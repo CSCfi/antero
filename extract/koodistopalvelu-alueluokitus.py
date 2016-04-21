@@ -68,7 +68,7 @@ def main():
     conn.commit()
 
     print (strftime("%Y-%m-%d %H:%M:%S", localtime())+" haetaan opintopolusta").encode('utf-8')
-    r = requests.get("http://virkailija.opintopolku.fi/koodisto-service/rest/json/kunta/koodi")
+    r = requests.get("http://virkailija.opintopolku.fi/koodisto-service/rest/json/kunta/koodi", verify=False)
     j = r.json()
     lkm = 0
     for i in j:
@@ -81,7 +81,7 @@ def main():
         loppupvm = i["voimassaLoppuPvm"]
 
         # luokitukset (nb! avi loytyy eri suunnasta!)
-        rr = requests.get("http://virkailija.opintopolku.fi/koodisto-service/rest/json/relaatio/sisaltyy-ylakoodit/%s" % i["koodiUri"])
+        rr = requests.get("http://virkailija.opintopolku.fi/koodisto-service/rest/json/relaatio/sisaltyy-ylakoodit/%s" % i["koodiUri"], verify=False)
         jj = rr.json()
         ss = ""
         for ii in jj:
@@ -91,7 +91,7 @@ def main():
                 avinimi_sv = haenimi(ii,"SV")
                 avinimi_en = haenimi(ii,"EN")
         # muut luokitukset
-        rr = requests.get("http://virkailija.opintopolku.fi/koodisto-service/rest/json/relaatio/sisaltyy-alakoodit/%s" % i["koodiUri"])
+        rr = requests.get("http://virkailija.opintopolku.fi/koodisto-service/rest/json/relaatio/sisaltyy-alakoodit/%s" % i["koodiUri"], verify=False)
         jj = rr.json()
         ss = ""
         for ii in jj:

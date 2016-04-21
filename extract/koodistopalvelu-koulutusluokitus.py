@@ -100,7 +100,7 @@ def main():
     conn.commit()
 
     print (strftime("%Y-%m-%d %H:%M:%S", localtime())+" haetaan opintopolusta").encode('utf-8')
-    r = requests.get("http://virkailija.opintopolku.fi/koodisto-service/rest/json/koulutus/koodi")
+    r = requests.get("http://virkailija.opintopolku.fi/koodisto-service/rest/json/koulutus/koodi", verify=False)
     j = r.json()
     lkm = 0
     for i in j:
@@ -113,7 +113,7 @@ def main():
         loppupvm = i["voimassaLoppuPvm"]
 
         # luokitukset
-        rr = requests.get("http://virkailija.opintopolku.fi/koodisto-service/rest/json/relaatio/sisaltyy-alakoodit/%s" % i["koodiUri"])
+        rr = requests.get("http://virkailija.opintopolku.fi/koodisto-service/rest/json/relaatio/sisaltyy-alakoodit/%s" % i["koodiUri"], verify=False)
         jj = rr.json()
         ss = ""
         for ii in jj:

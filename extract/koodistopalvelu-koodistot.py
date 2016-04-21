@@ -76,7 +76,7 @@ def main():
     for koodisto in koodistot:
         url = koodistouri % koodisto
         print (strftime("%Y-%m-%d %H:%M:%S", localtime())+" haetaan opintopolusta -- "+url).encode('utf-8')
-        r = requests.get(url)
+        r = requests.get(url, verify=False)
         j = r.json()
         lkm = 0
         for i in j:
