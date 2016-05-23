@@ -21,22 +21,6 @@ def main():
     conn = psycopg2.connect(conn_string)
     cur = conn.cursor()
 
-    # sarakkeet
-    oid = ""
-    koodi = ""
-    nimi = ""
-    nimi_sv = None
-    nimi_en = None
-    alkupvm = ""
-    loppupvm = None
-    jarjestajaoid = None
-    jarjestajakoodi = None
-    jarjestajanimi = None
-    jarjestajanimi_sv = None
-    jarjestajanimi_en = None
-    kuntakoodi = None # nimet erikseen
-    oppilaitostyyppikoodi = None # nimet erikseen
-    
     print (strftime("%Y-%m-%d %H:%M:%S", localtime())+" tyhjennetaan sa_oppilaitosluokitus").encode('utf-8')
     cur.execute("DELETE FROM sa_oppilaitosluokitus")
     conn.commit()
@@ -60,6 +44,22 @@ def main():
             for o in i["children"]:
                 if "oppilaitosKoodi" in o:
                     lkm += 1
+                    # sarakkeet
+                    oid = ""
+                    koodi = ""
+                    nimi = ""
+                    nimi_sv = None
+                    nimi_en = None
+                    alkupvm = ""
+                    loppupvm = None
+                    jarjestajaoid = None
+                    jarjestajakoodi = None
+                    jarjestajanimi = None
+                    jarjestajanimi_sv = None
+                    jarjestajanimi_en = None
+                    kuntakoodi = None # nimet erikseen
+                    oppilaitostyyppikoodi = None # nimet erikseen
+                    
                     oid = o["oid"]
                     koodi = o["oppilaitosKoodi"]
                     nimi = None if "fi" not in o["nimi"] else o["nimi"]["fi"]

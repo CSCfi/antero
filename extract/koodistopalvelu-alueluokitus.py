@@ -27,42 +27,6 @@ def main():
     conn = psycopg2.connect(conn_string)
     cur = conn.cursor()
 
-    # sarakkeet
-    koodi = ""
-    nimi = ""
-    nimi_sv = None
-    nimi_en = None
-    alkupvm = ""
-    loppupvm = None
-    maakuntakoodi = None
-    maakuntanimi = None
-    maakuntanimi_sv = None
-    maakuntanimi_en = None
-    avikoodi = None
-    avinimi = None
-    avinimi_sv = None
-    avinimi_en = None
-    elykoodi = None
-    elynimi = None
-    elynimi_sv = None
-    elynimi_en = None
-    kielisuhdekoodi = None
-    kielisuhdenimi = None
-    kielisuhdenimi_sv = None
-    kielisuhdenimi_en = None
-    seutukuntakoodi = None
-    seutukuntanimi = None
-    seutukuntanimi_sv = None
-    seutukuntanimi_en = None
-    laanikoodi = None
-    laaninimi = None
-    laaninimi_sv = None
-    laaninimi_en = None
-    kuntaryhmakoodi = None
-    kuntaryhmanimi = None
-    kuntaryhmanimi_sv = None
-    kuntaryhmanimi_en = None
-    
     print (strftime("%Y-%m-%d %H:%M:%S", localtime())+" tyhjennetaan sa_alueluokitus").encode('utf-8')
     cur.execute("DELETE FROM sa_alueluokitus")
     conn.commit()
@@ -73,6 +37,42 @@ def main():
     lkm = 0
     for i in j:
         lkm += 1
+        # sarakkeet
+        koodi = ""
+        nimi = ""
+        nimi_sv = None
+        nimi_en = None
+        alkupvm = ""
+        loppupvm = None
+        maakuntakoodi = None
+        maakuntanimi = None
+        maakuntanimi_sv = None
+        maakuntanimi_en = None
+        avikoodi = None
+        avinimi = None
+        avinimi_sv = None
+        avinimi_en = None
+        elykoodi = None
+        elynimi = None
+        elynimi_sv = None
+        elynimi_en = None
+        kielisuhdekoodi = None
+        kielisuhdenimi = None
+        kielisuhdenimi_sv = None
+        kielisuhdenimi_en = None
+        seutukuntakoodi = None
+        seutukuntanimi = None
+        seutukuntanimi_sv = None
+        seutukuntanimi_en = None
+        laanikoodi = None
+        laaninimi = None
+        laaninimi_sv = None
+        laaninimi_en = None
+        kuntaryhmakoodi = None
+        kuntaryhmanimi = None
+        kuntaryhmanimi_sv = None
+        kuntaryhmanimi_en = None
+        
         koodi = i["koodiArvo"]
         nimi = haenimi(i,"FI")
         nimi_sv = haenimi(i,"SV")

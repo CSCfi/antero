@@ -27,14 +27,6 @@ def main():
     conn = psycopg2.connect(conn_string)
     cur = conn.cursor()
 
-    # sarakkeet + koodisto!
-    koodi = ""
-    nimi = ""
-    nimi_sv = None
-    nimi_en = None
-    alkupvm = ""
-    loppupvm = None
-    
     print (strftime("%Y-%m-%d %H:%M:%S", localtime())+" tyhjennetaan sa_koodistot").encode('utf-8')
     cur.execute("DELETE FROM sa_koodistot")
     conn.commit()
@@ -81,6 +73,7 @@ def main():
         lkm = 0
         for i in j:
             lkm += 1
+            # sarakkeet
             koodi = i["koodiArvo"]
             nimi = haenimi(i,"FI")
             nimi_sv = haenimi(i,"SV")
