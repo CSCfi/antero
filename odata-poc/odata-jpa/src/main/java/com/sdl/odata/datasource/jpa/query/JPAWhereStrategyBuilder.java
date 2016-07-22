@@ -26,10 +26,11 @@ import com.sdl.odata.api.processor.query.CriteriaValue;
 import com.sdl.odata.api.processor.query.LiteralCriteriaValue;
 import com.sdl.odata.api.processor.query.ModOperator$;
 import com.sdl.odata.api.processor.query.PropertyCriteriaValue;
-import com.sdl.odata.datasource.jpa.util.JPAMetadataUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static com.sdl.odata.datasource.jpa.util.JPAMetadataUtil.getJPAPropertyName;
+import static com.sdl.odata.datasource.jpa.util.JPAMetadataUtil.getJpaPropertyType;
 
 /**
  * This class builds where clause for given criteria.
@@ -50,15 +51,6 @@ public class JPAWhereStrategyBuilder {
     public JPAWhereStrategyBuilder(EntityType targetEntityType, JPAQueryBuilder jpaQueryBuilder) {
         this.targetEntityType = targetEntityType;
         this.jpaQueryBuilder = jpaQueryBuilder;
-    }
-
-    /**
-     * Return current parameter value name
-     *
-     * @return name of current parameter value
-     */
-    private String curParamName() {
-        return PREFIX_PARAM + (paramCount+1);
     }
 
     /**
@@ -130,11 +122,13 @@ public class JPAWhereStrategyBuilder {
     }
 
     private void buildFromPropertyCriteriaValue(PropertyCriteriaValue value, StringBuilder builder) {
-        final String propertyName = JPAMetadataUtil.getJPAPropertyName(targetEntityType, value.propertyName());
+        final String paramName = PREFIX_PARAM + (paramCount+1);
+        final String propertyName = getJPAPropertyName(targetEntityType, value.propertyName());
+        final Class<?> literalType = getJpaPropertyType(targetEntityType, propertyName);
+        jpaQueryBuilder.addLiteralType(paramName, literalType);
         builder.append(jpaQueryBuilder.getFromAlias());
         builder.append(".");
         builder.append(propertyName);
-        addLiteralType(propertyName);
     }
 
     private void buildFromCompositeCriteria(CompositeCriteria criteria, StringBuilder builder) throws ODataException {
@@ -152,10 +146,5 @@ public class JPAWhereStrategyBuilder {
     public JPAWhereStrategyBuilder setParamCount(int paramCount) {
         this.paramCount = paramCount;
         return this;
-    }
-
-    private void addLiteralType(final String propertyName) {
-        final Class<?> literalType = JPAMetadataUtil.getJPAPropertyType(targetEntityType, propertyName);
-        jpaQueryBuilder.addLiteralType(curParamName(), literalType);
     }
 }

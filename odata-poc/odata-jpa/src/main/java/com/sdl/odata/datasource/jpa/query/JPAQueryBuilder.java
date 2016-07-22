@@ -18,11 +18,13 @@ package com.sdl.odata.datasource.jpa.query;
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 
-import scala.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import static com.sdl.odata.datasource.jpa.mapper.PojoMapper.edmToJpaValue;
 
 
 /**
@@ -168,34 +170,19 @@ public final class JPAQueryBuilder {
     }
 
     public Map<String, Object> getParams() {
-        return params;
+        return params.entrySet().stream().collect(Collectors.toMap(e -> e.getKey(),
+            e -> edmToJpaValue(literalTypes.get(e.getKey()), e.getValue())
+        ));
     }
 
     public JPAQueryBuilder addParams(Map<String, Object> params) {
-        for(Map.Entry<String,Object> e : params.entrySet()) {
-            addParam(e.getKey(), e.getValue());
-        }
+        this.params.putAll(params);
         return this;
     }
 
     public JPAQueryBuilder addParam(String name, Object value) {
-        this.params.put(name, convertType(name, value));
+        this.params.put(name, value);
         return this;
-    }
-
-    private Object convertType(String name, final Object value) {
-        final Class<?> type = literalTypes.get(name);
-        if(value instanceof Number && null != type && null != value) {
-            final BigDecimal number = (BigDecimal) value;
-            if(type == Long.class || type.getName().equals("long")) {
-                return number.longValue();
-            } else if(type == Integer.class || type.getName().equals("int")) {
-                return number.intValue();
-            } else if(type == Short.class || type.getName().equals("short")) {
-                return number.shortValue();
-            }
-        }
-        return value;
     }
 
     public JPAQuery build() {
@@ -243,6 +230,6 @@ public final class JPAQueryBuilder {
             Joiner.on(',').appendTo(queryStringBuilder, orderByFields);
         }
 
-        return new JPAQuery(queryStringBuilder.toString(), params, limitCount, skipCount);
+        return new JPAQuery(queryStringBuilder.toString(), getParams(), limitCount, skipCount);
     }
 }

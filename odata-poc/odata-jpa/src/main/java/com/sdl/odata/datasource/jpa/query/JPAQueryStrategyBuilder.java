@@ -45,7 +45,7 @@ import java.util.Map;
 
 import static com.sdl.odata.datasource.jpa.util.JPAMetadataUtil.getJPACollectionName;
 import static com.sdl.odata.datasource.jpa.util.JPAMetadataUtil.getJPAPropertyName;
-import static com.sdl.odata.datasource.jpa.util.JPAMetadataUtil.getJPAPropertyType;
+import static com.sdl.odata.datasource.jpa.util.JPAMetadataUtil.getJpaPropertyType;
 
 /**
  * JPA Strategy for building a JPA query from the OData query model.
@@ -172,9 +172,8 @@ public final class JPAQueryStrategyBuilder {
         for (Map.Entry<String, Object> entry : operation.getKeyAsJava().entrySet()) {
             String paramName = alias + entry.getKey();
             whereClauseElements.add(alias + "." + entry.getKey() + " = :" + paramName);
-            final EntityType entityType = getUnderlyingEntityType(operation.getSource());
-            builder.addLiteralType(paramName, getJPAPropertyType(entityType, entry.getKey()));
             params.put(paramName, entry.getValue());
+            builder.addLiteralType(paramName, getLiteralType(operation, entry.getKey()));
         }
 
         return builder.setWhereClause(Joiner.on(" AND ").join(whereClauseElements)).addParams(params);
@@ -252,6 +251,10 @@ public final class JPAQueryStrategyBuilder {
         return (EntityType) entityDataModel.getType(entitySet.getTypeName());
     }
 
+    private Class<?> getLiteralType(final SelectByKeyOperation operation, final String propertyName) {
+        final EntityType entityType = getUnderlyingEntityType(operation.getSource());
+        return getJpaPropertyType(entityType, propertyName);
+    }
 
     public int getParamCount() {
         return paramCount;

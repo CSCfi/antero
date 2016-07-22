@@ -42,9 +42,11 @@ import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.function.Supplier;
+
+import static com.sdl.odata.datasource.jpa.mapper.PojoMapper.isDefaultAssignable;
+import static com.sdl.odata.datasource.jpa.mapper.PojoMapper.jpaToEdmClassName;
 
 /**
  * @author Renze de Vries
@@ -150,7 +152,7 @@ public class PropertyBuilder {
 
     private void generateField(Class<?> propertyType, String propertyName) {
         try {
-            CtClass fieldType = pool.get(propertyType.getName());
+            CtClass fieldType = pool.get(jpaToEdmClassName(propertyType));
 
             generateField(fieldType, propertyName, () -> generateAnnotation(propertyName));
         } catch (NotFoundException e) {
@@ -205,12 +207,6 @@ public class PropertyBuilder {
         private boolean collection = false;
         private boolean key = false;
 
-        private final Class[] defaultClasses = new Class[] {
-            String.class,
-            Number.class,
-            Boolean.class
-        };
-
         private MethodInfo(Method method) {
             this.method = method;
 
@@ -227,10 +223,6 @@ public class PropertyBuilder {
             Class<?> returnType = method.getReturnType();
 
             return returnType.isPrimitive() || isDefaultAssignable(returnType);
-        }
-
-        public boolean isDefaultAssignable(Class<?> returnType) {
-            return Arrays.stream(defaultClasses).anyMatch( c -> c.isAssignableFrom(returnType));
         }
 
         public Class<?> getReturnType() {

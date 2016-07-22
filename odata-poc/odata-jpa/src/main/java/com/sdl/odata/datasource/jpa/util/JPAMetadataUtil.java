@@ -94,7 +94,7 @@ public final class JPAMetadataUtil {
         return getJPACollectionName(odataEntityType);
     }
 
-    private static Field getJPAEntityField(EntityType entityType, String propertyName) {
+    private static Field getJpaEntityField(EntityType entityType, String propertyName) {
         StructuralProperty property = entityType.getStructuralProperty(propertyName);
         if (property == null) {
             throw new ODataSystemException("Property '" + propertyName + "' does not exist in entity type: " +
@@ -111,7 +111,7 @@ public final class JPAMetadataUtil {
      * @return The name of the corresponding JPA property.
      */
     public static String getJPAPropertyName(EntityType entityType, String propertyName) {
-        Field field = getJPAEntityField(entityType, propertyName);
+        Field field = getJpaEntityField(entityType, propertyName);
         ODataJPAProperty jpaPropertyAnno = field.getAnnotation(ODataJPAProperty.class);
         String jpaPropertyName = jpaPropertyAnno.value();
         if (Strings.isNullOrEmpty(jpaPropertyName)) {
@@ -128,7 +128,7 @@ public final class JPAMetadataUtil {
      * @param propertyName The name of the OData property.
      * @return The type of the corresponding JPA property.
      */
-    public static Class<?> getJPAPropertyType(EntityType entityType, String propertyName) {
-        return getJPAEntityField(entityType, propertyName).getType();
+    public static Class<?> getJpaPropertyType(EntityType entityType, String propertyName) {
+        return getJpaEntityField(entityType, propertyName).getType();
     }
 }

@@ -19,8 +19,8 @@ public class SA_Aipal {
 
     private Long vastausid;
     private Date vastausaika;
-    private Integer numerovalinta;
-    private Integer vaihtoehto;
+    private Short numerovalinta;
+    private Short vaihtoehto;
     private String monivalintavaihtoehto;
     private Long kysymysid;
     private String kysymys_fi;
@@ -69,34 +69,35 @@ public class SA_Aipal {
         this.vastausid = vastausid;
     }
 
-    @Basic(optional = true)
+    @Column(nullable = true)
     @Temporal(TemporalType.DATE)
     public Date getVastausaika() {
-        return vastausaika;
+        return this.vastausaika;
     }
 
-    public void setVastausaika(Date paatospvm) {
+    public void setVastausaika(Date vastausaika) {
         this.vastausaika = vastausaika;
     }
 
     @Column(nullable = true)
-    public Integer getNumerovalinta() {
+    public Short getNumerovalinta() {
         return numerovalinta;
     }
 
-    public void setNumerovalinta(Integer numerovalinta) {
+    public void setNumerovalinta(Short numerovalinta) {
         this.numerovalinta = numerovalinta;
     }
 
     @Column(nullable = true)
-    public Integer getVaihtoehto() {
+    public Short getVaihtoehto() {
         return vaihtoehto;
     }
 
-    public void setVaihtoehto(Integer vaihtoehto) {
+    public void setVaihtoehto(Short vaihtoehto) {
         this.vaihtoehto = vaihtoehto;
     }
 
+    @Column(nullable = true)
     @Size(max = 500)
     public String getMonivalintavaihtoehto() {
         return monivalintavaihtoehto;
@@ -116,6 +117,7 @@ public class SA_Aipal {
     }
 
     @Column(nullable = true)
+    @Size(max = 500)
     public String getKysymys_fi() {
         return kysymys_fi;
     }
@@ -125,6 +127,7 @@ public class SA_Aipal {
     }
 
     @Column(nullable = true)
+    @Size(max = 500)
     public String getKysymys_sv() {
         return kysymys_sv;
     }
@@ -143,6 +146,7 @@ public class SA_Aipal {
     }
 
     @Column(nullable = true)
+    @Size(max = 500)
     public String getKysymysryhma_fi() {
         return kysymysryhma_fi;
     }
@@ -152,6 +156,7 @@ public class SA_Aipal {
     }
 
     @Column(nullable = true)
+    @Size(max = 500)
     public String getKysymysryhma_sv() {
         return kysymysryhma_sv;
     }
@@ -161,6 +166,7 @@ public class SA_Aipal {
     }
 
     @Column(nullable = true)
+    @Size(max = 20)
     public String getVastaustyyppi() {
         return vastaustyyppi;
     }
@@ -179,6 +185,7 @@ public class SA_Aipal {
     }
 
     @Column(nullable = true)
+    @Size(max = 20)
     public String getRahoitusmuoto() {
         return rahoitusmuoto;
     }
@@ -188,6 +195,7 @@ public class SA_Aipal {
     }
 
     @Column(nullable = true)
+    @Size(max = 20)
     public String getTutkintotunnus() {
         return tutkintotunnus;
     }
@@ -197,6 +205,7 @@ public class SA_Aipal {
     }
 
     @Column(nullable = true)
+    @Size(max = 500)
     public String getTutkinto_fi() {
         return tutkinto_fi;
     }
@@ -206,6 +215,7 @@ public class SA_Aipal {
     }
 
     @Column(nullable = true)
+    @Size(max = 500)
     public String getTutkinto_sv() {
         return tutkinto_sv;
     }
@@ -215,6 +225,7 @@ public class SA_Aipal {
     }
 
     @Column(nullable = true)
+    @Size(max = 20)
     public String getOpintoalatunnus() {
         return opintoalatunnus;
     }
@@ -224,6 +235,7 @@ public class SA_Aipal {
     }
 
     @Column(nullable = true)
+    @Size(max = 500)
     public String getOpintoala_fi() {
         return opintoala_fi;
     }
@@ -233,6 +245,7 @@ public class SA_Aipal {
     }
 
     @Column(nullable = true)
+    @Size(max = 500)
     public String getOpintoala_sv() {
         return opintoala_sv;
     }
@@ -242,6 +255,7 @@ public class SA_Aipal {
     }
 
     @Column(nullable = true)
+    @Size(max = 20)
     public String getSuorituskieli() {
         return suorituskieli;
     }
@@ -251,6 +265,7 @@ public class SA_Aipal {
     }
 
     @Column(nullable = true)
+    @Size(max = 20)
     public String getValmistavan_koulutuksen_jarjestaja() {
         return valmistavan_koulutuksen_jarjestaja;
     }
@@ -260,6 +275,7 @@ public class SA_Aipal {
     }
 
     @Column(nullable = true)
+    @Size(max = 500)
     public String getValmistavan_koulutuksen_jarjestaja_fi() {
         return valmistavan_koulutuksen_jarjestaja_fi;
     }
@@ -269,6 +285,7 @@ public class SA_Aipal {
     }
 
     @Column(nullable = true)
+    @Size(max = 500)
     public String getValmistavan_koulutuksen_jarjestaja_sv() {
         return valmistavan_koulutuksen_jarjestaja_sv;
     }
@@ -278,6 +295,7 @@ public class SA_Aipal {
     }
 
     @Column(nullable = true)
+    @Size(max = 20)
     public String getValmistavan_koulutuksen_oppilaitos() {
         return valmistavan_koulutuksen_oppilaitos;
     }
@@ -287,6 +305,7 @@ public class SA_Aipal {
     }
 
     @Column(nullable = true)
+    @Size(max = 500)
     public String getValmistavan_koulutuksen_oppilaitos_fi() {
         return valmistavan_koulutuksen_oppilaitos_fi;
     }
@@ -296,6 +315,7 @@ public class SA_Aipal {
     }
 
     @Column(nullable = true)
+    @Size(max = 500)
     public String getValmistavan_koulutuksen_oppilaitos_sv() {
         return valmistavan_koulutuksen_oppilaitos_sv;
     }
@@ -314,6 +334,7 @@ public class SA_Aipal {
     }
 
     @Column(nullable = true)
+    @Size(max = 500)
     public String getKyselykerta() {
         return kyselykerta;
     }
@@ -332,6 +353,7 @@ public class SA_Aipal {
     }
 
     @Column(nullable = true)
+    @Size(max = 500)
     public String getKysely_fi() {
         return kysely_fi;
     }
@@ -341,6 +363,7 @@ public class SA_Aipal {
     }
 
     @Column(nullable = true)
+    @Size(max = 500)
     public String getKysely_sv() {
         return kysely_sv;
     }
@@ -350,6 +373,7 @@ public class SA_Aipal {
     }
 
     @Column(nullable = true)
+    @Size(max = 20)
     public String getKoulutustoimija() {
         return koulutustoimija;
     }
@@ -359,6 +383,7 @@ public class SA_Aipal {
     }
 
     @Column(nullable = true)
+    @Size(max = 500)
     public String getKoulutustoimija_fi() {
         return koulutustoimija_fi;
     }
@@ -368,6 +393,7 @@ public class SA_Aipal {
     }
 
     @Column(nullable = true)
+    @Size(max = 500)
     public String getKoulutustoimija_sv() {
         return koulutustoimija_sv;
     }

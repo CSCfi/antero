@@ -3,6 +3,10 @@ package fi.csc.antero.odata.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
+import java.util.Date;
 
 /**
  * F_Maara entity
@@ -11,12 +15,12 @@ import javax.persistence.Id;
  */
 @Entity(name = "F_MAARA")
 public class F_Maara {
-    private long id;
+    private Long id;
     private String ytunnus;
-//    private Date paatospvm;
+    private Date paatospvm;
     private String diaarinro;
-//    private Date alkupvm;
-//    private Date loppupvm;
+    private Date alkupvm;
+    private Date loppupvm;
     private Integer kokonaisopiskelijamaara;
     private Integer kokonaisopiskelijamaara_1;
     private Integer kokonaisopiskelijamaara_2;
@@ -40,20 +44,20 @@ public class F_Maara {
         this.ytunnus = ytunnus;
     }
 
-    public F_Maara() {
-    }
+    public F_Maara() {}
 
     @Id
     @Column
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
     @Column
+    @Size(max = 10)
     public String getYtunnus() {
         return ytunnus;
     }
@@ -62,17 +66,18 @@ public class F_Maara {
         this.ytunnus = ytunnus;
     }
 
-//    @Basic(optional = true)
-//    @Temporal(TemporalType.DATE)
-//    public Date getPaatospvm() {
-//        return paatospvm;
-//    }
-//
-//    public void setPaatospvm(Date paatospvm) {
-//        this.paatospvm = paatospvm;
-//    }
+    @Column(nullable = true)
+    @Temporal(TemporalType.DATE)
+    public Date getPaatospvm() {
+        return this.paatospvm;
+    }
+
+    public void setPaatospvm(Date paatospvm) {
+        this.paatospvm = paatospvm;
+    }
 
     @Column
+    @Size(max = 15)
     public String getDiaarinro() {
         return diaarinro;
     }
@@ -80,25 +85,27 @@ public class F_Maara {
     public void setDiaarinro(String diaarinro) {
         this.diaarinro = diaarinro;
     }
-//
-//    @Column
-//    public Date getAlkupvm() {
-//        return alkupvm;
-//    }
-//
-//    public void setAlkupvm(Date alkupvm) {
-//        this.alkupvm = alkupvm;
-//    }
-//
-//    @Column
-//    public Date getLoppupvm() {
-//        return loppupvm;
-//    }
-//
-//    public void setLoppupvm(Date loppupvm) {
-//        this.loppupvm = loppupvm;
-//    }
-//
+
+    @Column(nullable = true)
+    @Temporal(TemporalType.DATE)
+    public Date getAlkupvm() {
+        return this.alkupvm;
+    }
+
+    public void setAlkupvm(Date alkupvm) {
+        this.alkupvm = alkupvm;
+    }
+
+    @Column(nullable = true)
+    @Temporal(TemporalType.DATE)
+    public Date getLoppupvm() {
+        return this.loppupvm;
+    }
+
+    public void setLoppupvm(Date loppupvm) {
+        this.loppupvm = loppupvm;
+    }
+
     @Column(nullable = true)
     public Integer getKokonaisopiskelijamaara() {
         return kokonaisopiskelijamaara;
@@ -181,6 +188,7 @@ public class F_Maara {
     }
 
     @Column(nullable = true)
+    @Size(max = 15)
     public String getOpetuskieli() {
         return opetuskieli;
     }
