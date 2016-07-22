@@ -45,7 +45,7 @@ import java.util.Map;
 
 import static com.sdl.odata.datasource.jpa.util.JPAMetadataUtil.getJPACollectionName;
 import static com.sdl.odata.datasource.jpa.util.JPAMetadataUtil.getJPAPropertyName;
-import static com.sdl.odata.datasource.jpa.util.JPAMetadataUtil.getJPAPropertyType;
+import static com.sdl.odata.datasource.jpa.util.JPAMetadataUtil.getJpaPropertyType;
 
 /**
  * JPA Strategy for building a JPA query from the OData query model.
@@ -173,7 +173,7 @@ public final class JPAQueryStrategyBuilder {
             String paramName = alias + entry.getKey();
             whereClauseElements.add(alias + "." + entry.getKey() + " = :" + paramName);
             final EntityType entityType = getUnderlyingEntityType(operation.getSource());
-            builder.addLiteralType(paramName, getJPAPropertyType(entityType, entry.getKey()));
+            builder.addLiteralType(paramName, getJpaPropertyType(entityType, entry.getKey()));
             params.put(paramName, entry.getValue());
         }
 

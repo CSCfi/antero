@@ -19,6 +19,8 @@ import com.sdl.odata.api.processor.datasource.ODataDataSourceException;
 
 import java.lang.reflect.Field;
 
+import static com.sdl.odata.datasource.jpa.mapper.PojoMapper.jpaToEdmValue;
+
 /**
  * Small utility class that contains reflection shortcuts.
  * @author Renze de Vries
@@ -80,7 +82,7 @@ public final class ReflectionUtil {
     public static Object readField(Field field, Object object) throws ODataDataSourceException {
         field.setAccessible(true);
         try {
-            return field.get(object);
+            return jpaToEdmValue(field.get(object));
         } catch (IllegalAccessException e) {
             throw new ODataDataSourceException("Cannot read field: " + field.getName(), e);
         }
