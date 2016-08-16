@@ -9,7 +9,7 @@ import javax.validation.constraints.Size;
 //import java.util.Date;
 
 /**
- * F_Maara entitymk_opintopiste
+ * F_Amk_opintopiste entity
  *
  * @author lauri.jokipii@csc.fi
  */
