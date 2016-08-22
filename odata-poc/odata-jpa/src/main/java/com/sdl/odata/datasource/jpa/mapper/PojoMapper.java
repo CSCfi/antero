@@ -3,6 +3,7 @@ package com.sdl.odata.datasource.jpa.mapper;
 import javassist.NotFoundException;
 import org.apache.commons.lang3.StringUtils;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -16,6 +17,7 @@ public class PojoMapper {
         String.class,
         Integer.class,
         Long.class,
+        BigDecimal.class,
         Short.class,
         Boolean.class,
         Date.class
