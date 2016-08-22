@@ -2,7 +2,6 @@ package fi.csc.antero.odata.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
@@ -20,7 +19,7 @@ public class D_Koulutustyyppi {
     private String selite;
     private String selite_sv;
     private String selite_en;
-    private List<F_AMK_Opintopiste> f_AMK_Opintopiste;
+    private List<F_AMK_Opintopiste> koulutustyyppi;
 
     public D_Koulutustyyppi() {
 
@@ -67,11 +66,11 @@ public class D_Koulutustyyppi {
     }
 
     @OneToMany(mappedBy = "koulutustyyppi")
-    public List<F_AMK_Opintopiste> getF_AMK_Opintopiste() {
-        return f_AMK_Opintopiste;
+    public List<F_AMK_Opintopiste> getKoulutustyyppi() {
+        return koulutustyyppi;
     }
 
-    public void setF_AMK_Opintopiste(List<F_AMK_Opintopiste> f_AMK_Opintopiste) {
-        this.f_AMK_Opintopiste = f_AMK_Opintopiste;
+    public void setKoulutustyyppi(List<F_AMK_Opintopiste> koulutustyyppi) {
+        this.koulutustyyppi = koulutustyyppi;
     }
 }
