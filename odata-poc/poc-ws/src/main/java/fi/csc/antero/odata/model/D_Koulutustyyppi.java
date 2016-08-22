@@ -19,11 +19,9 @@ public class D_Koulutustyyppi {
     private String selite;
     private String selite_sv;
     private String selite_en;
-    private List<F_AMK_Opintopiste> koulutustyyppi;
+    private List<F_AMK_Opintopiste> opintopisteet;
 
-    public D_Koulutustyyppi() {
-
-    }
+    public D_Koulutustyyppi() {}
 
     @Id
     @Size(max = 5)
@@ -66,11 +64,11 @@ public class D_Koulutustyyppi {
     }
 
     @OneToMany(mappedBy = "koulutustyyppi")
-    public List<F_AMK_Opintopiste> getKoulutustyyppi() {
-        return koulutustyyppi;
+    public List<F_AMK_Opintopiste> getOpintopisteet() {
+        return opintopisteet;
     }
 
-    public void setKoulutustyyppi(List<F_AMK_Opintopiste> koulutustyyppi) {
-        this.koulutustyyppi = koulutustyyppi;
+    public void setOpintopisteet(List<F_AMK_Opintopiste> opintopisteet) {
+        this.opintopisteet = opintopisteet;
     }
 }

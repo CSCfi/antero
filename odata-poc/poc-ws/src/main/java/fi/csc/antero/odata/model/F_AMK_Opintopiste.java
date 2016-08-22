@@ -20,7 +20,7 @@ public class F_AMK_Opintopiste {
     private Short vuosi;
     private D_DB db;
     private D_Koulutustyyppi koulutustyyppi;
-    private D_Koulutusala2002 koodi;
+    private D_Koulutusala2002 koulutusala;
     private BigDecimal perustutkinto;
     private BigDecimal tkitoiminnanlaajuus;
     private BigDecimal tkimuutlaajuus;
@@ -58,7 +58,7 @@ public class F_AMK_Opintopiste {
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "db", nullable = true)
+    @JoinColumn(name = "db_db", nullable = true)
     public D_DB getDb() {
         return db;
     }
@@ -68,7 +68,7 @@ public class F_AMK_Opintopiste {
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "koulutustyyppi", nullable = true)
+    @JoinColumn(name = "koulutustyyppi_koodi", nullable = true)
     public D_Koulutustyyppi getKoulutustyyppi() {
         return koulutustyyppi;
     }
@@ -78,13 +78,13 @@ public class F_AMK_Opintopiste {
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "koodi", nullable = true)
-    public D_Koulutusala2002 getKoodi() {
-        return koodi;
+    @JoinColumn(name = "koulutusala2002_koodi", nullable = true)
+    public D_Koulutusala2002 getKoulutusala() {
+        return koulutusala;
     }
 
-    public void setKoodi(D_Koulutusala2002 koodi) {
-        this.koodi = koodi;
+    public void setKoulutusala(D_Koulutusala2002 koulutusala) {
+        this.koulutusala = koulutusala;
     }
 
     @Column(nullable = true)
