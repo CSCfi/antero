@@ -52,11 +52,11 @@ def main():
                     nimi_en = None
                     alkupvm = ""
                     loppupvm = None
-                    jarjestajaoid = None
-                    jarjestajakoodi = None
-                    jarjestajanimi = None
-                    jarjestajanimi_sv = None
-                    jarjestajanimi_en = None
+                    #jarjestajaoid = None
+                    #jarjestajakoodi = None
+                    #jarjestajanimi = None
+                    #jarjestajanimi_sv = None
+                    #jarjestajanimi_en = None
                     kuntakoodi = None # nimet erikseen
                     oppilaitostyyppikoodi = None # nimet erikseen
                     
