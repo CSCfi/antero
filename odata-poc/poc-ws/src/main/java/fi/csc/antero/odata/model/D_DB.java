@@ -16,8 +16,8 @@ import java.util.List;
 public class D_DB {
 
     private String db_db;
-    private String selite;
-    private String koodi;
+    private String korkeakoulu;
+    private String oppilaitos_koodi;
     private List<F_AMK_Opintopiste> opintopisteet;
 
     public D_DB() {
@@ -36,22 +36,22 @@ public class D_DB {
 
     @Column
     @Size(max = 100)
-    public String getSelite() {
-        return selite;
+    public String getKorkeakoulu() {
+        return korkeakoulu;
     }
 
-    public void setSelite(String selite) {
-        this.selite = selite;
+    public void setKorkeakoulu(String korkeakoulu) {
+        this.korkeakoulu = korkeakoulu;
     }
 
     @Column
     @Size(max = 5)
-    public String getKoodi() {
-        return koodi;
+    public String getOppilaitos_koodi() {
+        return oppilaitos_koodi;
     }
 
-    public void setKoodi(String koodi) {
-        this.koodi = koodi;
+    public void setOppilaitos_koodi(String oppilaitos_koodi) {
+        this.oppilaitos_koodi = oppilaitos_koodi;
     }
 
     @OneToMany(mappedBy = "db_db")

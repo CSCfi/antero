@@ -16,9 +16,9 @@ import java.util.List;
 public class D_Koulutustyyppi {
 
     private String koulutustyyppi_koodi;
-    private String selite;
-    private String selite_sv;
-    private String selite_en;
+    private String koulutustyyppi;
+    private String koulutustyyppi_sv;
+    private String koulutustyyppi_en;
     private List<F_AMK_Opintopiste> opintopisteet;
 
     public D_Koulutustyyppi() {}
@@ -35,32 +35,32 @@ public class D_Koulutustyyppi {
 
     @Column
     @Size(max = 200)
-    public String getSelite() {
-        return selite;
+    public String getKoulutustyyppi() {
+        return koulutustyyppi;
     }
 
-    public void setSelite(String selite) {
-        this.selite = selite;
-    }
-
-    @Column(nullable = true)
-    @Size(max = 200)
-    public String getSelite_sv() {
-        return selite_sv;
-    }
-
-    public void setSelite_sv(String selite_sv) {
-        this.selite_sv = selite_sv;
+    public void setKoulutustyyppi(String koulutustyyppi) {
+        this.koulutustyyppi = koulutustyyppi;
     }
 
     @Column(nullable = true)
     @Size(max = 200)
-    public String getSelite_en() {
-        return selite_en;
+    public String getKoulutustyyppi_sv() {
+        return koulutustyyppi_sv;
     }
 
-    public void setSelite_en(String selite_en) {
-        this.selite_en = selite_en;
+    public void setKoulutustyyppi_sv(String koulutustyyppi_sv) {
+        this.koulutustyyppi_sv = koulutustyyppi_sv;
+    }
+
+    @Column(nullable = true)
+    @Size(max = 200)
+    public String getKoulutustyyppi_en() {
+        return koulutustyyppi_en;
+    }
+
+    public void setKoulutustyyppi_en(String koulutustyyppi_en) {
+        this.koulutustyyppi_en = koulutustyyppi_en;
     }
 
     @OneToMany(mappedBy = "koulutustyyppi_koodi")
