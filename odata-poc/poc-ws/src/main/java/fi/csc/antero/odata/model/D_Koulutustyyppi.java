@@ -15,7 +15,7 @@ import java.util.List;
 @Entity(name = "D_KOULUTUSTYYPPI")
 public class D_Koulutustyyppi {
 
-    private String koodi;
+    private String koulutustyyppi_koodi;
     private String selite;
     private String selite_sv;
     private String selite_en;
@@ -25,12 +25,12 @@ public class D_Koulutustyyppi {
 
     @Id
     @Size(max = 5)
-    public String getKoodi() {
-        return koodi;
+    public String getKoulutustyyppi_koodi() {
+        return koulutustyyppi_koodi;
     }
 
-    public void setKoodi(String koodi) {
-        this.koodi = koodi;
+    public void setKoulutustyyppi_koodi(String koulutustyyppi_koodi) {
+        this.koulutustyyppi_koodi = koulutustyyppi_koodi;
     }
 
     @Column
@@ -63,7 +63,7 @@ public class D_Koulutustyyppi {
         this.selite_en = selite_en;
     }
 
-    @OneToMany(mappedBy = "koulutustyyppi")
+    @OneToMany(mappedBy = "koulutustyyppi_koodi")
     public List<F_AMK_Opintopiste> getOpintopisteet() {
         return opintopisteet;
     }

@@ -18,9 +18,9 @@ public class F_AMK_Opintopiste {
 
     private Long id;
     private Short vuosi;
-    private D_DB db;
-    private D_Koulutustyyppi koulutustyyppi;
-    private D_Koulutusala2002 koulutusala;
+    private D_DB db_db;
+    private D_Koulutustyyppi koulutustyyppi_koodi;
+    private D_Koulutusala2002 koulutusala_koodi;
     private BigDecimal perustutkinto;
     private BigDecimal tkitoiminnanlaajuus;
     private BigDecimal tkimuutlaajuus;
@@ -59,32 +59,32 @@ public class F_AMK_Opintopiste {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "db_db", nullable = true)
-    public D_DB getDb() {
-        return db;
+    public D_DB getDb_db() {
+        return db_db;
     }
 
-    public void setDb(D_DB db) {
-        this.db = db;
+    public void setDb_db(D_DB db_db) {
+        this.db_db = db_db;
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "koulutustyyppi_koodi", nullable = true)
-    public D_Koulutustyyppi getKoulutustyyppi() {
-        return koulutustyyppi;
+    public D_Koulutustyyppi getKoulutustyyppi_koodi() {
+        return koulutustyyppi_koodi;
     }
 
-    public void setKoulutustyyppi(D_Koulutustyyppi koulutustyyppi) {
-        this.koulutustyyppi = koulutustyyppi;
+    public void setKoulutustyyppi_koodi(D_Koulutustyyppi koulutustyyppi_koodi) {
+        this.koulutustyyppi_koodi = koulutustyyppi_koodi;
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "koulutusala2002_koodi", nullable = true)
-    public D_Koulutusala2002 getKoulutusala() {
-        return koulutusala;
+    public D_Koulutusala2002 getKoulutusala_koodi() {
+        return koulutusala_koodi;
     }
 
-    public void setKoulutusala(D_Koulutusala2002 koulutusala) {
-        this.koulutusala = koulutusala;
+    public void setKoulutusala_koodi(D_Koulutusala2002 koulutusala_koodi) {
+        this.koulutusala_koodi = koulutusala_koodi;
     }
 
     @Column(nullable = true)

@@ -15,7 +15,7 @@ import java.util.List;
 @Entity(name = "D_KOULUTUSALA2002")
 public class D_Koulutusala2002 {
 
-    private String koodi;
+    private String koulutusala2002_koodi;
     private String selite;
     private String selite_sv;
     private String selite_en;
@@ -27,12 +27,12 @@ public class D_Koulutusala2002 {
 
     @Id
     @Size(max = 5)
-    public String getKoodi() {
-        return koodi;
+    public String getKoulutusala2002_koodi() {
+        return koulutusala2002_koodi;
     }
 
-    public void setKoodi(String koodi) {
-        this.koodi = koodi;
+    public void setKoulutusala2002_koodi(String koulutusala2002_koodi) {
+        this.koulutusala2002_koodi = koulutusala2002_koodi;
     }
 
     @Size(max = 100)
@@ -64,7 +64,7 @@ public class D_Koulutusala2002 {
         this.selite_en = selite_en;
     }
 
-    @OneToMany(mappedBy = "koulutusala")
+    @OneToMany(mappedBy = "koulutusala_koodi")
     public List<F_AMK_Opintopiste> getOpintopisteet() {
         return opintopisteet;
     }

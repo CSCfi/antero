@@ -15,7 +15,7 @@ import java.util.List;
 @Entity(name = "D_DB")
 public class D_DB {
 
-    private String db;
+    private String db_db;
     private String selite;
     private String koodi;
     private List<F_AMK_Opintopiste> opintopisteet;
@@ -26,12 +26,12 @@ public class D_DB {
 
     @Id
     @Size(max = 8)
-    public String getDb() {
-        return db;
+    public String getDb_db() {
+        return db_db;
     }
 
-    public void setDb(String db) {
-        this.db = db;
+    public void setDb_db(String db_db) {
+        this.db_db = db_db;
     }
 
     @Column
@@ -54,7 +54,7 @@ public class D_DB {
         this.koodi = koodi;
     }
 
-    @OneToMany(mappedBy = "db")
+    @OneToMany(mappedBy = "db_db")
     public List<F_AMK_Opintopiste> getOpintopisteet() {
         return opintopisteet;
     }
