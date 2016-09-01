@@ -16,8 +16,8 @@ def main():
     tunnus = "antero"
     salasana = "antero"
     
-    taulu = "sa_valos"
-    url = "https://amkoutetestapp.csc.fi/api/public/valos"
+    taulu = "sa_oiva_maara"
+    url = "https://amkoutetestapp.csc.fi/api/public/reporting"
 
     conn_string = "host='%s' dbname='%s' user='%s' password='%s'" % (kone,kanta,tunnus,salasana)
     print ("Connecting to database")
