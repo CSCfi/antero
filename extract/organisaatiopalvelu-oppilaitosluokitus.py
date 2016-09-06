@@ -5,7 +5,10 @@ from time import localtime, strftime
 import psycopg2
 import sys
 
-import requests
+import http.client
+opintopolkuuri = "virkailija.opintopolku.fi"
+httpconn = http.client.HTTPSConnection(opintopolkuuri)
+
 import json
 
 def main():
@@ -26,13 +29,14 @@ def main():
     conn.commit()
 
     linkit = [
-        "https://virkailija.opintopolku.fi/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?organisaatiotyyppi=Koulutustoimija&aktiiviset=true&suunnitellut=true&lakkautetut=false",
-        "https://virkailija.opintopolku.fi/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?organisaatiotyyppi=Koulutustoimija&aktiiviset=false&suunnitellut=false&lakkautetut=true"
+        "/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?organisaatiotyyppi=Koulutustoimija&aktiiviset=true&suunnitellut=true&lakkautetut=false",
+        "/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?organisaatiotyyppi=Koulutustoimija&aktiiviset=false&suunnitellut=false&lakkautetut=true"
     ]
     for url in linkit:
         print (strftime("%Y-%m-%d %H:%M:%S", localtime())+" haetaan opintopolusta -- "+url).encode('utf-8')
-        r = requests.get(url, verify=False)
-        j = r.json()
+        httpconn.request('GET', url)
+        r = httpconn.getresponse()
+        j = json.loads(r.read())
         lkm = 0
         for i in j["organisaatiot"]:
             jarjestajaoid = i["oid"]

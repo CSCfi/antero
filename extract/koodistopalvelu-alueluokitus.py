@@ -5,7 +5,10 @@ from time import localtime, strftime
 import psycopg2
 import sys
 
-import requests
+import http.client
+opintopolkuuri = "virkailija.opintopolku.fi"
+httpconn = http.client.HTTPSConnection(opintopolkuuri)
+
 import json
 
 def haenimi(i,kieli):
@@ -32,8 +35,9 @@ def main():
     conn.commit()
 
     print (strftime("%Y-%m-%d %H:%M:%S", localtime())+" haetaan opintopolusta").encode('utf-8')
-    r = requests.get("http://virkailija.opintopolku.fi/koodisto-service/rest/json/kunta/koodi", verify=False)
-    j = r.json()
+    httpconn.request('GET', "/koodisto-service/rest/json/kunta/koodi")
+    r = httpconn.getresponse()
+    j = json.loads(r.read())
     lkm = 0
     for i in j:
         lkm += 1
@@ -81,8 +85,9 @@ def main():
         loppupvm = i["voimassaLoppuPvm"]
 
         # luokitukset (nb! avi loytyy eri suunnasta!)
-        rr = requests.get("http://virkailija.opintopolku.fi/koodisto-service/rest/json/relaatio/sisaltyy-ylakoodit/%s" % i["koodiUri"], verify=False)
-        jj = rr.json()
+        httpconn.request('GET', "/koodisto-service/rest/json/relaatio/sisaltyy-ylakoodit/%s" % i["koodiUri"])
+        rr = httpconn.getresponse()
+        jj = json.loads(rr.read())
         ss = ""
         for ii in jj:
             if ii["koodisto"]["koodistoUri"] == "aluehallintovirasto":
@@ -91,8 +96,9 @@ def main():
                 avinimi_sv = haenimi(ii,"SV")
                 avinimi_en = haenimi(ii,"EN")
         # muut luokitukset
-        rr = requests.get("http://virkailija.opintopolku.fi/koodisto-service/rest/json/relaatio/sisaltyy-alakoodit/%s" % i["koodiUri"], verify=False)
-        jj = rr.json()
+        httpconn.request('GET', "/koodisto-service/rest/json/relaatio/sisaltyy-alakoodit/%s" % i["koodiUri"])
+        rr = httpconn.getresponse()
+        jj = json.loads(rr.read())
         ss = ""
         for ii in jj:
             if ii["koodisto"]["koodistoUri"] == "maakunta":
