@@ -1,0 +1,1 @@
+DROP TABLE IF EXISTS dbo.f_amk_talous_4_tilikauden_tutkimusmenot_ja_rahoitus

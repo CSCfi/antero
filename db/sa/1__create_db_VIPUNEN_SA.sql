@@ -1,0 +1,2 @@
+-- Poistettu skriptin sisältö.
+-- Päädyttiin siihen, että kannan luomiset tulee tehdä ensin vahvemmin tunnuksin ihmistyönä.
