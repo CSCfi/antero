@@ -1,4 +1,4 @@
-﻿if not exists (select * from sys.objects where object_id = object_id('dbo.d_yo') and type in ('u'))
+if not exists (select * from sys.objects where object_id = object_id('dbo.d_yo') and type in ('u'))
 begin
 create table dbo.d_yo(
 	id bigint identity(-1,1) not null,

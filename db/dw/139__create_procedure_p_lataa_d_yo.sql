@@ -1,4 +1,4 @@
-﻿create procedure dbo.p_lataa_d_yo as
+create procedure dbo.p_lataa_d_yo as
 
 merge dbo.d_yo as target
 using (select koodi

@@ -1,4 +1,4 @@
-﻿ALTER PROCEDURE dbo.p_lataa_d_tili AS
+ALTER PROCEDURE dbo.p_lataa_d_tili AS
 
 TRUNCATE TABLE dbo.d_tili
 SET IDENTITY_INSERT dbo.d_tili ON
