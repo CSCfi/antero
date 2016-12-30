@@ -1,4 +1,4 @@
-# Vipunen ETL for Staging Area (SA)
+# Antero ETL for Staging Area (SA)
 
 ..with Python and MS SQL
 
