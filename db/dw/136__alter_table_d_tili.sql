@@ -1,3 +1,5 @@
+TRUNCATE TABLE dbo.d_tili
+
 IF NOT EXISTS (
   select * from INFORMATION_SCHEMA.COLUMNS
   where TABLE_SCHEMA='dbo' and TABLE_NAME='d_tili'
