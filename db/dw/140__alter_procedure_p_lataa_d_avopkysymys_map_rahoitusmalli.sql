@@ -1,11 +1,4 @@
-USE [ANTERO_DW]
-GO
-/****** Object:  StoredProcedure [dbo].[p_lataa_d_avopkysymys]    Script Date: 3.1.2017 9:30:59 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-ALTER PROCEDURE [dbo].[p_lataa_d_avopkysymys] AS
+ALTER PROCEDURE dbo.p_lataa_d_avopkysymys AS
 if not exists (select * from dbo.d_avopkysymys where id=-1) begin
   set identity_insert dbo.d_avopkysymys on;
   insert into dbo.d_avopkysymys (
