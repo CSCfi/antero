@@ -26,7 +26,7 @@ SELECT
 
 ,d_kalenteri.kalenteri_avain as 'Koodit Kalenteri'
 ,d_kalenteri.vuosi
-,d_kalenteri.kuukausi
+,d_kalenteri.kuukausi as 'Koodit Kuukausi'
 ,d_kalenteri.kuukausi_fi as 'Kuukausi'
 ,d_kalenteri.kuukausi_sv
 ,d_kalenteri.kuukausi_en
