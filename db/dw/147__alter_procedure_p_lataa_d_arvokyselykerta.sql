@@ -4,27 +4,29 @@ ALTER PROCEDURE dbo.p_lataa_d_arvokyselykerta AS
 if not exists (select * from dbo.d_arvokyselykerta where id=-1) begin
 set identity_insert dbo.d_arvokyselykerta on;
 insert into dbo.d_arvokyselykerta (
-	   [source]
-	  ,[kyselykertaid]
-	  ,[kyselykerta]
-      ,[kyselyid]
-	  ,[kysely_fi]
-      ,[kysely_sv]
-      ,[kysely_en] 
-	  ,kyselypohja
-	  ,vuosi
+   id
+  ,[source]
+  ,[kyselykertaid]
+  ,[kyselykerta]
+  ,[kyselyid]
+  ,[kysely_fi]
+  ,[kysely_sv]
+  ,[kysely_en] 
+  ,kyselypohja
+  ,vuosi
 )
 
 SELECT distinct
-      [source]
-	  ,koodi
-	  ,nimi
-      ,koodi
-	  ,nimi
-      ,nimi_sv
-      ,nimi_en 
-	  ,nimi
-	  ,-1
+   -1
+  ,[source]
+  ,koodi
+  ,nimi
+  ,koodi
+  ,nimi
+  ,nimi_sv
+  ,nimi_en 
+  ,nimi
+  ,-1
 FROM ANTERO_SA.dbo.sa_koodistot
   where koodisto='vipunenmeta'
   and koodi='-1'
@@ -159,6 +161,7 @@ else 'Muu' end as kyselypohja,
   'ETL: p_lataa_d_avopkyselykerta' AS source
   FROM ANTERO_SA.dbo.sa_arvo_kaikki
   WHERE 1 = 1
+  GROUP BY kyselykertaid, kyselykerta, kyselyid, kysely_fi, kysely_sv, kysely_en
   ) AS src
 ON target.kyselykertaid = src.kyselykertaid AND target.kyselyid = src.kyselyid
 WHEN MATCHED THEN
@@ -168,8 +171,7 @@ WHEN MATCHED THEN
     kysely_en = src.kysely_en,
     kyselykerta = src.kyselykerta,
     kyselypohja = src.kyselypohja,
-	vuosi = src.vuosi,
-
+    vuosi = src.vuosi,
     target.source = src.source
 WHEN NOT MATCHED THEN
   INSERT (
@@ -179,8 +181,8 @@ WHEN NOT MATCHED THEN
     kysely_en,
     kyselykertaid,
     kyselykerta,
-	kyselypohja,
-	vuosi,
+    kyselypohja,
+    vuosi,
     source
   )
   VALUES (
