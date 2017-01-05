@@ -41,9 +41,9 @@ SELECT
   f.vaihtoehto,
   f.monivalintavaihtoehto,
   f.numerovalinta,
-  f.taustakysymys_ika,
-  f.taustakysymys_sukupuoli,
-  f.taustakysymys_pohjakoulutus,
+  null as taustakysymys_ika,
+  null as taustakysymys_sukupuoli,
+  null as taustakysymys_pohjakoulutus,
 
   f.vastaajaid,
 
