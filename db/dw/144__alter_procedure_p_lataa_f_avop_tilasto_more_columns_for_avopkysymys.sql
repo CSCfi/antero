@@ -1,7 +1,7 @@
 ALTER PROCEDURE [dbo].[p_lataa_f_avop_tilasto] AS
 
 TRUNCATE TABLE dbo.f_avop_tilasto
-
+/* NB FIX PROCEDURE AFTERWARDS TO DO NOTHING DUE TO ILL BEHAVIOUR FROM TWO MIGRATION FLOWS
 INSERT INTO dbo.f_avop_tilasto (
   d_organisaatio_id,
   d_koulutusluokitus_id,
@@ -59,3 +59,4 @@ LEFT JOIN dbo.d_avopkysymys d6 ON d6.kysymysryhmaid = f.kysymysryhmaid AND d6.ky
   AND d6.kysymysryhmajarjestys=f.kysymysryhmajarjestys AND d6.kysymysjarjestys=f.kysymysjarjestys
 WHERE f.valtakunnallinen = 1
 AND f.kysymysryhma LIKE '%AVOP%'
+--*/

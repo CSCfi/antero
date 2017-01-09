@@ -1,7 +1,7 @@
 ALTER PROCEDURE dbo.p_lataa_f_avop_tilasto AS
 
 TRUNCATE TABLE dbo.f_avop_tilasto
-
+/* NB FIX PROCEDURE AFTERWARDS TO DO NOTHING DUE TO ILL BEHAVIOUR FROM TWO MIGRATION FLOWS
 INSERT INTO dbo.f_avop_tilasto (
   d_organisaatio_id,
   d_koulutusluokitus_id,
@@ -59,3 +59,4 @@ LEFT JOIN dbo.d_alueluokitus d4 ON d4.alueluokitus_avain like 'kunta_%' and d4.k
 LEFT JOIN dbo.d_kalenteri d5 ON d5.kalenteri_avain = f.vastausaika
 WHERE f.valtakunnallinen = 1
 AND f.kysymysryhma LIKE '%AVOP%'
+--*/
