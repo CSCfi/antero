@@ -1,7 +1,7 @@
 ALTER PROCEDURE dbo.p_lataa_f_kotimaiset_julkaisut_tilasto AS
 
 TRUNCATE TABLE dbo.f_kotimaiset_julkaisut_tilasto
-
+/* NB FIX PROCEDURE AFTERWARDS TO DO NOTHING DUE TO ILL BEHAVIOUR FROM TWO MIGRATION FLOWS
 INSERT INTO dbo.f_kotimaiset_julkaisut_tilasto (
   d_sektori_id,
   d_organisaatio_id,
@@ -40,3 +40,4 @@ LEFT JOIN dbo.d_julkaisutyyppi d4 ON d4.julkaisutyyppi_koodi = f.julkaisuntyyppi
 LEFT JOIN dbo.d_julkaisun_kansainvalisyys d5 ON d5.julkaisun_kansainvalisyys_koodi = f.julkaisunKansainvalisyysKytkin
 LEFT JOIN dbo.d_kansainvalinen_yhteisjulkaisu d6 ON d6.kansainvalinen_yhteisjulkaisu_koodi = f.yhteisjulkaisuKVKytkin
 LEFT JOIN dbo.d_tieteenala d7 ON d7.tieteenala_koodi = f.tieteenalaTKs --nb! korvertoitu lista lennossa yhdeksi koodiarvoksi
+--*/

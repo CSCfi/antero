@@ -1,7 +1,7 @@
 ALTER PROCEDURE dbo.p_lataa_f_kotimaiset_julkaisut_tilasto AS
 
 TRUNCATE TABLE dbo.f_kotimaiset_julkaisut_tilasto
-
+/* NB FIX PROCEDURE AFTERWARDS TO DO NOTHING DUE TO ILL BEHAVIOUR FROM TWO MIGRATION FLOWS
 INSERT INTO dbo.f_kotimaiset_julkaisut_tilasto (
 	d_sektori_id,
 	d_organisaatio_id,
@@ -44,3 +44,4 @@ LEFT JOIN dbo.d_tieteenala d7 ON d7.tieteenala_koodi = replace(substring(
     ,charindex('tieteenala',f.tieteenalaTKs)+13
     ,4
   ),',','')
+--*/
