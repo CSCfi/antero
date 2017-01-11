@@ -25,12 +25,12 @@ SELECT
 ,d_alueluokitus.maakunta_en
 
 ,d_kalenteri.kalenteri_avain as 'Koodit Kalenteri'
-,d_kalenteri.vuosi
+,d_kalenteri.vuosi as 'Vastausvuosi'
 ,d_kalenteri.kuukausi as 'Koodit Kuukausi'
-,d_kalenteri.kuukausi_fi as 'Kuukausi'
+,d_kalenteri.kuukausi_fi as 'Vastauskuukausi'
 ,d_kalenteri.kuukausi_sv
 ,d_kalenteri.kuukausi_en
-,d_kalenteri.paiva
+,d_kalenteri.paiva as 'Vastauspäivä'
 
 ,d_arvokysymys.kysymys_fi as 'Kysymys'
 ,d_arvokysymys.kysymys_sv
@@ -55,8 +55,8 @@ SELECT
 
 ,lukumaara
 
-,d_arvokyselykerta.kyselypohja
-,d_arvokyselykerta.vuosi
+,d_arvokyselykerta.kyselypohja 
+,d_arvokyselykerta.vuosi as 'Kyselyvuosi'
 ,valtakunnallinen
 
 FROM f_arvo AS f
