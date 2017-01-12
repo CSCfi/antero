@@ -44,7 +44,7 @@ SELECT
 ,d_arvokyselykerta.kyselykerta
 
 ,koulutusmuoto
-,vastaustyyppi
+,d_arvokysymys.vastaustyyppi
 ,vaihtoehto
 ,monivalintavaihtoehto
 ,numerovalinta
