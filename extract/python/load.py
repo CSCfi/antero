@@ -15,8 +15,8 @@ import dboperator
 def show(message):
   print strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message
 
-def load(secure,hostname,url,table,postdata,condition,verbose):
-  show("begin "+hostname+" "+url+" "+table+" "+postdata+" "+condition)
+def load(secure,hostname,url,schema,table,postdata,condition,verbose):
+  show("begin "+hostname+" "+url+" "+schema+" "+table+" "+postdata+" "+condition)
   address=hostname+url
   if secure:
     show("load securely from "+address)
@@ -44,11 +44,11 @@ def load(secure,hostname,url,table,postdata,condition,verbose):
   # remove data conditionally, otherwise empty
   # merge operation could be considered here...
   if condition:
-    show("remove from %s with condition '%s'"%(table,condition))
-    dboperator.execute("DELETE FROM %s WHERE %s"%(table,condition))
+    show("remove from %s.%s with condition '%s'"%(schema,table,condition))
+    dboperator.execute("DELETE FROM %s.%s WHERE %s"%(schema,table,condition))
   else:
-    show("empty %s"%(table))
-    dboperator.empty(table)
+    show("empty %s.%s"%(schema,table))
+    dboperator.empty(schema,table)
 
   show("insert data")
   cnt=0
@@ -68,7 +68,7 @@ def load(secure,hostname,url,table,postdata,condition,verbose):
     for col in row:
       if type(row[col]) is list:
         row[col] = str(row[col])
-    dboperator.insert(address,table,row)
+    dboperator.insert(address,schema,table,row)
 
   show("wrote %d"%(cnt))
   dboperator.close()
@@ -77,19 +77,19 @@ def load(secure,hostname,url,table,postdata,condition,verbose):
 
 def usage():
   print """
-usage: load.py [-s|--secure] -H|--hostname <hostname> -u|--url <url> -t|--table <table> [-p|--postdata] [-c|--condition <condition>] [-v|--verbose]
+usage: load.py [-s|--secure] -H|--hostname <hostname> -u|--url <url> -e|--schema <schema> -t|--table <table> [-p|--postdata] [-c|--condition <condition>] [-v|--verbose]
 """
 
 def main(argv):
   # muuttujat jotka kerrotaan argumentein
   secure=False
-  hostname,url,table="","",""
+  hostname,url,schema,table="","","",""
   postdata=""
   condition=""
   verbose=False
 
   try:
-    opts,args=getopt.getopt(argv,"sH:u:t:p:c:v",["secure","hostname=","url=","table=","postdata=","condition=","verbose"])
+    opts,args=getopt.getopt(argv,"sH:u:e:t:p:c:v",["secure","hostname=","url=","schema=","table=","postdata=","condition=","verbose"])
   except getopt.GetoptError as err:
     print(err)
     usage()
@@ -98,15 +98,16 @@ def main(argv):
     if opt in ("-s", "--secure"): secure=True
     elif opt in ("-H", "--hostname"): hostname=arg
     elif opt in ("-u", "--url"): url=arg
+    elif opt in ("-e", "--schema"): schema=arg
     elif opt in ("-t", "--table"): table=arg
     elif opt in ("-p", "--postdata"): postdata=arg
     elif opt in ("-c", "--condition"): condition=arg
     elif opt in ("-v", "--verbose"): verbose=True
-  if not hostname or not url or not table:
+  if not hostname or not url or not schema or not table:
     usage()
     sys.exit(2)
 
-  load(secure,hostname,url,table,postdata,condition,verbose)
+  load(secure,hostname,url,schema,table,postdata,condition,verbose)
 
 if __name__ == "__main__":
     main(sys.argv[1:])

@@ -32,9 +32,9 @@ def load(schema,procedure,verbose=False):
 
 def usage():
   print """
-usage: callsp.py [-s|--schema <schema>] -p|--procedure <procedure> [-v|--verbose]
+usage: callsp.py [-e|--schema <schema>] -p|--procedure <procedure> [-v|--verbose]
 
-schema defaults to dbo.
+schema defaults to "dbo"
 procedure is mandatory argument. Name of the procedure to execute.
 """
 
@@ -45,16 +45,16 @@ def main(argv):
   verbose = False
 
   try:
-    opts, args = getopt.getopt(argv,"s:p:v",["schema=","procedure=","verbose"])
+    opts, args = getopt.getopt(argv,"e:p:v",["schema=","procedure=","verbose"])
   except getopt.GetoptError as err:
     print(err)
     usage()
     sys.exit(2)
   for opt, arg in opts:
-    if opt in ("-s", "--schema"): schema = arg
+    if opt in ("-e", "--schema"): schema = arg
     elif opt in ("-p", "--procedure"): procedure = arg
     elif opt in ("-v", "--verbose"): verbose = True
-  if not procedure:
+  if not schema or not procedure:
     usage()
     sys.exit(2)
 

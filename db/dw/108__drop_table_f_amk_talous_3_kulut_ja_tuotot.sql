@@ -1,1 +1,0 @@
-DROP TABLE IF EXISTS dbo.f_amk_talous_3_kulut_ja_tuotot

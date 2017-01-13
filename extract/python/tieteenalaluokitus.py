@@ -30,14 +30,14 @@ def getnimi(i,kieli):
             return m["nimi"]
     return None
 
-def load(secure,hostname,url,table,codeset,verbose=False,debug=False):
+def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
   if verbose: print strftime("%Y-%m-%d %H:%M:%S", localtime())+" begin"
 
   row = makerow()
   dboperator.columns(row,debug)
 
-  if verbose: print strftime("%Y-%m-%d %H:%M:%S", localtime())+" empty %s"%(table)
-  dboperator.empty(table,debug)
+  if verbose: print strftime("%Y-%m-%d %H:%M:%S", localtime())+" empty %s.%s"%(schema,table)
+  dboperator.empty(schema,table,debug)
 
   url = url % codeset # replace placeholder
   if secure:
@@ -74,7 +74,7 @@ def load(secure,hostname,url,table,codeset,verbose=False,debug=False):
         row["paatieteenalanimi_en"] = getnimi(ii,"EN")
 
     if verbose: print strftime("%Y-%m-%d %H:%M:%S", localtime())+" %d -- %s"%(cnt,row["koodi"])
-    dboperator.insert(hostname+url,table,row,debug)
+    dboperator.insert(hostname+url,schema,table,row,debug)
 
   dboperator.close(debug)
 
@@ -82,11 +82,12 @@ def load(secure,hostname,url,table,codeset,verbose=False,debug=False):
 
 def usage():
   print """
-usage: tieteenalaluokitus.py [-s|--secure] [-H|--hostname <hostname>] [-u|--url <url>] [-t|--table <table>] -c|--codeset <codeset> [-v|--verbose] [-d|--debug]
+usage: tieteenalaluokitus.py [-s|--secure] [-H|--hostname <hostname>] [-u|--url <url>] [-e|--schema <schema>] [-t|--table <table>] -c|--codeset <codeset> [-v|--verbose] [-d|--debug]
 
 secure defaults to being secure (HTTPS) (so no point in using this argument at all)
 hostname defaults to $OPINTOPOLKU then to "testi.virkailija.opintopolku.fi"
 url defaults to "/koodisto-service/rest/json/%s/koodi" (do notice the %s in middle which is a placeholder for codeset argument)
+schema defaults to "dbo"
 table defaults to "sa_tieteenalaluokitus"
 codeset defaults to "tieteenala"
 """
@@ -96,12 +97,13 @@ def main(argv):
   secure = True # default secure, so always secure!
   hostname = os.getenv("OPINTOPOLKU") or "testi.virkailija.opintopolku.fi"
   url = "/koodisto-service/rest/json/%s/koodi" # nb %s
+  schema = "dbo"
   table = "sa_tieteenalaluokitus"
   codeset = "tieteenala"
   verbose,debug = False,False
 
   try:
-    opts, args = getopt.getopt(argv,"sH:u:t:c:vd",["secure","hostname=","url=","table=","codeset=","verbose","debug"])
+    opts, args = getopt.getopt(argv,"sH:u:e:t:c:vd",["secure","hostname=","url=","schema=","table=","codeset=","verbose","debug"])
   except getopt.GetoptError as err:
     print(err)
     usage()
@@ -110,17 +112,18 @@ def main(argv):
     if opt in ("-s", "--secure"): secure = True
     elif opt in ("-H", "--hostname"): hostname = arg
     elif opt in ("-u", "--url"): url = arg
+    elif opt in ("-e", "--schema"): schema = arg
     elif opt in ("-t", "--table"): table = arg
     elif opt in ("-c", "--codeset"): codeset = arg
     elif opt in ("-v", "--verbose"): verbose = True
     elif opt in ("-d", "--debug"): debug = True
-  if not hostname or not url or not table or not codeset:
+  if not hostname or not url or not schema or not table or not codeset:
     usage()
     sys.exit(2)
 
   if debug: print "debugging"
 
-  load(secure,hostname,url,table,codeset,verbose,debug)
+  load(secure,hostname,url,schema,table,codeset,verbose,debug)
 
 if __name__ == "__main__":
   main(sys.argv[1:])

@@ -21,7 +21,7 @@ def getnimi(i,kieli):
 def show(message):
   print strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message
 
-def load(secure,hostname,url,table,codeset,verbose=False):
+def load(secure,hostname,url,schema,table,codeset,verbose=False):
   if verbose: show("begin")
 
   # make "columnlist" separately (type has no meaning as we're not creating table)
@@ -45,8 +45,8 @@ def load(secure,hostname,url,table,codeset,verbose=False):
   r = httpconn.getresponse()
   j = json.loads(r.read())
   cnt = 0
-  if verbose: show("delete from %s where koodisto=%s"%(table,codeset))
-  dboperator.remove(table,"koodisto",codeset)
+  if verbose: show("delete from %s.%s where koodisto=%s"%(schema,table,codeset))
+  dboperator.remove(schema,table,"koodisto",codeset)
   for i in j:
     cnt += 1
     # make "row"
@@ -60,7 +60,7 @@ def load(secure,hostname,url,table,codeset,verbose=False):
     row["loppupvm"] = i["voimassaLoppuPvm"]
 
     if verbose: show("-- %s -- %d -- %s"%(codeset,cnt,row["koodi"]))
-    dboperator.insert(address,table,row)
+    dboperator.insert(address,schema,table,row)
 
   dboperator.close()
 
@@ -68,11 +68,12 @@ def load(secure,hostname,url,table,codeset,verbose=False):
 
 def usage():
   print """
-usage: codes.py [-s|--secure] [-H|--hostname <hostname>] [-u|--url <url>] [-t|--table <table>] -c|--codeset <codeset> [-v|--verbose]
+usage: codes.py [-s|--secure] [-H|--hostname <hostname>] [-u|--url <url>] [-e|--schema <schema>] [-t|--table <table>] -c|--codeset <codeset> [-v|--verbose]
 
 secure defaults to being secure (HTTPS) (so no point in using this argument at all)
 hostname defaults to $OPINTOPOLKU then to "testi.virkailija.opintopolku.fi"
 url defaults to "/koodisto-service/rest/json/%s/koodi" (do notice the %s in middle which is a placeholder for codeset argument)
+schema defaults to "dbo"
 table defaults to "sa_koodistot"
 codeset is the only mandatory argument. No default. Name of the "koodisto" to be loaded.
 """
@@ -82,12 +83,13 @@ def main(argv):
   secure = True # default secure, so always secure!
   hostname = os.getenv("OPINTOPOLKU") or "testi.virkailija.opintopolku.fi"
   url = "/koodisto-service/rest/json/%s/koodi"
+  schema = "dbo"
   table = "sa_koodistot"
   codeset = ""
   verbose = False
 
   try:
-    opts, args = getopt.getopt(argv,"sH:u:t:c:vd",["secure","hostname=","url=","table=","codeset=","verbose"])
+    opts, args = getopt.getopt(argv,"sH:u:e:t:c:vd",["secure","hostname=","url=","schema=","table=","codeset=","verbose"])
   except getopt.GetoptError as err:
     print(err)
     usage()
@@ -96,14 +98,15 @@ def main(argv):
     if opt in ("-s", "--secure"): secure = True
     elif opt in ("-H", "--hostname"): hostname = arg
     elif opt in ("-u", "--url"): url = arg
+    elif opt in ("-e", "--schema"): schema = arg
     elif opt in ("-t", "--table"): table = arg
     elif opt in ("-c", "--codeset"): codeset = arg
     elif opt in ("-v", "--verbose"): verbose = True
-  if not hostname or not url or not table or not codeset:
+  if not hostname or not url or not schema or not table or not codeset:
     usage()
     sys.exit(2)
 
-  load(secure,hostname,url,table,codeset,verbose)
+  load(secure,hostname,url,schema,table,codeset,verbose)
 
 if __name__ == "__main__":
   main(sys.argv[1:])

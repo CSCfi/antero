@@ -53,31 +53,31 @@ def resetcolumns(row,debug=False):
   columns(row,debug)
 
 # empty - with truncate
-def empty(table,debug=False):
+def empty(schema,table,debug=False):
   global conn, cur, count
-  if debug: print "dboperator.empty: %s"%(table)
-  cur.execute("TRUNCATE TABLE [%s]"%(table))
+  if debug: print "dboperator.empty: %s.%s"%(schema,table)
+  cur.execute("TRUNCATE TABLE %s.%s"%(schema,table))
   count = cur.rowcount
   conn.commit()
 
 # remove - delete with condition (column==value)
 # this function is not used!?
-def remove(table,column,value,debug=False):
+def remove(schema,table,column,value,debug=False):
   global conn, cur, count
-  if debug: print "dboperator.remove: table=%s column=%s value=%s"%(table,column,value)
-  cur.execute("DELETE FROM [%s] WHERE %s='%s'"%(table,column,value))
+  if debug: print "dboperator.remove: schema=%s table=%s column=%s value=%s"%(schema,table,column,value)
+  cur.execute("DELETE FROM %s.%s WHERE %s='%s'"%(schema,table,column,value))
   count = cur.rowcount
   conn.commit()
 
 # insert - one row at a time
 # nb! columns must be known already (see columns)
-def insert(source,table,row,debug=False):
+def insert(source,schema,table,row,debug=False):
   global conn, cur, count, columnlist
   if debug: print "dboperator.insert: columnlist="+(",".join(columnlist))
   columnstr = ",".join(columnlist)
   placeholders = ','.join(['%s' for s in columnlist])
 
-  statement = "INSERT INTO [%s] (%s,source) VALUES (%s,'%s');" % (table,columnstr,placeholders,source)
+  statement = "INSERT INTO %s.%s (%s,source) VALUES (%s,'%s');"%(schema,table,columnstr,placeholders,source)
   cur.execute(statement,tuple([row[c] for c in columnlist]))
   count = cur.rowcount
   conn.commit()
