@@ -7,7 +7,7 @@ Call a stored procedure in database.
 
 Depends on dboperator which takes care of connection and other db stuff.
 """
-import sys,getopt
+import sys,os,getopt
 from time import localtime, strftime
 
 import dboperator
