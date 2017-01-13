@@ -11,7 +11,7 @@ USING (
   FROM sa.sa_koodistot
   where koodisto in ('oppilaitosnumero','koulutustoimija','tutkimusorganisaatio')
   and koodi not in (
-    select b.koodi from .sa_koodistot b
+    select b.koodi from sa.sa_koodistot b
     where b.koodisto=sa_koodistot.koodisto and b.koodi=sa_koodistot.koodi
     group by b.koodi having count(*)>1
   )
