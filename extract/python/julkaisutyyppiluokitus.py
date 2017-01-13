@@ -87,8 +87,8 @@ usage: julkaisutyyppiluokitus.py [-s|--secure] [-H|--hostname <hostname>] [-u|--
 secure defaults to being secure (HTTPS) (so no point in using this argument at all)
 hostname defaults to $OPINTOPOLKU then to "testi.virkailija.opintopolku.fi"
 url defaults to "/koodisto-service/rest/json/%s/koodi" (do notice the %s in middle which is a placeholder for codeset argument)
-schema defaults to "dbo"
-table defaults to "sa_julkaisutyyppiluokitus"
+schema defaults to $SCHEMA then to "" (for database default if set)
+table defaults to $TABLE then to "sa_julkaisutyyppiluokitus"
 codeset defaults to "julkaisutyyppi"
 """
 
@@ -97,8 +97,8 @@ def main(argv):
   secure = True # default secure, so always secure!
   hostname = os.getenv("OPINTOPOLKU") or "testi.virkailija.opintopolku.fi"
   url = "/koodisto-service/rest/json/%s/koodi" # nb %s
-  schema = "dbo"
-  table = "sa_julkaisutyyppiluokitus"
+  schema = os.getenv("SCHEMA") or ""
+  table = os.getenv("TABLE") or "sa_julkaisutyyppiluokitus"
   codeset = "julkaisutyyppi"
   verbose,debug = False,False
 

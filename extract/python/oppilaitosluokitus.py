@@ -89,8 +89,8 @@ usage: oppilaitosluokitus.py [-s|--secure] [-H|--hostname <hostname>] [-u|--url 
 secure defaults to being secure (HTTPS) (so no point in using this argument at all)
 hostname defaults to $OPINTOPOLKU then to "testi.virkailija.opintopolku.fi"
 url not used
-schema defaults to "dbo"
-table defaults to "sa_oppilaitosluokitus"
+schema defaults to $SCHEMA then to "" (for database default if set)
+table defaults to $TABLE then to "sa_oppilaitosluokitus"
 codeset not used
 """
 
@@ -99,8 +99,8 @@ def main(argv):
   secure = True # default secure, so always secure!
   hostname = os.getenv("OPINTOPOLKU") or "testi.virkailija.opintopolku.fi"
   url = "N/A" # nb argument not used!
-  schema = "dbo"
-  table = "sa_oppilaitosluokitus"
+  schema = os.getenv("SCHEMA") or ""
+  table = os.getenv("TABLE") or "sa_oppilaitosluokitus"
   codeset = "N/A" # nb argument not used!
   verbose,debug = False,False
   

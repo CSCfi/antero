@@ -73,8 +73,8 @@ usage: codes.py [-s|--secure] [-H|--hostname <hostname>] [-u|--url <url>] [-e|--
 secure defaults to being secure (HTTPS) (so no point in using this argument at all)
 hostname defaults to $OPINTOPOLKU then to "testi.virkailija.opintopolku.fi"
 url defaults to "/koodisto-service/rest/json/%s/koodi" (do notice the %s in middle which is a placeholder for codeset argument)
-schema defaults to "dbo"
-table defaults to "sa_koodistot"
+schema defaults to $SCHEMA then to "" (for database default if set)
+table defaults to $TABLE then to "sa_koodistot"
 codeset is the only mandatory argument. No default. Name of the "koodisto" to be loaded.
 """
 
@@ -83,8 +83,8 @@ def main(argv):
   secure = True # default secure, so always secure!
   hostname = os.getenv("OPINTOPOLKU") or "testi.virkailija.opintopolku.fi"
   url = "/koodisto-service/rest/json/%s/koodi"
-  schema = "dbo"
-  table = "sa_koodistot"
+  schema = os.getenv("SCHEMA") or ""
+  table = os.getenv("TABLE") or "sa_koodistot"
   codeset = ""
   verbose = False
 

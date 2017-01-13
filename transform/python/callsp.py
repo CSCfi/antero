@@ -34,13 +34,13 @@ def usage():
   print """
 usage: callsp.py [-e|--schema <schema>] -p|--procedure <procedure> [-v|--verbose]
 
-schema defaults to "dbo"
+schema defaults to $SCHEMA then to "" (for database default if set)
 procedure is mandatory argument. Name of the procedure to execute.
 """
 
 def main(argv):
   # variables that are given as arguments with possible default values
-  schema = "dbo"
+  schema = os.getenv("SCHEMA") or ""
   procedure = ""
   verbose = False
 

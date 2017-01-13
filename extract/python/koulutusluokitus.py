@@ -171,9 +171,9 @@ usage: koulutusluokitus.py [-s|--secure] [-H|--hostname <hostname>] [-u|--url <u
 secure defaults to being secure (HTTPS) (so no point in using this argument at all)
 hostname defaults to "testi.virkailija.opintopolku.fi"
 url defaults to "/koodisto-service/rest/json/%s/koodi" (do notice the %s in middle which is a placeholder for codeset argument)
-schema defaults to "dbo"
-table defaults to "sa_koulutusluokitus"
-codeset defaults to "koulutus"
+schema defaults to $SCHEMA then to "" (for database default if set)
+table defaults to $TABLE then to "sa_koulutusluokitus"
+codeset defaults to "koulutus" (probably not going to change -- ever)
 """
 
 def main(argv):
@@ -181,8 +181,8 @@ def main(argv):
   secure = True # default secure, so always secure!
   hostname = os.getenv("OPINTOPOLKU") or "testi.virkailija.opintopolku.fi"
   url = "/koodisto-service/rest/json/%s/koodi" # nb %s
-  schema = "dbo"
-  table = "sa_koulutusluokitus"
+  schema = os.getenv("SCHEMA") or ""
+  table = os.getenv("TABLE") or "sa_koulutusluokitus"
   codeset = "koulutus"
   verbose,debug = False,False
   
