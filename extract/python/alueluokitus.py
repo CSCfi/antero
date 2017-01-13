@@ -166,7 +166,7 @@ def main(argv):
 
   if debug: print "debugging"
 
-  load(secure,hostname,url,table,codeset,verbose,debug)
+  load(secure,hostname,url,schema,table,codeset,verbose,debug)
 
 if __name__ == "__main__":
   main(sys.argv[1:])
