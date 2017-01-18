@@ -55,7 +55,7 @@ WHEN NOT MATCHED THEN
     liikkuvuudentyyppi_koodi,
     liikkuvuudentyyppi_fi,
     liikkuvuudentyyppi_sv,
-    liikkuvuudentyyppi_sv,
+    liikkuvuudentyyppi_en,
     source
   )
   VALUES (

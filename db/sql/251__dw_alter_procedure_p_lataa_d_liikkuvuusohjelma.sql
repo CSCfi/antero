@@ -55,7 +55,7 @@ WHEN NOT MATCHED THEN
     liikkuvuusohjelma_koodi,
     liikkuvuusohjelma_fi,
     liikkuvuusohjelma_sv,
-    liikkuvuusohjelma_sv,
+    liikkuvuusohjelma_en,
     source
   )
   VALUES (

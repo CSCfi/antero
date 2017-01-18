@@ -55,7 +55,7 @@ WHEN NOT MATCHED THEN
     maatjavaltiot2_koodi,
     maatjavaltiot2_fi,
     maatjavaltiot2_sv,
-    maatjavaltiot2_sv,
+    maatjavaltiot2_en,
     source
   )
   VALUES (

@@ -55,7 +55,7 @@ WHEN NOT MATCHED THEN
     sukupuoli_koodi,
     sukupuoli_fi,
     sukupuoli_sv,
-    sukupuoli_sv,
+    sukupuoli_en,
     source
   )
   VALUES (

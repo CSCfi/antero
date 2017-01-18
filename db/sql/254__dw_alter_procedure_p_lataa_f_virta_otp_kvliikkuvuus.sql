@@ -66,7 +66,7 @@ LEFT JOIN dw.d_maatjavaltiot2 d8 ON d8.maatjavaltiot2_koodi=f.kohdemaa
 --CROSS JOIN (select -1 as id) as d8
 --LEFT JOIN dw.d_maatjavaltiot2 d9 ON d9.maatjavaltiot2_koodi=f.kansalaisuus
 CROSS JOIN (select -1 as id) as d9
---TODO: LEFT JOIN dw.liikkuvuusohjelma d10...
+--LEFT JOIN dw.d_liikkuvuusohjelma d10 ON d10.liikkuvuusohjelma_koodi=f.liikkuvuusohjelma
 CROSS JOIN (select -1 as id) as d10
 
 UNION ALL
@@ -113,7 +113,7 @@ LEFT JOIN dw.d_maatjavaltiot2 d7 ON d7.maatjavaltiot2_koodi=f.lahtomaa
 CROSS JOIN (select -1 as id) as d8
 --LEFT JOIN dw.d_maatjavaltiot2 d9 ON d9.maatjavaltiot2_koodi=f.kansalaisuus
 CROSS JOIN (select -1 as id) as d9
---TODO: LEFT JOIN dw.liikkuvuusohjelma d10...
+--LEFT JOIN dw.d_liikkuvuusohjelma d10 ON d10.liikkuvuusohjelma_koodi=f.liikkuvuusohjelma
 CROSS JOIN (select -1 as id) as d10
 
 
@@ -161,8 +161,8 @@ LEFT JOIN dw.d_maatjavaltiot2 d8 ON d8.maatjavaltiot2_koodi=f.kohdemaa
 --CROSS JOIN (select -1 as id) as d8
 --LEFT JOIN dw.d_maatjavaltiot2 d9 ON d9.maatjavaltiot2_koodi=f.kansalaisuus
 CROSS JOIN (select -1 as id) as d9
---TODO: LEFT JOIN dw.liikkuvuusohjelma d10...
-CROSS JOIN (select -1 as id) as d10
+LEFT JOIN dw.d_liikkuvuusohjelma d10 ON d10.liikkuvuusohjelma_koodi=f.liikkuvuusohjelma
+--CROSS JOIN (select -1 as id) as d10
 
 
 UNION ALL
@@ -209,5 +209,5 @@ LEFT JOIN dw.d_maatjavaltiot2 d7 ON d7.maatjavaltiot2_koodi=f.lahtomaa
 CROSS JOIN (select -1 as id) as d8
 LEFT JOIN dw.d_maatjavaltiot2 d9 ON d9.maatjavaltiot2_koodi=f.kansalaisuus
 --CROSS JOIN (select -1 as id) as d9
---TODO: LEFT JOIN dw.liikkuvuusohjelma d10...
-CROSS JOIN (select -1 as id) as d10
+LEFT JOIN dw.d_liikkuvuusohjelma d10 ON d10.liikkuvuusohjelma_koodi=f.liikkuvuusohjelma
+--CROSS JOIN (select -1 as id) as d10
