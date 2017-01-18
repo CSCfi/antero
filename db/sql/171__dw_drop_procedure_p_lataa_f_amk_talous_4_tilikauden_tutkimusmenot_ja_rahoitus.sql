@@ -1,0 +1,1 @@
+DROP PROCEDURE IF EXISTS dw.p_lataa_f_amk_talous_4_tilikauden_tutkimusmenot_ja_rahoitus

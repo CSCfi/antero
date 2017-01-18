@@ -19,7 +19,7 @@ def makerow():
     'jarjestajaoid':None, 'jarjestajakoodi':None, 'jarjestajanimi':None, 'jarjestajanimi_sv':None, 'jarjestajanimi_en':None
   }
 
-def load(secure,hostname,url,table,codeset,verbose=False,debug=False):
+def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
   if verbose: print strftime("%Y-%m-%d %H:%M:%S", localtime())+" begin"
 
   # make "columnlist" (type has no meaning as we're not creating table)
@@ -27,8 +27,8 @@ def load(secure,hostname,url,table,codeset,verbose=False,debug=False):
   # setup dboperator so other calls work
   dboperator.columns(row,debug)
   
-  if verbose: print strftime("%Y-%m-%d %H:%M:%S", localtime())+" empty %s"%(table)
-  dboperator.empty(table,debug)
+  if verbose: print strftime("%Y-%m-%d %H:%M:%S", localtime())+" empty %s.%s"%(schema,table)
+  dboperator.empty(schema,table,debug)
 
   url = "" # replace with hardcoded values below
   if secure:
@@ -76,7 +76,7 @@ def load(secure,hostname,url,table,codeset,verbose=False,debug=False):
           # => text values separately
   
           if verbose: print strftime("%Y-%m-%d %H:%M:%S", localtime())+" %d -- %s"%(cnt,row["koodi"])
-          dboperator.insert(hostname+url,table,row,debug)
+          dboperator.insert(hostname+url,schema,table,row,debug)
 
   dboperator.close(debug)
 
@@ -84,12 +84,13 @@ def load(secure,hostname,url,table,codeset,verbose=False,debug=False):
 
 def usage():
   print """
-usage: oppilaitosluokitus.py [-s|--secure] [-H|--hostname <hostname>] [-u|--url <url>] [-t|--table <table>] -c|--codeset <codeset> [-v|--verbose] [-d|--debug]
+usage: oppilaitosluokitus.py [-s|--secure] [-H|--hostname <hostname>] [-u|--url <url>] [-e|--schema <schema>] [-t|--table <table>] -c|--codeset <codeset> [-v|--verbose] [-d|--debug]
 
 secure defaults to being secure (HTTPS) (so no point in using this argument at all)
 hostname defaults to $OPINTOPOLKU then to "testi.virkailija.opintopolku.fi"
 url not used
-table defaults to "sa_oppilaitosluokitus"
+schema defaults to $SCHEMA then to "" (for database default if set)
+table defaults to $TABLE then to "sa_oppilaitosluokitus"
 codeset not used
 """
 
@@ -98,12 +99,13 @@ def main(argv):
   secure = True # default secure, so always secure!
   hostname = os.getenv("OPINTOPOLKU") or "testi.virkailija.opintopolku.fi"
   url = "N/A" # nb argument not used!
-  table = "sa_oppilaitosluokitus"
+  schema = os.getenv("SCHEMA") or ""
+  table = os.getenv("TABLE") or "sa_oppilaitosluokitus"
   codeset = "N/A" # nb argument not used!
   verbose,debug = False,False
   
   try:
-    opts, args = getopt.getopt(argv,"sH:u:t:c:vd",["secure","hostname=","url=","table=","codeset=","verbose","debug"])
+    opts, args = getopt.getopt(argv,"sH:u:e:t:c:vd",["secure","hostname=","url=","schema=","table=","codeset=","verbose","debug"])
   except getopt.GetoptError as err:
     print(err)
     usage()
@@ -112,17 +114,18 @@ def main(argv):
     if opt in ("-s", "--secure"): secure = True
     elif opt in ("-H", "--hostname"): hostname = arg
     elif opt in ("-u", "--url"): url = arg
+    elif opt in ("-e", "--schema"): schema = arg
     elif opt in ("-t", "--table"): table = arg
     elif opt in ("-c", "--codeset"): codeset = arg
     elif opt in ("-v", "--verbose"): verbose = True
     elif opt in ("-d", "--debug"): debug = True
-  if not hostname or not url or not table or not codeset:
+  if not hostname or not url or not schema or not table or not codeset:
     usage()
     sys.exit(2)
 
   if debug: print "debugging"
 
-  load(secure,hostname,url,table,codeset,verbose,debug)
+  load(secure,hostname,url,schema,table,codeset,verbose,debug)
 
 if __name__ == "__main__":
   main(sys.argv[1:])

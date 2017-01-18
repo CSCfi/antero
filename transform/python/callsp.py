@@ -7,7 +7,7 @@ Call a stored procedure in database.
 
 Depends on dboperator which takes care of connection and other db stuff.
 """
-import sys,getopt
+import sys,os,getopt
 from time import localtime, strftime
 
 import dboperator
@@ -32,29 +32,29 @@ def load(schema,procedure,verbose=False):
 
 def usage():
   print """
-usage: callsp.py [-s|--schema <schema>] -p|--procedure <procedure> [-v|--verbose]
+usage: callsp.py [-e|--schema <schema>] -p|--procedure <procedure> [-v|--verbose]
 
-schema defaults to dbo.
+schema defaults to $SCHEMA then to "" (for database default if set)
 procedure is mandatory argument. Name of the procedure to execute.
 """
 
 def main(argv):
   # variables that are given as arguments with possible default values
-  schema = "dbo"
+  schema = os.getenv("SCHEMA") or ""
   procedure = ""
   verbose = False
 
   try:
-    opts, args = getopt.getopt(argv,"s:p:v",["schema=","procedure=","verbose"])
+    opts, args = getopt.getopt(argv,"e:p:v",["schema=","procedure=","verbose"])
   except getopt.GetoptError as err:
     print(err)
     usage()
     sys.exit(2)
   for opt, arg in opts:
-    if opt in ("-s", "--schema"): schema = arg
+    if opt in ("-e", "--schema"): schema = arg
     elif opt in ("-p", "--procedure"): procedure = arg
     elif opt in ("-v", "--verbose"): verbose = True
-  if not procedure:
+  if not schema or not procedure:
     usage()
     sys.exit(2)
 

@@ -36,8 +36,8 @@ def jv(jsondata, key):
     return jsondata[key]
   return None
 
-def load(hostname,url,table,verbose):
-  show("begin "+hostname+" "+url+" "+table)
+def load(hostname,url,schema,table,verbose):
+  show("begin "+hostname+" "+url+" "+schema+" "+table)
   address=hostname+url
 
   show("load securely from "+address)
@@ -50,9 +50,9 @@ def load(hostname,url,table,verbose):
 
   show("api returned %d objects"%(len(j)))
 
-  show("empty %s"%(table))
-  #dboperator.empty(table)
-  cur.execute("TRUNCATE TABLE [%s]"%(table))
+  show("empty %s.%s"%(schema,table))
+  #dboperator.empty(schema,table)
+  cur.execute("TRUNCATE TABLE %s.%s"%(schema,table))
   conn.commit()
 
   show("insert data")
@@ -175,10 +175,10 @@ def load(hostname,url,table,verbose):
     ##for col in row:
     ##  if type(row[col]) is list:
     ##    row[col] = ','.join(str(d) for d in row[col])
-    ##dboperator.insert(address,table,row)
+    ##dboperator.insert(address,schema,table,row)
     #dboperator.execute("""
     cur.execute("""
-    INSERT INTO %s
+    INSERT INTO %s.%s
     (
      organisaatioTunnus, ilmoitusVuosi, julkaisunTunnus, julkaisunTilakoodi, julkaisunOrgTunnus, julkaisuVuosi,
      julkaisunNimi, tekijatiedotTeksti, tekijoidenLkm, sivunumeroTeksti, artikkelinumero, isbn, jufoTunnus,
@@ -191,7 +191,7 @@ def load(hostname,url,table,verbose):
      hankeTKs, avainsanaTKs, isbnTKs, issnTKs, koulutusalaTKs, orgYksikkoTKs, tekijaTKs, tieteenalaTKs
      ,source
     )
-    """%(table)+"""
+    """%(schema,table)+"""
     VALUES (
      %s,%s,%s,%s,%s,%s,
      %s,%s,%s,%s,%s,%s,%s,
@@ -227,16 +227,16 @@ def load(hostname,url,table,verbose):
 
 def usage():
   print """
-usage: tkjulkaisut.py -H|--hostname <hostname> -u|--url <url> -t|--table <table> [-v|--verbose]
+usage: tkjulkaisut.py -H|--hostname <hostname> -u|--url <url> -e|--schema <schema> -t|--table <table> [-v|--verbose]
 """
 
 def main(argv):
   # muuttujat jotka kerrotaan argumentein
-  hostname,url,table="","",""
+  hostname,url,schema,table="","","",""
   verbose=False
 
   try:
-    opts,args=getopt.getopt(argv,"H:u:t:v",["hostname=","url=","table=","verbose"])
+    opts,args=getopt.getopt(argv,"H:u:e:t:v",["hostname=","url=","schema=","table=","verbose"])
   except getopt.GetoptError as err:
     print(err)
     usage()
@@ -244,13 +244,14 @@ def main(argv):
   for opt,arg in opts:
     if opt in ("-H", "--hostname"): hostname=arg
     elif opt in ("-u", "--url"): url=arg
+    elif opt in ("-e", "--schema"): schema=arg
     elif opt in ("-t", "--table"): table=arg
     elif opt in ("-v", "--verbose"): verbose=True
-  if not hostname or not url or not table:
+  if not hostname or not url or not schema or not table:
     usage()
     sys.exit(2)
 
-  load(hostname,url,table,verbose)
+  load(hostname,url,schema,table,verbose)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
