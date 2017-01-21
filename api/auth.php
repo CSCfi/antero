@@ -18,15 +18,9 @@ if (!$validated || isset($_SESSION['loggedout'])) {
   header('WWW-Authenticate: Basic realm="Login Area"');
   header('HTTP/1.0 401 Unauthorized');
 ?>
-<!DOCTYPE>
-<html>
-<head>
-<title>Vipunen API</title>
-</head>
-<body>
+<!DOCTYPE html>
+<title>Antero API</title>
 <div id="messagebox">Authorization Required</div>
-</body>
-</html>
 <?php
   exit;
 }

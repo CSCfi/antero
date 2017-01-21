@@ -25,7 +25,7 @@ if(!mssql_select_db($settings["database"]["name"], $link)){
   die('Something went while connecting to database');
 }
 
-$query = 'SELECT sukupuoli_koodi, sukupuoli, sukupuoli_sv, sukupuoli_en, ika, ikaryhma10_koodi, ikaryhma10, ikaryhma10_sv, ikaryhma10_en FROM sa_henkiloluokitus';
+$query = 'SELECT sukupuoli_koodi, sukupuoli, sukupuoli_sv, sukupuoli_en, ika, ikaryhma10_koodi, ikaryhma10, ikaryhma10_sv, ikaryhma10_en FROM sa.sa_henkiloluokitus';
 $result = mssql_query($query,$link) or die('Query failed: ' . mssql_get_last_message());
 
 if ($type == "csv") {

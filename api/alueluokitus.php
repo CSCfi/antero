@@ -1,18 +1,18 @@
 <?php
 if ($_GET) {
-    $type = $_GET['type'];
+  $type = $_GET['type'];
 } else {
-    $type = "csv"; // oletus
+  $type = "csv"; // oletus
 }
 
 if ($type=="json") {
-    header('Content-Type: application/json; charset=utf-8');
+  header('Content-Type: application/json; charset=utf-8');
 } elseif ($type=="tsv") {
-    //header('Content-Type: text/tab-separated-values; charset=utf-8');
-    header('Content-Type: text/plain; charset=iso-8859-1');
+  //header('Content-Type: text/tab-separated-values; charset=utf-8');
+  header('Content-Type: text/plain; charset=iso-8859-1');
 } else {
-    //header('Content-Type: text/csv; charset=utf-8');
-    header('Content-Type: text/plain; charset=iso-8859-1');
+  //header('Content-Type: text/csv; charset=utf-8');
+  header('Content-Type: text/plain; charset=iso-8859-1');
 }
 
 header("Access-Control-Allow-Origin: *");
@@ -28,34 +28,34 @@ if(!mssql_select_db($settings["database"]["name"], $link)){
 }
 
 $query = 'SELECT koodi,nimi,nimi_sv,nimi_en, alkupvm,loppupvm, maakuntakoodi,maakuntanimi,maakuntanimi_sv,maakuntanimi_en, avikoodi,avinimi,avinimi_sv,avinimi_en, elykoodi,elynimi,elynimi_sv,elynimi_en, kielisuhdekoodi,kielisuhdenimi,kielisuhdenimi_sv,kielisuhdenimi_en, seutukuntakoodi,seutukuntanimi,seutukuntanimi_sv,seutukuntanimi_en, laanikoodi,laaninimi,laaninimi_sv,laaninimi_en, kuntaryhmakoodi,kuntaryhmanimi,kuntaryhmanimi_sv,kuntaryhmanimi_en
-FROM SA_ALUELUOKITUS';
+FROM sa.sa_alueluokitus';
 $result = mssql_query($query,$link) or die('Query failed: ' . mssql_get_last_message());
 
 if ($type == "csv") {
-    echo "koodi;nimi;nimi_sv;nimi_en;alkupvm;loppupvm;maakuntakoodi;maakuntanimi;maakuntanimi_sv;maakuntanimi_en;avikoodi;avinimi;avinimi_sv;avinimi_en;elykoodi;elynimi;elynimi_sv;elynimi_en;kielisuhdekoodi;kielisuhdenimi;kielisuhdenimi_sv;kielisuhdenimi_en;seutukuntakoodi;seutukuntanimi;seutukuntanimi_sv;seutukuntanimi_en;laanikoodi;laaninimi;laaninimi_sv;laaninimi_en;kuntaryhmakoodi;kuntaryhmanimi;kuntaryhmanimi_sv;kuntaryhmanimi_en;";
-    echo "\n";
+  echo "koodi;nimi;nimi_sv;nimi_en;alkupvm;loppupvm;maakuntakoodi;maakuntanimi;maakuntanimi_sv;maakuntanimi_en;avikoodi;avinimi;avinimi_sv;avinimi_en;elykoodi;elynimi;elynimi_sv;elynimi_en;kielisuhdekoodi;kielisuhdenimi;kielisuhdenimi_sv;kielisuhdenimi_en;seutukuntakoodi;seutukuntanimi;seutukuntanimi_sv;seutukuntanimi_en;laanikoodi;laaninimi;laaninimi_sv;laaninimi_en;kuntaryhmakoodi;kuntaryhmanimi;kuntaryhmanimi_sv;kuntaryhmanimi_en;";
+  echo "\n";
 }
 // tsv?
 //json:
 $return_arr = array();
 while ($row = mssql_fetch_array($result, MSSQL_ASSOC)) {
-    if ($type == "csv" || $type == "tsv") {
-        foreach ($row as $col_value) {
-            echo utf8_decode($col_value);
-            if ($type == "csv") {
-                echo ";";
-            } elseif ($type == "tsv") {
-                echo "\t";
-            }
-        }
-        echo "\n";
+  if ($type == "csv" || $type == "tsv") {
+    foreach ($row as $col_value) {
+      echo utf8_decode($col_value);
+      if ($type == "csv") {
+        echo ";";
+      } elseif ($type == "tsv") {
+        echo "\t";
+      }
     }
-    if ($type == "json") {
-        array_push($return_arr,$row);
-    }
+    echo "\n";
+  }
+  if ($type == "json") {
+    array_push($return_arr,$row);
+  }
 }
 if ($type == "json") {
-    echo json_encode($return_arr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+  echo json_encode($return_arr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
 }
 
 mssql_free_result($result);

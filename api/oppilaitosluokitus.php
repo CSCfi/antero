@@ -27,7 +27,9 @@ if(!mssql_select_db($settings["database"]["name"], $link)){
   die('Something went while connecting to database');
 }
 
-$query = 'SELECT oid,koodi,nimi,nimi_sv,nimi_en,alkupvm,loppupvm,kuntakoodi,oppilaitostyyppikoodi,jarjestajaoid,jarjestajakoodi,jarjestajanimi,jarjestajanimi_sv,jarjestajanimi_en FROM sa_oppilaitosluokitus';
+$query = 'SELECT oid,koodi,nimi,nimi_sv,nimi_en,alkupvm,loppupvm,
+kuntakoodi,oppilaitostyyppikoodi,jarjestajaoid,jarjestajakoodi,jarjestajanimi,jarjestajanimi_sv,jarjestajanimi_en
+FROM sa.sa_oppilaitosluokitus';
 $result = mssql_query($query,$link) or die('Query failed: ' . mssql_get_last_message());
 
 if ($type == "csv") {

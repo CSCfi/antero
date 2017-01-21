@@ -44,7 +44,7 @@ if (!$koodisto) {
     $query .= "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
     if(!preg_match("/\/$/",$_SERVER['REQUEST_URI'])) $query .= "/";
     $query .= "'+koodisto as uri";
-    $query .= " FROM SA_KOODISTOT";
+    $query .= " FROM sa.sa_koodistot";
 
     if ($type == "csv") {
         echo "koodisto;uri;";
@@ -52,7 +52,7 @@ if (!$koodisto) {
     }
 }
 else {
-    $query = "SELECT koodi,nimi,nimi_sv,nimi_en, alkupvm,loppupvm FROM SA_KOODISTOT WHERE koodisto='$koodisto'";
+    $query = "SELECT koodi,nimi,nimi_sv,nimi_en, alkupvm,loppupvm FROM sa.sa_koodistot WHERE koodisto='$koodisto'";
 
     if ($type == "csv") {
         echo "koodi;nimi;nimi_sv;nimi_en;alkupvm;loppupvm;";
