@@ -1,0 +1,57 @@
+﻿Param
+(
+    [string]$pdlogpath = "d:\temp\logs",
+    [string]$gitdir = "D:\temp\testi\git",
+    [string]$sqlserver = "dwitvipusql16",
+    [string]$database = "ANTERO",
+    [string]$tabulardir = "D:\temp\jenkins\tabular\"
+)
+
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+function Unzip
+{
+    param([string]$zipfile, [string]$outpath)
+
+    [System.IO.Compression.ZipFile]::ExtractToDirectory($zipfile, $outpath)
+}
+
+$connectionString = “Server=$sqlserver;Database=$database;Integrated Security=True;”
+$connection = New-Object System.Data.SqlClient.SqlConnection
+$connection.ConnectionString = $connectionString
+
+$query = "SELECT [tabular] FROM [$database].[dbo].[tabularprocessing] WHERE [ready] = 0"
+
+$command = $connection.CreateCommand()
+$command.CommandText = $query
+$connection.Open()
+
+$table = @()
+
+$reader = $command.ExecuteReader()
+
+while ($reader.Read())
+{
+   $name = $reader.GetValue(0)
+   $table += $name
+}
+$reader.Close()
+
+#git clone https://github.com/CSC-IT-Center-for-Science/antero.git
+Invoke-WebRequest https://github.com/CSC-IT-Center-for-Science/antero/archive/master.zip -OutFile "$gitdir\antero.zip"
+
+Unzip "$gitdir\antero.zip" "$gitdir"
+
+Copy-Item ($gitdir+"\antero-master\tabular\powershell") ($tabulardir) -recurse
+
+foreach ($tabular in $table)
+{
+    Copy-Item ($gitdir+"\antero-master\tabular\"+$tabular) ($tabulardir+$tabular) -recurse
+
+    $updateCommand = New-Object System.Data.SqlClient.SqlCommand
+    $updateCommand.Connection = $connection
+    $updateCommand.commandtext = "UPDATE [$database].[dbo].[tabularprocessing] SET [ready] = 1 WHERE [tabular] = " + "'" + $tabular + "'"
+    $updateCommand.executenonquery()
+}
+
+Remove-Item $gitdir\* -recurse
+$connection.Close()
