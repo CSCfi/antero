@@ -41,7 +41,7 @@ Invoke-WebRequest https://github.com/CSC-IT-Center-for-Science/antero/archive/ma
 
 Unzip "$gitdir\antero.zip" "$gitdir"
 
-Copy-Item ($gitdir+"\antero-master\tabular\powershell") ($tabulardir) -recurse
+Copy-Item ($gitdir+"\antero-master\tabular\powershell") ($tabulardir) -recurse -force
 
 foreach ($tabular in $table)
 {
