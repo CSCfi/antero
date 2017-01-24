@@ -5,20 +5,8 @@
     "culture": "fi-FI",
     "dataSources": [
       {
-        "name": "SqlServer dwitvipusql16 ANTERO_DW",
-        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=ANTERO_DW;Integrated Security=SSPI;Persist Security Info=false",
-        "impersonationMode": "impersonateAccount",
-        "account": "dwi\\pankalai",
-        "annotations": [
-          {
-            "name": "ConnectionEditUISource",
-            "value": "SqlServer"
-          }
-        ]
-      },
-      {
-        "name": "SqlServer dwitvipusql16 ANTERO_DW 2",
-        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=ANTERO_DW;Integrated Security=SSPI;Persist Security Info=false",
+        "name": "SqlServer dwitvipusql16 ANTERO",
+        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
         "impersonationMode": "impersonateAccount",
         "account": "dwi\\pankalai",
         "annotations": [
@@ -281,7 +269,7 @@
             "sourceProviderType": "WChar"
           },
           {
-            "name": "kyselykerta",
+            "name": "Kyselykerta",
             "dataType": "string",
             "sourceColumn": "kyselykerta",
             "sourceProviderType": "WChar",
@@ -387,20 +375,36 @@
             "sourceColumn": "kysymysryhmajarjestys"
           },
           {
-            "name": "Koodit Koulutusnimike",
+            "type": "calculated",
+            "name": "Hallinnonala",
             "dataType": "string",
-            "sourceColumn": "Koodit Koulutusnimike"
-          },
-          {
-            "name": "Koulutusnimike",
-            "dataType": "string",
-            "sourceColumn": "Koulutusnimike",
+            "isDataTypeInferred": true,
+            "expression": "IF(Muuttujat[Organisaatio]=\"Poliisiammattikorkeakoulu\",\"Muiden hallinnonalojen alainen koulutus\",\"Opetushallinnon alainen koulutus\")",
             "displayFolder": "Koulutusmuuttujat"
           },
           {
-            "name": "Koodit Koulutusala, taso 1",
+            "name": "Koodit Koulutus",
             "dataType": "string",
-            "sourceColumn": "Koodit Koulutusala, taso 1"
+            "sourceColumn": "Koodit Koulutus",
+            "displayFolder": "Koulutusmuuttujat"
+          },
+          {
+            "name": "Koulutus",
+            "dataType": "string",
+            "sourceColumn": "Koulutus",
+            "displayFolder": "Koulutusmuuttujat"
+          },
+          {
+            "name": "Koulutusaste, taso 1",
+            "dataType": "string",
+            "sourceColumn": "Koulutusaste, taso 1",
+            "displayFolder": "Koulutusmuuttujat"
+          },
+          {
+            "name": "Koulutusaste, taso 2",
+            "dataType": "string",
+            "sourceColumn": "Koulutusaste, taso 2",
+            "displayFolder": "Koulutusmuuttujat"
           },
           {
             "name": "Koulutusala, taso 1",
@@ -409,40 +413,10 @@
             "displayFolder": "Koulutusmuuttujat"
           },
           {
-            "name": "koulutusalataso1_sv",
-            "dataType": "string",
-            "sourceColumn": "koulutusalataso1_sv"
-          },
-          {
-            "name": "koulutusalataso1_en",
-            "dataType": "string",
-            "sourceColumn": "koulutusalataso1_en"
-          },
-          {
-            "name": "Koodit Koulutusala, taso 2",
-            "dataType": "string",
-            "sourceColumn": "Koodit Koulutusala, taso 2"
-          },
-          {
             "name": "Koulutusala, taso 2",
             "dataType": "string",
             "sourceColumn": "Koulutusala, taso 2",
             "displayFolder": "Koulutusmuuttujat"
-          },
-          {
-            "name": "koulutusalataso2_sv",
-            "dataType": "string",
-            "sourceColumn": "koulutusalataso2_sv"
-          },
-          {
-            "name": "koulutusalataso2_en",
-            "dataType": "string",
-            "sourceColumn": "koulutusalataso2_en"
-          },
-          {
-            "name": "Koodit Koulutusala, taso 3",
-            "dataType": "string",
-            "sourceColumn": "Koodit Koulutusala, taso 3"
           },
           {
             "name": "Koulutusala, taso 3",
@@ -451,35 +425,24 @@
             "displayFolder": "Koulutusmuuttujat"
           },
           {
-            "name": "koulutusalataso3_sv",
-            "dataType": "string",
-            "sourceColumn": "koulutusalataso3_sv"
-          },
-          {
-            "name": "koulutusalataso3_en",
-            "dataType": "string",
-            "sourceColumn": "koulutusalataso3_en"
-          },
-          {
-            "name": "Koodit OKM ohjauksen ala",
-            "dataType": "string",
-            "sourceColumn": "Koodit OKM ohjauksen ala"
-          },
-          {
             "name": "OKM ohjauksen ala",
             "dataType": "string",
             "sourceColumn": "OKM ohjauksen ala",
             "displayFolder": "Koulutusmuuttujat"
           },
           {
-            "name": "okmohjauksenala_sv",
-            "dataType": "string",
-            "sourceColumn": "okmohjauksenala_sv"
+            "type": "calculated",
+            "name": "Ikä järjestys",
+            "dataType": "int64",
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "expression": "IF(Muuttujat[Ikä]=\"Alle 25 vuotta\",1,IF(Muuttujat[Ikä]=\"25-34 vuotta\",2,IF(Muuttujat[Ikä]=\"35-45 vuotta\",3,IF(Muuttujat[Ikä]=\"Yli 45 vuotta\",4,99))))"
           },
           {
-            "name": "okmohjauksenala_en",
+            "name": "Koulutusnimike",
             "dataType": "string",
-            "sourceColumn": "okmohjauksenala_en"
+            "sourceColumn": "Koulutusnimike",
+            "displayFolder": "Koulutusmuuttujat"
           }
         ],
         "partitions": [
@@ -487,8 +450,8 @@
             "name": "v_arvo",
             "dataView": "full",
             "source": {
-              "query": " SELECT [dbo].[v_arvo].* FROM [dbo].[v_arvo] ",
-              "dataSource": "SqlServer dwitvipusql16 ANTERO_DW 2"
+              "query": " SELECT [dw].[v_arvo].* FROM [dw].[v_arvo] ",
+              "dataSource": "SqlServer dwitvipusql16 ANTERO"
             },
             "annotations": [
               {
@@ -541,22 +504,6 @@
                   "      </key>",
                   "      <value>",
                   "        <int>107</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>Koulutusnimike</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>100</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>Koodit Koulutusnimike</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>133</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -937,10 +884,34 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Koodit Koulutusala, taso 1</string>",
+                  "        <string>Koulutus</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>155</int>",
+                  "        <int>71</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koodit Koulutus</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>104</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koulutusaste, taso 1</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>129</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koulutusaste, taso 2</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>129</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -953,58 +924,10 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>koulutusalataso1_sv</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>128</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>koulutusalataso1_en</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>129</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>Koodit Koulutusala, taso 2</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>155</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
                   "        <string>Koulutusala, taso 2</string>",
                   "      </key>",
                   "      <value>",
                   "        <int>122</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>koulutusalataso2_sv</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>128</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>koulutusalataso2_en</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>129</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>Koodit Koulutusala, taso 3</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>155</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1017,30 +940,6 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>koulutusalataso3_sv</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>128</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>koulutusalataso3_en</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>129</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>Koodit OKM ohjauksen ala</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>154</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
                   "        <string>OKM ohjauksen ala</string>",
                   "      </key>",
                   "      <value>",
@@ -1049,18 +948,10 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>okmohjauksenala_sv</string>",
+                  "        <string>Koulutusnimike</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>129</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>okmohjauksenala_en</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>130</int>",
+                  "        <int>100</int>",
                   "      </value>",
                   "    </item>",
                   "  </ColumnWidths>",
@@ -1103,22 +994,6 @@
                   "      </key>",
                   "      <value>",
                   "        <int>4</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>Koulutusnimike</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>53</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>Koodit Koulutusnimike</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>52</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1499,7 +1374,23 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Koodit Koulutusala, taso 1</string>",
+                  "        <string>Koulutus</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>53</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koodit Koulutus</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>52</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koulutusaste, taso 1</string>",
                   "      </key>",
                   "      <value>",
                   "        <int>54</int>",
@@ -1507,7 +1398,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Koulutusala, taso 1</string>",
+                  "        <string>Koulutusaste, taso 2</string>",
                   "      </key>",
                   "      <value>",
                   "        <int>55</int>",
@@ -1515,7 +1406,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>koulutusalataso1_sv</string>",
+                  "        <string>Koulutusala, taso 1</string>",
                   "      </key>",
                   "      <value>",
                   "        <int>56</int>",
@@ -1523,7 +1414,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>koulutusalataso1_en</string>",
+                  "        <string>Koulutusala, taso 2</string>",
                   "      </key>",
                   "      <value>",
                   "        <int>57</int>",
@@ -1531,7 +1422,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Koodit Koulutusala, taso 2</string>",
+                  "        <string>Koulutusala, taso 3</string>",
                   "      </key>",
                   "      <value>",
                   "        <int>58</int>",
@@ -1539,7 +1430,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Koulutusala, taso 2</string>",
+                  "        <string>OKM ohjauksen ala</string>",
                   "      </key>",
                   "      <value>",
                   "        <int>59</int>",
@@ -1547,82 +1438,10 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>koulutusalataso2_sv</string>",
+                  "        <string>Koulutusnimike</string>",
                   "      </key>",
                   "      <value>",
                   "        <int>60</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>koulutusalataso2_en</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>61</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>Koodit Koulutusala, taso 3</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>62</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>Koulutusala, taso 3</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>63</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>koulutusalataso3_sv</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>64</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>koulutusalataso3_en</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>65</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>Koodit OKM ohjauksen ala</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>66</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>OKM ohjauksen ala</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>67</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>okmohjauksenala_sv</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>68</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>okmohjauksenala_en</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>69</int>",
                   "      </value>",
                   "    </item>",
                   "  </ColumnDisplayIndex>",
@@ -1670,7 +1489,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Koodit Koulutusnimike</string>",
+                  "        <string>Koulutus</string>",
                   "      </key>",
                   "      <value>",
                   "        <boolean>true</boolean>",
@@ -1678,7 +1497,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Koulutusnimike</string>",
+                  "        <string>Koodit Koulutus</string>",
                   "      </key>",
                   "      <value>",
                   "        <boolean>true</boolean>",
@@ -1686,7 +1505,15 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Koodit Koulutusala, taso 1</string>",
+                  "        <string>Koulutusaste, taso 1</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koulutusaste, taso 2</string>",
                   "      </key>",
                   "      <value>",
                   "        <boolean>true</boolean>",
@@ -1702,55 +1529,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>koulutusalataso1_sv</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <boolean>true</boolean>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>koulutusalataso1_en</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <boolean>true</boolean>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>Koodit Koulutusala, taso 2</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <boolean>true</boolean>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
                   "        <string>Koulutusala, taso 2</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <boolean>true</boolean>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>koulutusalataso2_sv</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <boolean>true</boolean>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>koulutusalataso2_en</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <boolean>true</boolean>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>Koodit Koulutusala, taso 3</string>",
                   "      </key>",
                   "      <value>",
                   "        <boolean>true</boolean>",
@@ -1766,30 +1545,6 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>koulutusalataso3_sv</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <boolean>true</boolean>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>koulutusalataso3_en</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <boolean>true</boolean>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>Koodit OKM ohjauksen ala</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <boolean>true</boolean>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
                   "        <string>OKM ohjauksen ala</string>",
                   "      </key>",
                   "      <value>",
@@ -1798,15 +1553,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>okmohjauksenala_sv</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <boolean>true</boolean>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>okmohjauksenala_en</string>",
+                  "        <string>Koulutusnimike</string>",
                   "      </key>",
                   "      <value>",
                   "        <boolean>true</boolean>",
@@ -1929,24 +1676,24 @@
           },
           {
             "name": "Pisteet (AVOP-AMK)",
-            "expression": "calculate(sum(Muuttujat[numerovalinta]),Muuttujat[kyselypohja]=\"AVOP-AMK\")",
+            "expression": "calculate(sum(Muuttujat[numerovalinta]),Muuttujat[kyselypohja]=\"AVOP-AMK\",Muuttujat[Rahoitusmallikysymys]=TRUE)",
             "formatString": "#,0"
           },
           {
             "name": "Pisteet (AVOP-YAMK)",
-            "expression": "calculate(sum(Muuttujat[numerovalinta]),Muuttujat[kyselypohja]=\"AVOP-YAMK\")",
+            "expression": "calculate(sum(Muuttujat[numerovalinta]),Muuttujat[kyselypohja]=\"AVOP-YAMK\",Muuttujat[Rahoitusmallikysymys]=TRUE)",
             "formatString": "#,0"
           },
           {
             "name": "Pisteet (KANDI)",
-            "expression": "calculate(sum(Muuttujat[numerovalinta]),Muuttujat[kyselypohja]=\"KANDI\")",
+            "expression": "calculate(sum(Muuttujat[numerovalinta]),Muuttujat[kyselypohja]=\"KANDI\",Muuttujat[Rahoitusmallikysymys]=TRUE)",
             "formatString": "#,0"
           }
         ],
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": " SELECT [dbo].[v_arvo].* FROM [dbo].[v_arvo] "
+            "value": " SELECT [dw].[v_arvo].* FROM [dw].[v_arvo] "
           },
           {
             "name": "_TM_ExtProp_DbTableName",
@@ -1954,7 +1701,7 @@
           },
           {
             "name": "_TM_ExtProp_DbSchemaName",
-            "value": "dbo"
+            "value": "dw"
           },
           {
             "name": "TableWidgetSerialization",
@@ -2006,22 +1753,6 @@
               "      </key>",
               "      <value>",
               "        <int>107</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>Koulutusnimike</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>100</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>Koodit Koulutusnimike</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>133</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -2402,10 +2133,34 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Koodit Koulutusala, taso 1</string>",
+              "        <string>Koulutus</string>",
               "      </key>",
               "      <value>",
-              "        <int>155</int>",
+              "        <int>71</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koodit Koulutus</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>104</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koulutusaste, taso 1</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>129</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koulutusaste, taso 2</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>129</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -2418,58 +2173,10 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>koulutusalataso1_sv</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>128</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>koulutusalataso1_en</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>129</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>Koodit Koulutusala, taso 2</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>155</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
               "        <string>Koulutusala, taso 2</string>",
               "      </key>",
               "      <value>",
               "        <int>122</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>koulutusalataso2_sv</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>128</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>koulutusalataso2_en</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>129</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>Koodit Koulutusala, taso 3</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>155</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -2482,30 +2189,6 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>koulutusalataso3_sv</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>128</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>koulutusalataso3_en</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>129</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>Koodit OKM ohjauksen ala</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>154</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
               "        <string>OKM ohjauksen ala</string>",
               "      </key>",
               "      <value>",
@@ -2514,18 +2197,10 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>okmohjauksenala_sv</string>",
+              "        <string>Koulutusnimike</string>",
               "      </key>",
               "      <value>",
-              "        <int>129</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>okmohjauksenala_en</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>130</int>",
+              "        <int>100</int>",
               "      </value>",
               "    </item>",
               "  </ColumnWidths>",
@@ -2568,22 +2243,6 @@
               "      </key>",
               "      <value>",
               "        <int>4</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>Koulutusnimike</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>53</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>Koodit Koulutusnimike</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>52</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -2964,7 +2623,23 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Koodit Koulutusala, taso 1</string>",
+              "        <string>Koulutus</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>53</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koodit Koulutus</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>52</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koulutusaste, taso 1</string>",
               "      </key>",
               "      <value>",
               "        <int>54</int>",
@@ -2972,7 +2647,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Koulutusala, taso 1</string>",
+              "        <string>Koulutusaste, taso 2</string>",
               "      </key>",
               "      <value>",
               "        <int>55</int>",
@@ -2980,7 +2655,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>koulutusalataso1_sv</string>",
+              "        <string>Koulutusala, taso 1</string>",
               "      </key>",
               "      <value>",
               "        <int>56</int>",
@@ -2988,7 +2663,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>koulutusalataso1_en</string>",
+              "        <string>Koulutusala, taso 2</string>",
               "      </key>",
               "      <value>",
               "        <int>57</int>",
@@ -2996,7 +2671,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Koodit Koulutusala, taso 2</string>",
+              "        <string>Koulutusala, taso 3</string>",
               "      </key>",
               "      <value>",
               "        <int>58</int>",
@@ -3004,7 +2679,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Koulutusala, taso 2</string>",
+              "        <string>OKM ohjauksen ala</string>",
               "      </key>",
               "      <value>",
               "        <int>59</int>",
@@ -3012,82 +2687,10 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>koulutusalataso2_sv</string>",
+              "        <string>Koulutusnimike</string>",
               "      </key>",
               "      <value>",
               "        <int>60</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>koulutusalataso2_en</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>61</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>Koodit Koulutusala, taso 3</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>62</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>Koulutusala, taso 3</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>63</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>koulutusalataso3_sv</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>64</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>koulutusalataso3_en</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>65</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>Koodit OKM ohjauksen ala</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>66</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>OKM ohjauksen ala</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>67</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>okmohjauksenala_sv</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>68</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>okmohjauksenala_en</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>69</int>",
               "      </value>",
               "    </item>",
               "  </ColumnDisplayIndex>",
@@ -3135,7 +2738,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Koodit Koulutusnimike</string>",
+              "        <string>Koulutus</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -3143,7 +2746,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Koulutusnimike</string>",
+              "        <string>Koodit Koulutus</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -3151,7 +2754,15 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Koodit Koulutusala, taso 1</string>",
+              "        <string>Koulutusaste, taso 1</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koulutusaste, taso 2</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -3167,55 +2778,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>koulutusalataso1_sv</string>",
-              "      </key>",
-              "      <value>",
-              "        <boolean>true</boolean>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>koulutusalataso1_en</string>",
-              "      </key>",
-              "      <value>",
-              "        <boolean>true</boolean>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>Koodit Koulutusala, taso 2</string>",
-              "      </key>",
-              "      <value>",
-              "        <boolean>true</boolean>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
               "        <string>Koulutusala, taso 2</string>",
-              "      </key>",
-              "      <value>",
-              "        <boolean>true</boolean>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>koulutusalataso2_sv</string>",
-              "      </key>",
-              "      <value>",
-              "        <boolean>true</boolean>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>koulutusalataso2_en</string>",
-              "      </key>",
-              "      <value>",
-              "        <boolean>true</boolean>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>Koodit Koulutusala, taso 3</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -3231,30 +2794,6 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>koulutusalataso3_sv</string>",
-              "      </key>",
-              "      <value>",
-              "        <boolean>true</boolean>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>koulutusalataso3_en</string>",
-              "      </key>",
-              "      <value>",
-              "        <boolean>true</boolean>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>Koodit OKM ohjauksen ala</string>",
-              "      </key>",
-              "      <value>",
-              "        <boolean>true</boolean>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
               "        <string>OKM ohjauksen ala</string>",
               "      </key>",
               "      <value>",
@@ -3263,15 +2802,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>okmohjauksenala_sv</string>",
-              "      </key>",
-              "      <value>",
-              "        <boolean>true</boolean>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>okmohjauksenala_en</string>",
+              "        <string>Koulutusnimike</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -3310,15 +2841,15 @@
             "name": "Sarakeleveys",
             "dataView": "full",
             "source": {
-              "query": " SELECT [dbo].[Sarakeleveys].* FROM [dbo].[Sarakeleveys] ",
-              "dataSource": "SqlServer dwitvipusql16 ANTERO_DW"
+              "query": " SELECT [dw].[Sarakeleveys].* FROM [dw].[Sarakeleveys] ",
+              "dataSource": "SqlServer dwitvipusql16 ANTERO"
             }
           }
         ],
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": " SELECT [dbo].[Sarakeleveys].* FROM [dbo].[Sarakeleveys] "
+            "value": " SELECT [dw].[Sarakeleveys].* FROM [dw].[Sarakeleveys] "
           },
           {
             "name": "_TM_ExtProp_DbTableName",
@@ -3326,7 +2857,7 @@
           },
           {
             "name": "_TM_ExtProp_DbSchemaName",
-            "value": "dbo"
+            "value": "dw"
           }
         ]
       }
@@ -3339,9 +2870,6 @@
             "name": "Muuttujat",
             "columns": [
               {
-                "name": "Kysely"
-              },
-              {
                 "name": "Kysymys"
               },
               {
@@ -3349,9 +2877,6 @@
               },
               {
                 "name": "Organisaatio"
-              },
-              {
-                "name": "Rahoitusmallikysymys"
               },
               {
                 "name": "Ikä"
@@ -3366,6 +2891,18 @@
                 "name": "kyselypohja"
               },
               {
+                "name": "Kyselykerta"
+              },
+              {
+                "name": "Kyselyvuosi"
+              },
+              {
+                "name": "Koodit Organisaatio"
+              },
+              {
+                "name": "Hallinnonala"
+              },
+              {
                 "name": "Koulutusala, taso 1"
               },
               {
@@ -3375,7 +2912,19 @@
                 "name": "Koulutusala, taso 3"
               },
               {
+                "name": "Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
                 "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Koulutusnimike"
+              },
+              {
+                "name": "Koodit Koulutus"
               }
             ],
             "measures": [
@@ -3392,17 +2941,6 @@
                 "name": "Pisteet (AVOP-AMK)"
               }
             ]
-          },
-          {
-            "name": "Sarakeleveys",
-            "columns": [
-              {
-                "name": "leveys"
-              },
-              {
-                "name": "Sarakeleveys"
-              }
-            ]
           }
         ]
       },
@@ -3411,6 +2949,44 @@
         "tables": [
           {
             "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Kyselykerta"
+              },
+              {
+                "name": "Kyselyvuosi"
+              },
+              {
+                "name": "Koodit Organisaatio"
+              },
+              {
+                "name": "Hallinnonala"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Koulutusnimike"
+              },
+              {
+                "name": "Koodit Koulutus"
+              }
+            ],
             "measures": [
               {
                 "name": "Keskiarvo (AVOP-AMK, LIVE)"
@@ -3420,17 +2996,6 @@
               },
               {
                 "name": "Vastaajamäärä (AVOP-AMK, LIVE)"
-              }
-            ]
-          },
-          {
-            "name": "Sarakeleveys",
-            "columns": [
-              {
-                "name": "leveys"
-              },
-              {
-                "name": "Sarakeleveys"
               }
             ]
           }
@@ -3446,9 +3011,6 @@
                 "name": "Ikä"
               },
               {
-                "name": "Kysely"
-              },
-              {
                 "name": "Kysymys"
               },
               {
@@ -3461,13 +3023,22 @@
                 "name": "Pohjakoulutus"
               },
               {
-                "name": "Rahoitusmallikysymys"
-              },
-              {
                 "name": "Sukupuoli"
               },
               {
                 "name": "kyselypohja"
+              },
+              {
+                "name": "Kyselykerta"
+              },
+              {
+                "name": "Kyselyvuosi"
+              },
+              {
+                "name": "Koodit Organisaatio"
+              },
+              {
+                "name": "Hallinnonala"
               },
               {
                 "name": "Koulutusala, taso 1"
@@ -3479,7 +3050,19 @@
                 "name": "Koulutusala, taso 3"
               },
               {
+                "name": "Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
                 "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Koulutusnimike"
+              },
+              {
+                "name": "Koodit Koulutus"
               }
             ],
             "measures": [
@@ -3496,17 +3079,6 @@
                 "name": "Pisteet (AVOP-YAMK)"
               }
             ]
-          },
-          {
-            "name": "Sarakeleveys",
-            "columns": [
-              {
-                "name": "leveys"
-              },
-              {
-                "name": "Sarakeleveys"
-              }
-            ]
           }
         ]
       },
@@ -3515,6 +3087,44 @@
         "tables": [
           {
             "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Kyselykerta"
+              },
+              {
+                "name": "Kyselyvuosi"
+              },
+              {
+                "name": "Koodit Organisaatio"
+              },
+              {
+                "name": "Hallinnonala"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Koulutusnimike"
+              },
+              {
+                "name": "Koodit Koulutus"
+              }
+            ],
             "measures": [
               {
                 "name": "Keskiarvo (AVOP-YAMK, LIVE)"
@@ -3524,17 +3134,6 @@
               },
               {
                 "name": "Vastaajamäärä (AVOP-YAMK, LIVE)"
-              }
-            ]
-          },
-          {
-            "name": "Sarakeleveys",
-            "columns": [
-              {
-                "name": "leveys"
-              },
-              {
-                "name": "Sarakeleveys"
               }
             ]
           }
@@ -3550,9 +3149,6 @@
                 "name": "Ikä"
               },
               {
-                "name": "Kysely"
-              },
-              {
                 "name": "Kysymys"
               },
               {
@@ -3565,13 +3161,19 @@
                 "name": "Pohjakoulutus"
               },
               {
-                "name": "Rahoitusmallikysymys"
-              },
-              {
                 "name": "Sukupuoli"
               },
               {
                 "name": "kyselypohja"
+              },
+              {
+                "name": "Kyselykerta"
+              },
+              {
+                "name": "Kyselyvuosi"
+              },
+              {
+                "name": "Koodit Organisaatio"
               },
               {
                 "name": "Koulutusala, taso 1"
@@ -3583,7 +3185,19 @@
                 "name": "Koulutusala, taso 3"
               },
               {
+                "name": "Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
                 "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Koulutusnimike"
+              },
+              {
+                "name": "Koodit Koulutus"
               }
             ],
             "measures": [
@@ -3600,17 +3214,6 @@
                 "name": "Pisteet (KANDI)"
               }
             ]
-          },
-          {
-            "name": "Sarakeleveys",
-            "columns": [
-              {
-                "name": "leveys"
-              },
-              {
-                "name": "Sarakeleveys"
-              }
-            ]
           }
         ]
       },
@@ -3619,6 +3222,41 @@
         "tables": [
           {
             "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Kyselykerta"
+              },
+              {
+                "name": "Kyselyvuosi"
+              },
+              {
+                "name": "Koodit Organisaatio"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Koulutusnimike"
+              },
+              {
+                "name": "Koodit Koulutus"
+              }
+            ],
             "measures": [
               {
                 "name": "Keskiarvo (KANDI, LIVE)"
@@ -3628,17 +3266,6 @@
               },
               {
                 "name": "Vastaajamäärä (KANDI, LIVE)"
-              }
-            ]
-          },
-          {
-            "name": "Sarakeleveys",
-            "columns": [
-              {
-                "name": "leveys"
-              },
-              {
-                "name": "Sarakeleveys"
               }
             ]
           }
