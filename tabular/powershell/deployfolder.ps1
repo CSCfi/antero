@@ -6,7 +6,8 @@
     [string]$prodtabserver = "dwitviputab16",
     [string]$prodsqlserver = "dwitvipusql16",
     [string]$proddatabase = "ANTERO",
-    [string]$workdir = "D:\temp\jenkins\work\"#,
+    [string]$workdir = "D:\temp\jenkins\work\",
+    [string]$exe = "C:\Program Files (x86)\Microsoft SQL Server\130\Tools\Binn\ManagementStudio\Microsoft.AnalysisServices.Deployment.exe"#,
     #[string]$username = "USERNAME",
     #[string]$password = "PASSWORD"
 )
@@ -45,7 +46,7 @@ forEach ($file in $files)
     Remove-Item $destfile
     Copy-Item $file $destfile
     
-    & "$ScriptPath\tabulardeploy.ps1" $workdir"Model.bim" $workdir $prodtabserver $prodsqlserver $proddatabase
+    & "$ScriptPath\tabulardeploy.ps1" $workdir"Model.bim" $workdir $prodtabserver $prodsqlserver $proddatabase $exe
 }
 
 Remove-Item $tabularsdir* -recurse -exclude powershell,*.ps1
