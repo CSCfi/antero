@@ -39,7 +39,7 @@ forEach ($file in $files)
     $xml = [xml](Get-Content $projectfile.FullName)
     $projectname = $xml.Project.PropertyGroup[0].DeploymentServerDatabase
     $xml = [xml](Get-Content ($workdir + "Model.deploymenttargets"))
-    $xml.DeploymentTarget.Database = $projectname
+    $xml.DeploymentTarget.Database = "$projectname"
     $xml.Save($workdir + "Model.deploymenttargets")
     $destfile = $workdir + "Model.bim"
     Remove-Item $destfile
