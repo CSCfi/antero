@@ -5,7 +5,7 @@
     [string]$tabularsdir = "D:\temp\jenkins\tabular\",
     [string]$prodtabserver = "dwitviputab16",
     [string]$prodsqlserver = "dwitvipusql16",
-    [string]$proddatabase = "ANTERO_DW",
+    [string]$proddatabase = "ANTERO",
     [string]$workdir = "D:\temp\jenkins\work\"#,
     #[string]$username = "USERNAME",
     #[string]$password = "PASSWORD"
@@ -37,9 +37,9 @@ forEach ($file in $files)
     Write-Host "Processing file:" $file.FullName
     $projectfile = get-childitem $file.DirectoryName"*.smproj"
     $xml = [xml](Get-Content $projectfile.FullName)
-    $projectname = $xml.Project.PropertyGroup[0].DeploymentServerDatabase
+    $projectname = $xml.Project.PropertyGroup[1].DeploymentServerDatabase
     $xml = [xml](Get-Content ($workdir + "Model.deploymenttargets"))
-    $xml.DeploymentTarget.Database = "$projectname"
+    $xml.DeploymentTarget.Database = $projectname
     $xml.Save($workdir + "Model.deploymenttargets")
     $destfile = $workdir + "Model.bim"
     Remove-Item $destfile
