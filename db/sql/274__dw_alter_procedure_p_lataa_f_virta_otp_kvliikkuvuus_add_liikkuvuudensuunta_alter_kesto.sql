@@ -49,7 +49,7 @@ SELECT
   cast(dateadd(ss,cast(jaksoLoppupvm/1000 as int)+(2*3600),'19700101') as date) -- epoch (=kutsuaika per 1000) + 2h (gmt => suomen talvi)
   end as jaksoLoppupvm,
   
-  case when isnumeric(f.kesto) then cast(f.kesto as int) end as kesto,
+  case when isnumeric(f.kesto)=1 then cast(f.kesto as int) end as kesto,
   
   cast(1 as int) AS lukumaara,
   
@@ -98,7 +98,7 @@ SELECT
   cast(dateadd(ss,cast(jaksoLoppupvm/1000 as int)+(2*3600),'19700101') as date) -- epoch (=kutsuaika per 1000) + 2h (gmt => suomen talvi)
   end as jaksoLoppupvm,
   
-  case when isnumeric(f.kesto) then cast(f.kesto as int) end as kesto,
+  case when isnumeric(f.kesto)=1 then cast(f.kesto as int) end as kesto,
   
   cast(1 as int) AS lukumaara,
   
@@ -148,7 +148,7 @@ SELECT
   cast(dateadd(ss,cast(jaksoLoppupvm/1000 as int)+(2*3600),'19700101') as date) -- epoch (=kutsuaika per 1000) + 2h (gmt => suomen talvi)
   end as jaksoLoppupvm,
   
-  case when isnumeric(f.kesto) then cast(f.kesto as int) end as kesto,
+  case when isnumeric(f.kesto)=1 then cast(f.kesto as int) end as kesto,
   
   cast(1 as int) AS lukumaara,
   
@@ -198,7 +198,7 @@ SELECT
   cast(dateadd(ss,cast(jaksoLoppupvm/1000 as int)+(2*3600),'19700101') as date) -- epoch (=kutsuaika per 1000) + 2h (gmt => suomen talvi)
   end as jaksoLoppupvm,
   
-  case when isnumeric(f.kesto) then cast(f.kesto as int) end as kesto,
+  case when isnumeric(f.kesto)=1 then cast(f.kesto as int) end as kesto,
   
   cast(1 as int) AS lukumaara,
   
