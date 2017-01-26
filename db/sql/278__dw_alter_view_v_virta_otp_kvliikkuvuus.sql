@@ -11,7 +11,7 @@ SELECT d1.organisaatio_koodi
 
 	  ,d3.koulutusastetaso2_koodi AS 'Koulutusaste (taso 2) Koodi'
 	  ,d3.koulutusastetaso2_fi AS 'Koulutusaste (taso 2)'
-	  ,d3.koulutusalataso2_sv
+	  ,d3.koulutusastetaso2_sv
 	  ,d3.koulutusastetaso2_en
 	  ,d3.koulutusalataso1_koodi AS 'Koulutusala (taso 1) Koodi'
 	  ,d3.koulutusalataso1_fi AS 'Koulutusala (taso 1)'
