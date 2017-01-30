@@ -19,7 +19,7 @@ $connectionString = “Server=$sqlserver;Database=$database;Integrated Security=
 $connection = New-Object System.Data.SqlClient.SqlConnection
 $connection.ConnectionString = $connectionString
 
-$query = "SELECT [tabular] FROM [$database].[dbo].[tabularprocessing] WHERE [ready] = 0"
+$query = "SELECT [tabular] FROM [$database].[dbo].[tabulardeploy] WHERE [ready] = 0"
 
 $command = $connection.CreateCommand()
 $command.CommandText = $query
@@ -49,7 +49,7 @@ foreach ($tabular in $table)
 
     $updateCommand = New-Object System.Data.SqlClient.SqlCommand
     $updateCommand.Connection = $connection
-    $updateCommand.commandtext = "UPDATE [$database].[dbo].[tabularprocessing] SET [ready] = 1 WHERE [tabular] = " + "'" + $tabular + "'"
+    $updateCommand.commandtext = "UPDATE [$database].[dbo].[tabulardeploy] SET [ready] = 1 WHERE [tabular] = " + "'" + $tabular + "'"
     $updateCommand.executenonquery()
 }
 
