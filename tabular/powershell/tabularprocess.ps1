@@ -6,6 +6,9 @@
     [string]$database = "ANTERO"
 )
 
+[Reflection.Assembly]::LoadWithPartialName("Microsoft.AnalysisServices")
+$server = New-Object Microsoft.AnalysisServices.Server
+$server.connect($tabularserver)
 
 $pdlogfile = "logfile.log"                    #File name for logs
 
@@ -53,7 +56,15 @@ foreach ($tabular in $table)
     $alku = Get-Date
     try
     {
-        Invoke-ProcessASDatabase -databasename $tabular -server 'dwitviputab16' -RefreshType "Full"
+        $b = $server.Databases | ? {$_.Name -eq $tabular} | Select CompatibilityLevel
+        if ($b.CompatibilityLevel -ge 1200)
+        {
+            Invoke-ProcessASDatabase -databasename $tabular -server $tabularserver -RefreshType "Full"
+        }
+        else
+        {
+            Invoke-ProcessASDatabase -databasename $tabular -server $tabularserver -ProcessType "ProcessFull"
+        }
     }
     catch
     {
