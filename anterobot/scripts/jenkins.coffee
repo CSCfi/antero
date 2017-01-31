@@ -234,13 +234,13 @@ jenkinsListJobsRecur = (content,filter,level,parentpath) ->
   response = ""
   for job in content.jobs
     if job._class.match(/Folder$/i)
-      if (filter.test job.name) or (filter.test state)
-        if level>0
-          response += "  " for i in [1..level]
-        response += "* :open_file_folder: **#{job.name}**\n"
-        level++
-        response += jenkinsListJobsRecur(job,filter,level,"#{parentpath}/#{job.name}")
-        level--
+      #if (filter.test job.name) or (filter.test state)
+      if level>0
+        response += "  " for i in [1..level]
+      response += "* :open_file_folder: **#{job.name}**\n"
+      level++
+      response += jenkinsListJobsRecur(job,filter,level,"#{parentpath}/#{job.name}")
+      level--
     else
       # Add the job to the jobList
       index = jobList.indexOf("#{parentpath}/#{job.name}")
@@ -316,7 +316,7 @@ module.exports = (robot) ->
   robot.respond /j(?:enkins)? last (.*)/i, (msg) ->
     jenkinsLast(msg)
 
-  robot.respond /j(?:enkins)? list( (.+))?/i, (msg) ->
+  robot.respond /j(?:enkins)? (?:list|ls)( (.+))?/i, (msg) ->
     jenkinsList(msg)
 
   robot.respond /j(?:enkins)? clear( (.+))?/i, (msg) ->
