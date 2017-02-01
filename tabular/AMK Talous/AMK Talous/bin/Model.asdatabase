@@ -5,8 +5,8 @@
     "culture": "fi-FI",
     "dataSources": [
       {
-        "name": "ANTERO_DW",
-        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=ANTERO_DW;Integrated Security=SSPI;Persist Security Info=false",
+        "name": "ANTERO",
+        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
         "impersonationMode": "impersonateAccount",
         "account": "dwi\\jrouhiai",
         "annotations": [
@@ -218,6 +218,7 @@
           {
             "name": "arvo",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "arvo"
           },
           {
@@ -248,6 +249,24 @@
             "dataType": "string",
             "isHidden": true,
             "sourceColumn": "Ohjauksenala koodilla"
+          },
+          {
+            "name": "tili_taso5_fi",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "tili_taso5_fi"
+          },
+          {
+            "name": "tili_taso5_sv",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "tili_taso5_sv"
+          },
+          {
+            "name": "tili_taso5_en",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "tili_taso5_en"
           }
         ],
         "partitions": [
@@ -255,8 +274,8 @@
             "name": "AMK_TALOUS",
             "dataView": "full",
             "source": {
-              "query": " SELECT [dbo].[v_f_tab_amk_talous].* FROM [dbo].[v_f_tab_amk_talous] ",
-              "dataSource": "ANTERO_DW"
+              "query": " SELECT [dw].[v_amk_talous].* FROM [dw].[v_amk_talous] ",
+              "dataSource": "ANTERO"
             },
             "annotations": [
               {
@@ -527,6 +546,30 @@
                   "        <int>100</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>tili_taso5_fi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>85</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>tili_taso5_sv</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>90</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>tili_taso5_en</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>91</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -785,6 +828,30 @@
                   "        <int>28</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>tili_taso5_fi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>32</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>tili_taso5_sv</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>33</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>tili_taso5_en</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>34</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -988,6 +1055,30 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>tili_taso5_fi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>tili_taso5_sv</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>tili_taso5_en</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -1062,7 +1153,7 @@
           },
           {
             "name": "Palkat ja palkkiot",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso0_fi] = \"Tuloslaskelma\"), FILTER(Muuttujat,[tili_taso4_fi]=\"Palkat ja palkkiot\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso0_fi] = \"Tuloslaskelma\"), FILTER('Muuttujat', [tili_taso2_fi] = \"Henkilöstökulut\"), FILTER(Muuttujat,[tili_taso4_fi]=\"Palkat ja palkkiot\"))",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\Varsinainen toiminta\\Henkilöstökulut"
           },
@@ -1230,7 +1321,7 @@
           },
           {
             "name": "Tuloverot (Liiketoiminta)",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso0_fi] = \"Tuloslaskelma\"), FILTER(Muuttujat,[tili_taso4_fi]=\"Tuloverot\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso0_fi] = \"Tuloslaskelma\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Tilinpäätössiirrot\"), FILTER(Muuttujat,[tili_taso4_fi]=\"Tuloverot\"))",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\Tilinpäätössiirrot"
           },
@@ -1932,7 +2023,7 @@
           },
           {
             "name": "Kulut yhteensä (Yhteensä/Koulutustoiminta)",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Koulutustoiminta\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Yhteensä\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Kulut\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Koulutustoiminta\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Yhteensä\"), FILTER('Muuttujat', [tili_taso2_fi] = \"Kulut\"))",
             "formatString": "#,0",
             "displayFolder": "Toimintokohtainen erittely yhteensä\\Koulutustoiminta\\Kulut"
           },
@@ -2142,7 +2233,7 @@
           },
           {
             "name": "Perustutkintojen osat",
-            "expression": "SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Perustutkintojen osat\"),[arvo])",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso0_fi] = \"Perustehtävän kokonaiskustannukset\"), FILTER(Muuttujat,[tili_taso4_fi]=\"Perustutkintojen osat\"))",
             "formatString": "#,0",
             "displayFolder": "Perustehtävän kokonaiskustannukset\\Koulutus"
           },
@@ -2154,7 +2245,7 @@
           },
           {
             "name": "Muu koulutus",
-            "expression": "SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Muu koulutus\"),[arvo])",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso0_fi] = \"Perustehtävän kokonaiskustannukset\"), FILTER(Muuttujat,[tili_taso4_fi]=\"Muu koulutus\"))",
             "formatString": "#,0",
             "displayFolder": "Perustehtävän kokonaiskustannukset\\Koulutus"
           },
@@ -2162,29 +2253,29 @@
             "name": "Tutkimus- ja kehitystoiminta yhteensä",
             "expression": "SUMX(FILTER(Muuttujat,[tili_taso1_fi]=\"Tutkimus- ja kehitystoiminta\"),[arvo])",
             "formatString": "#,0",
-            "displayFolder": "Perustehtävän kokonaiskustannukset\\Tutkimus"
+            "displayFolder": "Perustehtävän kokonaiskustannukset\\Tutkimus- ja kehitystoiminta"
           },
           {
             "name": "Ylempi amk-koulutus",
             "expression": "SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Ylempi amk-koulutus\"),[arvo])",
             "formatString": "#,0",
-            "displayFolder": "Perustehtävän kokonaiskustannukset\\Tutkimus"
+            "displayFolder": "Perustehtävän kokonaiskustannukset\\Tutkimus- ja kehitystoiminta"
           },
           {
             "name": "T&K-toiminta",
             "expression": "SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"T&k-toiminta\"),[arvo])",
             "formatString": "#,0",
-            "displayFolder": "Perustehtävän kokonaiskustannukset\\Tutkimus"
+            "displayFolder": "Perustehtävän kokonaiskustannukset\\Tutkimus- ja kehitystoiminta"
           },
           {
             "name": "Muu yhteiskunnallinen toiminta",
             "expression": "SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Muu yhteiskunnallinen toiminta\"),[arvo])",
             "formatString": "#,0",
-            "displayFolder": "Perustehtävän kokonaiskustannukset\\Muu yhteiskunnallinen toiminta yhteensä"
+            "displayFolder": "Perustehtävän kokonaiskustannukset\\Muu yhteiskunnallinen toiminta"
           },
           {
             "name": "Koulutustoiminta yhteensä",
-            "expression": "SUMX(FILTER(Muuttujat,[tili_taso1_fi]=\"Koulutus\"),[arvo])",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso0_fi] = \"Perustehtävän kokonaiskustannukset\"), FILTER(Muuttujat,[tili_taso1_fi]=\"Koulutus\"))",
             "formatString": "#,0",
             "displayFolder": "Perustehtävän kokonaiskustannukset\\Koulutus"
           },
@@ -2322,7 +2413,7 @@
           },
           {
             "name": "Rahoitustuotot ja -kulut yhteensä",
-            "expression": "SUMX(FILTER(Muuttujat,[tili_taso1_fi]=\"Rahoitustuotot- ja kulut\"),[arvo])",
+            "expression": "SUMX(FILTER(Muuttujat,[tili_taso1_fi]=\"Rahoitustuotot ja kulut\"),[arvo])",
             "formatString": "#,0",
             "displayFolder": "Liiketoiminnan tuloslaskelma\\Rahoitustuotot ja -kulut"
           },
@@ -2394,7 +2485,7 @@
           },
           {
             "name": "Korkokulut ja muut rahoituskulut saman konsernin yrityksille",
-            "expression": "SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Korkokulut- ja muut rahoituskulut - saman konsernin yrityksille\"),[arvo])",
+            "expression": "SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Korkokulut ja muut rahoituskulut saman konsernin yrityksille\"),[arvo])",
             "formatString": "#,0",
             "displayFolder": "Liiketoiminnan tuloslaskelma\\Rahoitustuotot ja -kulut\\Korkokulut ja muut rahoituskulut"
           },
@@ -2508,7 +2599,7 @@
           },
           {
             "name": "Kulut yhteensä (Perustehtävä/Koulutustoiminta)",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Koulutustoiminta\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Perustehtävä\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Kulut\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Koulutustoiminta\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Perustehtävä\"), FILTER('Muuttujat', [tili_taso2_fi] = \"Kulut\"))",
             "formatString": "#,0",
             "displayFolder": "Toimintokohtainen erittely perustehtävä\\Koulutustoiminta\\Kulut"
           },
@@ -2580,7 +2671,7 @@
           },
           {
             "name": "Kulut yhteensä (Liiketoiminta/Koulutustoiminta)",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Koulutustoiminta\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Liiketoiminta\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Kulut\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Koulutustoiminta\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Liiketoiminta\"), FILTER('Muuttujat', [tili_taso2_fi] = \"Kulut\"))",
             "formatString": "#,0",
             "displayFolder": "Toimintokohtainen erittely liiketoiminta\\Koulutustoiminta\\Kulut"
           },
@@ -2724,25 +2815,25 @@
           },
           {
             "name": "Kulut yhteensä (Perustehtävä/Muu yhteiskunnallinen toiminta)",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Muu yhteiskunnallinen toiminta\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Perustehtävä\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Kulut\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Muu yhteiskunnallinen toiminta\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Perustehtävä\"), FILTER('Muuttujat', [tili_taso2_fi] = \"Kulut\"))",
             "formatString": "#,0",
             "displayFolder": "Toimintokohtainen erittely perustehtävä\\Muu yhteiskunnallinen toiminta\\Kulut"
           },
           {
             "name": "Kulut yhteensä (Perustehtävä/Toiminnot yhteensä)",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Toiminnot yhteensä\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Perustehtävä\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Kulut\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Toiminnot yhteensä\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Perustehtävä\"), FILTER('Muuttujat', [tili_taso2_fi] = \"Kulut\"))",
             "formatString": "#,0",
             "displayFolder": "Toimintokohtainen erittely perustehtävä\\Toiminnot yhteensä\\Kulut"
           },
           {
             "name": "Kulut yhteensä (Perustehtävä/Tutkimus- ja kehitystoiminta)",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Tutkimus- ja kehitystoiminta\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Perustehtävä\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Kulut\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Tutkimus- ja kehitystoiminta\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Perustehtävä\"), FILTER('Muuttujat', [tili_taso2_fi] = \"Kulut\"))",
             "formatString": "#,0",
             "displayFolder": "Toimintokohtainen erittely perustehtävä\\Tutkimus- ja kehitystoiminta\\Kulut"
           },
           {
             "name": "Kulut yhteensä (Perustehtävä/Yhteiskulut)",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Yhteiskulut\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Perustehtävä\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Kulut\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Yhteiskulut\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Perustehtävä\"), FILTER('Muuttujat', [tili_taso2_fi] = \"Kulut\"))",
             "formatString": "#,0",
             "displayFolder": "Toimintokohtainen erittely perustehtävä\\Yhteiskulut\\Kulut"
           },
@@ -2962,25 +3053,25 @@
           },
           {
             "name": "Kulut yhteensä (Liiketoiminta/Muu yhteiskunnallinen toiminta)",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Muu yhteiskunnallinen toiminta\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Liiketoiminta\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Kulut\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Muu yhteiskunnallinen toiminta\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Liiketoiminta\"), FILTER('Muuttujat', [tili_taso2_fi] = \"Kulut\"))",
             "formatString": "#,0",
             "displayFolder": "Toimintokohtainen erittely liiketoiminta\\Muu yhteiskunnallinen toiminta\\Kulut"
           },
           {
             "name": "Kulut yhteensä (Liiketoiminta/Toiminnot yhteensä)",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Toiminnot yhteensä\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Liiketoiminta\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Kulut\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Toiminnot yhteensä\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Liiketoiminta\"), FILTER('Muuttujat', [tili_taso2_fi] = \"Kulut\"))",
             "formatString": "#,0",
             "displayFolder": "Toimintokohtainen erittely liiketoiminta\\Toiminnot yhteensä\\Kulut"
           },
           {
             "name": "Kulut yhteensä (Liiketoiminta/Tutkimus- ja kehitystoiminta)",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Tutkimus- ja kehitystoiminta\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Liiketoiminta\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Kulut\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Tutkimus- ja kehitystoiminta\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Liiketoiminta\"), FILTER('Muuttujat', [tili_taso2_fi] = \"Kulut\"))",
             "formatString": "#,0",
             "displayFolder": "Toimintokohtainen erittely liiketoiminta\\Tutkimus- ja kehitystoiminta\\Kulut"
           },
           {
             "name": "Kulut yhteensä (Liiketoiminta/Yhteiskulut)",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Yhteiskulut\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Liiketoiminta\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Kulut\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Yhteiskulut\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Liiketoiminta\"), FILTER('Muuttujat', [tili_taso2_fi] = \"Kulut\"))",
             "formatString": "#,0",
             "displayFolder": "Toimintokohtainen erittely liiketoiminta\\Yhteiskulut\\Kulut"
           },
@@ -3202,7 +3293,7 @@
           },
           {
             "name": "Kulut yhteensä (Yhteensä/Muu yhteiskunnallinen toiminta)",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Muu yhteiskunnallinen toiminta\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Yhteensä\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Kulut\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Muu yhteiskunnallinen toiminta\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Yhteensä\"), FILTER('Muuttujat', [tili_taso2_fi] = \"Kulut\"))",
             "formatString": "#,0",
             "displayFolder": "Toimintokohtainen erittely yhteensä\\Muu yhteiskunnallinen toiminta\\Kulut"
           },
@@ -3214,13 +3305,13 @@
           },
           {
             "name": "Kulut yhteensä (Yhteensä/Tutkimus- ja kehitystoiminta)",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Tutkimus- ja kehitystoiminta\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Yhteensä\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Kulut\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Tutkimus- ja kehitystoiminta\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Yhteensä\"), FILTER('Muuttujat', [tili_taso2_fi] = \"Kulut\"))",
             "formatString": "#,0",
             "displayFolder": "Toimintokohtainen erittely yhteensä\\Tutkimus- ja kehitystoiminta\\Kulut"
           },
           {
             "name": "Kulut yhteensä (Yhteensä/Yhteiskulut)",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Yhteiskulut\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Yhteensä\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Kulut\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Yhteiskulut\"), FILTER('Muuttujat', [erittely_nimi_fi] = \"Yhteensä\"), FILTER('Muuttujat', [tili_taso2_fi] = \"Kulut\"))",
             "formatString": "#,0",
             "displayFolder": "Toimintokohtainen erittely yhteensä\\Yhteiskulut\\Kulut"
           },
@@ -3342,15 +3433,15 @@
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": " SELECT [dbo].[v_f_tab_amk_talous].* FROM [dbo].[v_f_tab_amk_talous] "
+            "value": " SELECT [dw].[v_amk_talous].* FROM [dw].[v_amk_talous] "
           },
           {
             "name": "_TM_ExtProp_DbTableName",
-            "value": "v_f_tab_amk_talous"
+            "value": "v_amk_talous"
           },
           {
             "name": "_TM_ExtProp_DbSchemaName",
-            "value": "dbo"
+            "value": "dw"
           },
           {
             "name": "TableWidgetSerialization",
@@ -3620,6 +3711,30 @@
               "        <int>100</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>tili_taso5_fi</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>85</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>tili_taso5_sv</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>90</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>tili_taso5_en</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>91</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -3878,6 +3993,30 @@
               "        <int>28</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>tili_taso5_fi</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>32</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>tili_taso5_sv</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>33</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>tili_taso5_en</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>34</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -4081,6 +4220,30 @@
               "        <boolean>true</boolean>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>tili_taso5_fi</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>tili_taso5_sv</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>tili_taso5_en</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
               "  </ColumnChecked>",
               "  <ColumnFilter />",
               "  <SelectionFilter />",
@@ -4124,15 +4287,73 @@
             "name": "Sarakeleveys",
             "dataView": "full",
             "source": {
-              "query": " SELECT [dbo].[Sarakeleveys].* FROM [dbo].[Sarakeleveys] ",
-              "dataSource": "ANTERO_DW"
-            }
+              "query": " SELECT [dw].[Sarakeleveys].* FROM [dw].[Sarakeleveys] ",
+              "dataSource": "ANTERO"
+            },
+            "annotations": [
+              {
+                "name": "TableWidgetSerialization",
+                "value": [
+                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"TableWidgetSerialization\"><AnnotationContent><![CDATA[<?xml version=\"1.0\"?>",
+                  "<TableWidgetGridSerialization xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">",
+                  "  <ColumnSuggestedType />",
+                  "  <ColumnFormat />",
+                  "  <ColumnAccuracy />",
+                  "  <ColumnCurrencySymbol />",
+                  "  <ColumnPositivePattern />",
+                  "  <ColumnNegativePattern />",
+                  "  <ColumnWidths>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Sarakeleveys</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>94</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>leveys</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>61</int>",
+                  "      </value>",
+                  "    </item>",
+                  "  </ColumnWidths>",
+                  "  <ColumnDisplayIndex>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Sarakeleveys</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>0</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>leveys</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>1</int>",
+                  "      </value>",
+                  "    </item>",
+                  "  </ColumnDisplayIndex>",
+                  "  <ColumnFrozen />",
+                  "  <ColumnChecked />",
+                  "  <ColumnFilter />",
+                  "  <SelectionFilter />",
+                  "  <FilterParameters />",
+                  "  <IsSortDescending>false</IsSortDescending>",
+                  "</TableWidgetGridSerialization>]]></AnnotationContent></Gemini>"
+                ]
+              }
+            ]
           }
         ],
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": " SELECT [dbo].[Sarakeleveys].* FROM [dbo].[Sarakeleveys] "
+            "value": " SELECT [dw].[Sarakeleveys].* FROM [dw].[Sarakeleveys] "
           },
           {
             "name": "_TM_ExtProp_DbTableName",
@@ -4140,7 +4361,63 @@
           },
           {
             "name": "_TM_ExtProp_DbSchemaName",
-            "value": "dbo"
+            "value": "dw"
+          },
+          {
+            "name": "TableWidgetSerialization",
+            "value": [
+              "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"TableWidgetSerialization\"><AnnotationContent><![CDATA[<?xml version=\"1.0\"?>",
+              "<TableWidgetGridSerialization xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">",
+              "  <ColumnSuggestedType />",
+              "  <ColumnFormat />",
+              "  <ColumnAccuracy />",
+              "  <ColumnCurrencySymbol />",
+              "  <ColumnPositivePattern />",
+              "  <ColumnNegativePattern />",
+              "  <ColumnWidths>",
+              "    <item>",
+              "      <key>",
+              "        <string>Sarakeleveys</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>94</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>leveys</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>61</int>",
+              "      </value>",
+              "    </item>",
+              "  </ColumnWidths>",
+              "  <ColumnDisplayIndex>",
+              "    <item>",
+              "      <key>",
+              "        <string>Sarakeleveys</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>0</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>leveys</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>1</int>",
+              "      </value>",
+              "    </item>",
+              "  </ColumnDisplayIndex>",
+              "  <ColumnFrozen />",
+              "  <ColumnChecked />",
+              "  <ColumnFilter />",
+              "  <SelectionFilter />",
+              "  <FilterParameters />",
+              "  <IsSortDescending>false</IsSortDescending>",
+              "</TableWidgetGridSerialization>]]></AnnotationContent></Gemini>"
+            ]
           }
         ]
       }
@@ -4333,6 +4610,9 @@
               },
               {
                 "name": "Muu valtio (pl. Tekes, Suomen Akatemia, Sosiaaliturvarahastot ja muu OKM)"
+              },
+              {
+                "name": "Voitto/tappio ennen satunnaisia eriä"
               }
             ]
           }
@@ -5218,6 +5498,9 @@
               },
               {
                 "name": "Ulkopuolinen rahoitus yhteensä"
+              },
+              {
+                "name": "Perusrahoitus (Tutkimusrahoitus)"
               }
             ]
           }
@@ -5263,6 +5546,12 @@
               },
               {
                 "name": "Tutkintokoulutus"
+              },
+              {
+                "name": "T&K-toiminta"
+              },
+              {
+                "name": "Ylempi amk-koulutus"
               }
             ]
           }
