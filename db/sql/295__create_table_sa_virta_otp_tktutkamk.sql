@@ -45,7 +45,7 @@ CREATE TABLE sa.sa_virta_otp_tktutkamk(
   oikeus_paattymispaivamaara date NULL,
   oikeus_siirtopaivamaara date NULL,
   luoja nvarchar(128) NULL,
-  luontipaivamaara datetime NOT NULL
+  luontipaivamaara datetime NOT NULL,
   
   loadtime datetime2(4) NOT NULL,
   source nvarchar(255) NULL,

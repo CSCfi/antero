@@ -36,7 +36,7 @@ CREATE TABLE sa.sa_virta_otp_tktutkyo(
   opintosuoritus_id int NULL,
   opiskeluoikeus_id int NULL,
   luoja nvarchar(128) NULL,
-  luontipaivamaara datetime NOT NULL
+  luontipaivamaara datetime NOT NULL,
   
   loadtime datetime2(4) NOT NULL,
   source nvarchar(255) NULL,
