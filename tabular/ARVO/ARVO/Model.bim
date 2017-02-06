@@ -8,7 +8,7 @@
         "name": "SqlServer dwitvipusql16 ANTERO",
         "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
         "impersonationMode": "impersonateAccount",
-        "account": "dwi\\pankalai",
+        "account": "dwi\\jpesonen",
         "annotations": [
           {
             "name": "ConnectionEditUISource",
@@ -19,58 +19,51 @@
     ],
     "tables": [
       {
-        "name": "Muuttujat",
+        "name": "Sarakeleveys",
         "columns": [
           {
-            "name": "Vastauskuukausi",
+            "name": "Sarakeleveys",
             "dataType": "string",
-            "sourceColumn": "Vastauskuukausi",
-            "sourceProviderType": "WChar",
-            "displayFolder": "Aikamuuttujat"
-          },
-          {
-            "name": "Vastauspäivä",
-            "dataType": "int64",
-            "sourceColumn": "Vastauspäivä",
-            "sourceProviderType": "Integer",
-            "displayFolder": "Aikamuuttujat"
-          },
-          {
-            "name": "lukumaara",
-            "dataType": "int64",
             "isHidden": true,
-            "sourceColumn": "lukumaara",
-            "sourceProviderType": "Integer"
+            "sourceColumn": "Sarakeleveys",
+            "sourceProviderType": "Char"
           },
           {
-            "name": "Kysymys",
+            "name": "leveys",
             "dataType": "string",
-            "sourceColumn": "Kysymys",
-            "sourceProviderType": "WChar",
-            "displayFolder": "Kyselymuuttujat"
-          },
-          {
-            "name": "Rahoitusmallikysymys",
-            "dataType": "boolean",
-            "sourceColumn": "rahoitusmallikysymys",
-            "formatString": "\"TRUE\";\"TRUE\";\"FALSE\"",
-            "sourceProviderType": "Boolean",
-            "displayFolder": "Kyselymuuttujat"
-          },
-          {
-            "name": "numerovalinta",
-            "dataType": "int64",
-            "sourceColumn": "numerovalinta",
-            "sourceProviderType": "Char",
-            "displayFolder": "Kyselymuuttujat"
-          },
-          {
-            "name": "vastaajaid",
-            "dataType": "int64",
             "isHidden": true,
-            "sourceColumn": "vastaajaid",
-            "sourceProviderType": "Integer"
+            "sourceColumn": "leveys",
+            "sourceProviderType": "Char"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Sarakeleveys",
+            "dataView": "full",
+            "source": {
+              "query": " SELECT [dw].[Sarakeleveys].* FROM [dw].[Sarakeleveys] ",
+              "dataSource": "SqlServer dwitvipusql16 ANTERO"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [dw].[Sarakeleveys].* FROM [dw].[Sarakeleveys] "
           },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "Sarakeleveys"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dw"
+          }
+        ]
+      },
+      {
+        "name": "Muuttujat",
+        "columns": [
           {
             "name": "Tilastovuosi",
             "dataType": "int64",
@@ -105,6 +98,18 @@
             "sourceColumn": "organisaatio_en",
             "sourceProviderType": "WChar",
             "displayFolder": "Organisation variables"
+          },
+          {
+            "name": "Koodit Koulutus",
+            "dataType": "string",
+            "sourceColumn": "Koodit Koulutus",
+            "displayFolder": "Koulutusmuuttujat"
+          },
+          {
+            "name": "Koulutus",
+            "dataType": "string",
+            "sourceColumn": "Koulutus",
+            "displayFolder": "Koulutusmuuttujat"
           },
           {
             "name": "koulutusluokitus_sv",
@@ -224,6 +229,13 @@
             "displayFolder": "Koodimuuttujat"
           },
           {
+            "name": "Vastauskuukausi",
+            "dataType": "string",
+            "sourceColumn": "Vastauskuukausi",
+            "sourceProviderType": "WChar",
+            "displayFolder": "Aikamuuttujat"
+          },
+          {
             "name": "kuukausi_sv",
             "dataType": "string",
             "sourceColumn": "kuukausi_sv",
@@ -238,16 +250,41 @@
             "displayFolder": "Time variables"
           },
           {
+            "name": "Vastauspäivä",
+            "dataType": "int64",
+            "sourceColumn": "Vastauspäivä",
+            "sourceProviderType": "Integer",
+            "displayFolder": "Aikamuuttujat"
+          },
+          {
+            "name": "Kysymys",
+            "dataType": "string",
+            "sourceColumn": "Kysymys",
+            "sortByColumn": "kysymysjarjestys",
+            "sourceProviderType": "WChar",
+            "displayFolder": "Kyselymuuttujat"
+          },
+          {
             "name": "kysymys_sv",
             "dataType": "string",
             "sourceColumn": "kysymys_sv",
+            "sortByColumn": "kysymysjarjestys",
             "sourceProviderType": "WChar"
           },
           {
             "name": "kysymys_en",
             "dataType": "string",
             "sourceColumn": "kysymys_en",
+            "sortByColumn": "kysymysjarjestys",
             "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Rahoitusmallikysymys",
+            "dataType": "boolean",
+            "sourceColumn": "rahoitusmallikysymys",
+            "formatString": "\"TRUE\";\"TRUE\";\"FALSE\"",
+            "sourceProviderType": "Boolean",
+            "displayFolder": "Kyselymuuttujat"
           },
           {
             "name": "Kysely",
@@ -304,25 +341,25 @@
             "displayFolder": "Kyselymuuttujat"
           },
           {
-            "name": "Ikä",
-            "dataType": "string",
-            "sourceColumn": "taustakysymys_ika",
-            "sourceProviderType": "WChar",
-            "displayFolder": "Henkilömuuttujat"
+            "name": "numerovalinta",
+            "dataType": "int64",
+            "sourceColumn": "numerovalinta",
+            "sourceProviderType": "Char",
+            "displayFolder": "Kyselymuuttujat"
           },
           {
-            "name": "Sukupuoli",
-            "dataType": "string",
-            "sourceColumn": "taustakysymys_sukupuoli",
-            "sourceProviderType": "WChar",
-            "displayFolder": "Henkilömuuttujat"
+            "name": "vastaajaid",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "vastaajaid",
+            "sourceProviderType": "Integer"
           },
           {
-            "name": "Pohjakoulutus",
-            "dataType": "string",
-            "sourceColumn": "taustakysymys_pohjakoulutus",
-            "sourceProviderType": "WChar",
-            "displayFolder": "Henkilömuuttujat"
+            "name": "lukumaara",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "lukumaara",
+            "sourceProviderType": "Integer"
           },
           {
             "name": "kyselypohja",
@@ -347,6 +384,27 @@
             "displayFolder": "Kyselymuuttujat"
           },
           {
+            "name": "Ikä",
+            "dataType": "string",
+            "sourceColumn": "taustakysymys_ika",
+            "sourceProviderType": "WChar",
+            "displayFolder": "Henkilömuuttujat"
+          },
+          {
+            "name": "Sukupuoli",
+            "dataType": "string",
+            "sourceColumn": "taustakysymys_sukupuoli",
+            "sourceProviderType": "WChar",
+            "displayFolder": "Henkilömuuttujat"
+          },
+          {
+            "name": "Pohjakoulutus",
+            "dataType": "string",
+            "sourceColumn": "taustakysymys_pohjakoulutus",
+            "sourceProviderType": "WChar",
+            "displayFolder": "Henkilömuuttujat"
+          },
+          {
             "name": "kysymysjarjestys",
             "dataType": "int64",
             "isHidden": true,
@@ -356,6 +414,7 @@
             "name": "Kysymysryhmä",
             "dataType": "string",
             "sourceColumn": "Kysymysryhmä",
+            "sortByColumn": "kysymysryhmajarjestys",
             "displayFolder": "Kyselymuuttujat"
           },
           {
@@ -380,18 +439,6 @@
             "dataType": "string",
             "isDataTypeInferred": true,
             "expression": "IF(Muuttujat[Organisaatio]=\"Poliisiammattikorkeakoulu\",\"Muiden hallinnonalojen alainen koulutus\",\"Opetushallinnon alainen koulutus\")",
-            "displayFolder": "Koulutusmuuttujat"
-          },
-          {
-            "name": "Koodit Koulutus",
-            "dataType": "string",
-            "sourceColumn": "Koodit Koulutus",
-            "displayFolder": "Koulutusmuuttujat"
-          },
-          {
-            "name": "Koulutus",
-            "dataType": "string",
-            "sourceColumn": "Koulutus",
             "displayFolder": "Koulutusmuuttujat"
           },
           {
@@ -1588,7 +1635,7 @@
           },
           {
             "name": "Vastaajamäärä (AVOP-AMK)",
-            "expression": "IF([vast-avop-amk]<5,BLANK(),CALCULATE([vast-avop-amk],Muuttujat[Kyselyvuosi]<YEAR(NOW())))",
+            "expression": "IF([vast-avop-amk]<5,BLANK(),CALCULATE([vast-avop-amk],Muuttujat[Kyselyvuosi]<YEAR(NOW()),Muuttujat[valtakunnallinen]=TRUE()))",
             "formatString": "#,0"
           },
           {
@@ -1598,7 +1645,7 @@
           },
           {
             "name": "Vastaajamäärä (AVOP-YAMK)",
-            "expression": "IF([vast-avop-yamk]<5,BLANK(),CALCULATE([vast-avop-yamk],Muuttujat[Kyselyvuosi]<YEAR(NOW())))",
+            "expression": "IF([vast-avop-yamk]<5,BLANK(),CALCULATE([vast-avop-yamk],Muuttujat[Kyselyvuosi]<YEAR(NOW()),Muuttujat[valtakunnallinen]=TRUE()))",
             "formatString": "#,0"
           },
           {
@@ -1618,7 +1665,7 @@
           },
           {
             "name": "Keskiarvo (AVOP-AMK)",
-            "expression": "IF([vast-avop-amk]<5,BLANK(),CALCULATE(AVERAGE(Muuttujat[numerovalinta]),Muuttujat[Kyselyvuosi]<YEAR(NOW())))",
+            "expression": "IF([vast-avop-amk]<5,BLANK(),CALCULATE(AVERAGE(Muuttujat[numerovalinta]),Muuttujat[Kyselyvuosi]<YEAR(NOW()),Muuttujat[valtakunnallinen]=TRUE()))",
             "formatString": "0.0"
           },
           {
@@ -1628,7 +1675,7 @@
           },
           {
             "name": "Keskiarvo (AVOP-YAMK)",
-            "expression": "IF([vast-avop-yamk]<5,BLANK(),CALCULATE(AVERAGE(Muuttujat[numerovalinta]),Muuttujat[Kyselyvuosi]<YEAR(NOW())))",
+            "expression": "IF([vast-avop-yamk]<5,BLANK(),CALCULATE(AVERAGE(Muuttujat[numerovalinta]),Muuttujat[Kyselyvuosi]<YEAR(NOW()),Muuttujat[valtakunnallinen]=TRUE()))",
             "formatString": "0.0"
           },
           {
@@ -1643,7 +1690,7 @@
           },
           {
             "name": "Keskihajonta (AVOP-AMK)",
-            "expression": "IF([vast-avop-amk]<5,BLANK(),CALCULATE(STDEV.P(Muuttujat[numerovalinta]),Muuttujat[Kyselyvuosi]<YEAR(NOW())))",
+            "expression": "IF([vast-avop-amk]<5,BLANK(),CALCULATE(STDEV.P(Muuttujat[numerovalinta]),Muuttujat[Kyselyvuosi]<YEAR(NOW()),Muuttujat[valtakunnallinen]=TRUE()))",
             "formatString": "0.0"
           },
           {
@@ -1653,7 +1700,7 @@
           },
           {
             "name": "Keskihajonta (AVOP-YAMK)",
-            "expression": "IF([vast-avop-yamk]<5,BLANK(),CALCULATE(STDEV.P(Muuttujat[numerovalinta]),Muuttujat[Kyselyvuosi]<YEAR(NOW())))",
+            "expression": "IF([vast-avop-yamk]<5,BLANK(),CALCULATE(STDEV.P(Muuttujat[numerovalinta]),Muuttujat[Kyselyvuosi]<YEAR(NOW()),Muuttujat[valtakunnallinen]=TRUE()))",
             "formatString": "0.0"
           },
           {
@@ -1676,12 +1723,12 @@
           },
           {
             "name": "Pisteet (AVOP-AMK)",
-            "expression": "calculate(sum(Muuttujat[numerovalinta]),Muuttujat[kyselypohja]=\"AVOP-AMK\",Muuttujat[Rahoitusmallikysymys]=TRUE)",
+            "expression": "IF([vast-avop-amk]<5,BLANK(),calculate(sum(Muuttujat[numerovalinta]),Muuttujat[kyselypohja]=\"AVOP-AMK\",Muuttujat[Rahoitusmallikysymys]=TRUE))",
             "formatString": "#,0"
           },
           {
             "name": "Pisteet (AVOP-YAMK)",
-            "expression": "calculate(sum(Muuttujat[numerovalinta]),Muuttujat[kyselypohja]=\"AVOP-YAMK\",Muuttujat[Rahoitusmallikysymys]=TRUE)",
+            "expression": "if([vast-avop-yamk]<5,BLANK(),calculate(sum(Muuttujat[numerovalinta]),Muuttujat[kyselypohja]=\"AVOP-YAMK\",Muuttujat[Rahoitusmallikysymys]=TRUE))",
             "formatString": "#,0"
           },
           {
@@ -2815,49 +2862,6 @@
               "  <IsSortDescending>false</IsSortDescending>",
               "</TableWidgetGridSerialization>]]></AnnotationContent></Gemini>"
             ]
-          }
-        ]
-      },
-      {
-        "name": "Sarakeleveys",
-        "columns": [
-          {
-            "name": "Sarakeleveys",
-            "dataType": "string",
-            "isHidden": true,
-            "sourceColumn": "Sarakeleveys",
-            "sourceProviderType": "Char"
-          },
-          {
-            "name": "leveys",
-            "dataType": "string",
-            "isHidden": true,
-            "sourceColumn": "leveys",
-            "sourceProviderType": "Char"
-          }
-        ],
-        "partitions": [
-          {
-            "name": "Sarakeleveys",
-            "dataView": "full",
-            "source": {
-              "query": " SELECT [dw].[Sarakeleveys].* FROM [dw].[Sarakeleveys] ",
-              "dataSource": "SqlServer dwitvipusql16 ANTERO"
-            }
-          }
-        ],
-        "annotations": [
-          {
-            "name": "_TM_ExtProp_QueryDefinition",
-            "value": " SELECT [dw].[Sarakeleveys].* FROM [dw].[Sarakeleveys] "
-          },
-          {
-            "name": "_TM_ExtProp_DbTableName",
-            "value": "Sarakeleveys"
-          },
-          {
-            "name": "_TM_ExtProp_DbSchemaName",
-            "value": "dw"
           }
         ]
       }
