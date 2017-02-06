@@ -1,3 +1,7 @@
+IF EXISTS (select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='sa' and TABLE_NAME='sa_virta_otp_tktutkamk') BEGIN
+  DROP TABLE sa.sa_virta_otp_tktutkamk
+END
+
 IF NOT EXISTS (select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='sa' and TABLE_NAME='sa_virta_otp_tktutkamk') BEGIN
 
 CREATE TABLE sa.sa_virta_otp_tktutkamk(
@@ -34,18 +38,18 @@ CREATE TABLE sa.sa_virta_otp_tktutkamk(
   optutk varchar(4) NULL,
   ohjauksenAla varchar(3) NULL,
   ekkoodi varchar(3) NULL,
-  suorituspaivamaara date NULL,
+  suorituspaivamaara bigint NULL, --date
   opiskelijaavain varchar(100) NULL,
   opintosuoritusavain varchar(100) NULL,
   opiskeluoikeusavain varchar(100) NULL,
-  opiskelija_id int NULL,
-  opintosuoritus_id int NULL,
-  opiskeluoikeus_id int NULL,
-  oikeus_alkamispaivamaara date NULL,
-  oikeus_paattymispaivamaara date NULL,
-  oikeus_siirtopaivamaara date NULL,
+  opiskelijaId int NULL,
+  opintosuoritusId int NULL,
+  opiskeluoikeusId int NULL,
+  oikeusAlkamispaivamaara bigint NULL, --date
+  oikeusPaattymispaivamaara bigint NULL, --date
+  oikeusSiirtopaivamaara bigint NULL, --date
   luoja nvarchar(128) NULL,
-  luontipaivamaara datetime NOT NULL,
+  luontipaivamaara bigint NOT NULL, --datetime
   
   loadtime datetime2(4) NOT NULL,
   source nvarchar(255) NULL,
