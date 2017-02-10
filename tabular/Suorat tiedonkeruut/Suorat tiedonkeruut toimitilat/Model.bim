@@ -112,7 +112,8 @@
             "name": "Koodit Yliopisto",
             "dataType": "string",
             "sourceColumn": "Koodit Yliopisto",
-            "sourceProviderType": "Char"
+            "sourceProviderType": "Char",
+            "displayFolder": "Koodimuuttujat"
           }
         ],
         "partitions": [
@@ -123,6 +124,33 @@
               "query": " SELECT [dw].[v_st_toimitilat].* FROM [dw].[v_st_toimitilat] ",
               "dataSource": "SqlServer dwitvipusql16 ANTERO"
             }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Aalto Yliopistokiinteistöt Oy, m2",
+            "expression": "sum(Muuttujat[yliopistokiinteistoyhtion_toimitilat_aalto_yliopistokiinteistot_oy])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Helsingin Yliopistokiinteistöt Oy, m2",
+            "expression": "sum(Muuttujat[yliopistokiinteistoyhtion_toimitilat_helsingin_yliopistokiinteistot_oy])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Suomen Yliopistokiinteistöt Oy, m2",
+            "expression": "sum(Muuttujat[yliopistokiinteistoyhtion_toimitilat_suomen_yliopistokiinteistot_oy])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Muut vuokratilat, m2",
+            "expression": "sum(Muuttujat[muut_vuokratilat])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Harjoittelukoulut, m2",
+            "expression": "Sum(Muuttujat[harjoittelukoulujen_tilat])",
+            "formatString": "#,0"
           }
         ],
         "annotations": [
@@ -137,6 +165,55 @@
           {
             "name": "_TM_ExtProp_DbSchemaName",
             "value": "dw"
+          }
+        ]
+      }
+    ],
+    "perspectives": [
+      {
+        "name": "yo_tilat",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Koodit Yliopisto"
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Yliopisto"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Aalto Yliopistokiinteistöt Oy, m2"
+              },
+              {
+                "name": "Harjoittelukoulut, m2"
+              },
+              {
+                "name": "Helsingin Yliopistokiinteistöt Oy, m2"
+              },
+              {
+                "name": "Muut vuokratilat, m2"
+              },
+              {
+                "name": "Suomen Yliopistokiinteistöt Oy, m2"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
           }
         ]
       }
