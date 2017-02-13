@@ -6,8 +6,8 @@ load
 todo doc
 """
 import sys,os,getopt
-import httplib,ssl,base64
-import json
+import urllib2, base64
+import ijson
 from time import localtime, strftime
 
 import dboperator
@@ -16,31 +16,39 @@ def show(message):
   print strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message
 
 def load(secure,hostname,url,schema,table,postdata,condition,verbose):
-  show("begin "+hostname+" "+url+" "+schema+" "+table+" "+postdata+" "+condition)
-  address=hostname+url
+  show("begin "+hostname+" "+url+" "+schema+" "+table+" "+(postdata or "")+" "+(condition or ""))
   if secure:
-    show("load securely from "+address)
-    httpconn=httplib.HTTPSConnection(hostname, context=ssl._create_unverified_context())
+    address = "https://"+hostname+url
   else:
-    show("load from "+address)
-    httpconn=httplib.HTTPConnection(hostname)
+    address = "http://"+hostname+url
+  show("load from "+address)
+  
+  reqheaders = {'Content-Type': 'application/json'}
+  # api credentials from env vars
+  if os.getenv("API_USERNAME"):
+    show("using authentication")
+    apiuser = os.getenv("API_USERNAME")
+    apipass = os.getenv("API_PASSWORD")
+    reqheaders['Authorization'] = 'Basic %s' % base64.b64encode(apiuser+":"+apipass)
 
-  # data for post operation determines to use post, otherwise get
-  if postdata:
-    headers=""
-    # api credentials from env vars
-    if os.getenv("API_USERNAME"):
-      apiuser = os.getenv("API_USERNAME")
-      apipass = os.getenv("API_PASSWORD")
-      headers={'Content-Type': 'application/json', 'Authorization': 'Basic %s' % base64.b64encode(apiuser+":"+apipass)}
-    httpconn.request('POST', url, postdata, headers)
+  # automatic POST with (post)data
+  request = urllib2.Request(address, data=postdata, headers=reqheaders)
+  try:
+    response = urllib2.urlopen(request)
+  except urllib2.HTTPError, e:
+    show('The server couldn\'t fulfill the request.')
+    show('Error code: %d'%(e.code))
+    sys.exit(2)
+  except urllib2.URLError, e:
+    show('We failed to reach a server.')
+    show('Reason: %s'%(e.reason))
+    sys.exit(2)
   else:
-    httpconn.request('GET', url)
+    # everything is fine
+    show("api call OK")
 
-  r=httpconn.getresponse()
-  j=json.loads(r.read())
-  show("api returned %d objects"%(len(j)))
-
+  parser = ijson.parse(response)
+  
   # remove data conditionally, otherwise empty
   # merge operation could be considered here...
   if condition:
@@ -52,23 +60,35 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose):
 
   show("insert data")
   cnt=0
-  for row in j:
-    cnt+=1
-    # show some sign of being alive
-    if cnt%100 == 0:
-      sys.stdout.write('.')
-      sys.stdout.flush()
-    if cnt%1000 == 0:
-      show("-- %d" % (cnt))
-    if verbose: show("%d -- %s"%(cnt,row))
+  row={}
+  for prefix, event, value in parser:
+    #print prefix, event, value
+    if event=='start_map':
+      cnt+=1
+      row={}
+    
+    if event in {'string','number'}:
+      row[prefix.split('.')[1]]=value
+    elif event=='string':
+      row[prefix.split('.')[1]]=value
+    elif event=='number':
+      row[prefix.split('.')[1]]=float(value) if '.' in value else int(value)
+    elif event=='end_map':
+      # show some sign of being alive
+      if cnt%100 == 0:
+        sys.stdout.write('.')
+        sys.stdout.flush()
+      if cnt%1000 == 0:
+        show("-- %d" % (cnt))
+      if verbose: show("%d -- %s"%(cnt,row))
 
-    # find out which columns to use on insert
-    dboperator.resetcolumns(row)
+      # find out which columns to use on insert
+      dboperator.resetcolumns(row)
 
-    for col in row:
-      if type(row[col]) is list:
-        row[col] = str(row[col])
-    dboperator.insert(address,schema,table,row)
+      for col in row:
+        if type(row[col]) is list:
+          row[col] = str(row[col])
+      dboperator.insert(address,schema,table,row)
 
   show("wrote %d"%(cnt))
   dboperator.close()
@@ -84,8 +104,8 @@ def main(argv):
   # muuttujat jotka kerrotaan argumentein
   secure=False
   hostname,url,schema,table="","","",""
-  postdata=""
-  condition=""
+  postdata=None
+  condition=None
   verbose=False
 
   try:
