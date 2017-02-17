@@ -30,7 +30,7 @@ CREATE TABLE [dw].[f_amk_henkilon_tyo](
  CONSTRAINT [PK__f_amk_he__3213E83F6F6DBF08] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
-);
+));
 
 ALTER TABLE [dw].[f_amk_henkilon_tyo] ADD  CONSTRAINT [DF_f_amk_henkilosto_loadtime]  DEFAULT (getdate()) FOR [loadtime]
 ;
@@ -59,7 +59,7 @@ CREATE TABLE [dw].[f_amk_julkaisut_f_i](
  CONSTRAINT [PK__f_amk_ko__3213E83FD0BDD843] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
-);
+));
 
 ALTER TABLE [dw].[f_amk_julkaisut_f_i] ADD  CONSTRAINT [DF_f_amk_kotimaiset_julkaisut_loadtime]  DEFAULT (getdate()) FOR [loadtime]
 ;
@@ -86,7 +86,7 @@ CREATE TABLE [dw].[f_amk_luennoitsijat](
 PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
-)
+))
 
 ; END
 
@@ -114,7 +114,7 @@ CREATE TABLE [dw].[f_amk_opettaja_ja_henkilostoliikkuvuus](
  CONSTRAINT [PK__f_amk_op__3213E83F29661723] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
-);
+));
 
 ALTER TABLE [dw].[f_amk_opettaja_ja_henkilostoliikkuvuus] ADD  CONSTRAINT [DF_f_amk_opettaja_ja_henkilostoliikkuvuus_loadtime]  DEFAULT (getdate()) FOR [loadtime]
 ;
@@ -140,7 +140,7 @@ CREATE TABLE [dw].[f_amk_opinnaytetyot](
  CONSTRAINT [PK__f_amk_op__3213E83F7F8B799A] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
-);
+));
 ALTER TABLE [dw].[f_amk_opinnaytetyot] ADD  CONSTRAINT [DF_f_amk_opinnaytetyot_loadtime]  DEFAULT (getdate()) FOR [loadtime]
 ;
 
@@ -163,7 +163,7 @@ CREATE TABLE [dw].[f_amk_ostopalveluna_hankittu_tyo](
  CONSTRAINT [PK__f_amk_os__3213E83F61A14695] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
-);
+));
 
 ALTER TABLE [dw].[f_amk_ostopalveluna_hankittu_tyo] ADD  CONSTRAINT [DF_f_amk_ostopalveluna_hankittu_tyo_loadtime]  DEFAULT (getdate()) FOR [loadtime]
 ;
@@ -193,7 +193,7 @@ CREATE TABLE [dw].[f_amk_sivutoiminen_henkilokunta](
  CONSTRAINT [PK__f_amk_si__3213E83F9719606D] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
-);
+));
 
 ALTER TABLE [dw].[f_amk_sivutoiminen_henkilokunta] ADD  CONSTRAINT [DF_f_amk_sivutoiminen_henkilokunta_loadtime]  DEFAULT (getdate()) FOR [loadtime]
 ;
@@ -219,7 +219,7 @@ CREATE TABLE [dw].[f_amk_sivutoimiset_opettajat](
 PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
-)
+))
 
 ; END
 
@@ -239,7 +239,7 @@ CREATE TABLE [dw].[f_amk_toimipisteet](
  CONSTRAINT [PK__f_amk_to__3213E83F6FB50623] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
-)
+))
 
 ; 
 
