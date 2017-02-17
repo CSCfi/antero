@@ -12,6 +12,11 @@
     #[string]$password = "PASSWORD"
 )
 
+# Change exe path in production!
+if ($prodsqlserver -eq "dwipvipusql16") {
+  $exe = "D:\Program Files (x86)\Microsoft SQL Server\130\Tools\Binn\ManagementStudio\Microsoft.AnalysisServices.Deployment.exe"
+}
+
 $pdlogfile = "logfile.log"                    #File name for logs
 
 # 1. Import powershelllogging module. 
