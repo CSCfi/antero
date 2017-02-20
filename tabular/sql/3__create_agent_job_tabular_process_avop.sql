@@ -2,7 +2,7 @@ USE msdb
 
 -- VARIABLES
 -- could be parameterized
-DECLARE @p_databaseName nvarchar(128) = N'ARVO'
+DECLARE @p_databaseName nvarchar(128) = N'AVOP'
 DECLARE @p_server nvarchar(128) = N'§sed-me-tabserver§'
 
 -- no need to parameterize since they are resolved from above (and fixed otherwise)
