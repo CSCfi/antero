@@ -8,7 +8,7 @@ DECLARE @p_server nvarchar(128) = N'dwitviputab16'
 
 -- no need to parameterize since they are resolved from above (and fixed otherwise)
 DECLARE @p_jobName nvarchar(128) = N'Tabular process '+@p_databaseName
-DECLARE @p_command nvarchar(128) = N'{
+DECLARE @p_command nvarchar(max) = N'{
   "refresh": {
     "type": "full",
     "objects": [
