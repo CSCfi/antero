@@ -13,7 +13,7 @@ DECLARE @p_command nvarchar(128) = N'{
     "type": "full",
     "objects": [
       {
-        "database": '+@p_databaseName+'
+        "database": "'+@p_databaseName+'"
       }
     ]
   }
