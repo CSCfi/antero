@@ -1,0 +1,264 @@
+{
+  "name": "SemanticModel",
+  "compatibilityLevel": 1200,
+  "model": {
+    "culture": "fi-FI",
+    "dataSources": [
+      {
+        "name": "SqlServer dwitvipusql16 ANTERO",
+        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
+        "impersonationMode": "impersonateAccount",
+        "account": "dwi\\pankalai",
+        "annotations": [
+          {
+            "name": "ConnectionEditUISource",
+            "value": "SqlServer"
+          }
+        ]
+      }
+    ],
+    "tables": [
+      {
+        "name": "Sarakeleveys",
+        "columns": [
+          {
+            "name": "Sarakeleveys",
+            "dataType": "string",
+            "sourceColumn": "Sarakeleveys",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "leveys",
+            "dataType": "string",
+            "sourceColumn": "leveys",
+            "sourceProviderType": "Char"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Sarakeleveys",
+            "dataView": "full",
+            "source": {
+              "query": " SELECT [dw].[Sarakeleveys].* FROM [dw].[Sarakeleveys] ",
+              "dataSource": "SqlServer dwitvipusql16 ANTERO"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [dw].[Sarakeleveys].* FROM [dw].[Sarakeleveys] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "Sarakeleveys"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dw"
+          }
+        ]
+      },
+      {
+        "name": "Muuttujat",
+        "columns": [
+          {
+            "name": "Tilastovuosi",
+            "dataType": "int64",
+            "sourceColumn": "Tilastovuosi",
+            "sourceProviderType": "Integer",
+            "displayFolder": "Aikamuuttujat"
+          },
+          {
+            "name": "Sukupuoli",
+            "dataType": "string",
+            "sourceColumn": "Sukupuoli",
+            "sourceProviderType": "WChar",
+            "displayFolder": "Henkilömuuttujat"
+          },
+          {
+            "name": "Kansalaisuus",
+            "dataType": "string",
+            "sourceColumn": "Kansalaisuus",
+            "sourceProviderType": "WChar",
+            "displayFolder": "Henkilömuuttujat"
+          },
+          {
+            "name": "Tehtäväjaottelu",
+            "dataType": "string",
+            "sourceColumn": "Tehtäväjaottelu",
+            "sourceProviderType": "Char",
+            "displayFolder": "Henkilömuuttujat"
+          },
+          {
+            "name": "Tutkijanuravaihe",
+            "dataType": "string",
+            "sourceColumn": "Tutkijanuravaihe",
+            "sourceProviderType": "Char",
+            "displayFolder": "Henkilömuuttujat"
+          },
+          {
+            "name": "Vierailutyyppi",
+            "dataType": "string",
+            "sourceColumn": "Vierailutyyppi",
+            "sourceProviderType": "Char",
+            "displayFolder": "Henkilömuuttujat"
+          },
+          {
+            "name": "Liikkuvuusohjelma",
+            "dataType": "string",
+            "sourceColumn": "Liikkuvuusohjelma",
+            "sourceProviderType": "WChar",
+            "displayFolder": "Henkilömuuttujat"
+          },
+          {
+            "name": "OKM ohjauksen ala",
+            "dataType": "string",
+            "sourceColumn": "OKM ohjauksen ala",
+            "sourceProviderType": "Char",
+            "displayFolder": "Koulutusmuuttujat"
+          },
+          {
+            "name": "Maa",
+            "dataType": "string",
+            "sourceColumn": "Maa",
+            "sourceProviderType": "WChar",
+            "displayFolder": "Henkilömuuttujat"
+          },
+          {
+            "name": "Ammattikorkeakoulu",
+            "dataType": "string",
+            "sourceColumn": "Ammattikorkeakoulu",
+            "sourceProviderType": "Char",
+            "displayFolder": "Organisaatiomuuttujat"
+          },
+          {
+            "name": "Yliopisto",
+            "dataType": "string",
+            "sourceColumn": "Yliopisto",
+            "sourceProviderType": "Char",
+            "displayFolder": "Organisaatiomuuttujat"
+          },
+          {
+            "name": "vierailut_ulkomaille_lkm",
+            "dataType": "int64",
+            "sourceColumn": "vierailut_ulkomaille_lkm",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "vierailut_ulkomailta_lkm",
+            "dataType": "int64",
+            "sourceColumn": "vierailut_ulkomailta_lkm",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "liikkuvuuden_kesto_ulkomaille",
+            "dataType": "double",
+            "sourceColumn": "liikkuvuuden_kesto_ulkomaille",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "liikkuvuuden_kesto_ulkomailta",
+            "dataType": "double",
+            "sourceColumn": "liikkuvuuden_kesto_ulkomailta",
+            "sourceProviderType": "Numeric"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "v_st_liikkuvuus",
+            "dataView": "full",
+            "source": {
+              "query": " SELECT [dw].[v_st_liikkuvuus].* FROM [dw].[v_st_liikkuvuus] ",
+              "dataSource": "SqlServer dwitvipusql16 ANTERO"
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Suomesta ulkomaille - pitkät vaihdot",
+            "expression": "calculate(sum(Muuttujat[vierailut_ulkomaille_lkm]),Muuttujat[Vierailutyyppi]=\"pitkä lähtevä\")",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Suomesta ulkomaille - lyhyet vaihdot",
+            "expression": "calculate(sum(Muuttujat[vierailut_ulkomaille_lkm]),Muuttujat[Vierailutyyppi]=\"lyhyt lähtevä\")",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ulkomailta Suomeen- pitkät vaihdot",
+            "expression": "calculate(sum(Muuttujat[vierailut_ulkomailta_lkm]),Muuttujat[Vierailutyyppi]=\"pitkä tuleva\")",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ulkomailta Suomeen- lyhyet vaihdot",
+            "expression": "calculate(sum(Muuttujat[vierailut_ulkomailta_lkm]),Muuttujat[Vierailutyyppi]=\"lyhyt tuleva\")",
+            "formatString": "#,0"
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [dw].[v_st_liikkuvuus].* FROM [dw].[v_st_liikkuvuus] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "v_st_liikkuvuus"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dw"
+          }
+        ]
+      }
+    ],
+    "perspectives": [
+      {
+        "name": "amk_ope_at",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Ammattikorkeakoulu"
+              },
+              {
+                "name": "Kansalaisuus"
+              },
+              {
+                "name": "Maa"
+              },
+              {
+                "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Tehtäväjaottelu"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "annotations": [
+      {
+        "name": "ClientCompatibilityLevel",
+        "value": "400"
+      }
+    ]
+  },
+  "id": "SemanticModel"
+}
