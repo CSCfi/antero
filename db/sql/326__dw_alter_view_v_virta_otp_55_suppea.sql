@@ -1,4 +1,4 @@
-ALTER VIEW dw.v_virta_otp_55_supppea AS 
+ALTER VIEW dw.v_virta_otp_55_suppea AS 
 SELECT d1.organisaatio_koodi AS 'Oppilaitos Koodi'
   ,d1.organisaatio_fi AS 'Oppilaitos'
 
