@@ -31,6 +31,8 @@ In CentOS installation via `yum` with dependencies (there are quite a few!) is s
 
 ## Loader scripts
 
+NB! About to change!
+
 For the purpose of these staging area data loading, or extract, scripts there has been made a generic `dboperator.py` script. What is special about this script is that it requires those environment variables mentioned above, it opens database connection at init, and there is a function called `columns` that must be always called before any insert statements as it sets up column information to the module. `dboperator` also has some functionality for column types for creating tables on-the-fly but a decision has been made that database objects are created and maintained elsewhere and must be set up prior to loading data (see repo folder: /db).
 
 ### Codesets and classifications
