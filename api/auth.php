@@ -5,7 +5,10 @@ if (isset($_SESSION['newlogin'])) {
   unset($_SESSION['loggedout']);
 }
 $settings = parse_ini_file('/var/www/auth-settings.ini', true);
-$valid_passwords = array ($settings["vipunen"]["user"] => $settings["vipunen"]["pass"]);
+$valid_passwords = array (
+  $settings["vipunen"]["user"] => $settings["vipunen"]["pass"],
+  $settings["samk"]["user"] => $settings["samk"]["pass"]
+);
 $valid_users = array_keys($valid_passwords);
 
 $user = $_SERVER['PHP_AUTH_USER'];
