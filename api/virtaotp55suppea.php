@@ -1,4 +1,3 @@
-<?php require 'auth.php'; ?>
 <?php
 $type = "csv"; // oletus
 if ($_GET) {
