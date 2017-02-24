@@ -16,19 +16,23 @@ def show(message):
   print strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message
 
 def load(command,verbose=False):
-  show("begin with "+command)
+  if verbose: show("begin with "+command)
 
   sql = command
   try:
-    print dboperator.get(sql)
+    # quick hack for getting return value. do fix me!
+    if "select " in sql:
+      print dboperator.get(sql)
+    else:
+      dboperator.execute(sql)
   except:
-    show("Something went wrong. Probably procedure wasn't found or there is a permission problem. Over and out.")
+    show("Something went wrong. Over and out.")
     dboperator.close()
     exit(2) # lopeta virheeseen
 
   dboperator.close()
 
-  show("ready")
+  if verbose: show("ready")
 
 def usage():
   print """
