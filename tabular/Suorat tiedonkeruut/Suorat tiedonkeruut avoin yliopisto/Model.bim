@@ -1,0 +1,200 @@
+{
+  "name": "SemanticModel",
+  "compatibilityLevel": 1200,
+  "model": {
+    "culture": "fi-FI",
+    "dataSources": [
+      {
+        "name": "SqlServer dwitvipusql16 ANTERO",
+        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
+        "impersonationMode": "impersonateAccount",
+        "account": "dwi\\pankalai",
+        "annotations": [
+          {
+            "name": "ConnectionEditUISource",
+            "value": "SqlServer"
+          }
+        ]
+      }
+    ],
+    "tables": [
+      {
+        "name": "Sarakeleveys",
+        "columns": [
+          {
+            "name": "Sarakeleveys",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "Sarakeleveys",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "leveys",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "leveys",
+            "sourceProviderType": "Char"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Sarakeleveys",
+            "dataView": "full",
+            "source": {
+              "query": " SELECT [dw].[Sarakeleveys].* FROM [dw].[Sarakeleveys] ",
+              "dataSource": "SqlServer dwitvipusql16 ANTERO"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [dw].[Sarakeleveys].* FROM [dw].[Sarakeleveys] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "Sarakeleveys"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dw"
+          }
+        ]
+      },
+      {
+        "name": "Muuttujat",
+        "columns": [
+          {
+            "name": "Tilastovuosi",
+            "dataType": "int64",
+            "sourceColumn": "Tilastovuosi",
+            "sourceProviderType": "Integer",
+            "displayFolder": "Aikamuuttujat"
+          },
+          {
+            "name": "Sukupuoli",
+            "dataType": "string",
+            "sourceColumn": "Sukupuoli",
+            "sourceProviderType": "WChar",
+            "displayFolder": "Henkilömuuttujat"
+          },
+          {
+            "name": "Yliopisto",
+            "dataType": "int64",
+            "sourceColumn": "Yliopisto",
+            "sourceProviderType": "Integer",
+            "displayFolder": "Organisaatiomuuttujat"
+          },
+          {
+            "name": "suorittaneiden_lkm",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "suorittaneiden_lkm",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Koodit Yliopisto",
+            "dataType": "string",
+            "sourceColumn": "Koodit Yliopisto",
+            "sourceProviderType": "Char",
+            "displayFolder": "Koodimuuttujat"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "v_st_avoin_yliopisto",
+            "dataView": "full",
+            "source": {
+              "query": " SELECT [dw].[v_st_avoin_yliopisto].* FROM [dw].[v_st_avoin_yliopisto] ",
+              "dataSource": "SqlServer dwitvipusql16 ANTERO"
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Avoimen yliopisto-opetuksen opiskelijat (netto-opiskelijamäärä)",
+            "expression": "sum(Muuttujat[suorittaneiden_lkm])",
+            "formatString": "#,0"
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [dw].[v_st_avoin_yliopisto].* FROM [dw].[v_st_avoin_yliopisto] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "v_st_avoin_yliopisto"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dw"
+          }
+        ]
+      }
+    ],
+    "perspectives": [
+      {
+        "name": "netto_opiskelijat",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Koodit Yliopisto"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Yliopisto"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Avoimen yliopisto-opetuksen opiskelijat (netto-opiskelijamäärä)"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "roles": [
+      {
+        "name": "Luku",
+        "modelPermission": "read",
+        "members": [
+          {
+            "memberName": "DWI\\T_SP_Excel_S_Read",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1732"
+          },
+          {
+            "memberName": "DWI\\P_SP_Excel_S_Read",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1733"
+          }
+        ]
+      }
+    ],
+    "annotations": [
+      {
+        "name": "ClientCompatibilityLevel",
+        "value": "400"
+      }
+    ]
+  },
+  "id": "SemanticModel"
+}
