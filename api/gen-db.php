@@ -46,10 +46,11 @@ $query .= "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 if(!preg_match("/\/$/",$_SERVER['REQUEST_URI'])) $query .= "/";
 $query .= "'+tablename as uri ";
 
+// DISABLED BY USING NON EXISTING SCHEMA
 $query .= <<<EOSQL
 from (
   -- normaalit taulut
-  select TABLE_NAME as tablename from INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='sa'
+  select TABLE_NAME as tablename from INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='notexists'
   -- näkymät?
   -- materilisoidut näkymät?
 ) as t
@@ -58,7 +59,7 @@ EOSQL;
 // haetaanko dataa (onhan annettu hyväksyttävä nimi)?
 if ($taulu) {
   if (preg_match("/^[-A-Z_0-9]+$/i",$taulu)) {
-    $query = "SELECT * FROM sa.$taulu";
+    $query = "SELECT * FROM notexists.$taulu";
   } else {
     die('Could not accept given argument');
   }
