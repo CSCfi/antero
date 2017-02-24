@@ -1,4 +1,5 @@
-
+IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dw].[v_st_henkilosto]'))
+EXEC dbo.sp_executesql @statement = N'
 
 
 CREATE view [dw].[v_st_henkilosto] as
@@ -89,7 +90,7 @@ left join dw.d_yo_tutkijanuravaihe d8 on d8.id=f.d_tutkijanuravaihe_id
 left join dw.d_yo_henkilostoryhma d9 on d9.id=f.d_henkilostoryhma_id
 left join dw.d_yo_harjoittelukoulujen_henkilostoryhma d10 on d10.id=f.d_harjoittelukoulujen_henkilostoryhma_id
 
-
+'
 
 
 

@@ -1,4 +1,5 @@
-
+IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dw].[v_st_opinnaytetyot]'))
+EXEC dbo.sp_executesql @statement = N'
 
 
 
@@ -32,7 +33,7 @@ join dw.d_ohjauksenala d2 on d2.id=f.d_ohjauksen_ala_id
 join dw.d_amk d6 on d6.id=f.d_amk_id
 join dw.d_koulutusala_2002 d9 on d9.id=f.d_koulutusala_id
 
-
+'
 
 
 
