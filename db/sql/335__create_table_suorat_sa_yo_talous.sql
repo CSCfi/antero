@@ -95,7 +95,7 @@ CREATE TABLE [sa].[sa_suorat_yo_talous_1_tuloslaskelma](
 	[IMP_CREATED_DATE] [datetime] NULL,
 	[IMP_UPDATED_DATE] [datetime] NULL,
 	[IMP_CREATED_BY] [varchar](100) NULL
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) 
 
 END
 
@@ -205,7 +205,7 @@ CREATE TABLE [sa].[sa_suorat_yo_talous_2_tase](
 	[IMP_CREATED_DATE] [datetime] NULL,
 	[IMP_UPDATED_DATE] [datetime] NULL,
 	[IMP_CREATED_BY] [varchar](100) NULL
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) 
 
 END
 
@@ -229,7 +229,7 @@ CREATE TABLE [sa].[sa_suorat_yo_talous_3_tuloslaskelman_toiminnot](
 	[IMP_CREATED_DATE] [datetime] NULL,
 	[IMP_UPDATED_DATE] [datetime] NULL,
 	[IMP_CREATED_BY] [varchar](100) NULL
-) ON [PRIMARY]
+) 
 
 END
 
@@ -273,7 +273,7 @@ CREATE TABLE [sa].[sa_suorat_yo_talous_4_tutkimusmenot](
 	[IMP_CREATED_DATE] [datetime] NULL,
 	[IMP_UPDATED_DATE] [datetime] NULL,
 	[IMP_CREATED_BY] [varchar](100) NULL
-) ON [PRIMARY]
+) 
 
 END
 
@@ -315,7 +315,7 @@ CREATE TABLE [sa].[sa_suorat_yo_talous_5_kustannustiedot](
 	[IMP_CREATED_DATE] [datetime] NULL,
 	[IMP_UPDATED_DATE] [datetime] NULL,
 	[IMP_CREATED_BY] [varchar](100) NULL
-) ON [PRIMARY]
+) 
 
 END
 
@@ -376,7 +376,7 @@ CREATE TABLE [sa].[sa_suorat_yo_talous_6_liiketoiminnan_tuloslaskelma](
 	[IMP_CREATED_DATE] [datetime] NULL,
 	[IMP_UPDATED_DATE] [datetime] NULL,
 	[IMP_CREATED_BY] [varchar](100) NULL
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) 
 
 END
 
