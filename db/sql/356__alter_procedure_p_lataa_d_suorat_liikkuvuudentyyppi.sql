@@ -1,4 +1,4 @@
-AS
+ALTER PROCEDURE dw.p_lataa_d_suorat_liikkuvuudentyyppi AS
 IF (
 		SELECT count(1)
 		FROM dw.d_suorat_liikkuvuudentyyppi
