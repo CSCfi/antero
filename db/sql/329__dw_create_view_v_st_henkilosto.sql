@@ -1,7 +1,5 @@
 IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dw].[v_st_henkilosto]'))
 EXEC dbo.sp_executesql @statement = N'
-
-
 CREATE view [dw].[v_st_henkilosto] as
 
 --amk
@@ -15,7 +13,7 @@ Tilastovuosi = vuosi
 ,[Henkilöstöryhmä] = null
 ,[Henkilöstöryhmä (harjoittelukoulut)] = null
 
-,[Sektori] = 'Ammattikorkeakoulutus'
+,[Sektori] = ''Ammattikorkeakoulutus''
 ,[Koulutusala 02] = d4.selite_fi
 ,[Koulutusala 95] = null
 ,[OKM ohjauksen ala] = d5.ohjauksenala_nimi_fi
@@ -57,7 +55,7 @@ Tilastovuosi = vuosi
 ,[Henkilöstöryhmä] = d9.selite_fi
 ,[Henkilöstöryhmä (harjoittelukoulut)] = d10.selite_fi
 
-,[Sektori] = 'Yliopistokoulutus'
+,[Sektori] = ''Yliopistokoulutus''
 ,[Koulutusala 02] = null
 ,[Koulutusala 95] = null
 ,[OKM ohjauksen ala] = d5.ohjauksenala_nimi_fi
@@ -71,7 +69,7 @@ Tilastovuosi = vuosi
 ,[henkilotyovuosi]
 
 --koodit
-,[Koodit Tehtäväjaottelu] = case when d3.selite_fi='Muu henkilökunta' then 3 else d3.koodi end
+,[Koodit Tehtäväjaottelu] = case when d3.selite_fi=''Muu henkilökunta'' then 3 else d3.koodi end
 ,[Koodit Ammattikorkeakoulu] = null
 ,[Koodit Yliopisto] = d7.yo_tunnus
 ,[Koodit Henkilöstöryhmä] = d10.koodi
@@ -91,9 +89,3 @@ left join dw.d_yo_henkilostoryhma d9 on d9.id=f.d_henkilostoryhma_id
 left join dw.d_yo_harjoittelukoulujen_henkilostoryhma d10 on d10.id=f.d_harjoittelukoulujen_henkilostoryhma_id
 
 '
-
-
-
-
-
-

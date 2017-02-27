@@ -1,6 +1,5 @@
 IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dw].[v_st_liikkuvuus]'))
 EXEC dbo.sp_executesql @statement = N'
-
 CREATE view [dw].[v_st_liikkuvuus] as
 
 select 
@@ -24,7 +23,7 @@ select
 ,[Ammattikorkeakoulu] = d6.amk_nimi_fi
 ,[Yliopisto] = null
 
-,[Sektori] = 'AMK'
+,[Sektori] = ''AMK''
 
 --mittarit
 ,f.vierailut_ulkomaille_lkm
@@ -75,7 +74,7 @@ select
 ,[Ammattikorkeakoulu] = null
 ,[Yliopisto] = d6.yo_nimi_fi
 
-,[Sektori] = 'Yliopisto'
+,[Sektori] = ''Yliopisto''
 
 --mittarit
 ,f.vierailut_ulkomaille_lkm
@@ -102,13 +101,3 @@ join dw.d_suorat_liikkuvuudentyyppi d8 on d8.id=f.d_vierailutyyppi_id
 join dw.d_koulutusala_1995 d9 on d9.id=f.d_koulutusala_id
 
 '
-
-
-
-
-
-
-
-
-
-

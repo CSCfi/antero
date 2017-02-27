@@ -1,4 +1,3 @@
-
 IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dw].[v_st_julkaisut_f_i]'))
 EXEC dbo.sp_executesql @statement = N'
 
@@ -23,7 +22,7 @@ select
 ,[Päätieteenala] = d5.paatieteenala_nimi_fi
 ,[Tieteenala] = d5.tieteenala_nimi_fi
 
-,[Sektori] = 'AMK'
+,[Sektori] = ''AMK''
 
 --mittarit
 ,f.julkaisujen_maara
@@ -69,7 +68,7 @@ select
 ,[Päätieteenala] = d5.paatieteenala_nimi_fi
 ,[Tieteenala] = d5.tieteenala_nimi_fi
 
-,[Sektori] = 'Yliopisto'
+,[Sektori] = ''Yliopisto''
 
 --mittarit
 ,f.julkaisujen_maara
@@ -96,7 +95,3 @@ join dw.d_yo d6 on d6.id=f.d_yliopisto_id
 join dw.d_koulutusala_2002 d9 on d9.id=f.d_koulutusala_id
 
 '
-
-
-
-
