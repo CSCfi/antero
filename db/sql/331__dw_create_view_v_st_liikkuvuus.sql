@@ -1,4 +1,10 @@
+IF NOT EXISTS(     SELECT *     FROM sys.columns     WHERE Name      = N'd_vierailutyyppi_id'       AND Object_ID = Object_ID(N'dw.f_amk_opettaja_ja_henkilostoliikkuvuus'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'ALTER TABLE [dw].[f_amk_opettaja_ja_henkilostoliikkuvuus] ADD [d_vierailutyyppi_id] int not null'
+END
+
 IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dw].[v_st_liikkuvuus]'))
+BEGIN
 EXEC dbo.sp_executesql @statement = N'
 CREATE view [dw].[v_st_liikkuvuus] as
 
@@ -101,3 +107,4 @@ join dw.d_suorat_liikkuvuudentyyppi d8 on d8.id=f.d_vierailutyyppi_id
 join dw.d_koulutusala_1995 d9 on d9.id=f.d_koulutusala_id
 
 '
+END
