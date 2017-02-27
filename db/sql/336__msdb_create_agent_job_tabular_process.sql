@@ -1,5 +1,4 @@
 -- NOTICE THE USE OF msdb DATABASE
-USE msdb
 
 -- VARIABLES
 -- orchestrator sets value

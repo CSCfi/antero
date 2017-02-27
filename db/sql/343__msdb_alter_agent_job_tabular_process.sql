@@ -1,5 +1,4 @@
 -- NOTICE THE USE OF msdb DATABASE
-use msdb
 
 DECLARE @p_server nvarchar(128) = N'§sed-me-tabserver§'
 DECLARE @p_jobName nvarchar(128) = N'Tabular process'
