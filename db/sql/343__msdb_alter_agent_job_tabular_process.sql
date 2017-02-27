@@ -7,7 +7,7 @@ DECLARE @jobId BINARY(16)
 select @jobId=job_id from msdb.dbo.sysjobs_view where name=@p_jobName
 
 IF EXISTS (select * from msdb.dbo.sysjobs_view where name=@p_jobName) BEGIN
-EXEC msdb.dbo.sp_delete_jobstep @job_id=@jobId, @step_id=1
+EXEC msdb.dbo.sp_delete_jobstep @job_id=@jobId, @step_id=0 --remove all
 
 EXEC msdb.dbo.sp_add_jobstep @job_id=@jobId, @step_name=N'§to-be-set-by-procedure§', 
   @step_id=1, 
