@@ -3,9 +3,9 @@
 """
 dbcommand
 
-Send and execute a command in database.
+Send and execute a command in database. Optionally get a result back. See usage.
 
-Depends on dboperator which takes care of connection and other db stuff.
+NB! Depends on dboperator which takes care of connection and other db stuff.
 """
 import sys,getopt
 from time import localtime, strftime
@@ -16,7 +16,7 @@ def show(message):
   print strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message
 
 def load(command,expect,verbose=False):
-  if verbose: show("begin with "+command+" expect "+expect)
+  if verbose: show("begin with "+command) # no point in trying to show expect!
 
   sql = command
   ret = None
@@ -28,8 +28,8 @@ def load(command,expect,verbose=False):
       # print out (as a return value) the entire result or row count or what, some kind of figuring?
       if expect=='row count':
         ret = len(resql)
-      elif len(resql)==1:
-        ret = 0 if resql[0][expect] else 1
+      elif len(resql)==1 and expect in resql[0]:
+        ret = resql[0][expect]
       else:
         ret = resql
     else:
@@ -46,9 +46,15 @@ def load(command,expect,verbose=False):
   
 def usage():
   print """
-usage: dbcommand.py -c|--command <command> [-v|--verbose]
+usage: dbcommand.py -c|--command <string> [-e|--expect <string>] [-v|--verbose]
 
 command is mandatory argument. The SQL to execute.
+expect  is for getting results from a query.
+        For ease of use one can tell from one row return query the column which value is expected.
+        Special case is "row count" which will just return the number of rows query returns.
+        Somewhat default behaviour is to return the whole result set as an array of dicts.
+        You can achieve default behaviour by giving a value to this argument that is not part
+        of column names in result, for ex. "*", and/or results give exactly NOT one row.
 """
 
 def main(argv):
