@@ -1,3 +1,4 @@
+
 ALTER PROCEDURE [dw].[p_lataa_f_amk_henkilon_tyo]
 AS
 TRUNCATE TABLE dw.f_amk_henkilon_tyo;
@@ -42,7 +43,7 @@ SELECT COALESCE(s2.id,-1)
 	,COALESCE(s12.id,-1)
 	,COALESCE(s13.id,-1)
 	,COALESCE(s14.id,-1)
-	,COALESCE(s14.id,-1)
+	,COALESCE(s15.id,-1)
 	,[Vuosi]
 	,Henkilotyovuosi
 	,[Työajan käyttötiedot, opetus]
