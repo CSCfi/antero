@@ -30,7 +30,6 @@ SELECT
 ,coalesce(d1.id,-1) AS d_yliopisto_id
 ,s.erillisetOikeudet as suorittaneiden_lkm
 ,s.erillisetOpettajat as opettajakoulutus_suorittaneiden_lkm
-,'THIS WILL FAIL'
 ,s.source
 ,s.loadtime
 FROM sa.sa_virta_otp_avoimeterillisetyo as s
