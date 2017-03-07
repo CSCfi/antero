@@ -14,7 +14,6 @@ INSERT INTO dw.f_yo_erillisella_opinto_oikeudella_opiskelevat (
 SELECT
  s.vuosi
 ,d1.id as d_yliopisto_id
-,s.YLIOPISTO_TUNNUS
 ,s.suorittaneiden_lkm
 ,s.opettajakoulutus_suorittaneiden_lkm
 ,'etl: sa_suorat_yo6b_erillisella_opinto_oikeudella_opiskelevat' as source
@@ -28,7 +27,6 @@ UNION ALL
 SELECT 
  s.vuosi
 ,coalesce(d1.id,-1) AS d_yliopisto_id
-,s.organisaatioKoodi
 ,s.erillisetOikeudet as suorittaneiden_lkm
 ,s.erillisetOpettajat as opettajakoulutus_suorittaneiden_lkm
 ,s.source
