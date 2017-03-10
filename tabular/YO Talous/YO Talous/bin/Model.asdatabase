@@ -148,12 +148,14 @@
           {
             "name": "Tilastovuosi",
             "dataType": "int64",
-            "sourceColumn": "Tilastovuosi"
+            "sourceColumn": "Tilastovuosi",
+            "displayFolder": "Aikamuuttujat"
           },
           {
             "name": "Yliopisto",
             "dataType": "string",
-            "sourceColumn": "Yliopisto"
+            "sourceColumn": "Yliopisto",
+            "displayFolder": "Organisaatiomuuttujat"
           },
           {
             "name": "Koulutusala",
@@ -1779,7 +1781,7 @@
             "displayFolder": "Tutkimusmenot\\Kotimainen ulkopuolinen rahoitus"
           },
           {
-            "name": "Muu opetus- ja kulttuuriministeriö",
+            "name": "Opetus- ja kulttuuriministeriö",
             "expression": "SUMX(FILTER(Muuttujat,[tili_taso5_fi]=\"Muu opetus- ja kulttuuriministeriö\"),[arvo])",
             "formatString": "#,0",
             "displayFolder": "Tutkimusmenot\\Kotimainen ulkopuolinen rahoitus"
@@ -1791,7 +1793,7 @@
             "displayFolder": "Tutkimusmenot\\Kotimainen ulkopuolinen rahoitus"
           },
           {
-            "name": "Muu työ- ja elinkeinoministeriö",
+            "name": "Työ- ja elinkeinoministeriö",
             "expression": "SUMX(FILTER(Muuttujat,[tili_taso5_fi]=\"Muu työ- ja elinkeinoministeriö\"),[arvo])",
             "formatString": "#,0",
             "displayFolder": "Tutkimusmenot\\Kotimainen ulkopuolinen rahoitus"
@@ -2253,7 +2255,7 @@
             "displayFolder": "Liiketoiminnan tuloslaskelma"
           },
           {
-            "name": "Ministeriöt",
+            "name": "Ministeriöt yhteensä",
             "expression": "SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Ulkoasiainministeriö\"),[arvo])+SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Oikeusministeriö\"),[arvo])+SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Sisäasiainministeriö\"),[arvo])+SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Puolustusministeriö\"),[arvo])+SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Valtiovarainministeriö \"),[arvo])+SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Maa- ja metsätalousministeriö\"),[arvo])+SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Liikenne- ja viestintäministeriö\"),[arvo])+SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Sosiaali- ja terveysministeriö\"),[arvo])+SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Ympäristöministeriö\"),[arvo])+SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Muu opetus- ja kulttuuriministeriö\"),[arvo])+SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Muu työ- ja elinkeinoministeriö\"),[arvo])",
             "formatString": "#,0",
             "displayFolder": "Tutkimusmenot\\Kotimainen ulkopuolinen rahoitus"
@@ -2717,7 +2719,8 @@
           {
             "name": "Opettajankoulutuksen kehittäminen",
             "expression": "SUMX(FILTER(Muuttujat,[tili_taso5_fi]=\"Opettajankoulutuksen kehittäminen\"),[arvo])",
-            "formatString": "#,0"
+            "formatString": "#,0",
+            "displayFolder": "Varsinaisen toiminnan kustannukset\\Harjoittelukoulut\\Opettajankoulutus ja kehitystehtävät"
           },
           {
             "name": "Kansalliskirjasto yhteensä",
@@ -2786,7 +2789,7 @@
             "displayFolder": "Toimintokohtainen erittely\\Harjoittelukoulut\\Tuotot"
           },
           {
-            "name": "Varsinaisen toiminnan tuotot yhteensä (kansalliskirjasto)",
+            "name": "Varsinaisen liiketoiminnan tuotot yhteensä (kansalliskirjasto)",
             "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [toiminto_nimi_fi] = \"Kansalliskirjasto\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Tuotot\"))",
             "formatString": "#,0",
             "displayFolder": "Toimintokohtainen erittely\\Kansalliskirjasto\\Tuotot"
@@ -3166,14 +3169,38 @@
           {
             "name": "Tilikauden tuloksen osuus kokonaistuotosta",
             "expression": "[Tilikauden ylijäämä/alijäämä]/[Yliopiston kokonaisrahoitus]",
-            "formatString": "#,0",
+            "formatString": "#,0.00",
             "displayFolder": "Tuloslaskelma - yliopisto\\Johdetut mittarit"
           },
           {
             "name": "Tilikauden tuloksen osuus kokonaistuotosta ilman avustus- ja sijoitustuottoja",
             "expression": "([Tilikauden ylijäämä/alijäämä]-[Tuotto-/kulujäämä (varainhankinta)]-[Tuotto-/kulujäämä (sijoitus- ja rahoitustoiminta)])/([Varsinaisen toiminnan tuotot]+[Yliopistolain mukainen valtionrahoitus (OKM)]+[Muut yleisavustukset])",
-            "formatString": "#,0",
+            "formatString": "#,0.00",
             "displayFolder": "Tuloslaskelma - yliopisto\\Johdetut mittarit"
+          },
+          {
+            "name": "Maksuvalmius",
+            "expression": "(CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso0_fi] = \"Tase\"), FILTER(Muuttujat,[tili_taso3_fi]=\"Lyhytaikaiset saamiset\"))+CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso0_fi] = \"Tase\"), FILTER(Muuttujat,[tili_taso3_fi]=\"Rahoitusarvopaperit\"))+[Rahat ja pankkisaamiset])/(CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso0_fi] = \"Tase\"), FILTER(Muuttujat,[tili_taso3_fi]=\"Lyhytaikainen vieras pääoma\"))-[Lyhytaikaiset saadut ennakot])",
+            "formatString": "#,0.00",
+            "displayFolder": "Tase - yliopisto\\Johdetut mittarit"
+          },
+          {
+            "name": "Omavaraisuusaste",
+            "expression": "[Oma pääoma yhteensä]/([Vastaavaa yhteensä]-[Lyhytaikaiset saadut ennakot])",
+            "formatString": "#,0.00",
+            "displayFolder": "Tase - yliopisto\\Johdetut mittarit"
+          },
+          {
+            "name": "Toimintapääoman suhde omaan pääomaan",
+            "expression": "([Toimintapääoma]+[Edellisten tilikausien voitto (tappio) (+/-)]+[Tilikauden voitto (tappio) (+/-)])/[Oma pääoma yhteensä]",
+            "formatString": "#,0.00",
+            "displayFolder": "Tase - yliopisto\\Johdetut mittarit"
+          },
+          {
+            "name": "Liiketoiminnan nettotulos",
+            "expression": "[Tilikauden voitto tai tappio]/[Liikevaihto(Tiedot liiketoiminnasta)]",
+            "formatString": "#,0.00",
+            "displayFolder": "Liiketoiminnan tuloslaskelma\\Johdetut mittarit"
           }
         ],
         "annotations": [
@@ -4214,6 +4241,14 @@
         "tables": [
           {
             "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Yliopisto"
+              }
+            ],
             "measures": [
               {
                 "name": "Tarvikkeet ja tavarat"
@@ -4470,6 +4505,14 @@
         "tables": [
           {
             "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Yliopisto"
+              }
+            ],
             "measures": [
               {
                 "name": "Aineet ja tarvikkeet"
@@ -4737,6 +4780,15 @@
               },
               {
                 "name": "Omakatteisten rahastojen velat"
+              },
+              {
+                "name": "Maksuvalmius"
+              },
+              {
+                "name": "Omavaraisuusaste"
+              },
+              {
+                "name": "Toimintapääoman suhde omaan pääomaan"
               }
             ]
           }
@@ -4747,6 +4799,14 @@
         "tables": [
           {
             "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Yliopisto"
+              }
+            ],
             "measures": [
               {
                 "name": "Avustustuotot (harjoittelukoulut)"
@@ -4935,7 +4995,7 @@
                 "name": "Varsinaisen toiminnan tuotot yhteensä (harjoittelukoulut)"
               },
               {
-                "name": "Varsinaisen toiminnan tuotot yhteensä (kansalliskirjasto)"
+                "name": "Varsinaisen liiketoiminnan tuotot yhteensä (kansalliskirjasto)"
               },
               {
                 "name": "Varsinaisen toiminnan tuotot yhteensä (koulutus)"
@@ -4958,6 +5018,14 @@
         "tables": [
           {
             "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Yliopisto"
+              }
+            ],
             "measures": [
               {
                 "name": "Yliopiston oma rahoitus yhteensä"
@@ -4993,10 +5061,10 @@
                 "name": "Muu julkinen rahoitus"
               },
               {
-                "name": "Muu opetus- ja kulttuuriministeriö"
+                "name": "Opetus- ja kulttuuriministeriö"
               },
               {
-                "name": "Muu työ- ja elinkeinoministeriö"
+                "name": "Työ- ja elinkeinoministeriö"
               },
               {
                 "name": "Muu ulkomainen rahoitus"
@@ -5038,10 +5106,13 @@
                 "name": "Tutkimusmenot yhteensä"
               },
               {
-                "name": "Ministeriöt"
+                "name": "Ministeriöt yhteensä"
               },
               {
                 "name": "Ulkopuolinen rahoitus yhteensä"
+              },
+              {
+                "name": "Sosiaali- ja terveysministeriö"
               }
             ]
           }
@@ -5052,6 +5123,14 @@
         "tables": [
           {
             "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Yliopisto"
+              }
+            ],
             "measures": [
               {
                 "name": "Yliopiston varsinaisen toiminnan kustannukset yhteensä"
@@ -5073,6 +5152,63 @@
               },
               {
                 "name": "Perustutkintokoulutus"
+              },
+              {
+                "name": "Erillislakien mukaiset julkisoikeudelliset suoritteet"
+              },
+              {
+                "name": "Esiopetus"
+              },
+              {
+                "name": "Harjoittelu harjoittelukoulun ulkopuolella"
+              },
+              {
+                "name": "Harjoittelu harjoittelukoulussa"
+              },
+              {
+                "name": "Harjoittelukoulu yhteensä"
+              },
+              {
+                "name": "Kansallisen kulttuuriperinnön tallettaminen ja ylläpito"
+              },
+              {
+                "name": "Kansalliset palvelut kirjastoille sekä korkeakoulusektorille"
+              },
+              {
+                "name": "Kansalliskirjasto yhteensä"
+              },
+              {
+                "name": "Lukiokoulutus"
+              },
+              {
+                "name": "Muut tehtävät"
+              },
+              {
+                "name": "Opettajankoulutuksen kehittäminen"
+              },
+              {
+                "name": "Opettajankoulutus- ja kehitystehtävät yhteensä"
+              },
+              {
+                "name": "Opetustehtävät yhteensä"
+              },
+              {
+                "name": "Perusopetus"
+              },
+              {
+                "name": "Taiteellinen toiminta"
+              },
+              {
+                "name": "Tieteellinen ja taiteellinen jatkotutkintokoulutus"
+              },
+              {
+                "name": "Tieteellinen tutkimus"
+              },
+              {
+                "name": "Yleistoiminnot"
+              },
+              {
+                "name": "Yliopistolain mukaiset kansalliskirjastotehtävät yhteensä"
               }
             ]
           }
@@ -5083,6 +5219,14 @@
         "tables": [
           {
             "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Yliopisto"
+              }
+            ],
             "measures": [
               {
                 "name": "Aineet, tarvikkeet ja tavarat yhteensä"
@@ -5218,6 +5362,9 @@
               },
               {
                 "name": "Voitto tai tappio ennen tilinpäätössiirtoja ja veroja"
+              },
+              {
+                "name": "Liiketoiminnan nettotulos"
               }
             ]
           }
