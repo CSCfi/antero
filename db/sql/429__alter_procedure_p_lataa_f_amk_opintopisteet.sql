@@ -1,4 +1,3 @@
-/*
 ALTER PROCEDURE dw.p_lataa_f_amk_opintopisteet
 AS
 TRUNCATE TABLE dw.f_amk_opintopisteet;
@@ -34,7 +33,6 @@ INSERT INTO dw.f_amk_opintopisteet (
 
   source
 )
---*/
 SELECT
  coalesce(d1.id,-1) as d_amk_id
 ,coalesce(d2.id,-1) as d_koulutusala_2002_id
