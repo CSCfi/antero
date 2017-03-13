@@ -115,3 +115,5 @@ join dw.d_ohjauksenala d2 on d2.id=f.d_ohjauksenala_id
 join dw.d_yo d3 on d3.id=f.d_yo_id
 join dw.d_kalenteri d5 on d5.id=f.d_tilannepvm_id
 where d5.paivays like '%-03-02'
+
+'
