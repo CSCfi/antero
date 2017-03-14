@@ -12,6 +12,7 @@ import sys,getopt,os
 import pymssql
 from time import localtime, strftime
 import glob # tiedostojen listaamiseen, kelpaa myös ns wildcardsit
+import re
 
 import dboperator
 
@@ -20,10 +21,12 @@ def show(message):
 
 def loadsql(sqlfile,verbose=False):
   fd = open(sqlfile, 'r')
-  sql = fd.read()
+  allsql = fd.read()
   fd.close()
-  if verbose: show(sql)
-  dboperator.execute(sql)
+  # split MS SQL batches
+  for sql in re.split('\ngo.*\n',allsql):
+    if verbose: show(sql)
+    dboperator.execute(sql)
 
 def load(sqlfile,migrate,verbose=False):
   show("begin "+sqlfile)
