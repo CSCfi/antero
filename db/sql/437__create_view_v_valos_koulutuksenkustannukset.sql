@@ -32,7 +32,7 @@ SELECT [vuosi] AS ''Tilastovuosi''
       ,[suorite] AS ''Suorite''
 FROM
 	(SELECT [rekno],[vuosi],[ytunnus],[kala],[koulumto],[OMISTAJA],[KUNTA],[VIRKUNTA],[k010l01],[k010l02],[k010l03],[k020l01],[k020l02],[k020l03],[k030l01],[k030l02],[k030l03],[k040l01],[k040l02],[k040l03],[k060l01],[k060l02],[k060l03],[k070l01],[k070l02],[k070l03],[k080l01],[k080l02],[k080l03],[k090l02],[k090l03]
-	  FROM [ANTERO].[sa].[sa_valos_2015]) p
+	  FROM [sa].[sa_valos_2015]) p
 UNPIVOT 
 	([suorite] FOR [menolajitoiminto] IN
 	  ([k010l01],[k010l02],[k010l03],[k020l01],[k020l02],[k020l03],[k030l01],[k030l02],[k030l03],[k040l01],[k040l02],[k040l03],[k060l01],[k060l02],[k060l03],[k070l01],[k070l02],[k070l03],[k080l01],[k080l02],[k080l03],[k090l02],[k090l03])) AS unpvt
@@ -75,7 +75,7 @@ SELECT [vuosi] AS ''Tilastovuosi''
       ,[suorite] AS ''Suorite''
 FROM
 	(SELECT [rekno],[vuosi],[ytunnus],[kala],[koulumto],[OMISTAJA],[KUNTA],[VIRKUNTA],k100l01,k100l02,k100l03
-	  FROM [ANTERO].[sa].[sa_valos_2015] WHERE rekno=55 OR koulumto=133 or koulumto=134 or koulumto=135) p
+	  FROM [sa].[sa_valos_2015] WHERE rekno=55 OR koulumto=133 or koulumto=134 or koulumto=135) p
 UNPIVOT 
 	([suorite] FOR [menolajitoiminto] IN
 	  (k100l01,k100l02,k100l03)) AS unpvt
@@ -118,7 +118,7 @@ SELECT [vuosi] AS ''Tilastovuosi''
       ,[suorite] AS ''Suorite''
 FROM
 	(SELECT [rekno],[vuosi],[ytunnus],[kala],[koulumto],[OMISTAJA],[KUNTA],[VIRKUNTA],k100l09
-	  FROM [ANTERO].[sa].[sa_valos_2015] WHERE rekno=9 OR rekno=18) p
+	  FROM [sa].[sa_valos_2015] WHERE rekno=9 OR rekno=18) p
 UNPIVOT 
 	([suorite] FOR [menolajitoiminto] IN
 	  (k100l09)) AS unpvt
