@@ -61,7 +61,6 @@ def empty(schema,table,debug=False):
   conn.commit()
 
 # remove - delete with condition (column==value)
-# this function is not used!?
 def remove(schema,table,column,value,debug=False):
   global conn, cur, count
   if debug: print "dboperator.remove: schema=%s table=%s column=%s value=%s"%(schema,table,column,value)
@@ -82,6 +81,7 @@ def insert(source,schema,table,row,debug=False):
   count = cur.rowcount
   conn.commit()
 
+# for procedure calls and ready made statements
 def execute(sql,debug=False):
   global conn, cur, count, columnlist
   if debug: print "dboperator.execute: sql="+sql
@@ -89,6 +89,7 @@ def execute(sql,debug=False):
   count = cur.rowcount
   conn.commit()
 
+# get results of a query as an array of dicts
 def get(sql,debug=False):
   global conn, cur, count, columnlist
   if debug: print "dboperator.get: sql="+sql
