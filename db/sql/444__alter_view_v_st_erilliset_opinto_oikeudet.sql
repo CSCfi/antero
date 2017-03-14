@@ -7,8 +7,10 @@ select
 
 [Tilastovuosi] = vuosi
 
+,Koulutusala = null
+,[OKM ohjauksen ala] = null
 
-,[Yliopisto] = null
+,[Yliopisto] = d6.yo_nimi_fi
 
 --mittarit
 ,f.suorittaneiden_lkm
@@ -18,6 +20,8 @@ select
 
 --koodit
 ,[Koodit Yliopisto] = d6.yo_tunnus
+,[Koodit Koulutusala] = null
+,[Koodit OKM ohjauksen ala] = null
 
 
 
@@ -30,8 +34,10 @@ select
 
 [Tilastovuosi] = f.vuosi
 
+,Koulutusala = d1.selite_fi
+,[OKM ohjauksen ala] = d2.ohjauksenala_nimi_fi
 
-,[Yliopisto] = null
+,[Yliopisto] = d6.yo_nimi_fi
 
 --mittarit
 ,null
@@ -41,10 +47,13 @@ select
 
 --koodit
 ,[Koodit Yliopisto] = d6.yo_tunnus
-
+,[Koodit Koulutusala] = d1.koodi
+,[Koodit OKM ohjauksen ala] = d2.ohjauksenala_koodi
 
 
 from [dw].[f_yo_opintopisteet] f
+join dw.d_koulutusala_1995 d1 on d1.id=f.d_opintoala95_id
+join dw.d_ohjauksenala d2 on d2.id=f.d_ohjauksenala_id
 join dw.d_yo d6 on d6.id=f.d_yo_id
 join dw.d_kalenteri d7 on d7.id=f.d_tilannepvm_id
 
