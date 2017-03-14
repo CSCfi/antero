@@ -6,7 +6,6 @@ EXEC dbo.sp_executesql @statement = N'create view dw.v_valos_suoritteet as selec
 GO
 
 ALTER VIEW dw.v_valos_suoritteet AS
-CREATE VIEW dw.v_valos_suoritteet AS
 SELECT vuosi AS 'Tilastovuosi'
 	  ,rekno AS 'Sektori Koodi'
 	  ,d5.nimi AS 'Sektori'
