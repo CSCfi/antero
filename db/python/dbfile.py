@@ -24,7 +24,7 @@ def loadsql(sqlfile,verbose=False):
   allsql = fd.read()
   fd.close()
   # split MS SQL batches
-  for sql in re.split('\ngo.*\n',allsql):
+  for sql in re.split('\ngo.*\n', allsql, flags=re.IGNORECASE):
     if verbose: show(sql)
     dboperator.execute(sql)
 
