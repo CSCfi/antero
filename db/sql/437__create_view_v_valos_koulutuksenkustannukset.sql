@@ -18,9 +18,13 @@ SELECT [vuosi] AS ''Tilastovuosi''
       ,[OMISTAJA] AS ''Omistajatyyppi Koodi''
 	  ,d4.nimi AS ''Omistajatyyppi''
       ,[KUNTA] AS ''Koulutuksen kunta Koodi''
-	  ,d9.nimi AS ''Koulutuksen kunta''
+	  ,d9.kunta_fi AS ''Koulutuksen kunta''
+	  ,d9.maakunta_koodi AS ''Koulutuksen maakunta Koodi''
+	  ,d9.maakunta_fi AS ''Koulutuksen maakunta''
 	  ,[VIRKUNTA] AS ''Koulutuksen järjestäjän kunta Koodi''
-	  ,d8.nimi AS ''Koulutuksen järjestäjän kunta''
+	  ,d8.kunta_fi AS ''Koulutuksen järjestäjän kunta''
+	  ,d8.maakunta_koodi AS ''Koulutuksen järjestäjän maakunta Koodi''
+	  ,d8.maakunta_fi AS ''Koulutuksen järjestäjän maakunta''
 	  ,RIGHT(menolajitoiminto, 3) AS ''Menolaji Koodi''
 	  ,d6.nimi AS ''Menolaji''
 	  ,LEFT(menolajitoiminto, 4) AS ''Toiminto Koodi''
@@ -39,8 +43,8 @@ UNPIVOT
 	  LEFT JOIN sa.sa_koodistot d5 ON d5.koodisto=''vipunenvalossektori'' and d5.koodi=rekno
 	  LEFT JOIN sa.sa_koodistot d6 ON d6.koodisto=''vipunenvalosmenolaji'' and d6.koodi=RIGHT(menolajitoiminto,3)
 	  LEFT JOIN sa.sa_koodistot d7 ON d7.koodisto=''vipunenvalostoiminto'' and d7.koodi=LEFT(menolajitoiminto,4)
-	  LEFT JOIN sa.sa_koodistot d8 ON d8.koodisto=''kunta'' and d8.koodi=VIRKUNTA
-	  LEFT JOIN sa.sa_koodistot d9 ON d9.koodisto=''kunta'' and d9.koodi=KUNTA
+	  LEFT JOIN dw.d_alueluokitus d8 ON d8.kunta_koodi=VIRKUNTA
+	  LEFT JOIN dw.d_alueluokitus d9 ON d9.kunta_koodi=KUNTA
 
 -- Perusopetuksen aamu- ja iltapäivätoiminta ja vammaisopetus, ei toimintoerittelyä
 UNION ALL
@@ -57,9 +61,13 @@ SELECT [vuosi] AS ''Tilastovuosi''
       ,[OMISTAJA] AS ''Omistajatyyppi Koodi''
 	  ,d4.nimi AS ''Omistajatyyppi''
       ,[KUNTA] AS ''Koulutuksen kunta Koodi''
-	  ,d9.nimi AS ''Koulutuksen kunta''
+	  ,d9.kunta_fi AS ''Koulutuksen kunta''
+	  ,d9.maakunta_koodi AS ''Koulutuksen maakunta Koodi''
+	  ,d9.maakunta_fi AS ''Koulutuksen maakunta''
 	  ,[VIRKUNTA] AS ''Koulutuksen järjestäjän kunta Koodi''
-	  ,d8.nimi AS ''Koulutuksen järjestäjän kunta''
+	  ,d8.kunta_fi AS ''Koulutuksen järjestäjän kunta''
+	  ,d8.maakunta_koodi AS ''Koulutuksen järjestäjän maakunta Koodi''
+	  ,d8.maakunta_fi AS ''Koulutuksen järjestäjän maakunta''
 	  ,RIGHT(menolajitoiminto, 3) AS ''Menolaji Koodi''
 	  ,d6.nimi AS ''Menolaji''
 	  ,LEFT(menolajitoiminto, 4) AS ''Toiminto Koodi''
@@ -78,8 +86,8 @@ UNPIVOT
 	  LEFT JOIN sa.sa_koodistot d5 ON d5.koodisto=''vipunenvalossektori'' and d5.koodi=rekno
 	  LEFT JOIN sa.sa_koodistot d6 ON d6.koodisto=''vipunenvalosmenolaji'' and d6.koodi=RIGHT(menolajitoiminto,3)
 	  LEFT JOIN sa.sa_koodistot d7 ON d7.koodisto=''vipunenvalostoiminto'' and d7.koodi=LEFT(menolajitoiminto,4)
-	  LEFT JOIN sa.sa_koodistot d8 ON d8.koodisto=''kunta'' and d8.koodi=VIRKUNTA
-	  LEFT JOIN sa.sa_koodistot d9 ON d9.koodisto=''kunta'' and d9.koodi=KUNTA
+	  LEFT JOIN dw.d_alueluokitus d8 ON d8.kunta_koodi=VIRKUNTA
+	  LEFT JOIN dw.d_alueluokitus d9 ON d9.kunta_koodi=KUNTA
 
 -- Kansalaisopistot ja kesäyliopistot, ei toiminto- eikä menolajierittelyä
 UNION ALL 
@@ -96,9 +104,13 @@ SELECT [vuosi] AS ''Tilastovuosi''
       ,[OMISTAJA] AS ''Omistajatyyppi Koodi''
 	  ,d4.nimi AS ''Omistajatyyppi''
       ,[KUNTA] AS ''Koulutuksen kunta Koodi''
-	  ,d9.nimi AS ''Koulutuksen kunta''
+	  ,d9.kunta_fi AS ''Koulutuksen kunta''
+	  ,d9.maakunta_koodi AS ''Koulutuksen maakunta Koodi''
+	  ,d9.maakunta_fi AS ''Koulutuksen maakunta''
 	  ,[VIRKUNTA] AS ''Koulutuksen järjestäjän kunta Koodi''
-	  ,d8.nimi AS ''Koulutuksen järjestäjän kunta''
+	  ,d8.kunta_fi AS ''Koulutuksen järjestäjän kunta''
+	  ,d8.maakunta_koodi AS ''Koulutuksen järjestäjän maakunta Koodi''
+	  ,d8.maakunta_fi AS ''Koulutuksen järjestäjän maakunta''
 	  ,RIGHT(menolajitoiminto, 3) AS ''Menolaji Koodi''
 	  ,d6.nimi AS ''Menolaji''
 	  ,LEFT(menolajitoiminto, 4) AS ''Toiminto Koodi''
@@ -117,8 +129,8 @@ UNPIVOT
 	  LEFT JOIN sa.sa_koodistot d5 ON d5.koodisto=''vipunenvalossektori'' and d5.koodi=rekno
 	  LEFT JOIN sa.sa_koodistot d6 ON d6.koodisto=''vipunenvalosmenolaji'' and d6.koodi=RIGHT(menolajitoiminto,3)
 	  LEFT JOIN sa.sa_koodistot d7 ON d7.koodisto=''vipunenvalostoiminto'' and d7.koodi=LEFT(menolajitoiminto,4)
-	  LEFT JOIN sa.sa_koodistot d8 ON d8.koodisto=''kunta'' and d8.koodi=VIRKUNTA
-	  LEFT JOIN sa.sa_koodistot d9 ON d9.koodisto=''kunta'' and d9.koodi=KUNTA
+	  LEFT JOIN dw.d_alueluokitus d8 ON d8.kunta_koodi=VIRKUNTA
+	  LEFT JOIN dw.d_alueluokitus d9 ON d9.kunta_koodi=KUNTA
 	  
 
 '
