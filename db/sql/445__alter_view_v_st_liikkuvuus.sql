@@ -34,7 +34,7 @@ select
 
 --koodit
 ,[Koodit Koulutusala 1995] = null
-,[Koodit Koulutusala 2002] = d9.koodi
+,[Koodit Koulutusala 2002] = case d9.koodi when -1 then 99 else d9.koodi end
 ,[Koodit OKM ohjauksen ala] = case d2.ohjauksenala_koodi when -1 then 99 else d2.ohjauksenala_koodi end
 ,[Koodit Yliopisto] = null
 ,[Koodit Ammattikorkeakoulu] = d6.amk_tunnus
@@ -85,7 +85,7 @@ select
 ,null
 
 --koodit
-,[Koodit Koulutusala 1995] = d9.koodi
+,[Koodit Koulutusala 1995] = case d9.koodi when -1 then 99 else d9.koodi end
 ,[Koodit Koulutusala 2002] = null
 ,[Koodit OKM ohjauksen ala] = case d2.ohjauksenala_koodi when -1 then 99 else d2.ohjauksenala_koodi end
 ,[Koodit Yliopisto] = d6.yo_tunnus

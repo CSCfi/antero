@@ -33,7 +33,7 @@ select
 
 [Tilastovuosi] = f.vuosi
 
-,Koulutusala = d1.selite_fi
+,Koulutusala = d1.opintoala95_nimi_fi
 ,[OKM ohjauksen ala] = d2.ohjauksenala_nimi_fi
 
 ,[Yliopisto] = case d6.yo_nimi_fi when 'Turun yliopisto (-2009)' then 'Turun yliopisto' else d6.yo_nimi_fi end
@@ -46,14 +46,18 @@ select
 
 --koodit
 ,[Koodit Yliopisto] = d6.yo_tunnus
-,[Koodit Koulutusala] = case d1.koodi when -1 then 99 else d1.koodi end
+,[Koodit Koulutusala] = case d1.opintoala95_koodi when -1 then 99 else d1.opintoala95_koodi end
 ,[Koodit OKM ohjauksen ala] = d2.ohjauksenala_koodi
 
 
 from [dw].[f_yo_opintopisteet] f
-join dw.d_koulutusala_1995 d1 on d1.id=f.d_opintoala95_id
+join dw.d_opintoala95 d1 on d1.id=f.d_opintoala95_id
 join dw.d_ohjauksenala d2 on d2.id=f.d_ohjauksenala_id
 join dw.d_yo d6 on d6.id=f.d_yo_id
 join dw.d_kalenteri d7 on d7.id=f.d_tilannepvm_id
 
 where d7.paivays like '%-03-02'
+
+
+
+
