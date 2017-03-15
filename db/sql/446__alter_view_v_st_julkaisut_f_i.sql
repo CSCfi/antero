@@ -1,7 +1,4 @@
 
-
-
-
 ALTER view [dw].[v_st_julkaisut_f_i] as
 
 select 
@@ -33,11 +30,11 @@ select
 ,[Koodit Julkaisutyyppi] = d3.julkaisutyyppi_koodi
 ,[Koodit Julkaisun kansainvälisyys] = d4.julkaisun_kansainvalisyys_koodi
 ,[Koodit Koulutusala 1995] = null
-,[Koodit Koulutusala 2002] = d9.koodi
-,[Koodit OKM ohjauksen ala] = d2.ohjauksenala_koodi
+,[Koodit Koulutusala 2002] = case d9.koodi when -1 then 99 else d9.koodi end
+,[Koodit OKM ohjauksen ala] = case d2.ohjauksenala_koodi when -1 then 9 else d2.ohjauksenala_koodi end
 ,[Koodit Yliopisto] = null
 ,[Koodit Ammattikorkeakoulu] = d6.amk_tunnus
-,[Koodit Päätieteenala] = case d5.paatieteenala_koodi when -1 then 99 else d5.paatieteenala_koodi end
+,[Koodit Päätieteenala] = case d5.paatieteenala_koodi when -1 then 9 else d5.paatieteenala_koodi end
 ,[Koodit Tieteenala] = case d5.tieteenala_koodi when -1 then 9999 else d5.tieteenala_koodi end
 
 
@@ -79,12 +76,12 @@ select
 ,[Koodit Julkaisun pääluokka] = d3.julkaisunpaaluokka_koodi
 ,[Koodit Julkaisutyyppi] = d3.julkaisutyyppi_koodi
 ,[Koodit Julkaisun kansainvälisyys] = d4.julkaisun_kansainvalisyys_koodi
-,[Koodit Koulutusala 1995] = null
-,[Koodit Koulutusala 2002] = d9.koodi
-,[Koodit OKM ohjauksen ala] = d2.ohjauksenala_koodi
+,[Koodit Koulutusala 1995] = case d9.koodi when -1 then 99 else d9.koodi end
+,[Koodit Koulutusala 2002] = null
+,[Koodit OKM ohjauksen ala] = case d2.ohjauksenala_koodi when -1 then 9 else d2.ohjauksenala_koodi end
 ,[Koodit Yliopisto] = d6.yo_tunnus
 ,[Koodit Ammattikorkeakoulu] = null
-,[Koodit Päätieteenala] = case d5.paatieteenala_koodi when -1 then 99 else d5.paatieteenala_koodi end
+,[Koodit Päätieteenala] = case d5.paatieteenala_koodi when -1 then 9 else d5.paatieteenala_koodi end
 ,[Koodit Tieteenala] = case d5.tieteenala_koodi when -1 then 9999 else d5.tieteenala_koodi end
 
 from [dw].[f_yo_julkaisut_f_i] f
@@ -93,7 +90,7 @@ join dw.d_julkaisutyyppi d3 on d3.id=f.d_julkaisutyyppi_id
 join dw.d_julkaisun_kansainvalisyys d4 on d4.id=f.d_julkaisun_kansainvalisyys_id
 join dw.d_tieteenala d5 on d5.id=f.d_tieteenala_id
 join dw.d_yo d6 on d6.id=f.d_yliopisto_id
-join dw.d_koulutusala_2002 d9 on d9.id=f.d_koulutusala_id
+join dw.d_koulutusala_1995 d9 on d9.id=f.d_koulutusala_id
 
 
 
