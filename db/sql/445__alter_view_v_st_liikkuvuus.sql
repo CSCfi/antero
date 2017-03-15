@@ -51,6 +51,7 @@ join dw.d_amk d6 on d6.id=f.d_amk_id
 join dw.d_amk_liikkuvuusohjelma d7 on d7.id=f.d_liikkuvuusohjelma_id
 join dw.d_suorat_liikkuvuudentyyppi d8 on d8.id=f.d_vierailutyyppi_id
 join dw.d_koulutusala_2002 d9 on d9.id=f.d_koulutusala_id
+where d5.maatjavaltiot2_fi!='Ahvenanmaa'
 
 
 UNION ALL
@@ -102,6 +103,8 @@ join dw.d_yo d6 on d6.id=f.d_yliopisto_id
 join dw.d_yo_tutkijanuravaihe d7 on d7.id=f.d_yo_tutkijanuravaihe_id
 join dw.d_suorat_liikkuvuudentyyppi d8 on d8.id=f.d_vierailutyyppi_id
 join dw.d_koulutusala_1995 d9 on d9.id=f.d_koulutusala_id
+where d5.maatjavaltiot2_fi!='Ahvenanmaa'
+
 
 
 
