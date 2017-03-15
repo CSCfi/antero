@@ -7,8 +7,8 @@ select
 
 [Tilastovuosi] = vuosi
 
-,Koulutusala = null
-,[OKM ohjauksen ala] = null
+,Koulutusala = 'Tuntematon'
+,[OKM ohjauksen ala] = 'Tuntematon'
 
 ,[Yliopisto] = d6.yo_nimi_fi
 
