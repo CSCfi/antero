@@ -1,6 +1,5 @@
 
 
-
 ALTER view [dw].[v_st_erilliset_opinto_oikeudet] as
 
 select 
@@ -20,8 +19,8 @@ select
 
 --koodit
 ,[Koodit Yliopisto] = d6.yo_tunnus
-,[Koodit Koulutusala] = null
-,[Koodit OKM ohjauksen ala] = null
+,[Koodit Koulutusala] = 99
+,[Koodit OKM ohjauksen ala] = 99
 
 
 
@@ -37,7 +36,7 @@ select
 ,Koulutusala = d1.selite_fi
 ,[OKM ohjauksen ala] = d2.ohjauksenala_nimi_fi
 
-,[Yliopisto] = d6.yo_nimi_fi
+,[Yliopisto] = case d6.yo_nimi_fi when 'Turun yliopisto (-2009)' then 'Turun yliopisto' else d6.yo_nimi_fi end
 
 --mittarit
 ,null
@@ -47,7 +46,7 @@ select
 
 --koodit
 ,[Koodit Yliopisto] = d6.yo_tunnus
-,[Koodit Koulutusala] = d1.koodi
+,[Koodit Koulutusala] = case d1.koodi when -1 then 99 else d1.koodi end
 ,[Koodit OKM ohjauksen ala] = d2.ohjauksenala_koodi
 
 
@@ -58,9 +57,3 @@ join dw.d_yo d6 on d6.id=f.d_yo_id
 join dw.d_kalenteri d7 on d7.id=f.d_tilannepvm_id
 
 where d7.paivays like '%-03-02'
-
-
-
-
-
-
