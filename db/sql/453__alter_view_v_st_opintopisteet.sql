@@ -1,5 +1,4 @@
 
-
 ALTER view [dw].[v_st_opintopisteet] as
 
 select 
@@ -56,7 +55,7 @@ join dw.d_ohjauksenala d2 on d2.id=f.d_ohjauksenala_id
 join dw.d_amk d3 on d3.id=f.d_amk_id
 join dw.d_amk_koulutustyyppi d4 on d4.id=f.d_amk_koulutustyyppi_id
 join dw.d_kalenteri d5 on d5.id=f.d_tilannepvm_id
-where d5.paivays like '%-03-01'
+where (d5.paivays like '%-03-01' and f.vuosi>2015) or (d_tilannepvm_id=-1 and f.vuosi<=2015)
 
 union all
 
@@ -113,5 +112,6 @@ join dw.d_koulutusala_1995 d1 on d1.id=f.d_opintoala95_id
 join dw.d_ohjauksenala d2 on d2.id=f.d_ohjauksenala_id
 join dw.d_yo d3 on d3.id=f.d_yo_id
 join dw.d_kalenteri d5 on d5.id=f.d_tilannepvm_id
-where d5.paivays like '%-03-01'
+where (d5.paivays like '%-03-01' and f.vuosi>2015) or (d_tilannepvm_id=-1 and f.vuosi<=2015)
+
 
