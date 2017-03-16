@@ -193,3 +193,9 @@ WHEN NOT MATCHED THEN
     tutkintotyyppikoodi,tutkintotyyppinimi,tutkintotyyppinimi_sv,tutkintotyyppinimi_en,
     src.source
   );
+GO
+
+-- NB! Extra thingy - re-populate koulutusluokitus (due to lacking in merge matching)
+-- clear koulutusluokitus and populate so all unknowns will be populated
+TRUNCATE TABLE dw.d_koulutusluokitus
+EXEC dw.p_lataa_d_koulutusluokitus

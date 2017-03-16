@@ -1,6 +1,3 @@
---clear koulutusluokitus for repopulating at first possible chance
-TRUNCATE TABLE dw.d_koulutusluokitus
-
 IF NOT EXISTS (
 select * from INFORMATION_SCHEMA.COLUMNS
 where TABLE_SCHEMA='dw' and TABLE_NAME='d_koulutusluokitus'
