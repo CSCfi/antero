@@ -80,3 +80,7 @@ WHEN NOT MATCHED THEN
     src.oppilaitostyyppikoodi, src.oppilaitostyyppinimi, src.oppilaitostyyppinimi_sv, src.oppilaitostyyppinimi_en,
     src.source
   );
+GO
+
+-- populate immediately
+EXEC dw.p_lataa_d_organisaatio
