@@ -1,5 +1,6 @@
 
 
+
 ALTER view [dw].[v_st_erilliset_opinto_oikeudet] as
 
 select 
@@ -21,8 +22,6 @@ select
 ,[Koodit Yliopisto] = d6.yo_tunnus
 ,[Koodit Koulutusala] = 99
 ,[Koodit OKM ohjauksen ala] = 99
-
-
 
 from [dw].[f_yo_erillisella_opinto_oikeudella_opiskelevat] f
 join dw.d_yo d6 on d6.id=f.d_yliopisto_id
@@ -51,12 +50,13 @@ select
 
 
 from [dw].[f_yo_opintopisteet] f
-join dw.d_opintoala95 d1 on d1.id=f.d_opintoala95_id
+left join dw.d_opintoala95 d1 on d1.id=f.d_opintoala95_id
 join dw.d_ohjauksenala d2 on d2.id=f.d_ohjauksenala_id
 join dw.d_yo d6 on d6.id=f.d_yo_id
-join dw.d_kalenteri d7 on d7.id=f.d_tilannepvm_id
+left join dw.d_kalenteri d7 on d7.id=f.d_tilannepvm_id
 
-where d7.paivays like '%-03-02'
+where (d7.paivays like '%-03-02' and f.vuosi>=2016) or f.vuosi<2016
+
 
 
 
