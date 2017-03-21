@@ -16,7 +16,8 @@ def makerow():
   return {
     'oid':None, 'koodi':None, 'nimi':None, 'nimi_sv':None, 'nimi_en':None, 'alkupvm':None, 'loppupvm':None,
     'kuntakoodi':None, 'oppilaitostyyppikoodi':None,
-    'jarjestajaoid':None, 'jarjestajakoodi':None, 'jarjestajanimi':None, 'jarjestajanimi_sv':None, 'jarjestajanimi_en':None
+    'jarjestajaoid':None, 'jarjestajakoodi':None, 'jarjestajanimi':None, 'jarjestajanimi_sv':None, 'jarjestajanimi_en':None,
+    'osoite':None, 'postinumero':None, 'postitoimipaikka':None, 'latitude':None, 'longitude':None
   }
 
 def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
@@ -74,6 +75,21 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
           # => text values separately
           row["oppilaitostyyppikoodi"] = o["oppilaitostyyppi"].replace("oppilaitostyyppi_","").replace("#1","")
           # => text values separately
+
+          # get address
+          httpconn.request('GET', "/organisaatio-service/rest/organisaatio/"+row["oid"])
+          rr = httpconn.getresponse()
+          jj = json.loads(rr.read())
+          if jj["kayntiosoite"]:
+            row["osoite"] = jj["kayntiosoite"]["osoite"]
+            row["postinumero"] = jj["kayntiosoite"]["postinumeroUri"].replace("posti_","")
+            row["postitoimipaikka"] = jj["kayntiosoite"]["postitoimipaikka"]
+          elif jj["postiosoite"]:
+            row["osoite"] = jj["postiosoite"]["osoite"]
+            row["postinumero"] = jj["postiosoite"]["postinumeroUri"].replace("posti_","")
+            row["postitoimipaikka"] = jj["postiosoite"]["postitoimipaikka"]
+          # todo get coordinates (see geocoding.py)
+
   
           if verbose: print strftime("%Y-%m-%d %H:%M:%S", localtime())+" %d -- %s"%(cnt,row["koodi"])
           dboperator.insert(hostname+url,schema,table,row,debug)
