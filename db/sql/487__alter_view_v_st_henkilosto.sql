@@ -1,5 +1,6 @@
 
 
+
 ALTER view [dw].[v_st_henkilosto] as
 
 --amk
@@ -7,7 +8,7 @@ select
 Tilastovuosi = vuosi
 
 ,Sukupuoli = d1.sukupuoli_fi
-,Kansalaisuus = case when d2.maatjavaltiot2_fi='Suomi' then 'Suomi' else d2.maanosa_fi end
+,Kansalaisuus = case when d2.maatjavaltiot2_fi in ('Suomi','Ahvenanmaa') then 'Suomi' else d2.maanosa_fi end
 ,Tehtäväjaottelu = d3.selite_fi
 ,[Tutkijanuravaihe tai tuntiopettajuus] = null
 ,[Henkilöstöryhmä] = null
@@ -33,8 +34,9 @@ Tilastovuosi = vuosi
 ,[Koodit Henkilöstöryhmä] = null
 ,[Koodit Tieteenala] = d6.tieteenala_koodi
 ,[Koodit Päätieteenala] = d6.paatieteenala_koodi
+
 --järjestykset
-,[Kansalaisuus järj] = case when d2.maatjavaltiot2_fi='Suomi' then 1 else d2.maanosa_koodi+1 end
+,[Kansalaisuus järj] = case when d2.maatjavaltiot2_fi in ('Suomi','Ahvenanmaa') then 1 when d2.maatjavaltiot2_koodi = -1 then 9 else d2.maanosa_koodi+1 end
 
 from [dw].[f_amk_henkilon_tyo] f
 left join dw.d_sukupuoli d1 on d1.id=f.d_sukupuoli_id
@@ -52,7 +54,7 @@ select
 Tilastovuosi = vuosi
 
 ,Sukupuoli = d1.sukupuoli_fi
-,Kansalaisuus = case when d2.maatjavaltiot2_fi='Suomi' then 'Suomi' else d2.maanosa_fi end
+,Kansalaisuus = case when d2.maatjavaltiot2_fi in ('Suomi','Ahvenanmaa') then 'Suomi' else d2.maanosa_fi end
 ,Tehtäväjaottelu = d3.selite_fi
 ,[Tutkijanuravaihe tai tuntiopettajuus] = d8.selite_fi
 ,[Henkilöstöryhmä] = d9.selite_fi
@@ -78,8 +80,9 @@ Tilastovuosi = vuosi
 ,[Koodit Henkilöstöryhmä] = d10.koodi
 ,[Koodit Tieteenala] = d6.tieteenala_koodi
 ,[Koodit Päätieteenala] = d6.paatieteenala_koodi
+
 --järjestykset
-,[Kansalaisuus järj] = case when d2.maatjavaltiot2_fi='Suomi' then 1 else d2.maanosa_koodi+1 end
+,[Kansalaisuus järj] = case when d2.maatjavaltiot2_fi in ('Suomi','Ahvenanmaa') then 1 when d2.maatjavaltiot2_koodi = -1 then 9 else d2.maanosa_koodi+1 end
 
 
 from [dw].[f_yo_henkilon_tyo] f
