@@ -16,8 +16,8 @@ create table sa.sa_suorat_hist_yo6a_avoin_yliopisto_opetus
 , kesäyliop_ei_tutkopiskelijoille int
 , muut_jarj_tutkopiskelijoille int
 , muut_jarj_ei_tutkopiskelijoille int
-, latausaika  unknown
-, paivitysaika  unknown
+, latausaika  datetime
+, paivitysaika  datetime
 , imp_created_date datetime
 )
 ;
