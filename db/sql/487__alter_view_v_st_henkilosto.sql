@@ -34,6 +34,7 @@ Tilastovuosi = vuosi
 ,[Koodit Tieteenala] = d6.tieteenala_koodi
 ,[Koodit Päätieteenala] = d6.paatieteenala_koodi
 --järjestykset
+,[Kansalaisuus järj] = case when d2.maatjavaltiot2_fi='Suomi' then 1 else d2.maanosa_fi+1 end
 
 from [dw].[f_amk_henkilon_tyo] f
 left join dw.d_sukupuoli d1 on d1.id=f.d_sukupuoli_id
@@ -78,6 +79,7 @@ Tilastovuosi = vuosi
 ,[Koodit Tieteenala] = d6.tieteenala_koodi
 ,[Koodit Päätieteenala] = d6.paatieteenala_koodi
 --järjestykset
+,[Kansalaisuus järj] = case when d2.maatjavaltiot2_fi='Suomi' then 1 else d2.maanosa_fi+1 end
 
 
 from [dw].[f_yo_henkilon_tyo] f
@@ -91,4 +93,7 @@ left join dw.d_yo d7 on d7.id=f.d_yliopisto_id
 left join dw.d_yo_tutkijanuravaihe d8 on d8.id=f.d_tutkijanuravaihe_id
 left join dw.d_yo_henkilostoryhma d9 on d9.id=f.d_henkilostoryhma_id
 left join dw.d_yo_harjoittelukoulujen_henkilostoryhma d10 on d10.id=f.d_harjoittelukoulujen_henkilostoryhma_id
+
+
+
 
