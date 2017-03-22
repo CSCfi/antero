@@ -40,9 +40,8 @@ def load(secure,hostname,url,schema,table,verbose):
   
   # read the data.
   # all of it. this is dangerous for big datasets!
-  data = response.content
-  # remove "BOM"
-  data = data.replace(codecs.BOM_UTF8,'')
+  # convert to utf-8 on-the-fly if it's not
+  data = response.text.encode('utf-8')
   #"""
 
   # create temporary file (remove at the end)
