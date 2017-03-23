@@ -62,11 +62,12 @@ class reader:
         self.reader = csv.reader(f, dialect=dialect, **kwds)
 
     def value(self, s):
-	try: return int(s)
-	except: pass
-	try: return float(s)
-	except: pass
-	return unicode(s, "utf-8")
+        #LJ don't make ints or floats
+        #try: return int(s)
+        #except: pass
+        #try: return float(s)
+        #except: pass
+        return unicode(s, "utf-8")
 
     def next(self):
         row = self.reader.next()
@@ -93,7 +94,7 @@ class writer:
         data = self.queue.getvalue()
         data = data.decode("utf-8")
         # ... and reencode it into the target encoding
-	self.encoder.write(data)
+        self.encoder.write(data)
         # empty queue
         self.queue.truncate(0)
 
@@ -144,7 +145,7 @@ class DictWriter:
                    extrasaction)
         self.extrasaction = extrasaction
         self.writer = writer(f, dialect, *args, **kwds)
-	self.writer.writerow(fieldnames)
+        self.writer.writerow(fieldnames)
 
     def _dict_to_list(self, rowdict):
         if self.extrasaction == "raise":
