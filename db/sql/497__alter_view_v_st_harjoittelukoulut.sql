@@ -10,6 +10,9 @@ select
 
 ,[Henkilöstöryhmä] = null
 
+,[Koulutusala] = 'Tieto puuttuu'
+,[Ohjauksen ala] = 'Tieto puuttuu'
+
 --mittarit
 ,f.harjoittelukoulun_oppilaat_esiopetus
 ,f.harjoittelukoulun_oppilaat_perusopetuksen_vuodet_1_6
@@ -31,6 +34,8 @@ select
 
 --koodit
 ,[Koodit Yliopisto] = d1.yo_tunnus
+,[Koodit Koulutusala] = null
+,[Koodit Ohjauksen ala] = null
 
 
 from [dw].[f_yo_harjoittelukoulut] f
@@ -43,6 +48,9 @@ select
 ,[Yliopisto] = d1.yo_nimi_fi
 
 ,null
+
+,[Koulutusala] = 'Tieto puuttuu'
+,[Ohjauksen ala] = 'Tieto puuttuu'
 
 --mittarit
 ,null
@@ -65,6 +73,8 @@ select
 
 --koodit
 ,[Koodit Yliopisto] = d1.yo_tunnus
+,[Koodit Koulutusala] = null
+,[Koodit Ohjauksen ala] = null
 
 
 from [dw].[f_yo_harjoittelukoulujen_opintopisteet] f
@@ -78,6 +88,8 @@ select
 
 ,[Henkilöstöryhmä] = d3.selite_fi
 
+,[Koulutusala] = d4.selite_fi
+,[Ohjauksen ala] = d5.ohjauksenala_nimi_fi
 --mittarit
 ,null
 ,null
@@ -99,12 +111,16 @@ select
 
 --koodit
 ,[Koodit Yliopisto] = d1.yo_tunnus
+,[Koodit Koulutusala] = d4.koodi
+,[Koodit Ohjauksen ala] = d5.ohjauksenala_koodi
 
 
 from [dw].[f_yo_henkilon_tyo] f
 join dw.d_yo d1 on d1.id=f.d_yliopisto_id
 join dw.d_yo_tehtavanjaottelu d2 on d2.id=f.d_tehtavanjaottelu_id
 join dw.d_yo_harjoittelukoulujen_henkilostoryhma d3 on d3.id=f.d_harjoittelukoulujen_henkilostoryhma_id
+join dw.d_koulutusala_1995 d4 on d4.id=f.d_koulutusala_id
+join dw.d_ohjauksenala d5 on d5.id=f.d_ohjauksenala_id
 where d2.selite_fi='Harjoittelukoulujen henkilöstö'
 
 
