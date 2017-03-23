@@ -34,8 +34,9 @@ select
 
 --koodit
 ,[Koodit Yliopisto] = d1.yo_tunnus
-,[Koodit Koulutusala] = null
-,[Koodit Ohjauksen ala] = null
+,[Koodit Koulutusala] = 99
+,[Koodit Ohjauksen ala] = 99
+,[Koodit Henkilöstöryhmä] = 99
 
 
 from [dw].[f_yo_harjoittelukoulut] f
@@ -73,8 +74,9 @@ select
 
 --koodit
 ,[Koodit Yliopisto] = d1.yo_tunnus
-,[Koodit Koulutusala] = null
-,[Koodit Ohjauksen ala] = null
+,[Koodit Koulutusala] = 99
+,[Koodit Ohjauksen ala] = 99
+,[Koodit Henkilöstöryhmä] = 99
 
 
 from [dw].[f_yo_harjoittelukoulujen_opintopisteet] f
@@ -111,8 +113,9 @@ select
 
 --koodit
 ,[Koodit Yliopisto] = d1.yo_tunnus
-,[Koodit Koulutusala] = d4.koodi
-,[Koodit Ohjauksen ala] = d5.ohjauksenala_koodi
+,[Koodit Koulutusala] = case d4.koodi when -1 then 99 else d4.koodi end
+,[Koodit Ohjauksen ala] = case d5.ohjauksenala_koodi when -1 then 99 else d5.ohjauksenala_koodi end
+,[Koodit Henkilöstöryhmä] = d3.koodi
 
 
 from [dw].[f_yo_henkilon_tyo] f
