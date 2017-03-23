@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 # vim: set fileencoding=UTF-8 :
 """
 dboperator
@@ -28,18 +29,52 @@ conn = pymssql.connect(dbhost, dbuser, dbpass, dbname)
 cur = conn.cursor(as_dict=True)
 
 columnlist = []
+columntypes = dict()
 
 count = -1
 
 # best practices columns
 columnlistignore = ["id","loadtime","source","username"]
 
-# columns
+# columns - figure out columns and their data types
 # - populate columnlist with unique values
 #   takes columnlistignore into account
+# - populate columntypes with unique values
+#
+# NB! From one row at a time!
+#  If api leaves null values entirely out from response
+#  (for ex. virta-jtp julkaisut), this function should be
+#  called N times so that all column names appear where N is
+#  at least 1 but is your own choice.
+#  Sometimes even all rows might be worth looping through.
+#  The idea is that before create and insert calls the whole dataset
+#  could be looped through so that all possible columns are known
+#  and only after that create the table and insert the data...
 def columns(row,debug=False):
-  global columnlist, columnlistignore
+  global columnlist, columntypes, columnlistignore
   for col in row:
+    key = str(col)
+    if type(row[col]) is int:
+      if row[col] > 2**31:
+        columntypes[key] = 'bigint'
+      else:
+        columntypes[key] = 'int'
+    elif type(row[col]) is bool:
+      columntypes[key] = 'bit'
+    elif type(row[col]) is float:
+      columntypes[key] = 'float'
+    elif type(row[col]) is str:
+      # attempt to solve max length of string
+      lenkey = "len"+key
+      strlen = len(row[col]) if len(row[col])>2 else 2 # minimum of 2 chars
+      # initial or bigger
+      if lenkey not in columntypes or strlen > columntypes[lenkey]:
+        columntypes[lenkey] = strlen
+        columntypes[key] = "varchar("+str(strlen)+")"
+    # default to string type. NoneType goes here also
+    if key not in columntypes:
+      columntypes[key] = 'varchar(max)'
+    if debug: print "dboperator.columns: col:%s, type:%s, columntype:%s, strlen:%s" % (col,type(row[col]),columntypes[key],columntypes[lenkey])
     if col not in columnlist:
       columnlist.append(col)
   for ignr in columnlistignore:
@@ -48,9 +83,61 @@ def columns(row,debug=False):
   if debug: print "dboperator.columns: columnlist="+(",".join(columnlist))
 
 def resetcolumns(row,debug=False):
-  global columnlist
+  global columnlist, columntypes
   columnlist = []
+  columntypes = dict()
   columns(row,debug)
+
+# create - create table if not exists and empty it
+# nb! columns and their types must be known before (see columns)
+def create(schema,table,debug=False):
+  global conn, cur, columntypes, columnlist
+  sqlcreate_beg = """
+  IF NOT EXISTS (
+    SELECT 1 FROM INFORMATION_SCHEMA.TABLES
+    WHERE TABLE_SCHEMA='"""+schema+"""' AND TABLE_NAME='"""+table+"""'
+  )
+  BEGIN
+    CREATE TABLE """+schema+"""."""+table+"""(
+      id bigint IDENTITY(1,1) NOT NULL,
+      loadtime datetime NOT NULL,
+      source nvarchar(100) NULL,
+      username nvarchar(128) NOT NULL,
+  """
+  sqlcreate_mid = ""
+  sqlcreate_end = """
+      CONSTRAINT PK__"""+table+""" PRIMARY KEY CLUSTERED (id)
+    );
+    ALTER TABLE """+schema+"""."""+table+""" ADD CONSTRAINT DF__"""+table+"""__loadtime  DEFAULT (getdate()) FOR loadtime;
+    ALTER TABLE """+schema+"""."""+table+""" ADD CONSTRAINT DF__"""+table+"""__username  DEFAULT (suser_name()) FOR username;
+  END
+  """
+  for col in columnlist:
+    sqlcreate_mid += "%s %s NULL,"%(col,columntypes[col])
+  # create/execute
+  cur.execute(sqlcreate_beg+sqlcreate_mid+sqlcreate_end)
+  conn.commit()
+  # empty
+  empty(schema,table,debug)
+  if debug: print "dboperator.create: columnlist="+(",".join(columnlist))
+
+# drop - drop a table
+# todo: drop other objects as well...
+def drop(schema,table,debug=False):
+  global conn, cur
+  if debug: print "dboperator.drop: "+schema+"."+table
+  sql = """
+  IF EXISTS (
+    SELECT 1 FROM INFORMATION_SCHEMA.TABLES
+    WHERE TABLE_SCHEMA='"""+schema+"""' AND TABLE_NAME='"""+table+"""'
+  )
+  BEGIN
+    DROP TABLE """+schema+"""."""+table+"""
+  END
+  """
+  # remove/drop/execute
+  cur.execute(sql)
+  conn.commit()
 
 # empty - with truncate
 def empty(schema,table,debug=False):
