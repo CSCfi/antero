@@ -1,0 +1,2 @@
+ALTER TABLE sa.sa_suorat_yo_talous_4_tutkimusmenot ADD ohjauksenala_koodi int NULL;
+ALTER TABLE sa.sa_suorat_yo_talous_5_kustannustiedot ADD ohjauksenala varchar(255) NULL, ohjauksenala_koodi int NULL;
