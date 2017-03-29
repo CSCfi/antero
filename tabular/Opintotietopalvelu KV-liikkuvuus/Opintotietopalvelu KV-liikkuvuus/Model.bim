@@ -425,6 +425,14 @@
             "dataType": "string",
             "sourceColumn": "Kansalaisuuden maanosa",
             "displayFolder": "Henkilö"
+          },
+          {
+            "type": "calculated",
+            "name": "kk-liikkuvuusjakso",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "expression": "CONCATENATE([Oppilaitos Koodi],[liikkuvuusjaksoavain])"
           }
         ],
         "partitions": [
@@ -1282,47 +1290,25 @@
         ],
         "measures": [
           {
-            "name": "liikkuvuusjaksolkm-tilasto",
-            "expression": "CALCULATE(DISTINCTCOUNT([liikkuvuusjaksoavain]),Muuttujat[tilannepvm]=DATE(2017,3,1))",
+            "name": "liikkuvuusjaksolkm",
+            "expression": "CALCULATE(DISTINCTCOUNT([kk-liikkuvuusjakso]),Muuttujat[tilannepvm]=DATE(2017,3,1))",
             "isHidden": true,
             "displayFolder": "Lukumäärä"
           },
           {
-            "name": "liikkuvuusjaksolkm-live",
-            "expression": "CALCULATE(DISTINCTCOUNT([liikkuvuusjaksoavain]),Muuttujat[tilannepvm]=TODAY()-1)",
-            "isHidden": true,
-            "displayFolder": "Lukumäärä"
-          },
-          {
-            "name": "liikkuvuudenkestoavg-live",
-            "expression": "CALCULATE(AVERAGE([kesto]),Muuttujat[tilannepvm]=TODAY()-1)",
-            "isHidden": true,
-            "displayFolder": "Lukumäärä"
-          },
-          {
-            "name": "liikkuvuudenkestoavg-tilasto",
+            "name": "liikkuvuudenkestoavg",
             "expression": "CALCULATE(AVERAGE([kesto]),Muuttujat[tilannepvm]=DATE(2017,3,1))",
             "isHidden": true,
             "displayFolder": "Lukumäärä"
           },
           {
-            "name": "Liikkuvuusjaksojen määrä (1.3.)",
-            "expression": "IF([liikkuvuusjaksolkm-tilasto]<5,3,[liikkuvuusjaksolkm-tilasto])",
+            "name": "Liikkuvuusjaksojen määrä",
+            "expression": "IF(AND([liikkuvuusjaksolkm]>0,[liikkuvuusjaksolkm]<6),3,[liikkuvuusjaksolkm])",
             "formatString": "# ### ###"
           },
           {
-            "name": "Liikkuvuuden keskimääräinen kesto pv (1.3.)",
-            "expression": "IF([liikkuvuusjaksolkm-tilasto]<5,BLANK(),[liikkuvuudenkestoavg-tilasto])",
-            "formatString": "# ### ###"
-          },
-          {
-            "name": "Liikkuvuusjaksojen määrä (LIVE)",
-            "expression": "IF([liikkuvuusjaksolkm-live]<5,3,[liikkuvuusjaksolkm-live])",
-            "formatString": "# ### ###"
-          },
-          {
-            "name": "Liikkuvuuden keskimääräinen kesto pv (LIVE)",
-            "expression": "IF([liikkuvuusjaksolkm-live]<5,BLANK(),[liikkuvuudenkestoavg-live])",
+            "name": "Liikkuvuuden keskimääräinen kesto pv",
+            "expression": "IF([liikkuvuusjaksolkm]<6,BLANK(),[liikkuvuudenkestoavg])",
             "formatString": "# ### ###"
           }
         ],
@@ -2316,14 +2302,6 @@
               {
                 "name": "Lähtömaan maanosa Koodi"
               }
-            ],
-            "measures": [
-              {
-                "name": "Liikkuvuusjaksojen määrä (LIVE)"
-              },
-              {
-                "name": "Liikkuvuuden keskimääräinen kesto pv (LIVE)"
-              }
             ]
           }
         ]
@@ -2457,10 +2435,10 @@
             ],
             "measures": [
               {
-                "name": "Liikkuvuuden keskimääräinen kesto pv (1.3.)"
+                "name": "Liikkuvuuden keskimääräinen kesto pv"
               },
               {
-                "name": "Liikkuvuusjaksojen määrä (1.3.)"
+                "name": "Liikkuvuusjaksojen määrä"
               }
             ]
           }
