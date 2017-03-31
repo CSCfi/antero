@@ -51,8 +51,6 @@ def load(secure,hostname,url,schema,table,verbose=False):
   row = makerow()
   # setup dboperator so other calls work
   dboperator.columns(row)
-  ##import codecs
-  ##f = codecs.open(table,'w+b','utf-8')
 
   if verbose: show("empty %s.%s"%(schema,table))
   dboperator.empty(schema,table)
@@ -108,6 +106,13 @@ def load(secure,hostname,url,schema,table,verbose=False):
   cnt = 0
   for o in oids:
     cnt+=1
+    # show some sign of being alive
+    if cnt%100 == 0:
+      sys.stdout.write('.')
+      sys.stdout.flush()
+    if cnt%1000 == 0:
+      show("-- %d" % (cnt))
+    if verbose: show("%d -- %s"%(cnt,row))
 
     # make another requets to actual organization data
     r = requests.get(address+o)
@@ -125,6 +130,10 @@ def load(secure,hostname,url,schema,table,verbose=False):
     if "tyypit" in i and "Koulutustoimija" in i["tyypit"]:
       row["tyyppi"] = "Koulutustoimija"
       row["koodi"] = jv(i,"ytunnus")
+      if not row["koodi"]:
+        row["koodi"] = jv(i,"virastotunnus") # alternatively try virastotunnus if ytunnus is missing
+      if not row["koodi"]:
+        row["tyyppi"] = None # cancel this organization from loading
     elif "tyypit" in i and "Oppilaitos" in i["tyypit"]:
       row["tyyppi"] = "Oppilaitos"
       row["koodi"] = jv(i,"oppilaitosKoodi")
@@ -170,10 +179,8 @@ def load(secure,hostname,url,schema,table,verbose=False):
       # nb! coordinates in another process! (see geocoding.py)
       
       if verbose: show(" %5d -- %s %s (%s)"%(cnt,row["tyyppi"],row["koodi"],row["nimi"]))
-      #f.write(str(row))
       dboperator.insert(hostname+url,schema,table,row)
   
-  #f.close()
   dboperator.close()
 
   if verbose: show("ready")
