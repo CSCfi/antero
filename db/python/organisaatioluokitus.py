@@ -195,12 +195,21 @@ def load(secure,hostname,url,schema,table,verbose=False):
           osoite_array = ["--address"]
           osoite_array.append(row["osoite"] + ", " + row["postinumero"] + ", " + row["postitoimipaikka"])
 
-          geocoding_api_answer = geocoding.main(osoite_array)
-          if geocoding_api_answer["STATUS"] == "OK":
-            row["latitude"] = geocoding_api_answer["RESULT"]["latitude"]
-            row["longitude"] = geocoding_api_answer["RESULT"]["longitude"]
-          else:  # STATUS == NOK
-            print "Error:", geocoding_api_answer["RESULT"]
+          api_fetch_successful = False
+          try:
+            geocoding_api_answer = geocoding.main(osoite_array)
+            api_fetch_successful = True
+          except Exception, e:
+            print "Error: " + str(e)
+          except SystemExit:
+            pass  # catch the sys.exit from geocoding. It prints the usage().
+
+          if api_fetch_successful:
+            if geocoding_api_answer["STATUS"] == "OK":
+              row["latitude"] = geocoding_api_answer["RESULT"]["latitude"]
+              row["longitude"] = geocoding_api_answer["RESULT"]["longitude"]
+            else:  # STATUS == NOK
+              print "Error:", geocoding_api_answer["RESULT"]
 
       if verbose: show(" %5d -- %s %s (%s)"%(cnt,row["tyyppi"],row["koodi"],row["nimi"]))
       dboperator.insert(hostname+url,schema,table,row)
