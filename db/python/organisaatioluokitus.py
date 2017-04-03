@@ -14,6 +14,7 @@ Koodi is in
 - toimipistekoodi for Toimipiste.
 """
 import sys, os, getopt
+import geocoding
 import requests
 from time import localtime, strftime
 
@@ -175,12 +176,35 @@ def load(secure,hostname,url,schema,table,verbose=False):
         row["osoite"] = jv(josoite,"osoite")
         row["postinumero"] = josoite["postinumeroUri"].replace("posti_","") if "postinumeroUri" in josoite and josoite["postinumeroUri"] else None
         row["postitoimipaikka"] = jv(josoite,"postitoimipaikka")
-      
-      # nb! coordinates in another process! (see geocoding.py)
-      
+
+        """
+        nb! coordinates in another process! (see geocoding.py)
+        In short:  geocoding.py translates given address to latitude/longitude -coordinates
+
+        Geocoding eats the address in following format: ["--address", "Mannerheimintie 80, 00100, helsinki"]
+
+        Geocoding returns:
+        {'STATUS': 'OK', 'RESULT': {'latitude': 60.24565450000001, 'longitude': 24.8390398}}
+
+        OR if problems:
+        {'STATUS': 'NOK', 'RESULT': "Error message"}
+        """
+
+        if row["osoite"] is not None and row["postinumero"] is not None and row["postitoimipaikka"] is not None:
+
+          osoite_array = ["--address"]
+          osoite_array.append(row["osoite"] + ", " + row["postinumero"] + ", " + row["postitoimipaikka"])
+
+          geocoding_api_answer = geocoding.main(osoite_array)
+          if geocoding_api_answer["STATUS"] == "OK":
+            row["latitude"] = geocoding_api_answer["RESULT"]["latitude"]
+            row["longitude"] = geocoding_api_answer["RESULT"]["longitude"]
+          else:  # STATUS == NOK
+            print "Error:", geocoding_api_answer["RESULT"]
+
       if verbose: show(" %5d -- %s %s (%s)"%(cnt,row["tyyppi"],row["koodi"],row["nimi"]))
       dboperator.insert(hostname+url,schema,table,row)
-  
+
   dboperator.close()
 
   if verbose: show("ready")

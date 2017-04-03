@@ -38,12 +38,15 @@ def get_geo_coordinates_from_server(url_address):
     try:
         api_key = os.environ['GEO_COORDINATES_API_KEY']
     except KeyError:
-        return get_result_dictionary(False, "Error: API-key missing")
+        return get_result_dictionary(False, "API-key missing")
 
     google_geocode_api_base_url = "https://maps.googleapis.com/maps/api/geocode/json?address="
     complete_url = google_geocode_api_base_url + url_address + "&key=" + api_key
 
-    r = requests.get(complete_url)
+    try:
+        r = requests.get(complete_url)
+    except requests.exceptions.RequestException as e:
+        return get_result_dictionary(False, e)
 
     if r.status_code != 200:
         return get_result_dictionary(False, "Service down. Please try later again.")
@@ -73,7 +76,7 @@ def get_geo_coordinates_from_server(url_address):
 
 def parse_url_address(argument_array):
     address_string = ""
-    for i in range(2, len(argument_array)):  # first arguments not part of address
+    for i in range(1, len(argument_array)):  # first argument not part of address
         address_string += argument_array[i]
         address_string += "+"  # replace spaces in the address with '+' sign
 
@@ -144,16 +147,17 @@ def parse_url_address(argument_array):
 
 def main(argv):
 
-    if len(sys.argv) < 3:
+    if len(argv) < 2:
         usage()
         sys.exit(2)
 
-    if sys.argv[1] != "-A" and sys.argv[1] != "--address":
+    if not(argv[0] == "-A" or argv[0] == "--address"):
         usage()
         sys.exit(3)
 
-    url_address = parse_url_address(sys.argv)
-    print json.dumps(get_geo_coordinates_from_server(url_address))
+    url_address = parse_url_address(argv)
+
+    return get_geo_coordinates_from_server(url_address)
 
 
 if __name__ == "__main__":
