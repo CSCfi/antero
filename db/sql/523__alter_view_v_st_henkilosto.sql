@@ -31,7 +31,7 @@ Tilastovuosi = vuosi
 ,[Koodit Ammattikorkeakoulu] = d7.amk_tunnus
 ,[Koodit Yliopisto] = null
 ,[Koodit Henkilöstöryhmä] = null
-,[Koodit OKM ohjauksen ala] = case d5.ohjauksenala_koodi when -1 then 9 else d5.ohjauksenala_koodi end
+,[Koodit OKM ohjauksen ala] = case d5.ohjauksenala_koodi when -1 then 99 else d5.ohjauksenala_koodi end
 ,[Koodit Tieteenala] = d6.tieteenala_koodi
 ,[Koodit Päätieteenala] = d6.paatieteenala_koodi
 
@@ -78,7 +78,7 @@ Tilastovuosi = vuosi
 ,[Koodit Ammattikorkeakoulu] = null
 ,[Koodit Yliopisto] = d7.yo_tunnus
 ,[Koodit Henkilöstöryhmä] = d10.koodi
-,[Koodit OKM ohjauksen ala] = case d5.ohjauksenala_koodi when -1 then 9 else d5.ohjauksenala_koodi end
+,[Koodit OKM ohjauksen ala] = case d5.ohjauksenala_koodi when -1 then 99 else d5.ohjauksenala_koodi end
 ,[Koodit Tieteenala] = d6.tieteenala_koodi
 ,[Koodit Päätieteenala] = d6.paatieteenala_koodi
 
