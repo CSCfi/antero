@@ -89,6 +89,7 @@
             "name": "Tehtäväjaottelu",
             "dataType": "string",
             "sourceColumn": "Tehtäväjaottelu",
+            "sortByColumn": "Koodit Tehtäväjaottelu",
             "sourceProviderType": "Char",
             "displayFolder": "Henkilömuuttujat"
           },
@@ -185,7 +186,7 @@
           },
           {
             "name": "Maanosa",
-            "dataType": "int64",
+            "dataType": "string",
             "sourceColumn": "Maanosa",
             "displayFolder": "Kansainvälisen liikkuvuuden muuttujat"
           },
@@ -224,6 +225,12 @@
             "dataType": "string",
             "isHidden": true,
             "sourceColumn": "Sektori"
+          },
+          {
+            "name": "Koodit Tehtäväjaottelu",
+            "dataType": "int64",
+            "sourceColumn": "Koodit Tehtäväjaottelu",
+            "displayFolder": "Koodimuuttujat"
           }
         ],
         "partitions": [
@@ -439,6 +446,14 @@
                   "        <int>63</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koodit Tehtäväjaottelu</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>140</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -633,6 +648,14 @@
                   "        <int>23</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koodit Tehtäväjaottelu</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>24</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -716,6 +739,14 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koodit Tehtäväjaottelu</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -749,13 +780,35 @@
             "formatString": "#,0"
           },
           {
+            "name": "Suomesta ulkomaille (lkm)",
+            "expression": [
+              "if(sum(Muuttujat[vierailut_ulkomaille_lkm])=0,blank(),sum(Muuttujat[vierailut_ulkomaille_lkm])",
+              ")"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ulkomailta Suomeen (lkm)",
+            "expression": [
+              "if(sum(Muuttujat[vierailut_ulkomailta_lkm])=0,blank(),sum(Muuttujat[vierailut_ulkomailta_lkm])",
+              ")"
+            ],
+            "formatString": "#,0"
+          },
+          {
             "name": "Suomesta ulkomaille (pv)",
-            "expression": "sum(Muuttujat[vierailut_ulkomaille_lkm])",
+            "expression": [
+              "if(sum(Muuttujat[liikkuvuuden_kesto_ulkomaille])=0,blank(),sum(Muuttujat[liikkuvuuden_kesto_ulkomaille])",
+              ")"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Ulkomailta Suomeen (pv)",
-            "expression": "sum(Muuttujat[vierailut_ulkomailta_lkm])",
+            "expression": [
+              "if(sum(Muuttujat[liikkuvuuden_kesto_ulkomailta])=0,blank(),sum(Muuttujat[liikkuvuuden_kesto_ulkomailta])",
+              ")"
+            ],
             "formatString": "#,0"
           }
         ],
@@ -976,6 +1029,14 @@
               "        <int>63</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koodit Tehtäväjaottelu</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>140</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -1170,6 +1231,14 @@
               "        <int>23</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koodit Tehtäväjaottelu</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>24</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -1253,6 +1322,14 @@
               "        <boolean>true</boolean>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koodit Tehtäväjaottelu</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
               "  </ColumnChecked>",
               "  <ColumnFilter />",
               "  <SelectionFilter />",
@@ -1313,10 +1390,16 @@
             ],
             "measures": [
               {
-                "name": "Ulkomailta Suomeen (pv)"
+                "name": "Ulkomailta Suomeen (lkm)"
+              },
+              {
+                "name": "Suomesta ulkomaille (lkm)"
               },
               {
                 "name": "Suomesta ulkomaille (pv)"
+              },
+              {
+                "name": "Ulkomailta Suomeen (pv)"
               }
             ]
           },
@@ -1375,10 +1458,10 @@
             ],
             "measures": [
               {
-                "name": "Suomesta ulkomaille (pv)"
+                "name": "Suomesta ulkomaille (lkm)"
               },
               {
-                "name": "Ulkomailta Suomeen (pv)"
+                "name": "Ulkomailta Suomeen (lkm)"
               }
             ]
           },

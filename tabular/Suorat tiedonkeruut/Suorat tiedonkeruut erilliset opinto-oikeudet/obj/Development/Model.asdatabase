@@ -113,12 +113,14 @@
             "name": "Koulutusala",
             "dataType": "string",
             "sourceColumn": "Koulutusala",
+            "sortByColumn": "Koodit Koulutusala",
             "displayFolder": "Koulutusmuuttujat"
           },
           {
             "name": "OKM ohjauksen ala",
             "dataType": "string",
             "sourceColumn": "OKM ohjauksen ala",
+            "sortByColumn": "Koodit OKM ohjauksen ala",
             "displayFolder": "Koulutusmuuttujat"
           },
           {
@@ -398,22 +400,28 @@
         "measures": [
           {
             "name": "Erilliset opinto-oikeudet (pl. opettajankoulutus)",
-            "expression": "sum(Muuttujat[suorittaneiden_lkm])",
+            "expression": "if(sum(Muuttujat[suorittaneiden_lkm])=0,blank(),sum(Muuttujat[suorittaneiden_lkm]))",
             "formatString": "#,0"
           },
           {
             "name": "Opettajankoulutus, erilliset opinto-oikeudet",
-            "expression": "sum(Muuttujat[opettajakoulutus_suorittaneiden_lkm])",
+            "expression": [
+              "if(sum(Muuttujat[opettajakoulutus_suorittaneiden_lkm])=0,blank(),sum(Muuttujat[opettajakoulutus_suorittaneiden_lkm])",
+              ")"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Erillisten opinto-oikeuksien opintopisteet (pl. opettajankoulutus)",
-            "expression": "sum([erillisilla_oik_op_lkm])",
+            "expression": [
+              "if(sum([erillisilla_oik_op_lkm])=0,blank(),sum([erillisilla_oik_op_lkm])",
+              ")"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Erillisten opinto-oikeuksien opettajankoulutuksen opintopisteet",
-            "expression": "sum([erillisilla_oik_opkoul_op_lkm])",
+            "expression": "if(sum([erillisilla_oik_opkoul_op_lkm])=0,blank(),sum([erillisilla_oik_opkoul_op_lkm]))",
             "formatString": "#,0"
           }
         ],
