@@ -181,7 +181,7 @@ def load(secure,hostname,url,schema,table,verbose=False):
         nb! coordinates in another process! (see geocoding.py)
         In short:  geocoding.py translates given address to latitude/longitude -coordinates
 
-        Geocoding eats the address in following format: ["--address", "Mannerheimintie 80, 00100, helsinki"]
+        Geocoding eats the address in following format: ["--address", "Kadunnimi talon_numero [porras asunto], postinumero, kaupunki"]
 
         Geocoding returns:
         {'STATUS': 'OK', 'RESULT': {'latitude': 60.24565450000001, 'longitude': 24.8390398}}
@@ -190,10 +190,15 @@ def load(secure,hostname,url,schema,table,verbose=False):
         {'STATUS': 'NOK', 'RESULT': "Error message"}
         """
 
-        if row["osoite"] is not None and row["postinumero"] is not None and row["postitoimipaikka"] is not None:
+        if row["osoite"] is not None and row["osoite"] is not "" and row["postinumero"] is not None and row["postitoimipaikka"] is not None:
+          """
+          if there are commas (,) in row["osoite"], use the part before the first comma
+          e.g. "Fredrikinkatu 33 A, 2 krs" --> "Fredrikinkatu 33 A"
+          """
+          osoite_parsed = row["osoite"].split(",")[0]
 
           osoite_array = ["--address"]
-          osoite_array.append(row["osoite"] + ", " + row["postinumero"] + ", " + row["postitoimipaikka"])
+          osoite_array.append(osoite_parsed + ", " + row["postinumero"] + ", " + row["postitoimipaikka"])
 
           api_fetch_successful = False
           try:
