@@ -33,45 +33,57 @@ def get_result_dictionary(status_ok, result):
         return {"STATUS": "NOK", "RESULT": result}
 
 
-def get_geo_coordinates_from_server(url_address):
-
+def get_geo_coordinates_from_server(address, postalcode, city):
     try:
         api_key = os.environ['GEO_COORDINATES_API_KEY']
     except KeyError:
         return get_result_dictionary(False, "API-key missing")
 
-    google_geocode_api_base_url = "https://maps.googleapis.com/maps/api/geocode/json?address="
-    complete_url = google_geocode_api_base_url + url_address + "&key=" + api_key
+    geocode_server_api_base_url = "https://search.mapzen.com/v1/search/structured?"
+    address_url = "address=" + address + "&postalcode=" + postalcode + "&locality=" + city + "&country=finland"
+    complete_url = geocode_server_api_base_url + address_url + "&api_key=" + api_key + "&size=1"  # limit the query size to only one top-result
 
     try:
-        r = requests.get(complete_url)
+        r = requests.get(complete_url, headers={"Accept": "application/json"})
     except requests.exceptions.RequestException as e:
         return get_result_dictionary(False, e)
 
-    if r.status_code != 200:
-        return get_result_dictionary(False, "Service down. Please try later again.")
+    # GET-request sent successfully to server, and a reply was received.
+    try:
+        result_json = json.loads(r.text)
+    except ValueError, e:
+        return get_result_dictionary(False, "Invalid JSON from server.")
 
-    result_json = json.loads(r.text)
-    coordinate_results = {}
+    # Check HTTP error codes
+    if r.status_code == 400:
+        return get_result_dictionary(False, result_json)  # Bad Request: An input parameter was invalid. An error message is included in the response body with more details.
 
-    if result_json[u'status'] == "ZERO_RESULTS":
-        return get_result_dictionary(False, "No geo-coordinates found for the given address.")
-    elif result_json[u'status'] == "OVER_QUERY_LIMIT":
-        return get_result_dictionary(False, "You are over your quota.")
-    elif result_json[u'status'] == "REQUEST_DENIED":
-        return get_result_dictionary(False, "Your request was denied.")
-    elif result_json[u'status'] == "INVALID_REQUEST":
-        return get_result_dictionary(False, "The query is missing.")
-    elif result_json[u'status'] == "UNKNOWN_ERROR":
-        return get_result_dictionary(False, "Request could not be processed due to a server error. The request may succeed if you try again.")
-    elif result_json[u'status'] == "ERROR":
-        return get_result_dictionary(False, "Request timed out or there was a problem contacting the Google servers. The request may succeed if you try again.")
-    elif result_json[u'status'] == "OK":
-        results = result_json[u'results'][0]
-        coordinate_results["latitude"] = results[u'geometry'][u'location'][u'lat']
-        coordinate_results["longitude"] = results[u'geometry'][u'location'][u'lng']
+    elif r.status_code == 404:
+        return get_result_dictionary(False, "Not Found: The URL is invalid or the path is no longer valid.")
 
-    return get_result_dictionary(True, coordinate_results)
+    elif r.status_code == 408:
+        return get_result_dictionary(False, "Request Timeout: The Elasticsearch cluster took too long to respond.")
+
+    elif r.status_code == 500:
+        return get_result_dictionary(False, "Internal Server Error: Generic fatal error.")
+
+    elif r.status_code == 502:
+        return get_result_dictionary(False, "Bad Gateway: Connection was lost to the Elasticsearch cluster.")
+
+    elif r.status_code == 200:
+        # Currently only coordinates for exact matches are selected  (confidence == 1)
+        if result_json[u'features'][0][u'properties'][u'confidence'] == 1:
+            coordinate_results = {}
+            result_json[u'features'][0][u'properties'][u'confidence']
+            results = result_json[u'features'][0][u'geometry'][u'coordinates']
+            coordinate_results["latitude"] = results[1]
+            coordinate_results["longitude"] = results[0]
+            return get_result_dictionary(True, coordinate_results)
+        else:
+            return get_result_dictionary(False, "Result is not accurate enough.")
+
+    else:
+        return get_result_dictionary(False, "Unknown HTTP-error code: " + str(r.status_code))
 
 
 def parse_url_address(argument_array):
@@ -135,14 +147,9 @@ def parse_url_address(argument_array):
     zip_code: +27800
     city: +Uusi+Kaarlepyy
     """
+    address = street_name + house_number
 
-    url_address = street_name + house_number + "," + zip_code + "," + city
-
-    """
-    Example:
-    url_address: Abraham+Wetterin+tie+123,+27800,+Uusi+Kaarlepyy
-    """
-    return url_address
+    return {"address": address, "postalcode": zip_code, "city": city}
 
 
 def main(argv):
@@ -155,9 +162,8 @@ def main(argv):
         usage()
         sys.exit(3)
 
-    url_address = parse_url_address(argv)
-
-    return get_geo_coordinates_from_server(url_address)
+    parsed_url = parse_url_address(argv)
+    return get_geo_coordinates_from_server(parsed_url["address"], parsed_url["postalcode"], parsed_url["city"])
 
 
 if __name__ == "__main__":

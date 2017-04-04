@@ -45,6 +45,45 @@ def getmeta(i,tieto,kieli):
 def show(message):
   print strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message
 
+def get_and_set_coordinates(row):
+  """
+  nb! coordinates in another process! (see geocoding.py)
+  In short:  geocoding.py translates given address to latitude/longitude -coordinates
+
+  Geocoding eats the address in following format: ["--address", "Kadunnimi talon_numero [porras asunto], postinumero, kaupunki"]
+
+  Geocoding returns:
+  {'STATUS': 'OK', 'RESULT': {'latitude': 61.246893, 'longitude': 22.33108}}
+
+  OR if problems:
+  {'STATUS': 'NOK', 'RESULT': "Error message"}
+
+  --
+
+  if there are commas (,) in row["osoite"], use the part before the first comma
+  e.g. "Fredrikinkatu 33 A, 2 krs" --> "Fredrikinkatu 33 A"
+  """
+  osoite_parsed = row["osoite"].split(",")[0]
+
+  osoite_array = ["--address"]
+  osoite_array.append(osoite_parsed + ", " + row["postinumero"] + ", " + row["postitoimipaikka"])
+
+  api_fetch_successful = False
+  try:
+    geocoding_api_answer = geocoding.main(osoite_array)
+    api_fetch_successful = True
+  except Exception, e:
+    print "Error: " + str(e)
+  except SystemExit:
+    pass  # catch the sys.exit from geocoding. It prints the usage().
+
+  if api_fetch_successful:
+    if geocoding_api_answer["STATUS"] == "OK":
+      row["latitude"] = geocoding_api_answer["RESULT"]["latitude"]
+      row["longitude"] = geocoding_api_answer["RESULT"]["longitude"]
+    else:  # STATUS == NOK
+      print "Error:", geocoding_api_answer["RESULT"]
+
 def load(secure,hostname,url,schema,table,verbose=False):
   if verbose: show("begin")
 
@@ -177,44 +216,8 @@ def load(secure,hostname,url,schema,table,verbose=False):
         row["postinumero"] = josoite["postinumeroUri"].replace("posti_","") if "postinumeroUri" in josoite and josoite["postinumeroUri"] else None
         row["postitoimipaikka"] = jv(josoite,"postitoimipaikka")
 
-        """
-        nb! coordinates in another process! (see geocoding.py)
-        In short:  geocoding.py translates given address to latitude/longitude -coordinates
-
-        Geocoding eats the address in following format: ["--address", "Kadunnimi talon_numero [porras asunto], postinumero, kaupunki"]
-
-        Geocoding returns:
-        {'STATUS': 'OK', 'RESULT': {'latitude': 60.24565450000001, 'longitude': 24.8390398}}
-
-        OR if problems:
-        {'STATUS': 'NOK', 'RESULT': "Error message"}
-        """
-
         if row["osoite"] is not None and row["osoite"] is not "" and row["postinumero"] is not None and row["postitoimipaikka"] is not None:
-          """
-          if there are commas (,) in row["osoite"], use the part before the first comma
-          e.g. "Fredrikinkatu 33 A, 2 krs" --> "Fredrikinkatu 33 A"
-          """
-          osoite_parsed = row["osoite"].split(",")[0]
-
-          osoite_array = ["--address"]
-          osoite_array.append(osoite_parsed + ", " + row["postinumero"] + ", " + row["postitoimipaikka"])
-
-          api_fetch_successful = False
-          try:
-            geocoding_api_answer = geocoding.main(osoite_array)
-            api_fetch_successful = True
-          except Exception, e:
-            print "Error: " + str(e)
-          except SystemExit:
-            pass  # catch the sys.exit from geocoding. It prints the usage().
-
-          if api_fetch_successful:
-            if geocoding_api_answer["STATUS"] == "OK":
-              row["latitude"] = geocoding_api_answer["RESULT"]["latitude"]
-              row["longitude"] = geocoding_api_answer["RESULT"]["longitude"]
-            else:  # STATUS == NOK
-              print "Error:", geocoding_api_answer["RESULT"]
+          get_and_set_coordinates(row)
 
       if verbose: show(" %5d -- %s %s (%s)"%(cnt,row["tyyppi"],row["koodi"],row["nimi"]))
       dboperator.insert(hostname+url,schema,table,row)
