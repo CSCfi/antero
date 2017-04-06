@@ -39,8 +39,6 @@ def load(command,expect,verbose=False):
     dboperator.close()
     exit(2) # lopeta virheeseen
 
-  dboperator.close()
-
   if verbose: show("ready")
   return ret
   
@@ -82,6 +80,8 @@ def main(argv):
   ret = load(command,expect,verbose)
   if expect:
     print ret
+
+  dboperator.close()
 
 if __name__ == "__main__":
   main(sys.argv[1:])
