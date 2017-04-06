@@ -91,13 +91,16 @@ def parse_url_address(argument_array):
     address_string = ""
     for i in range(1, len(argument_array)):  # first argument not part of address
         address_string += argument_array[i]
-        address_string += "+"  # replace spaces in the address with '+' sign
+        address_string += "+"  # add '+' sign between array cells
 
     # remove the unnecessary last +-sign
     address_string = address_string[:-1]
 
+    # replace whitespaces in the address with '+' sign
+    address_string = address_string.replace(" ", "+")
+
     """
-    address_string, e.g. Mannerheimintie+123+F+63,+00100,+Helsinki or Abraham+Wetterin+tie+123+G+64,+27800,+Uusi+Kaarlepyy
+    address_string, e.g. Mannerheimintie+123+F+63,00100,Helsinki or Abraham+Wetterin+tie+123+G+64,27800,Uusi+Kaarlepyy
     split address_string using ',' delimeter
     """
     address_array = address_string.split(',')
@@ -145,8 +148,8 @@ def parse_url_address(argument_array):
     Example:
     street_name: Abraham+Wetterin+tie
     house_number: +123
-    zip_code: +27800
-    city: +Uusi+Kaarlepyy
+    zip_code: 27800
+    city: Uusi+Kaarlepyy
     """
     address = street_name + house_number
 

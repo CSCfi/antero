@@ -82,7 +82,7 @@ def get_and_set_coordinates(row):
       row["latitude"] = geocoding_api_answer["RESULT"]["latitude"]
       row["longitude"] = geocoding_api_answer["RESULT"]["longitude"]
     else:  # STATUS == NOK
-      print "Error:", geocoding_api_answer["RESULT"]
+      print "Error:", geocoding_api_answer["RESULT"].encode('utf-8', 'ignore')  # unknown characters will be lost (ignored)
 
 def load(secure,hostname,url,schema,table,verbose=False):
   if verbose: show("begin")
