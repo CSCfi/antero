@@ -72,7 +72,8 @@ def get_geo_coordinates_from_server(address, postalcode, city):
 
     elif r.status_code == 200:
         # Currently only coordinates for exact matches are selected  (confidence == 1)
-        if result_json[u'features'][0][u'properties'][u'confidence'] == 1:
+        result_confidence = result_json[u'features'][0][u'properties'][u'confidence']
+        if result_confidence == 1:
             coordinate_results = {}
             result_json[u'features'][0][u'properties'][u'confidence']
             results = result_json[u'features'][0][u'geometry'][u'coordinates']
@@ -80,7 +81,7 @@ def get_geo_coordinates_from_server(address, postalcode, city):
             coordinate_results["longitude"] = results[0]
             return get_result_dictionary(True, coordinate_results)
         else:
-            return get_result_dictionary(False, "Result is not accurate enough.")
+            return get_result_dictionary(False, "Confidence: " + str(result_confidence) + ", for: " + address_url)
 
     else:
         return get_result_dictionary(False, "Unknown HTTP-error code: " + str(r.status_code))
