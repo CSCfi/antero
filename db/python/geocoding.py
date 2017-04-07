@@ -71,9 +71,8 @@ def get_geo_coordinates_from_server(address, postalcode, city):
         return get_result_dictionary(False, "Bad Gateway: Connection was lost to the Elasticsearch cluster.")
 
     elif r.status_code == 200:
-        # Currently only coordinates for exact matches are selected  (confidence == 1)
         result_confidence = result_json[u'features'][0][u'properties'][u'confidence']
-        if result_confidence == 1:
+        if result_confidence >= 0.6:  # TODO: this needs more evaluation. What is the minimum acceptable confidence.
             coordinate_results = {}
             result_json[u'features'][0][u'properties'][u'confidence']
             results = result_json[u'features'][0][u'geometry'][u'coordinates']
@@ -100,7 +99,7 @@ def parse_url_address(argument_array):
     address_string = address_string.replace(" ", "+")
 
     """
-    address_string, e.g. Mannerheimintie+123+F+63,00100,Helsinki or Abraham+Wetterin+tie+123+G+64,27800,Uusi+Kaarlepyy
+    address_string, e.g. Mannerheimintie+123+F+63,+00100,+Helsinki or Abraham+Wetterin+tie+123+G+64,+27800,+Uusi+Kaarlepyy
     split address_string using ',' delimeter
     """
     address_array = address_string.split(',')
@@ -124,25 +123,21 @@ def parse_url_address(argument_array):
             street_name_finished = True
             house_number += i
 
-    # remove the unnecessary last +-sign
-    street_name = street_name[:-1]
-    # add space (+-sign) to the beginning of house_number
-    house_number = '+' + house_number
+    if zip_code != "" and zip_code[0] == "+":
+        zip_code = zip_code[1:]
 
-    # trivial length checkings
-    if len(street_name) == 0 or len(zip_code) == 0 or len(city) == 0:
-        usage()
-        sys.exit(5)
+    # zip-code must be 5 digits, and 00000 is not OK
+    if len(zip_code) == 5 and zip_code != "00000":
+        for j in range(0, len(zip_code)):
+            if not zip_code[j].isdigit():
+                print "Error: Postalcode incorrect: " + zip_code
+                sys.exit(5)
+    else:
+        print "Error: Postalcode incorrect: " + zip_code
+        sys.exit(6)
 
-    for j in range(1, len(zip_code)):  # exclude first character ('+')
-        if not zip_code[j].isdigit():
-            usage()
-            sys.exit(6)
-
-    for k in city:
-        if k.isdigit():
-            usage()
-            sys.exit(7)
+    if city != "" and city[0] == "+":
+        city = city[1:]
 
     """
     Example:
