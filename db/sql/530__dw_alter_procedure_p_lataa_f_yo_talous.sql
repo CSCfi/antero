@@ -510,7 +510,7 @@ from
 union all
 	  select tilik
       ,yliop_koodi
-	  ,coalesce(opm95opa, '-1') as opintoala95
+	  ,coalesce(opm95opa_koodi, '-1') as opintoala95
 	  ,tili
       ,'L' as aineistotyyppi
 	  ,'-1' as toiminto
@@ -520,7 +520,7 @@ union all
       ,'ETL: p_lataa_f_yo_talous - SA_SUORAT_YO_TALOUS_5_kustannustiedot' as src from
 (select tilik
       ,yliop_koodi
-      ,OPM95OPA_koodi
+      ,opm95opa_koodi
 	  ,ohjauksenala_koodi
       ,ptutkoul as koulutus
 	  ,ptutosat as ptutosat2
