@@ -13,6 +13,7 @@ public class JsonRowHandler implements RowCallbackHandler {
 
     private final JsonGenerator jsonGenerator;
     private final List<ApiProperty> properties;
+    private long count = 0;
 
     public JsonRowHandler(JsonGenerator jsonGenerator, List<ApiProperty> properties) {
         this.jsonGenerator = jsonGenerator;
@@ -30,8 +31,13 @@ public class JsonRowHandler implements RowCallbackHandler {
             }
             jsonGenerator.writeEndObject();
             jsonGenerator.flush();
+            count++;
         } catch (IOException e) {
             throw new SQLException("Could not process result set row!", e);
         }
+    }
+
+    public long getCount() {
+        return count;
     }
 }

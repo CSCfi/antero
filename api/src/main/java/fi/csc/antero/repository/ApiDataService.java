@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.vineey.rql.filter.parser.DefaultFilterParser;
 import static com.github.vineey.rql.querydsl.filter.QueryDslFilterContext.withMapping;
+import com.github.vineey.rql.querydsl.page.QuerydslPageParser;
+import com.querydsl.core.QueryModifiers;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.Expressions;
@@ -57,24 +59,32 @@ public class ApiDataService {
         this.queryFactory = queryFactory;
     }
 
-    public void streamToJsonArray(String table, OutputStream out, String filter) throws IOException, SQLException {
+    public Long streamToJsonArray(String table, OutputStream out, String filter, Long offset, Long limit) throws IOException, SQLException {
         final JsonGenerator jg = om.getFactory().createGenerator(out);
-        StringBuilder sb = new StringBuilder();
-        if (!schema.isEmpty()) {
-            sb.append(schema).append(".");
-        }
-        sb.append(table);
-        final StringTemplate path = Expressions.stringTemplate(sb.toString());
+        final StringTemplate path = getFromExpression(table);
         final SQLQuery<String> sql = queryFactory.select(Expressions.stringTemplate("*"))
                 .from(path)
-                .where(createFilterPredicate(table, filter));
+                .where(createFilterPredicate(table, filter))
+                .restrict(createLimitQueryModifier(offset, limit));
         sql.setUseLiterals(true);
         jg.writeStartArray();
-        jdbcTemplate.query(sql.getSQL().getSQL(),
+        final String queryString = sql.getSQL().getSQL();
+        log.info("Execute query [{}]", queryString);
+        final JsonRowHandler rowHandler = new JsonRowHandler(jg, getTableColumns(table));
+        jdbcTemplate.query(queryString,
                 ps -> ps.setFetchDirection(ResultSet.FETCH_FORWARD),
-                new JsonRowHandler(jg, getTableColumns(table)));
+                rowHandler);
         jg.writeEndArray();
         jg.flush();
+        return rowHandler.getCount();
+    }
+
+    @Cacheable("count")
+    public Long getCount(String table, String filter) throws SQLException {
+        return queryFactory.select(Expressions.stringTemplate("*"))
+                .from(getFromExpression(table))
+                .where(createFilterPredicate(table, filter))
+                .fetchCount();
     }
 
     @Cacheable("tables")
@@ -148,5 +158,35 @@ public class ApiDataService {
             log.error("Filtering error!", t);
             throw new FilterException("Bad filtering parameter! Cause: " + t.getMessage());
         }
+    }
+
+    private QueryModifiers createLimitQueryModifier(Long offset, Long limit) {
+        if (offset == null && limit == null) {
+            return QueryModifiers.EMPTY;
+        }
+        String limitStr = "limit(%d,%d)";
+        if (offset == null || offset < 0) {
+            limitStr = String.format(limitStr, 0, limit);
+        } else if (limit == null || limit < 0) {
+            limitStr = String.format(limitStr, offset, Long.MAX_VALUE);
+        } else {
+            limitStr = String.format(limitStr, offset, limit);
+        }
+        QuerydslPageParser querydslPageParser = new QuerydslPageParser();
+        try {
+            return querydslPageParser.parse(limitStr);
+        } catch (Throwable t) {
+            log.error("Limit error!", t);
+            throw new FilterException("Bad limit parameter! Cause: " + t.getMessage());
+        }
+    }
+
+    private StringTemplate getFromExpression(String table) {
+        StringBuilder sb = new StringBuilder();
+        if (!schema.isEmpty()) {
+            sb.append(schema).append(".");
+        }
+        sb.append(table);
+        return Expressions.stringTemplate(sb.toString());
     }
 }

@@ -29,14 +29,27 @@ public class ApiController {
     }
 
     @RequestMapping(value = "/resources/{resource}/data", method = RequestMethod.GET)
-    public void getData(@PathVariable("resource") String resource, HttpServletResponse response,
-                        @RequestParam(value = "filter", defaultValue = "") String filter) throws IOException, SQLException {
+    public void getData(@PathVariable("resource") String resource,
+                        HttpServletResponse response,
+                        @RequestParam(value = "filter", required = false) String filter,
+                        @RequestParam(value = "offset", required = false) Long offset,
+                        @RequestParam(value = "limit", required = false) Long limit)
+            throws IOException, SQLException {
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         checkResource(resource);
-        service.streamToJsonArray(resource, response.getOutputStream(), filter);
+        service.streamToJsonArray(resource, response.getOutputStream(), filter, offset, limit);
     }
 
-    @RequestMapping(value = "/resources/{resource}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @RequestMapping(value = "/resources/{resource}/data/count", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public Long getDataCount(@PathVariable("resource") String resource,
+                             @RequestParam(value = "filter", required = false) String filter)
+            throws SQLException {
+        return service.getCount(resource, filter);
+    }
+
+    @RequestMapping(value = "/resources/{resource}", method = RequestMethod.GET,
+            produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public
     @ResponseBody
     List<ApiProperty> getResource(@PathVariable("resource") String resource) throws SQLException, IOException {

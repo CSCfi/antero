@@ -7,12 +7,11 @@ import org.skyscreamer.jsonassert.JSONAssert;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.Set;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -26,100 +25,113 @@ public class ApiControllerTest {
 
     @Test
     public void testGetData() throws Exception {
-        final ResponseEntity<String> responseEntity = restTemplate.getForEntity("/resources/test_data/data",
-                String.class);
-        final String response = responseEntity.getBody();
-        Assert.assertEquals("Response code should match!", 200, responseEntity.getStatusCodeValue());
-        String expected = "[{\"id\" : 1,\n" +
-                "\"test_text\" : \"text value\",\n" +
-                "\"test_number\" : 1.11,\n" +
-                "\"test_date\" : 1483221600000\n" +
-                "},{\n" +
-                "\"id\" : 2,\n" +
-                "\"test_text\" : \"text value 2\",\n" +
-                "\"test_number\" : 2.22,\n" +
-                "\"test_date\" : 1485986400000\n" +
+        final ResponseEntity<String> entity = makeQuery("/resources/test_data/data", 200);
+        String expected = "[{'id' : 1," +
+                "'test_text' : 'text value'," +
+                "'test_number' : 1.11," +
+                "'test_date' : 1483221600000" +
+                "},{" +
+                "'id' : 2," +
+                "'test_text' : 'text value 2'," +
+                "'test_number' : 2.22," +
+                "'test_date' : 1485986400000" +
                 "}]";
-        JSONAssert.assertEquals(expected, response, false);
+        JSONAssert.assertEquals(expected, entity.getBody(), false);
     }
 
     @Test
     public void testGetDataWithFilter() throws Exception {
-        final ResponseEntity<String> responseEntity = restTemplate
-                .getForEntity("/resources/test_data/data?filter=(test_text=='*value 2';id>1)",
-                        String.class);
-        final String response = responseEntity.getBody();
-        Assert.assertEquals("Response code should match!", 200, responseEntity.getStatusCodeValue());
-        String expected = "[{\"id\" : 2,\n" +
-                "\"test_text\" : \"text value 2\",\n" +
-                "\"test_number\" : 2.22,\n" +
-                "\"test_date\" : 1485986400000\n" +
+        final ResponseEntity<String> entity = makeQuery("/resources/test_data/data?filter=(test_text=='*value 2';id>1)",
+                200);
+        final String result = entity.getBody();
+        String expected = "[{'id' : 2," +
+                "'test_text' : 'text value 2'," +
+                "'test_number' : 2.22," +
+                "'test_date' : 1485986400000" +
                 "}]";
-        JSONAssert.assertEquals(expected, response, false);
+        JSONAssert.assertEquals(expected, result, false);
     }
 
     @Test
     public void testGetDataWithWhiteSpaceFilter() throws Exception {
-        final ResponseEntity<String> responseEntity = restTemplate
-                .getForEntity("/resources/test_data/data?filter=white_space=='true'",
-                        String.class);
-        final String response = responseEntity.getBody();
-        Assert.assertEquals("Response code should match!", 200, responseEntity.getStatusCodeValue());
-        String expected = "[{\"id\" : 1,\n" +
-                "\"test_text\" : \"text value\",\n" +
-                "\"test_number\" : 1.11,\n" +
-                "\"test_date\" : 1483221600000,\n" +
-                "\"white_space\" : true" +
+        final String result = makeQuery("/resources/test_data/data?filter=white_space=='true'", 200)
+                .getBody();
+        String expected = "[{'id' : 1," +
+                "'test_text' : 'text value'," +
+                "'test_number' : 1.11," +
+                "'test_date' : 1483221600000," +
+                "'white_space' : true" +
                 "}]";
-        JSONAssert.assertEquals(expected, response, false);
+        JSONAssert.assertEquals(expected, result, false);
     }
 
     @Test
     public void testGetDataWithBadFilter() throws Exception {
-        final ResponseEntity<String> responseEntity = restTemplate
-                .getForEntity("/resources/test_data/data?filter=(test_text=='*value 2';invalid>1)",
-                        String.class);
-        Assert.assertEquals("Response code should match!", 400, responseEntity.getStatusCodeValue());
+        makeQuery("/resources/test_data/data?filter=(test_text=='*value 2';invalid>1)", 400);
     }
 
     @Test
     public void testGetDataInvalidResource() throws Exception {
-        final ResponseEntity<String> responseEntity = restTemplate.getForEntity("/resources/invalid_data",
-                String.class);
-        Assert.assertEquals("Response code should match!", 404, responseEntity.getStatusCodeValue());
+        makeQuery("/resources/invalid_data", 404);
+    }
+
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            scripts = {"/sql/init.sql", "/sql/limit_test_data.sql"})
+    @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD,
+            scripts = "/sql/clear.sql")
+    public void testGetDataWithPaging() throws Exception {
+        final String baseUrl = "/resources/test_data/data?";
+        int size = 2;
+        for (int i = 0; i < 5; i++) {
+            final String url = String.format(baseUrl + "offset=%d&limit=%d", i * size, size);
+            final String result = makeQuery(url, 200).getBody();
+            JSONAssert.assertEquals(String.format("[{'id':%d}, {'id':%d}]", i * size + 1, i * size + 2),
+                    result, false);
+        }
+    }
+
+    @Test
+    public void testDataCount() throws Exception {
+        final String result = makeQuery("/resources/test_data/data/count", 200).getBody();
+        JSONAssert.assertEquals("2", result, false);
     }
 
     @Test
     public void testGetResource() throws Exception {
-        final ResponseEntity<String> responseEntity = restTemplate.getForEntity("/resources/test_data", String.class);
-        Assert.assertEquals("Response code should match!", 200, responseEntity.getStatusCodeValue());
-        final String result = responseEntity.getBody();
+        final String result = makeQuery("/resources/test_data", 200).getBody();
         Assert.assertNotNull(result);
-        String expected = "[ {\n" +
-                "  \"name\" : \"id\",\n" +
-                "  \"type\" : \"INTEGER\"\n" +
-                "}, {\n" +
-                "  \"name\" : \"test_text\",\n" +
-                "  \"type\" : \"VARCHAR\"\n" +
-                "}, {\n" +
-                "  \"name\" : \"test_number\",\n" +
-                "  \"type\" : \"DOUBLE\"\n" +
-                "}, {\n" +
-                "  \"name\" : \"test_date\",\n" +
-                "  \"type\" : \"TIMESTAMP\"\n" +
-                "}, {\n" +
-                "  \"name\" : \"white_space\",\n" +
-                "  \"type\" : \"BOOLEAN\"\n" +
+        String expected = "[ {" +
+                "  'name' : 'id'," +
+                "  'type' : 'INTEGER'" +
+                "}, {" +
+                "  'name' : 'test_text'," +
+                "  'type' : 'VARCHAR'" +
+                "}, {" +
+                "  'name' : 'test_number'," +
+                "  'type' : 'DOUBLE'" +
+                "}, {" +
+                "  'name' : 'test_date'," +
+                "  'type' : 'TIMESTAMP'" +
+                "}, {" +
+                "  'name' : 'white_space'," +
+                "  'type' : 'BOOLEAN'" +
                 "} ]";
         JSONAssert.assertEquals(expected, result, false);
     }
 
     @Test
     public void testGetResources() throws Exception {
-        final ResponseEntity<Set> responseEntity = restTemplate.getForEntity("/resources", Set.class);
-        Assert.assertEquals("Response code should match!", 200, responseEntity.getStatusCodeValue());
-        final Set tableNames = responseEntity.getBody();
-        Assert.assertTrue("Table names does not contain right tables!",
-                tableNames.contains("test_data") && tableNames.contains("test_data_2"));
+        final String result = makeQuery("/resources", 200).getBody();
+        JSONAssert.assertEquals("['test_data', 'test_data_2']", result, false);
+    }
+
+    private ResponseEntity<String> makeQuery(String url, int expectedStatus) {
+        final ResponseEntity<String> responseEntity = restTemplate
+                .getForEntity(url,
+                        String.class);
+        Assert.assertEquals("Response code should match!", expectedStatus, responseEntity.getStatusCodeValue());
+        Assert.assertEquals("Content-type should match!", MediaType.APPLICATION_JSON_UTF8, responseEntity.getHeaders().getContentType());
+        return responseEntity;
     }
 }

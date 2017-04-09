@@ -2,10 +2,12 @@ package fi.csc.antero.controller;
 
 import fi.csc.antero.exception.FilterException;
 import fi.csc.antero.exception.NotFoundException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @ControllerAdvice
@@ -13,14 +15,18 @@ import org.springframework.web.bind.annotation.RestController;
 public class ApiExceptionHandler {
 
     @ExceptionHandler(NotFoundException.class)
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    public String handleNotFound(NotFoundException e) {
-        return e.getMessage();
+    public ResponseEntity<String> handleNotFound(NotFoundException e) {
+        return new ResponseEntity<>(e.getMessage(), getHttpHeaders(), HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(FilterException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public String handleFilteringError(FilterException e) {
-        return e.getMessage();
+    public ResponseEntity<String> handleFilteringError(FilterException e) {
+        return new ResponseEntity<>(e.getMessage(), getHttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    private HttpHeaders getHttpHeaders() {
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        return headers;
     }
 }
