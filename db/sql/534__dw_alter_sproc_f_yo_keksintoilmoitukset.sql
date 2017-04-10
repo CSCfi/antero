@@ -30,7 +30,7 @@ SELECT s2.id
 	,getdate()
 	,'etl: p_lataa_f_yo_keksintoilmoitukset'
 	,suser_sname()
-FROM [sa].sa_yo3b_julkaisut_keksintoilmoitukset s1
+FROM [sa].sa_suorat_yo3b_julkaisut_keksintoilmoitukset s1
 JOIN [dw].[d_yo] s2 ON s1.yliopisto = s2.yo_tunnus
 LEFT JOIN [dw].d_koulutusala_1995 s3 ON CONVERT(VARCHAR, s1.[I Koulutusala]) = CONVERT(VARCHAR, CASE WHEN s3.koodi = 'NN' THEN '-1' ELSE s3.koodi END)
 	AND s1.Vuosi < 2016
