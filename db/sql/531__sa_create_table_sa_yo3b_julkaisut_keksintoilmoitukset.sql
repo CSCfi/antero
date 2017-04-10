@@ -1,4 +1,4 @@
-IF NOT EXISTS (select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='sa' and TABLE_NAME='sa_suorat_yo_talous_5_kustannustiedot_harjoittelukoulut') BEGIN
+IF NOT EXISTS (select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='sa' and TABLE_NAME='sa_yo3b_julkaisut_keksintoilmoitukset') BEGIN
 
 create table sa_yo3b_julkaisut_keksintoilmoitukset
 (
