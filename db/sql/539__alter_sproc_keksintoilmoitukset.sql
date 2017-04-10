@@ -32,4 +32,3 @@ LEFT JOIN [dw].d_ohjauksenala s4 ON s1.[I Koulutusala] = s4.ohjauksenala_koodi
 	AND s1.Vuosi >= 2016
 LEFT JOIN [dw].d_julkaisun_kansainvalisyys s5 ON s1.[Julkaisumaa (julkaistu Suomessa   julkaistu ulkomailla)] = s5.julkaisun_kansainvalisyys_koodi
 LEFT JOIN [dw].d_tieteenala s6 ON s1.[I Tieteenala] = s6.tieteenala_koodi
-GO
