@@ -1,6 +1,6 @@
-IF NOT EXISTS (select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='sa' and TABLE_NAME='sa_yo3b_julkaisut_keksintoilmoitukset') BEGIN
+IF NOT EXISTS (select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='sa' and TABLE_NAME='sa_suorat_yo3b_julkaisut_keksintoilmoitukset') BEGIN
 
-create table sa.sa_yo3b_julkaisut_keksintoilmoitukset
+create table sa.sa_suorat_yo3b_julkaisut_keksintoilmoitukset
 (
   yliopisto varchar(4000)
 , vuosi varchar(4000)
