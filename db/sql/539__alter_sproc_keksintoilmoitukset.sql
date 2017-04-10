@@ -9,6 +9,10 @@ INSERT INTO dw.f_amk_keksintoilmoitukset (
 	,d_julkaisun_kansainvalisyys_id
 	,d_tieteenala_id
 	,[vuosi]
+	,H21
+	,H22
+	,H23
+	,H24
 	,[julkaisujen_maara]
 	,[loadtime]
 	,[source]
@@ -20,7 +24,10 @@ SELECT s2.id
 	,COALESCE(s5.id,-1)
 	,COALESCE(s6.id,-1)
 	,[Vuosi]
-	,[Julkaisujen määrä]
+	,H21
+	,H22
+	,H23
+	,H24
 	,getdate()
 	,'etl: p_lataa_f_amk_keksintoilmoitukset'
 	,suser_sname()
