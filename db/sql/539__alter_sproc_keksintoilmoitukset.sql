@@ -13,7 +13,6 @@ INSERT INTO dw.f_amk_keksintoilmoitukset (
 	,H22
 	,H23
 	,H24
-	,[julkaisujen_maara]
 	,[loadtime]
 	,[source]
 	,[username]
