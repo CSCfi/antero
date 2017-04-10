@@ -1,4 +1,4 @@
-ALTER PROCEDURE [dw].p_lataa_yo_keksintoilmoitukset
+ALTER PROCEDURE [dw].p_lataa_f_yo_keksintoilmoitukset
 AS
 TRUNCATE TABLE dw.f_yo_keksintoilmoitukset;
 
@@ -28,7 +28,7 @@ SELECT s2.id
 	,COALESCE(H23, 0)
 	,COALESCE(H24, 0)
 	,getdate()
-	,'etl: p_lataa_yo_keksintoilmoitukset'
+	,'etl: p_lataa_f_yo_keksintoilmoitukset'
 	,suser_sname()
 FROM [sa].sa_yo3b_julkaisut_keksintoilmoitukset s1
 JOIN [dw].[d_yo] s2 ON s1.yliopisto = s2.yo_tunnus
