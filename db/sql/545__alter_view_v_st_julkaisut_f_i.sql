@@ -1,5 +1,4 @@
 
-
 ALTER view [dw].[v_st_julkaisut_f_i] as
 
 select 
@@ -264,6 +263,7 @@ join dw.d_julkaisun_kansainvalisyys d4 on d4.id=f.d_julkaisun_kansainvalisyys_id
 join dw.d_tieteenala d5 on d5.id=f.d_tieteenala_id
 join dw.d_amk d6 on d6.id=f.d_amk_id
 join dw.d_koulutusala_2002 d9 on d9.id=f.d_koulutusala_id
+where h21<>0 or h22<>0 or h23<>0 or h24<>0
 
 union all
 
@@ -328,7 +328,7 @@ join dw.d_julkaisun_kansainvalisyys d4 on d4.id=f.d_julkaisun_kansainvalisyys_id
 join dw.d_tieteenala d5 on d5.id=f.d_tieteenala_id
 join dw.d_yo d6 on d6.id=f.d_yliopisto_id
 join dw.d_koulutusala_1995 d9 on d9.id=f.d_koulutusala_id
-
+where h21<>0 or h22<>0 or h23<>0 or h24<>0
 
 
 
