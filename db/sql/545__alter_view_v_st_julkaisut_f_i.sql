@@ -203,7 +203,7 @@ join dw.d_koulutusala_1995 d9 on d9.id=f.d_koulutusala_id
 */
 union all
 
---H
+--H amk
 select 
 [Tilastovuosi] = vuosi
 
@@ -267,7 +267,7 @@ join dw.d_koulutusala_2002 d9 on d9.id=f.d_koulutusala_id
 
 union all
 
---H
+--H YO
 select 
 [Tilastovuosi] = vuosi
 
@@ -312,11 +312,11 @@ select
 						else '-1'
 					end
 ,[Koodit Julkaisun kansainvälisyys] = d4.julkaisun_kansainvalisyys_koodi
-,[Koodit Koulutusala 1995] = null
-,[Koodit Koulutusala 2002] = case d9.koodi when -1 then 99 else d9.koodi end
+,[Koodit Koulutusala 1995] = case d9.koodi when -1 then 99 else d9.koodi end
+,[Koodit Koulutusala 2002] = null
 ,[Koodit OKM ohjauksen ala] = case d2.ohjauksenala_koodi when -1 then 9 else d2.ohjauksenala_koodi end
-,[Koodit Yliopisto] = null
-,[Koodit Ammattikorkeakoulu] = d6.yo_tunnus
+,[Koodit Yliopisto] = d6.yo_tunnus
+,[Koodit Ammattikorkeakoulu] = null
 ,[Koodit Päätieteenala] = case d5.paatieteenala_koodi when -1 then 9 else d5.paatieteenala_koodi end
 ,[Koodit Tieteenala] = case d5.tieteenala_koodi when -1 then 9999 else d5.tieteenala_koodi end
 
