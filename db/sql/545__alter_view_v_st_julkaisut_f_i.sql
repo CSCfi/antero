@@ -293,7 +293,7 @@ select
 ,[Päätieteenala] = d5.paatieteenala_nimi_fi
 ,[Tieteenala] = d5.tieteenala_nimi_fi
 
-,[Sektori] = 'AMK'
+,[Sektori] = 'Yliopisto'
 
 --mittarit
 ,[julkaisujen maara] = h21
