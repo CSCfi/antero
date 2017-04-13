@@ -43,13 +43,29 @@ forEach ($file in $files)
     Write-Host "Processing file:" $file.FullName
     $projectfile = get-childitem $file.DirectoryName"*.smproj"
     $xml = [xml](Get-Content $projectfile.FullName)
-    $projectname = $xml.Project.PropertyGroup[1].DeploymentServerDatabase
+    if ($xml.Project.PropertyGroup[0].DeploymentServerDatabase)
+    {
+        $projectname = $xml.Project.PropertyGroup[0].DeploymentServerDatabase
+    }
+    else
+    {
+        $projectname = $xml.Project.PropertyGroup[1].DeploymentServerDatabase
+    }
     $xml = [xml](Get-Content ($workdir + "Model.deploymenttargets"))
     $xml.DeploymentTarget.Database = $projectname
     $xml.Save($workdir + "Model.deploymenttargets")
     $destfile = $workdir + "Model.bim"
     Remove-Item $destfile
-    Copy-Item $file $destfile
+    if([bool]((Get-Content $file) -as [xml]))
+    {
+        $asdatabase = get-childitem $file.DirectoryName"*.asdatabase" -recurse
+        $asdatabase >> "d:\temp\asdatabase.txt"
+        Copy-Item $asdatabase $destfile
+    }
+    else
+    {
+        Copy-Item $file $destfile
+    }
     
     & "$ScriptPath\tabulardeploy.ps1" $workdir"Model.bim" $workdir $prodtabserver $prodsqlserver $proddatabase $exe
 }
