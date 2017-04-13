@@ -56,7 +56,15 @@ forEach ($file in $files)
     $xml.Save($workdir + "Model.deploymenttargets")
     $destfile = $workdir + "Model.bim"
     Remove-Item $destfile
-    Copy-Item $file $destfile
+    if([bool]((Get-Content $file) -as [xml]))
+    {
+        $asdatabase = get-childitem $file.DirectoryName"\*.asdatabase"
+        Copy-Item $asdatabase $destfile
+    }
+    else
+    {
+        Copy-Item $file $destfile
+    }
     
     & "$ScriptPath\tabulardeploy.ps1" $workdir"Model.bim" $workdir $prodtabserver $prodsqlserver $proddatabase $exe
 }
