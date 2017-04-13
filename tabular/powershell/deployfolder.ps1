@@ -43,7 +43,6 @@ forEach ($file in $files)
     Write-Host "Processing file:" $file.FullName
     $projectfile = get-childitem $file.DirectoryName"*.smproj"
     $projectfile
-
     $xml = [xml](Get-Content $projectfile.FullName)
     if ($xml.Project.PropertyGroup[0].DeploymentServerDatabase)
     {
