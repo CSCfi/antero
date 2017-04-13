@@ -43,7 +43,7 @@ forEach ($file in $files)
     Write-Host "Processing file:" $file.FullName
     $projectfile = get-childitem $file.DirectoryName"*.smproj"
     $xml = [xml](Get-Content $projectfile.FullName)
-    $projectname = $xml.Project.PropertyGroup[1].DeploymentServerDatabase
+    $projectname = $xml.Project.PropertyGroup[$xml.Project.PropertyGroup.Count - 1].DeploymentServerDatabase
     $xml = [xml](Get-Content ($workdir + "Model.deploymenttargets"))
     $xml.DeploymentTarget.Database = $projectname
     $xml.Save($workdir + "Model.deploymenttargets")
