@@ -42,7 +42,7 @@ forEach ($file in $files)
 {
     Write-Host "Processing file:" $file.FullName
     $projectfile = get-childitem $file.DirectoryName"*.smproj"
-    $projectfile
+    $projectfile >> "d:\temp\projectfile.txt"
 
     $xml = [xml](Get-Content $projectfile.FullName)
     if ($xml.Project.PropertyGroup[0].DeploymentServerDatabase)
@@ -61,7 +61,7 @@ forEach ($file in $files)
     if([bool]((Get-Content $file) -as [xml]))
     {
         $asdatabase = get-childitem $file.DirectoryName"\bin\*.asdatabase"
-        $asdatabase
+        $asdatabase >> "d:\temp\asdatabase.txt"
         Copy-Item $asdatabase $destfile
     }
     else
