@@ -169,6 +169,19 @@ def load(hostname,url,schema,table,verbose):
         if "jNro" in d and d["jNro"]==1 and "tieteenala" in d:
           tieteenalaTKstr = d["tieteenala"]
 
+    kasvatusalat_1 = jv(row, "kasvatusalat_1")
+    taiteet_ja_kulttuurialat_2 = jv(row, "taiteet_ja_kulttuurialat_2")
+    humanistiset_alat_3 = jv(row, "humanistiset_alat_3")
+    yhteiskunnalliset_alat_4 = jv(row, "yhteiskunnalliset_alat_4")
+    kauppa_hallinto_ja_oikeustieteet_5 = jv(row, "kauppa_hallinto_ja_oikeustieteet_5")
+    luonnontieteet_6 = jv(row, "luonnontieteet_6")
+    tietojenkasittely_ja_tietoliikenne_7 = jv(row, "tietojenkasittely_ja_tietoliikenne_7")
+    tekniikan_alat_8 = jv(row, "tekniikan_alat_8")
+    maa_ja_metsatalousalat_9 = jv(row, "maa_ja_metsatalousalat_9")
+    laaketieteet_10 = jv(row, "laaketieteet_10")
+    terveys_ja_hyvinvointialat_11 = jv(row, "terveys_ja_hyvinvointialat_11")
+    palvelualat_12 = jv(row, "palvelualat_12")
+
     # find out which columns to use on insert
     ##dboperator.resetcolumns(row)
     ##
@@ -188,7 +201,11 @@ def load(hostname,url,schema,table,verbose):
      julkaisunKansainvalisyysKytkin, julkaisunKieliKoodi, avoinSaatavuusKoodi, evoJulkaisunKytkin, doi,
      pysyvaOsoiteTeksti, lahdetietokannanTunnus, latausId, yhteisjulkaisuId, rinnakkaistallennusKytkin,
      yhteisjulkaisunTunnus, juuliOsoiteTeksti, yhteisjulkaisuYritysKytkin, jufoId, orgSektori,
-     hankeTKs, avainsanaTKs, isbnTKs, issnTKs, koulutusalaTKs, orgYksikkoTKs, tekijaTKs, tieteenalaTKs
+     hankeTKs, avainsanaTKs, isbnTKs, issnTKs, koulutusalaTKs, orgYksikkoTKs, tekijaTKs, tieteenalaTKs,
+     kasvatusalat_1, taiteet_ja_kulttuurialat_2, humanistiset_alat_3, yhteiskunnalliset_alat_4,
+     kauppa_hallinto_ja_oikeustieteet_5, luonnontieteet_6, tietojenkasittely_ja_tietoliikenne_7,
+     tekniikan_alat_8, maa_ja_metsatalousalat_9, laaketieteet_10, terveys_ja_hyvinvointialat_11,
+     palvelualat_12
      ,source
     )
     """%(schema,table)+"""
@@ -201,7 +218,11 @@ def load(hostname,url,schema,table,verbose):
      %s,%s,%s,%s,%s,
      %s,%s,%s,%s,%s,
      %s,%s,%s,%s,%s,
-     %s,%s,%s,%s,%s,%s,%s,%s
+     %s,%s,%s,%s,%s,%s,%s,%s,
+     %s,%s,%s,%s,
+     %s,%s,%s,
+     %s,%s,%s,%s,
+     %s
      ,%s
     )
     """, (
@@ -213,7 +234,11 @@ def load(hostname,url,schema,table,verbose):
      julkaisunKansainvalisyysKytkin, julkaisunKieliKoodi, avoinSaatavuusKoodi, evoJulkaisunKytkin, doi,
      pysyvaOsoiteTeksti, lahdetietokannanTunnus, latausId, yhteisjulkaisuId, rinnakkaistallennusKytkin,
      yhteisjulkaisunTunnus, juuliOsoiteTeksti, yhteisjulkaisuYritysKytkin, jufoId, orgSektori,
-     hankeTKstr, avainsanaTKstr, isbnTKstr, issnTKstr, koulutusalaTKstr, orgYksikkoTKstr, tekijaTKstr, tieteenalaTKstr
+     hankeTKstr, avainsanaTKstr, isbnTKstr, issnTKstr, koulutusalaTKstr, orgYksikkoTKstr, tekijaTKstr, tieteenalaTKstr,
+     kasvatusalat_1, taiteet_ja_kulttuurialat_2, humanistiset_alat_3, yhteiskunnalliset_alat_4,
+     kauppa_hallinto_ja_oikeustieteet_5, luonnontieteet_6, tietojenkasittely_ja_tietoliikenne_7,
+     tekniikan_alat_8, maa_ja_metsatalousalat_9, laaketieteet_10, terveys_ja_hyvinvointialat_11,
+     palvelualat_12
      ,address
     ))
     conn.commit()
