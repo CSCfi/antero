@@ -14,6 +14,7 @@ IF NOT EXISTS (
   ALTER TABLE dw.f_virta_otp_kvliikkuvuus ADD cimo_opintoaste varchar(2) NULL
 END
 /* revert
+-- should empty table before or something similar!
 ALTER TABLE dw.f_virta_otp_kvliikkuvuus ADD d_opiskeluoikeudentyyppi_id int NOT NULL
 
 ALTER TABLE dw.f_virta_otp_kvliikkuvuus DROP COLUMN cimo_opintoaste
