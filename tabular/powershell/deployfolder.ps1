@@ -58,7 +58,7 @@ forEach ($file in $files)
     Remove-Item $destfile
     if([bool]((Get-Content $file) -as [xml]))
     {
-        $asdatabase = get-childitem $file.DirectoryName"*.asdatabase" -recurse
+        $asdatabase = get-childitem $file.DirectoryName + $file.BaseName".asdatabase" -recurse
         $asdatabase >> "d:\temp\asdatabase.txt"
         Copy-Item $asdatabase $destfile
     }
