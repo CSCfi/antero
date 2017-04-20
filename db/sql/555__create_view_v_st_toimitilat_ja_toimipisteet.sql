@@ -10,7 +10,7 @@ Tilastovuosi = vuosi
 ,Yliopisto = d1.yo_nimi_fi
 ,Ammattikorkeakoulu = NULL
 ,Korkeakoulu = d1.yo_nimi_fi
-,Sektori = 'Yliopisto'
+,Sektori = "Yliopisto"
 
 ,Toimipiste = NULL
 ,Toimipaikka = NULL
@@ -45,7 +45,7 @@ Tilastovuosi = vuosi
 ,Yliopisto = NULL
 ,Ammattikorkeakoulu = d1.amk_nimi_fi
 ,Korkeakoulu = d1.amk_nimi_fi
-,Sektori = 'Ammattikorkeakoulu'
+,Sektori = "Ammattikorkeakoulu"
 
 ,Toimipiste = d3.toimipisteen_nimi
 ,Toimipaikka = d3.toimipaikan_nimi
@@ -81,7 +81,7 @@ Tilastovuosi = vuosi
 ,Yliopisto = d1.yo_nimi_fi
 ,Ammattikorkeakoulu = NULL
 ,Korkeakoulu = d1.yo_nimi_fi
-,Sektori = 'Yliopisto'
+,Sektori = "Yliopisto"
 
 ,Toimipiste = d2.selite_fi
 ,Toimipaikka = d3.selite_fi
