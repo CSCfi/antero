@@ -29,12 +29,12 @@ public class ApiControllerTest {
         String expected = "[{'id' : 1," +
                 "'test_text' : 'text value'," +
                 "'test_number' : 1.11," +
-                "'test_date' : 1483221600000" +
+                "'test_date' : '2017-01-01 00:00:00'" +
                 "},{" +
                 "'id' : 2," +
                 "'test_text' : 'text value 2'," +
                 "'test_number' : 2.22," +
-                "'test_date' : 1485986400000" +
+                "'test_date' : '2017-02-02 00:00:00'" +
                 "}]";
         JSONAssert.assertEquals(expected, entity.getBody(), false);
     }
@@ -47,7 +47,7 @@ public class ApiControllerTest {
         String expected = "[{'id' : 2," +
                 "'test_text' : 'text value 2'," +
                 "'test_number' : 2.22," +
-                "'test_date' : 1485986400000" +
+                "'test_date' : '2017-02-02 00:00:00'" +
                 "}]";
         JSONAssert.assertEquals(expected, result, false);
     }
@@ -59,8 +59,24 @@ public class ApiControllerTest {
         String expected = "[{'id' : 1," +
                 "'test_text' : 'text value'," +
                 "'test_number' : 1.11," +
-                "'test_date' : 1483221600000," +
+                "'test_date' : '2017-01-01 00:00:00'," +
                 "'white_space' : true" +
+                "}]";
+        JSONAssert.assertEquals(expected, result, false);
+    }
+
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            scripts = {"/sql/init.sql", "/sql/limit_test_data.sql"})
+    @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD,
+            scripts = "/sql/clear.sql")
+    public void testGetDataWithDateFilter() throws Exception {
+        final String result = makeQuery("/resources/test_data/data?filter=test_date=='2017-01-03 00:00:00'", 200)
+                .getBody();
+        String expected = "[{'id' : 3," +
+                "'test_text' : 'text value'," +
+                "'test_number' : 3.11," +
+                "'test_date' : '2017-01-03 00:00:00'" +
                 "}]";
         JSONAssert.assertEquals(expected, result, false);
     }
@@ -68,6 +84,7 @@ public class ApiControllerTest {
     @Test
     public void testGetDataWithBadFilter() throws Exception {
         makeQuery("/resources/test_data/data?filter=(test_text=='*value 2';invalid>1)", 400);
+        makeQuery("/resources/test_data/data?filter=(test_text=='*value 2';test_date>'invalid_date_format')", 400);
     }
 
     @Test
@@ -103,19 +120,20 @@ public class ApiControllerTest {
         Assert.assertNotNull(result);
         String expected = "[ {" +
                 "  'name' : 'id'," +
-                "  'type' : 'INTEGER'" +
+                "  'type' : 'number'" +
                 "}, {" +
                 "  'name' : 'test_text'," +
-                "  'type' : 'VARCHAR'" +
+                "  'type' : 'string'" +
                 "}, {" +
                 "  'name' : 'test_number'," +
-                "  'type' : 'DOUBLE'" +
+                "  'type' : 'number'" +
                 "}, {" +
                 "  'name' : 'test_date'," +
-                "  'type' : 'TIMESTAMP'" +
+                "  'type' : 'date'," +
+                "  'format' : 'yyyy-MM-dd HH:mm:ss'" +
                 "}, {" +
                 "  'name' : 'white_space'," +
-                "  'type' : 'BOOLEAN'" +
+                "  'type' : 'boolean'" +
                 "} ]";
         JSONAssert.assertEquals(expected, result, false);
     }
