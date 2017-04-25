@@ -25,14 +25,10 @@ import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.math.BigDecimal;
 import java.sql.DatabaseMetaData;
-import java.sql.Date;
 import java.sql.JDBCType;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -107,7 +103,7 @@ public class ApiDataService {
             final int dataType = resultSet.getInt("DATA_TYPE");
             final String sqlName = resultSet.getString("COLUMN_NAME");
             columns.add(new ApiProperty(sqlName.replaceAll("\\s", "_"), sqlName,
-                    JDBCType.valueOf(dataType)));
+                    PropType.valueOf(JDBCType.valueOf(dataType))));
         }
         return columns;
     }
@@ -118,35 +114,22 @@ public class ApiDataService {
         }
         final Map<String, Path> pathMap = new HashMap<>();
         for (ApiProperty column : getTableColumns(table)) {
-            Path path = null;
-            final JDBCType value = column.getType();
+            Path path;
+            final PropType type = column.getType();
             final String variable = column.getSqlName();
-            if (value == JDBCType.VARCHAR || value == JDBCType.NVARCHAR || value == JDBCType.CHAR) {
+            if (type.getPathType() == PathType.STRING) {
                 path = Expressions.stringPath(variable);
-            } else if (value == JDBCType.INTEGER) {
-                path = Expressions.numberPath(Integer.class, variable);
-            } else if (value == JDBCType.BIGINT) {
-                path = Expressions.numberPath(Long.class, variable);
-            } else if (value == JDBCType.DOUBLE || value == JDBCType.FLOAT) {
-                path = Expressions.numberPath(Double.class, variable);
-            } else if (value == JDBCType.REAL) {
-                path = Expressions.numberPath(Float.class, variable);
-            } else if (value == JDBCType.DECIMAL || value == JDBCType.NUMERIC) {
-                path = Expressions.numberPath(BigDecimal.class, variable);
-            } else if (value == JDBCType.BIT || value == JDBCType.BOOLEAN) {
+            } else if (type.getPathType() == PathType.BOOLEAN) {
                 path = Expressions.booleanPath(variable);
-            } else if (value == JDBCType.SMALLINT) {
-                path = Expressions.numberPath(Short.class, variable);
-            } else if (value == JDBCType.TINYINT) {
-                path = Expressions.numberPath(Byte.class, variable);
-            } else if (value == JDBCType.DATE) {
-                path = Expressions.datePath(Date.class, variable);
-            } else if (value == JDBCType.TIME) {
-                path = Expressions.timePath(Time.class, variable);
-            } else if (value == JDBCType.TIMESTAMP) {
-                path = Expressions.dateTimePath(Timestamp.class, variable);
-            }
-            if (path == null) {
+            } else if (type.getPathType() == PathType.NUMBER) {
+                path = Expressions.numberPath(type.getJavaType(), variable);
+            } else if (type.getPathType() == PathType.DATE) {
+                path = Expressions.datePath(type.getJavaType(), variable);
+            } else if (type.getPathType() == PathType.TIME) {
+                path = Expressions.timePath(type.getJavaType(), variable);
+            } else if (type.getPathType() == PathType.DATETIME) {
+                path = Expressions.dateTimePath(type.getJavaType(), variable);
+            } else {
                 continue;
             }
             pathMap.put(column.getApiName(), path);
@@ -155,7 +138,8 @@ public class ApiDataService {
         try {
             return new DefaultFilterParser().parse(filter, withMapping(pathMap));
         } catch (Throwable t) {
-            log.error("Filtering error!", t);
+            final String msg = String.format("Filtering error! Table: '%s', Filter: '%s'", table, filter);
+            log.error(msg, t);
             throw new FilterException("Bad filtering parameter! Cause: " + t.getMessage());
         }
     }
