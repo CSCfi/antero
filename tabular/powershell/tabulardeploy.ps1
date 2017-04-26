@@ -37,12 +37,16 @@ try
     if([bool]((Get-Content $modelfile) -as [xml]))
     {
         $xml = [xml]((Get-Content $scriptfile -Encoding Unicode))
-        Write-Host "Deploying model:" $xml.Alter.ObjectDefinition.Database.Name
+        Write-Host "Deploying model:" $xml.Batch.Alter.ObjectDefinition.Database.Name
 
-        $node = $xml.Alter.ObjectDefinition.Database.DataSources.ChildNodes
+        $node = $xml.Batch.Alter.ObjectDefinition.Database.DataSources.ChildNodes
         foreach($datasource in $node)
         {
-            $datasource.ImpersonationInfo.RemoveChild('Account')            $datasource.ImpersonationInfo.ImpersonationMode = "ImpersonateServiceAccount"
+            #$datasource.ImpersonationInfo.RemoveChild('Account')
+            ($datasource.ImpersonationInfo.ChildNodes | Where-Object { 'Account' -contains $_.Name }) | ForEach-Object {
+                [void]$_.ParentNode.RemoveChild($_)
+            }
+            $datasource.ImpersonationInfo.ImpersonationMode = "ImpersonateServiceAccount"
             $datasource.ConnectionString = "Provider=SQLNCLI11;Data Source=" + $prodsqlserver + ";Persist Security Info=false;Integrated Security=SSPI;Initial Catalog=" + $proddatabase
         }
 
@@ -66,7 +70,8 @@ try
 
         foreach($f in $e)
         {
-            $f.PSObject.Properties.Remove('Account')            $f.impersonationMode = "impersonateServiceAccount"
+            $f.PSObject.Properties.Remove('Account')
+            $f.impersonationMode = "impersonateServiceAccount"
             $f.connectionString = "Provider=SQLNCLI11;Data Source=" + $prodsqlserver + ";Initial Catalog=" + $proddatabase + ";Integrated Security=SSPI;Persist Security Info=false"
         }
 
