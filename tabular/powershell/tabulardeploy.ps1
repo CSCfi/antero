@@ -52,12 +52,12 @@ try
             $connstr = ""
             $oldstr = [string]$datasource.ConnectionString
             $oldstr -split ";" | %{
-                $e = $_ -split '=' # ex. "Provider=SQLNCLI11"
+                $s = $_ -split '=' # ex. "Provider=SQLNCLI11"
                 if ($connstr.Length -gt 0) {
                     $connstr += ";"
                 }
-                if ($e[0] -eq 'Data Source') {
-                    $connstr += $e[0]+"="+$prodsqlserver # replace
+                if ($s[0] -eq 'Data Source') {
+                    $connstr += $s[0]+"="+$prodsqlserver # replace
                 } else {
                     $connstr += $_ # keep
                 }
@@ -92,12 +92,12 @@ try
             $connstr = ""
             $oldstr = [string]$f.connectionString
             $oldstr -split ";" | %{
-                $e = $_ -split '=' # ex. "Provider=SQLNCLI11"
+                $s = $_ -split '=' # ex. "Provider=SQLNCLI11"
                 if ($connstr.Length -gt 0) {
                     $connstr += ";"
                 }
-                if ($e[0] -eq 'Data Source') {
-                    $connstr += $e[0]+"="+$prodsqlserver # replace
+                if ($s[0] -eq 'Data Source') {
+                    $connstr += $s[0]+"="+$prodsqlserver # replace
                 } else {
                     $connstr += $_ # keep
                 }
