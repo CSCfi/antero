@@ -42,7 +42,6 @@ end
 
 MERGE dw.d_avoinsaatavuus AS target
 USING (
-/* WAITING FOR SOURCE TO BE SOMEWHERE!!!
   SELECT
     koodi,
     COALESCE(nimi, nimi_sv, nimi_en) AS nimi,
@@ -51,13 +50,6 @@ USING (
     source
   FROM sa.sa_koodistot
   where koodisto='avoinsaatavuus'
---*/
-  select '0' as koodi, 'Ei vastausta' as nimi, 'Inget svar' as nimi_sv, 'No answer' as nimi_en, 'justus' as source
-  union
-  select '1', 'Open access -julkaisukanavassa ilmestynyt julkaisu', 'Publicerad i Open Access -tidskrift', 'Published in open access publication', 'justus'
-  union
-  select '2', 'Hybridijulkaisukanavassa ilmestynyt avoin julkaisu', 'Publicerad i hybridtidskrift', 'Published in hybrid open access journal', 'justus'
-
 ) AS src
 ON target.avoinsaatavuus_koodi = src.koodi
 WHEN MATCHED THEN
