@@ -47,7 +47,22 @@ try
                 [void]$_.ParentNode.RemoveChild($_)
             }
             $datasource.ImpersonationInfo.ImpersonationMode = "ImpersonateServiceAccount"
-            $datasource.ConnectionString = "Provider=SQLNCLI11;Data Source=" + $prodsqlserver + ";Persist Security Info=false;Integrated Security=SSPI;Initial Catalog=" + $proddatabase
+
+            #$datasource.ConnectionString = "Provider=SQLNCLI11;Data Source=" + $prodsqlserver + ";Persist Security Info=false;Integrated Security=SSPI;Initial Catalog=" + $proddatabase
+            $connstr = ""
+            $oldstr = [string]$datasource.ConnectionString
+            $oldstr -split ";" | %{
+                $e = $_ -split '=' # ex. "Provider=SQLNCLI11"
+                if ($connstr.Length -gt 0) {
+                    $connstr += ";"
+                }
+                if ($e[0] -eq 'Data Source') {
+                    $connstr += $e[0]+"="+$prodsqlserver # replace
+                } else {
+                    $connstr += $_ # keep
+                }
+            }
+            $datasource.ConnectionString = $connstr
         }
 
         $serverName = “Data Source=” + $prodtabserver
