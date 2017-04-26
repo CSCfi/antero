@@ -36,8 +36,8 @@ while ($reader.Read())
 }
 $reader.Close()
 
-#git clone https://github.com/CSC-IT-Center-for-Science/antero.git
-Invoke-WebRequest https://github.com/CSC-IT-Center-for-Science/antero/archive/master.zip -OutFile "$gitdir\antero.zip"
+#git clone https://github.com/CSCfi/antero.git
+Invoke-WebRequest https://github.com/CSCfi/antero/archive/master.zip -OutFile "$gitdir\antero.zip"
 
 Unzip "$gitdir\antero.zip" "$gitdir"
 

@@ -37,9 +37,9 @@ try
     if([bool]((Get-Content $modelfile) -as [xml]))
     {
         $xml = [xml]((Get-Content $scriptfile -Encoding Unicode))
-        Write-Host "Deploying model:" $xml.Alter.ObjectDefinition.Database.Name
+        Write-Host "Deploying model:" $xml.Batch.Alter.ObjectDefinition.Database.Name
 
-        $node = $xml.Alter.ObjectDefinition.Database.DataSources.ChildNodes
+        $node = $xml.Batch.Alter.ObjectDefinition.Database.DataSources.ChildNodes
         foreach($datasource in $node)
         {
             $datasource.ImpersonationInfo.RemoveChild('Account')
