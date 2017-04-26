@@ -87,7 +87,23 @@ try
         {
             $f.PSObject.Properties.Remove('Account')
             $f.impersonationMode = "impersonateServiceAccount"
-            $f.connectionString = "Provider=SQLNCLI11;Data Source=" + $prodsqlserver + ";Initial Catalog=" + $proddatabase + ";Integrated Security=SSPI;Persist Security Info=false"
+
+            #$f.connectionString = "Provider=SQLNCLI11;Data Source=" + $prodsqlserver + ";Initial Catalog=" + $proddatabase + ";Integrated Security=SSPI;Persist Security Info=false"
+            $connstr = ""
+            $oldstr = [string]$f.connectionString
+            $oldstr -split ";" | %{
+                $e = $_ -split '=' # ex. "Provider=SQLNCLI11"
+                if ($connstr.Length -gt 0) {
+                    $connstr += ";"
+                }
+                if ($e[0] -eq 'Data Source') {
+                    $connstr += $e[0]+"="+$prodsqlserver # replace
+                } else {
+                    $connstr += $_ # keep
+                }
+            }
+            $f.connectionString = $connstr
+
         }
 
         #$s2 = $a | ConvertTo-Json -Depth 64
