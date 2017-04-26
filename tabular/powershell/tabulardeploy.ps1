@@ -42,7 +42,10 @@ try
         $node = $xml.Batch.Alter.ObjectDefinition.Database.DataSources.ChildNodes
         foreach($datasource in $node)
         {
-            $datasource.ImpersonationInfo.RemoveChild('Account')
+            #$datasource.ImpersonationInfo.RemoveChild('Account')
+            ($datasource.ImpersonationInfo.ChildNodes | Where-Object { 'Account' -contains $_.Name }) | ForEach-Object {
+                [void]$_.ParentNode.RemoveChild($_)
+            }
             $datasource.ImpersonationInfo.ImpersonationMode = "ImpersonateServiceAccount"
             $datasource.ConnectionString = "Provider=SQLNCLI11;Data Source=" + $prodsqlserver + ";Persist Security Info=false;Integrated Security=SSPI;Initial Catalog=" + $proddatabase
         }
