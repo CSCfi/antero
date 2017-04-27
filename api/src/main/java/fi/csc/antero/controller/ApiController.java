@@ -77,18 +77,18 @@ public class ApiController {
     public List<ApiProperty> getResource(@ApiParam(value = "Name of the resource", required = true)
                                          @PathVariable("resource") String resource) throws SQLException, IOException {
         checkResource(resource);
-        return service.getTableColumns(resource);
+        return service.listResourceProperties(resource);
     }
 
     @RequestMapping(value = "/resources", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "Lists available resource names")
     public Set<String> getResources() throws SQLException, IOException {
-        return service.getTableNames();
+        return service.listResources();
     }
 
     private void checkResource(String resource) throws SQLException {
-        if (!service.getTableNames().contains(resource.toLowerCase())) {
+        if (!service.listResources().contains(resource.toLowerCase())) {
             throw new NotFoundException(String.format("Resource '%s' not found", resource));
         }
     }
