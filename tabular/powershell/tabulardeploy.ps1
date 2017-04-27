@@ -47,7 +47,22 @@ try
                 [void]$_.ParentNode.RemoveChild($_)
             }
             $datasource.ImpersonationInfo.ImpersonationMode = "ImpersonateServiceAccount"
-            $datasource.ConnectionString = "Provider=SQLNCLI11;Data Source=" + $prodsqlserver + ";Persist Security Info=false;Integrated Security=SSPI;Initial Catalog=" + $proddatabase
+
+            #$datasource.ConnectionString = "Provider=SQLNCLI11;Data Source=" + $prodsqlserver + ";Persist Security Info=false;Integrated Security=SSPI;Initial Catalog=" + $proddatabase
+            $connstr = ""
+            $oldstr = [string]$datasource.ConnectionString
+            $oldstr -split ";" | %{
+                $s = $_ -split '=' # ex. "Provider=SQLNCLI11"
+                if ($connstr.Length -gt 0) {
+                    $connstr += ";"
+                }
+                if ($s[0] -eq 'Data Source') {
+                    $connstr += $s[0]+"="+$prodsqlserver # replace
+                } else {
+                    $connstr += $_ # keep
+                }
+            }
+            $datasource.ConnectionString = $connstr
         }
 
         $serverName = “Data Source=” + $prodtabserver
@@ -72,7 +87,23 @@ try
         {
             $f.PSObject.Properties.Remove('Account')
             $f.impersonationMode = "impersonateServiceAccount"
-            $f.connectionString = "Provider=SQLNCLI11;Data Source=" + $prodsqlserver + ";Initial Catalog=" + $proddatabase + ";Integrated Security=SSPI;Persist Security Info=false"
+
+            #$f.connectionString = "Provider=SQLNCLI11;Data Source=" + $prodsqlserver + ";Initial Catalog=" + $proddatabase + ";Integrated Security=SSPI;Persist Security Info=false"
+            $connstr = ""
+            $oldstr = [string]$f.connectionString
+            $oldstr -split ";" | %{
+                $s = $_ -split '=' # ex. "Provider=SQLNCLI11"
+                if ($connstr.Length -gt 0) {
+                    $connstr += ";"
+                }
+                if ($s[0] -eq 'Data Source') {
+                    $connstr += $s[0]+"="+$prodsqlserver # replace
+                } else {
+                    $connstr += $_ # keep
+                }
+            }
+            $f.connectionString = $connstr
+
         }
 
         #$s2 = $a | ConvertTo-Json -Depth 64
