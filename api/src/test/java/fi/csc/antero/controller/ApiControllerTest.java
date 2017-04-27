@@ -115,6 +115,12 @@ public class ApiControllerTest {
     }
 
     @Test
+    public void testDataCountWithFilter() throws Exception {
+        final String result = makeQuery("/resources/test_data/data/count?filter=id==1", 200).getBody();
+        JSONAssert.assertEquals("1", result, false);
+    }
+
+    @Test
     public void testGetResource() throws Exception {
         final String result = makeQuery("/resources/test_data", 200).getBody();
         Assert.assertNotNull(result);

@@ -66,11 +66,11 @@ public class ApiDataService {
     }
 
     public Long getCount(String table, String filter) throws SQLException {
-        final String sql = queryFactory.select(Expressions.stringTemplate("*").count())
+        final SQLQuery<Long> sqlQuery = queryFactory.select(Expressions.stringTemplate("*").count())
                 .from(getFromExpression(table))
-                .where(createFilterPredicate(table, filter))
-                .getSQL().getSQL();
-        return dataDao.queryCount(sql);
+                .where(createFilterPredicate(table, filter));
+        sqlQuery.setUseLiterals(true);
+        return dataDao.queryCount(sqlQuery.getSQL().getSQL());
     }
 
     public Set<String> listResources() throws SQLException {
