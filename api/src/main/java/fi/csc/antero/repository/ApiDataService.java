@@ -12,26 +12,20 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.sql.SQLQuery;
 import com.querydsl.sql.SQLQueryFactory;
+import fi.csc.antero.dao.ApiDataDao;
 import fi.csc.antero.exception.FilterException;
 import fi.csc.antero.response.JsonRowHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.sql.DatabaseMetaData;
-import java.sql.JDBCType;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -41,7 +35,7 @@ public class ApiDataService {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private final JdbcTemplate jdbcTemplate;
+    private final ApiDataDao dataDao;
     private final ObjectMapper om;
     private final SQLQueryFactory queryFactory;
 
@@ -49,71 +43,62 @@ public class ApiDataService {
     private String schema;
 
     @Autowired
-    public ApiDataService(JdbcTemplate jdbcTemplate, ObjectMapper om, SQLQueryFactory queryFactory) {
-        this.jdbcTemplate = jdbcTemplate;
+    public ApiDataService(ApiDataDao dataDao, ObjectMapper om, SQLQueryFactory queryFactory) {
+        this.dataDao = dataDao;
         this.om = om;
         this.queryFactory = queryFactory;
     }
 
-    public Long streamToJsonArray(String table, OutputStream out, String filter, Long offset, Long limit) throws IOException, SQLException {
+    public void streamToJsonArray(String table, OutputStream out, String filter, Long offset, Long limit) throws IOException, SQLException {
         final JsonGenerator jg = om.getFactory().createGenerator(out);
+        jg.writeStartArray();
         final StringTemplate path = getFromExpression(table);
         final SQLQuery<String> sql = queryFactory.select(Expressions.stringTemplate("*"))
                 .from(path)
                 .where(createFilterPredicate(table, filter))
                 .restrict(createLimitQueryModifier(offset, limit));
         sql.setUseLiterals(true);
-        jg.writeStartArray();
         final String queryString = sql.getSQL().getSQL();
-        log.info("Execute query [{}]", queryString);
-        final JsonRowHandler rowHandler = new JsonRowHandler(jg, getTableColumns(table));
-        jdbcTemplate.query(queryString,
-                ps -> ps.setFetchDirection(ResultSet.FETCH_FORWARD),
-                rowHandler);
+        final JsonRowHandler rowHandler = new JsonRowHandler(jg, dataDao.queryTableColumns(table));
+        dataDao.queryForStream(queryString, rowHandler);
         jg.writeEndArray();
         jg.flush();
-        return rowHandler.getCount();
     }
 
-    @Cacheable("count")
     public Long getCount(String table, String filter) throws SQLException {
-        return queryFactory.select(Expressions.stringTemplate("*"))
+        final SQLQuery<Long> sqlQuery = queryFactory.select(Expressions.stringTemplate("*").count())
                 .from(getFromExpression(table))
-                .where(createFilterPredicate(table, filter))
-                .fetchCount();
+                .where(createFilterPredicate(table, filter));
+        sqlQuery.setUseLiterals(true);
+        return dataDao.queryCount(sqlQuery.getSQL().getSQL());
     }
 
-    @Cacheable("tables")
-    public Set<String> getTableNames() throws SQLException {
-        final DatabaseMetaData metaData = jdbcTemplate.getDataSource().getConnection().getMetaData();
-        final ResultSet resultSet = metaData.getTables(null, schema, "%", new String[]{"TABLE", "VIEW"});
-        Set<String> tableNames = new HashSet<>();
-        while (resultSet.next()) {
-            tableNames.add(resultSet.getString(3));
-        }
-        return tableNames;
+    public Set<String> listResources() throws SQLException {
+        return dataDao.queryTableNames();
     }
 
-    @Cacheable("columns")
-    public List<ApiProperty> getTableColumns(String table) throws SQLException {
-        final List<ApiProperty> columns = new ArrayList<>();
-        final DatabaseMetaData metaData = jdbcTemplate.getDataSource().getConnection().getMetaData();
-        final ResultSet resultSet = metaData.getColumns(null, schema, table, "%");
-        while (resultSet.next()) {
-            final int dataType = resultSet.getInt("DATA_TYPE");
-            final String sqlName = resultSet.getString("COLUMN_NAME");
-            columns.add(new ApiProperty(sqlName.replaceAll("\\s", "_"), sqlName,
-                    PropType.valueOf(JDBCType.valueOf(dataType))));
-        }
-        return columns;
+    public List<ApiProperty> listResourceProperties(String resource) throws SQLException {
+        return dataDao.queryTableColumns(resource);
     }
 
     private Predicate createFilterPredicate(String table, String filter) throws SQLException {
         if (StringUtils.isEmpty(filter)) {
             return null;
         }
+        final Map<String, Path> pathMap = getPathMap(table);
+
+        try {
+            return new DefaultFilterParser().parse(filter, withMapping(pathMap));
+        } catch (Throwable t) {
+            final String msg = String.format("Filtering error! Table: '%s', Filter: '%s'", table, filter);
+            log.error(msg, t);
+            throw new FilterException("Bad filtering parameter! Cause: " + t.getMessage());
+        }
+    }
+
+    private Map<String, Path> getPathMap(String table) throws SQLException {
         final Map<String, Path> pathMap = new HashMap<>();
-        for (ApiProperty column : getTableColumns(table)) {
+        for (ApiProperty column : dataDao.queryTableColumns(table)) {
             Path path;
             final PropType type = column.getType();
             final String variable = column.getSqlName();
@@ -134,14 +119,7 @@ public class ApiDataService {
             }
             pathMap.put(column.getApiName(), path);
         }
-
-        try {
-            return new DefaultFilterParser().parse(filter, withMapping(pathMap));
-        } catch (Throwable t) {
-            final String msg = String.format("Filtering error! Table: '%s', Filter: '%s'", table, filter);
-            log.error(msg, t);
-            throw new FilterException("Bad filtering parameter! Cause: " + t.getMessage());
-        }
+        return pathMap;
     }
 
     private QueryModifiers createLimitQueryModifier(Long offset, Long limit) {
