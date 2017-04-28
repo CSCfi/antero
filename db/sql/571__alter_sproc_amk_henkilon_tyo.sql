@@ -70,27 +70,3 @@ LEFT JOIN [dw].[d_yo_nimitystapa] s12 ON s1.[Nimitystapa (työsuhteen vakituisuu
 LEFT JOIN [dw].[d_kieli] s13 ON s1.Äidinkieli = s13.kieli_koodi
 LEFT JOIN [dw].[d_amk_paatoimiset_opettajat] s14 ON s1.[Päätoimiset opettajat] = s14.koodi
 LEFT JOIN [dw].[d_ohjauksenala] s15 ON COALESCE(s1.ohjauksenala_koodi,-1) = s15.ohjauksenala_koodi -- tulee 2016
-	,[suoritetut_opintopisteet_muut_opettajankoulutusryhmat]
-	,[loadtime]
-	,[source]
-	,[username]
-	)
-SELECT s2.id
-	,COALESCE(s3.id,-1)
-	,COALESCE(s4.id,-1)
-	,[Vuosi]
-	,COALESCE([Harjoittelukoulussa suoritetut opintopisteet, luokanopettajaharjoittelu],-1)
-	,COALESCE([Harjoittelukoulussa suoritetut opintopisteet, aineenopettajaharjoittelu],-1)
-	,COALESCE([Harjoittelukoulussa suoritetut opintopisteet, erityisopettajat],-1)
-	,COALESCE([Harjoittelukoulussa suoritetut opintopisteet, opinto-ohjaajat],-1)
-	,COALESCE([Harjoittelukoulussa suoritetut opintopisteet, lastentarhanopettajat],-1)
-	,COALESCE([Harjoittelukoulussa suoritetut opintopisteet, aikuiskoulutukseen painottunut harjoittelu],-1)
-	,COALESCE([Harjoittelukoulussa suoritetut opintopisteet, muut opettajankoulutusryhmät],-1)
-	,getdate()
-	,'etl: p_lataa_f_yo_harjoittelukoulujen_opintopisteet'
-	,suser_sname()
-FROM [sa].[sa_suorat_yo2_opintopisteet] s1
-JOIN [dw].[d_yo] s2 ON s1.yliopisto = s2.yo_tunnus
-LEFT JOIN [dw].[d_koulutusala_1995] s3 ON s1.[Koulutusala 1995] = s3.koodi
-LEFT JOIN [dw].d_ohjauksenala s4 ON s1.ohjauksenala_koodi = s4.ohjauksenala_koodi
-;
