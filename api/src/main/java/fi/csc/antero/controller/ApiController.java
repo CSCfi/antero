@@ -40,20 +40,13 @@ public class ApiController {
             response = Object.class)
     public StreamingResponseBody getResourceData(@ApiParam(value = "Name of the resource", required = true)
                                                  @PathVariable("resource") String resource,
-                                                 @ApiParam(value = "FIQL query filter. Example: prop1=='text*' and prop2>3")
-                                                 @RequestParam(value = "filter", required = false) String filter,
-                                                 @ApiParam(value = "Sorting '+' asc and '-' desc. Example: (+prop1,-prop2)")
-                                                 @RequestParam(value = "sort", required = false) String sort,
-                                                 @ApiParam(value = "Offset of returned results")
-                                                 @RequestParam(value = "offset", required = false) Long offset,
-                                                 @ApiParam(value = "Number of returned results")
-                                                 @RequestParam(value = "limit", required = false) Long limit,
+                                                 ApiQuery query,
                                                  HttpServletResponse response) throws SQLException {
         response.setContentType(MediaType.APPLICATION_JSON_UTF8_VALUE);
         checkResource(resource);
         return outputStream -> {
             try {
-                service.streamToJsonArray(resource, outputStream, filter, sort, offset, limit);
+                service.streamToJsonArray(resource, outputStream, query);
             } catch (SQLException e) {
                 throw new IOException(e);
             }

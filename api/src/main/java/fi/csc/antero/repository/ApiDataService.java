@@ -16,6 +16,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.sql.SQLQuery;
 import com.querydsl.sql.SQLQueryFactory;
+import fi.csc.antero.controller.ApiQuery;
 import fi.csc.antero.dao.ApiDataDao;
 import fi.csc.antero.exception.FilterException;
 import fi.csc.antero.response.JsonRowHandler;
@@ -53,16 +54,16 @@ public class ApiDataService {
         this.queryFactory = queryFactory;
     }
 
-    public void streamToJsonArray(String table, OutputStream out, String filter, String sort, Long offset, Long limit)
+    public void streamToJsonArray(String table, OutputStream out, ApiQuery query)
             throws IOException, SQLException {
         final JsonGenerator jg = om.getFactory().createGenerator(out);
         jg.writeStartArray();
         final StringTemplate path = getFromExpression(table);
         final SQLQuery<String> sql = queryFactory.select(Expressions.stringTemplate("*"))
                 .from(path)
-                .where(createFilterPredicate(table, filter))
-                .orderBy(createOrderSpecifiers(table, sort))
-                .restrict(createLimitQueryModifier(offset, limit));
+                .where(createFilterPredicate(table, query.getFilter()))
+                .orderBy(createOrderSpecifiers(table, query.getSort()))
+                .restrict(createLimitQueryModifier(query.getOffset(), query.getLimit()));
         sql.setUseLiterals(true);
         final String queryString = sql.getSQL().getSQL();
         final JsonRowHandler rowHandler = new JsonRowHandler(jg, dataDao.queryTableColumns(table));
