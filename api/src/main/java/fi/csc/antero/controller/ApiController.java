@@ -40,8 +40,10 @@ public class ApiController {
             response = Object.class)
     public StreamingResponseBody getResourceData(@ApiParam(value = "Name of the resource", required = true)
                                                  @PathVariable("resource") String resource,
-                                                 @ApiParam(value = "FIQL query filter")
+                                                 @ApiParam(value = "FIQL query filter. Example: prop1=='text*' and prop2>3")
                                                  @RequestParam(value = "filter", required = false) String filter,
+                                                 @ApiParam(value = "Sorting '+' asc and '-' desc. Example: (+prop1,-prop2)")
+                                                 @RequestParam(value = "sort", required = false) String sort,
                                                  @ApiParam(value = "Offset of returned results")
                                                  @RequestParam(value = "offset", required = false) Long offset,
                                                  @ApiParam(value = "Number of returned results")
@@ -51,7 +53,7 @@ public class ApiController {
         checkResource(resource);
         return outputStream -> {
             try {
-                service.streamToJsonArray(resource, outputStream, filter, offset, limit);
+                service.streamToJsonArray(resource, outputStream, filter, sort, offset, limit);
             } catch (SQLException e) {
                 throw new IOException(e);
             }
@@ -61,8 +63,8 @@ public class ApiController {
     @RequestMapping(value = "/resources/{resource}/data/count", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
     @ApiOperation(value = "Get count of resource data",
-    notes = "Counts total amount of results that query will return. " +
-            "Can be used as pre-check if paging is need when actual data is loaded.")
+            notes = "Counts total amount of results that query will return. " +
+                    "Can be used as pre-check if paging is need when actual data is loaded.")
     public Long getDataCount(@ApiParam(value = "Name of the resource", required = true)
                              @PathVariable("resource") String resource,
                              @ApiParam(value = "FIQL query filter")

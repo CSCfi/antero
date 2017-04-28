@@ -3,9 +3,13 @@ package fi.csc.antero.repository;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.vineey.rql.filter.parser.DefaultFilterParser;
-import static com.github.vineey.rql.querydsl.filter.QueryDslFilterContext.withMapping;
+import com.github.vineey.rql.querydsl.filter.QueryDslFilterContext;
 import com.github.vineey.rql.querydsl.page.QuerydslPageParser;
+import com.github.vineey.rql.querydsl.sort.OrderSpecifierList;
+import com.github.vineey.rql.querydsl.sort.QuerydslSortContext;
+import com.github.vineey.rql.sort.parser.DefaultSortParser;
 import com.querydsl.core.QueryModifiers;
+import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.Expressions;
@@ -49,13 +53,15 @@ public class ApiDataService {
         this.queryFactory = queryFactory;
     }
 
-    public void streamToJsonArray(String table, OutputStream out, String filter, Long offset, Long limit) throws IOException, SQLException {
+    public void streamToJsonArray(String table, OutputStream out, String filter, String sort, Long offset, Long limit)
+            throws IOException, SQLException {
         final JsonGenerator jg = om.getFactory().createGenerator(out);
         jg.writeStartArray();
         final StringTemplate path = getFromExpression(table);
         final SQLQuery<String> sql = queryFactory.select(Expressions.stringTemplate("*"))
                 .from(path)
                 .where(createFilterPredicate(table, filter))
+                .orderBy(createOrderSpecifiers(table, sort))
                 .restrict(createLimitQueryModifier(offset, limit));
         sql.setUseLiterals(true);
         final String queryString = sql.getSQL().getSQL();
@@ -88,11 +94,51 @@ public class ApiDataService {
         final Map<String, Path> pathMap = getPathMap(table);
 
         try {
-            return new DefaultFilterParser().parse(filter, withMapping(pathMap));
+            return new DefaultFilterParser().parse(filter, QueryDslFilterContext.withMapping(pathMap));
         } catch (Throwable t) {
             final String msg = String.format("Filtering error! Table: '%s', Filter: '%s'", table, filter);
             log.error(msg, t);
             throw new FilterException("Bad filtering parameter! Cause: " + t.getMessage());
+        }
+    }
+
+    private QueryModifiers createLimitQueryModifier(Long offset, Long limit) {
+        if (offset == null && limit == null) {
+            return QueryModifiers.EMPTY;
+        }
+        String limitStr = "limit(%d,%d)";
+        if (offset == null || offset < 0) {
+            limitStr = String.format(limitStr, 0, limit);
+        } else if (limit == null || limit < 0) {
+            limitStr = String.format(limitStr, offset, Long.MAX_VALUE);
+        } else {
+            limitStr = String.format(limitStr, offset, limit);
+        }
+        QuerydslPageParser querydslPageParser = new QuerydslPageParser();
+        try {
+            return querydslPageParser.parse(limitStr);
+        } catch (Throwable t) {
+            final String msg = String.format("Limit error! Limit: '%s'", limitStr);
+            log.error(msg, t);
+            throw new FilterException("Bad limit parameter! Cause: " + t.getMessage());
+        }
+    }
+
+    private OrderSpecifier[] createOrderSpecifiers(String table, String sort) throws SQLException {
+        final OrderSpecifier[] orderSpecifiers = {};
+        if (StringUtils.isEmpty(sort)) {
+            return orderSpecifiers;
+        }
+        DefaultSortParser sortParser = new DefaultSortParser();
+        try {
+            OrderSpecifierList orderSpecifierList = sortParser.parse("sort" + sort,
+                    QuerydslSortContext.withMapping(getPathMap(table)));
+
+            return orderSpecifierList.getOrders().toArray(orderSpecifiers);
+        } catch (Throwable t) {
+            final String msg = String.format("Sort error! Table: '%s', Sort: '%s'", table, sort);
+            log.error(msg, t);
+            throw new FilterException("Bad sorting parameter! Cause: " + t.getMessage());
         }
     }
 
@@ -120,27 +166,6 @@ public class ApiDataService {
             pathMap.put(column.getApiName(), path);
         }
         return pathMap;
-    }
-
-    private QueryModifiers createLimitQueryModifier(Long offset, Long limit) {
-        if (offset == null && limit == null) {
-            return QueryModifiers.EMPTY;
-        }
-        String limitStr = "limit(%d,%d)";
-        if (offset == null || offset < 0) {
-            limitStr = String.format(limitStr, 0, limit);
-        } else if (limit == null || limit < 0) {
-            limitStr = String.format(limitStr, offset, Long.MAX_VALUE);
-        } else {
-            limitStr = String.format(limitStr, offset, limit);
-        }
-        QuerydslPageParser querydslPageParser = new QuerydslPageParser();
-        try {
-            return querydslPageParser.parse(limitStr);
-        } catch (Throwable t) {
-            log.error("Limit error!", t);
-            throw new FilterException("Bad limit parameter! Cause: " + t.getMessage());
-        }
     }
 
     private StringTemplate getFromExpression(String table) {

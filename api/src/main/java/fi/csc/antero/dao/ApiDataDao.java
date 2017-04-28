@@ -3,6 +3,7 @@ package fi.csc.antero.dao;
 import fi.csc.antero.repository.ApiProperty;
 import fi.csc.antero.repository.PropType;
 import fi.csc.antero.response.JsonRowHandler;
+import fi.csc.antero.util.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +68,7 @@ public class ApiDataDao {
         while (resultSet.next()) {
             final int dataType = resultSet.getInt("DATA_TYPE");
             final String sqlName = resultSet.getString("COLUMN_NAME");
-            columns.add(new ApiProperty(sqlName.replaceAll("\\s", "_"), sqlName,
+            columns.add(new ApiProperty(Utils.convertToCamelCase(sqlName), sqlName,
                     PropType.valueOf(JDBCType.valueOf(dataType))));
         }
         return columns;
