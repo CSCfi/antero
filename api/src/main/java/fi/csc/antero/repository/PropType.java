@@ -1,32 +1,26 @@
 package fi.csc.antero.repository;
 
-import java.math.BigDecimal;
 import java.sql.JDBCType;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.Arrays;
 
 public enum PropType {
-    INTEGER(Integer.class, PathType.NUMBER, JDBCType.INTEGER),
-    FLOAT(Float.class, PathType.NUMBER, JDBCType.REAL),
-    LONG(Long.class, PathType.NUMBER, JDBCType.BIGINT),
-    DOUBLE(Double.class, PathType.NUMBER, JDBCType.DOUBLE, JDBCType.FLOAT),
-    BIG_DECIMAL(BigDecimal.class, PathType.NUMBER, JDBCType.DECIMAL, JDBCType.NUMERIC),
-    BYTE(Byte.class, PathType.NUMBER, JDBCType.TINYINT),
-    SHORT(Short.class, PathType.NUMBER, JDBCType.SMALLINT),
-    STRING(String.class, PathType.STRING, JDBCType.VARCHAR, JDBCType.NVARCHAR, JDBCType.CHAR),
-    BOOLEAN(Boolean.class, PathType.BOOLEAN, JDBCType.BIT, JDBCType.BOOLEAN),
-    DATE(LocalDate.class, PathType.DATE, JDBCType.DATE),
-    TIME(LocalTime.class, PathType.TIME, JDBCType.TIME),
-    DATETIME(LocalDateTime.class, PathType.DATETIME, JDBCType.TIMESTAMP);
+    INTEGER(PathType.NUMBER, JDBCType.INTEGER),
+    FLOAT(PathType.NUMBER, JDBCType.REAL),
+    LONG(PathType.NUMBER, JDBCType.BIGINT),
+    DOUBLE(PathType.NUMBER, JDBCType.DOUBLE, JDBCType.FLOAT),
+    BIG_DECIMAL(PathType.NUMBER, JDBCType.DECIMAL, JDBCType.NUMERIC),
+    BYTE(PathType.NUMBER, JDBCType.TINYINT),
+    SHORT(PathType.NUMBER, JDBCType.SMALLINT),
+    STRING(PathType.STRING, JDBCType.VARCHAR, JDBCType.NVARCHAR, JDBCType.CHAR),
+    BOOLEAN(PathType.BOOLEAN, JDBCType.BIT, JDBCType.BOOLEAN),
+    DATE(PathType.DATE, JDBCType.DATE),
+    TIME(PathType.TIME, JDBCType.TIME),
+    DATETIME(PathType.DATETIME, JDBCType.TIMESTAMP);
 
-    private Class<?> javaType;
-    private PathType pathType;
-    private JDBCType[] jdbcTypes;
+    private final PathType pathType;
+    private final JDBCType[] jdbcTypes;
 
-    PropType(Class<?> javaType, PathType pathType, JDBCType... jdbcTypes) {
-        this.javaType = javaType;
+    PropType(PathType pathType, JDBCType... jdbcTypes) {
         this.pathType = pathType;
         this.jdbcTypes = jdbcTypes;
     }
@@ -38,15 +32,11 @@ public enum PropType {
                 .orElse(null);
     }
 
-    public Class getJavaType() {
-        return javaType;
-    }
-
     public PathType getPathType() {
         return pathType;
     }
 
-    public JDBCType[] getJdbcTypes() {
+    private JDBCType[] getJdbcTypes() {
         return jdbcTypes;
     }
 }
