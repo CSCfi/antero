@@ -5,9 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ApiProperty {
 
-    private String apiName;
-    private String sqlName;
-    private PropType type;
+    private final String apiName;
+    private final String sqlName;
+    private final PropType type;
 
     public ApiProperty(String apiName, String sqlName, PropType type) {
         this.apiName = apiName;
@@ -21,12 +21,12 @@ public class ApiProperty {
     }
 
     @JsonIgnore
-    public String getSqlName() {
+    String getSqlName() {
         return sqlName;
     }
 
     @JsonIgnore
-    public PropType getType() {
+    PropType getType() {
         return type;
     }
 

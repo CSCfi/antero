@@ -9,7 +9,7 @@ public enum PathType {
     DATETIME("date", "yyyy-MM-dd HH:mm:ss");
 
     private String format;
-    private String name;
+    private final String name;
 
     PathType(String name, String format) {
         this.format = format;

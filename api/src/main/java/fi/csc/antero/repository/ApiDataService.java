@@ -13,6 +13,7 @@ import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Path;
 import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.dsl.Expressions;
+import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.sql.SQLQuery;
 import com.querydsl.sql.SQLQueryFactory;
@@ -29,7 +30,11 @@ import org.springframework.util.StringUtils;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -125,7 +130,7 @@ public class ApiDataService {
         }
     }
 
-    private OrderSpecifier[] createOrderSpecifiers(String table, String sort) throws SQLException {
+    private OrderSpecifier[] createOrderSpecifiers(String table, String sort) {
         final OrderSpecifier[] orderSpecifiers = {};
         if (StringUtils.isEmpty(sort)) {
             return orderSpecifiers;
@@ -154,19 +159,40 @@ public class ApiDataService {
             } else if (type.getPathType() == PathType.BOOLEAN) {
                 path = Expressions.booleanPath(variable);
             } else if (type.getPathType() == PathType.NUMBER) {
-                path = Expressions.numberPath(type.getJavaType(), variable);
+                path = getNumberPath(type, variable);
             } else if (type.getPathType() == PathType.DATE) {
-                path = Expressions.datePath(type.getJavaType(), variable);
+                path = Expressions.datePath(LocalDate.class, variable);
             } else if (type.getPathType() == PathType.TIME) {
-                path = Expressions.timePath(type.getJavaType(), variable);
+                path = Expressions.timePath(LocalTime.class, variable);
             } else if (type.getPathType() == PathType.DATETIME) {
-                path = Expressions.dateTimePath(type.getJavaType(), variable);
+                path = Expressions.dateTimePath(LocalDateTime.class, variable);
             } else {
                 continue;
             }
             pathMap.put(column.getApiName(), path);
         }
         return pathMap;
+    }
+
+    private NumberPath getNumberPath(PropType type, String variable) {
+        switch (type) {
+            case INTEGER:
+                return Expressions.numberPath(Integer.class, variable);
+            case BIG_DECIMAL:
+                return Expressions.numberPath(BigDecimal.class, variable);
+            case FLOAT:
+                return Expressions.numberPath(Float.class, variable);
+            case DOUBLE:
+                return Expressions.numberPath(Double.class, variable);
+            case LONG:
+                return Expressions.numberPath(Long.class, variable);
+            case SHORT:
+                return Expressions.numberPath(Short.class, variable);
+            case BYTE:
+                return Expressions.numberPath(Byte.class, variable);
+            default:
+                return null;
+        }
     }
 
     private StringTemplate getFromExpression(String table) {

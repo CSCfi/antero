@@ -44,7 +44,7 @@ public class ApiDataDao {
     }
 
     @Cacheable("count")
-    public Long queryCount(String countQuery) throws SQLException {
+    public Long queryCount(String countQuery) {
         log.info("Execute count query [{}]", countQuery);
         return jdbcTemplate.queryForObject(countQuery, Long.class);
     }
