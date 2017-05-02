@@ -7,7 +7,8 @@ todo doc
 """
 import sys,os,getopt
 import urllib2, base64
-import ijson
+import ijson.backends.yajl2_cffi as ijson
+import json
 from time import localtime, strftime
 
 import dboperator
@@ -47,8 +48,6 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose):
     # everything is fine
     show("api call OK")
 
-  parser = ijson.parse(response)
-  
   # remove data conditionally, otherwise empty
   # merge operation could be considered here...
   if condition:
@@ -60,39 +59,27 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose):
 
   show("insert data")
   cnt=0
-  row={}
-  for prefix, event, value in parser:
-    #print prefix, event, value
-    if event=='start_map':
-      cnt+=1
-      row={}
-    
-    if event in {'string','number'}:
-      row[prefix.split('.')[1]]=value
-    elif event=='string':
-      row[prefix.split('.')[1]]=value
-    elif event=='number':
-      row[prefix.split('.')[1]]=float(value) if '.' in value else int(value)
-    elif event=='end_map':
-      # show some sign of being alive
-      if cnt%100 == 0:
-        sys.stdout.write('.')
-        sys.stdout.flush()
-      if cnt%1000 == 0:
-        show("-- %d" % (cnt))
-      if verbose: show("%d -- %s"%(cnt,row))
+  for row in ijson.items(response,'item'):
+    cnt+=1
+    # show some sign of being alive
+    if cnt%100 == 0:
+      sys.stdout.write('.')
+      sys.stdout.flush()
+    if cnt%1000 == 0:
+      show("-- %d" % (cnt))
+    if verbose: show("%d -- %s"%(cnt,row))
 
-      # find out which columns to use on insert
-      dboperator.resetcolumns(row)
+    # find out which columns to use on insert
+    dboperator.resetcolumns(row)
 
-      for col in row:
-        if type(row[col]) is list:
-          row[col] = str(row[col])
-      dboperator.insert(address,schema,table,row)
+    # flatten arrays/lists
+    for col in row:
+      if type(row[col]) is list:
+        row[col] = ''.join(map(str,json.dumps(row[col])))
+
+    dboperator.insert(address,schema,table,row)
 
   show("wrote %d"%(cnt))
-  dboperator.close()
-
   show("ready")
 
 def usage():
@@ -128,6 +115,8 @@ def main(argv):
     sys.exit(2)
 
   load(secure,hostname,url,schema,table,postdata,condition,verbose)
+
+  dboperator.close()
 
 if __name__ == "__main__":
     main(sys.argv[1:])
