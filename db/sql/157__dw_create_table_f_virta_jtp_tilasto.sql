@@ -21,7 +21,7 @@ CREATE TABLE dw.f_virta_jtp_tilasto(
   d_tieteenala_id int not null,
   tilastovuosi int not null,
 
-  lukumaara int not null
+  lukumaara [decimal](6, 5) null
 )
 ;
 
