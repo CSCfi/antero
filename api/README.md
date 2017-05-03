@@ -15,6 +15,20 @@ Running application in local environment.
     
 Executable jar package is created in `build/libs` directory.
 
+## Making release
+Project uses version numbering from SCM system. Gradle plugin named [Axion-Release-Plugin](https://github.com/allegro/axion-release-plugin)
+manages projects version number by tags in SCM.
+
+Create new release version from current branch:
+
+    $sh gradlew release
+    
+Release plugin creates new tag and pushes it to remote repository.
+
+Check projects current version:
+
+    $sh gradlew currentVersion
+
 ## Installing in to the server
 1. Build package. [See here](#build)
 
