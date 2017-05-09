@@ -16,8 +16,8 @@ select
 			when f.vuosi-(year(DATEADD(SECOND, loAloituspvm / 1000, '19691231 20:00'))+case when month(DATEADD(SECOND, loAloituspvm / 1000, '19691231 20:00'))>7 then 1 else 0 end)<0 then 'Ei tietoa'
 			else cast(f.vuosi-(year(DATEADD(SECOND, loAloituspvm / 1000, '19691231 20:00'))+case when month(DATEADD(SECOND, loAloituspvm / 1000, '19691231 20:00'))>7 then 1 else 0 end) as varchar) 
 		end,'Ei tietoa')
-	  ,[Henkilo_koodi] = opiskelijaAvain+opiskeluoikeusAvain+d1.oppilaitoskoodi
-	  ,[Sukupuoli] = coalesce(d3.sukupuoli,'Tuntematon')
+	  ,[Henkilo_koodi] = opiskelijaAvain+opiskeluoikeusAvain+d1.organisaatio_koodi
+	  ,[Sukupuoli] = coalesce(d3.sukupuoli_fi,'Tuntematon')
       ,uusi_opisk = coalesce(f.uusiOpisk,0)
 	  ,[Aloittanut keväällä] = case f.uusiOpiskKevat when 1 then 'Kyllä' when 0 then 'Ei' else 'Tuntematon' end
       ,[Olo syksy] = coalesce(f.edellinenSyysolo,0)
@@ -32,7 +32,7 @@ select
 	  
 	  ,[Sektori] = 
 		case 
-			when d1.oppilaitos in 
+			when d1.organisaatio_fi in 
 			('Aalto-yliopisto',
 			'Helsingin yliopisto',
 			'Itä-Suomen yliopisto',
@@ -49,31 +49,31 @@ select
 			'Åbo Akademi') then 'Yliopisto'
 			else 'Ammattikorkeakoulu'
 		end
-	  ,[Korkeakoulu] = d1.oppilaitos     
+	  ,[Korkeakoulu] = d1.organisaatio_fi
       ,[Tutkintokoodi] = coalesce(f.[tkoodi],'999999')
-	  ,[Tutkinto]  = coalesce(d2.koulutus,'Tuntematon')
-	  ,[OKM ohjauksen ala] = coalesce(d2.OKM_ohjauksen_ala,'Tuntematon')
-	  ,[Koulutusaste, taso 1] = coalesce(d2.iscle2011,'Tuntematon')
-	  ,[Koulutusaste, taso 2] = coalesce(d2.Koulutusaste_taso2,'Tuntematon')
-	  ,[Koulutusala, taso 1] = coalesce(d2.iscfibroad2013,'Tuntematon')
-	  ,[Koulutusala, taso 2] = coalesce(d2.iscfinarrow2013,'Tuntematon')
-	  ,[Koulutusala, taso 3] = coalesce(d2.iscfi2013,'Tuntematon')
+	  ,[Tutkinto]  = coalesce(d2.koulutusluokitus_fi,'Tuntematon')
+	  ,[OKM ohjauksen ala] = coalesce(d2.okmohjauksenala_fi,'Tuntematon')
+	  ,[Koulutusaste, taso 1] = coalesce(d2.koulutusastetaso1_fi,'Tuntematon')
+	  ,[Koulutusaste, taso 2] = coalesce(d2.Koulutusastetaso2_fi,'Tuntematon')
+	  ,[Koulutusala, taso 1] = coalesce(d2.koulutusalataso1_fi,'Tuntematon')
+	  ,[Koulutusala, taso 2] = coalesce(d2.koulutusalataso2_fi,'Tuntematon')
+	  ,[Koulutusala, taso 3] = coalesce(d2.koulutusalataso3_fi,'Tuntematon')
 
       ,f.[suorittanut27]
       ,f.[suorittanut55IlmanPankkia]
       ,f.[suorittanut55PankinAvulla]
 
 	  --järjestys
-	  ,[OKM ohjauksen ala jarj] = coalesce(case when d2.jarjestys_OKM_ohjauksen_ala = 'ööö' then null else d2.jarjestys_OKM_ohjauksen_ala end,999)
-	  ,[Koulutusaste, taso 1 jarj] = coalesce(case when d2.jarjestys_iscle2011 = 'ööö' then null else d2.jarjestys_iscle2011 end,999)
-	  ,[Koulutusaste, taso 2 jarj] = coalesce(case when d2.jarjestys_Koulutusaste_taso2 = 'ööö' then null else d2.jarjestys_Koulutusaste_taso2 end,999)
-	  ,[Koulutusala, taso 1 jarj] = coalesce(case when d2.jarjestys_iscfibroad2013 = 'ööö' then null else d2.jarjestys_iscfibroad2013 end,999)
-	  ,[Koulutusala, taso 2 jarj] = coalesce(case when d2.jarjestys_iscfinarrow2013 = 'ööö' then null else d2.jarjestys_iscfinarrow2013 end,999)
-	  ,[Koulutusala, taso 3 jarj] = coalesce(case when d2.jarjestys_iscfi2013 = 'ööö' then null else d2.jarjestys_iscfi2013 end,9999)
+	  ,[OKM ohjauksen ala jarj] = d2.okmohjauksenala_koodi
+	  ,[Koulutusaste, taso 1 jarj] = d2.koulutusastetaso1_koodi
+	  ,[Koulutusaste, taso 2 jarj] = d2.koulutusastetaso2_koodi
+	  ,[Koulutusala, taso 1 jarj] = d2.koulutusalataso1_koodi
+	  ,[Koulutusala, taso 2 jarj] = d2.koulutusalataso2_koodi
+	  ,[Koulutusala, taso 3 jarj] = d2.koulutusalataso3_koodi
    
 
   FROM [ANTERO].[sa].[sa_virta_otp_viisviis] f
 
-LEFT JOIN VipunenTK.dbo.d_oppilaitoksen_taustatiedot d1 on d1.oppilaitoskoodi=f.oppilaitostunnus
-LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d2 on d2.koulutus_koodi=f.tkoodi
-LEFT JOIN VipunenTK.dbo.d_sukupuoli d3 on d3.sukupuoli_koodi=f.sukupuoli
+LEFT JOIN ANTERO.dw.d_organisaatioluokitus d1 on d1.organisaatio_koodi=f.oppilaitostunnus
+LEFT JOIN ANTERO.dw.d_koulutusluokitus d2 on d2.koulutusluokitus_koodi=f.tkoodi
+LEFT JOIN ANTERO.dw.d_sukupuoli d3 on d3.sukupuoli_koodi=f.sukupuoli
