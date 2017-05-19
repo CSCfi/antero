@@ -1,4 +1,4 @@
-ALTER VIEW api.v_ytl_arvosanat AS
+ALTER VIEW api.ytl_arvosanat AS
 
 SELECT id AS 'Opiskelija Koodi'
 ,tutkintokerta AS 'Tutkintokerta Koodi'
