@@ -44,7 +44,7 @@ def load(command,expect,verbose=False):
   
 def usage():
   print """
-usage: dbcommand.py -c|--command <string> [-e|--expect <string>] [-v|--verbose]
+usage: dbcommand.py -c|--command <string> [-e|--expect <string>] [-v|--verbose] [-r|--return]
 
 command is mandatory argument. The SQL to execute.
 expect  is for getting results from a query.
@@ -53,6 +53,8 @@ expect  is for getting results from a query.
         Somewhat default behaviour is to return the whole result set as an array of dicts.
         You can achieve default behaviour by giving a value to this argument that is not part
         of column names in result, for ex. "*", and/or results give exactly NOT one row.
+return is an optional argument. By default the dbcommand prints the result to shell. With this
+        paremeter the dbcommand returns the result to user.
 """
 
 def main(argv):
@@ -60,9 +62,10 @@ def main(argv):
   command = ""
   expect = ""
   verbose = False
+  return_wanted = False
 
   try:
-    opts, args = getopt.getopt(argv,"c:e:v",["command=","expect=","verbose"])
+    opts, args = getopt.getopt(argv,"c:e:v:r",["command=","expect=","verbose","return"])
   except getopt.GetoptError as err:
     print(err)
     usage()
@@ -71,6 +74,7 @@ def main(argv):
     if opt in ("-c", "--command"): command = arg
     elif opt in ("-e", "--expect"): expect = arg
     elif opt in ("-v", "--verbose"): verbose = True
+    elif opt in ("-r", "--return"): return_wanted = True
   if not command:
     usage()
     sys.exit(2)
@@ -79,7 +83,10 @@ def main(argv):
     verbose = False # would interfere with "return" value
   ret = load(command,expect,verbose)
   if expect:
-    return ret
+     if return_wanted:
+         return ret
+     else:
+         print ret
 
   dboperator.close()
 
