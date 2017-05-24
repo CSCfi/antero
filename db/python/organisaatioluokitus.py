@@ -14,10 +14,12 @@ Koodi is in
 - toimipistekoodi for Toimipiste.
 """
 import sys, os, getopt
+import json
 import geocoding
 import requests
 from time import localtime, strftime
 
+import dbcommand
 import dboperator
 
 def makerow():
@@ -45,6 +47,26 @@ def getmeta(i,tieto,kieli):
 def show(message):
   print strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message
 
+def check_if_coordinates_in_our_db(osoite, postinumero, postitoimipaikka):
+  command = ("SELECT * FROM [ANTERO].[sa].[sa_koordinaatit] WHERE osoite='" + osoite +
+             "' AND postinumero='" + postinumero + "' AND postitoimipaikka='" + postitoimipaikka + "'")
+
+  result = dbcommand.main(["--command", command, "--expect", "*", "--return"])
+
+  if len(result) > 0:  # the coordinates are found
+      latitude = json.dumps((result)[0]["latitude"])
+      longitude = json.dumps((result)[0]["longitude"])
+  else:
+      return {"coordinates_found": False, "latitude": None, "longitude": None}
+
+  return {"coordinates_found": True, "latitude": latitude, "longitude": longitude}
+
+def insert_coordinates_to_our_db(osoite, postinumero, postitoimipaikka, latitude, longitude):
+  command = ("INSERT INTO [ANTERO].[sa].[sa_koordinaatit] (osoite, postinumero, postitoimipaikka, latitude, longitude) VALUES ('" +
+             osoite + "', '" + postinumero + "', '" + postitoimipaikka + "', '" + latitude + "', '" + longitude + "')")
+
+  dbcommand.main(["--command", command])
+
 def get_and_set_coordinates(row):
   """
   nb! coordinates in another process! (see geocoding.py)
@@ -68,21 +90,33 @@ def get_and_set_coordinates(row):
   osoite_array = ["--address"]
   osoite_array.append(osoite_parsed + ", " + row["postinumero"] + ", " + row["postitoimipaikka"])
 
-  api_fetch_successful = False
-  try:
-    geocoding_api_answer = geocoding.main(osoite_array)
-    api_fetch_successful = True
-  except Exception, e:
-    print "Error: " + str(e)
-  except SystemExit:
-    pass  # catch the sys.exit from geocoding. It prints the usage().
+  """
+  First check if the coordinates are found in our database, if not, only then fetch the coordinates from an external-API.
+  Finally, if coordinates were not found, insert them to our database for future fetching.
+  """
+  check_coordinates = check_if_coordinates_in_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"])
+  if check_coordinates["coordinates_found"]:
+    row["latitude"] = check_coordinates["latitude"]
+    row["longitude"] = check_coordinates["longitude"]
+  else:  # coordinates were not found from our own database
 
-  if api_fetch_successful:
-    if geocoding_api_answer["STATUS"] == "OK":
-      row["latitude"] = geocoding_api_answer["RESULT"]["latitude"]
-      row["longitude"] = geocoding_api_answer["RESULT"]["longitude"]
-    else:  # STATUS == NOK
-      print "Error:", geocoding_api_answer["RESULT"].encode('utf-8', 'ignore')  # unknown characters will be lost (ignored)
+    api_fetch_successful = False
+    try:
+      geocoding_api_answer = geocoding.main(osoite_array)
+      api_fetch_successful = True
+    except Exception, e:
+      print "Error: " + str(e)
+    except SystemExit:
+      pass  # catch the sys.exit from geocoding. It prints the usage().
+
+    if api_fetch_successful:
+      if geocoding_api_answer["STATUS"] == "OK":
+        row["latitude"] = geocoding_api_answer["RESULT"]["latitude"]
+        row["longitude"] = geocoding_api_answer["RESULT"]["longitude"]
+
+        insert_coordinates_to_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"], row["latitude"], row["longitude"])
+      else:  # STATUS == NOK
+        print "Error:", geocoding_api_answer["RESULT"].encode('utf-8', 'ignore')  # unknown characters will be lost (ignored)
 
 def load(secure,hostname,url,schema,table,verbose=False):
   if verbose: show("begin")
