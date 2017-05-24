@@ -79,7 +79,7 @@ def main(argv):
     verbose = False # would interfere with "return" value
   ret = load(command,expect,verbose)
   if expect:
-    print ret
+    return ret
 
   dboperator.close()
 
