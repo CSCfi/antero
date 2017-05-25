@@ -37,7 +37,7 @@ def load(command,expect,verbose=False):
   except Exception as e:
     print(e)
     show("Something went wrong. Over and out.")
-    dboperator.close() this to be optional ?
+    dboperator.close()
     exit(2) # lopeta virheeseen
 
   if verbose: show("ready")
