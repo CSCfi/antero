@@ -49,9 +49,10 @@ def show(message):
 
 def check_if_coordinates_in_our_db(osoite, postinumero, postitoimipaikka):
   command = ("SELECT * FROM [ANTERO].[sa].[sa_koordinaatit] WHERE osoite='" + osoite +
-             "' AND postinumero='" + postinumero + "' AND postitoimipaikka='" + postitoimipaikka + "'").encode('utf-8', 'ignore')  # unknown characters will be lost (ignored)
+             "' AND postinumero='" + postinumero + "' AND postitoimipaikka='" + postitoimipaikka + "'")
+  .encode('utf-8', 'ignore')  # unknown characters will be lost (ignored)
 
-  result = dbcommand.main(["--command", command, "--expect", "*", "--return"])
+  result = dbcommand.load(command, "*", False)
 
   if len(result) > 0:  # the coordinates are found
       latitude = json.dumps((result)[0]["latitude"])
@@ -63,9 +64,10 @@ def check_if_coordinates_in_our_db(osoite, postinumero, postitoimipaikka):
 
 def insert_coordinates_to_our_db(osoite, postinumero, postitoimipaikka, latitude, longitude):
   command = ("INSERT INTO [ANTERO].[sa].[sa_koordinaatit] (osoite, postinumero, postitoimipaikka, latitude, longitude) VALUES ('" +
-             osoite + "', '" + postinumero + "', '" + postitoimipaikka + "', '" + str(latitude) + "', '" + str(longitude) + "')").encode('utf-8', 'ignore')  # unknown characters will be lost (ignored)
+             osoite + "', '" + postinumero + "', '" + postitoimipaikka + "', '" + str(latitude) + "', '" + str(longitude) + "')")
+  .encode('utf-8', 'ignore')
 
-  dbcommand.main(["--command", command])
+  dbcommand.load(command, "", False)
 
 def get_and_set_coordinates(row):
   """
@@ -116,7 +118,7 @@ def get_and_set_coordinates(row):
 
         insert_coordinates_to_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"], row["latitude"], row["longitude"])
       else:  # STATUS == NOK
-        print "Error:", geocoding_api_answer["RESULT"].encode('utf-8', 'ignore')  # unknown characters will be lost (ignored)
+        print "Error:", geocoding_api_answer["RESULT"].encode('utf-8', 'ignore')
 
 def load(secure,hostname,url,schema,table,verbose=False):
   if verbose: show("begin")

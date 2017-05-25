@@ -34,8 +34,7 @@ def load(command,expect,verbose=False):
         ret = resql
     else:
       dboperator.execute(sql)
-  except Exception as e:
-    show(e)
+  except:
     show("Something went wrong. Over and out.")
     dboperator.close()
     exit(2) # lopeta virheeseen
@@ -89,7 +88,7 @@ def main(argv):
      else:
          print ret
 
-  #dboperator.close()  this to be optional ?
+  dboperator.close()
 
 if __name__ == "__main__":
   main(sys.argv[1:])
