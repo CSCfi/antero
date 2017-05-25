@@ -88,7 +88,7 @@ def main(argv):
      else:
          print ret
 
-  dboperator.close()
+  #dboperator.close()  this to be optional ?
 
 if __name__ == "__main__":
   main(sys.argv[1:])

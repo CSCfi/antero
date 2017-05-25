@@ -48,10 +48,9 @@ def show(message):
   print strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message
 
 def check_if_coordinates_in_our_db(osoite, postinumero, postitoimipaikka):
-  print("1")
   command = ("SELECT * FROM [ANTERO].[sa].[sa_koordinaatit] WHERE osoite='" + osoite +
              "' AND postinumero='" + postinumero + "' AND postitoimipaikka='" + postitoimipaikka + "'")
-  print("2")
+
   result = dbcommand.main(["--command", command, "--expect", "*", "--return"])
 
   if len(result) > 0:  # the coordinates are found
@@ -63,7 +62,6 @@ def check_if_coordinates_in_our_db(osoite, postinumero, postitoimipaikka):
   return {"coordinates_found": True, "latitude": latitude, "longitude": longitude}
 
 def insert_coordinates_to_our_db(osoite, postinumero, postitoimipaikka, latitude, longitude):
-  print("3")
   command = ("INSERT INTO [ANTERO].[sa].[sa_koordinaatit] (osoite, postinumero, postitoimipaikka, latitude, longitude) VALUES ('" +
              osoite + "', '" + postinumero + "', '" + postitoimipaikka + "', '" + str(latitude) + "', '" + str(longitude) + "')")
 
@@ -96,7 +94,6 @@ def get_and_set_coordinates(row):
   First check if the coordinates are found in our database, if not, only then fetch the coordinates from an external-API.
   Finally, if coordinates were not found, insert them to our database for future fetching.
   """
-  print("4")
   check_coordinates = check_if_coordinates_in_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"])
   if check_coordinates["coordinates_found"]:
     row["latitude"] = check_coordinates["latitude"]
@@ -126,6 +123,11 @@ def load(secure,hostname,url,schema,table,verbose=False):
 
   # make "columnlist" (type has no meaning as we're not creating table)
   row = makerow()
+  # setup dboperator so other calls work
+  dboperator.columns(row)
+
+  if verbose: show("empty %s.%s"%(schema,table))
+  dboperator.empty(schema,table)
 
   # fetching could be as simple and fast as:
   """
@@ -253,15 +255,9 @@ def load(secure,hostname,url,schema,table,verbose=False):
           get_and_set_coordinates(row)
 
       if verbose: show(" %5d -- %s %s (%s)"%(cnt,row["tyyppi"],row["koodi"],row["nimi"]))
-
-      # setup dboperator so other calls work
-      dboperator.columns(row)
-
-      if verbose: show("empty %s.%s"%(schema,table))
-      dboperator.empty(schema,table)
-
       dboperator.insert(hostname+url,schema,table,row)
-      dboperator.close()
+
+  dboperator.close()
 
   if verbose: show("ready")
 
