@@ -63,7 +63,7 @@ def check_if_coordinates_in_our_db(osoite, postinumero, postitoimipaikka):
 
 def insert_coordinates_to_our_db(osoite, postinumero, postitoimipaikka, latitude, longitude):
   command = ("INSERT INTO [ANTERO].[sa].[sa_koordinaatit] (osoite, postinumero, postitoimipaikka, latitude, longitude) VALUES ('" +
-             osoite + "', '" + postinumero + "', '" + postitoimipaikka + "', '" + latitude + "', '" + longitude + "')")
+             osoite + "', '" + postinumero + "', '" + postitoimipaikka + "', '" + str(latitude) + "', '" + str(longitude) + "')")
 
   dbcommand.main(["--command", command])
 
