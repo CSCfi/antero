@@ -34,9 +34,10 @@ def load(command,expect,verbose=False):
         ret = resql
     else:
       dboperator.execute(sql)
-  except:
+  except Exception as e:
+    print(e)
     show("Something went wrong. Over and out.")
-    dboperator.close()
+    dboperator.close() this to be optional ?
     exit(2) # lopeta virheeseen
 
   if verbose: show("ready")
