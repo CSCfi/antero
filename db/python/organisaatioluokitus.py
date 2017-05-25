@@ -251,7 +251,7 @@ def load(secure,hostname,url,schema,table,verbose=False):
         row["postitoimipaikka"] = jv(josoite,"postitoimipaikka")
 
         if (row["osoite"] is not None and row["osoite"] is not "" and row["postinumero"] is not None and row["postinumero"] is not ""
-            and row["postinumero"] is not "00000" and row["postitoimipaikka"] is not None and row["postitoimipaikka"] is not ""):
+            and int(row["postinumero"]) is not 0 and row["postitoimipaikka"] is not None and row["postitoimipaikka"] is not ""):
           get_and_set_coordinates(row)
 
       if verbose: show(" %5d -- %s %s (%s)"%(cnt,row["tyyppi"],row["koodi"],row["nimi"]))
