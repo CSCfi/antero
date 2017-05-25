@@ -72,7 +72,7 @@ def get_geo_coordinates_from_server(address, postalcode, city):
 
     elif r.status_code == 200:
         result_confidence = result_json[u'features'][0][u'properties'][u'confidence']
-        if result_confidence >= 0.6:  # TODO: this needs more evaluation. What is the minimum acceptable confidence.
+        if result_confidence >= 0.1:  # TODO: this needs more evaluation. What is the minimum acceptable confidence.
             coordinate_results = {}
             result_json[u'features'][0][u'properties'][u'confidence']
             results = result_json[u'features'][0][u'geometry'][u'coordinates']
