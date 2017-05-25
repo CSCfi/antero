@@ -48,9 +48,10 @@ def show(message):
   print strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message
 
 def check_if_coordinates_in_our_db(osoite, postinumero, postitoimipaikka):
+  print("1")
   command = ("SELECT * FROM [ANTERO].[sa].[sa_koordinaatit] WHERE osoite='" + osoite +
              "' AND postinumero='" + postinumero + "' AND postitoimipaikka='" + postitoimipaikka + "'")
-
+  print("2")
   result = dbcommand.main(["--command", command, "--expect", "*", "--return"])
 
   if len(result) > 0:  # the coordinates are found
@@ -62,6 +63,7 @@ def check_if_coordinates_in_our_db(osoite, postinumero, postitoimipaikka):
   return {"coordinates_found": True, "latitude": latitude, "longitude": longitude}
 
 def insert_coordinates_to_our_db(osoite, postinumero, postitoimipaikka, latitude, longitude):
+  print("3")
   command = ("INSERT INTO [ANTERO].[sa].[sa_koordinaatit] (osoite, postinumero, postitoimipaikka, latitude, longitude) VALUES ('" +
              osoite + "', '" + postinumero + "', '" + postitoimipaikka + "', '" + str(latitude) + "', '" + str(longitude) + "')")
 
@@ -94,6 +96,7 @@ def get_and_set_coordinates(row):
   First check if the coordinates are found in our database, if not, only then fetch the coordinates from an external-API.
   Finally, if coordinates were not found, insert them to our database for future fetching.
   """
+  print("4")
   check_coordinates = check_if_coordinates_in_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"])
   if check_coordinates["coordinates_found"]:
     row["latitude"] = check_coordinates["latitude"]
