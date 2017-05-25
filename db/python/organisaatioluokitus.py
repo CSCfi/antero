@@ -123,12 +123,7 @@ def load(secure,hostname,url,schema,table,verbose=False):
 
   # make "columnlist" (type has no meaning as we're not creating table)
   row = makerow()
-  # setup dboperator so other calls work
-  dboperator.columns(row)
 
-  if verbose: show("empty %s.%s"%(schema,table))
-  dboperator.empty(schema,table)
-  
   # fetching could be as simple and fast as:
   """
   geturi = "v2/hae?aktiiviset=true&suunnitellut=true&lakkautetut=true&organisaatiotyyppi="
@@ -255,9 +250,15 @@ def load(secure,hostname,url,schema,table,verbose=False):
           get_and_set_coordinates(row)
 
       if verbose: show(" %5d -- %s %s (%s)"%(cnt,row["tyyppi"],row["koodi"],row["nimi"]))
-      dboperator.insert(hostname+url,schema,table,row)
 
-  dboperator.close()
+      # setup dboperator so other calls work
+      dboperator.columns(row)
+
+      if verbose: show("empty %s.%s"%(schema,table))
+      dboperator.empty(schema,table)
+
+      dboperator.insert(hostname+url,schema,table,row)
+      dboperator.close()
 
   if verbose: show("ready")
 
