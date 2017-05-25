@@ -35,7 +35,7 @@ def load(command,expect,verbose=False):
     else:
       dboperator.execute(sql)
   except Exception as e:
-    print(e)
+    show(e)
     show("Something went wrong. Over and out.")
     dboperator.close()
     exit(2) # lopeta virheeseen
