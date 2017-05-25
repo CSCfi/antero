@@ -49,8 +49,8 @@ def show(message):
 
 def check_if_coordinates_in_our_db(osoite, postinumero, postitoimipaikka):
   command = ("SELECT * FROM [ANTERO].[sa].[sa_koordinaatit] WHERE osoite='" + osoite +
-             "' AND postinumero='" + postinumero + "' AND postitoimipaikka='" + postitoimipaikka + "'")
-  .encode('utf-8', 'ignore')  # unknown characters will be lost (ignored)
+             "' AND postinumero='" + postinumero + "' AND postitoimipaikka='" + postitoimipaikka + "'") \
+             .encode('utf-8', 'ignore')  # unknown characters will be lost (ignored)
 
   result = dbcommand.load(command, "*", False)
 
@@ -64,8 +64,8 @@ def check_if_coordinates_in_our_db(osoite, postinumero, postitoimipaikka):
 
 def insert_coordinates_to_our_db(osoite, postinumero, postitoimipaikka, latitude, longitude):
   command = ("INSERT INTO [ANTERO].[sa].[sa_koordinaatit] (osoite, postinumero, postitoimipaikka, latitude, longitude) VALUES ('" +
-             osoite + "', '" + postinumero + "', '" + postitoimipaikka + "', '" + str(latitude) + "', '" + str(longitude) + "')")
-  .encode('utf-8', 'ignore')
+             osoite + "', '" + postinumero + "', '" + postitoimipaikka + "', '" + str(latitude) + "', '" + str(longitude) + "')") \
+             .encode('utf-8', 'ignore')
 
   dbcommand.load(command, "", False)
 
