@@ -118,7 +118,7 @@ def get_and_set_coordinates(row):
 
         insert_coordinates_to_our_db(osoite_parsed, postinumero, postitoimipaikka, row["latitude"], row["longitude"])
       else:  # STATUS == NOK
-        print "Error:", geocoding_api_answer["RESULT"].encode('utf-8', 'ignore')
+        print "Error:", geocoding_api_answer["RESULT"].decode('utf-8', 'ignore')
 
 def load(secure,hostname,url,schema,table,verbose=False):
   if verbose: show("begin")
