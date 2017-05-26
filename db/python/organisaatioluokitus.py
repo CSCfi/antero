@@ -49,8 +49,7 @@ def show(message):
 
 def check_if_coordinates_in_our_db(osoite, postinumero, postitoimipaikka):
   command = ("SELECT * FROM [ANTERO].[sa].[sa_koordinaatit] WHERE osoite='" + osoite +
-             "' AND postinumero='" + postinumero + "' AND postitoimipaikka='" + postitoimipaikka + "'") \
-             .encode('utf-8', 'ignore')  # unknown characters will be lost (ignored)
+             "' AND postinumero='" + postinumero + "' AND postitoimipaikka='" + postitoimipaikka + "'")
 
   result = dbcommand.load(command, "*", False)
 
@@ -64,8 +63,7 @@ def check_if_coordinates_in_our_db(osoite, postinumero, postitoimipaikka):
 
 def insert_coordinates_to_our_db(osoite, postinumero, postitoimipaikka, latitude, longitude):
   command = ("INSERT INTO [ANTERO].[sa].[sa_koordinaatit] (osoite, postinumero, postitoimipaikka, latitude, longitude) VALUES ('" +
-             osoite + "', '" + postinumero + "', '" + postitoimipaikka + "', '" + str(latitude) + "', '" + str(longitude) + "')") \
-             .encode('utf-8', 'ignore')
+             osoite + "', '" + postinumero + "', '" + postitoimipaikka + "', '" + str(latitude) + "', '" + str(longitude) + "')")
 
   dbcommand.load(command, "", False)
 
@@ -87,16 +85,18 @@ def get_and_set_coordinates(row):
   if there are commas (,) in row["osoite"], use the part before the first comma
   e.g. "Fredrikinkatu 33 A, 2 krs" --> "Fredrikinkatu 33 A"
   """
-  osoite_parsed = row["osoite"].split(",")[0]
+  osoite_parsed = row["osoite"].split(",")[0].encode('utf-8', 'ignore')  # unknown characters will be lost (ignored)
+  postinumero = row["postinumero"].encode('utf-8', 'ignore')
+  postitoimipaikka = row["postitoimipaikka"].encode('utf-8', 'ignore')
 
   osoite_array = ["--address"]
-  osoite_array.append(osoite_parsed + ", " + row["postinumero"] + ", " + row["postitoimipaikka"])
+  osoite_array.append(osoite_parsed + ", " + postinumero + ", " + postitoimipaikka)
 
   """
   First check if the coordinates are found in our database, if not, only then fetch the coordinates from an external-API.
   Finally, if coordinates were not found, insert them to our database for future fetching.
   """
-  check_coordinates = check_if_coordinates_in_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"])
+  check_coordinates = check_if_coordinates_in_our_db(osoite_parsed, postinumero, postitoimipaikka)
   if check_coordinates["coordinates_found"]:
     row["latitude"] = check_coordinates["latitude"]
     row["longitude"] = check_coordinates["longitude"]
@@ -116,7 +116,7 @@ def get_and_set_coordinates(row):
         row["latitude"] = geocoding_api_answer["RESULT"]["latitude"]
         row["longitude"] = geocoding_api_answer["RESULT"]["longitude"]
 
-        insert_coordinates_to_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"], row["latitude"], row["longitude"])
+        insert_coordinates_to_our_db(osoite_parsed, postinumero, postitoimipaikka, row["latitude"], row["longitude"])
       else:  # STATUS == NOK
         print "Error:", geocoding_api_answer["RESULT"].encode('utf-8', 'ignore')
 
