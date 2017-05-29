@@ -21,6 +21,8 @@ from time import localtime, strftime
 import dbcommand
 import dboperator
 
+EXT_API_QUERY_CONFIDENCE_LIMIT = 0.6  # TODO: this needs more evaluation. What is the minimum acceptable confidence.
+
 def makerow():
   return {
     'oid':None, 'koodi':None, 'nimi':None, 'nimi_sv':None, 'nimi_en':None, 'alkupvm':None, 'loppupvm':None,
@@ -54,17 +56,18 @@ def check_if_coordinates_in_our_db(osoite, postinumero, postitoimipaikka):
   result = dbcommand.load(command, "*", False)
 
   if len(result) > 0:  # the coordinates are found
-      latitude = (result)[0]["latitude"]
-      longitude = (result)[0]["longitude"]
+      latitude = result[0]["latitude"]
+      longitude = result[0]["longitude"]
+      confidence = result[0]["confidence"]
   else:
-      return {"coordinates_found": False, "latitude": None, "longitude": None}
+      return {"coordinates_found": False, "latitude": None, "longitude": None, "confidence": None}
 
-  return {"coordinates_found": True, "latitude": latitude, "longitude": longitude}
+  return {"coordinates_found": True, "latitude": latitude, "longitude": longitude, "confidence": confidence}
 
-def insert_coordinates_to_our_db(osoite, postinumero, postitoimipaikka, latitude, longitude):
-  command = ("INSERT INTO [ANTERO].[sa].[sa_koordinaatit] (osoite, postinumero, postitoimipaikka, latitude, longitude) VALUES ('" +
-             osoite + "', '" + postinumero + "', '" + postitoimipaikka + "', '" + str(latitude) + "', '" + str(longitude) + "')") \
-             .encode('utf-8', 'ignore')
+def insert_coordinates_to_our_db(osoite, postinumero, postitoimipaikka, latitude, longitude, api_result_confidence):
+  command = ("INSERT INTO [ANTERO].[sa].[sa_koordinaatit] (osoite, postinumero, postitoimipaikka, latitude, longitude, confidence) VALUES ('" +
+             osoite + "', '" + postinumero + "', '" + postitoimipaikka + "', '" + str(latitude) + "', '" + str(longitude) + "', '" + \
+             str(api_result_confidence) + "')").encode('utf-8', 'ignore')
 
   dbcommand.load(command, "", False)
 
@@ -76,7 +79,7 @@ def get_and_set_coordinates(row):
   Geocoding eats the address in following format: ["--address", "Kadunnimi talon_numero [porras asunto], postinumero, kaupunki"]
 
   Geocoding returns:
-  {'STATUS': 'OK', 'RESULT': {'latitude': 61.246893, 'longitude': 22.33108}}
+  {'STATUS': 'OK', 'RESULT': {'latitude': 61.246893, 'longitude': 22.33108, 'confidence': 0.8}}
 
   OR if problems:
   {'STATUS': 'NOK', 'RESULT': "Error message"}
@@ -97,8 +100,11 @@ def get_and_set_coordinates(row):
   """
   check_coordinates = check_if_coordinates_in_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"])
   if check_coordinates["coordinates_found"]:
-    row["latitude"] = check_coordinates["latitude"]
-    row["longitude"] = check_coordinates["longitude"]
+    if check_coordinates["confidence"] >= EXT_API_QUERY_CONFIDENCE_LIMIT:
+      row["latitude"] = check_coordinates["latitude"]
+      row["longitude"] = check_coordinates["longitude"]
+    else:
+        pass  # fetched result has too low confidence to be shown
   else:  # coordinates were not found from our own database
 
     api_fetch_successful = False
@@ -112,10 +118,14 @@ def get_and_set_coordinates(row):
 
     if api_fetch_successful:
       if geocoding_api_answer["STATUS"] == "OK":
-        row["latitude"] = geocoding_api_answer["RESULT"]["latitude"]
-        row["longitude"] = geocoding_api_answer["RESULT"]["longitude"]
-
-        insert_coordinates_to_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"], row["latitude"], row["longitude"])
+          api_result_confidence = geocoding_api_answer["RESULT"]["confidence"]
+          if api_result_confidence >= EXT_API_QUERY_CONFIDENCE_LIMIT:
+            row["latitude"] = geocoding_api_answer["RESULT"]["latitude"]
+            row["longitude"] = geocoding_api_answer["RESULT"]["longitude"]
+          else:
+              pass  # results not shown further
+          insert_coordinates_to_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"], geocoding_api_answer["RESULT"]["latitude"],
+                                       geocoding_api_answer["RESULT"]["longitude"], api_result_confidence)
       else:  # STATUS == NOK
         print "Error:", geocoding_api_answer["RESULT"].encode('utf-8', 'ignore')
 

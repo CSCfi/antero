@@ -47,9 +47,13 @@ forEach ($file in $files)
     {
         $projectname = $xml.Project.PropertyGroup[0].DeploymentServerDatabase
     }
-    else
+    elseif ($xml.Project.PropertyGroup[1].DeploymentServerDatabase)
     {
         $projectname = $xml.Project.PropertyGroup[1].DeploymentServerDatabase
+    }
+    else
+    {
+        $projectname = $xml.Project.PropertyGroup[2].DeploymentServerDatabase
     }
     $xml = [xml](Get-Content ($workdir + "Model.deploymenttargets"))
     $xml.DeploymentTarget.Database = $projectname
