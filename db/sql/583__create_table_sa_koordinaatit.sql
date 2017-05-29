@@ -9,8 +9,9 @@ CREATE TABLE sa.sa_koordinaatit(
   osoite nvarchar(500) NULL,
   postinumero varchar(5) NULL,
   postitoimipaikka nvarchar(200) NULL,
-  latitude varchar(30) NULL,
-  longitude varchar(30) NULL,
+  latitude varchar(20) NULL,
+  longitude varchar(20) NULL,
+  confidence varchar(20) NULL,
 
   CONSTRAINT PK__sa_koordinaatit PRIMARY KEY CLUSTERED (id ASC)
 )
