@@ -71,17 +71,12 @@ def get_geo_coordinates_from_server(address, postalcode, city):
         return get_result_dictionary(False, "Bad Gateway: Connection was lost to the Elasticsearch cluster.")
 
     elif r.status_code == 200:
-        result_confidence = result_json[u'features'][0][u'properties'][u'confidence']
-        if result_confidence >= 0.6:  # TODO: this needs more evaluation. What is the minimum acceptable confidence.
-            coordinate_results = {}
-            result_json[u'features'][0][u'properties'][u'confidence']
-            results = result_json[u'features'][0][u'geometry'][u'coordinates']
-            coordinate_results["latitude"] = results[1]
-            coordinate_results["longitude"] = results[0]
-            return get_result_dictionary(True, coordinate_results)
-        else:
-            return get_result_dictionary(False, "Confidence: " + str(result_confidence) + ", for: " + address_url)
-
+        coordinate_results = {}
+        results = result_json[u'features'][0][u'geometry'][u'coordinates']
+        coordinate_results["latitude"] = results[1]
+        coordinate_results["longitude"] = results[0]
+        coordinate_results["confidence"] = result_json[u'features'][0][u'properties'][u'confidence']
+        return get_result_dictionary(True, coordinate_results)
     else:
         return get_result_dictionary(False, "Unknown HTTP-error code: " + str(r.status_code))
 
