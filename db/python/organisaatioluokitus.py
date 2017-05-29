@@ -124,7 +124,8 @@ def get_and_set_coordinates(row):
             row["longitude"] = geocoding_api_answer["RESULT"]["longitude"]
           else:
               pass  # results not shown further
-          insert_coordinates_to_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"], row["latitude"], row["longitude"], api_result_confidence)
+          insert_coordinates_to_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"], geocoding_api_answer["RESULT"]["latitude"],
+                                       geocoding_api_answer["RESULT"]["longitude"], api_result_confidence)
       else:  # STATUS == NOK
         print "Error:", geocoding_api_answer["RESULT"].encode('utf-8', 'ignore')
 
