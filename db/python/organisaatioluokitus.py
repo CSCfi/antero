@@ -67,7 +67,10 @@ def get_kotikunta_by_kuntakoodi(koodi):
     print "Error: virkailija.opintopolku.fi, " + str(e)
 
   if r.status_code == 200:
-    return {"OK": True, "kunta": result_json[0]["metadata"][0]["nimi"]}  # if code == 200 we can assume the correct format for this json
+    for i in result_json[0]["metadata"]:
+        if i["kieli"] == "FI":
+          return {"OK": True, "kunta": i["nimi"]}
+    return {"OK": True, "kunta": result_json[0]["metadata"][0]["nimi"]}  # If FI was not found
   else:
     print("Error! virkailija.opintopolku.fi, code: " + str(r.status_code))
   return {"OK": False, "kunta": None}
