@@ -15,6 +15,7 @@ Koodi is in
 """
 import sys, os, getopt
 import geocoding
+import json
 import requests
 from time import localtime, strftime
 
@@ -47,6 +48,29 @@ def getmeta(i,tieto,kieli):
 
 def show(message):
   print strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message
+
+def get_osoite_array(osoite, postinumero, kunta):
+  osoite_array = ["--address"]
+  osoite_array.append(osoite + ", " + postinumero + ", " + kunta)
+  return osoite_array
+
+def get_kotikunta_by_kuntakoodi(koodi):
+  try:
+    r = requests.get("https://virkailija.opintopolku.fi/koodisto-service/rest/json/kunta/koodi/arvo/" + str(koodi),
+                     headers={"Accept": "application/json"})
+  except requests.exceptions.RequestException as e:
+    print "Error: virkailija.opintopolku.fi, no kunta for koodi: " + koodi
+
+  try:
+    result_json = json.loads(r.text)
+  except ValueError, e:
+    print "Error: virkailija.opintopolku.fi, " + str(e)
+
+  if r.status_code == 200:
+    return {"OK": True, "kunta": result_json[0]["metadata"][0]["nimi"]}  # if code == 200 we can assume the correct format for this json
+  else:
+    print("Error! virkailija.opintopolku.fi, code: " + str(r.status_code))
+  return {"OK": False, "kunta": None}
 
 def check_if_coordinates_in_our_db(osoite, postinumero, postitoimipaikka):
   command = ("SELECT * FROM [ANTERO].[sa].[sa_koordinaatit] WHERE osoite='" + osoite +
@@ -82,6 +106,19 @@ def coordinate_length_ok(latitude, longitude):
       return True
   return False
 
+def fetch_coordinates_from_server(osoite_array):
+  api_fetch_successful = False
+
+  try:
+    geocoding_api_answer = geocoding.main(osoite_array)
+    api_fetch_successful = True
+  except Exception, e:
+    print "Error: " + str(e)
+  except SystemExit:
+    pass  # catch the sys.exit from geocoding. It prints the usage().
+
+  return {"OK": api_fetch_successful, "result": geocoding_api_answer}
+
 def get_and_set_coordinates(row):
   """
   nb! coordinates in another process! (see geocoding.py)
@@ -97,17 +134,14 @@ def get_and_set_coordinates(row):
 
   --
 
-  if there are commas (,) in row["osoite"], use the part before the first comma
+  if there are commas (,) in osoite, use the part before the first comma
   e.g. "Fredrikinkatu 33 A, 2 krs" --> "Fredrikinkatu 33 A"
   """
   osoite_parsed = row["osoite"].split(",")[0]
-
-  osoite_array = ["--address"]
-  osoite_array.append(osoite_parsed + ", " + row["postinumero"] + ", " + row["postitoimipaikka"])
+  osoite_array = get_osoite_array(osoite_parsed, row["postinumero"], row["postitoimipaikka"])
 
   """
-  First check if the coordinates are found in our database, if not, only then fetch the coordinates from an external-API.
-  Finally, if coordinates were not found, insert them to our database for future fetching.
+  First check if the coordinates are found in our database.
   """
   check_coordinates = check_if_coordinates_in_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"])
   if check_coordinates["coordinates_found"]:
@@ -116,20 +150,46 @@ def get_and_set_coordinates(row):
       row["longitude"] = check_coordinates["longitude"]
     else:
         pass  # fetched result has too low confidence to be shown or the coordinate length-check failed
-  else:  # coordinates were not found from our own database
 
-    api_fetch_successful = False
-    try:
-      geocoding_api_answer = geocoding.main(osoite_array)
-      api_fetch_successful = True
-    except Exception, e:
-      print "Error: " + str(e)
-    except SystemExit:
-      pass  # catch the sys.exit from geocoding. It prints the usage().
+  else:
+    """
+    Coordinates not found in our database, fetch from external-API. First use "postitoimipaikka",
+    if the result-confidence is too low, then use "kotikunta" instead.
+    """
+    query_result = fetch_coordinates_from_server(osoite_array)
+    if query_result["OK"]:
+      geocoding_api_answer = query_result["result"]
 
-    if api_fetch_successful:
       if geocoding_api_answer["STATUS"] == "OK":
-          api_result_confidence = geocoding_api_answer["RESULT"]["confidence"]
+        api_result_confidence = geocoding_api_answer["RESULT"]["confidence"]
+
+        kotikunta = get_kotikunta_by_kuntakoodi(row["kotikunta"])
+        if api_result_confidence < EXT_API_QUERY_CONFIDENCE_LIMIT and kotikunta["OK"]:
+          """
+          Too low confidence. Fetch again, now with 'kotikunta' instead of 'postitoimipaikka'.
+          """
+          new_osoite_array = get_osoite_array(osoite_parsed, row["postinumero"], kotikunta["kunta"])
+          query_result = fetch_coordinates_from_server(new_osoite_array)
+
+          if query_result["OK"]:
+            geocoding_api_answer = query_result["result"]
+
+            if geocoding_api_answer["STATUS"] == "OK":
+              api_result_confidence = geocoding_api_answer["RESULT"]["confidence"]
+              latitude = geocoding_api_answer["RESULT"]["latitude"]
+              longitude = geocoding_api_answer["RESULT"]["longitude"]
+
+              if api_result_confidence >= EXT_API_QUERY_CONFIDENCE_LIMIT and coordinate_length_ok(latitude, longitude):
+                row["latitude"] = latitude
+                row["longitude"] = longitude
+              else:
+                pass  # results not shown further
+
+              insert_coordinates_to_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"], latitude, longitude, api_result_confidence)
+            else:  # STATUS == NOK
+              print "Error:", geocoding_api_answer["RESULT"].encode('utf-8', 'ignore')
+
+        else:  # First external-API fetching successful (=high confidence) or we don't have better info (kotikunta is not known!)
           latitude = geocoding_api_answer["RESULT"]["latitude"]
           longitude = geocoding_api_answer["RESULT"]["longitude"]
 
@@ -137,7 +197,7 @@ def get_and_set_coordinates(row):
             row["latitude"] = latitude
             row["longitude"] = longitude
           else:
-              pass  # results not shown further
+            pass  # results not shown further
 
           insert_coordinates_to_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"], latitude, longitude, api_result_confidence)
       else:  # STATUS == NOK
@@ -172,15 +232,15 @@ def load(secure,hostname,url,schema,table,verbose=False):
       address = "http://"+hostname+url+geturi+tyyppi
   """
   # ... but results don't contain address information :(
-  
+
   if secure:
     address = "https://"+hostname+url
   else:
     address = "http://"+hostname+url
-  
+
   #""" load from web
   show("load from "+address)
-  
+
   try:
     # first create a "hash map" of liitokset
     liitosresponse = requests.get(address+"v2/liitokset")
