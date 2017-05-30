@@ -71,6 +71,17 @@ def insert_coordinates_to_our_db(osoite, postinumero, postitoimipaikka, latitude
 
   dbcommand.load(command, "", False)
 
+def coordinate_length_ok(latitude, longitude):
+  """
+  A valid coordinate should be a float of certain length (i.e. usually 8-9 characters including the dot).
+  E.g. ['60.388098', '25.621308']
+  Explicitly check the length of a float and discard clearly invalid coordinates. There seems to be an issue
+  with some of the coordinates having a high confidence value, but the coordinate is still clearly wrong (too short).
+  """
+  if len(str(latitude)) > 6 and len(str(longitude)) > 6:
+      return True
+  return False
+
 def get_and_set_coordinates(row):
   """
   nb! coordinates in another process! (see geocoding.py)
@@ -100,11 +111,11 @@ def get_and_set_coordinates(row):
   """
   check_coordinates = check_if_coordinates_in_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"])
   if check_coordinates["coordinates_found"]:
-    if check_coordinates["confidence"] >= EXT_API_QUERY_CONFIDENCE_LIMIT:
+    if check_coordinates["confidence"] >= EXT_API_QUERY_CONFIDENCE_LIMIT and coordinate_length_ok(check_coordinates["latitude"], check_coordinates["longitude"]):
       row["latitude"] = check_coordinates["latitude"]
       row["longitude"] = check_coordinates["longitude"]
     else:
-        pass  # fetched result has too low confidence to be shown
+        pass  # fetched result has too low confidence to be shown or the coordinate length-check failed
   else:  # coordinates were not found from our own database
 
     api_fetch_successful = False
@@ -119,13 +130,16 @@ def get_and_set_coordinates(row):
     if api_fetch_successful:
       if geocoding_api_answer["STATUS"] == "OK":
           api_result_confidence = geocoding_api_answer["RESULT"]["confidence"]
-          if api_result_confidence >= EXT_API_QUERY_CONFIDENCE_LIMIT:
-            row["latitude"] = geocoding_api_answer["RESULT"]["latitude"]
-            row["longitude"] = geocoding_api_answer["RESULT"]["longitude"]
+          latitude = geocoding_api_answer["RESULT"]["latitude"]
+          longitude = geocoding_api_answer["RESULT"]["longitude"]
+
+          if api_result_confidence >= EXT_API_QUERY_CONFIDENCE_LIMIT and coordinate_length_ok(latitude, longitude):
+            row["latitude"] = latitude
+            row["longitude"] = longitude
           else:
               pass  # results not shown further
-          insert_coordinates_to_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"], geocoding_api_answer["RESULT"]["latitude"],
-                                       geocoding_api_answer["RESULT"]["longitude"], api_result_confidence)
+
+          insert_coordinates_to_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"], latitude, longitude, api_result_confidence)
       else:  # STATUS == NOK
         print "Error:", geocoding_api_answer["RESULT"].encode('utf-8', 'ignore')
 
