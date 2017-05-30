@@ -59,7 +59,7 @@ def get_kotikunta_by_kuntakoodi(koodi):
     r = requests.get("https://virkailija.opintopolku.fi/koodisto-service/rest/json/kunta/koodi/arvo/" + str(koodi),
                      headers={"Accept": "application/json"})
   except requests.exceptions.RequestException as e:
-    print "Error: virkailija.opintopolku.fi, no kunta for koodi: " + koodi
+    print "Error: virkailija.opintopolku.fi, no kunta for koodi: " + str(koodi)
 
   try:
     result_json = json.loads(r.text)
