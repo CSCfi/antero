@@ -22,7 +22,6 @@ select
 ,null as opintopisteet_kesayo
 ,null as opintopisteet_muut
 ,null as opintopisteet_yo
-,null as opintopisteet_maahanmuuttajat
 
 ,[Sektori] = 'Avoin amk'
 
@@ -62,7 +61,6 @@ select
 ,f.avoinamk_op_kesa_lkm
 ,f.avoinamk_op_muut_lkm
 ,f.avoinamk_op_yliop_lkm
-,null
 
 ,[Sektori] = 'Avoin amk'
 
@@ -102,7 +100,6 @@ select
 ,null
 ,null
 ,null
-,null
 
 ,[Sektori] = 'Maahanmuuttajat'
 
@@ -134,14 +131,14 @@ select
 
 --mittarit
 ,null
-,null
-,null
-,null
-,null
-,null
-,null
-,null
 ,mamu_op_lkm
+,null
+,null
+,null
+,null
+,null
+,null
+
 
 ,[Sektori] = 'Maahanmuuttajat'
 
@@ -157,7 +154,6 @@ from [dw].[f_amk_opintopisteet] f
 join dw.d_ohjauksenala d2 on d2.id=f.d_ohjauksenala_id
 join dw.d_koulutusala_2002 d3 on d3.id=f.d_koulutusala_2002_id
 join dw.d_amk d6 on d6.id=f.d_amk_id
-
 
 
 
