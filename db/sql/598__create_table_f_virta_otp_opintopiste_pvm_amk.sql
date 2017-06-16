@@ -1,11 +1,12 @@
-IF NOT EXISTS (select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='dw' and TABLE_NAME='f_virta_otp_opintopiste_pvm_amk') BEGIN
+IF NOT EXISTS (select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='dw' and TABLE_NAME='f_virta_otp_opintopiste_pvm_amk') 
+BEGIN
 
 CREATE TABLE [dw].[f_virta_otp_opintopiste_pvm_amk](
 	[id] [int] IDENTITY(1,1) NOT NULL,
 	[tilastovuosi] [int] NOT NULL,
 	[suorituspaiva] [bigint] NULL,
 	[d_ohjauksenala_id] [int] NOT NULL,
-	[d_amk_koulutustyyppi_id] [int] NOT NULL
+	[d_amk_koulutustyyppi_id] [int] NOT NULL,
 	[d_amk_id] [int] NOT NULL,
 	[lukumaara_int] [int] NULL,
 	[perustutk_opiskelijat_lkm] [int] NULL,
@@ -25,6 +26,5 @@ CREATE TABLE [dw].[f_virta_otp_opintopiste_pvm_amk](
 	[source] [nvarchar](255) NULL,
 	[username] [nvarchar](128) NOT NULL
 )
-;
 
 END
