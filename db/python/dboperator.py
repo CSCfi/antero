@@ -167,13 +167,13 @@ def insert(source,schema,table,row,debug=False):
   placeholders = ','.join(['%s' for s in columnlist])
 
   statement = "INSERT INTO %s.%s (%s,source) VALUES (%s,'%s');"%(schema,table,columnstr,placeholders,source)
-  cur.execute(statement,tuple([row[c] for c in columnlist]))
+  cur.execute(statement,tuple([row[c.replace('_source_','')] for c in columnlist]))
   count = cur.rowcount
   conn.commit()
 
 # for procedure calls and ready made statements
 def execute(sql,debug=False):
-  global conn, cur, count, columnlist
+  global conn, cur, count
   if debug: print "dboperator.execute: sql="+sql
   cur.execute(sql)
   count = cur.rowcount
@@ -181,7 +181,7 @@ def execute(sql,debug=False):
 
 # get results of a query as an array of dicts
 def get(sql,debug=False):
-  global conn, cur, count, columnlist
+  global conn, cur, count
   if debug: print "dboperator.get: sql="+sql
   cur.execute(sql)
   count = cur.rowcount
