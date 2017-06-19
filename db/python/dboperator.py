@@ -54,6 +54,9 @@ def columns(row,debug=False):
   global columnlist, columntypes, columnlistignore
   for col in row:
     key = str(col)
+    # if column name from source collides with "reserved" names prefixit with "_source_"
+    if key in columnlistignore:
+      key = '_source_'+key
     if type(row[col]) is int:
       if row[col] > 2**31:
         columntypes[key] = 'bigint'
@@ -74,9 +77,9 @@ def columns(row,debug=False):
     # default to string type. NoneType goes here also
     if key not in columntypes:
       columntypes[key] = 'varchar(max)'
-    if debug: print "dboperator.columns: col:%s, type:%s, columntype:%s, strlen:%s" % (col,type(row[col]),columntypes[key],columntypes[lenkey])
-    if col not in columnlist:
-      columnlist.append(col)
+    if debug: print "dboperator.columns: col:%s->key:%s, type:%s, columntype:%s, strlen:%s" % (col,key,type(row[col]),columntypes[key],columntypes[lenkey])
+    if key not in columnlist:
+      columnlist.append(key)
   for ignr in columnlistignore:
     if ignr in columnlist:
       columnlist.remove(ignr)
