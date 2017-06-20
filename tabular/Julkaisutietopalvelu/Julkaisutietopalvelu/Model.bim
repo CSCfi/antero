@@ -1923,12 +1923,16 @@
           },
           {
             "name": "JufoKK",
-            "expression": "CONCATENATE([Jufot]/CALCULATE([Jufot],ALL(Muuttujat[Yliopisto])),\" (\"&COUNTROWS(CALCULATETABLE(Muuttujat,FILTER(Muuttujat,OR(OR(Muuttujat[Jufotaso int]=1,Muuttujat[Jufotaso int]=2),Muuttujat[Jufotaso int]=3)),FILTER(Muuttujat,OR(Muuttujat[Koodit Julkaisun pääluokka]=\"A\",Muuttujat[Koodit Julkaisun pääluokka]=\"C\")),FILTER(Muuttujat,[Tilastovuosi]>=2015)))&\")\")",
+            "expression": "CONCATENATE(FORMAT([measure1]/CALCULATE([measure1],ALL(Muuttujat[Yliopisto])),\"FIXED\"),\" (\"&CALCULATE(DISTINCTCOUNT(Muuttujat[JulkaisunTunnus]),FILTER(Muuttujat,OR(OR(Muuttujat[Jufotaso int]=1,Muuttujat[Jufotaso int]=2),Muuttujat[Jufotaso int]=3)),FILTER(Muuttujat,OR(Muuttujat[Koodit Julkaisun pääluokka]=\"A\",Muuttujat[Koodit Julkaisun pääluokka]=\"C\")),FILTER(Muuttujat,[Tilastovuosi]>=2015))&\")\")",
             "formatString": "0.00"
           },
           {
             "name": "measure1",
-            "expression": "AVERAGEX(VALUES(Muuttujat[JulkaisunTunnus]),CALCULATE(AVERAGE(Muuttujat[Jufotaso int]),FILTER(Muuttujat,OR(OR([Jufotaso int]=1,[Jufotaso int]=2),[Jufotaso int]=3)),FILTER(Muuttujat,OR([Koodit Julkaisun pääluokka]=\"A\",[Koodit Julkaisun pääluokka]=\"C\")),FILTER(Muuttujat,[Tilastovuosi]>=2015)))"
+            "expression": "AVERAGEX(DISTINCT(Muuttujat[JulkaisunTunnus]),CALCULATE(AVERAGE(Muuttujat[Jufotaso int]),FILTER(Muuttujat,OR(OR([Jufotaso int]=1,[Jufotaso int]=2),[Jufotaso int]=3)),FILTER(Muuttujat,OR([Koodit Julkaisun pääluokka]=\"A\",[Koodit Julkaisun pääluokka]=\"C\")),FILTER(Muuttujat,[Tilastovuosi]>=2015)))"
+          },
+          {
+            "name": "measure2",
+            "expression": "AVERAGEX(VALUES(Muuttujat[JulkaisunTunnus]),CALCULATE(AVERAGE(Muuttujat[Jufotaso int]),FILTER(Muuttujat,OR(OR([Jufotaso int]=1,[Jufotaso int]=2),[Jufotaso int]=3)),FILTER(Muuttujat,OR([Koodit Julkaisun pääluokka]=\"A\",[Koodit Julkaisun pääluokka]=\"C\")),FILTER(Muuttujat,[Tilastovuosi]<2015)))"
           }
         ],
         "annotations": [
