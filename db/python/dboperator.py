@@ -74,12 +74,15 @@ def columns(row,debug=False):
       if lenkey not in columntypes or strlen > columntypes[lenkey]:
         columntypes[lenkey] = strlen
         columntypes[key] = "varchar("+str(strlen)+")"
-    # default to string type. NoneType goes here also
-    if key not in columntypes:
-      columntypes[key] = 'varchar(max)'
-    if debug: print "dboperator.columns: col:%s->key:%s, type:%s, columntype:%s, strlen:%s" % (col,key,type(row[col]),columntypes[key],columntypes[lenkey])
-    if key not in columnlist:
-      columnlist.append(key)
+        if debug: print "dboperator.columns: key:%s, type:%s, columntype:%s, strlen:%s" % (key,type(row[col]),columntypes[key],columntypes[lenkey])
+    # ignore dict type altogether (for now)
+    if type(row[col]) is not dict:
+      # default to string type. NoneType goes here also
+      if key not in columntypes:
+        columntypes[key] = 'varchar(max)'
+      if debug: print "dboperator.columns: key:%s, type:%s, columntype:%s, (col:%s)" % (key,type(row[col]),columntypes[key],col)
+      if key not in columnlist:
+        columnlist.append(key)
   for ignr in columnlistignore:
     if ignr in columnlist:
       columnlist.remove(ignr)
