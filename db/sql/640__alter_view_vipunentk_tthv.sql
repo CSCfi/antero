@@ -307,6 +307,7 @@ SELECT --top 100000 --testausta
   inner join VipunenTK.dbo.d_toimiala_tthv2_sama_kuin_ed_vuonna d23 on d23.id=f.toimiala_tthv2_sama_kuin_ed_vuonna_id
   inner join VipunenTK.dbo.d_kylla_ei d24 on d24.id = f.tyonantaja_vaihtunut_id
 
+GO
 USE [ANTERO]
 
 
