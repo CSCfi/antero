@@ -1,13 +1,14 @@
 USE [VipunenTK_DW]
 GO
 
-ALTER TABLE [dbo].[d_alueluokitus] DROP CONSTRAINT [DF__d_alueluokitus_paattyy]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[d_alueluokitus]') AND type in (N'U'))
+ALTER TABLE [dbo].[d_alueluokitus] DROP CONSTRAINT IF EXISTS [DF__d_alueluokitus_paattyy]
 GO
-
-ALTER TABLE [dbo].[d_alueluokitus] DROP CONSTRAINT [DF__d_alueluokitus_alkaa]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[d_alueluokitus]') AND type in (N'U'))
+ALTER TABLE [dbo].[d_alueluokitus] DROP CONSTRAINT IF EXISTS [DF__d_alueluokitus_alkaa]
 GO
-
-ALTER TABLE [dbo].[d_alueluokitus] DROP CONSTRAINT [DF__d_alueluokitus_luotu]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[d_alueluokitus]') AND type in (N'U'))
+ALTER TABLE [dbo].[d_alueluokitus] DROP CONSTRAINT IF EXISTS [DF__d_alueluokitus_luotu]
 GO
 
 /****** Object:  Table [dbo].[d_alueluokitus]    Script Date: 27.6.2017 17:27:42 ******/

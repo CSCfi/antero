@@ -1,13 +1,14 @@
 USE [VipunenTK_DW]
 GO
 
-ALTER TABLE [dbo].[d_koulutusluokitus] DROP CONSTRAINT [DF__d_koulutusluokitus_paattyy]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[d_koulutusluokitus]') AND type in (N'U'))
+ALTER TABLE [dbo].[d_koulutusluokitus] DROP CONSTRAINT IF EXISTS [DF__d_koulutusluokitus_paattyy]
 GO
-
-ALTER TABLE [dbo].[d_koulutusluokitus] DROP CONSTRAINT [DF__d_koulutusluokitus_alkaa]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[d_koulutusluokitus]') AND type in (N'U'))
+ALTER TABLE [dbo].[d_koulutusluokitus] DROP CONSTRAINT IF EXISTS [DF__d_koulutusluokitus_alkaa]
 GO
-
-ALTER TABLE [dbo].[d_koulutusluokitus] DROP CONSTRAINT [DF__d_koulutusluokitus_luotu]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[d_koulutusluokitus]') AND type in (N'U'))
+ALTER TABLE [dbo].[d_koulutusluokitus] DROP CONSTRAINT IF EXISTS [DF__d_koulutusluokitus_luotu]
 GO
 
 /****** Object:  Table [dbo].[d_koulutusluokitus]    Script Date: 27.6.2017 17:28:32 ******/
