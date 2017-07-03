@@ -54,6 +54,9 @@ def columns(row,debug=False):
   global columnlist, columntypes, columnlistignore
   for col in row:
     key = str(col)
+    # if column name from source collides with "reserved" names prefixit with "_source_"
+    if key in columnlistignore:
+      key = '_source_'+key
     if type(row[col]) is int:
       if row[col] > 2**31:
         columntypes[key] = 'bigint'
@@ -71,12 +74,15 @@ def columns(row,debug=False):
       if lenkey not in columntypes or strlen > columntypes[lenkey]:
         columntypes[lenkey] = strlen
         columntypes[key] = "varchar("+str(strlen)+")"
-    # default to string type. NoneType goes here also
-    if key not in columntypes:
-      columntypes[key] = 'varchar(max)'
-    if debug: print "dboperator.columns: col:%s, type:%s, columntype:%s, strlen:%s" % (col,type(row[col]),columntypes[key],columntypes[lenkey])
-    if col not in columnlist:
-      columnlist.append(col)
+        if debug: print "dboperator.columns: key:%s, type:%s, columntype:%s, strlen:%s" % (key,type(row[col]),columntypes[key],columntypes[lenkey])
+    # ignore dict type altogether (for now)
+    if type(row[col]) is not dict:
+      # default to string type. NoneType goes here also
+      if key not in columntypes:
+        columntypes[key] = 'varchar(max)'
+      if debug: print "dboperator.columns: key:%s, type:%s, columntype:%s, (col:%s)" % (key,type(row[col]),columntypes[key],col)
+      if key not in columnlist:
+        columnlist.append(key)
   for ignr in columnlistignore:
     if ignr in columnlist:
       columnlist.remove(ignr)
@@ -164,13 +170,13 @@ def insert(source,schema,table,row,debug=False):
   placeholders = ','.join(['%s' for s in columnlist])
 
   statement = "INSERT INTO %s.%s (%s,source) VALUES (%s,'%s');"%(schema,table,columnstr,placeholders,source)
-  cur.execute(statement,tuple([row[c] for c in columnlist]))
+  cur.execute(statement,tuple([row[c.replace('_source_','')] for c in columnlist]))
   count = cur.rowcount
   conn.commit()
 
 # for procedure calls and ready made statements
 def execute(sql,debug=False):
-  global conn, cur, count, columnlist
+  global conn, cur, count
   if debug: print "dboperator.execute: sql="+sql
   cur.execute(sql)
   count = cur.rowcount
@@ -178,7 +184,7 @@ def execute(sql,debug=False):
 
 # get results of a query as an array of dicts
 def get(sql,debug=False):
-  global conn, cur, count, columnlist
+  global conn, cur, count
   if debug: print "dboperator.get: sql="+sql
   cur.execute(sql)
   count = cur.rowcount
