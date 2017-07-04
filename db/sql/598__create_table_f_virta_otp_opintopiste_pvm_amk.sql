@@ -4,7 +4,7 @@ BEGIN
 CREATE TABLE [dw].[f_virta_otp_opintopiste_pvm_amk](
 	[id] [int] IDENTITY(1,1) NOT NULL,
 	[tilastovuosi] [int] NOT NULL,
-	[suorituspaiva] [bigint] NULL,
+	[suorituspaiva] [datetime] NOT NULL,
 	[d_ohjauksenala_id] [int] NOT NULL,
 	[d_amk_koulutustyyppi_id] [int] NOT NULL,
 	[d_amk_id] [int] NOT NULL,
