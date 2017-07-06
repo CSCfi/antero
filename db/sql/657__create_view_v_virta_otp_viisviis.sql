@@ -1,7 +1,7 @@
 IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'dw.v_virta_otp_viisviis'))
 EXEC dbo.sp_executesql @statement = N'create view dw.v_virta_otp_viisviis as select 1 as a'
 GO
-
+-- Testi
 ALTER VIEW dw.v_virta_otp_viisviis 
 
 AS
