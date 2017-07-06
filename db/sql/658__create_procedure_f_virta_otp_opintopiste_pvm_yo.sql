@@ -1,4 +1,10 @@
-﻿CREATE PROCEDURE dw.p_lataa_f_virta_otp_opintopiste_pvm_yo AS
+﻿if not exists (select * from sys.objects where object_id = object_id('dw.p_lataa_f_virta_otp_opintopiste_pvm_yo') and type in ('p', 'pc'))
+begin
+exec dbo.sp_executesql @statement = N'create procedure dw.p_lataa_f_virta_otp_opintopiste_pvm_yo as' 
+end
+go
+
+ALTER PROCEDURE dw.p_lataa_f_virta_otp_opintopiste_pvm_yo AS
 
 TRUNCATE TABLE dw.f_virta_otp_opintopiste_pvm_yo
 
