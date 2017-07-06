@@ -9,7 +9,6 @@ IF NOT EXISTS (
 exec('CREATE PROCEDURE dw.p_lataa_f_virta_otp_opintopiste_pvm_amk AS') END
 GO
 
-
 ALTER PROCEDURE dw.p_lataa_f_virta_otp_opintopiste_pvm_amk AS 
 
 TRUNCATE TABLE dw.f_virta_otp_opintopiste_pvm_amk;
@@ -34,7 +33,6 @@ INSERT INTO dw.f_virta_otp_opintopiste_pvm_amk (
   TKI_harjoittelun_laajuus_lkm,
   ulkomaaharjoittelu_lkm,
   erikoistumiskoulutus_lkm,
-
   source
   
 )
