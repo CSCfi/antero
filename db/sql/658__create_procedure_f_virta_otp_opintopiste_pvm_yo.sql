@@ -6,9 +6,12 @@ IF NOT EXISTS (
   and ROUTINE_NAME='p_lataa_f_virta_otp_opintopiste_pvm_yo'
 ) BEGIN
  
-exec('CREATE PROCEDURE dw.p_lataa_f_virta_otp_opintopiste_pvm_yo AS
+exec('CREATE PROCEDURE dw.p_lataa_f_virta_otp_opintopiste_pvm_yo AS') END
+GO
 
-TRUNCATE TABLE dw.f_virta_otp_opintopiste_pvm_yo
+ALTER PROCEDURE dw.p_lataa_f_virta_otp_opintopiste_pvm_yo AS 
+
+TRUNCATE TABLE dw.f_virta_otp_opintopiste_pvm_yo;
 
 INSERT INTO dw.f_virta_otp_opintopiste_pvm_yo (
   tilastovuosi,
@@ -26,7 +29,6 @@ INSERT INTO dw.f_virta_otp_opintopiste_pvm_yo (
   erillinen_opinto_opettaja_lkm,
   ulkomaaharjoittelu_lkm,
   erikoistumiskoulutus_lkm,
-
   source
   
 )
@@ -51,5 +53,5 @@ SELECT
 FROM sa.sa_virta_otp_opintopistepvmyo as sa
 LEFT JOIN dw.d_ohjauksenala d1 ON d1.ohjauksenala_koodi=sa.koodi
 LEFT JOIN dw.d_yo d2 ON d2.yo_tunnus = sa.oppilaitostunnus
-')
-END
+
+GO
