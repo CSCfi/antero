@@ -27,7 +27,7 @@ INSERT INTO dw.f_virta_otp_opintopiste_pvm_amk (
 )
 SELECT
   sa.vuosi,
-  convert(date,dateadd(s, convert(bigint, sa.suorituspaiva) / 1000, convert(datetime, '1-1-1970'))),
+  convert(date,dateadd(s, convert(bigint, sa.suorituspaiva) / 1000, convert(datetime, '1-1-1970'))) AS suorituspaiva,
   coalesce(d1.id,-1) AS d_ohjauksenala_id,
   coalesce(d2.id,-1) AS d_amk_koulutustyyppi_id,
   coalesce(d3.id,-1) AS d_amk_id,
