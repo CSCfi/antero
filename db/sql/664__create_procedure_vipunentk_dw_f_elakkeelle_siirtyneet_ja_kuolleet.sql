@@ -23,3 +23,4 @@ Insert into VipunenTK.dbo.f_elakkeelle_siirtyneet_ja_kuolleet
 
 
 GO
+USE [ANTERO]
