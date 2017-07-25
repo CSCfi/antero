@@ -1,13 +1,3 @@
-USE [ANTERO]
-GO
-
-/****** Object:  View [dw].[v_arvo]    Script Date: 25.7.2017 11:08:00 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
 
 ALTER VIEW [dw].[v_arvo] AS
 SELECT
@@ -96,6 +86,5 @@ LEFT JOIN dw.d_kalenteri ON f.d_kalenteri_id=d_kalenteri.id
 LEFT JOIN dw.d_arvokysymys ON f.d_arvokysymys_id=d_arvokysymys.id
 LEFT JOIN dw.d_arvokyselykerta ON f.d_arvokyselykerta_id=d_arvokyselykerta.id
 
-GO
 
 
