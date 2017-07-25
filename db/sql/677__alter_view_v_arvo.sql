@@ -1,3 +1,13 @@
+USE [ANTERO]
+GO
+
+/****** Object:  View [dw].[v_arvo]    Script Date: 25.7.2017 11:08:00 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
 
 ALTER VIEW [dw].[v_arvo] AS
 SELECT
@@ -45,7 +55,7 @@ SELECT
 ,d_arvokysymys.kysymys_sv
 ,d_arvokysymys.kysymys_en
 
-,case d_arvokysymys.rahoitusmallikysymys when 1 then 'Kyllä' when 0 then 'Ei' else 'Tieto puuttuu' end as 'Rahoitusmallikysymys'
+,case d_arvokysymys.rahoitusmallikysymys when 1 then 'Kyllä' when 0 then 'Ei' else 'Tieto puuttuu' end as rahoitusmallikysymys
 
 ,d_arvokyselykerta.kysely_fi as 'Kysely'
 ,d_arvokyselykerta.kysely_sv
@@ -57,9 +67,11 @@ SELECT
 ,vaihtoehto
 ,monivalintavaihtoehto
 ,numerovalinta
-,taustakysymys_ika
-,taustakysymys_sukupuoli
-,taustakysymys_pohjakoulutus
+,coalesce(taustakysymys_ika,'Tieto puuttuu') as 'taustakysymys_ika'
+,case taustakysymys_ika when 'alle 25 vuotta' then 1 when '25-34 vuotta'  then 2 when '35-45 vuotta' then 3 when 'yli 45 vuotta' then 4 else 9 end as jarjestys_ika
+,coalesce(taustakysymys_sukupuoli,'Tieto puuttuu') as 'taustakysymys_sukupuoli'
+,case taustakysymys_sukupuoli when 'Mies' then 1 when 'Nainen' then 2 when 'Muu' then 3 when 'En halua vastata' then 4 else 9 end as jarjestys_sukupuoli
+,coalesce(taustakysymys_pohjakoulutus,'Tieto puuttuu') as 'taustakysymys_pohjakoulutus'
 ,vastaajaid
 
 ,lukumaara
@@ -84,5 +96,6 @@ LEFT JOIN dw.d_kalenteri ON f.d_kalenteri_id=d_kalenteri.id
 LEFT JOIN dw.d_arvokysymys ON f.d_arvokysymys_id=d_arvokysymys.id
 LEFT JOIN dw.d_arvokyselykerta ON f.d_arvokyselykerta_id=d_arvokyselykerta.id
 
+GO
 
 
