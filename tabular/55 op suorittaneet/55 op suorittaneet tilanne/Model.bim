@@ -292,7 +292,7 @@
         "measures": [
           {
             "name": "Väh. 55 op suorittaneet",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilo_koodi]),Muuttujat[Suorittanut55]=1)",
+            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilo_koodi]),Muuttujat[Suorittanut55]=1,Muuttujat[Lukuvuosi]<>\"2016/2017\")",
             "formatString": "#,0"
           },
           {
@@ -302,17 +302,17 @@
           },
           {
             "name": "Keväällä aloittaneista väh. 27 op suorittaneet",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilo_koodi]),Muuttujat[suorittanut27]=1)",
+            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilo_koodi]),Muuttujat[suorittanut27]=1,Muuttujat[Lukuvuosi]<>\"2016/2017\")",
             "formatString": "#,0"
           },
           {
             "name": "Suorittanut 55 op ilman pankkia",
-            "expression": "calculate(DISTINCTCOUNT(Muuttujat[Henkilo_koodi]),Muuttujat[suorittanut55IlmanPankkia]=1)",
+            "expression": "calculate(DISTINCTCOUNT(Muuttujat[Henkilo_koodi]),Muuttujat[suorittanut55IlmanPankkia]=1,Muuttujat[Lukuvuosi]<>\"2016/2017\")",
             "formatString": "#,0"
           },
           {
             "name": "Läsnäolleet",
-            "expression": "calculate(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[Lasna]=1)",
+            "expression": "calculate(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[Lasna]=1,Muuttujat[Lukuvuosi]<>\"2016/2017\")",
             "formatString": "#,0"
           },
           {
@@ -322,11 +322,51 @@
           },
           {
             "name": "Läsnäolleet kevät",
-            "expression": "CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[Olo kevät]=1)",
+            "expression": "CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[Olo kevät]=1,Muuttujat[Lukuvuosi]<>\"2016/2017\")",
             "formatString": "#,0"
           },
           {
             "name": "Läsnäolleet syksy",
+            "expression": "CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[Olo syksy]=1,Muuttujat[Lukuvuosi]<>\"2016/2017\")",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Väh. 55 op suorittaneet (LIVE)",
+            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilo_koodi]),Muuttujat[Suorittanut55]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Väh. 55 op suorittaneet, rahoitusmalli (LIVE)",
+            "expression": "[Väh. 55 op suorittaneet]-[Keväällä aloittaneista väh. 27 op suorittaneet]/2",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Keväällä aloittaneista väh. 27 op suorittaneet (LIVE)",
+            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilo_koodi]),Muuttujat[suorittanut27]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Suorittanut 55 op ilman pankkia (LIVE)",
+            "expression": "calculate(DISTINCTCOUNT(Muuttujat[Henkilo_koodi]),Muuttujat[suorittanut55IlmanPankkia]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Läsnäolleet (LIVE)",
+            "expression": "calculate(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[Lasna]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "55 op suorittaneiden osuus (LIVE)",
+            "expression": "[Väh. 55 op suorittaneet]/[Läsnäolleet]",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Läsnäolleet kevät (LIVE)",
+            "expression": "CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[Olo kevät]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Läsnäolleet syksy (LIVE)",
             "expression": "CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[Olo syksy]=1)",
             "formatString": "#,0"
           }
@@ -418,6 +458,92 @@
               },
               {
                 "name": "Väh. 55 op suorittaneet, rahoitusmalli"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Perus_LIVE",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Aika aloittamisesta"
+              },
+              {
+                "name": "Aloittanut keväällä"
+              },
+              {
+                "name": "Korkeakoulu"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "Lukuvuosi"
+              },
+              {
+                "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Sektori"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Tutkinto"
+              },
+              {
+                "name": "Tutkintokoodi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "55 op suorittaneiden osuus (LIVE)"
+              },
+              {
+                "name": "Keväällä aloittaneista väh. 27 op suorittaneet (LIVE)"
+              },
+              {
+                "name": "Läsnäolleet (LIVE)"
+              },
+              {
+                "name": "Suorittanut 55 op ilman pankkia (LIVE)"
+              },
+              {
+                "name": "Väh. 55 op suorittaneet (LIVE)"
+              },
+              {
+                "name": "Väh. 55 op suorittaneet, rahoitusmalli (LIVE)"
               }
             ]
           },
