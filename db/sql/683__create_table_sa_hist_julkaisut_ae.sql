@@ -1,6 +1,4 @@
-IF EXISTS (select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='sa' and TABLE_NAME='sa_suorat_hist_amk3_julkaisut_a_e') BEGIN
-
-DROP TABLE sa.sa_suorat_hist_amk3_julkaisut_a_e;
+IF NOT EXISTS (select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='sa' and TABLE_NAME='sa_suorat_hist_amk3_julkaisut_a_e') BEGIN
 
 CREATE TABLE [sa].[sa_suorat_hist_amk3_julkaisut_a_e](
 	[AMK_TUNNUS] [varchar](5) NULL,
@@ -27,9 +25,7 @@ CREATE TABLE [sa].[sa_suorat_hist_amk3_julkaisut_a_e](
 
 END
 
-IF EXISTS (select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='sa' and TABLE_NAME='sa_suorat_hist_yo3_julkaisut_a_e') BEGIN
-
-DROP TABLE sa.sa_suorat_hist_yo3_julkaisut_a_e;
+IF NOT EXISTS (select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='sa' and TABLE_NAME='sa_suorat_hist_yo3_julkaisut_a_e') BEGIN
 
 CREATE TABLE [sa].[sa_suorat_hist_yo3_julkaisut_a_e](
 	[YLIOPISTO_TUNNUS] [varchar](5) NULL,
