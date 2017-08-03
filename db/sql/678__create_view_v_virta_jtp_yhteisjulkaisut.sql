@@ -8,8 +8,11 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'dw.v_virta_jtp_yhteisjulkaisut'))
+EXEC dbo.sp_executesql @statement = N'create view dw.v_virta_jtp_yhteisjulkaisut as select 1 as a'
+GO
 
-CREATE VIEW [dw].[v_virta_jtp_yhteisjulkaisut] AS
+ALTER VIEW [dw].[v_virta_jtp_yhteisjulkaisut] AS
 
 SELECT
 Tilastovuosi
