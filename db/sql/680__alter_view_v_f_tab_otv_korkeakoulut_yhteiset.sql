@@ -1,4 +1,7 @@
-ALTER VIEW [VipunenTK].[dbo].[v_f_tab_otv_korkeakoulut_yhteiset] AS
+USE [VipunenTK]
+GO
+
+ALTER VIEW [dbo].[v_f_tab_otv_korkeakoulut_yhteiset] AS
 
 Select 
 [Tilastovuosi]
@@ -744,7 +747,7 @@ SELECT [tilastointivuosi] as Tilastovuosi
 	  ,[ika20_24_lkm] = NULL
 	  ,[ika25_34_lkm] = NULL
 	  ,[ika25_64_lkm] = NULL
-  FROM [VipunenTK].[dbo].[f_OTV_2_8_Korkeakouluopiskelijat]
+  FROM [dbo].[f_OTV_2_8_Korkeakouluopiskelijat]
 
 UNION ALL
 SELECT [tilastointivuosi] as Tilastovuosi
@@ -860,7 +863,7 @@ SELECT [tilastointivuosi] as Tilastovuosi
 	  ,[ika20_24_lkm] = NULL
 	  ,[ika25_34_lkm] = NULL
 	  ,[ika25_64_lkm] = NULL
-  FROM [VipunenTK].[dbo].[f_OTV_2_9_Korkeakoulututkinnot]
+  FROM [dbo].[f_OTV_2_9_Korkeakoulututkinnot]
 
 UNION ALL
 SELECT [tilastointivuosi] as Tilastovuosi
@@ -976,80 +979,83 @@ SELECT [tilastointivuosi] as Tilastovuosi
 	  ,[ika20_24_lkm]
 	  ,[ika25_34_lkm]
 	  ,[ika25_64_lkm]
-  FROM [VipunenTK].[dbo].[f_OTV_4_9_Vaestorakenne_kunnittain]
+  FROM [dbo].[f_OTV_4_9_Vaestorakenne_kunnittain]
 
   ) f
-	INNER JOIN [VipunenTK].[dbo].d_aineisto d1 ON d1.id = f.aineisto_id
-	INNER JOIN [VipunenTK].[dbo].d_aineisto_OTV d1b ON d1b.id = f.aineisto_OTV_id
-	INNER JOIN [VipunenTK].[dbo].d_aidinkieli_versio1 d2 ON d2.id = f.aidinkieli_versio1_id
-	INNER JOIN [VipunenTK].[dbo].d_aidinkieli_versio2 d2b ON d2b.id = f.aidinkieli_versio2_id
-	INNER JOIN [VipunenTK].[dbo].d_alueluokitus d3 ON d3.id = f.kotikunta_id
-	INNER JOIN [VipunenTK].[dbo].d_alueluokitus d3b ON d3b.id = f.kotikunta1x_id
-	INNER JOIN [VipunenTK].[dbo].d_alueluokitus d3c ON d3c.id = f.kotikunta2x_id
-	INNER JOIN [VipunenTK].[dbo].d_sukupuoli d4 ON d4.id = f.sukupuoli_id
-	INNER JOIN [VipunenTK].[dbo].d_ika d5 ON d5.id = f.ika_id
-	INNER JOIN [VipunenTK].[dbo].d_kausi d5b ON d5b.kausi_id = f.syntymavuosi_id
-	INNER JOIN [VipunenTK].[dbo].d_kausi d5c ON d5c.kausi_id = f.syntymakuukausi_id
-	INNER JOIN [VipunenTK].[dbo].d_tutkinto_amk d6a ON d6a.id = f.tutkinto_amk_id
-	INNER JOIN [VipunenTK].[dbo].d_tutkinto_yo d6b ON d6b.id = f.tutkinto_yo_id
-	INNER JOIN [VipunenTK].[dbo].d_koulutustyyppi d7 ON d7.id = f.koulutustyyppi_id
-	INNER JOIN [VipunenTK].[dbo].d_kansalaisuus_versio2 d8 ON d8.id = f.kansalaisuus_versio2_id
-	INNER JOIN [VipunenTK].[dbo].d_kansalaisuus_versio1 d8b ON d8b.id = f.kansalaisuus_versio1_id
-	INNER JOIN [VipunenTK].[dbo].d_oppilaitoksen_taustatiedot d9 ON d9.id = f.oppilaitos_id
-	INNER JOIN [VipunenTK].[dbo].d_oppilaitoksen_taustatiedot d9b ON d9b.id = f.koulutuksen_jarjestaja_id
-	INNER JOIN [VipunenTK].[dbo].d_lahde d10 ON d10.id = f.lahde_id
-	INNER JOIN [VipunenTK].[dbo].d_koulutusohjelma_amk d11 ON d11.id = f.koulutusohjelma_amk_id
-	INNER JOIN [VipunenTK].[dbo].d_opiskelijan_olo d12 ON d12.id = f.opiskelijan_olo_syys_id
-	INNER JOIN [VipunenTK].[dbo].d_opiskelijan_olo_tamm d12b ON d12b.id = f.opiskelijan_olo_tamm_id
-	INNER JOIN [VipunenTK].[dbo].d_rahoituslahde d13 ON d13.id = f.rahoituslahde_id
-	INNER JOIN [VipunenTK].[dbo].d_suuntautumisvaihtoehto_amk d15 ON d15.id = f.suuntautumisvaihtoehto_amk_id
-	INNER JOIN [VipunenTK].[dbo].d_kieli d16 ON d16.id = f.koulutuksen_kieli_id
-	INNER JOIN [VipunenTK].[dbo].d_ensisijainen_opintooikeus d17 ON d17.id = f.ensisijainen_opintooikeus_id
-	INNER JOIN [VipunenTK].[dbo].d_tilauskoulutuksen_sijaintimaa d18 ON d18.id = f.tilauskoulutuksen_sijaintimaa_id
-	INNER JOIN [VipunenTK].[dbo].d_koulutussektori d19 ON d19.id = f.koulutussektori_id
-	INNER JOIN [VipunenTK].[dbo].d_opetushallinnon_koulutus d20 ON d20.id = f.opetushallinnon_koulutus_id
-	INNER JOIN [VipunenTK].[dbo].d_koulutusluokitus d21 ON d21.id = f.koulutusluokitus_id
-	INNER JOIN [VipunenTK].[dbo].d_koulutuslaji_okm d21b ON d21b.id = f.koulutuslaji_OKM_id
-	INNER JOIN [VipunenTK].[dbo].d_alueluokitus d22 ON d22.id = f.koulutuksen_kunta_id
-	INNER JOIN [VipunenTK].[dbo].d_alueluokitus d22b ON d22b.id = f.koulutuksen_jarjestaja_kunta_id
-	INNER JOIN [VipunenTK].[dbo].d_alueluokitus d22c ON d22c.id = f.oppilaitos_kunta_id
-	INNER JOIN [VipunenTK].[dbo].d_kausi d23 ON d23.kausi_id = f.kirjoihintulovuosi_id
-	INNER JOIN [VipunenTK].[dbo].d_kausi d23b ON d23b.kausi_id = f.kirjoihintulokausi_id
-	INNER JOIN [VipunenTK].[dbo].d_kausi d24b ON d24b.kausi_id = f.kirjoihintulovuosi_korkeakoulusektori_id
-	INNER JOIN [VipunenTK].[dbo].d_kausi d24c ON d24c.kausi_id = f.kirjoihintulovuosi_korkeakoulusektori_lasnaoleva_id
-	INNER JOIN [VipunenTK].[dbo].d_kausi d24d ON d24d.kausi_id = f.kirjoihintulovuosi_sektori_id
-	INNER JOIN [VipunenTK].[dbo].d_kausi d24e ON d24e.kausi_id = f.kirjoihintulovuosi_sektori_lasnaoleva_id
-	INNER JOIN [VipunenTK].[dbo].d_kausi d24f ON d24f.kausi_id = f.kirjoihintulovuosi_korkeakoulu_id
-	INNER JOIN [VipunenTK].[dbo].d_kausi d24f2 ON d24f2.kausi_id = f.kirjoihintulokausi_korkeakoulu_id
-	INNER JOIN [VipunenTK].[dbo].d_kausi d24g ON d24g.kausi_id = f.kirjoihintulovuosi_korkeakoulu_lasnaoleva_id
-	INNER JOIN [VipunenTK].[dbo].d_kausi d24h ON d24h.kausi_id = f.kirjoihintulovuosi_opintoala_id
-	INNER JOIN [VipunenTK].[dbo].d_kausi d24i ON d24i.kausi_id = f.kirjoihintulovuosi_opintoala_lasnaoleva_id
-	INNER JOIN [VipunenTK].[dbo].d_kausi d24j ON d24j.kausi_id = f.kirjoihintulovuosi_tutkinto_id
-	INNER JOIN [VipunenTK].[dbo].d_kausi d24k ON d24k.kausi_id = f.kirjoihintulokausi_tutkinto_id
-	INNER JOIN [VipunenTK].[dbo].d_kausi d24l ON d24l.kausi_id = f.tutkintooikeusvuosi_id
-	INNER JOIN [VipunenTK].[dbo].d_vahintaan_55_op_suorittanut d28 ON d28.id = f.vahintaan_55_op_suorittanut_id
-	INNER JOIN [VipunenTK].[dbo].d_opiskelijan_fte_tieto d29 ON d29.id = f.opiskelijan_fte_tieto_id
+	INNER JOIN [dbo].d_aineisto d1 ON d1.id = f.aineisto_id
+	INNER JOIN [dbo].d_aineisto_OTV d1b ON d1b.id = f.aineisto_OTV_id
+	INNER JOIN [dbo].d_aidinkieli_versio1 d2 ON d2.id = f.aidinkieli_versio1_id
+	INNER JOIN [dbo].d_aidinkieli_versio2 d2b ON d2b.id = f.aidinkieli_versio2_id
+	INNER JOIN [dbo].d_alueluokitus d3 ON d3.id = f.kotikunta_id
+	INNER JOIN [dbo].d_alueluokitus d3b ON d3b.id = f.kotikunta1x_id
+	INNER JOIN [dbo].d_alueluokitus d3c ON d3c.id = f.kotikunta2x_id
+	INNER JOIN [dbo].d_sukupuoli d4 ON d4.id = f.sukupuoli_id
+	INNER JOIN [dbo].d_ika d5 ON d5.id = f.ika_id
+	INNER JOIN [dbo].d_kausi d5b ON d5b.kausi_id = f.syntymavuosi_id
+	INNER JOIN [dbo].d_kausi d5c ON d5c.kausi_id = f.syntymakuukausi_id
+	INNER JOIN [dbo].d_tutkinto_amk d6a ON d6a.id = f.tutkinto_amk_id
+	INNER JOIN [dbo].d_tutkinto_yo d6b ON d6b.id = f.tutkinto_yo_id
+	INNER JOIN [dbo].d_koulutustyyppi d7 ON d7.id = f.koulutustyyppi_id
+	INNER JOIN [dbo].d_kansalaisuus_versio2 d8 ON d8.id = f.kansalaisuus_versio2_id
+	INNER JOIN [dbo].d_kansalaisuus_versio1 d8b ON d8b.id = f.kansalaisuus_versio1_id
+	INNER JOIN [dbo].d_oppilaitoksen_taustatiedot d9 ON d9.id = f.oppilaitos_id
+	INNER JOIN [dbo].d_oppilaitoksen_taustatiedot d9b ON d9b.id = f.koulutuksen_jarjestaja_id
+	INNER JOIN [dbo].d_lahde d10 ON d10.id = f.lahde_id
+	INNER JOIN [dbo].d_koulutusohjelma_amk d11 ON d11.id = f.koulutusohjelma_amk_id
+	INNER JOIN [dbo].d_opiskelijan_olo d12 ON d12.id = f.opiskelijan_olo_syys_id
+	INNER JOIN [dbo].d_opiskelijan_olo_tamm d12b ON d12b.id = f.opiskelijan_olo_tamm_id
+	INNER JOIN [dbo].d_rahoituslahde d13 ON d13.id = f.rahoituslahde_id
+	INNER JOIN [dbo].d_suuntautumisvaihtoehto_amk d15 ON d15.id = f.suuntautumisvaihtoehto_amk_id
+	INNER JOIN [dbo].d_kieli d16 ON d16.id = f.koulutuksen_kieli_id
+	INNER JOIN [dbo].d_ensisijainen_opintooikeus d17 ON d17.id = f.ensisijainen_opintooikeus_id
+	INNER JOIN [dbo].d_tilauskoulutuksen_sijaintimaa d18 ON d18.id = f.tilauskoulutuksen_sijaintimaa_id
+	INNER JOIN [dbo].d_koulutussektori d19 ON d19.id = f.koulutussektori_id
+	INNER JOIN [dbo].d_opetushallinnon_koulutus d20 ON d20.id = f.opetushallinnon_koulutus_id
+	INNER JOIN [dbo].d_koulutusluokitus d21 ON d21.id = f.koulutusluokitus_id
+	INNER JOIN [dbo].d_koulutuslaji_okm d21b ON d21b.id = f.koulutuslaji_OKM_id
+	INNER JOIN [dbo].d_alueluokitus d22 ON d22.id = f.koulutuksen_kunta_id
+	INNER JOIN [dbo].d_alueluokitus d22b ON d22b.id = f.koulutuksen_jarjestaja_kunta_id
+	INNER JOIN [dbo].d_alueluokitus d22c ON d22c.id = f.oppilaitos_kunta_id
+	INNER JOIN [dbo].d_kausi d23 ON d23.kausi_id = f.kirjoihintulovuosi_id
+	INNER JOIN [dbo].d_kausi d23b ON d23b.kausi_id = f.kirjoihintulokausi_id
+	INNER JOIN [dbo].d_kausi d24b ON d24b.kausi_id = f.kirjoihintulovuosi_korkeakoulusektori_id
+	INNER JOIN [dbo].d_kausi d24c ON d24c.kausi_id = f.kirjoihintulovuosi_korkeakoulusektori_lasnaoleva_id
+	INNER JOIN [dbo].d_kausi d24d ON d24d.kausi_id = f.kirjoihintulovuosi_sektori_id
+	INNER JOIN [dbo].d_kausi d24e ON d24e.kausi_id = f.kirjoihintulovuosi_sektori_lasnaoleva_id
+	INNER JOIN [dbo].d_kausi d24f ON d24f.kausi_id = f.kirjoihintulovuosi_korkeakoulu_id
+	INNER JOIN [dbo].d_kausi d24f2 ON d24f2.kausi_id = f.kirjoihintulokausi_korkeakoulu_id
+	INNER JOIN [dbo].d_kausi d24g ON d24g.kausi_id = f.kirjoihintulovuosi_korkeakoulu_lasnaoleva_id
+	INNER JOIN [dbo].d_kausi d24h ON d24h.kausi_id = f.kirjoihintulovuosi_opintoala_id
+	INNER JOIN [dbo].d_kausi d24i ON d24i.kausi_id = f.kirjoihintulovuosi_opintoala_lasnaoleva_id
+	INNER JOIN [dbo].d_kausi d24j ON d24j.kausi_id = f.kirjoihintulovuosi_tutkinto_id
+	INNER JOIN [dbo].d_kausi d24k ON d24k.kausi_id = f.kirjoihintulokausi_tutkinto_id
+	INNER JOIN [dbo].d_kausi d24l ON d24l.kausi_id = f.tutkintooikeusvuosi_id
+	INNER JOIN [dbo].d_vahintaan_55_op_suorittanut d28 ON d28.id = f.vahintaan_55_op_suorittanut_id
+	INNER JOIN [dbo].d_opiskelijan_fte_tieto d29 ON d29.id = f.opiskelijan_fte_tieto_id
 	--INNER JOIN [dbo].d_opiskelumuoto d30 ON d30.id = f.opiskelumuoto_id
-	INNER JOIN [VipunenTK].[dbo].d_yliopisto d31 ON d31.id = f.yliopisto_id
-	INNER JOIN [VipunenTK].[dbo].d_tiedekunta_yo d32 ON d32.id = f.tiedekunta_yo_id
-	INNER JOIN [VipunenTK].[dbo].d_uusi_vanha_opiskelija d33 ON d33.id = f.uusi_vanha_opiskelija_id
+	INNER JOIN [dbo].d_yliopisto d31 ON d31.id = f.yliopisto_id
+	INNER JOIN [dbo].d_tiedekunta_yo d32 ON d32.id = f.tiedekunta_yo_id
+	INNER JOIN [dbo].d_uusi_vanha_opiskelija d33 ON d33.id = f.uusi_vanha_opiskelija_id
 	--INNER JOIN [dbo].d_kausi d34 ON d34.kausi_id = f.tutkintooikeusvuosi_id
-	INNER JOIN [VipunenTK].[dbo].d_opettajankelpoisuus d35 ON d35.id = f.opettajankelpoisuus_id
-	INNER JOIN [VipunenTK].[dbo].d_avoinvayla d36 ON d36.id = f.avoinvayla_id
-	INNER JOIN [VipunenTK].[dbo].d_kausi d37 ON d37.kausi_id = f.tutkinnon_suoritusvuosi_id
-	INNER JOIN [VipunenTK].[dbo].d_kausi d38 ON d38.kausi_id = f.tutkinnon_suorituslukukausi_id
-	INNER JOIN [VipunenTK].[dbo].d_kausi d39 ON d39.kausi_id = f.tutkinnon_suorituskuukausi_id
-	INNER JOIN [VipunenTK].[dbo].d_valtio_historia d40 ON d40.id = f.maanosa_id
-	INNER JOIN [VipunenTK].[dbo].d_valtio_historia d41 ON d41.id = f.eumaa_id
-	INNER JOIN [VipunenTK].[dbo].d_valtio_historia d42 ON d42.id = f.etamaa_id
-	INNER JOIN [VipunenTK].[dbo].d_pohjoismaa d43 ON d43.id = f.pohjoismaa_id
+	INNER JOIN [dbo].d_opettajankelpoisuus d35 ON d35.id = f.opettajankelpoisuus_id
+	INNER JOIN [dbo].d_avoinvayla d36 ON d36.id = f.avoinvayla_id
+	INNER JOIN [dbo].d_kausi d37 ON d37.kausi_id = f.tutkinnon_suoritusvuosi_id
+	INNER JOIN [dbo].d_kausi d38 ON d38.kausi_id = f.tutkinnon_suorituslukukausi_id
+	INNER JOIN [dbo].d_kausi d39 ON d39.kausi_id = f.tutkinnon_suorituskuukausi_id
+	INNER JOIN [dbo].d_valtio_historia d40 ON d40.id = f.maanosa_id
+	INNER JOIN [dbo].d_valtio_historia d41 ON d41.id = f.eumaa_id
+	INNER JOIN [dbo].d_valtio_historia d42 ON d42.id = f.etamaa_id
+	INNER JOIN [dbo].d_pohjoismaa d43 ON d43.id = f.pohjoismaa_id
 WHERE 
 d1.aineisto_koodi=
 (case
-	when d1b.aineisto like '2.8%' then (case when NOT EXISTS (SELECT 1 FROM [VipunenTK].[dbo].[f_OTV_2_8_Korkeakouluopiskelijat] o WHERE o.aineisto='L' and o.tilastointivuosi=f.Tilastovuosi) then 'E' else 'L' end)
-	when d1b.aineisto like '2.9%' then (case when NOT EXISTS (SELECT 1 FROM [VipunenTK].[dbo].[f_OTV_2_9_Korkeakoulututkinnot] o WHERE o.aineisto='L' and o.tilastointivuosi=f.Tilastovuosi) then 'E' else 'L' end)
+	when d1b.aineisto like '2.8%' then (case when NOT EXISTS (SELECT 1 FROM [dbo].[f_OTV_2_8_Korkeakouluopiskelijat] o WHERE o.aineisto='L' and o.tilastointivuosi=f.Tilastovuosi) then 'E' else 'L' end)
+	when d1b.aineisto like '2.9%' then (case when NOT EXISTS (SELECT 1 FROM [dbo].[f_OTV_2_9_Korkeakoulututkinnot] o WHERE o.aineisto='L' and o.tilastointivuosi=f.Tilastovuosi) then 'E' else 'L' end)
 	else '-1'
 end
 )
 AND d9.oppilaitoskoodi <> '02557' AND d9.oppilaitoskoodi <> '10031' AND d9.oppilaitoskoodi <> '02358'
 AND coalesce(d9.oppilaitoksen_korvaavakoodi,d9.oppilaitoskoodi) not in ('01029','01569','10102') --ahvenanmaan oppilaitokset pois
+
+USE [ANTERO]
+GO
