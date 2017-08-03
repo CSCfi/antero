@@ -1,6 +1,4 @@
-
-
-ALTER VIEW [dbo].[v_f_tab_otv_korkeakoulut_yhteiset] AS
+ALTER VIEW [VipunenTK].[dbo].[v_f_tab_otv_korkeakoulut_yhteiset] AS
 
 Select 
 [Tilastovuosi]
