@@ -747,7 +747,7 @@ SELECT [tilastointivuosi] as Tilastovuosi
 	  ,[ika20_24_lkm] = NULL
 	  ,[ika25_34_lkm] = NULL
 	  ,[ika25_64_lkm] = NULL
-  FROM [dbo].[f_OTV_2_8_Korkeakouluopiskelijat]
+  FROM [VipunenTK].[dbo].[f_OTV_2_8_Korkeakouluopiskelijat]
 
 UNION ALL
 SELECT [tilastointivuosi] as Tilastovuosi
@@ -863,7 +863,7 @@ SELECT [tilastointivuosi] as Tilastovuosi
 	  ,[ika20_24_lkm] = NULL
 	  ,[ika25_34_lkm] = NULL
 	  ,[ika25_64_lkm] = NULL
-  FROM [dbo].[f_OTV_2_9_Korkeakoulututkinnot]
+  FROM [VipunenTK].[dbo].[f_OTV_2_9_Korkeakoulututkinnot]
 
 UNION ALL
 SELECT [tilastointivuosi] as Tilastovuosi
@@ -979,7 +979,7 @@ SELECT [tilastointivuosi] as Tilastovuosi
 	  ,[ika20_24_lkm]
 	  ,[ika25_34_lkm]
 	  ,[ika25_64_lkm]
-  FROM [dbo].[f_OTV_4_9_Vaestorakenne_kunnittain]
+  FROM [VipunenTK].[dbo].[f_OTV_4_9_Vaestorakenne_kunnittain]
 
   ) f
 	INNER JOIN [dbo].d_aineisto d1 ON d1.id = f.aineisto_id
@@ -1049,8 +1049,8 @@ SELECT [tilastointivuosi] as Tilastovuosi
 WHERE 
 d1.aineisto_koodi=
 (case
-	when d1b.aineisto like '2.8%' then (case when NOT EXISTS (SELECT 1 FROM [dbo].[f_OTV_2_8_Korkeakouluopiskelijat] o WHERE o.aineisto='L' and o.tilastointivuosi=f.Tilastovuosi) then 'E' else 'L' end)
-	when d1b.aineisto like '2.9%' then (case when NOT EXISTS (SELECT 1 FROM [dbo].[f_OTV_2_9_Korkeakoulututkinnot] o WHERE o.aineisto='L' and o.tilastointivuosi=f.Tilastovuosi) then 'E' else 'L' end)
+	when d1b.aineisto like '2.8%' then (case when NOT EXISTS (SELECT 1 FROM [VipunenTK].[dbo].[f_OTV_2_8_Korkeakouluopiskelijat] o WHERE o.aineisto='L' and o.tilastointivuosi=f.Tilastovuosi) then 'E' else 'L' end)
+	when d1b.aineisto like '2.9%' then (case when NOT EXISTS (SELECT 1 FROM [VipunenTK].[dbo].[f_OTV_2_9_Korkeakoulututkinnot] o WHERE o.aineisto='L' and o.tilastointivuosi=f.Tilastovuosi) then 'E' else 'L' end)
 	else '-1'
 end
 )
