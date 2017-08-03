@@ -73,6 +73,7 @@
           {
             "name": "Koodit julkaisun ID",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "julkaisunTunnus",
             "sourceProviderType": "Char",
             "displayFolder": "Koodimuuttujat"
@@ -80,6 +81,7 @@
           {
             "name": "Koodit yhteisjulkaisun ID",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "yhteisjulkaisuId",
             "sourceProviderType": "Char",
             "displayFolder": "Koodimuuttujat"
@@ -116,6 +118,7 @@
           {
             "name": "Koodit Organisaatio",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "Koodit Organisaatio",
             "sourceProviderType": "Char",
             "displayFolder": "Koodimuuttujat"
@@ -554,6 +557,18 @@
             "name": "Yhteisjulkaisut lkm 2",
             "expression": "SUMX(VALUES(Muuttujat[Koodit yhteisjulkaisun ID]),SUMX(VALUES(Muuttujat[Koodit julkaisun ID]),SUMX(VALUES(Muuttujat[Koodit OKM ohjauksen ala]),CALCULATE(FIRSTNONBLANK(Muuttujat[lukumaara],SUM([lukumaara]))))))",
             "formatString": "#,0.000"
+          },
+          {
+            "name": "Yhteistyöorganisaatioiden määrä",
+            "expression": " DISTINCTCOUNT(Muuttujat[Koodit yhteistyöorganisaatio])"
+          },
+          {
+            "name": "Yhteistyöorganisaatioiden määrä (keskiarvo) per yhteisjulkaisu",
+            "expression": " IF(DISTINCTCOUNT([Koodit yhteisjulkaisun ID])=1,[Yhteistyöorganisaatioiden määrä],DIVIDE(SUMX(VALUES(Muuttujat[Koodit yhteisjulkaisun ID]),[Yhteistyöorganisaatioiden määrä]),DISTINCTCOUNT([Koodit yhteisjulkaisun ID])))"
+          },
+          {
+            "name": "Kansainvälisten yhteisjulkaisujen lkm",
+            "expression": " CALCULATE(DISTINCTCOUNT([Koodit yhteisjulkaisun ID]),Muuttujat[Koodit Kansainvälinen yhteisjulkaisu]=\"1\")"
           }
         ],
         "annotations": [
@@ -568,6 +583,26 @@
           {
             "name": "_TM_ExtProp_DbSchemaName",
             "value": "dw"
+          }
+        ]
+      }
+    ],
+    "roles": [
+      {
+        "name": "Luku",
+        "modelPermission": "read",
+        "members": [
+          {
+            "memberName": "DWI\\P_SP_Excel_S_Read",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1733"
+          },
+          {
+            "memberName": "DWI\\T_SP_Excel_S_Read",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1732"
+          },
+          {
+            "memberName": "NT AUTHORITY\\IUSR",
+            "memberId": "S-1-5-17"
           }
         ]
       }
