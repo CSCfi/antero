@@ -1057,5 +1057,7 @@ end
 AND d9.oppilaitoskoodi <> '02557' AND d9.oppilaitoskoodi <> '10031' AND d9.oppilaitoskoodi <> '02358'
 AND coalesce(d9.oppilaitoksen_korvaavakoodi,d9.oppilaitoskoodi) not in ('01029','01569','10102') --ahvenanmaan oppilaitokset pois
 
+GO
+
 USE [ANTERO]
 GO
