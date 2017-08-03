@@ -14,14 +14,12 @@ GO
 
 
 
+IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'dw.v_indikaattori_asemointi'))
+EXEC dbo.sp_executesql @statement = N'create view dw.v_indikaattori_asemointi as select 1 as a'
+GO
 
 
-
-
-
-
-
-CREATE view [dw].[v_indikaattori_asemointi] as
+ALTER view [dw].[v_indikaattori_asemointi] as
 /****** Korkeakoulututkinnot ******/
 SELECT [tilastointivuosi] as 'Tilastovuosi'
       ,d50.organisaatio_fi as 'Oppilaitos'
