@@ -1,4 +1,5 @@
-
+USE [VipunenTK]
+GO
 
 ALTER VIEW [dbo].[v_f_tab_otv_korkeakoulut_yliopisto] AS
 
@@ -1038,6 +1039,10 @@ end
 --(d1.aineisto_koodi in ('L','-1') OR (d1.aineisto_koodi='E' and Tilastovuosi=2016))
 AND d10.lahde_koodi in ('-1','51','52') AND d9.oppilaitoskoodi <> '02557' AND d9.oppilaitoskoodi <> '10031' AND d9.oppilaitoskoodi <> '02358'
 
+GO
+
+USE [ANTERO]
+GO
 
 
 
