@@ -1,9 +1,6 @@
-
-
+USE [VipunenTK]
 
 ALTER VIEW [dbo].[v_f_tab_otv_korkeakoulut_yhteiset] AS
-
-USE VipunenTK 
 
 Select 
 [Tilastovuosi]
@@ -1059,9 +1056,4 @@ end
 AND d9.oppilaitoskoodi <> '02557' AND d9.oppilaitoskoodi <> '10031' AND d9.oppilaitoskoodi <> '02358'
 AND coalesce(d9.oppilaitoksen_korvaavakoodi,d9.oppilaitoskoodi) not in ('01029','01569','10102') --ahvenanmaan oppilaitokset pois
 
-
-
-
-
-
-
+USE [ANTERO]
