@@ -1,3 +1,12 @@
+IF NOT EXISTS (
+  select * from INFORMATION_SCHEMA.COLUMNS
+  where TABLE_SCHEMA='dw' and TABLE_NAME='f_virta_jtp_tilasto'
+  and COLUMN_NAME='yhteisjulkaisunTunnus'
+) BEGIN
+  ALTER TABLE dw.f_virta_jtp_tilasto ADD yhteisjulkaisunTunnus varchar(50) NULL
+END
+GO
+
 ALTER PROCEDURE [dw].[p_lataa_f_virta_jtp_tilasto] AS
 
 TRUNCATE TABLE dw.f_virta_jtp_tilasto
