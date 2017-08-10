@@ -121,13 +121,20 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
   cnt = 0
   for ii in jj["result"]:
     cnt += 1
+    # show some sign of being alive
+    if cnt%100 == 0:
+      sys.stdout.write('.')
+      sys.stdout.flush()
+    if cnt%1000 == 0:
+      show("-- %d" % (cnt))
+
     url = "/tarjonta-service/rest/v1/hakukohde/%s?populateAdditionalKomotoFields=true"%(ii["oid"])
     try:
       httpconn.request('GET', url)
       r = httpconn.getresponse()
       j = json.loads(r.read())
     except ValueError, e:
-      show("%d -- could not load %s"%(cnt,ii["oid"]))
+      show("-- %d -- could not load %s"%(cnt,ii["oid"]))
     else:
       i = j["result"]
       row = makerow()
@@ -137,9 +144,9 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
         if type(row[col]) is list:
           row[col] = ''.join(map(str,json.dumps(row[col])))
 
-    if verbose: show("%d -- %s"%(cnt,row["oid"]))
-    if debug: print row
-    dboperator.insert(hostname+url,schema,table,row,debug)
+      if verbose: show("%d -- %s"%(cnt,row["oid"]))
+      if debug: print row
+      dboperator.insert(hostname+url,schema,table,row,debug)
 
   if verbose: show("ready")
 

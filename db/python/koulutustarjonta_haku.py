@@ -88,6 +88,13 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
   cnt = 0
   for i in j["result"]:
     cnt += 1
+    # show some sign of being alive
+    if cnt%100 == 0:
+      sys.stdout.write('.')
+      sys.stdout.flush()
+    if cnt%1000 == 0:
+      show("-- %d" % (cnt))
+
     row = makerow()
 
     for col in row:
