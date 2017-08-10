@@ -128,7 +128,6 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
       j = json.loads(r.read())
     except ValueError, e:
       show("%d -- could not load %s"%(cnt,ii["oid"]))
-      show('Error code: %d'%(e.code))
     else:
       i = j["result"]
       row = makerow()
