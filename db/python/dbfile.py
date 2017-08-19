@@ -13,6 +13,7 @@ import pymssql
 from time import localtime, strftime
 import glob # tiedostojen listaamiseen, kelpaa myös ns wildcardsit
 import re
+import codecs
 
 import dboperator
 
@@ -22,6 +23,8 @@ def show(message):
 def loadsql(sqlfile,verbose=False):
   fd = open(sqlfile, 'r')
   allsql = fd.read()
+  # remove UTF-8 BOM characters if they exist
+  allsql = allsql[3:] if allsql.startswith(codecs.BOM_UTF8) else allsql
   fd.close()
   # split MS SQL batches
   for sql in re.split('\ngo.*\n', allsql, flags=re.IGNORECASE):
