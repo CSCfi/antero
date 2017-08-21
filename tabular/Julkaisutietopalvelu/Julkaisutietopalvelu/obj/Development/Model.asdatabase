@@ -8,7 +8,7 @@
         "name": "SqlServer dwitvipusql16 ANTERO_DW 2",
         "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
         "impersonationMode": "impersonateAccount",
-        "account": "dwi\\pankalai",
+        "account": "dwi\\oeskola",
         "annotations": [
           {
             "name": "ConnectionEditUISource",
@@ -370,6 +370,28 @@
             "name": "Koodit Avoin saatavuus",
             "dataType": "string",
             "sourceColumn": "Koodit Avoin saatavuus"
+          },
+          {
+            "type": "calculated",
+            "name": "Jufotaso int",
+            "dataType": "int64",
+            "isDataTypeInferred": false,
+            "expression": "IF(OR(OR([Koodit Julkaisufoorumitaso]=\"1\",[Koodit Julkaisufoorumitaso]=\"2\"),[Koodit Julkaisufoorumitaso]=\"3\"),[Koodit Julkaisufoorumitaso],BLANK())"
+          },
+          {
+            "name": "julkaisunTunnus",
+            "dataType": "string",
+            "sourceColumn": "julkaisunTunnus"
+          },
+          {
+            "name": "Julkaisufoorumitaso_vanha",
+            "dataType": "string",
+            "sourceColumn": "Julkaisufoorumitaso_vanha"
+          },
+          {
+            "name": "Julkaisufoorumitaso_uusi",
+            "dataType": "string",
+            "sourceColumn": "Julkaisufoorumitaso_uusi"
           }
         ],
         "partitions": [
@@ -881,6 +903,30 @@
                   "        <int>143</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>julkaisunTunnus</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>106</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Julkaisufoorumitaso_vanha</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>160</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Julkaisufoorumitaso_uusi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>149</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -1371,6 +1417,30 @@
                   "        <int>60</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>julkaisunTunnus</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>61</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Julkaisufoorumitaso_vanha</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>62</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Julkaisufoorumitaso_uusi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>63</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -1846,6 +1916,30 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>julkaisunTunnus</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Julkaisufoorumitaso_vanha</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Julkaisufoorumitaso_uusi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -1876,6 +1970,27 @@
           {
             "name": "Julkaisut3",
             "expression": "sum([lukumaara])"
+          },
+          {
+            "name": "Jufot",
+            "expression": "CALCULATE(AVERAGE([Jufotaso int]),FILTER(Muuttujat,OR(OR([Jufotaso int]=1,[Jufotaso int]=2),[Jufotaso int]=3)),FILTER(Muuttujat,OR([Koodit Julkaisun pääluokka]=\"A\",[Koodit Julkaisun pääluokka]=\"C\")),FILTER(Muuttujat,[Tilastovuosi]>=2015))"
+          },
+          {
+            "name": "Jufot_2011_2014",
+            "expression": "CALCULATE(AVERAGE([Jufotaso int]),FILTER(Muuttujat,OR(OR([Jufotaso int]=1,[Jufotaso int]=2),[Jufotaso int]=3)),FILTER(Muuttujat,OR([Koodit Julkaisun pääluokka]=\"A\",[Koodit Julkaisun pääluokka]=\"C\")),FILTER(Muuttujat,[Tilastovuosi]<2015))"
+          },
+          {
+            "name": "JufoKK",
+            "expression": "CONCATENATE(FORMAT([measure1]/CALCULATE([measure1],ALL(Muuttujat[Yliopisto])),\"FIXED\"),\" (\"&CALCULATE(DISTINCTCOUNT(Muuttujat[JulkaisunTunnus]),FILTER(Muuttujat,OR(OR(Muuttujat[Jufotaso int]=1,Muuttujat[Jufotaso int]=2),Muuttujat[Jufotaso int]=3)),FILTER(Muuttujat,OR(Muuttujat[Koodit Julkaisun pääluokka]=\"A\",Muuttujat[Koodit Julkaisun pääluokka]=\"C\")),FILTER(Muuttujat,[Tilastovuosi]>=2015))&\")\")",
+            "formatString": "0.00"
+          },
+          {
+            "name": "measure1",
+            "expression": "AVERAGEX(DISTINCT(Muuttujat[JulkaisunTunnus]),CALCULATE(AVERAGE(Muuttujat[Jufotaso int]),FILTER(Muuttujat,OR(OR([Jufotaso int]=1,[Jufotaso int]=2),[Jufotaso int]=3)),FILTER(Muuttujat,OR([Koodit Julkaisun pääluokka]=\"A\",[Koodit Julkaisun pääluokka]=\"C\")),FILTER(Muuttujat,[Tilastovuosi]>=2015)))"
+          },
+          {
+            "name": "measure2",
+            "expression": "AVERAGEX(VALUES(Muuttujat[JulkaisunTunnus]),CALCULATE(AVERAGE(Muuttujat[Jufotaso int]),FILTER(Muuttujat,OR(OR([Jufotaso int]=1,[Jufotaso int]=2),[Jufotaso int]=3)),FILTER(Muuttujat,OR([Koodit Julkaisun pääluokka]=\"A\",[Koodit Julkaisun pääluokka]=\"C\")),FILTER(Muuttujat,[Tilastovuosi]<2015)))"
           }
         ],
         "annotations": [
@@ -2391,6 +2506,30 @@
               "        <int>143</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>julkaisunTunnus</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>106</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Julkaisufoorumitaso_vanha</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>160</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Julkaisufoorumitaso_uusi</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>149</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -2881,6 +3020,30 @@
               "        <int>60</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>julkaisunTunnus</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>61</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Julkaisufoorumitaso_vanha</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>62</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Julkaisufoorumitaso_uusi</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>63</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -3356,6 +3519,30 @@
               "        <boolean>true</boolean>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>julkaisunTunnus</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Julkaisufoorumitaso_vanha</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Julkaisufoorumitaso_uusi</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
               "  </ColumnChecked>",
               "  <ColumnFilter />",
               "  <SelectionFilter />",
@@ -3717,6 +3904,131 @@
               },
               {
                 "name": "Julkaisu rinnakkaistallennettu"
+              },
+              {
+                "name": "Yhteisjulkaisu yrityksen kanssa"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Julkaisut"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Julkaisut_jufot",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Avoin saatavuus"
+              },
+              {
+                "name": "Julkaisu rinnakkaistallennettu"
+              },
+              {
+                "name": "Julkaisufoorumitaso"
+              },
+              {
+                "name": "Julkaisufoorumitaso_uusi"
+              },
+              {
+                "name": "Julkaisufoorumitaso_vanha"
+              },
+              {
+                "name": "Julkaisun kansainvälisyys"
+              },
+              {
+                "name": "Julkaisun pääluokka"
+              },
+              {
+                "name": "Julkaisutyyppi"
+              },
+              {
+                "name": "Kansainvälinen yhteisjulkaisu"
+              },
+              {
+                "name": "Koodit Julkaisufoorumitaso"
+              },
+              {
+                "name": "Koodit Julkaisun kansainvälisyys"
+              },
+              {
+                "name": "Koodit Julkaisun pääluokka"
+              },
+              {
+                "name": "Koodit Julkaisutyyppi"
+              },
+              {
+                "name": "Koodit Kansainvälinen yhteisjulkaisu"
+              },
+              {
+                "name": "Koodit Koulutusala 02"
+              },
+              {
+                "name": "Koodit Koulutusala 95"
+              },
+              {
+                "name": "Koodit OKM ohjauksen ala"
+              },
+              {
+                "name": "Koodit Organisaatio"
+              },
+              {
+                "name": "Koodit Päätieteenala"
+              },
+              {
+                "name": "Koodit Sektori"
+              },
+              {
+                "name": "Koodit Tieteenala"
+              },
+              {
+                "name": "Koulutusala 02"
+              },
+              {
+                "name": "Koulutusala 95"
+              },
+              {
+                "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Organisaatio"
+              },
+              {
+                "name": "Päätieteenala"
+              },
+              {
+                "name": "Sektori"
+              },
+              {
+                "name": "Tieteenala"
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Yhteisjulk. muu kotim. tutkimusorganisaatio"
+              },
+              {
+                "name": "Yhteisjulk. valtion sektoritutkimuslaitos"
+              },
+              {
+                "name": "Yhteisjulk. yliop. sairaanhoitopiiri"
               },
               {
                 "name": "Yhteisjulkaisu yrityksen kanssa"
