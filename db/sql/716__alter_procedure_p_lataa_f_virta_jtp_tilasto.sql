@@ -1,12 +1,3 @@
-IF NOT EXISTS (
-  select * from INFORMATION_SCHEMA.COLUMNS
-  where TABLE_SCHEMA='dw' and TABLE_NAME='f_virta_jtp_tilasto'
-  and COLUMN_NAME='yhteisjulkaisunTunnus'
-) BEGIN
-  ALTER TABLE dw.f_virta_jtp_tilasto ADD yhteisjulkaisunTunnus varchar(50) NULL
-END
-GO
-
 ALTER PROCEDURE [dw].[p_lataa_f_virta_jtp_tilasto] AS
 
 TRUNCATE TABLE dw.f_virta_jtp_tilasto
@@ -33,7 +24,8 @@ INSERT INTO dw.f_virta_jtp_tilasto (
   d_rinnakkaistallennusKytkin_id,
   d_avoinSaatavuus_id,
   lukumaara,
-
+  d_julkaisufoorumitaso_vanha_id, --new
+  d_julkaisufoorumitaso_uusi_id,  --new
   source
 )
 
@@ -60,6 +52,8 @@ SELECT
   d_rinnakkaistallennusKytkin_id,
   d_avoinSaatavuus_id,
   cast(lukumaara as decimal(6,5)) as lukumaara,
+  d_julkaisufoorumitaso_vanha_id, --new
+  d_julkaisufoorumitaso_uusi_id,  --new
   'ETL: p_lataa_f_virta_jtp_tilasto' AS source
   
   FROM
@@ -97,7 +91,9 @@ SELECT
   coalesce(d14.id,-1) AS d_yhteisjulkaisuMuuKytkin_id,
   coalesce(d15.id,-1) AS d_yhteisjulkaisuYritysKytkin_id,
   coalesce(d16.id,-1) AS d_rinnakkaistallennusKytkin_id,
-  coalesce(d17.id,-1) AS d_avoinSaatavuus_id
+  coalesce(d17.id,-1) AS d_avoinSaatavuus_id,
+  coalesce(d18.id,-1) AS d_julkaisufoorumitaso_vanha_id, --new
+  coalesce(d19.id,-1) AS d_julkaisufoorumitaso_uusi_id  --new
 
   
 FROM sa.sa_virta_jtp_tkjulkaisut f
@@ -108,6 +104,10 @@ LEFT JOIN dw.d_organisaatioluokitus d2_2 ON d2_2.organisaatio_avain like 'koulut
 LEFT JOIN dw.d_organisaatioluokitus d2_3 ON d2_3.organisaatio_avain like 'tutkimusorganisaatio_%' and d2_3.organisaatio_koodi = f.organisaatioTunnus
 LEFT JOIN dw.d_organisaatioluokitus d2_4 ON d2_4.organisaatio_avain like 'oppilaitos_%' and d2_4.organisaatio_koodi = f.organisaatioTunnus
 LEFT JOIN dw.d_julkaisufoorumitaso d3 ON d3.julkaisufoorumitaso_koodi = coalesce(f.jufoLuokkaKoodi,'-') --nb! puuttuva arvo on -=Arvioitavana (pitäisi olla tyhjä, mutta koodistopalvelu ei salli)
+
+left join dw.d_julkaisufoorumitaso d18 ON d18.julkaisufoorumitaso_koodi = coalesce(f.jufoLuokkaVanha,'-') --new --nb! puuttuva arvo on -=Arvioitavana (pitäisi olla tyhjä, mutta koodistopalvelu ei salli)
+left join dw.d_julkaisufoorumitaso d19 ON d19.julkaisufoorumitaso_koodi = coalesce(f.jufoLuokkaUusi,'-') --new --nb! puuttuva arvo on -=Arvioitavana (pitäisi olla tyhjä, mutta koodistopalvelu ei salli)
+
 LEFT JOIN dw.d_julkaisutyyppi d4 ON d4.julkaisutyyppi_koodi = f.julkaisutyyppiKoodi
 LEFT JOIN dw.d_julkaisun_kansainvalisyys d5 ON d5.julkaisun_kansainvalisyys_koodi = f.julkaisunKansainvalisyysKytkin
 LEFT JOIN dw.d_kansainvalinen_yhteisjulkaisu d6 ON d6.kansainvalinen_yhteisjulkaisu_koodi = f.yhteisjulkaisuKVKytkin
@@ -189,6 +189,8 @@ SELECT
   coalesce(d16.id,-1) AS d_rinnakkaistallennusKytkin_id,
   -1 AS d_avoinSaatavuus_id, 
   cast(1 as decimal(6,5)) AS lukumaara,
+  coalesce(d18.id,-1) AS d_julkaisufoorumitaso_vanha_id, --new
+  coalesce(d19.id,-1) AS d_julkaisufoorumitaso_uusi_id,  --new
   'ETL: p_lataa_f_virta_jtp_tilasto' AS source
 
   
@@ -200,6 +202,10 @@ LEFT JOIN dw.d_organisaatioluokitus d2_2 ON d2_2.organisaatio_avain like 'koulut
 LEFT JOIN dw.d_organisaatioluokitus d2_3 ON d2_3.organisaatio_avain like 'tutkimusorganisaatio_%' and d2_3.organisaatio_koodi = f3.organisaatioTunnus
 LEFT JOIN dw.d_organisaatioluokitus d2_4 ON d2_4.organisaatio_avain like 'oppilaitos_%' and d2_4.organisaatio_koodi = f3.organisaatioTunnus
 LEFT JOIN dw.d_julkaisufoorumitaso d3 ON d3.julkaisufoorumitaso_koodi = coalesce(f3.jufoLuokkaKoodi,'-') --nb! puuttuva arvo on -=Arvioitavana (pitäisi olla tyhjä, mutta koodistopalvelu ei salli)
+
+left join dw.d_julkaisufoorumitaso d18 ON d18.julkaisufoorumitaso_koodi = coalesce(f3.jufoLuokkaVanha,'-') --new --nb! puuttuva arvo on -=Arvioitavana (pitäisi olla tyhjä, mutta koodistopalvelu ei salli)
+left join dw.d_julkaisufoorumitaso d19 ON d19.julkaisufoorumitaso_koodi = coalesce(f3.jufoLuokkaUusi,'-') --new --nb! puuttuva arvo on -=Arvioitavana (pitäisi olla tyhjä, mutta koodistopalvelu ei salli)
+
 LEFT JOIN dw.d_julkaisutyyppi d4 ON d4.julkaisutyyppi_koodi = f3.julkaisutyyppiKoodi
 LEFT JOIN dw.d_julkaisun_kansainvalisyys d5 ON d5.julkaisun_kansainvalisyys_koodi = f3.julkaisunKansainvalisyysKytkin
 LEFT JOIN dw.d_kansainvalinen_yhteisjulkaisu d6 ON d6.kansainvalinen_yhteisjulkaisu_koodi = f3.yhteisjulkaisuKVKytkin
@@ -234,3 +240,6 @@ WHERE f3.julkaisuVuosi<2016 or d1.virtajtpsektori_koodi in ('3','4')
 
 
 GO
+
+
+

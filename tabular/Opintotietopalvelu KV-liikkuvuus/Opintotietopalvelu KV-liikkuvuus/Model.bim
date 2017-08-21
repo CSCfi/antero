@@ -1386,6 +1386,26 @@
             "name": "Liikkuvuuden keskimääräinen kesto pv",
             "expression": "IF([liikkuvuusjaksolkm]<6,BLANK(),[liikkuvuudenkestoavg])",
             "formatString": "# ### ###"
+          },
+          {
+            "name": "liikkuvuusjaksolkmlive",
+            "expression": "CALCULATE(DISTINCTCOUNT([kk-liikkuvuusjakso]),Muuttujat[tilannepvm]=TODAY()-1)",
+            "isHidden": true
+          },
+          {
+            "name": "liikkuvuudenkestoavglive",
+            "expression": "CALCULATE(AVERAGE([kesto]),Muuttujat[tilannepvm]=TODAY()-1)",
+            "isHidden": true
+          },
+          {
+            "name": "Liikkuvuusjaksojen määrä (LIVE)",
+            "expression": "IF(AND([liikkuvuusjaksolkmlive]>0,[liikkuvuusjaksolkmlive]<6),3,[liikkuvuusjaksolkmlive])",
+            "formatString": "# ### ###"
+          },
+          {
+            "name": "Liikkuvuuden keskimääräinen kesto pv (LIVE)",
+            "expression": "IF([liikkuvuusjaksolkmlive]<6,BLANK(),[liikkuvuudenkestoavglive])",
+            "formatString": "0"
           }
         ],
         "annotations": [
@@ -2426,6 +2446,20 @@
               {
                 "name": "Lähtömaan maanosa Koodi"
               }
+            ],
+            "measures": [
+              {
+                "name": "Liikkuvuuden keskimääräinen kesto pv"
+              },
+              {
+                "name": "Liikkuvuuden keskimääräinen kesto pv (LIVE)"
+              },
+              {
+                "name": "Liikkuvuusjaksojen määrä"
+              },
+              {
+                "name": "Liikkuvuusjaksojen määrä (LIVE)"
+              }
             ]
           }
         ]
@@ -2573,7 +2607,7 @@
       {
         "name": "Luku",
         "modelPermission": "read",
-        "members": [ {"memberName": "DWI\\Z_T_Antero_Read_TAB", "memberId": "S-1-5-21-2196741920-3238685902-2581541251-4155"},{"memberName": "DWI\\Z_P_Antero_Read_TAB","memberId": "S-1-5-21-2196741920-3238685902-2581541251-4156"},
+        "members": [
           {
             "memberName": "DWI\\P_SP_Excel_S_Read",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1733"
@@ -2585,6 +2619,14 @@
           {
             "memberName": "NT AUTHORITY\\IUSR",
             "memberId": "S-1-5-17"
+          },
+          {
+            "memberName": "DWI\\Z_T_Antero_Read_TAB",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-4155"
+          },
+          {
+            "memberName": "DWI\\Z_P_Antero_Read_TAB",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-4156"
           }
         ]
       }

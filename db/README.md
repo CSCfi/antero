@@ -15,10 +15,13 @@ In CentOS installation via `yum` with dependencies (there are quite a few!) is s
 * Python 2
     * yum package(s):
         * `python-devel`
-        * `python-pip` asdasd
+        * `python-pip`
+        * `yajl`
     * pip packages:
         * `httplib`
         * `pymssql`
+        * `ijson`
+        * (may be more: yajl, yajl-py, urllib2, urllib3, requests, ...)
 
 #### Settings
 
