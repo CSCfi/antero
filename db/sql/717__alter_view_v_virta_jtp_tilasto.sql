@@ -1,12 +1,13 @@
 USE [ANTERO]
 GO
 
-/****** Object:  View [dw].[v_virta_jtp_tilasto]    Script Date: 18.8.2017 19:24:37 ******/
+/****** Object:  View [dw].[v_virta_jtp_tilasto]    Script Date: 25.8.2017 17:18:27 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 ALTER VIEW [dw].[v_virta_jtp_tilasto] AS
@@ -74,8 +75,10 @@ Tilastovuosi
 ,case [Koodit Avoin saatavuus] when -1 then 9 else [Koodit Avoin saatavuus] end as [Koodit Avoin saatavuus]
 ,[Avoin saatavuus]
 ,[lukumaara]
-,[Julkaisufoorumitaso_vanha]  --new
-,[Julkaisufoorumitaso_uusi]   --new
+,[Koodit Julkaisufoorumitaso_vanha]  --new
+,[Julkaisufoorumitaso vanha luokitus] --new
+,[Koodit Julkaisufoorumitaso_uusi]   --new
+,[Julkaisufoorumitaso uusi luokitus] --new
 
 
 FROM
@@ -145,8 +148,10 @@ SELECT f.tilastovuosi AS "Tilastovuosi"
   ,d17.avoinsaatavuus_koodi as 'Koodit Avoin saatavuus'
   ,d17.avoinsaatavuus_fi as 'Avoin saatavuus'
   ,f.lukumaara
-  ,d18.julkaisufoorumitaso_koodi as 'Julkaisufoorumitaso_vanha' --new
-  ,d19.julkaisufoorumitaso_koodi as 'Julkaisufoorumitaso_uusi'  --new
+  ,d18.julkaisufoorumitaso_koodi as 'Koodit Julkaisufoorumitaso_vanha' --new
+  ,d18.julkaisufoorumitaso_fi as 'Julkaisufoorumitaso vanha luokitus'  --new
+  ,d19.julkaisufoorumitaso_koodi as 'Koodit Julkaisufoorumitaso_uusi'  --new
+  ,d19.julkaisufoorumitaso_fi as 'Julkaisufoorumitaso uusi luokitus'  --new
 FROM dw.f_virta_jtp_tilasto f
 LEFT JOIN d_tieteenala d1 ON d1.id=f.d_tieteenala_id
 LEFT JOIN d_virtajtpsektori d2 ON d2.id=f.d_virtajtpsektori_id
@@ -232,8 +237,10 @@ SELECT f.vuosi AS "Tilastovuosi"
   ,d17.avoinsaatavuus_koodi as 'Koodit Avoin saatavuus'
   ,d17.avoinsaatavuus_fi as 'Avoin saatavuus'
   ,f.julkaisujen_maara
-  ,d18.julkaisufoorumitaso_koodi as 'Julkaisufoorumitaso_vanha' --new
-  ,d19.julkaisufoorumitaso_koodi as 'Julkaisufoorumitaso_uusi'  --new
+  ,d18.julkaisufoorumitaso_koodi as 'Koodit Julkaisufoorumitaso_vanha' --new
+  ,d18.julkaisufoorumitaso_fi as 'Julkaisufoorumitaso vanha luokitus'  --new
+  ,d19.julkaisufoorumitaso_koodi as 'Koodit Julkaisufoorumitaso_uusi'  --new
+  ,d19.julkaisufoorumitaso_fi as 'Julkaisufoorumitaso uusi luokitus'  --new
 FROM f_yo_julkaisut_f_i f
 LEFT JOIN d_tieteenala d1 ON d1.id=f.d_tieteenala_id
 LEFT JOIN d_virtajtpsektori d2 ON d2.id=(select id from dw.d_virtajtpsektori where virtajtpsektori_fi='Yliopisto')
@@ -321,8 +328,10 @@ SELECT f.vuosi AS "Tilastovuosi"
   ,d17.avoinsaatavuus_koodi as 'Koodit Avoin saatavuus'
   ,d17.avoinsaatavuus_fi as 'Avoin saatavuus'
   ,f.julkaisujen_maara
-  ,d18.julkaisufoorumitaso_koodi as 'Julkaisufoorumitaso_vanha' --new
-  ,d19.julkaisufoorumitaso_koodi as 'Julkaisufoorumitaso_uusi'  --new
+  ,d18.julkaisufoorumitaso_koodi as 'Koodit Julkaisufoorumitaso_vanha' --new
+  ,d18.julkaisufoorumitaso_fi as 'Julkaisufoorumitaso vanha luokitus'  --new
+  ,d19.julkaisufoorumitaso_koodi as 'Koodit Julkaisufoorumitaso_uusi'  --new
+  ,d19.julkaisufoorumitaso_fi as 'Julkaisufoorumitaso uusi luokitus'  --new
 FROM f_amk_julkaisut_f_i f
 LEFT JOIN d_tieteenala d1 ON d1.id=f.d_tieteenala_id
 LEFT JOIN d_virtajtpsektori d2 ON d2.id=(select id from dw.d_virtajtpsektori where virtajtpsektori_fi='Ammattikorkeakoulu')
@@ -411,9 +420,10 @@ SELECT f.vuosi AS "Tilastovuosi"
   ,d17.avoinsaatavuus_koodi as 'Koodit Avoin saatavuus'
   ,d17.avoinsaatavuus_fi as 'Avoin saatavuus'
   ,f.h21
-  ,d18.julkaisufoorumitaso_koodi as 'Julkaisufoorumitaso_vanha' --new
-  ,d19.julkaisufoorumitaso_koodi as 'Julkaisufoorumitaso_uusi'  --new
-
+  ,d18.julkaisufoorumitaso_koodi as 'Koodit Julkaisufoorumitaso_vanha' --new
+  ,d18.julkaisufoorumitaso_fi as 'Julkaisufoorumitaso vanha luokitus'  --new
+  ,d19.julkaisufoorumitaso_koodi as 'Koodit Julkaisufoorumitaso_uusi'  --new
+  ,d19.julkaisufoorumitaso_fi as 'Julkaisufoorumitaso uusi luokitus'  --new
 FROM dw.f_yo_keksintoilmoitukset f
 LEFT JOIN d_tieteenala d1 ON d1.id=f.d_tieteenala_id
 LEFT JOIN d_virtajtpsektori d2 ON d2.id=(select id from dw.d_virtajtpsektori where virtajtpsektori_fi='Yliopisto')
@@ -499,9 +509,10 @@ SELECT f.vuosi AS "Tilastovuosi"
   ,d17.avoinsaatavuus_koodi as 'Koodit Avoin saatavuus'
   ,d17.avoinsaatavuus_fi as 'Avoin saatavuus'
   ,f.h21
-  ,d18.julkaisufoorumitaso_koodi as 'Julkaisufoorumitaso_vanha' --new
-  ,d19.julkaisufoorumitaso_koodi as 'Julkaisufoorumitaso_uusi'  --new
-
+  ,d18.julkaisufoorumitaso_koodi as 'Koodit Julkaisufoorumitaso_vanha' --new
+  ,d18.julkaisufoorumitaso_fi as 'Julkaisufoorumitaso vanha luokitus'  --new
+  ,d19.julkaisufoorumitaso_koodi as 'Koodit Julkaisufoorumitaso_uusi'  --new
+  ,d19.julkaisufoorumitaso_fi as 'Julkaisufoorumitaso uusi luokitus'  --new
 FROM dw.f_amk_keksintoilmoitukset f
 LEFT JOIN d_tieteenala d1 ON d1.id=f.d_tieteenala_id
 LEFT JOIN d_virtajtpsektori d2 ON d2.id=(select id from dw.d_virtajtpsektori where virtajtpsektori_fi='Ammattikorkeakoulu')
@@ -587,9 +598,10 @@ SELECT f.vuosi AS "Tilastovuosi"
   ,d17.avoinsaatavuus_koodi as 'Koodit Avoin saatavuus'
   ,d17.avoinsaatavuus_fi as 'Avoin saatavuus'
   ,f.julkaisujen_maara
-  ,d18.julkaisufoorumitaso_koodi as 'Julkaisufoorumitaso_vanha' --new
-  ,d19.julkaisufoorumitaso_koodi as 'Julkaisufoorumitaso_uusi'  --new
-
+  ,d18.julkaisufoorumitaso_koodi as 'Koodit Julkaisufoorumitaso_vanha' --new
+  ,d18.julkaisufoorumitaso_fi as 'Julkaisufoorumitaso vanha luokitus'  --new
+  ,d19.julkaisufoorumitaso_koodi as 'Koodit Julkaisufoorumitaso_uusi'  --new
+  ,d19.julkaisufoorumitaso_fi as 'Julkaisufoorumitaso uusi luokitus'  --new
 FROM f_amk_julkaisut_a_e f
 LEFT JOIN d_tieteenala d1 ON d1.id=f.d_tieteenala_id
 LEFT JOIN d_virtajtpsektori d2 ON d2.id=(select id from dw.d_virtajtpsektori where virtajtpsektori_fi='Ammattikorkeakoulu')
@@ -677,9 +689,10 @@ SELECT f.vuosi AS "Tilastovuosi"
   ,d17.avoinsaatavuus_koodi as 'Koodit Avoin saatavuus'
   ,d17.avoinsaatavuus_fi as 'Avoin saatavuus'
   ,f.julkaisujen_maara
-  ,d18.julkaisufoorumitaso_koodi as 'Julkaisufoorumitaso_vanha' --new
-  ,d19.julkaisufoorumitaso_koodi as 'Julkaisufoorumitaso_uusi'  --new
-
+  ,d18.julkaisufoorumitaso_koodi as 'Koodit Julkaisufoorumitaso_vanha' --new
+  ,d18.julkaisufoorumitaso_fi as 'Julkaisufoorumitaso vanha luokitus'  --new
+  ,d19.julkaisufoorumitaso_koodi as 'Koodit Julkaisufoorumitaso_uusi'  --new
+  ,d19.julkaisufoorumitaso_fi as 'Julkaisufoorumitaso uusi luokitus'  --new
 FROM f_yo_julkaisut_a_e f
 LEFT JOIN d_tieteenala d1 ON d1.id=f.d_tieteenala_id
 LEFT JOIN d_virtajtpsektori d2 ON d2.id=(select id from dw.d_virtajtpsektori where virtajtpsektori_fi='Yliopisto')
