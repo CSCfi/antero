@@ -1916,6 +1916,61 @@
             "name": "Pisteet (KANDI, LIVE)",
             "expression": "IF([vast-kandi]<5,BLANK(),[pisteet-kandi])",
             "formatString": "# ### ###"
+          },
+          {
+            "name": "Pisteet (uraseuranta)",
+            "expression": "IF([vast-ura]<5,BLANK(),[pisteet-ura])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Vastaajamäärä (uraseuranta)",
+            "expression": "IF(AND([vast-ura]>0,[vast-ura]<6),3,[vast-ura])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Keskiarvo (uraseuranta)",
+            "expression": "IF([vast-ura]<6,BLANK(),[ka-ura])",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Keskihajonta (uraseuranta)",
+            "expression": "IF([vast-ura]<6,BLANK(),[kh-ura])",
+            "formatString": "0.0"
+          },
+          {
+            "name": "vast-ura",
+            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),OR(Muuttujat[Kyselykerta]=\"Uraseurantapilotti 2017, normaali\",Muuttujat[Kyselykerta]=\"Uraseurantapilotti 2017, lyhyt\"))",
+            "isHidden": true
+          },
+          {
+            "name": "vast-ura-tilasto",
+            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),OR(Muuttujat[Kyselykerta]=\"Uraseurantapilotti 2017, normaali\",Muuttujat[Kyselykerta]=\"Uraseurantapilotti 2017, lyhyt\"),Muuttujat[Kyselyvuosi]<YEAR(NOW()),Muuttujat[valtakunnallinen]=TRUE())",
+            "isHidden": true
+          },
+          {
+            "name": "ka-ura-tilasto",
+            "expression": "CALCULATE(AVERAGE(Muuttujat[numerovalinta]),Muuttujat[Kyselyvuosi]<YEAR(NOW()),Muuttujat[valtakunnallinen]=TRUE(),OR(Muuttujat[Kyselykerta]=\"Uraseurantapilotti 2017, normaali\",Muuttujat[Kyselykerta]=\"Uraseurantapilotti 2017, lyhyt\"))",
+            "isHidden": true
+          },
+          {
+            "name": "kh-ura-tilasto",
+            "expression": "CALCULATE(STDEV.P(Muuttujat[numerovalinta]),Muuttujat[Kyselyvuosi]<YEAR(NOW()),Muuttujat[valtakunnallinen]=TRUE(),OR(Muuttujat[Kyselykerta]=\"Uraseurantapilotti 2017, normaali\",Muuttujat[Kyselykerta]=\"Uraseurantapilotti 2017, lyhyt\"))",
+            "isHidden": true
+          },
+          {
+            "name": "ka-ura",
+            "expression": "CALCULATE(AVERAGE(Muuttujat[numerovalinta]),OR(Muuttujat[Kyselykerta]=\"Uraseurantapilotti 2017, normaali\",Muuttujat[Kyselykerta]=\"Uraseurantapilotti 2017, lyhyt\"))",
+            "isHidden": true
+          },
+          {
+            "name": "kh-ura",
+            "expression": "CALCULATE(STDEV.P(Muuttujat[numerovalinta]),OR(Muuttujat[Kyselykerta]=\"Uraseurantapilotti 2017, normaali\",Muuttujat[Kyselykerta]=\"Uraseurantapilotti 2017, lyhyt\"))",
+            "isHidden": true
+          },
+          {
+            "name": "pisteet-ura",
+            "expression": "calculate(sum(Muuttujat[numerovalinta]),OR(Muuttujat[Kyselykerta]=\"Uraseurantapilotti 2017, normaali\",Muuttujat[Kyselykerta]=\"Uraseurantapilotti 2017, lyhyt\"))",
+            "isHidden": true
           }
         ],
         "annotations": [
@@ -3732,6 +3787,86 @@
               },
               {
                 "name": "Pisteet (KANDI, LIVE)"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Uraseuranta",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Kieli"
+              },
+              {
+                "name": "Koodit Koulutus"
+              },
+              {
+                "name": "Koodit Organisaatio"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "Koulutusnimike"
+              },
+              {
+                "name": "Kyselyvuosi"
+              },
+              {
+                "name": "Kysymys"
+              },
+              {
+                "name": "Kysymysryhmä"
+              },
+              {
+                "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Organisaatio"
+              },
+              {
+                "name": "monivalintavaihtoehto"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Keskiarvo (uraseuranta)"
+              },
+              {
+                "name": "Keskihajonta (uraseuranta)"
+              },
+              {
+                "name": "Pisteet (uraseuranta)"
+              },
+              {
+                "name": "Vastaajamäärä (uraseuranta)"
               }
             ]
           },
