@@ -8075,10 +8075,7 @@ UNION ALL
   ) Aineistot
 
 
-
-
-
-
 GO
 
+USE [ANTERO]
 

@@ -1380,24 +1380,7 @@ FROM VipunenTK_SA.[dbo].[tktutk2016OKMEnnakko_YO]
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 GO
 
 
+USE [ANTERO]
