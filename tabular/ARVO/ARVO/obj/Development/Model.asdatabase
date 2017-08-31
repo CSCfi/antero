@@ -302,6 +302,7 @@
             "name": "monivalintavaihtoehto",
             "dataType": "string",
             "sourceColumn": "monivalintavaihtoehto",
+            "sortByColumn": "jarjestys_monivalintavaihtoehto",
             "sourceProviderType": "WChar",
             "displayFolder": "Kyselymuuttujat"
           },
@@ -474,6 +475,27 @@
             "dataType": "int64",
             "isHidden": true,
             "sourceColumn": "kandikysymys"
+          },
+          {
+            "type": "calculated",
+            "name": "monivalinta",
+            "dataType": "int64",
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "expression": "IF(OR([monivalintavaihtoehto]<>\"\",[vaihtoehto]<>\"\"),1,0)"
+          },
+          {
+            "type": "calculated",
+            "name": "Kysymystyyppi",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": "IF([monivalinta]=1,\"Monivalinta\",\"Muut\")",
+            "displayFolder": "Kyselymuuttujat"
+          },
+          {
+            "name": "jarjestys_monivalintavaihtoehto",
+            "dataType": "string",
+            "sourceColumn": "jarjestys_monivalintavaihtoehto"
           }
         ],
         "partitions": [
@@ -1009,6 +1031,14 @@
                   "        <int>96</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>jarjestys_monivalintavaihtoehto</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>184</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -1523,6 +1553,14 @@
                   "        <int>63</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>jarjestys_monivalintavaihtoehto</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>64</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -1657,6 +1695,14 @@
                   "    <item>",
                   "      <key>",
                   "        <string>kandikysymys</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>jarjestys_monivalintavaihtoehto</string>",
                   "      </key>",
                   "      <value>",
                   "        <boolean>true</boolean>",
@@ -1924,12 +1970,12 @@
           },
           {
             "name": "Vastaajamäärä (uraseuranta)",
-            "expression": "IF(AND([vast-ura]>0,[vast-ura]<6),3,[vast-ura])",
+            "expression": "IF(AND([vast-ura]>0,[vast-ura]<6),\"<5\",[vast-ura])",
             "formatString": "#,0"
           },
           {
-            "name": "Keskiarvo (uraseuranta)",
-            "expression": "IF([vast-ura]<6,BLANK(),[ka-ura])",
+            "name": "Keskiarvo / Vastausjakauma (uraseuranta)",
+            "expression": "IF([vast-ura]<6,BLANK(),IF([ka-ura]=0,FORMAT([ka-ura2],\"0%\"),FORMAT([ka-ura],\"0.0\")))",
             "formatString": "0.0"
           },
           {
@@ -1959,7 +2005,7 @@
           },
           {
             "name": "ka-ura",
-            "expression": "CALCULATE(AVERAGE(Muuttujat[numerovalinta]),OR(Muuttujat[Kyselykerta]=\"Uraseurantapilotti 2017, normaali\",Muuttujat[Kyselykerta]=\"Uraseurantapilotti 2017, lyhyt\"))",
+            "expression": "CALCULATE(AVERAGE(Muuttujat[numerovalinta]),OR(Muuttujat[Kyselykerta]=\"Uraseurantapilotti 2017, normaali\",Muuttujat[Kyselykerta]=\"Uraseurantapilotti 2017, lyhyt\"),Muuttujat[monivalinta]=0)",
             "isHidden": true
           },
           {
@@ -1970,6 +2016,12 @@
           {
             "name": "pisteet-ura",
             "expression": "calculate(sum(Muuttujat[numerovalinta]),OR(Muuttujat[Kyselykerta]=\"Uraseurantapilotti 2017, normaali\",Muuttujat[Kyselykerta]=\"Uraseurantapilotti 2017, lyhyt\"))",
+            "isHidden": true
+          },
+          {
+            "name": "ka-ura2",
+            "expression": "IF(ISFILTERED([monivalintavaihtoehto])=TRUE(),CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),OR(Muuttujat[Kyselykerta]=\"Uraseurantapilotti 2017, normaali\",Muuttujat[Kyselykerta]=\"Uraseurantapilotti 2017, lyhyt\"),Muuttujat[monivalinta]=1)/CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),OR(Muuttujat[Kyselykerta]=\"Uraseurantapilotti 2017, normaali\",Muuttujat[Kyselykerta]=\"Uraseurantapilotti 2017, lyhyt\"),Muuttujat[monivalinta]=1,ALL(Muuttujat[monivalintavaihtoehto])),BLANK())",
+            "formatString": "0 %;-0 %;0 %",
             "isHidden": true
           }
         ],
@@ -2510,6 +2562,14 @@
               "        <int>96</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>jarjestys_monivalintavaihtoehto</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>184</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -3024,6 +3084,14 @@
               "        <int>63</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>jarjestys_monivalintavaihtoehto</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>64</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -3158,6 +3226,14 @@
               "    <item>",
               "      <key>",
               "        <string>kandikysymys</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>jarjestys_monivalintavaihtoehto</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -3853,11 +3929,17 @@
               },
               {
                 "name": "monivalintavaihtoehto"
+              },
+              {
+                "name": "Kysymystyyppi"
+              },
+              {
+                "name": "Kyselykerta"
               }
             ],
             "measures": [
               {
-                "name": "Keskiarvo (uraseuranta)"
+                "name": "Keskiarvo / Vastausjakauma (uraseuranta)"
               },
               {
                 "name": "Keskihajonta (uraseuranta)"
