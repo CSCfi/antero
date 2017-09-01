@@ -82,6 +82,8 @@ def main(argv):
   if expect:
     verbose = False # would interfere with "return" value
   ret = load(command,expect,verbose)
+  if ret != None:
+      ret = ret.encode('utf-8')
   if expect:
      if return_wanted:
          return ret
