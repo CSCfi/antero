@@ -41,6 +41,10 @@ SELECT d1.amk_tunnus AS 'Ammattikorkeakoulun tunnus'
   ,d5.toiminto_nimi_fi
   ,d6.erittely_nimi_fi
   ,f.arvo
+
+  --oletusjärjestys sorttausta varten
+  ,ROW_NUMBER() OVER(ORDER BY f.id ASC, d1.id ASC, d2.id ASC, d3.id ASC, d5.id ASC, d6.id ASC) as defaultorder
+
   FROM dw.f_amk_talous f
 INNER JOIN dw.d_amk d1 ON f.d_amk_id = d1.id
 INNER JOIN dw.d_ohjauksenala d2 ON f.d_ohjauksenala_id = d2.id
@@ -49,6 +53,8 @@ INNER JOIN dw.d_aineistotyyppi d4 ON f.d_aineistotyyppi_id = d4.id
 INNER JOIN dw.d_toiminto d5 ON f.d_toiminto_id = d5.id
 INNER JOIN dw.d_erittely d6 ON f.d_erittely_id = d6.id
 WHERE f.arvo <> 0
+order by defaultorder
+
 GO
 /* revert
 drop view api.amk_talous
