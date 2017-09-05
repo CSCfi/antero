@@ -30137,6 +30137,10 @@
               </MeasureGroups>
               <Calculations>
                 <Calculation>
+                  <Name>[Measures].[New students enrollment year in subfield of education]</Name>
+                  <Type>Member</Type>
+                </Calculation>
+                <Calculation>
                   <Name>[Measures].[Degrees]</Name>
                   <Type>Member</Type>
                 </Calculation>
@@ -30186,10 +30190,6 @@
                 </Calculation>
                 <Calculation>
                   <Name>[Measures].[Students (present)]</Name>
-                  <Type>Member</Type>
-                </Calculation>
-                <Calculation>
-                  <Name>[Measures].[New students enrollment year in subfield of education]</Name>
                   <Type>Member</Type>
                 </Calculation>
               </Calculations>
@@ -43269,7 +43269,7 @@
               <Commands>
                 <Command>
                   <Text>CALCULATE; 
-CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1; 
+CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1, VISIBLE = 0; 
 ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measures defined]; </Text>
                 </Command>
                 <Command>
@@ -45463,7 +45463,7 @@ CREATE MEASURE 'Muuttujat'[Degrees attained by foreign students]=CALCULATE(SUM([
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Aloittaneet (TK määritelmä)]=CALCULATE(SUM([Opisk2]), FILTER('Muuttujat', [Kirjoihintulovuosi (TK määritelmä)] = [Tilastovuosi]),FILTER('Muuttujat', [Kirjoihintulovuosi] = [Tilastovuosi]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "73"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "81"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "82"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "90"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "91"))+CALCULATE(SUM([aloittaneet_kirjoihintulovuosi]), FILTER('Muuttujat', OR([lahde_koodi] = "41", [lahde_koodi] = "42")));
+CREATE MEASURE 'Muuttujat'[Aloittaneet (TK määritelmä)]=CALCULATE(SUM([Opisk2]), FILTER('Muuttujat', [Kirjoihintulovuosi (TK määritelmä)] = [Tilastovuosi]),FILTER('Muuttujat', [Kirjoihintulovuosi] = [Tilastovuosi]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "73"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "81"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "82"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "90"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "91"),FILTER(Muuttujat,[Koodit Koulutusaste taso 2]&lt;&gt;"-1"))+CALCULATE(SUM([aloittaneet_kirjoihintulovuosi]), FILTER('Muuttujat', OR([lahde_koodi] = "41", [lahde_koodi] = "42")));
 </Text>
                   <Annotations>
                     <Annotation>
