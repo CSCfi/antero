@@ -7,7 +7,7 @@ GO
 
 ALTER view api.opinnaytetyot as
 
-select 
+select
 
 [Tilastovuosi] = vuosi
 
@@ -27,6 +27,8 @@ select
 ,[Koodit Ammattikorkeakoulu] = d6.amk_tunnus
 ,[Koodit Koulutustyyppi] = d1.koodi
 
+--oletussorttaus
+,ROW_NUMBER() OVER(ORDER BY f.id ASC, d1.id ASC, d2.id ASC, d6.id ASC, d9.id ASC) as defaultorder
 
 
 from [dw].[f_amk_opinnaytetyot] f
@@ -35,10 +37,7 @@ join dw.d_ohjauksenala d2 on d2.id=f.d_ohjauksen_ala_id
 join dw.d_amk d6 on d6.id=f.d_amk_id
 join dw.d_koulutusala_2002 d9 on d9.id=f.d_koulutusala_id
 
-
-
-
-
+order by defaultorder ASC
 
 GO
 

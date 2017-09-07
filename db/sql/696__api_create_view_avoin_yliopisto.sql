@@ -22,7 +22,7 @@ select
 from [dw].[f_yo_avoimen_yliopiston_kautta_opiskelevat] f
 join dw.d_sukupuoli d1 on d1.id=f.d_sukupuoli_id
 join dw.d_yo d6 on d6.id=f.d_yliopisto_id
-order by defaultorder
+order by defaultorder ASC
 GO
 /* revert
 drop view api.avoin_yliopisto

@@ -7,6 +7,7 @@ GO
 
 ALTER view api.henkilosto as
 --amk
+--amk
 select
 Tilastovuosi = vuosi
 
@@ -55,6 +56,11 @@ Tilastovuosi = vuosi
   else cast(d2.maanosa_koodi as int)+1
   end
 
+  --oletusjärjestys sorttausta varten, 1000000000+ lajittelee alikyselyn tulokset
+
+  ,1000000000+ROW_NUMBER() OVER(ORDER BY f.id ASC, d1.id ASC, d2.id ASC, d3.id ASC,  d4.id ASC,  d5.id ASC,  d6.id ASC,  d7.id ASC,  d8.id ASC,  d9.id ASC, d10.id ASC) as defaultorder
+
+
 from [dw].[f_amk_henkilon_tyo] f
 left join dw.d_sukupuoli d1 on d1.id=f.d_sukupuoli_id
 left join dw.d_maatjavaltiot2 d2 on d2.id=f.d_maa_id
@@ -70,7 +76,7 @@ left join dw.d_yo_nimitystapa d10 on d10.id=f.d_nimitystapa_id
 UNION ALL
 
 --yo
-select 
+select
 Tilastovuosi = vuosi
 
 ,Sukupuoli = d1.sukupuoli_fi
@@ -105,7 +111,8 @@ Tilastovuosi = vuosi
 ,[Koodit Tieteenala] = d6.tieteenala_koodi
 ,[Koodit Päätieteenala] = d6.paatieteenala_koodi
 ,[Koodit Merkittävimmän tutkinnon taso] = 9
-,[Koodit Muun henkilöstön henkilöstöryhmä] = 9
+,[Koodit Muun he
+nkilöstön henkilöstöryhmä] = 9
 ,[Koodit Työsuhteen nimitystapa] = d11.koodi
 
 --järjestykset
@@ -117,6 +124,10 @@ Tilastovuosi = vuosi
   when d2.maanosa_koodi in ('2A','2B') then 2+1
   else cast(d2.maanosa_koodi as int)+1
   end
+
+  --oletusjärjestys sorttausta varten, 2000000000+ lajittelee alikyselyn tulokset
+
+  ,2000000000+ROW_NUMBER() OVER(ORDER BY f.id ASC, d1.id ASC, d2.id ASC, d3.id ASC,  d4.id ASC,  d5.id ASC,  d6.id ASC,  d7.id ASC,  d8.id ASC,  d9.id ASC, d10.id ASC, d11.id ASC) as defaultorder
 
 from [dw].[f_yo_henkilon_tyo] f
 left join dw.d_sukupuoli d1 on d1.id=f.d_sukupuoli_id
@@ -131,7 +142,10 @@ left join dw.d_yo_henkilostoryhma d9 on d9.id=f.d_henkilostoryhma_id
 left join dw.d_yo_harjoittelukoulujen_henkilostoryhma d10 on d10.id=f.d_harjoittelukoulujen_henkilostoryhma_id
 left join dw.d_yo_nimitystapa d11 on d11.id=f.d_nimitystapa_id
 
+order by defaultorder
+
 GO
+
 
 
 /* revert

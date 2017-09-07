@@ -8,7 +8,7 @@ GO
 ALTER view api.toimitilat as
 
 --amk
-select 
+select
 Tilastovuosi = vuosi
 
 
@@ -33,14 +33,18 @@ Tilastovuosi = vuosi
 --koodit
 ,[Koodit Yliopisto] = d1.yo_tunnus
 ,[Koodit Ammattikorkeakoulu] = NULL
---järjestykset
+
+--oletusjärjestys sorttausta varten, 1000000000+ lajittelee alikyselyn tulokset
+,1000000000+ ROW_NUMBER() OVER(ORDER BY f.id ASC, d1.id) as defaultorder
+
+
 
 from [dw].[f_yo_tilat] f
 join dw.d_yo d1 on d1.id=f.d_yliopisto_id
 
 UNION ALL
 
-select 
+select
 Tilastovuosi = vuosi
 
 
@@ -67,6 +71,9 @@ Tilastovuosi = vuosi
 ,[Koodit Yliopisto] = NULL
 ,[Koodit Ammattikorkeakoulu] = d1.amk_tunnus
 
+--oletusjärjestys sorttausta varten, 2000000000+ lajittelee alikyselyn tulokset
+,2000000000+ ROW_NUMBER() OVER(ORDER BY f.id ASC, d1.id, d3.id) as defaultorder
+
 FROM [dw].[f_amk_toimipisteet] f
 join dw.d_amk d1 on d1.id=f.d_amk_id
 --join dw.d_amk_toimipiste d2 on d2.id=f.d_toimipiste_id
@@ -75,7 +82,7 @@ join dw.d_amk_toimipisteen_toimipaikka d3 on d3.id=f.d_toimipisteen_toimipaikka_
 
 UNION ALL
 
-select 
+select
 Tilastovuosi = vuosi
 
 ,Yliopisto = d1.yo_nimi_fi
@@ -99,16 +106,19 @@ Tilastovuosi = vuosi
 ,[Koodit Yliopisto] = d1.yo_tunnus
 ,[Koodit Ammattikorkeakoulu] = NULL
 
+--oletusjärjestys sorttausta varten, 3000000000+ lajittelee alikyselyn tulokset
+,3000000000+ ROW_NUMBER() OVER(ORDER BY f.id ASC, d1.id, d3.id) as defaultorder
+
 FROM [dw].[f_yo_toimipisteet] f
 join dw.d_yo d1 on d1.id=f.d_yliopisto_id
 join dw.d_yo_toimipiste d2 on d2.id=f.d_toimipiste_id
 join dw.d_yo_toimipisteen_toimipaikka d3 on d3.id=f.d_toimipaikka_id
 
+order by  defaultorder ASC
 
 
 
 GO
-
 
 /* revert
 drop view api.toimitilat

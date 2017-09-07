@@ -7,7 +7,8 @@ GO
 
 ALTER view api.harjoittelukoulut as
 
-select 
+
+select
 [Tilastovuosi] = vuosi
 ,[Yliopisto] = d1.yo_nimi_fi
 
@@ -41,13 +42,17 @@ select
 ,[Koodit Ohjauksen ala] = 99
 ,[Koodit Henkilöstöryhmä] = 99
 
+--oletusjärjestys sorttausta varten, 1000000000+ lajittelee alikyselyn tulokset
+
+,1000000000+ROW_NUMBER() OVER(ORDER BY f.id ASC, d1.id ASC) as defaultorder
+
 
 from [dw].[f_yo_harjoittelukoulut] f
 join dw.d_yo d1 on d1.id=f.d_yliopisto_id
 
 UNION ALL
 
-select 
+select
 [Tilastovuosi] = vuosi
 ,[Yliopisto] = d1.yo_nimi_fi
 
@@ -81,13 +86,17 @@ select
 ,[Koodit Ohjauksen ala] = 99
 ,[Koodit Henkilöstöryhmä] = 99
 
+--oletusjärjestys sorttausta varten, 2000000000+ lajittelee alikyselyn tulokset
+
+,2000000000+ROW_NUMBER() OVER(ORDER BY f.id ASC, d1.id ASC) as defaultorder
+
 
 from [dw].[f_yo_harjoittelukoulujen_opintopisteet] f
 join dw.d_yo d1 on d1.id=f.d_yliopisto_id
 
 UNION ALL
 
-select 
+select
 [Tilastovuosi] = vuosi
 ,[Yliopisto] = d1.yo_nimi_fi
 
@@ -120,6 +129,10 @@ select
 ,[Koodit Ohjauksen ala] = case d5.ohjauksenala_koodi when -1 then 99 else d5.ohjauksenala_koodi end
 ,[Koodit Henkilöstöryhmä] = d3.koodi
 
+--oletusjärjestys sorttausta varten, 3000000000+ lajittelee alikyselyn tulokset
+
+,3000000000+ROW_NUMBER() OVER(ORDER BY f.id ASC, d1.id ASC, d2.id ASC, d3.id ASC, d4.id  ASC, d5.id ASC) as defaultorder
+
 
 from [dw].[f_yo_henkilon_tyo] f
 join dw.d_yo d1 on d1.id=f.d_yliopisto_id
@@ -129,6 +142,7 @@ join dw.d_koulutusala_1995 d4 on d4.id=f.d_koulutusala_id
 join dw.d_ohjauksenala d5 on d5.id=f.d_ohjauksenala_id
 where d2.selite_fi='Harjoittelukoulujen henkilöstö'
 
+order by defaultorder ASC
 
 
 

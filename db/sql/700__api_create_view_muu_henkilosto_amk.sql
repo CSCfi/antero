@@ -7,7 +7,7 @@ GO
 
 ALTER view api.muu_henkilosto_amk as
 
-select 
+select
 
 [Tilastovuosi] = vuosi
 
@@ -30,7 +30,9 @@ select
 ,[Koodit Ammattikorkeakoulu] = d6.amk_tunnus
 ,[Koodit Henkilöstöryhmä] = null
 
+--oletusjärjestys sorttausta varten, 1000000000+ lajittelee alikyselyn tulokset
 
+,1000000000+ROW_NUMBER() OVER(ORDER BY f.id ASC, d2.id ASC, d3.id ASC, d6.id ASC) as defaultorder
 
 from [dw].[f_amk_sivutoimiset_opettajat] f
 join dw.d_koulutusala_2002 d2 on d2.id=f.d_koulutusala_id
@@ -40,7 +42,7 @@ join dw.d_amk d6 on d6.id=f.d_amk_id
 
 union all
 
-select 
+select
 
 [Tilastovuosi] = vuosi
 
@@ -63,14 +65,18 @@ select
 ,[Koodit Ammattikorkeakoulu] = d6.amk_tunnus
 ,[Koodit Henkilöstöryhmä] = d1.koodi
 
+--oletusjärjestys sorttausta varten, 2000000000+ lajittelee alikyselyn tulokset
+
+,2000000000+ROW_NUMBER() OVER(ORDER BY f.id ASC, d1.id ASC, d6.id ASC) as defaultorder
 
 
 from [dw].[f_amk_ostopalveluna_hankittu_tyo] f
 join dw.d_amk_muun_henkilokunnan_henkilostoryhma d1 on d1.id=f.d_henkilostoryhma_id
 join dw.d_amk d6 on d6.id=f.d_amk_id
 
-
+order by defaultorder ASC
 GO
+
 
 /* revert
 drop view api.muu_henkilosto_amk

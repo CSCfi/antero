@@ -6,8 +6,7 @@ SELECT 1 AS a
 GO
 
 ALTER view api.avoin_amk as
-
-select 
+select
 [Tilastovuosi] = vuosi
 ,[Sukupuoli] = d1.sukupuoli_fi
 ,[OKM ohjauksen ala] = d2.ohjauksenala_nimi_fi
@@ -28,6 +27,10 @@ select
 ,[Koodit Sukupuoli] = d1.sukupuoli_koodi
 ,[Koodit OKM ohjauksen ala] = d2.ohjauksenala_koodi
 ,[Koodit Koulutusala] = d3.koodi
+
+--oletusjärjestys sorttausta varten, 1000000000+ lajittelee alikyselyn tulokset
+,1000000000+ ROW_NUMBER() OVER(ORDER BY f.id ASC, d1.id ASC, d2.id ASC, d3.id ASC, d6.id ASC) as defaultorder
+
 from [dw].[f_amk_avoimen_opiskelijat] f
 join dw.d_sukupuoli d1 on d1.id=f.d_sukupuoli_id
 join dw.d_ohjauksenala d2 on d2.id=f.d_ohjauksenala_id
@@ -36,7 +39,7 @@ join dw.d_amk d6 on d6.id=f.d_amk_id
 
 UNION ALL
 
-select 
+select
 [Tilastovuosi] = vuosi
 ,[Sukupuoli] = null
 ,[OKM ohjauksen ala] = d2.ohjauksenala_nimi_fi
@@ -57,6 +60,10 @@ select
 ,[Koodit Sukupuoli] = null
 ,[Koodit OKM ohjauksen ala] = d2.ohjauksenala_koodi
 ,[Koodit Koulutusala] = d3.koodi
+
+--oletusjärjestys sorttausta varten, 2000000000+ lajittelee alikyselyn tulokset
+,2000000000+ ROW_NUMBER() OVER(ORDER BY f.id ASC, d2.id ASC, d3.id ASC, d6.id ASC) as defaultorder
+
 from [dw].[f_amk_opintopisteet] f
 join dw.d_ohjauksenala d2 on d2.id=f.d_ohjauksenala_id
 join dw.d_koulutusala_2002 d3 on d3.id=f.d_koulutusala_2002_id
@@ -65,7 +72,7 @@ join dw.d_amk d6 on d6.id=f.d_amk_id
 
 UNION ALL
 
-select 
+select
 [Tilastovuosi] = vuosi
 ,[Sukupuoli] = d1.sukupuoli_fi
 ,[OKM ohjauksen ala] = d2.ohjauksenala_nimi_fi
@@ -86,6 +93,10 @@ select
 ,[Koodit Sukupuoli] = d1.sukupuoli_koodi
 ,[Koodit OKM ohjauksen ala] = d2.ohjauksenala_koodi
 ,[Koodit Koulutusala] = d3.koodi
+
+--oletusjärjestys sorttausta varten, 3000000000+ lajittelee alikyselyn tulokset
+,3000000000+ ROW_NUMBER() OVER(ORDER BY f.id ASC, d1.id ASC, d2.id ASC, d3.id ASC, d6.id ASC) as defaultorder
+
 from [dw].[f_amk_maahanmuuttajien_valmentava_koulutus] f
 join dw.d_sukupuoli d1 on d1.id=f.d_sukupuoli_id
 join dw.d_ohjauksenala d2 on d2.id=f.d_ohjauksenala_id
@@ -94,7 +105,7 @@ join dw.d_amk d6 on d6.id=f.d_amk_id
 
 UNION ALL
 
-select 
+select
 [Tilastovuosi] = vuosi
 ,[Sukupuoli] = null
 ,[OKM ohjauksen ala] = d2.ohjauksenala_nimi_fi
@@ -115,10 +126,18 @@ select
 ,[Koodit Sukupuoli] = null
 ,[Koodit OKM ohjauksen ala] = d2.ohjauksenala_koodi
 ,[Koodit Koulutusala] = d3.koodi
+
+--oletusjärjestys sorttausta varten, 3000000000+ lajittelee alikyselyn tulokset
+,3000000000+ ROW_NUMBER() OVER(ORDER BY f.id ASC, d2.id ASC, d3.id ASC, d6.id ASC) as defaultorder
+
 from [dw].[f_amk_opintopisteet] f
 join dw.d_ohjauksenala d2 on d2.id=f.d_ohjauksenala_id
 join dw.d_koulutusala_2002 d3 on d3.id=f.d_koulutusala_2002_id
 join dw.d_amk d6 on d6.id=f.d_amk_id
+
+order by defaultorder ASC
+
+
 GO
 /* revert
 drop view api.avoin_amk

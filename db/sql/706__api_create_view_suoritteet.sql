@@ -25,8 +25,12 @@ SELECT vuosi AS 'Tilastovuosi'
     ,d8.kunta_fi AS 'Koulutuksen järjestäjän kunta'
     ,d8.maakunta_koodi AS 'Koulutuksen järjestäjän maakunta Koodi'
     ,d8.maakunta_fi AS 'Koulutuksen järjestäjän maakunta'
-      ,cast(replace(suorite,',','.') as float) AS 'Suorite'
-      ,cast(replace(k100l09,',','.') as float) AS 'Summa'
+    ,cast(replace(suorite,',','.') as float) AS 'Suorite'
+    ,cast(replace(k100l09,',','.') as float) AS 'Summa'
+    --oletussorttaus
+
+    ,ROW_NUMBER() OVER(ORDER BY d1.id ASC, d2.id ASC , d3.id ASC , d4.id ASC , d5.id ASC, d8.id ASC, d9.id ASC ) as defaultorder
+
 FROM sa.sa_valos_2015
     LEFT JOIN dw.d_organisaatio d1 ON right(ytunnus,9)=organisaatio_koodi
     LEFT JOIN sa.sa_koodistot d2 ON d2.koodisto='vipunenvaloskoulutusmuoto' and d2.koodi=koulumto

@@ -7,7 +7,7 @@ GO
 
 ALTER view api.toimipisteet as
 
-select 
+select
 
 [Tilastovuosi] = vuosi
 
@@ -33,6 +33,10 @@ select
 ,[Koodit Yliopisto] = d1.yo_tunnus
 ,[Koodit Ammattikorkeakoulu] = null
 
+--oletusjärjestys sorttausta varten, 1000000000+ lajittelee alikyselyn tulokset
+
+,1000000000+ROW_NUMBER() OVER(ORDER BY f.id ASC, d1.id ASC, d2.id ASC , d3.id ASC , d4.id ASC , d5.id ASC, d6.id ASC ) as defaultorder
+
 FROM [ANTERO].[dw].[f_yo_toimipisteet] f
 left join dw.d_yo d1 on d1.id=f.d_yliopisto_id
 left join dw.d_yo_toimipiste d2 on d2.id=f.d_toimipiste_id
@@ -43,7 +47,7 @@ left join dw.d_kytkin d6 on d6.id=d2.d_toiminta_muu_id
 
 UNION ALL
 
-SELECT 
+SELECT
 [Tilastovuosi] = vuosi
 
 ,[Yliopisto] = null
@@ -68,15 +72,21 @@ SELECT
 ,[Koodit Yliopisto] = null
 ,[Koodit Ammattikorkeakoulu] = d1.amk_tunnus
 
-      
+--oletusjärjestys sorttausta varten, 2000000000+ lajittelee alikyselyn tulokset
+
+,2000000000+ROW_NUMBER() OVER(ORDER BY f.id ASC, d1.id ASC, d3.id ASC) as defaultorder
+
+
 FROM [ANTERO].[dw].[f_amk_toimipisteet] f
 left join dw.d_amk d1 on d1.id=f.d_amk_id
 --left join dw.d_amk_toimipisteen_toimipaikka d2 on d2.id=f.d_toimipiste_id
 left join dw.d_amk_toimipisteen_toimipaikka d3 on d3.id=f.d_toimipisteen_toimipaikka_id
 
+order by defaultorder ASC
 
 
 GO
+
 
 /* revert
 drop view api.toimipisteet

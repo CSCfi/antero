@@ -7,7 +7,8 @@ GO
 
 ALTER view api.erilliset_opinto_oikeudet as
 
-select 
+
+select
 
 [Tilastovuosi] = vuosi
 
@@ -28,13 +29,17 @@ select
 ,[Koodit OKM ohjauksen ala] = 99
 
 
+--oletusjärjestys sorttausta varten, 1000000000+ lajittelee alikyselyn tulokset
+
+,1000000000+ROW_NUMBER() OVER(ORDER BY f.id ASC, d6.id ASC) as defaultorder
+
 
 from [dw].[f_yo_erillisella_opinto_oikeudella_opiskelevat] f
 join dw.d_yo d6 on d6.id=f.d_yliopisto_id
 
 union all
 
-select 
+select
 
 [Tilastovuosi] = f.vuosi
 
@@ -54,6 +59,10 @@ select
 ,[Koodit Koulutusala] = case d1.opintoala95_koodi when -1 then 99 else d1.opintoala95_koodi end
 ,[Koodit OKM ohjauksen ala] = case d2.ohjauksenala_koodi when -1 then 99 else d2.ohjauksenala_koodi end
 
+--oletusjärjestys sorttausta varten, 2000000000+ lajittelee alikyselyn tulokset
+
+,2000000000+ROW_NUMBER() OVER(ORDER BY f.id ASC, d1.id ASC, d2.id ASC, d6.id ASC, d7.id ASC) as defaultorder
+
 
 from [dw].[f_yo_opintopisteet] f
 join dw.d_opintoala95 d1 on d1.id=f.d_opintoala95_id
@@ -63,7 +72,10 @@ join dw.d_kalenteri d7 on d7.id=f.d_tilannepvm_id
 
 where d7.paivays like '%-03-02'
 
+order by defaultorder ASC
+
 GO
+
 
 /* revert
 drop view api.erilliset_opinto_oikeudet
