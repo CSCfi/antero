@@ -74,7 +74,7 @@ from [dw].[f_amk_ostopalveluna_hankittu_tyo] f
 join dw.d_amk_muun_henkilokunnan_henkilostoryhma d1 on d1.id=f.d_henkilostoryhma_id
 join dw.d_amk d6 on d6.id=f.d_amk_id
 
-order by defaultorder ASC
+
 GO
 
 

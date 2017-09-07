@@ -53,7 +53,7 @@ INNER JOIN dw.d_aineistotyyppi d4 ON f.d_aineistotyyppi_id = d4.id
 INNER JOIN dw.d_toiminto d5 ON f.d_toiminto_id = d5.id
 INNER JOIN dw.d_erittely d6 ON f.d_erittely_id = d6.id
 WHERE f.arvo <> 0
-order by defaultorder ASC
+
 
 GO
 /* revert

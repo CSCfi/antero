@@ -27,6 +27,7 @@ SELECT vuosi AS 'Tilastovuosi'
     ,d8.maakunta_fi AS 'Koulutuksen järjestäjän maakunta'
     ,cast(replace(suorite,',','.') as float) AS 'Suorite'
     ,cast(replace(k100l09,',','.') as float) AS 'Summa'
+
     --oletussorttaus
 
     ,ROW_NUMBER() OVER(ORDER BY d1.id ASC, d2.id ASC , d3.id ASC , d4.id ASC , d5.id ASC, d8.id ASC, d9.id ASC ) as defaultorder

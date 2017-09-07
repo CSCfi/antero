@@ -72,7 +72,6 @@ join dw.d_kalenteri d7 on d7.id=f.d_tilannepvm_id
 
 where d7.paivays like '%-03-02'
 
-order by defaultorder ASC
 
 GO
 

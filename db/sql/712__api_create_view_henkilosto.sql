@@ -142,7 +142,7 @@ left join dw.d_yo_henkilostoryhma d9 on d9.id=f.d_henkilostoryhma_id
 left join dw.d_yo_harjoittelukoulujen_henkilostoryhma d10 on d10.id=f.d_harjoittelukoulujen_henkilostoryhma_id
 left join dw.d_yo_nimitystapa d11 on d11.id=f.d_nimitystapa_id
 
-order by defaultorder
+
 
 GO
 

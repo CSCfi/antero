@@ -114,8 +114,6 @@ join dw.d_yo d1 on d1.id=f.d_yliopisto_id
 join dw.d_yo_toimipiste d2 on d2.id=f.d_toimipiste_id
 join dw.d_yo_toimipisteen_toimipaikka d3 on d3.id=f.d_toimipaikka_id
 
-order by  defaultorder ASC
-
 
 
 GO
