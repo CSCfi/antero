@@ -142,9 +142,6 @@ join dw.d_koulutusala_1995 d4 on d4.id=f.d_koulutusala_id
 join dw.d_ohjauksenala d5 on d5.id=f.d_ohjauksenala_id
 where d2.selite_fi='Harjoittelukoulujen henkilöstö'
 
-order by defaultorder ASC
-
-
 
 GO
 

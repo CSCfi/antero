@@ -82,7 +82,6 @@ left join dw.d_amk d1 on d1.id=f.d_amk_id
 --left join dw.d_amk_toimipisteen_toimipaikka d2 on d2.id=f.d_toimipiste_id
 left join dw.d_amk_toimipisteen_toimipaikka d3 on d3.id=f.d_toimipisteen_toimipaikka_id
 
-order by defaultorder ASC
 
 
 GO

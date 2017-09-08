@@ -6,7 +6,7 @@ load
 todo doc
 """
 import sys,os,getopt
-import urllib2, base64
+import urllib2, base64, httplib
 import ijson.backends.yajl2_cffi as ijson
 import json
 from time import localtime, strftime
@@ -23,7 +23,7 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose):
   else:
     address = "http://"+hostname+url
   show("load from "+address)
-  
+
   reqheaders = {'Content-Type': 'application/json'}
   # api credentials from env vars
   if os.getenv("API_USERNAME"):
@@ -36,6 +36,8 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose):
   request = urllib2.Request(address, data=postdata, headers=reqheaders)
   try:
     response = urllib2.urlopen(request)
+  except httplib.IncompleteRead, e:
+    response = e.partial
   except urllib2.HTTPError, e:
     show('The server couldn\'t fulfill the request.')
     show('Error code: %d'%(e.code))

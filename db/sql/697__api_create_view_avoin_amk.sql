@@ -135,7 +135,7 @@ join dw.d_ohjauksenala d2 on d2.id=f.d_ohjauksenala_id
 join dw.d_koulutusala_2002 d3 on d3.id=f.d_koulutusala_2002_id
 join dw.d_amk d6 on d6.id=f.d_amk_id
 
-order by defaultorder ASC
+
 
 
 GO

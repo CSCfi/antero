@@ -54,7 +54,6 @@ from [ANTERO].[dw].[f_yo_taydennyskoulutukset_osallistumiset] f
 left join dw.d_yo d1 on d1.id=f.d_yliopisto_id
 left join dw.d_sukupuoli d2 on d2.id=f.sukupuoli_id
 
-order by defaultorder ASC
 
 
 --where d2.sukupuoli_fi='mies'
