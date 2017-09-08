@@ -13189,7 +13189,7 @@
   &lt;FilterParameters /&gt;
   &lt;IsSortDescending&gt;false&lt;/IsSortDescending&gt;
 &lt;/TableWidgetGridSerialization&gt;]]&gt;&lt;/AnnotationContent&gt;&lt;/Gemini&gt;</Value></Annotation><Annotation><Name>TableWidgetSourceTable</Name></Annotation><Annotation><Name>QueryEditorSerialization</Name></Annotation><Annotation><Name>IsQueryEditorUsed</Name><Value>False</Value></Annotation></Annotations><Source xsi:type="QueryBinding"><DataSourceID>55a345e7-7850-4819-a411-eabd81c3597b</DataSourceID><QueryDefinition>SELECT [dbo].[v_f_tab_otv_korkeakoulut_yliopisto].* 		FROM [dbo].[v_f_tab_otv_korkeakoulut_yliopisto]</QueryDefinition></Source><StorageMode valuens="ddl200_200">InMemory</StorageMode><ProcessingMode>Regular</ProcessingMode><ErrorConfiguration><KeyNotFound>IgnoreError</KeyNotFound><KeyDuplicate>ReportAndStop</KeyDuplicate><NullKeyNotAllowed>ReportAndStop</NullKeyNotAllowed></ErrorConfiguration><ProactiveCaching><SilenceInterval>-PT1S</SilenceInterval><Latency>-PT1S</Latency><SilenceOverrideInterval>-PT1S</SilenceOverrideInterval><ForceRebuildInterval>-PT1S</ForceRebuildInterval><Source xsi:type="ProactiveCachingInheritedBinding" /></ProactiveCaching></Partition></Partitions><ProactiveCaching><SilenceInterval>-PT1S</SilenceInterval><Latency>-PT1S</Latency><SilenceOverrideInterval>-PT1S</SilenceOverrideInterval><ForceRebuildInterval>-PT1S</ForceRebuildInterval><Source xsi:type="ProactiveCachingInheritedBinding" /></ProactiveCaching></MeasureGroup></MeasureGroups><Source><DataSourceViewID>Sandbox</DataSourceViewID></Source><MdxScripts><MdxScript><ID>MdxScript</ID><Name>MdxScript</Name><Commands><Command><Text>CALCULATE; 
-CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1; 
+CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1, VISIBLE = 0; 
 ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measures defined]; </Text></Command><Command><Text>----------------------------------------------------------
 -- PowerPivot measures command (do not modify manually) --
 ----------------------------------------------------------
@@ -13201,7 +13201,7 @@ CREATE MEASURE 'Muuttujat'[Opiskelijat]=SUM([Opisk2]);
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Uudet opiskelijat]=CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "91"));
+CREATE MEASURE 'Muuttujat'[Uudet opiskelijat]=IF(CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "91"))=0,BLANK(),CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "91")));
 </Text><Annotations><Annotation><Name>FullName</Name><Value>Uudet opiskelijat</Value></Annotation><Annotation><Name>Table</Name><Value>Muuttujat</Value></Annotation></Annotations></Command><Command><Text>----------------------------------------------------------
 -- PowerPivot measures command (do not modify manually) --
 ----------------------------------------------------------
@@ -13531,7 +13531,7 @@ CREATE MEASURE 'Muuttujat'[Andel som avlagt mer än 55 sp (yrkehögskola)]=[Yli 
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Nya utländska studenter]=CALCULATE(SUM([Opisk2]), FILTER('Muuttujat', [Kansalaisuus] &lt;&gt; "suomi"),FILTER(Muuttujat,[Aineisto]="Lopullinen"), FILTER('Muuttujat', [Kirjoihintulovuosi] = [Tilastovuosi]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "73"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "81"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "82"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "90"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "91"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "62"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "71"));
+CREATE MEASURE 'Muuttujat'[Nya utländska studenter]=CALCULATE(SUM([Opisk2]), FILTER('Muuttujat', [Kansalaisuus] &lt;&gt; "Suomi"),FILTER(Muuttujat,[Aineisto]="Lopullinen"),FILTER('Muuttujat', [Kirjoihintulovuosi] = [Tilastovuosi]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "73"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "81"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "82"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "90"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "91"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "62"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "71"));
 </Text><Annotations><Annotation><Name>FullName</Name><Value>Nya utländska studenter</Value></Annotation><Annotation><Name>Table</Name><Value>Muuttujat</Value></Annotation></Annotations></Command><Command><Text>----------------------------------------------------------
 -- PowerPivot measures command (do not modify manually) --
 ----------------------------------------------------------
@@ -13735,7 +13735,7 @@ CREATE MEASURE 'Muuttujat'[Percentage of students who attained more than 55 cred
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[New foreign students]=CALCULATE(SUM([Opisk2]), FILTER('Muuttujat', [Kansalaisuus] &lt;&gt; "suomi"),FILTER(Muuttujat,[Aineisto]="Lopullinen"), FILTER('Muuttujat', [Kirjoihintulovuosi] = [Tilastovuosi]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "73"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "81"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "82"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "90"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "91"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "62"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "71"));
+CREATE MEASURE 'Muuttujat'[New foreign students]=CALCULATE(SUM([Opisk2]), FILTER('Muuttujat', [Kansalaisuus] &lt;&gt; "Suomi"),FILTER(Muuttujat,[Aineisto]="Lopullinen"),FILTER('Muuttujat', [Kirjoihintulovuosi] = [Tilastovuosi]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "73"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "81"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "82"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "90"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "91"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "62"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] &lt;&gt; "71"));
 </Text><Annotations><Annotation><Name>FullName</Name><Value>New foreign students</Value></Annotation><Annotation><Name>Table</Name><Value>Muuttujat</Value></Annotation></Annotations></Command><Command><Text>----------------------------------------------------------
 -- PowerPivot measures command (do not modify manually) --
 ----------------------------------------------------------
