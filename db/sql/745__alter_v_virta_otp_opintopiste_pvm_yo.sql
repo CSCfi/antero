@@ -1,12 +1,3 @@
-USE [ANTERO]
-GO
-
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
 ALTER VIEW [dw].[v_virta_otp_opintopiste_pvm_yo] AS 
 SELECT
      [Tilastovuosi] = f.tilastovuosi
@@ -32,8 +23,8 @@ SELECT
 	 ,[Loadtime] = f.loadtime
 	 ,[Source] = f.source
 	 ,[Username] = f.username
-  FROM [ANTERO].[dw].[f_virta_otp_opintopiste_pvm_yo] f
+  FROM [dw].[f_virta_otp_opintopiste_pvm_yo] f
   LEFT JOIN dw.d_ohjauksenala d1 ON d1.id=f.d_ohjauksenala_id
   LEFT JOIN dw.d_yo d2 ON d2.id = f.d_yo_id
 
-  GO
+  
