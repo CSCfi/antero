@@ -406,6 +406,13 @@
             "dataType": "string",
             "sourceColumn": "Julkaisufoorumitaso uusi luokitus",
             "displayFolder": "Julkaisumuuttujat"
+          },
+          {
+            "type": "calculated",
+            "name": "Jufotaso uusi int",
+            "dataType": "int64",
+            "isDataTypeInferred": false,
+            "expression": "IF(OR(OR([Koodit Julkaisufoorumitaso_uusi]=\"1\",[Koodit Julkaisufoorumitaso_uusi]=\"2\"),[Koodit Julkaisufoorumitaso_uusi]=\"3\"),[Koodit Julkaisufoorumitaso_uusi],BLANK())"
           }
         ],
         "partitions": [
@@ -2053,6 +2060,14 @@
           {
             "name": "measure2",
             "expression": "AVERAGEX(VALUES(Muuttujat[JulkaisunTunnus]),CALCULATE(AVERAGE(Muuttujat[Jufotaso int]),FILTER(Muuttujat,OR(OR([Jufotaso int]=1,[Jufotaso int]=2),[Jufotaso int]=3)),FILTER(Muuttujat,OR([Koodit Julkaisun pääluokka]=\"A\",[Koodit Julkaisun pääluokka]=\"C\")),FILTER(Muuttujat,[Tilastovuosi]<2015)))"
+          },
+          {
+            "name": "apufunktio",
+            "expression": "AVERAGEX(DISTINCT(Muuttujat[JulkaisunTunnus]),CALCULATE(AVERAGE(Muuttujat[Jufotaso uusi int]),FILTER(Muuttujat,OR(OR([Jufotaso uusi int]=1,[Jufotaso uusi int]=2),[Jufotaso uusi int]=3)),FILTER(Muuttujat,OR([Koodit Julkaisun pääluokka]=\"A\",[Koodit Julkaisun pääluokka]=\"C\"))))"
+          },
+          {
+            "name": "Jufot (Suhteellinen)",
+            "expression": "CONCATENATE(FORMAT([apufunktio]/CALCULATE([apufunktio],ALL(Muuttujat[Yliopisto])),\"FIXED\"),\" (\"&CALCULATE(DISTINCTCOUNT(Muuttujat[JulkaisunTunnus]),FILTER(Muuttujat,OR(OR(Muuttujat[Jufotaso uusi int]=1,Muuttujat[Jufotaso uusi int]=2),Muuttujat[Jufotaso uusi int]=3)),FILTER(Muuttujat,OR(Muuttujat[Koodit Julkaisun pääluokka]=\"A\",Muuttujat[Koodit Julkaisun pääluokka]=\"C\")))&\")\")"
           }
         ],
         "annotations": [
@@ -4048,9 +4063,6 @@
                 "name": "Avoin saatavuus"
               },
               {
-                "name": "Julkaisu rinnakkaistallennettu"
-              },
-              {
                 "name": "Julkaisufoorumitaso"
               },
               {
@@ -4064,42 +4076,6 @@
               },
               {
                 "name": "Kansainvälinen yhteisjulkaisu"
-              },
-              {
-                "name": "Koodit Julkaisufoorumitaso"
-              },
-              {
-                "name": "Koodit Julkaisun kansainvälisyys"
-              },
-              {
-                "name": "Koodit Julkaisun pääluokka"
-              },
-              {
-                "name": "Koodit Julkaisutyyppi"
-              },
-              {
-                "name": "Koodit Kansainvälinen yhteisjulkaisu"
-              },
-              {
-                "name": "Koodit Koulutusala 02"
-              },
-              {
-                "name": "Koodit Koulutusala 95"
-              },
-              {
-                "name": "Koodit OKM ohjauksen ala"
-              },
-              {
-                "name": "Koodit Organisaatio"
-              },
-              {
-                "name": "Koodit Päätieteenala"
-              },
-              {
-                "name": "Koodit Sektori"
-              },
-              {
-                "name": "Koodit Tieteenala"
               },
               {
                 "name": "Koulutusala 02"
@@ -4126,33 +4102,21 @@
                 "name": "Tilastovuosi"
               },
               {
-                "name": "Yhteisjulk. muu kotim. tutkimusorganisaatio"
-              },
-              {
-                "name": "Yhteisjulk. valtion sektoritutkimuslaitos"
-              },
-              {
-                "name": "Yhteisjulk. yliop. sairaanhoitopiiri"
-              },
-              {
-                "name": "Yhteisjulkaisu yrityksen kanssa"
-              },
-              {
                 "name": "Julkaisufoorumitaso uusi luokitus"
               },
               {
                 "name": "Julkaisufoorumitaso vanha luokitus"
               },
               {
-                "name": "Koodit Julkaisufoorumitaso_uusi"
-              },
-              {
-                "name": "Koodit Julkaisufoorumitaso_vanha"
+                "name": "Yliopisto"
               }
             ],
             "measures": [
               {
                 "name": "Julkaisut"
+              },
+              {
+                "name": "Jufot (Suhteellinen)"
               }
             ]
           },
