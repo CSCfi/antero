@@ -5,7 +5,7 @@ SELECT 1 AS a
 '
 GO
 
-
+ALTER VIEW api.amk_talous
 
 select
 [Tilastovuosi] = vuosi
