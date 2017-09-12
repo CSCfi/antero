@@ -33,7 +33,7 @@ SELECT vuosi AS "Tilastovuosi"
 FROM
   (SELECT rekno,vuosi,ytunnus,kala,koulumto,OMISTAJA,KUNTA,VIRKUNTA,suorite,k010l01,k010l02,k010l03,k020l01,k020l02,k020l03,k030l01,k030l02,k030l03,k040l01,k040l02,k040l03,k060l01,k060l02,k060l03,k070l01,k070l02,k070l03,k080l01,k080l02,k080l03,k090l02,k090l03
     FROM sa.sa_valos_2015) p
-UNPIVOT 
+UNPIVOT
   (summa FOR menolajitoiminto IN
     (k010l01,k010l02,k010l03,k020l01,k020l02,k020l03,k030l01,k030l02,k030l03,k040l01,k040l02,k040l03,k060l01,k060l02,k060l03,k070l01,k070l02,k070l03,k080l01,k080l02,k080l03,k090l02,k090l03)) AS unpvt
     LEFT JOIN dw.d_organisaatio d1 ON RIGHT(ytunnus,9)=organisaatio_koodi
@@ -76,10 +76,10 @@ SELECT vuosi AS 'Tilastovuosi'
 FROM
   (SELECT rekno,vuosi,ytunnus,kala,koulumto,OMISTAJA,KUNTA,VIRKUNTA,suorite,k100l01,k100l02,k100l03
     FROM sa.sa_valos_2015 WHERE rekno=55 OR koulumto=133 or koulumto=134 or koulumto=135) p
-UNPIVOT 
+UNPIVOT
   (summa FOR menolajitoiminto IN
     (k100l01,k100l02,k100l03)) AS unpvt
-    LEFT JOIN dw.d_organisaatio d1 ON RIGHT(ytunnus,9)=organisaatio_koodi
+     LEFT JOIN dw.d_organisaatio d1 ON RIGHT(ytunnus,9)=organisaatio_koodi
     LEFT JOIN sa.sa_koodistot d2 ON d2.koodisto='vipunenvaloskoulutusmuoto' and d2.koodi=koulumto
     LEFT JOIN sa.sa_koodistot d3 ON d3.koodisto='vipunenvaloskoulutusala' and d3.koodi=kala
     LEFT JOIN sa.sa_koodistot d4 ON d4.koodisto='vipunenvalosomistajatyyppi' and d4.koodi=OMISTAJA
@@ -90,7 +90,7 @@ UNPIVOT
     LEFT JOIN dw.d_alueluokitus d9 ON d9.kunta_koodi=RIGHT(CONCAT('000', KUNTA), 3)
 
 -- Kansalaisopistot ja kesäyliopistot, ei toiminto- eikä menolajierittelyä
-UNION ALL 
+UNION ALL
 
 SELECT vuosi AS 'Tilastovuosi'
     ,rekno AS 'Sektori Koodi'
@@ -119,7 +119,7 @@ SELECT vuosi AS 'Tilastovuosi'
 FROM
   (SELECT rekno,vuosi,ytunnus,kala,koulumto,OMISTAJA,KUNTA,VIRKUNTA,suorite,k100l09
     FROM sa.sa_valos_2015 WHERE rekno=9 OR rekno=18) p
-UNPIVOT 
+UNPIVOT
   (summa FOR menolajitoiminto IN
     (k100l09)) AS unpvt
     LEFT JOIN dw.d_organisaatio d1 ON RIGHT(ytunnus,9)=organisaatio_koodi
