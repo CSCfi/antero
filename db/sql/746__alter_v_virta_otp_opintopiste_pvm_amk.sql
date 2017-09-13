@@ -1,6 +1,6 @@
 ALTER VIEW [dw].[v_virta_otp_opintopiste_pvm_amk] AS 
 SELECT
-      [Tilastovuosi] = f.tilastovuosi
+      [Tilastovuosi] = f.tilastovuosi 
      ,[Suorituspäivämäärä] = f.suorituspaiva
      ,[Suoritusvuosi] = YEAR(f.suorituspaiva)
      ,[Suorituskuukausi] = MONTH (f.suorituspaiva)
@@ -25,6 +25,9 @@ SELECT
 	 ,[TKI_harjoittelun_laajuus] = f.TKI_harjoittelun_laajuus_lkm
 	 ,[Ulkomaanharjoittelu] = f.ulkomaaharjoittelu_lkm
 	 ,[Erikoistumiskoulutus] = f.erikoistumiskoulutus_lkm   
+	 ,[Loadtime] = f.loadtime
+	 ,[Source] = f.source
+	 ,[Username] = f.username
   FROM dw.f_virta_otp_opintopiste_pvm_amk f
   LEFT JOIN dw.d_ohjauksenala d1 ON d1.id=f.d_ohjauksenala_id
   LEFT JOIN dw.d_amk_koulutustyyppi d2 ON d2.id = f.d_amk_koulutustyyppi_id
