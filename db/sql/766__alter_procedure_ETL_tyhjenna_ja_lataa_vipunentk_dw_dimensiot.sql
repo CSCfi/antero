@@ -938,5 +938,6 @@ TRUNCATE TABLE VipunenTK_DW..d_toimiala_tthv2_sama_kuin_ed_vuonna;
 INSERT INTO VipunenTK_DW..d_toimiala_tthv2_sama_kuin_ed_vuonna
 	SELECT * FROM VipunenTK_lisatiedot.[dbo].[v_toimiala_tthv2_sama_kuin_ed_vuonna] WHERE virhetilanne = 'E';
 
+GO
 
 USE [ANTERO]

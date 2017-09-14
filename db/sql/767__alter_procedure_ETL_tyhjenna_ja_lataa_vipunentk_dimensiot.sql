@@ -992,5 +992,6 @@ DELETE FROM VipunenTK..d_toimiala_tthv2_sama_kuin_ed_vuonna;
 INSERT INTO VipunenTK..d_toimiala_tthv2_sama_kuin_ed_vuonna
 	SELECT * FROM VipunenTK_DW.[dbo].[v_toimiala_tthv2_sama_kuin_ed_vuonna];
 	
+GO
 
 USE [ANTERO]
