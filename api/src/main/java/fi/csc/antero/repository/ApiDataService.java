@@ -133,11 +133,7 @@ public class ApiDataService {
     private OrderSpecifier[] createOrderSpecifiers(String table, String sort) {
         final OrderSpecifier[] orderSpecifiers = {};
         if (StringUtils.isEmpty(sort)) {
-            //return orderSpecifiers;
-            sort = "(+defaultorder)";
-        } else {
-            // replace ")" with ",+defaultorder)" so sort named column is always sorting as last resort
-            sort = sort.replace(")",",+defaultorder)");
+            return orderSpecifiers;
         }
 
         DefaultSortParser sortParser = new DefaultSortParser();
