@@ -44,7 +44,7 @@ public class ApiControllerTest {
 
     @Test
     public void testGetDataWithFilter() throws Exception {
-        final ResponseEntity<String> entity = makeQuery("/resources/test_data/data?sort=(+defaultorder)filter=(testText=='*value 2';id>1)",
+        final ResponseEntity<String> entity = makeQuery("/resources/test_data/data?sort=filter=(testText=='*value 2';id>1)",
                 200);
         final String result = entity.getBody();
         String expected = "[{'id' : 2," +
@@ -57,7 +57,7 @@ public class ApiControllerTest {
 
     @Test
     public void testGetDataWithWhiteSpaceFilter() throws Exception {
-        final String result = makeQuery("/resources/test_data/data?sort=(+defaultorder)&filter=whiteSpace=='true'",
+        final String result = makeQuery("/resources/test_data/data?sort=filter=whiteSpace=='true'",
                 200)
                 .getBody();
         String expected = "[{'id' : 1," +
@@ -75,7 +75,7 @@ public class ApiControllerTest {
     @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD,
             scripts = "/sql/clear.sql")
     public void testGetDataWithDateFilter() throws Exception {
-        final String result = makeQuery("/resources/test_data/data?sort=(+defaultorder)&filter=testDate=='2017-01-03 00:00:00'",
+        final String result = makeQuery("/resources/test_data/data?filter=testDate=='2017-01-03 00:00:00'",
                 200)
                 .getBody();
         String expected = "[{'id' : 3," +
