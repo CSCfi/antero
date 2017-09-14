@@ -37,7 +37,9 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose):
   try:
     response = urllib2.urlopen(request)
   except httplib.IncompleteRead, e:
-    response = e.partial
+    show('IncompleteRead exception.')
+    show('Received: %d'%(e.partial))
+    sys.exit(2)
   except urllib2.HTTPError, e:
     show('The server couldn\'t fulfill the request.')
     show('Error code: %d'%(e.code))
