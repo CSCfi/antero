@@ -1,17 +1,16 @@
 USE [VipunenTK]
 GO
-
-/****** Object:  View [dbo].[v_f_tab_indikaattorit_kk_aloitusika]    Script Date: 18.9.2017 11:15:02 ******/
+/****** Object:  View [dbo].[v_f_tab_indikaattorit_kk_aloitusika]    Script Date: 18.9.2017 13:20:59 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[v_f_tab_indikaattorit_kk_aloitusika]'))
+EXEC dbo.sp_executesql @statement = N'
 
 
 
-
-ALTER VIEW [dbo].[v_f_tab_indikaattorit_kk_aloitusika] AS
+CREATE VIEW [dbo].[v_f_tab_indikaattorit_kk_aloitusika] AS
 
 Select 
 f.tilastointivuosi as [Tilastovuosi]
@@ -41,10 +40,10 @@ f.tilastointivuosi as [Tilastovuosi]
 ,d21b.koulutuslaji_okm as Koulutuslaji
 ,d21b.koulutuslaji_okm2 as Koulutuslaji2
 ,case 
-	when d21.Koulutusaste_taso2_koodi IN ('62','63') OR (d21.Koulutusaste_taso2_koodi=72 AND d21.opintoala2002_koodi in (704,708)) then 'I sykli' 
-	when d21.Koulutusaste_taso2_koodi IN ('71','72') then 'II sykli' 
-	else 'Tuntematon' 
-end as 'Tutkinnon aloitussykli'
+	when d21.Koulutusaste_taso2_koodi IN (''62'',''63'') OR (d21.Koulutusaste_taso2_koodi=72 AND d21.opintoala2002_koodi in (704,708)) then ''I sykli'' 
+	when d21.Koulutusaste_taso2_koodi IN (''71'',''72'') then ''II sykli'' 
+	else ''Tuntematon'' 
+end as ''Tutkinnon aloitussykli''
 ,d22b.avi as "Koul. järjestäjän AVI"
 ,d22b.ely as "Koul. järjestäjän ELY"
 ,d22b.maakunta as "Koul. järjestäjän maakunta"
@@ -83,10 +82,10 @@ end as 'Tutkinnon aloitussykli'
 ,d21b.koulutuslaji_okm_SV as Examensslag
 ,d21b.koulutuslaji_okm2_SV as Examensslag2
 ,case 
-	when d21.Koulutusaste_taso2_koodi IN ('62','63') OR (d21.Koulutusaste_taso2_koodi=72 AND d21.opintoala2002_koodi in (704,708)) then 'Cykeln I' 
-	when d21.Koulutusaste_taso2_koodi IN ('71','72') then 'Cykeln II' 
-	else 'Okänd' 
-end as 'Cykeln'
+	when d21.Koulutusaste_taso2_koodi IN (''62'',''63'') OR (d21.Koulutusaste_taso2_koodi=72 AND d21.opintoala2002_koodi in (704,708)) then ''Cykeln I'' 
+	when d21.Koulutusaste_taso2_koodi IN (''71'',''72'') then ''Cykeln II'' 
+	else ''Okänd'' 
+end as ''Cykeln''
 --,d22b.avi_SV as "Koul. järjestäjän AVISV"
 --,d22b.ely_SV as "Koul. järjestäjän ELYSV"
 --,d22b.maakunta_SV as "Koul. järjestäjän maakuntaSV"
@@ -132,10 +131,10 @@ end as 'Cykeln'
 ,d21b.koulutuslaji_okm_EN as "Form of education"
 ,d21b.koulutuslaji_okm2_EN as "Form of education2"
 ,case 
-	when d21.Koulutusaste_taso2_koodi IN ('62','63')  OR (d21.Koulutusaste_taso2_koodi=72 AND d21.opintoala2002_koodi in (704,708)) then 'Cycle I' 
-	when d21.Koulutusaste_taso2_koodi IN ('71','72') then 'Cycle II' 
-	else 'Unknown' 
-end as 'Beginning cycle of education'
+	when d21.Koulutusaste_taso2_koodi IN (''62'',''63'')  OR (d21.Koulutusaste_taso2_koodi=72 AND d21.opintoala2002_koodi in (704,708)) then ''Cycle I'' 
+	when d21.Koulutusaste_taso2_koodi IN (''71'',''72'') then ''Cycle II'' 
+	else ''Unknown'' 
+end as ''Beginning cycle of education''
 --,d22b.avi_EN as "Koul. järjestäjän AVI"
 --,d22b.ely_EN as "Koul. järjestäjän ELY"
 --,d22b.maakunta_EN as "Koul. järjestäjän maakunta"
@@ -177,9 +176,9 @@ end as 'Beginning cycle of education'
 ,d21b.jarjestys as jarj_koullaji
 ,d21b.jarjestys2 as jarj_koullaji2
 ,case 
-	when d21.Koulutusaste_taso2_koodi IN ('62','63') OR (d21.Koulutusaste_taso2_koodi=72 AND d21.opintoala2002_koodi in (704,708)) then '1' 
-	when d21.Koulutusaste_taso2_koodi IN ('71','72') then '2' 
-	else '9' 
+	when d21.Koulutusaste_taso2_koodi IN (''62'',''63'') OR (d21.Koulutusaste_taso2_koodi=72 AND d21.opintoala2002_koodi in (704,708)) then ''1'' 
+	when d21.Koulutusaste_taso2_koodi IN (''71'',''72'') then ''2'' 
+	else ''9'' 
 end as jarj_aloitussykli
 ,d22b.jarjestys_avi as jarjestys_avi2
 ,d22b.jarjestys_ely as jarjestys_ely2
@@ -197,20 +196,20 @@ end as jarj_aloitussykli
 --Koodimuuttujat
 ,d2.aidinkieli_versio1_koodi as aidinkieli_koodi
 ,d5c.kuukausi as syntk
-,d7.koulutustyyppi_koodi as 'Koodit Koulutustyyppi'
-,d9.oppilaitoskoodi as 'Koodit Oppilaitos'
-,d9b.koulutuksen_jarjestajan_omistajatyyppikoodi as 'Koodit Koul. järjestäjän omistajatyyppi'
-,d9b.koulutuksen_jarjestajakoodi as 'Koodit Koulutuksen järjestäjä'
+,d7.koulutustyyppi_koodi as ''Koodit Koulutustyyppi''
+,d9.oppilaitoskoodi as ''Koodit Oppilaitos''
+,d9b.koulutuksen_jarjestajan_omistajatyyppikoodi as ''Koodit Koul. järjestäjän omistajatyyppi''
+,d9b.koulutuksen_jarjestajakoodi as ''Koodit Koulutuksen järjestäjä''
 ,d10.lahde_koodi
-,d21.koulutusaste2002_koodi as 'Koodit Koulutusaste'
-,d21.koulutusala2002_koodi as 'Koodit Koulutusala (02)'
-,d21.opintoala1995_koodi as 'Koodit Koulutusala (95)'
-,d21.opintoala2002_koodi as 'Koodit Opintoala (02)'
-,d21.koulutus_koodi as 'Koodit Koulutusnimike'
-,d22b.maakunta_koodi as 'Koodit Koul. järj. maakunta'
-,d22b.kunta_koodi as 'Koodit Koul. järj. kunta'
-,d22c.maakunta_koodi as 'Koodit Oppil. maakunta'
-,d22c.kunta_koodi as 'Koodit Oppil. kunta'
+,d21.koulutusaste2002_koodi as ''Koodit Koulutusaste''
+,d21.koulutusala2002_koodi as ''Koodit Koulutusala (02)''
+,d21.opintoala1995_koodi as ''Koodit Koulutusala (95)''
+,d21.opintoala2002_koodi as ''Koodit Opintoala (02)''
+,d21.koulutus_koodi as ''Koodit Koulutusnimike''
+,d22b.maakunta_koodi as ''Koodit Koul. järj. maakunta''
+,d22b.kunta_koodi as ''Koodit Koul. järj. kunta''
+,d22c.maakunta_koodi as ''Koodit Oppil. maakunta''
+,d22c.kunta_koodi as ''Koodit Oppil. kunta''
 ,d23.vuosi as alvv
 ,d23b.lukukausi as alkk
 ,d24f.vuosi as alvv_kk
@@ -281,15 +280,13 @@ FROM dbo.f_2_8e_Korkeakoulun_aloittaneiden_mediaani_iat f
 	
 	
 	
-WHERE d9.oppilaitoskoodi NOT IN ('02557','10031','02358') 
-AND aloitusika <> '-1' 
-AND d21.koulutusaste2002_koodi in ('62','63','71','72') 
+WHERE d9.oppilaitoskoodi NOT IN (''02557'',''10031'',''02358'') 
+AND aloitusika <> ''-1'' 
+AND d21.koulutusaste2002_koodi in (''62'',''63'',''71'',''72'') 
 AND (f.aloittaneet>0 OR f.aloittaneet_korkeakoulusektori>0)
 
 
-
+' 
 GO
 
 USE [ANTERO]
-
-
