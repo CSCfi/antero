@@ -41,7 +41,7 @@ f.tilastointivuosi as [Tilastovuosi]
 ,d21b.koulutuslaji_okm as Koulutuslaji
 ,d21b.koulutuslaji_okm2 as Koulutuslaji2
 ,case 
-	when d21.Koulutusaste_taso2_koodi IN ('62','63') OR d21.opintoala2002_koodi in (704,708) then 'I sykli' 
+	when d21.Koulutusaste_taso2_koodi IN ('62','63') OR (d21.Koulutusaste_taso2_koodi=72 AND d21.opintoala2002_koodi in (704,708)) then 'I sykli' 
 	when d21.Koulutusaste_taso2_koodi IN ('71','72') then 'II sykli' 
 	else 'Tuntematon' 
 end as 'Tutkinnon aloitussykli'
@@ -83,7 +83,7 @@ end as 'Tutkinnon aloitussykli'
 ,d21b.koulutuslaji_okm_SV as Examensslag
 ,d21b.koulutuslaji_okm2_SV as Examensslag2
 ,case 
-	when d21.Koulutusaste_taso2_koodi IN ('62','63') OR d21.opintoala2002_koodi in (704,708) then 'Cykeln I' 
+	when d21.Koulutusaste_taso2_koodi IN ('62','63') OR (d21.Koulutusaste_taso2_koodi=72 AND d21.opintoala2002_koodi in (704,708)) then 'Cykeln I' 
 	when d21.Koulutusaste_taso2_koodi IN ('71','72') then 'Cykeln II' 
 	else 'Okänd' 
 end as 'Cykeln'
@@ -132,7 +132,7 @@ end as 'Cykeln'
 ,d21b.koulutuslaji_okm_EN as "Form of education"
 ,d21b.koulutuslaji_okm2_EN as "Form of education2"
 ,case 
-	when d21.Koulutusaste_taso2_koodi IN ('62','63') OR d21.opintoala2002_koodi in (704,708) then 'Cycle I' 
+	when d21.Koulutusaste_taso2_koodi IN ('62','63')  OR (d21.Koulutusaste_taso2_koodi=72 AND d21.opintoala2002_koodi in (704,708)) then 'Cycle I' 
 	when d21.Koulutusaste_taso2_koodi IN ('71','72') then 'Cycle II' 
 	else 'Unknown' 
 end as 'Beginning cycle of education'
@@ -177,7 +177,7 @@ end as 'Beginning cycle of education'
 ,d21b.jarjestys as jarj_koullaji
 ,d21b.jarjestys2 as jarj_koullaji2
 ,case 
-	when d21.Koulutusaste_taso2_koodi IN ('62','63') OR d21.opintoala2002_koodi in (704,708) then '1' 
+	when d21.Koulutusaste_taso2_koodi IN ('62','63') OR (d21.Koulutusaste_taso2_koodi=72 AND d21.opintoala2002_koodi in (704,708)) then '1' 
 	when d21.Koulutusaste_taso2_koodi IN ('71','72') then '2' 
 	else '9' 
 end as jarj_aloitussykli
@@ -276,7 +276,10 @@ FROM dbo.f_2_8e_Korkeakoulun_aloittaneiden_mediaani_iat f
 	INNER JOIN [dbo].d_alueluokitus d22c ON d22c.alueluokitus_avain = d9.sijaintikuntakoodi
 	INNER JOIN [dbo].d_kausi d23 ON d23.kausi_id = f.kirjoihintulovuosi_id
 	INNER JOIN [dbo].d_kausi d23b ON d23b.kausi_id = f.kirjoihintulokausi_id
-	INNER JOIN [dbo].d_kausi d24f ON d24f.kausi_id = f.kirjoihintulovuosi_korkeakoulu_id	
+	INNER JOIN [dbo].d_kausi d24f ON d24f.kausi_id = f.kirjoihintulovuosi_korkeakoulu_id
+
+	
+	
 	
 WHERE d9.oppilaitoskoodi NOT IN ('02557','10031','02358') 
 AND aloitusika <> '-1' 
