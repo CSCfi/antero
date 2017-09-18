@@ -1664,11 +1664,6 @@
         ],
         "measures": [
           {
-            "name": "Yhteisjulkaisujen lkm",
-            "expression": " DISTINCTCOUNT(Muuttujat[Koodit yhteisjulkaisun ID])",
-            "formatString": "#,0"
-          },
-          {
             "name": "Lukumaara summa",
             "expression": " SUM([lukumaara])",
             "isHidden": true
@@ -1681,7 +1676,7 @@
           },
           {
             "name": "Julkaisut OKM ohjauksen aloilla",
-            "expression": "SUMX(VALUES(Muuttujat[Koodit yhteisjulkaisun ID]),SUMX(VALUES(Muuttujat[Koodit julkaisun ID]),SUMX(VALUES(Muuttujat[Koodit OKM ohjauksen ala]),CALCULATE(FIRSTNONBLANK(Muuttujat[lukumaara],SUM([lukumaara]))))))",
+            "expression": "CALCULATE(SUMX(VALUES(Muuttujat[Koodit yhteisjulkaisun ID]),SUMX(VALUES(Muuttujat[Koodit julkaisun ID]),SUMX(VALUES(Muuttujat[Koodit OKM ohjauksen ala]),CALCULATE(FIRSTNONBLANK(Muuttujat[lukumaara],SUM([lukumaara])))))),NOT(ISBLANK(Muuttujat[Koodit julkaisun ID])))",
             "formatString": "#,0.000"
           },
           {
@@ -1690,19 +1685,40 @@
           },
           {
             "name": "Yhteistyöorganisaatioita keskimäärin per yhteisjulkaisu",
-            "expression": " IF(DISTINCTCOUNT([Koodit yhteisjulkaisun ID])=1,[Yhteistyöorganisaatioiden määrä],DIVIDE(SUMX(VALUES(Muuttujat[Koodit yhteisjulkaisun ID]),[Yhteistyöorganisaatioiden määrä]),DISTINCTCOUNT([Koodit yhteisjulkaisun ID])))"
+            "expression": " IF(DISTINCTCOUNT([Koodit yhteisjulkaisun ID])=1,[Yhteistyöorganisaatioiden määrä],DIVIDE(SUMX(VALUES(Muuttujat[Koodit yhteisjulkaisun ID]),[Yhteistyöorganisaatioiden määrä]),CALCULATE(DISTINCTCOUNT([Koodit yhteisjulkaisun ID]),NOT(ISBLANK(Muuttujat[Koodit yhteisjulkaisun ID])))))"
           },
           {
             "name": "Kansainvälisten yhteisjulkaisujen lkm",
             "expression": " CALCULATE(DISTINCTCOUNT([Koodit yhteisjulkaisun ID]),Muuttujat[Koodit Kansainvälinen yhteisjulkaisu]=\"1\")"
           },
           {
-            "name": "Ammattikorkeakoulu htv",
+            "name": "Ammattikorkeakoulu henkilötyövuodet (TKI-htv)",
             "expression": " SUM([Ammattikorkeakoulu_HTV_opetustki])"
           },
           {
-            "name": "Yliopisto htv",
+            "name": "Yliopisto henkilötyövuodet (I-IV)",
             "expression": " SUM([YO_HTV_opetusTKI])"
+          },
+          {
+            "name": "Yhteisjulkaisujen lkm (pl. yhteisjulkaisut joissa vain kv-kumppani)",
+            "expression": " CALCULATE(DISTINCTCOUNT(Muuttujat[Koodit yhteisjulkaisun ID]),NOT(ISBLANK(Muuttujat[Koodit yhteisjulkaisun ID])))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Yhteisjulkaisut/htv",
+            "expression": "IF(ISBLANK([Yliopisto henkilötyövuodet (I-IV)]),DIVIDE([Yhteisjulkaisujen lkm (pl. yhteisjulkaisut joissa vain kv-kumppani)],[Ammattikorkeakoulu henkilötyövuodet (TKI-htv)]),DIVIDE([Yhteisjulkaisujen lkm (pl. yhteisjulkaisut joissa vain kv-kumppani)],[Yliopisto henkilötyövuodet (I-IV)]))"
+          },
+          {
+            "name": "Julkaisut joissa vain kv-yhteistyöorganisaatio",
+            "expression": "CALCULATE(DISTINCTCOUNT([Koodit julkaisun ID]),Muuttujat[Koodit yhteisjulkaisun ID]=\"0\")"
+          },
+          {
+            "name": "Yhteisjulkaisut (kaikki)",
+            "expression": "[Yhteisjulkaisujen lkm (pl. yhteisjulkaisut joissa vain kv-kumppani)]+[Julkaisut joissa vain kv-yhteistyöorganisaatio]"
+          },
+          {
+            "name": "Julkaisut/htv",
+            "expression": "IF(ISBLANK([Yliopisto henkilötyövuodet (I-IV)]),DIVIDE([Julkaisut OKM ohjauksen aloilla],[Ammattikorkeakoulu henkilötyövuodet (TKI-htv)]),DIVIDE([Julkaisut OKM ohjauksen aloilla],[Yliopisto henkilötyövuodet (I-IV)]))"
           }
         ],
         "annotations": [
