@@ -5,12 +5,12 @@ SELECT
      ,[Suoritusvuosi] = YEAR(f.suorituspaiva)
      ,[Suorituskuukausi] = MONTH (f.suorituspaiva)
      ,[Suorituspäivä] = DAY(f.suorituspaiva)
-     ,[Ohjauksenala_koodi] = d1.ohjauksenala_koodi
-     ,[Ohjauksenala] = d1.ohjauksenala_nimi_fi
+     ,[OKM_Ohjauksenala_koodi] = d1.ohjauksenala_koodi
+     ,[OKM_Ohjauksenala] = d1.ohjauksenala_nimi_fi
 	 ,[Koulutustyyppi_koodi] = d2.koodi
 	 ,[Koulutustyyppi] = d2.selite_fi
-	 ,[Organisaatio_koodi] = d3.amk_tunnus
-	 ,[Organisaatio] = d3.amk_nimi_fi
+	 ,[Ammattikorkeakoulu_koodi] = d3.amk_tunnus
+	 ,[Ammattikorkeakoulu] = d3.amk_nimi_fi
 	 ,[Lukumaara] = f.lukumaara_int
 	 ,[Perustutk_opiskelijat] = f.perustutk_opiskelijat_lkm
 	 ,[Vierask_suoritukset] = f.vierask_suoritukset_lkm
@@ -25,7 +25,7 @@ SELECT
 	 ,[TKI_harjoittelun_laajuus] = f.TKI_harjoittelun_laajuus_lkm
 	 ,[Ulkomaanharjoittelu] = f.ulkomaaharjoittelu_lkm
 	 ,[Erikoistumiskoulutus] = f.erikoistumiskoulutus_lkm   
-	 ,[Loadtime] = f.loadtime
+	 ,[Tietojen_ajankohta] = f.loadtime 
 	 ,[Source] = f.source
 	 ,[Username] = f.username
   FROM dw.f_virta_otp_opintopiste_pvm_amk f
