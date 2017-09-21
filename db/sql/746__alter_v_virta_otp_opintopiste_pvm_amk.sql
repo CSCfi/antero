@@ -5,11 +5,11 @@ SELECT
      ,[Suoritusvuosi] = YEAR(f.suorituspaiva)
      ,[Suorituskuukausi] = MONTH (f.suorituspaiva)
      ,[Suorituspäivä] = DAY(f.suorituspaiva)
-     ,[OKM_Ohjauksenala_koodi] = d1.ohjauksenala_koodi
-     ,[OKM_Ohjauksenala] = d1.ohjauksenala_nimi_fi
-	 ,[Koulutustyyppi_koodi] = d2.koodi
+     ,[Koulutusala_koodi]  = case d1.ohjauksenala_koodi when -1 then 99 else d1.ohjauksenala_koodi end
+     ,[Koulutusala] = d1.ohjauksenala_nimi_fi
+	 ,[Koulutustyyppi_koodi] = case d2.koodi when -1 then 99 else d2.koodi end
 	 ,[Koulutustyyppi] = d2.selite_fi
-	 ,[Ammattikorkeakoulu_koodi] = d3.amk_tunnus
+	 ,[Ammattikorkeakoulu_koodi] = case d3.amk_tunnus when -1 then 99 else d3.amk_tunnus end
 	 ,[Ammattikorkeakoulu] = d3.amk_nimi_fi
 	 ,[Lukumaara] = f.lukumaara_int
 	 ,[Perustutk_opiskelijat] = f.perustutk_opiskelijat_lkm
@@ -32,6 +32,5 @@ SELECT
   LEFT JOIN dw.d_ohjauksenala d1 ON d1.id=f.d_ohjauksenala_id
   LEFT JOIN dw.d_amk_koulutustyyppi d2 ON d2.id = f.d_amk_koulutustyyppi_id
   LEFT JOIN dw.d_amk d3 ON d3.id = f.d_amk_id
-
 
   

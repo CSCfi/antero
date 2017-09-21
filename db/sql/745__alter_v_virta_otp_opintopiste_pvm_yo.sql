@@ -5,9 +5,9 @@ SELECT
      ,[Suoritusvuosi] = YEAR(f.suorituspaiva)
      ,[Suorituskuukausi] = MONTH (f.suorituspaiva)
      ,[Suorituspäivä] = DAY(f.suorituspaiva)
-     ,[OKM_Ohjauksenala_koodi] = d1.ohjauksenala_koodi
-     ,[OKM_Ohjauksenala] = d1.ohjauksenala_nimi_fi
-     ,[Yliopisto_koodi_koodi] = d2.yo_tunnus
+     ,[Koulutusala_koodi] = case d1.ohjauksenala_koodi when -1 then 99 else d1.ohjauksenala_koodi end
+     ,[Koulutusala] = d1.ohjauksenala_nimi_fi
+     ,[Yliopisto_koodi_koodi] = case d2.yo_tunnus when -1 then 99 else d2.yo_tunnus end
      ,[Yliopisto] = d2.yo_nimi_fi
      ,[Lukumaara] = f.lukumaara_int
      ,[Perustutk_opiskelijat] = f.perustutk_opiskelijat_lkm
@@ -26,5 +26,6 @@ SELECT
   FROM [dw].[f_virta_otp_opintopiste_pvm_yo] f
   LEFT JOIN dw.d_ohjauksenala d1 ON d1.id=f.d_ohjauksenala_id
   LEFT JOIN dw.d_yo d2 ON d2.id = f.d_yo_id
+
 
   
