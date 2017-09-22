@@ -135,6 +135,7 @@ public class ApiDataService {
         if (StringUtils.isEmpty(sort)) {
             return orderSpecifiers;
         }
+
         DefaultSortParser sortParser = new DefaultSortParser();
         try {
             OrderSpecifierList orderSpecifierList = sortParser.parse("sort" + sort,

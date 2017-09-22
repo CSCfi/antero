@@ -1,16 +1,16 @@
 ALTER VIEW [dw].[v_virta_otp_opintopiste_pvm_amk] AS 
 SELECT
-      [Tilastovuosi] = f.tilastovuosi
+      [Tilastovuosi] = f.tilastovuosi 
      ,[Suorituspäivämäärä] = f.suorituspaiva
      ,[Suoritusvuosi] = YEAR(f.suorituspaiva)
      ,[Suorituskuukausi] = MONTH (f.suorituspaiva)
      ,[Suorituspäivä] = DAY(f.suorituspaiva)
-     ,[Ohjauksenala_koodi] = d1.ohjauksenala_koodi
-     ,[Ohjauksenala] = d1.ohjauksenala_nimi_fi
-	 ,[Koulutustyyppi_koodi] = d2.koodi
+     ,[Koulutusala_koodi]  = case d1.ohjauksenala_koodi when -1 then 99 else d1.ohjauksenala_koodi end
+     ,[Koulutusala] = d1.ohjauksenala_nimi_fi
+	 ,[Koulutustyyppi_koodi] = case d2.koodi when -1 then 99 else d2.koodi end
 	 ,[Koulutustyyppi] = d2.selite_fi
-	 ,[Organisaatio_koodi] = d3.amk_tunnus
-	 ,[Organisaatio] = d3.amk_nimi_fi
+	 ,[Ammattikorkeakoulu_koodi] = case d3.amk_tunnus when -1 then 99 else d3.amk_tunnus end
+	 ,[Ammattikorkeakoulu] = d3.amk_nimi_fi
 	 ,[Lukumaara] = f.lukumaara_int
 	 ,[Perustutk_opiskelijat] = f.perustutk_opiskelijat_lkm
 	 ,[Vierask_suoritukset] = f.vierask_suoritukset_lkm
@@ -25,10 +25,12 @@ SELECT
 	 ,[TKI_harjoittelun_laajuus] = f.TKI_harjoittelun_laajuus_lkm
 	 ,[Ulkomaanharjoittelu] = f.ulkomaaharjoittelu_lkm
 	 ,[Erikoistumiskoulutus] = f.erikoistumiskoulutus_lkm   
+	 ,[Tietojen_ajankohta] = f.loadtime 
+	 ,[Source] = f.source
+	 ,[Username] = f.username
   FROM dw.f_virta_otp_opintopiste_pvm_amk f
   LEFT JOIN dw.d_ohjauksenala d1 ON d1.id=f.d_ohjauksenala_id
   LEFT JOIN dw.d_amk_koulutustyyppi d2 ON d2.id = f.d_amk_koulutustyyppi_id
   LEFT JOIN dw.d_amk d3 ON d3.id = f.d_amk_id
-
 
   
