@@ -8,16 +8,23 @@ public class ApiProperty {
     private final String apiName;
     private final String sqlName;
     private final PropType type;
+    private final Boolean hidden;
 
-    public ApiProperty(String apiName, String sqlName, PropType type) {
+    public ApiProperty(String apiName, String sqlName, PropType type, Boolean hidden) {
         this.apiName = apiName;
         this.sqlName = sqlName;
         this.type = type;
+        this.hidden = hidden;
     }
 
     @JsonProperty("name")
     public String getApiName() {
         return apiName;
+    }
+
+    @JsonIgnore
+    public Boolean isHidden() {
+        return hidden;
     }
 
     @JsonIgnore

@@ -25,8 +25,12 @@ public class JsonRowHandler implements RowCallbackHandler {
         try {
             jsonGenerator.writeStartObject();
             for (int i = 0; i < properties.size(); i++) {
+                final ApiProperty apiProperty = properties.get(i);
+                if (apiProperty.isHidden()) {
+                    continue;
+                }
                 Object value = rs.getObject(i + 1);
-                String name = properties.get(i).getApiName();
+                String name = apiProperty.getApiName();
                 jsonGenerator.writeObjectField(name, value);
             }
             jsonGenerator.writeEndObject();
