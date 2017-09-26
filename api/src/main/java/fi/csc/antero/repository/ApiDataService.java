@@ -17,6 +17,7 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.sql.SQLQuery;
 import com.querydsl.sql.SQLQueryFactory;
+import fi.csc.antero.config.ConfigService;
 import fi.csc.antero.controller.ApiQuery;
 import fi.csc.antero.dao.ApiDataDao;
 import fi.csc.antero.exception.FilterException;
@@ -24,8 +25,7 @@ import fi.csc.antero.response.JsonRowHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.io.IOException;
@@ -39,8 +39,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
-@Component
+@Service
 public class ApiDataService {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -48,15 +49,14 @@ public class ApiDataService {
     private final ApiDataDao dataDao;
     private final ObjectMapper om;
     private final SQLQueryFactory queryFactory;
-
-    @Value("${api.db.schema}")
-    private String schema;
+    private final ConfigService configService;
 
     @Autowired
-    public ApiDataService(ApiDataDao dataDao, ObjectMapper om, SQLQueryFactory queryFactory) {
+    public ApiDataService(ApiDataDao dataDao, ObjectMapper om, SQLQueryFactory queryFactory, ConfigService configService) {
         this.dataDao = dataDao;
         this.om = om;
         this.queryFactory = queryFactory;
+        this.configService = configService;
     }
 
     public void streamToJsonArray(String table, OutputStream out, ApiQuery query)
@@ -90,7 +90,9 @@ public class ApiDataService {
     }
 
     public List<ApiProperty> listResourceProperties(String resource) throws SQLException {
-        return dataDao.queryTableColumns(resource);
+        return dataDao.queryTableColumns(resource).stream()
+                .filter(p -> !p.isHidden())
+                .collect(Collectors.toList());
     }
 
     private Predicate createFilterPredicate(String table, String filter) throws SQLException {
@@ -133,7 +135,7 @@ public class ApiDataService {
     private OrderSpecifier[] createOrderSpecifiers(String table, String sort) {
         final OrderSpecifier[] orderSpecifiers = {};
         if (StringUtils.isEmpty(sort)) {
-            return orderSpecifiers;
+            sort = "(+" + configService.getDefaultOrderColumn() + ")";
         }
 
         DefaultSortParser sortParser = new DefaultSortParser();
@@ -198,6 +200,7 @@ public class ApiDataService {
 
     private StringTemplate getFromExpression(String table) {
         StringBuilder sb = new StringBuilder();
+        final String schema = configService.getSchema();
         if (!schema.isEmpty()) {
             sb.append(schema).append(".");
         }
