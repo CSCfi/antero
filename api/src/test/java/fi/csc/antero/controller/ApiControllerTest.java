@@ -1,5 +1,6 @@
 package fi.csc.antero.controller;
 
+import fi.csc.antero.config.ConfigService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,20 +27,25 @@ public class ApiControllerTest {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Autowired
+    private ConfigService configService;
+
     @Test
     public void testGetData() throws Exception {
         final ResponseEntity<String> entity = makeQuery("/resources/test_data/data", 200);
         String expected = "[{'id' : 1," +
                 "'testText' : 'text value'," +
                 "'testNumber' : 1.11," +
-                "'testDate' : '2017-01-01 00:00:00'" +
+                "'testDate' : '2017-01-01 00:00:00'," +
+                "'whiteSpace' : true" +
                 "},{" +
                 "'id' : 2," +
                 "'testText' : 'text value 2'," +
                 "'testNumber' : 2.22," +
-                "'testDate' : '2017-02-02 00:00:00'" +
+                "'testDate' : '2017-02-02 00:00:00'," +
+                "'whiteSpace' : false" +
                 "}]";
-        JSONAssert.assertEquals(expected, entity.getBody(), false);
+        JSONAssert.assertEquals(expected, entity.getBody(), true);
     }
 
     @Test
@@ -179,6 +185,29 @@ public class ApiControllerTest {
     public void testGetResources() throws Exception {
         final String result = makeQuery("/resources", 200).getBody();
         JSONAssert.assertEquals("['test_data', 'test_data_2']", result, false);
+    }
+
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            scripts = {"/sql/init.sql", "/sql/sort_test_data.sql"})
+    @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD,
+            scripts = "/sql/clear.sql")
+    public void testDefaultOrder() throws Exception {
+        final String result = makeQuery("/resources/test_data/data", 200).getBody();
+        JSONAssert.assertEquals("[{'id': 3}, {'id': 4}, {'id': 1}, {'id': 2}]", result, JSONCompareMode.STRICT_ORDER);
+    }
+
+    @Test
+    @Sql(executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD,
+            scripts = {"/sql/init.sql", "/sql/sort_test_data.sql"})
+    @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD,
+            scripts = "/sql/clear.sql")
+    public void testDefaultOrderWithOverride() throws Exception {
+        final String oldConfig = configService.getDefaultOrderColumn();
+        configService.setDefaultOrderColumn("testNumber");
+        final String result = makeQuery("/resources/test_data/data", 200).getBody();
+        JSONAssert.assertEquals("[{'id': 4}, {'id': 2}, {'id': 1}, {'id': 3}]", result, JSONCompareMode.STRICT_ORDER);
+        configService.setDefaultOrderColumn(oldConfig);
     }
 
     private ResponseEntity<String> makeQuery(String url, int expectedStatus) {
