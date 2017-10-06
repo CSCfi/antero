@@ -71,8 +71,6 @@ def makerow():
     "koulutusaste_uri": None,
     #koulutuskoodi (KoodiV1RDTO): Kuusinumeroinen tilastokeskuksen koulutuskoodi,
     "koulutuskoodi_uri": None,
-    "koulutuskoodi_arvo": None,
-    "koulutuskoodi_nimi": None,
     #opintoala (KoodiV1RDTO): OPH2002 opintoala-koodi,
     "opintoala_uri": None,
     #opintojenLaajuusyksikko (KoodiV1RDTO): Opintojen laajusyksikko-koodi,
@@ -91,7 +89,9 @@ def makerow():
     "modifiedBy": None, # (string): Muokkauksen suorittajan nimi,
     "created": None, # (string): Luontipäivä ja aika,
     "oid": None, # (string): Objektin yksilöivä tunniste,
-    "version": None # (integer): Objektin versio numero
+    "version": None, # (integer): Objektin versio numero
+    "koulutuskoodi_arvo": None, #tilastokeskuksen koulutuskoodi
+    "koulutuskoodi_nimi": None #koulutuksen nimi
   }
 
 def getnimi(i,kieli):
