@@ -71,6 +71,8 @@ def makerow():
     "koulutusaste_uri": None,
     #koulutuskoodi (KoodiV1RDTO): Kuusinumeroinen tilastokeskuksen koulutuskoodi,
     "koulutuskoodi_uri": None,
+    "koulutuskoodi_arvo": None,
+    "koulutuskoodi_nimi": None,
     #opintoala (KoodiV1RDTO): OPH2002 opintoala-koodi,
     "opintoala_uri": None,
     #opintojenLaajuusyksikko (KoodiV1RDTO): Opintojen laajusyksikko-koodi,
@@ -103,7 +105,7 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
 
   row = makerow()
   dboperator.columns(row,debug)
-  
+
   if verbose: show("empty %s.%s"%(schema,table))
   dboperator.empty(schema,table,debug)
 
@@ -179,7 +181,7 @@ def main(argv):
   schema = os.getenv("SCHEMA") or "sa"
   table = os.getenv("TABLE") or "koulutustarjonta_koulutus"
   verbose,debug = False,False
-  
+
   try:
     opts, args = getopt.getopt(argv,"H:u:e:t:c:vd",["hostname=","url=","schema=","table=","verbose","debug"])
   except getopt.GetoptError as err:
