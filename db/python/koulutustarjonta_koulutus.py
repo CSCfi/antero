@@ -150,20 +150,20 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
             if colkey in i:
               if coluri in i[colkey]:
                 row[col] = i[colkey][coluri]
-        elif "_arvo" in col:
-            (colkey,colarvo) = col.split("_")
-            if colkey in i:
-                if colarvo in i[colkey]:
-                row[col] = i[colkey][colarvo]
-        elif "_nimi" in col:
-            (colkey,colnimi) = col.split("_")
-            if colkey in i:
-                if colnimi in i[colkey]:
-                row[col] = i[colkey][colnimi]
+            elif "_arvo" in col:
+                (colkey,colarvo) = col.split("_")
+                if colkey in i:
+                    if colarvo in i[colkey]:
+                        row[col] = i[colkey][colarvo]
+                    elif "_nimi" in col:
+                            (colkey,colnimi) = col.split("_")
+                            if colkey in i:
+                                if colnimi in i[colkey]:
+                                    row[col] = i[colkey][colnimi]
         else:
             row[col] = None if col not in i else i[col]
-          if type(row[col]) is list:
-            row[col] = ''.join(map(str,json.dumps(row[col])))
+            if type(row[col]) is list:
+              row[col] = ''.join(map(str,json.dumps(row[col])))
 
         # add organization oid stored from search results above
         row["organisaatio_oid"] = iii["oid"]
