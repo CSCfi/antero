@@ -150,12 +150,12 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
             if colkey in i:
               if coluri in i[colkey]:
                 row[col] = i[colkey][coluri]
-            elif "_arvo" in col:
+            elif col == "koulutuskoodi_arvo":
                 (colkey,colarvo) = col.split("_")
                 if colkey in i:
                     if colarvo in i[colkey]:
                         row[col] = i[colkey][colarvo]
-                    elif "_nimi" in col:
+                    elif col == "koulutuskoodi_nimi":
                             (colkey,colnimi) = col.split("_")
                             if colkey in i:
                                 if colnimi in i[colkey]:
