@@ -150,6 +150,16 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
             if colkey in i:
               if coluri in i[colkey]:
                 row[col] = i[colkey][coluri]
+          elif "_arvo" in col:
+             (colkey,coluri) = col.split("_")
+            if colkey in i:
+              if coluri in i[colkey]:
+                row[col] = i[colkey][coluri]
+          elif "_nimi" in col:
+            (colkey,coluri) = col.split("_")
+            if colkey in i:
+              if coluri in i[colkey]:
+                row[col] = i[colkey][coluri]
           else:
             row[col] = None if col not in i else i[col]
           if type(row[col]) is list:
