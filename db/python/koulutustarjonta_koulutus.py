@@ -151,16 +151,16 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
               if coluri in i[colkey]:
                 row[col] = i[colkey][coluri]
             elif col == "koulutuskoodi_arvo":
-                (colkey,colarvo) = col.split("_")
-                if colkey in i:
-                    if colarvo in i[colkey]:
-                        row[col] = i[colkey][colarvo]
-                    elif col == "koulutuskoodi_nimi":
-                            (colkey,colnimi) = col.split("_")
-                            if colkey in i:
-                                if colnimi in i[colkey]:
-                                    row[col] = i[colkey][colnimi]
-        else:
+              (colkey,colarvo) = col.split("_")
+              if colkey in i:
+                if colarvo in i[colkey]:
+                  row[col] = i[colkey][colarvo]
+                elif col == "koulutuskoodi_nimi":
+                  (colkey,colnimi) = col.split("_")
+                  if colkey in i:
+                    if colnimi in i[colkey]:
+                      row[col] = i[colkey][colnimi]
+          else:
             row[col] = None if col not in i else i[col]
             if type(row[col]) is list:
               row[col] = ''.join(map(str,json.dumps(row[col])))
