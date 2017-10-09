@@ -150,17 +150,17 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
             if colkey in i:
               if coluri in i[colkey]:
                 row[col] = i[colkey][coluri]
-          elif "_arvo" in col:
-             (colkey,coluri) = col.split("_")
+        elif "_arvo" in col:
+            (colkey,colarvo) = col.split("_")
             if colkey in i:
-              if coluri in i[colkey]:
-                row[col] = i[colkey][coluri]
-          elif "_nimi" in col:
-            (colkey,coluri) = col.split("_")
+                if colarvo in i[colkey]:
+                row[col] = i[colkey][colarvo]
+        elif "_nimi" in col:
+            (colkey,colnimi) = col.split("_")
             if colkey in i:
-              if coluri in i[colkey]:
-                row[col] = i[colkey][coluri]
-          else:
+                if colnimi in i[colkey]:
+                row[col] = i[colkey][colnimi]
+        else:
             row[col] = None if col not in i else i[col]
           if type(row[col]) is list:
             row[col] = ''.join(map(str,json.dumps(row[col])))
