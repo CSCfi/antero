@@ -71,6 +71,8 @@ def makerow():
     "koulutusaste_uri": None,
     #koulutuskoodi (KoodiV1RDTO): Kuusinumeroinen tilastokeskuksen koulutuskoodi,
     "koulutuskoodi_uri": None,
+    "koulutuskoodi_arvo": None, #tilastokeskuksen koulutuskoodi
+    "koulutuskoodi_nimi": None, #koulutuksen nimi
     #opintoala (KoodiV1RDTO): OPH2002 opintoala-koodi,
     "opintoala_uri": None,
     #opintojenLaajuusyksikko (KoodiV1RDTO): Opintojen laajusyksikko-koodi,
@@ -89,9 +91,7 @@ def makerow():
     "modifiedBy": None, # (string): Muokkauksen suorittajan nimi,
     "created": None, # (string): Luontipäivä ja aika,
     "oid": None, # (string): Objektin yksilöivä tunniste,
-    "version": None, # (integer): Objektin versio numero
-    "koulutuskoodi_arvo": None, #tilastokeskuksen koulutuskoodi
-    "koulutuskoodi_nimi": None #koulutuksen nimi
+    "version": None # (integer): Objektin versio numero
   }
 
 def getnimi(i,kieli):
@@ -150,16 +150,16 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
             if colkey in i:
               if coluri in i[colkey]:
                 row[col] = i[colkey][coluri]
-            elif col == "koulutuskoodi_arvo":
-              (colkey,colarvo) = col.split("_")
-              if colkey in i:
-                if colarvo in i[colkey]:
-                  row[col] = i[colkey][colarvo]
-                elif col == "koulutuskoodi_nimi":
-                  (colkey,colnimi) = col.split("_")
-                  if colkey in i:
-                    if colnimi in i[colkey]:
-                      row[col] = i[colkey][colnimi]
+          elif col == "koulutuskoodi_arvo":
+            (colkey,colarvo) = col.split("_")
+            if colkey in i:
+              if colarvo in i[colkey]:
+                row[col] = i[colkey][colarvo]
+          elif col == "koulutuskoodi_nimi":
+            (colkey,colnimi) = col.split("_")
+            if colkey in i:
+              if colnimi in i[colkey]:
+                row[col] = i[colkey][colnimi]
           else:
             row[col] = None if col not in i else i[col]
             if type(row[col]) is list:
