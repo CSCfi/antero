@@ -9,7 +9,6 @@ IF NOT EXISTS
 
 	BEGIN
 
-
 	CREATE TABLE [sa].[sa_suorat_amk7c_rekrytointi_valitun_taustatiedot](
 	[Vastaajatunnus] [nvarchar](max) NULL,
 	[Henkilönumero] [nvarchar](max) NULL,

@@ -34,10 +34,8 @@ IF NOT EXISTS
 		[IMP_UPDATED_DATE] [datetime] NULL,
 		[IMP_CREATED_BY] [varchar](100) NULL
 	) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+  END
 
-	END
-	
-	GO
 	/* revert
 	drop table sa.koulutustarjonta_koulutus
 	--*/

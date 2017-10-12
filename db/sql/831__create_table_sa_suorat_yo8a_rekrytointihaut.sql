@@ -28,10 +28,9 @@ IF NOT EXISTS
 		[IMP_UPDATED_DATE] [datetime] NULL,
 		[IMP_CREATED_BY] [varchar](100) NULL
 	) ON [PRIMARY]
+  END
 
-	END
 
-	GO
 
 	/* revert
 	drop table sa.sa_suorat_yo8a_rekrytointihaut

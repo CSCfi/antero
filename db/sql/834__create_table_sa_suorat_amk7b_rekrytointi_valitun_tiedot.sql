@@ -29,8 +29,7 @@ IF NOT EXISTS
 		[IMP_UPDATED_DATE] [datetime] NULL,
 		[IMP_CREATED_BY] [varchar](100) NULL
 	) ON [PRIMARY]
-
-	END
+  END
 
 	/* revert
 	drop table sa.sa_suorat_amk7b_rekrytointi_valitun_tiedot
