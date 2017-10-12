@@ -71,6 +71,8 @@ def makerow():
     "koulutusaste_uri": None,
     #koulutuskoodi (KoodiV1RDTO): Kuusinumeroinen tilastokeskuksen koulutuskoodi,
     "koulutuskoodi_uri": None,
+    "koulutuskoodi_arvo": None, #tilastokeskuksen koulutuskoodi
+    "koulutuskoodi_nimi": None, #koulutuksen nimi
     #opintoala (KoodiV1RDTO): OPH2002 opintoala-koodi,
     "opintoala_uri": None,
     #opintojenLaajuusyksikko (KoodiV1RDTO): Opintojen laajusyksikko-koodi,
@@ -103,7 +105,7 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
 
   row = makerow()
   dboperator.columns(row,debug)
-  
+
   if verbose: show("empty %s.%s"%(schema,table))
   dboperator.empty(schema,table,debug)
 
@@ -148,10 +150,20 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
             if colkey in i:
               if coluri in i[colkey]:
                 row[col] = i[colkey][coluri]
+          elif col == "koulutuskoodi_arvo":
+            (colkey,colarvo) = col.split("_")
+            if colkey in i:
+              if colarvo in i[colkey]:
+                row[col] = i[colkey][colarvo]
+          elif col == "koulutuskoodi_nimi":
+            (colkey,colnimi) = col.split("_")
+            if colkey in i:
+              if colnimi in i[colkey]:
+                row[col] = i[colkey][colnimi]
           else:
             row[col] = None if col not in i else i[col]
-          if type(row[col]) is list:
-            row[col] = ''.join(map(str,json.dumps(row[col])))
+            if type(row[col]) is list:
+              row[col] = ''.join(map(str,json.dumps(row[col])))
 
         # add organization oid stored from search results above
         row["organisaatio_oid"] = iii["oid"]
@@ -179,7 +191,7 @@ def main(argv):
   schema = os.getenv("SCHEMA") or "sa"
   table = os.getenv("TABLE") or "koulutustarjonta_koulutus"
   verbose,debug = False,False
-  
+
   try:
     opts, args = getopt.getopt(argv,"H:u:e:t:c:vd",["hostname=","url=","schema=","table=","verbose","debug"])
   except getopt.GetoptError as err:

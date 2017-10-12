@@ -28,7 +28,7 @@ def makerow():
     "valintojenAloituspaikatLkm": None, # int null, --(integer, optional),
     #--koulutukset (Set[KoulutusIdentification], optional): Hakukohde's related koulutukset (same as hakukohdeKoulutusOids but different format),
     #--yhteystiedot (array[YhteystiedotV1RDTO], optional),
-    #--hakukohdeKoulutusOids (array[string]): Hakukohde's related koulutus oids,
+    "hakukohdeKoulutusOids": None, # (array[string]): Hakukohde's related koulutus oids,
     #--valintakokeet (array[ValintakoeV1RDTO], optional),
     "hakukohteenNimiUri": None, # nvarchar(max) null, --(string, optional),
     "lukioKoulutus": None, # bit null, --(boolean, optional),
@@ -167,7 +167,7 @@ def main(argv):
   schema = os.getenv("SCHEMA") or "sa"
   table = os.getenv("TABLE") or "koulutustarjonta_hakukohde"
   verbose,debug = False,False
-  
+
   try:
     opts, args = getopt.getopt(argv,"H:u:e:t:c:vd",["hostname=","url=","schema=","table=","verbose","debug"])
   except getopt.GetoptError as err:
