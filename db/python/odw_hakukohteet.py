@@ -18,6 +18,7 @@ class Client:
         self.host = host
         self.path = path
         self.port = port
+        self.source = host + (":" + str(port) if port else "") + path
         self.ssl = ssl
         self.verbose = verbose > 0
         self.schema = schema
@@ -52,7 +53,7 @@ class Client:
         response.chunked = False
         count = 0
         data = ""
-        print("Count:")
+        print("Inserting data...")
         with closing(dboperator) as db:
             self._clear_data(db)
             while True:
@@ -67,15 +68,15 @@ class Client:
                     self._insert_data(db, json_data, count)
                     count += 1
                     self._print_progress(count)
-        self._print_progress(count)
-        print()
+        print("Count: %d" % count)
 
     @staticmethod
     def _print_progress(count):
+        if count % 100 == 0:
+            print(".", end="")
         if count % 1000 == 0:
-            message = "\r%d" % count
-            print(message, end='')
-            sys.stdout.flush()
+            print("--- %d ---" % count)
+        sys.stdout.flush()
 
     @staticmethod
     def _get_chunk_size(resp):
@@ -94,8 +95,7 @@ class Client:
         if count == 0:
             # First json will define columns.
             db.columns(json_data, self.verbose)
-        source = "%s:%d%s" % (self.host, self.port, self.path)
-        db.insert(source, self.schema, self.table, json_data, self.verbose)
+        db.insert(self.source, self.schema, self.table, json_data, self.verbose)
 
     def _clear_data(self, db):
         db.empty(self.schema,
