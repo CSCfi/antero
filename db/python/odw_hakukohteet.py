@@ -122,8 +122,8 @@ if __name__ == "__main__":
         arg_parser.add_argument('--table', type=str, default='sa_hakukohteet',
                                 help='database table name, default=sa_hakukohteet')
         args = arg_parser.parse_args(args=sys.argv[1:])
-        result = Client(**vars(args)).load()
-        sys.exit(result)
+        success = Client(**vars(args)).load()
+        sys.exit(0 if success else 1)
     finally:
         stop = timeit.default_timer()
         print("Done in %f seconds" % (stop - start))
