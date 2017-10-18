@@ -6,7 +6,7 @@ IF NOT EXISTS (
 
 BEGIN
 	ALTER TABLE dw.d_amk ADD jarjestys_amk_tunnus AS
-  case when amk_tunnus = -1 then '99999' else cast(amk_tunnus as varchar(10))
+  case when amk_tunnus = -1 then  '99999' else cast(amk_tunnus as varchar(10))
   END
 END
 GO
