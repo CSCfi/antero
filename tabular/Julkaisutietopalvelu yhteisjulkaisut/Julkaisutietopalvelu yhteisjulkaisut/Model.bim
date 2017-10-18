@@ -535,6 +535,18 @@
             "dataType": "double",
             "isHidden": true,
             "sourceColumn": "Ammattikorkeakoulu_HTV_opetustki"
+          },
+          {
+            "type": "calculated",
+            "name": "Yhteistyön kansainvälisyys",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": "IF([Koodit Kansainvälinen yhteisjulkaisu]=\"0\",\"Kansallinen yhteistyö\",IF([Koodit yhteisjulkaisun ID]=\"0\",\"Kansainvälinen yhteistyö\",IF(ISBLANK([Koodit yhteisjulkaisun ID]),BLANK(),\"Kansainvälinen ja kansallinen yhteistyö\")))"
+          },
+          {
+            "name": "YO_IV_HTV",
+            "dataType": "double",
+            "sourceColumn": "YO_IV_HTV"
           }
         ],
         "partitions": [
@@ -1094,6 +1106,14 @@
                   "        <int>201</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>YO_IV_HTV</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>85</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -1632,6 +1652,14 @@
                   "        <int>66</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>YO_IV_HTV</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>67</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -1646,6 +1674,14 @@
                   "    <item>",
                   "      <key>",
                   "        <string>Ammattikorkeakoulu_HTV_opetustki</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>YO_IV_HTV</string>",
                   "      </key>",
                   "      <value>",
                   "        <boolean>true</boolean>",
@@ -1669,7 +1705,7 @@
             "isHidden": true
           },
           {
-            "name": "Julkaisut OKM ohjauksen aloilla",
+            "name": "Julkaisut",
             "expression": [
               "",
               "CALCULATE(",
@@ -1700,10 +1736,11 @@
               "\tNOT(ISBLANK(Muuttujat[Koodit yhteisjulkaisun ID]))",
               "\t)+",
               "[Yhteisjulkaisut joissa vain kv-yhteistyöorganisaatio]"
-            ]
+            ],
+            "isHidden": true
           },
           {
-            "name": "Ammattikorkeakoulu henkilötyövuodet (TKI-htv)",
+            "name": "Ammattikorkeakoulu henkilötyövuodet (Opetus- ja TKI-htv)",
             "expression": " SUM([Ammattikorkeakoulu_HTV_opetustki])"
           },
           {
@@ -1712,15 +1749,16 @@
           },
           {
             "name": "Yhteisjulkaisut joissa vain kv-yhteistyöorganisaatio",
-            "expression": "CALCULATE(DISTINCTCOUNT([Koodit julkaisun ID]),Muuttujat[Koodit yhteisjulkaisun ID]=\"0\")"
+            "expression": "CALCULATE(DISTINCTCOUNT([Koodit julkaisun ID]),Muuttujat[Koodit yhteisjulkaisun ID]=\"0\")",
+            "isHidden": true
           },
           {
-            "name": "Yhteisjulkaisut (kaikki)",
+            "name": "Yhteisjulkaisut (netto)",
             "expression": "[Yhteisjulkaisujen lkm (pl. yhteisjulkaisut joissa vain kv-kumppani)]+[Yhteisjulkaisut joissa vain kv-yhteistyöorganisaatio]"
           },
           {
-            "name": "Julkaisut/htv",
-            "expression": "IF(ISBLANK([Yliopisto henkilötyövuodet (I-IV)]),DIVIDE([Julkaisut OKM ohjauksen aloilla],[Ammattikorkeakoulu henkilötyövuodet (TKI-htv)]),DIVIDE([Julkaisut OKM ohjauksen aloilla],[Yliopisto henkilötyövuodet (I-IV)]))"
+            "name": "Yhteisjulkaisut/htv",
+            "expression": "IF(ISBLANK([Yliopisto henkilötyövuodet (I-IV)]),DIVIDE([Julkaisut],[Ammattikorkeakoulu henkilötyövuodet (Opetus- ja TKI-htv)]),DIVIDE([Julkaisut],[Yliopisto henkilötyövuodet (I-IV)]))"
           },
           {
             "name": "Julkaisuja",
@@ -1730,12 +1768,18 @@
           },
           {
             "name": "Yhteisjulkaisujen lkm (pl. yhteisjulkaisut joissa vain kv-kumppani)",
-            "expression": " CALCULATE(DISTINCTCOUNT(Muuttujat[Koodit yhteisjulkaisun ID]),NOT(ISBLANK(Muuttujat[Koodit yhteisjulkaisun ID])))",
-            "formatString": "#,0"
+            "expression": " CALCULATE(DISTINCTCOUNT(Muuttujat[Koodit yhteisjulkaisun ID]),NOT(ISBLANK(Muuttujat[Koodit yhteisjulkaisun ID])),Muuttujat[Koodit yhteisjulkaisun ID]<>\"0\")",
+            "formatString": "#,0",
+            "isHidden": true
           },
           {
             "name": "Yhteisjulkaisut (pl. vain kv-kumppaneita)/htv",
-            "expression": "IF(ISBLANK([Yliopisto henkilötyövuodet (I-IV)]),DIVIDE([Yhteisjulkaisujen lkm (pl. yhteisjulkaisut joissa vain kv-kumppani)],[Ammattikorkeakoulu henkilötyövuodet (TKI-htv)]),DIVIDE([Yhteisjulkaisujen lkm (pl. yhteisjulkaisut joissa vain kv-kumppani)],[Yliopisto henkilötyövuodet (I-IV)]))"
+            "expression": "IF(ISBLANK([Yliopisto henkilötyövuodet (I-IV)]),DIVIDE([Yhteisjulkaisujen lkm (pl. yhteisjulkaisut joissa vain kv-kumppani)],[Ammattikorkeakoulu henkilötyövuodet (Opetus- ja TKI-htv)]),DIVIDE([Yhteisjulkaisujen lkm (pl. yhteisjulkaisut joissa vain kv-kumppani)],[Yliopisto henkilötyövuodet (I-IV)]))",
+            "isHidden": true
+          },
+          {
+            "name": "Yhteisjulkaisut/Tutkijanuraporras IV htv",
+            "expression": "DIVIDE([Julkaisut],SUM([YO_IV_HTV]))"
           }
         ],
         "annotations": [
@@ -2299,6 +2343,14 @@
               "        <int>201</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>YO_IV_HTV</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>85</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -2837,6 +2889,14 @@
               "        <int>66</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>YO_IV_HTV</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>67</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -2851,6 +2911,14 @@
               "    <item>",
               "      <key>",
               "        <string>Ammattikorkeakoulu_HTV_opetustki</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>YO_IV_HTV</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
