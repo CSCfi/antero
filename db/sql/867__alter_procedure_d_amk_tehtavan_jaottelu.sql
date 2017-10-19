@@ -1,11 +1,4 @@
-USE [ANTERO]
-GO
-/*  StoredProcedure [dw].[p_lataa_d_amk_tehtavanjaottelu]  */
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-ALTER PROCEDURE [dw].[p_lataa_d_amk_tehtavanjaottelu]
+ PROCEDURE [dw].[p_lataa_d_amk_tehtavanjaottelu]
 AS
 IF (
 		SELECT count(1)

@@ -1,10 +1,3 @@
-USE [ANTERO]
-GO
-/* StoredProcedure [dw].[p_lataa_d_amk_kelpoisuus]  **/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 ALTER PROCEDURE [dw].[p_lataa_d_amk_kelpoisuus]
 AS
 IF (
@@ -61,7 +54,7 @@ WHEN NOT MATCHED
 			,source
 			)
 		VALUES (
-			
+
 			src.koodi
 			,src.selite_fi
 			,src.selite_sv

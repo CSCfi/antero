@@ -1,10 +1,3 @@
-USE [ANTERO]
-GO
-/* StoredProcedure [dw].[p_lataa_d_amk_koulutustyyppi] */
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 ALTER PROCEDURE [dw].[p_lataa_d_amk_koulutustyyppi]
 AS
 IF (
