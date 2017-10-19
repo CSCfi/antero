@@ -1,4 +1,4 @@
- PROCEDURE [dw].[p_lataa_d_amk_tehtavanjaottelu]
+ALTER PROCEDURE [dw].[p_lataa_d_amk_tehtavanjaottelu]
 AS
 IF (
 		SELECT count(1)
