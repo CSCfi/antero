@@ -61,8 +61,7 @@ WHEN NOT MATCHED
 			,src.selite_en
 			,src.source
 			);
-      USE [ANTERO]
-
+    
 
 IF NOT EXISTS (
   SELECT * FROM INFORMATION_SCHEMA.COLUMNS
