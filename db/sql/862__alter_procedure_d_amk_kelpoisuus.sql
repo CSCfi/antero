@@ -61,6 +61,7 @@ WHEN NOT MATCHED
 			,source
 			)
 		VALUES (
+			
 			src.koodi
 			,src.selite_fi
 			,src.selite_sv
