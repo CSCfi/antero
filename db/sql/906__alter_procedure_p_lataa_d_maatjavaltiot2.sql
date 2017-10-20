@@ -98,7 +98,7 @@ WHEN NOT MATCHED THEN
   	WHERE TABLE_SCHEMA='dw' AND TABLE_NAME='d_maatjavaltiot2' AND COLUMN_NAME='jarjestys_maanosa_koodi')
 
   BEGIN
-  	ALTER TABLE dw.d_maatjavaltiot2 ADD jarjestys_maanosa_koodi AS case when maanosa_koodi = '-1' then 'ZZZZZ' then '99999' else cast(maanosa_koodi as varchar(10))
+  	ALTER TABLE dw.d_maatjavaltiot2 ADD jarjestys_maanosa_koodi AS case when maanosa_koodi = '-1' then 'ZZZZZ' else cast(maanosa_koodi as varchar(10))
     END
   END
 
@@ -107,7 +107,7 @@ WHEN NOT MATCHED THEN
   	WHERE TABLE_SCHEMA='dw' AND TABLE_NAME='d_maatjavaltiot2' AND COLUMN_NAME='jarjestys_maanosa2_koodi')
 
   BEGIN
-  	ALTER TABLE dw.d_maatjavaltiot2 ADD jarjestys_maanosa2_koodi AS case when maanosa2_koodi = '-1' then 'ZZZZZ' then '99999' else cast(maanosa2_koodi as varchar(10))
+  	ALTER TABLE dw.d_maatjavaltiot2 ADD jarjestys_maanosa2_koodi AS case when maanosa2_koodi = '-1' then 'ZZZZZ' else cast(maanosa2_koodi as varchar(10))
     END
   END
 
