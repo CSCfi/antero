@@ -1,7 +1,7 @@
 ALTER PROCEDURE [dw].[p_lataa_d_organisaation_alayksikot]
 AS
 IF (
-		SELECT count(1
+		SELECT count(1)
 		FROM dw.d_organisaation_alayksikot
 		WHERE [korkeakoulu_koodi] = '-1'
 		) = 0
@@ -57,7 +57,6 @@ WHEN NOT MATCHED
 			,src.[alayksikko_nimi]
 			,src.source
 			);
-
 
 IF NOT EXISTS (
 	SELECT * FROM INFORMATION_SCHEMA.COLUMNS
