@@ -93,7 +93,7 @@ WHEN NOT MATCHED
 			,COALESCE(src.[Toimipaikan kunta],'NA')
 			,src.source
 			);
-			
+
 IF NOT EXISTS (
 	SELECT * FROM INFORMATION_SCHEMA.COLUMNS
 	WHERE TABLE_SCHEMA='dw' AND TABLE_NAME='d_yo_toimipisteen_toimipaikka' AND COLUMN_NAME='jarjestys_koodi_toimipaikka')
@@ -103,7 +103,7 @@ BEGIN
 	END
 END
 
- NOT EXISTS (
+IF NOT EXISTS (
 	SELECT * FROM INFORMATION_SCHEMA.COLUMNS
 	WHERE TABLE_SCHEMA='dw' AND TABLE_NAME='d_yo_toimipisteen_toimipaikka' AND COLUMN_NAME='jarjestys_koodi_toimipiste')
 
