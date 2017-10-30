@@ -162,3 +162,5 @@ WHERE d1.aineisto_koodi = 'L' AND [tilastovuosi] <> '2009'
 GO
 
 
+
+USE [ANTERO]

@@ -1615,4 +1615,4 @@ WHERE d1.aineisto_koodi in ('L','-1') AND d9.oppilaitoskoodi <> '02557' AND d9.o
 
 GO
 
-
+USE [ANTERO]
