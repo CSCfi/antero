@@ -1411,17 +1411,22 @@
           },
           {
             "name": "Saapuneiuden ja lähteneiden vaihto-opiskelijoiden pisteet",
-            "expression": " SUM([kv_vaihtoopiskelijat_op_lkm])+SUM(Muuttujat[ulkom_hyv_luetut_op_lkm])"
+            "expression": " IF(SUM([kv_vaihtoopiskelijat_op_lkm])+SUM(Muuttujat[ulkom_hyv_luetut_op_lkm])=0,BLANK(),SUM([kv_vaihtoopiskelijat_op_lkm])+SUM(Muuttujat[ulkom_hyv_luetut_op_lkm]))"
           },
           {
             "name": "Muut kuin tutkinto-opetuksen opintopisteet",
             "expression": [
               " ",
+              "\tIF(",
               "\tSUM([avoinamk_op_amk_lkm])+",
               "\tSUM(Muuttujat[erilopintooik_op_lkm])+",
               "\tSUM([mamu_op_lkm])+",
-              "\tSUM([erikoul_suor_op_lkm])",
-              ""
+              "\tSUM([erikoul_suor_op_lkm])=0,BLANK(),",
+              "\tSUM([avoinamk_op_amk_lkm])+",
+              "\tSUM(Muuttujat[erilopintooik_op_lkm])+",
+              "\tSUM([mamu_op_lkm])+",
+              "\tSUM([erikoul_suor_op_lkm]",
+              "))"
             ]
           },
           {
