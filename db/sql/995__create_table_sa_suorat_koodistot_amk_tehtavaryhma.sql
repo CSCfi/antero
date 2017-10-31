@@ -6,10 +6,10 @@ USE ANTERO
 IF NOT EXISTS
 	(SELECT * FROM INFORMATION_SCHEMA.TABLES
 	WHERE TABLE_SCHEMA='dw'
-	AND TABLE_NAME='sa_suorat_koodistot_amk_tehtavanryhma')
+	AND TABLE_NAME='sa_suorat_koodistot_amk_tehtavaryhma')
 
 BEGIN
-CREATE TABLE [sa].[sa_suorat_koodistot_amk_tehtavanryhma](
+CREATE TABLE [sa].[sa_suorat_koodistot_amk_tehtavaryhma](
       [koodi] varchar(20)
       ,[selite_FI] varchar(100)
       ,[selite_SV] varchar(100)
