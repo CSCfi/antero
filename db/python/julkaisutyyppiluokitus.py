@@ -58,7 +58,7 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
     row["koodi"] = jv(i,"koodiArvo")
     row["nimi"] = getnimi(i,"FI")
     row["nimi_sv"] = getnimi(i,"SV")
-    row["nimi_en"] = getnimi(i,"FI")
+    row["nimi_en"] = getnimi(i,"EN")
     row["alkupvm"] = jv(i,"voimassaAlkuPvm")
     row["loppupvm"] = jv(i,"voimassaLoppuPvm")
 
