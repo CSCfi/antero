@@ -3363,20 +3363,10 @@
   &lt;IsSortDescending&gt;false&lt;/IsSortDescending&gt;
 &lt;/TableWidgetGridSerialization&gt;]]&gt;&lt;/AnnotationContent&gt;&lt;/Gemini&gt;</Value>
                     </Annotation>
-                    <Annotation>
-                      <Name>TableWidgetSourceTable</Name>
-                    </Annotation>
-                    <Annotation>
-                      <Name>QueryEditorSerialization</Name>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsQueryEditorUsed</Name>
-                      <Value>False</Value>
-                    </Annotation>
                   </Annotations>
                   <Source xsi:type="QueryBinding">
                     <DataSourceID>d4fc80ba-ff0c-40f0-8c5e-5a936fe67c91</DataSourceID>
-                    <QueryDefinition>SELECT [dbo].[v_f_tab_opettajat_7_5].* 		FROM [dbo].[v_f_tab_opettajat_7_5]</QueryDefinition>
+                    <QueryDefinition>SELECT [dbo].[v_f_tab_opettajat_7_5].* FROM [dbo].[v_f_tab_opettajat_7_5]</QueryDefinition>
                   </Source>
                   <StorageMode valuens="ddl200_200">InMemory</StorageMode>
                   <ProcessingMode>Regular</ProcessingMode>
@@ -3413,7 +3403,7 @@
               <Commands>
                 <Command>
                   <Text>CALCULATE; 
-CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1; 
+CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1, VISIBLE = 0; 
 ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measures defined]; </Text>
                 </Command>
                 <Command>
@@ -3466,44 +3456,6 @@ CREATE MEASURE 'Muuttujat'[Number of teachers]=COUNTROWS(Muuttujat);
                     <Annotation>
                       <Name>FullName</Name>
                       <Value>Number of teachers</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Muodollisesti kelpoisten osuus vastanneista]=[Muodollisesti kelpoiset]/[Opettajien lukumäärä (tiedonkeruussa)];
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Muodollisesti kelpoisten osuus vastanneista</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Muodollisesti kelpoiset]=calculate(COUNTROWS(Muuttujat),Muuttujat[Kelpoisuus]="Kelpoinen antamaan opetusta");
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Muodollisesti kelpoiset</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -3577,48 +3529,6 @@ CREATE MEASURE 'Muuttujat'[Muodollisesti kelpoiset]=calculate(COUNTROWS(Muuttuja
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
                 <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="General" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Muodollisesti kelpoisten osuus vastanneista]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>''</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="General" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Muodollisesti kelpoiset]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>''</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
                   <CalculationReference>Measures.[__No measures defined]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <Visible>false</Visible>
@@ -3649,7 +3559,7 @@ CREATE MEASURE 'Muuttujat'[Muodollisesti kelpoiset]=calculate(COUNTROWS(Muuttuja
           <ConnectionString>Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=VipunenTK;Integrated Security=SSPI;Persist Security Info=false</ConnectionString>
           <ImpersonationInfo>
             <ImpersonationMode>ImpersonateAccount</ImpersonationMode>
-            <Account>DWI\oeskola</Account>
+            <Account>DWI\pankalai</Account>
           </ImpersonationInfo>
           <Timeout>PT0S</Timeout>
         </DataSource>
@@ -3684,7 +3594,7 @@ CREATE MEASURE 'Muuttujat'[Muodollisesti kelpoiset]=calculate(COUNTROWS(Muuttuja
                         </xs:sequence>
                       </xs:complexType>
                     </xs:element>
-                    <xs:element name="v_f_tab_opettajat_7_5_be5b401f-78ef-4081-b75a-4262c2bf5385" msdata:Locale="" msprop:IsLogical="True" msprop:FriendlyName="Muuttujat" msprop:DbSchemaName="dbo" msprop:DbTableName="v_f_tab_opettajat_7_5" msprop:TableType="View" msprop:Description="v_f_tab_opettajat_7_5" msprop:QueryDefinition="      SELECT [dbo].[v_f_tab_opettajat_7_5].*   FROM [dbo].[v_f_tab_opettajat_7_5] ">
+                    <xs:element name="v_f_tab_opettajat_7_5_be5b401f-78ef-4081-b75a-4262c2bf5385" msdata:Locale="" msprop:IsLogical="True" msprop:FriendlyName="Muuttujat" msprop:DbSchemaName="dbo" msprop:DbTableName="v_f_tab_opettajat_7_5" msprop:TableType="View" msprop:Description="v_f_tab_opettajat_7_5" msprop:QueryDefinition=" SELECT [dbo].[v_f_tab_opettajat_7_5].* FROM [dbo].[v_f_tab_opettajat_7_5] ">
                       <xs:complexType>
                         <xs:sequence>
                           <xs:element name="Tilastovuosi" msprop:DbColumnName="Tilastovuosi" msprop:FriendlyName="Tilastovuosi" minOccurs="0">
