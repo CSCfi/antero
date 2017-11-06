@@ -53,5 +53,5 @@ SELECT
 
 FROM sa.sa_virta_otp_opintopistepvmamk as sa
 LEFT JOIN dw.d_ohjauksenala d1 ON d1.ohjauksenala_koodi=sa.koodi
-LEFT JOIN dw.d_amk_koulutustyyppi d2 ON d2.selite_fi = sa.koulutustyyppi
+LEFT JOIN dw.d_amk_koulutustyyppi d2 ON d2.koodi = sa.koulutustyyppi
 LEFT JOIN dw.d_amk d3 ON d3.amk_tunnus = sa.oppilaitostunnus
