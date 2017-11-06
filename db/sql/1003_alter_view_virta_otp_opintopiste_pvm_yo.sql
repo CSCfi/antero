@@ -20,7 +20,7 @@ SELECT
 	 ,[Erillinen_opinto_opettaja] = f.erillinen_opinto_opettaja_lkm
 	 ,[Ulkomaanharjoittelu] = f.ulkomaaharjoittelu_lkm
 	 ,[Erikoistumiskoulutus] = f.erikoistumiskoulutus_lkm
-	 ,[Tietojen_ajankohta] = f.loadtime
+	 ,[Tietojen_ajankohta2] = CAST(f.loadtime as date)
 	 ,[Source] = f.source
 	 ,[Username] = f.username
 	 ,[Ajankohta järjestys] = 99999999-CAST(CAST(YEAR(f.loadtime) AS nvarchar(4))+right('0'+CAST(MONTH(f.loadtime) AS nvarchar(2)),2)+right('0'+CAST(DAY(f.loadtime) AS nvarchar(2)),2) AS int)
