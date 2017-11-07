@@ -143,20 +143,6 @@
             "displayFolder": "Organisaatiomuuttujat"
           },
           {
-            "name": "Tietojen_ajankohta",
-            "dataType": "dateTime",
-            "sourceColumn": "Tietojen_ajankohta",
-            "formatString": "Short Date",
-            "sortByColumn": "Ajankohta järjestys",
-            "displayFolder": "Aikamuuttujat",
-            "annotations": [
-              {
-                "name": "Format",
-                "value": "<Format Format=\"DateTimeShortDatePattern\" />"
-              }
-            ]
-          },
-          {
             "name": "Koulutusala_koodi",
             "dataType": "int64",
             "isHidden": true,
@@ -172,13 +158,34 @@
             "name": "Ajankohta järjestys",
             "dataType": "int64",
             "sourceColumn": "Ajankohta järjestys"
+          },
+          {
+            "name": "Tietojen_ajankohta2",
+            "dataType": "dateTime",
+            "isHidden": true,
+            "sourceColumn": "Tietojen_ajankohta2",
+            "formatString": "dd.MM.yyyy",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"DateTimeCustom\"><DateTimes><DateTime LCID=\"1035\" Group=\"ShortDate\" FormatString=\"dd.MM.yyyy\" /></DateTimes></Format>"
+              }
+            ]
+          },
+          {
+            "type": "calculated",
+            "name": "Tietojen ajankohta",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": "IF(Muuttujat[Tietojen_ajankohta2]=MAX([Tietojen_ajankohta2]),\"Uusin\",FORMAT(Muuttujat[Tietojen_ajankohta2],\"dd.mm.yyyy\"))",
+            "sortByColumn": "Ajankohta järjestys"
           }
         ],
         "partitions": [
           {
             "name": "v_f_opintopisteet_yo",
             "source": {
-              "query": " SELECT [dw].[v_virta_otp_opintopiste_pvm_yo].[Tilastovuosi],[dw].[v_virta_otp_opintopiste_pvm_yo].[Suorituspäivämäärä],[dw].[v_virta_otp_opintopiste_pvm_yo].[Suoritusvuosi],[dw].[v_virta_otp_opintopiste_pvm_yo].[Suorituskuukausi],[dw].[v_virta_otp_opintopiste_pvm_yo].[Suorituspäivä],[dw].[v_virta_otp_opintopiste_pvm_yo].[Koulutusala_koodi],[dw].[v_virta_otp_opintopiste_pvm_yo].[Koulutusala],[dw].[v_virta_otp_opintopiste_pvm_yo].[Yliopisto_koodi_koodi],[dw].[v_virta_otp_opintopiste_pvm_yo].[Yliopisto],[dw].[v_virta_otp_opintopiste_pvm_yo].[Lukumaara],[dw].[v_virta_otp_opintopiste_pvm_yo].[Perustutk_opiskelijat],[dw].[v_virta_otp_opintopiste_pvm_yo].[Vierask_suoritukset],[dw].[v_virta_otp_opintopiste_pvm_yo].[Kansainv_vaihto],[dw].[v_virta_otp_opintopiste_pvm_yo].[KK_yhteistyo],[dw].[v_virta_otp_opintopiste_pvm_yo].[Avoin_kk],[dw].[v_virta_otp_opintopiste_pvm_yo].[Erillinen_opinto_oikeus],[dw].[v_virta_otp_opintopiste_pvm_yo].[Ulkomailta_hyv_luet],[dw].[v_virta_otp_opintopiste_pvm_yo].[Erillinen_opinto_opettaja],[dw].[v_virta_otp_opintopiste_pvm_yo].[Ulkomaanharjoittelu],[dw].[v_virta_otp_opintopiste_pvm_yo].[Erikoistumiskoulutus],[dw].[v_virta_otp_opintopiste_pvm_yo].[Tietojen_ajankohta],[dw].[v_virta_otp_opintopiste_pvm_yo].[Ajankohta järjestys] FROM [dw].[v_virta_otp_opintopiste_pvm_yo] ",
+              "query": " SELECT [dw].[v_virta_otp_opintopiste_pvm_yo].[Tilastovuosi],[dw].[v_virta_otp_opintopiste_pvm_yo].[Suorituspäivämäärä],[dw].[v_virta_otp_opintopiste_pvm_yo].[Suoritusvuosi],[dw].[v_virta_otp_opintopiste_pvm_yo].[Suorituskuukausi],[dw].[v_virta_otp_opintopiste_pvm_yo].[Suorituspäivä],[dw].[v_virta_otp_opintopiste_pvm_yo].[Koulutusala_koodi],[dw].[v_virta_otp_opintopiste_pvm_yo].[Koulutusala],[dw].[v_virta_otp_opintopiste_pvm_yo].[Yliopisto_koodi_koodi],[dw].[v_virta_otp_opintopiste_pvm_yo].[Yliopisto],[dw].[v_virta_otp_opintopiste_pvm_yo].[Lukumaara],[dw].[v_virta_otp_opintopiste_pvm_yo].[Perustutk_opiskelijat],[dw].[v_virta_otp_opintopiste_pvm_yo].[Vierask_suoritukset],[dw].[v_virta_otp_opintopiste_pvm_yo].[Kansainv_vaihto],[dw].[v_virta_otp_opintopiste_pvm_yo].[KK_yhteistyo],[dw].[v_virta_otp_opintopiste_pvm_yo].[Avoin_kk],[dw].[v_virta_otp_opintopiste_pvm_yo].[Erillinen_opinto_oikeus],[dw].[v_virta_otp_opintopiste_pvm_yo].[Ulkomailta_hyv_luet],[dw].[v_virta_otp_opintopiste_pvm_yo].[Erillinen_opinto_opettaja],[dw].[v_virta_otp_opintopiste_pvm_yo].[Ulkomaanharjoittelu],[dw].[v_virta_otp_opintopiste_pvm_yo].[Erikoistumiskoulutus],[dw].[v_virta_otp_opintopiste_pvm_yo].[Tietojen_ajankohta2],[dw].[v_virta_otp_opintopiste_pvm_yo].[Ajankohta järjestys] FROM [dw].[v_virta_otp_opintopiste_pvm_yo] ",
               "dataSource": "SqlServer dwitvipusql16  Antero"
             },
             "annotations": [
@@ -236,10 +243,10 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Tietojen_ajankohta</string>",
+                  "        <string>Tietojen_ajankohta2</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>123</int>",
+                  "        <int>129</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -430,10 +437,10 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Tietojen_ajankohta</string>",
+                  "        <string>Tietojen_ajankohta2</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>20</int>",
+                  "        <int>23</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -457,7 +464,7 @@
                   "        <string>Koulutusala</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>22</int>",
+                  "        <int>21</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -553,7 +560,7 @@
                   "        <string>Koulutusala_koodi</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>21</int>",
+                  "        <int>20</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -577,7 +584,7 @@
                   "        <string>Ajankohta järjestys</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>23</int>",
+                  "        <int>22</int>",
                   "      </value>",
                   "    </item>",
                   "  </ColumnDisplayIndex>",
@@ -633,7 +640,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Tietojen_ajankohta</string>",
+                  "        <string>Tietojen_ajankohta2</string>",
                   "      </key>",
                   "      <value>",
                   "        <boolean>true</boolean>",
@@ -719,7 +726,7 @@
           },
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": " SELECT [dw].[v_virta_otp_opintopiste_pvm_yo].[Tilastovuosi],[dw].[v_virta_otp_opintopiste_pvm_yo].[Suorituspäivämäärä],[dw].[v_virta_otp_opintopiste_pvm_yo].[Suoritusvuosi],[dw].[v_virta_otp_opintopiste_pvm_yo].[Suorituskuukausi],[dw].[v_virta_otp_opintopiste_pvm_yo].[Suorituspäivä],[dw].[v_virta_otp_opintopiste_pvm_yo].[Koulutusala_koodi],[dw].[v_virta_otp_opintopiste_pvm_yo].[Koulutusala],[dw].[v_virta_otp_opintopiste_pvm_yo].[Yliopisto_koodi_koodi],[dw].[v_virta_otp_opintopiste_pvm_yo].[Yliopisto],[dw].[v_virta_otp_opintopiste_pvm_yo].[Lukumaara],[dw].[v_virta_otp_opintopiste_pvm_yo].[Perustutk_opiskelijat],[dw].[v_virta_otp_opintopiste_pvm_yo].[Vierask_suoritukset],[dw].[v_virta_otp_opintopiste_pvm_yo].[Kansainv_vaihto],[dw].[v_virta_otp_opintopiste_pvm_yo].[KK_yhteistyo],[dw].[v_virta_otp_opintopiste_pvm_yo].[Avoin_kk],[dw].[v_virta_otp_opintopiste_pvm_yo].[Erillinen_opinto_oikeus],[dw].[v_virta_otp_opintopiste_pvm_yo].[Ulkomailta_hyv_luet],[dw].[v_virta_otp_opintopiste_pvm_yo].[Erillinen_opinto_opettaja],[dw].[v_virta_otp_opintopiste_pvm_yo].[Ulkomaanharjoittelu],[dw].[v_virta_otp_opintopiste_pvm_yo].[Erikoistumiskoulutus],[dw].[v_virta_otp_opintopiste_pvm_yo].[Tietojen_ajankohta],[dw].[v_virta_otp_opintopiste_pvm_yo].[Ajankohta järjestys] FROM [dw].[v_virta_otp_opintopiste_pvm_yo] "
+            "value": " SELECT [dw].[v_virta_otp_opintopiste_pvm_yo].[Tilastovuosi],[dw].[v_virta_otp_opintopiste_pvm_yo].[Suorituspäivämäärä],[dw].[v_virta_otp_opintopiste_pvm_yo].[Suoritusvuosi],[dw].[v_virta_otp_opintopiste_pvm_yo].[Suorituskuukausi],[dw].[v_virta_otp_opintopiste_pvm_yo].[Suorituspäivä],[dw].[v_virta_otp_opintopiste_pvm_yo].[Koulutusala_koodi],[dw].[v_virta_otp_opintopiste_pvm_yo].[Koulutusala],[dw].[v_virta_otp_opintopiste_pvm_yo].[Yliopisto_koodi_koodi],[dw].[v_virta_otp_opintopiste_pvm_yo].[Yliopisto],[dw].[v_virta_otp_opintopiste_pvm_yo].[Lukumaara],[dw].[v_virta_otp_opintopiste_pvm_yo].[Perustutk_opiskelijat],[dw].[v_virta_otp_opintopiste_pvm_yo].[Vierask_suoritukset],[dw].[v_virta_otp_opintopiste_pvm_yo].[Kansainv_vaihto],[dw].[v_virta_otp_opintopiste_pvm_yo].[KK_yhteistyo],[dw].[v_virta_otp_opintopiste_pvm_yo].[Avoin_kk],[dw].[v_virta_otp_opintopiste_pvm_yo].[Erillinen_opinto_oikeus],[dw].[v_virta_otp_opintopiste_pvm_yo].[Ulkomailta_hyv_luet],[dw].[v_virta_otp_opintopiste_pvm_yo].[Erillinen_opinto_opettaja],[dw].[v_virta_otp_opintopiste_pvm_yo].[Ulkomaanharjoittelu],[dw].[v_virta_otp_opintopiste_pvm_yo].[Erikoistumiskoulutus],[dw].[v_virta_otp_opintopiste_pvm_yo].[Tietojen_ajankohta2],[dw].[v_virta_otp_opintopiste_pvm_yo].[Ajankohta järjestys] FROM [dw].[v_virta_otp_opintopiste_pvm_yo] "
           },
           {
             "name": "TableWidgetSerialization",
@@ -775,10 +782,10 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Tietojen_ajankohta</string>",
+              "        <string>Tietojen_ajankohta2</string>",
               "      </key>",
               "      <value>",
-              "        <int>123</int>",
+              "        <int>129</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -969,10 +976,10 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Tietojen_ajankohta</string>",
+              "        <string>Tietojen_ajankohta2</string>",
               "      </key>",
               "      <value>",
-              "        <int>20</int>",
+              "        <int>23</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -996,7 +1003,7 @@
               "        <string>Koulutusala</string>",
               "      </key>",
               "      <value>",
-              "        <int>22</int>",
+              "        <int>21</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -1092,7 +1099,7 @@
               "        <string>Koulutusala_koodi</string>",
               "      </key>",
               "      <value>",
-              "        <int>21</int>",
+              "        <int>20</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -1116,7 +1123,7 @@
               "        <string>Ajankohta järjestys</string>",
               "      </key>",
               "      <value>",
-              "        <int>23</int>",
+              "        <int>22</int>",
               "      </value>",
               "    </item>",
               "  </ColumnDisplayIndex>",
@@ -1172,7 +1179,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Tietojen_ajankohta</string>",
+              "        <string>Tietojen_ajankohta2</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -1372,13 +1379,13 @@
                 "name": "Suoritusvuosi"
               },
               {
-                "name": "Tietojen_ajankohta"
-              },
-              {
                 "name": "Tilastovuosi"
               },
               {
                 "name": "Yliopisto"
+              },
+              {
+                "name": "Tietojen ajankohta"
               }
             ],
             "measures": [
