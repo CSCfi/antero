@@ -87,7 +87,7 @@ def makerow():
     #--tarjoajaNimet (Map[string,string], optional),
     "koulutusAsteTyyppi": None, # nvarchar(max) null, --(string, optional),
     "tutkintoonJohtava": None, # bit null, --(boolean, optional),
-    #--opetusKielet (Set[string], optional),
+    "opetusKielet": None, #--opetusKielet (Set[string], optional),
     "createdBy": None, # nvarchar(max) null, --(string): Luonnin suorittajan nimi,
     "modified": None, # nvarchar(max) null, --(string): Viimeinen muokkauspäivä ja aika,
     "modifiedBy": None, # nvarchar(max) null, --(string): Muokkauksen suorittajan nimi,
