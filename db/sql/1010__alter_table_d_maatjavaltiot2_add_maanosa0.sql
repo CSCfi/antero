@@ -9,7 +9,7 @@ ALTER TABLE dw.d_maatjavaltiot2 ADD
   maanosa0_koodi nvarchar(3) NULL,
   maanosa0_fi nvarchar(200) NULL,
   maanosa0_sv nvarchar(200) NULL,
-
+  maanosa0_en nvarchar(200) NULL
 END
 
 IF NOT EXISTS (
