@@ -981,3 +981,5 @@ LEFT join antero.dw.d_organisaatio d3 on d_organisaatio_id= d3.id
 
 
 GO
+
+USE [ANTERO]
