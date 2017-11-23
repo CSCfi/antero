@@ -14,7 +14,7 @@ import dboperator
 
 class Client:
     def __init__(self, host="localhost", path="/vipunendata", port=None, ssl=None, verbose=0,
-                 schema='sa', table='sa_hakukohteet'):
+                 schema='sa', table='sa_hakeneet_odw'):
         self.host = host
         self.path = path
         self.port = port
