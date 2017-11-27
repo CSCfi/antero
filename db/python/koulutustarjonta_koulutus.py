@@ -21,7 +21,7 @@ def makerow():
     #-- sekä tuosta search-kutsusta organisaation oid:
     "organisaatio_oid": None,
     #opintojenLaajuusarvo (KoodiV1RDTO): Opintojen laajuuden arvo,
-    "opintojenLaajuusarvo_uri": None,
+    "opintojenLaajuusarvo_arvo": None,
     #koulutusohjelma (NimiV1RDTO): Tutkinto-ohjelman nimi monella kielella, ainakin yksi kieli pitää olla täytetty,
     "koulutusohjelma_uri": None,
     #koulutuksenAlkamisPvms (Set[Date], optional): Koulutuksen alkamispvm, voi olla tyhjä, jos tyhjä alkamiskausi ja alkamisvuosi pitää olla valittuna,
@@ -32,7 +32,7 @@ def makerow():
     "tunniste": None, # (string, optional): Tutkinto-ohjelman tunniste, oppilaitoksen oma tunniste järjestettävälle koulutukselle,
     #kuvausKomo (fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvausV1RDTO, optional): Koulutuksen koulutusmoduulin monikieliset kuvaustekstit,
     #koulutuksenAlkamiskausi (KoodiV1RDTO, optional): Koulutuksen alkamiskausi koodisto koodi uri, jos ei määritetty ainakin yksi alkamispvm pitää olla valittuna,
-    "koulutuksenAlkamiskausi_uri": None,
+    "koulutuksenAlkamiskausi_arvo": None,
     "koulutuksenAlkamisvuosi": None, # (integer, optional): Koulutuksen alkamisvuosi, jos ei määritetty ainakin yksi alkamispvm pitää olla valittuna,
     "koulutusmoduuliTyyppi": None, # (string) = ['TUTKINNON_OSA' or 'TUTKINTO' or 'TUTKINTO_OHJELMA' or 'OPINTOKOKONAISUUS' or 'OPINTOJAKSO']: Koulutuksen koulutusmoduulin tyyppi,
     #koulutuslaji (KoodiV1RDTO, optional): Koulutuslaji-koodi,
