@@ -156,11 +156,11 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
             if colkey in i:
               if colarvo in i[colkey]:
                 row[col] = i[colkey][colarvo]
-          elif col == "koulutuskoodi_arvo":
-            (colkey,colarvo) = col.split("_")
-            if colkey in i:
-              if colarvo in i[colkey]:
-                row[col] = i[colkey][colarvo]
+          #elif col == "koulutuskoodi_arvo":
+           # (colkey,colarvo) = col.split("_")
+           # if colkey in i:
+           #   if colarvo in i[colkey]:
+           #     row[col] = i[colkey][colarvo]
           elif col == "koulutuskoodi_nimi":
             (colkey,colnimi) = col.split("_")
             if colkey in i:
