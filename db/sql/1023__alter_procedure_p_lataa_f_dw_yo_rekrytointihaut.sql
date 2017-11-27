@@ -89,6 +89,7 @@ LEFT JOIN [dw].[d_kytkin] s8 ON (
 						THEN '0'
 				ELSE '-1'
 				END AS kansalaisuus_id) =  s8.kytkin_koodi
+				
 --LEFT  JOIN [dw].[d_maatjavaltiot2] s9 ON [d_hakijan_maanosa_koodi] = s9.maanosa0_Koodi
 			/*
 RIGHT JOIN [dw].[d_maatjavaltiot2] s10 ON  s10.maanosa_koodi = (

@@ -1,6 +1,7 @@
 --
 --  create table f_yo_rekrytointihaut
 --
+
 USE [ANTERO]
 GO
 
