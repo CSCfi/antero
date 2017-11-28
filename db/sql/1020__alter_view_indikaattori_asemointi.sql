@@ -1,4 +1,4 @@
-Alter view [dw].[v_indikaattori_asemointi] as
+ALTER view [dw].[v_indikaattori_asemointi] as
 
 /****** Korkeakoulututkinnot ******/
 SELECT
@@ -30,7 +30,8 @@ SELECT
 	  ,NULL AS '1-14op suorittaneet' --lkm_op1_14
 	  ,NULL AS 'Yliopiston opetus- ja tutkimushenkilötyövuodet'
 	  ,NULL AS 'IV tutkijanuraportaan henkilötyövuodet'
-	  ,NULL AS 'Ammattikorkeakoulun opetus- ja TKI henkilökunta'
+	  ,NULL AS 'Ammattikorkeakoulun opetushenkilökunta'
+	  ,NULL AS 'Ammattikorkeakoulun TKI-henkilökunta'
 	  ,NULL AS 'AMK Julkaisut (A-E)'
 	  ,NULL AS 'AMK julkaisut (F ja I)'
 	  ,NULL AS 'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
@@ -109,6 +110,7 @@ SELECT
 	  ,NULL --opetus- tutkimushenkilökunta HTV
 	  ,NULL --IV porras HTV
 	  ,NULL --'Opetus- ja TKI henkilökunta'
+	  ,NULL AS 'Ammattikorkeakoulun TKI-henkilökunta'
 	  ,NULL -- 'AMK Julkaisut (A-E)'
 	  ,NULL -- 'AMK julkaisut (F ja I)'
 	  ,NULL --'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
@@ -189,6 +191,7 @@ SELECT
 	  ,NULL --opetus- tutkimushenkilökunta HTV
 	  ,NULL --IV porras HTV
 	  ,NULL --'Opetus- ja TKI henkilökunta'
+	  ,NULL AS 'Ammattikorkeakoulun TKI-henkilökunta'
 	  ,NULL -- 'AMK Julkaisut (A-E)'
 	  ,NULL --'AMK julkaisut (F ja I)'
 	  ,NULL --'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
@@ -262,6 +265,7 @@ SELECT [tilastointivuosi]
 	  ,NULL --opetus- tutkimushenkilökunta HTV
 	  ,NULL --IV porras HTV
 	  ,NULL --'Opetus- ja TKI henkilökunta'
+	  ,NULL AS 'Ammattikorkeakoulun TKI-henkilökunta'
 	  ,NULL -- 'AMK Julkaisut (A-E)'
 	  ,NULL -- 'AMK julkaisut (F ja I)'
 	  ,NULL --'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
@@ -337,6 +341,7 @@ SELECT [vuosi]
 	  ,case when d_tehtavanjaottelu_id in (0,2) then henkilotyovuosi else 0 end AS 'Opetus- ja tutkimushenkilökunta'
 	  ,case when d_tutkijanuravaihe_id=3 then henkilotyovuosi else 0 end as 'IV tutkijanuraporras'
 	  ,NULL --'Opetus- ja TKI henkilökunta'
+	  ,NULL AS 'Ammattikorkeakoulun TKI-henkilökunta'
 	  ,NULL -- 'AMK Julkaisut (A-E)'
 	  ,NULL -- 'AMK julkaisut (F ja I)'
 	  ,NULL --'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
@@ -409,7 +414,8 @@ SELECT [vuosi]
 	  ,NULL --lkm_op1_14
 	  ,NULL -- 'Opetus- ja tutkimushenkilökunta'
 	  ,NULL -- 'IV tutkijanuraporras'
-	  ,henkilotyovuosi AS 'Opetus- ja TKI henkilökunta'
+	  ,case when d_tehtavanjaottelu=0 then henkilotyovuosi end AS 'AMK Opetushenkilökunta'
+	  ,case when d_tehtavanjaottelu=1 then henkilotyovuosi end AS 'AMK TKI-henkilökunta'
 	  ,NULL -- 'AMK Julkaisut (A-E)'
 	  ,NULL -- 'AMK julkaisut (F ja I)'
 	  ,NULL --'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
@@ -488,6 +494,7 @@ SELECT tilastovuosi
 	  ,NULL -- 'Opetus- ja tutkimushenkilökunta'
 	  ,NULL -- 'IV tutkijanuraporras'
 	  ,NULL -- 'Opetus- ja TKI henkilökunta'
+	  ,NULL AS 'Ammattikorkeakoulun TKI-henkilökunta'
 	  ,case when d3.oppilaitostyyppi_koodi='41' then lukumaara else NULL end AS 'AMK Julkaisut (A-E)'
 	  ,NULL as 'AMK julkaisut (F ja I)'
 	  ,case when d3.oppilaitostyyppi_koodi='42' AND julkaisutyyppi_koodi in ('A1','A2','A3','A4','C1','C2') AND d_julkaisufoorumitaso_id in (4,5) then lukumaara else NULL end AS 'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
@@ -563,6 +570,7 @@ SELECT tilastovuosi
 	  ,NULL -- 'Opetus- ja tutkimushenkilökunta'
 	  ,NULL -- 'IV tutkijanuraporras'
 	  ,NULL -- 'Opetus- ja TKI henkilökunta'
+	  ,NULL AS 'Ammattikorkeakoulun TKI-henkilökunta'
 	  ,NULL --case when d3.oppilaitostyyppi_koodi='41' then lukumaara else NULL end AS 'AMK Julkaisut (A-E)'
 	  ,f.julkaisujen_maara as 'AMK julkaisut (F ja I)'
 	  ,NULL --case when d3.oppilaitostyyppi_koodi='42' AND julkaisutyyppi_koodi in ('A1','A2','A3','A4','C1','C2') AND d_julkaisufoorumitaso_id in (4,5) then lukumaara else NULL end AS 'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
@@ -634,6 +642,7 @@ SELECT tilikausi as 'Tilastointivuosi'
 	  ,NULL -- 'Opetus- ja tutkimushenkilökunta'
 	  ,NULL -- 'IV tutkijanuraporras'
 	  ,NULL -- 'Opetus- ja TKI henkilökunta'
+	  ,NULL AS 'Ammattikorkeakoulun TKI-henkilökunta'
 	  ,NULL -- 'AMK Julkaisut (A-E)'
 	  ,NULL -- 'AMK julkaisut (F ja I)'
 	  ,NULL -- 'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
@@ -708,6 +717,7 @@ SELECT vuosi
 	  ,NULL -- 'Opetus- ja tutkimushenkilökunta'
 	  ,NULL -- 'IV tutkijanuraporras'
 	  ,NULL -- 'Opetus- ja TKI henkilökunta'
+	  ,NULL AS 'Ammattikorkeakoulun TKI-henkilökunta'
 	  ,NULL -- 'AMK Julkaisut (A-E)'
 	  ,NULL -- 'AMK julkaisut (F ja I)'
 	  ,NULL -- 'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
@@ -780,6 +790,7 @@ SELECT vuosi
 	  ,NULL -- 'Opetus- ja tutkimushenkilökunta'
 	  ,NULL -- 'IV tutkijanuraporras'
 	  ,NULL -- 'Opetus- ja TKI henkilökunta'
+	  ,NULL AS 'Ammattikorkeakoulun TKI-henkilökunta'
 	  ,NULL -- 'AMK Julkaisut (A-E)'
 	  ,NULL -- 'AMK julkaisut (F ja I)'
 	  ,NULL -- 'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
@@ -857,6 +868,7 @@ SELECT tilastointivuosi
 	  ,NULL -- 'Opetus- ja tutkimushenkilökunta'
 	  ,NULL -- 'IV tutkijanuraporras'
 	  ,NULL -- 'Opetus- ja TKI henkilökunta'
+	  ,NULL AS 'Ammattikorkeakoulun TKI-henkilökunta'
 	  ,NULL -- 'AMK Julkaisut (A-E)'
 	  ,NULL -- 'AMK julkaisut (F ja I)'
 	  ,NULL -- 'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
@@ -934,6 +946,7 @@ SELECT vuosi
 	  ,NULL -- 'Opetus- ja tutkimushenkilökunta'
 	  ,NULL -- 'IV tutkijanuraporras'
 	  ,NULL -- 'Opetus- ja TKI henkilökunta'
+	  ,NULL AS 'Ammattikorkeakoulun TKI-henkilökunta'
 	  ,NULL -- 'AMK Julkaisut (A-E)'
 	  ,NULL -- 'AMK julkaisut (F ja I)'
 	  ,NULL -- 'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
@@ -988,6 +1001,9 @@ LEFT join antero.dw.d_organisaatio d3 on d_organisaatio_id= d3.id
 
 
 GO
+
+
+
 
 USE [ANTERO]
 
