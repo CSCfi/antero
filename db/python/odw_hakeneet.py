@@ -14,7 +14,7 @@ import dboperator
 
 class Client:
     def __init__(self, host="localhost", path="/vipunendata", port=None, ssl=None, verbose=0,
-                 schema='sa', table='sa_hakukohteet'):
+                 schema='sa', table='sa_odw_hakeneet'):
         self.host = host
         self.path = path
         self.port = port
@@ -119,8 +119,8 @@ if __name__ == "__main__":
         arg_parser.add_argument('-v', '--verbose', default=0, action='store_const', const=1,
                                 help='increase output verbosity')
         arg_parser.add_argument('--schema', type=str, default='sa', help='database schema, default=sa')
-        arg_parser.add_argument('--table', type=str, default='sa_hakukohteet',
-                                help='database table name, default=sa_hakukohteet')
+        arg_parser.add_argument('--table', type=str, default='sa_odw_hakeneet',
+                                help='database table name, default=sa_odw_hakeneet')
         args = arg_parser.parse_args(args=sys.argv[1:])
         success = Client(**vars(args)).load()
         sys.exit(0 if success else 1)

@@ -34,7 +34,7 @@ def makerow():
     "lukioKoulutus": None, # bit null, --(boolean, optional),
     "alinHyvaksyttavaKeskiarvo": None, # float null, --(number, optional),
     #--painotettavatOppiaineet (array[PainotettavaOppiaineV1RDTO], optional),
-    "hakukohteenNimet": None, #nvarchar (max) (Map[string,string], optional): Hashmap containing hakukohde names and name language,
+    #--hakukohteenNimet": None, #nvarchar (max) (Map[string,string], optional): Hashmap containing hakukohde names and name language,
     #--aloituspaikatKuvaukset (Map[string,string], optional),
     "ammatillinenPerustutkinto": None, # bit null, --(boolean, optional),
     "hakulomakeUrl": None, # nvarchar(max) null, --(string, optional): Hakulomakkeen www-osoite,

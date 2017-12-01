@@ -21,7 +21,7 @@ def makerow():
     #-- sekä tuosta search-kutsusta organisaation oid:
     "organisaatio_oid": None,
     #opintojenLaajuusarvo (KoodiV1RDTO): Opintojen laajuuden arvo,
-    "opintojenLaajuusarvo_uri": None,
+    "opintojenLaajuusarvo_arvo": None,
     #koulutusohjelma (NimiV1RDTO): Tutkinto-ohjelman nimi monella kielella, ainakin yksi kieli pitää olla täytetty,
     "koulutusohjelma_uri": None,
     #koulutuksenAlkamisPvms (Set[Date], optional): Koulutuksen alkamispvm, voi olla tyhjä, jos tyhjä alkamiskausi ja alkamisvuosi pitää olla valittuna,
@@ -32,7 +32,7 @@ def makerow():
     "tunniste": None, # (string, optional): Tutkinto-ohjelman tunniste, oppilaitoksen oma tunniste järjestettävälle koulutukselle,
     #kuvausKomo (fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvausV1RDTO, optional): Koulutuksen koulutusmoduulin monikieliset kuvaustekstit,
     #koulutuksenAlkamiskausi (KoodiV1RDTO, optional): Koulutuksen alkamiskausi koodisto koodi uri, jos ei määritetty ainakin yksi alkamispvm pitää olla valittuna,
-    "koulutuksenAlkamiskausi_uri": None,
+    "koulutuksenAlkamiskausi_arvo": None,
     "koulutuksenAlkamisvuosi": None, # (integer, optional): Koulutuksen alkamisvuosi, jos ei määritetty ainakin yksi alkamispvm pitää olla valittuna,
     "koulutusmoduuliTyyppi": None, # (string) = ['TUTKINNON_OSA' or 'TUTKINTO' or 'TUTKINTO_OHJELMA' or 'OPINTOKOKONAISUUS' or 'OPINTOJAKSO']: Koulutuksen koulutusmoduulin tyyppi,
     #koulutuslaji (KoodiV1RDTO, optional): Koulutuslaji-koodi,
@@ -40,21 +40,21 @@ def makerow():
     "komoOid": None, # (string, optional): Koulutusmoduulin yksilöivä tunniste,
     "uniqueExternalId": None, # (string, optional): Oppilaitoksen globaalisti uniikki tunniste koulutukselle,
     #opintopolkuAlkamiskausi (Map, optional): Opintopolussa näytettävä koulutuksen alkaminen,
-    "hinta": None, # (number, optional): Koulutuksen hinta, on pakollinen jos koulutus on merkitty maksulliseksi,
-    "hintaString": None, # (string, optional): Koulutuksen hinta (korvaa vanhan Double-tyyppisen hinnan, koska pitää tukea myös muita kun numeroita),
+    #"hinta": None, # (number, optional): Koulutuksen hinta, on pakollinen jos koulutus on merkitty maksulliseksi,
+    #"hintaString": None, # (string, optional): Koulutuksen hinta (korvaa vanhan Double-tyyppisen hinnan, koska pitää tukea myös muita kun numeroita),
     #sisaltyvatKoulutuskoodit (KoodiUrisV1RDTO, optional): Koulutukseen sisältyvät koulutuskoodit,
     "isAvoimenYliopistonKoulutus": None, # (boolean, optional): Onko koulutus avoimen yliopiston/ammattikorkeakoulun koulutus,
     #opetusAikas (KoodiUrisV1RDTO): Koulutuksen opetusajat (esim. Iltaopetus) (sisältää koodisto koodi uri:a),
     #opetusPaikkas (KoodiUrisV1RDTO): Koulutuksen opetuspaikat (sisältää koodisto koodi uri:a),
     #aihees (KoodiUrisV1RDTO, optional): Koulutuksen aiheet (sisältää koodisto koodi uri:a),
-    "hakijalleNaytettavaTunniste": None, # (string, optional): Hakijalle näytettävä tunniste,
+    #"hakijalleNaytettavaTunniste": None, # (string, optional): Hakijalle näytettävä tunniste,
     #yhteyshenkilos (Set[YhteyshenkiloTyyppi], optional),
     #opetusTarjoajat (Set[string], optional): Opintojen tarjoajat,
     #opetusJarjestajat (Set[string], optional): Opintojen järjestäjät,
     #opetusmuodos (KoodiUrisV1RDTO): Koulutuksen opetusmuodot (sisältää koodisto koodi uri:a),
     #suunniteltuKestoTyyppi (KoodiV1RDTO): Koulutuksen suunntellun keston tyyppi (koodisto koodi uri),
-    "suunniteltuKestoTyyppi_uri": None,
-    "suunniteltuKestoArvo": None, # (string): Koulutuksen suunntellun keston arvo,
+    #"suunniteltuKestoTyyppi_uri": None,
+    #"suunniteltuKestoArvo": None, # (string): Koulutuksen suunntellun keston arvo,
     #ammattinimikkeet (KoodiUrisV1RDTO, optional): Koulutuksen ammattinimikkeet (sisältää koodisto koodi uri:a),
     "opintojenMaksullisuus": None, # (boolean, optional): Valitaan opintojen maksullisuuden (false=koulutus ei vaadi maksua),
     #kuvausKomoto (fi.vm.sade.tarjonta.service.resources.v1.dto.koulutus.KuvausV1RDTO, optional): Koulutuksen koulutusmoduulin toteutuksen monikieliset kuvaustekstit,
@@ -86,6 +86,7 @@ def makerow():
     "nqf_uri": None,
     #koulutustyyppi (KoodiV1RDTO): Koulutustyyppi-koodi,
     "koulutustyyppi_uri": None,
+    "pohjakoulutusvaatimus_arvo": None,
     "createdBy": None, # (string): Luonnin suorittajan nimi,
     "modified": None, # (string): Viimeinen muokkauspäivä ja aika,
     "modifiedBy": None, # (string): Muokkauksen suorittajan nimi,
@@ -150,11 +151,16 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
             if colkey in i:
               if coluri in i[colkey]:
                 row[col] = i[colkey][coluri]
-          elif col == "koulutuskoodi_arvo":
+          elif "_arvo" in col:
             (colkey,colarvo) = col.split("_")
             if colkey in i:
               if colarvo in i[colkey]:
                 row[col] = i[colkey][colarvo]
+          #elif col == "koulutuskoodi_arvo":
+           # (colkey,colarvo) = col.split("_")
+           # if colkey in i:
+           #   if colarvo in i[colkey]:
+           #     row[col] = i[colkey][colarvo]
           elif col == "koulutuskoodi_nimi":
             (colkey,colnimi) = col.split("_")
             if colkey in i:
