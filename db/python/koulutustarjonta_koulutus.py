@@ -85,7 +85,7 @@ def makerow():
     #nqf (KoodiV1RDTO): NQF-koodi,
     "nqf_uri": None,
     #koulutustyyppi (KoodiV1RDTO): Koulutustyyppi-koodi,
-    "koulutustyyppi_uri": None,
+    "koulutustyyppi_arvo": None,
     "pohjakoulutusvaatimus_arvo": None,
     "createdBy": None, # (string): Luonnin suorittajan nimi,
     "modified": None, # (string): Viimeinen muokkauspäivä ja aika,
