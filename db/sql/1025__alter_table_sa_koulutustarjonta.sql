@@ -243,4 +243,4 @@ BEGIN
 ALTER TABLE [sa].[koulutustarjonta_koulutus] ADD  CONSTRAINT [DF__koulutustarjonta_koulutus__username]  DEFAULT (suser_name()) FOR [username]
 END
 
-
+GO
