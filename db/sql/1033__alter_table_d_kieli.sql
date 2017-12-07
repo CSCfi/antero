@@ -48,4 +48,5 @@ BEGIN
 ALTER TABLE [dw].[d_kieli] ADD  CONSTRAINT [DF__d_kieli__username]  DEFAULT (suser_name()) FOR [username]
 END
 
-
+GO
+USE [ANTERO]
