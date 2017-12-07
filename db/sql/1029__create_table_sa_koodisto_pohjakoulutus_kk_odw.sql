@@ -1,6 +1,9 @@
 USE [ANTERO]
 GO
-/****** Object:  Table [sa].[sa_koodisto_pohjakoulutus_kk_odw]    Script Date: 7.12.2017 17:06:33 ******/
+/****** Object:  Table [sa].[sa_koodisto_pohjakoulutus_kk_odw]    Script Date: 7.12.2017 17:15:04 ******/
+DROP TABLE IF EXISTS [sa].[sa_koodisto_pohjakoulutus_kk_odw]
+GO
+/****** Object:  Table [sa].[sa_koodisto_pohjakoulutus_kk_odw]    Script Date: 7.12.2017 17:15:04 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
