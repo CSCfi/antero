@@ -36,9 +36,7 @@ def makerow():
     #--painotettavatOppiaineet (array[PainotettavaOppiaineV1RDTO], optional),
     #--hakukohteenNimet": None, #nvarchar (max) (Map[string,string], optional): Hashmap containing hakukohde names and name language,
     #--aloituspaikatKuvaukset (Map[string,string], optional),
-    "hakukohteenNimet_kieli_fi": None, 
-    "hakukohteenNimet_kieli_sv": None, 
-    "hakukohteenNimet_kieli_en": None, 
+    
     "ammatillinenPerustutkinto": None, # bit null, --(boolean, optional),
     "hakulomakeUrl": None, # nvarchar(max) null, --(string, optional): Hakulomakkeen www-osoite,
     "koulutuksenAlkamisvuosi": None, # int null, --(integer, optional),
