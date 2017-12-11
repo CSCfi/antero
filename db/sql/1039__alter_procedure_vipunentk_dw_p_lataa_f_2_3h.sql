@@ -238,3 +238,6 @@ LEFT JOIN VipunenTK..d_kylla_ei d65 on d65.kylla_ei_koodi=f.kotimaakunta_sama_ku
 LEFT JOIN VipunenTK..d_kylla_ei d66 on d66.kylla_ei_koodi=f.ed_vuoden_kotimaakunta_sama_kuin_koulutuksen_maakunta
 LEFT JOIN VipunenTK..d_kylla_ei d67 on d67.kylla_ei_koodi=f.ed_vuoden_kotikunta_sama_kuin_koulutuksen_kunta
 		
+GO 
+
+USE [ANTERO]
