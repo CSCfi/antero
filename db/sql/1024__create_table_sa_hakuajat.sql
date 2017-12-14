@@ -1,5 +1,5 @@
 --
---  create table f_yo_rekrytointihaut
+--  create table sa.sa_hakuajat
 --
 
 USE [ANTERO]
@@ -24,5 +24,5 @@ CREATE TABLE [sa].[sa_hakuajat](
 	[latausaika] [datetime2](7) NULL,
 	[tila] [nvarchar](100) NULL,
 	[modified] [datetime2](7) NULL
-) 
+)
 END
