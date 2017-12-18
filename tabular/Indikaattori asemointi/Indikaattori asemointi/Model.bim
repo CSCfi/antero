@@ -391,6 +391,44 @@
             "dataType": "double",
             "isHidden": true,
             "sourceColumn": "Ammattikorkeakoulun TKI-henkilökunta"
+          },
+          {
+            "type": "calculated",
+            "name": "Organisaatio",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": [
+              "SWITCH(IF(NOT(ISBLANK([Aloituslukuvuosi (läpäisy)])),Muuttujat[Oppilaitos]),",
+              "\t\"Sibelius-Akatemia\",\"Taideyliopisto\",",
+              "\t\"Teatterikorkeakoulu\",\"Taideyliopisto\",",
+              "\t\"Kuvataideakatemia\",\"Taideyliopisto\",",
+              "SWITCH(Muuttujat[Oppilaitos],",
+              "\t\"Mikkelin Ammattikorkeakoulu\",\"Kaakkois-Suomen Ammattikorkeakoulu\",",
+              "\t\"Kymenlaakson Ammattikorkeakoulu\",\"Kaakkois-Suomen Ammattikorkeakoulu\",",
+              "\t\"Kemi-Tornion Ammattikorkeakoulu\",\"Lapin Ammattikorkeakoulu\",",
+              "\t\"Rovaniemen Ammattikorkeakoulu\",\"Lapin Ammattikorkeakoulu\",",
+              "\tMuuttujat[Oppilaitos]))"
+            ],
+            "displayFolder": "Organisaatiomuuttujat"
+          },
+          {
+            "type": "calculated",
+            "name": "Organisaatio_koodi",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": [
+              "SWITCH(IF(NOT(ISBLANK([Aloituslukuvuosi (läpäisy)])),Muuttujat[Koodit oppilaitos]),",
+              "\t\"01742\",\"10103\",",
+              "\t\"01717\",\"10103\",",
+              "\t\"01740\",\"10103\",",
+              "SWITCH([Koodit oppilaitos],",
+              "\t\"02506\",\"10118\",",
+              "\t\"02608\",\"10118\",",
+              "\t\"02505\",\"10108\",",
+              "\t\"02538\",\"10108\",",
+              "\t[Koodit oppilaitos]))"
+            ],
+            "displayFolder": "Organisaatiomuuttujat"
           }
         ],
         "partitions": [
@@ -1784,6 +1822,17 @@
           {
             "name": "Amk tki htv",
             "expression": " SUM([Ammattikorkeakoulun TKI-henkilökunta])"
+          },
+          {
+            "name": "7v suorittaneet mround",
+            "expression": [
+              "CALCULATE(IF(CALCULATE(SUM([7v_suorittaneet_lkm])=0),BLANK(),IF(CALCULATE(SUM([7v_suorittaneet_lkm]))=1,3,MROUND(CALCULATE(SUM([7v_suorittaneet_lkm])),3))))",
+              "\t\t"
+            ]
+          },
+          {
+            "name": "7v aloittaneet mround",
+            "expression": "CALCULATE(IF(CALCULATE(SUM([Yo 7v aloittaneet lkm])=0),BLANK(),IF(CALCULATE(SUM([Yo 7v aloittaneet lkm]))=1,3,MROUND(CALCULATE(SUM([Yo 7v aloittaneet lkm])),3))))"
           }
         ],
         "annotations": [
