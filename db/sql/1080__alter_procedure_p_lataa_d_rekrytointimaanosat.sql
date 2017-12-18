@@ -1,4 +1,4 @@
-ALTER  PROCEDURE [dbo].[p_lataa_d_rekrytointi_maanosat] AS
+ALTER  PROCEDURE [dw].[p_lataa_d_rekrytointi_maanosat] AS
 if not exists (select * from d_rekrytointi_maanosat where id=-1) begin
   set identity_insert d_rekrytointi_maanosat on;
   insert into d_rekrytointi_maanosat (
@@ -23,7 +23,7 @@ if not exists (select * from d_rekrytointi_maanosat where id=-1) begin
 	  koodi,nimi,nimi_sv,nimi_en,
 	  koodi,nimi,nimi_sv,nimi_en,
     source
-  from sa_koodistot
+  from sa.sa_koodistot
   where koodisto='vipunenmeta'
   and koodi='-1'
   ;
@@ -44,14 +44,14 @@ end else begin
     maanosat_sv=s.nimi_sv,
     maanosat_en=s.nimi_en,
     source=s.source
-  from d_rekrytointi_maanosat d
-  join sa_koodistot s on s.koodi=d.rekrytointi_maanosat_koodi
+  from dw.d_rekrytointi_maanosat d
+  join sa.sa_koodistot s on s.koodi=d.rekrytointi_maanosat_koodi
   where s.koodisto='vipunenmeta'
   and s.koodi='-1'
   ;
 end
 
-MERGE d_rekrytointi_maanosat AS target
+MERGE dw.d_rekrytointi_maanosat AS target
 USING (
   SELECT DISTINCT
   	 s.koodi
@@ -95,7 +95,7 @@ USING (
   	 END
   	 AS maanosat2nimi_en
 	,source=s.source
-  FROM sa_koodistot s
+  FROM sa.sa_koodistot s
   	LEFT JOIN sa_maaluokitus s2 ON   s2.maanosatkoodi =
   	CASE
   		WHEN s.koodi = '1'
@@ -166,10 +166,10 @@ WHEN NOT MATCHED THEN
     src.nimi_sv,
     src.nimi_en,
     src.maanosat0koodi,
-	src.maanosat0nimi,
+	  src.maanosat0nimi,
     src.maanosat0nimi_sv,
-	src.maanosat0nimi_en,
-	src.maanosat2koodi,
+	  src.maanosat0nimi_en,
+	  src.maanosat2koodi,
     src.maanosat2nimi,
     src.maanosat2nimi_sv,
     src.maanosat2nimi_en,
