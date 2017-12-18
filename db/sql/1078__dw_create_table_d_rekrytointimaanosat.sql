@@ -1,3 +1,4 @@
+USE [ANTERO]
 IF NOT EXISTS (select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='dw' and TABLE_NAME='d_rekrytointi_maanosat') BEGIN
 
 CREATE TABLE dw.d_rekrytointi_maanosat(
@@ -10,13 +11,14 @@ CREATE TABLE dw.d_rekrytointi_maanosat(
   rekrytointi_maanosat_sv nvarchar(100) not null,
   rekrytointi_maanosat_en nvarchar(100) not null,
   maanosat0_koodi nvarchar(100) not null,
-  maanosat0_fi,nvarchar(100) not null,
+  maanosat0_fi nvarchar(100) not null,
   maanosat0_sv nvarchar(100) not null,
   maanosat0_en nvarchar(100) not null,
   maanosat_koodi nvarchar(100) not null,
-  maanosat_fi,nvarchar(100) not null,
+  maanosat_fi nvarchar(100) not null,
   maanosat_sv nvarchar(100) not null,
   maanosat_en nvarchar(100) not null,
+
 
  CONSTRAINT PK__d_rekrytointi_maanosat PRIMARY KEY CLUSTERED (id ASC)
 )
