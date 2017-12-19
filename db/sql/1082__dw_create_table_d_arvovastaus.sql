@@ -18,8 +18,8 @@ CREATE TABLE dw.d_arvovastaus (
  CONSTRAINT PK__d_arvovastaus PRIMARY KEY CLUSTERED (id ASC)
 )
 ;
-ALTER TABLE dw.d_arvovastaus ADD  CONSTRAINT DF__d_nimitystapa__loadtime  DEFAULT (getdate()) FOR loadtime
+ALTER TABLE dw.d_arvovastaus ADD  CONSTRAINT DF__d_arvovastaus__loadtime  DEFAULT (getdate()) FOR loadtime
 ;
-ALTER TABLE dw.d_arvovastaus ADD  CONSTRAINT DF__d_nimitystapa__username  DEFAULT (suser_sname()) FOR username
+ALTER TABLE dw.d_arvovastaus ADD  CONSTRAINT DF__d_arvovastaus__username  DEFAULT (suser_sname()) FOR username
 ;
 END
