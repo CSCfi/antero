@@ -18663,7 +18663,7 @@
                   <Type>Member</Type>
                 </Calculation>
                 <Calculation>
-                  <Name>[Measures].[Aloittaneet]</Name>
+                  <Name>[Measures].[Läsnäolevaksi ilmoittautuneet]</Name>
                   <Type>Member</Type>
                 </Calculation>
                 <Calculation>
@@ -19018,10 +19018,6 @@
                   <Type>Member</Type>
                 </Calculation>
                 <Calculation>
-                  <Name>[Measures].[Nybörjare]</Name>
-                  <Type>Member</Type>
-                </Calculation>
-                <Calculation>
                   <Name>[Measures].[Antagna]</Name>
                   <Type>Member</Type>
                 </Calculation>
@@ -19035,6 +19031,10 @@
                 </Calculation>
                 <Calculation>
                   <Name>[Measures].[Antal som mottagit en plats]</Name>
+                  <Type>Member</Type>
+                </Calculation>
+                <Calculation>
+                  <Name>[Measures].[Närvarande]</Name>
                   <Type>Member</Type>
                 </Calculation>
                 <Calculation>
@@ -19375,10 +19375,6 @@
                   <Type>Member</Type>
                 </Calculation>
                 <Calculation>
-                  <Name>[Measures].[Admitted]</Name>
-                  <Type>Member</Type>
-                </Calculation>
-                <Calculation>
                   <Name>[Measures].[All applicants (no netting)]</Name>
                   <Type>Member</Type>
                 </Calculation>
@@ -19388,6 +19384,10 @@
                 </Calculation>
                 <Calculation>
                   <Name>[Measures].[All applicants]</Name>
+                  <Type>Member</Type>
+                </Calculation>
+                <Calculation>
+                  <Name>[Measures].[Enrolled as present]</Name>
                   <Type>Member</Type>
                 </Calculation>
                 <Calculation>
@@ -30333,7 +30333,7 @@
               <Commands>
                 <Command>
                   <Text>CALCULATE; 
-CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1; 
+CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1, VISIBLE = 0; 
 ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measures defined]; </Text>
                 </Command>
                 <Command>
@@ -30418,12 +30418,12 @@ CREATE MEASURE 'Muuttujat'[Ensisijaiset hakijat]=CALCULATE(DISTINCTCOUNT(Muuttuj
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Läsnäolijaksi ilmoittautuneet]=calculate(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Vastaanoton tila]="Vastaanottanut läsnäoleva");
+CREATE MEASURE 'Muuttujat'[Läsnäolevaksi ilmoittautuneet]=calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet2]=1);
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
-                      <Value>Läsnäolijaksi ilmoittautuneet</Value>
+                      <Value>Läsnäolevaksi ilmoittautuneet</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -30817,12 +30817,12 @@ CREATE MEASURE 'Muuttujat'[Admitted]=calculate(DISTINCTCOUNT([Henkilö OID]),Muu
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Läsnäolijaksi ilmoittautuneetSV]=calculate(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Vastaanoton tila]="Vastaanottanut läsnäoleva");
+CREATE MEASURE 'Muuttujat'[Närvarande]=calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet2]=1);
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
-                      <Value>Läsnäolijaksi ilmoittautuneetSV</Value>
+                      <Value>Närvarande</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -30836,12 +30836,12 @@ CREATE MEASURE 'Muuttujat'[Läsnäolijaksi ilmoittautuneetSV]=calculate(DISTINCT
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Läsnäolijaksi ilmoittautuneetEN]=calculate(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Vastaanoton tila]="Vastaanottanut läsnäoleva");
+CREATE MEASURE 'Muuttujat'[Enrolled as present]=calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet2]=1);
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
-                      <Value>Läsnäolijaksi ilmoittautuneetEN</Value>
+                      <Value>Enrolled as present</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -30948,13 +30948,13 @@ CREATE MEASURE 'Muuttujat'[Läsnäolijaksi ilmoittautuneetEN]=calculate(DISTINCT
                     <Annotation>
                       <Name>Format</Name>
                       <Value>
-                        <Format Format="NumberWhole" xmlns="" />
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
                       </Value>
                     </Annotation>
                   </Annotations>
-                  <CalculationReference>[Läsnäolijaksi ilmoittautuneet]</CalculationReference>
+                  <CalculationReference>[Läsnäolevaksi ilmoittautuneet]</CalculationReference>
                   <CalculationType>Member</CalculationType>
-                  <FormatString>'0'</FormatString>
+                  <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
                 <CalculationProperty>
                   <Annotations>
@@ -31393,7 +31393,7 @@ CREATE MEASURE 'Muuttujat'[Läsnäolijaksi ilmoittautuneetEN]=calculate(DISTINCT
                       </Value>
                     </Annotation>
                   </Annotations>
-                  <CalculationReference>[Läsnäolijaksi ilmoittautuneetSV]</CalculationReference>
+                  <CalculationReference>[Närvarande]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
@@ -31414,7 +31414,7 @@ CREATE MEASURE 'Muuttujat'[Läsnäolijaksi ilmoittautuneetEN]=calculate(DISTINCT
                       </Value>
                     </Annotation>
                   </Annotations>
-                  <CalculationReference>[Läsnäolijaksi ilmoittautuneetEN]</CalculationReference>
+                  <CalculationReference>[Enrolled as present]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
