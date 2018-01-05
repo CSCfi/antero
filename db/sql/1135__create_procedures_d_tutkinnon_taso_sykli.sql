@@ -25,7 +25,7 @@ VALUES
 (3, N'3', N'II sykli', N'Cykeln II', N'Cycle II', N'3', CAST(N'2018-01-05T08:00:33.513' AS DateTime), N'p_lataa_d_tutkinnon_aloitussykli_kk', N'DWI\pankalai'),
 (4, N'4', N'II sykli siirtohaku', N'Cykeln II ansökan om överflyttning', N'Cycle II transfer application', N'4', CAST(N'2018-01-05T08:00:33.513' AS DateTime), N'p_lataa_d_tutkinnon_aloitussykli_kk', N'DWI\pankalai'),
 (5, N'5', N'III sykli', N'Cykeln III', N'Cycle III', N'5', CAST(N'2018-01-05T08:00:33.513' AS DateTime), N'p_lataa_d_tutkinnon_aloitussykli_kk', N'DWI\pankalai'),
-(5, N'5', N'Tutkintoon johtamaton koulutus', N'Utbildning som inte leder till en examen', N'Education not leading to a qualification', N'6', CAST(N'2018-01-05T08:00:33.513' AS DateTime), N'p_lataa_d_tutkinnon_aloitussykli_kk', N'DWI\pankalai')
+(6, N'6', N'Tutkintoon johtamaton koulutus', N'Utbildning som inte leder till en examen', N'Education not leading to a qualification', N'6', CAST(N'2018-01-05T08:00:33.513' AS DateTime), N'p_lataa_d_tutkinnon_aloitussykli_kk', N'DWI\pankalai')
 
 
 SET IDENTITY_INSERT dw.d_tutkinnon_aloitussykli_kk OFF
