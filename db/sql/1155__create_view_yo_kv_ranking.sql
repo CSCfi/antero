@@ -1,3 +1,8 @@
+USE [ANTERO]
+GO
+IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dw].[v_yo_kv_ranking]'))
+EXEC dbo.sp_executesql @statement = N'
+
 create view dw.v_yo_kv_ranking as
 
 
@@ -241,3 +246,4 @@ where f.konserni='E' and d9.aineistotyyppi_koodi='L'
 GO
 
 USE [ANTERO]
+'
