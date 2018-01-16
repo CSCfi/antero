@@ -2,6 +2,7 @@ create view dw.v_yo_kv_ranking as
 
 
 
+
 /************* OPISKELIJAT ***************/
 
 Select
@@ -9,7 +10,11 @@ Select
 --- Luokittelevat ---
 
  tilastointivuosi
-,d1.oppilaitos as Yliopisto
+,case 
+	when d1.oppilaitos='Tampereen tekn. yliopisto' then 'Tampereen teknillinen yliopisto'
+	when d1.oppilaitos='Lappeenrannan tekn. yliopisto' then 'Lappeenrannan teknillinen yliopisto'
+	else d1.oppilaitos
+	end as Yliopisto
 ,d5.sukupuoli
 ,d6.kansalaisuus_versio2
 ,d7.opiskelijan_olo as 'Opiskelijan olo syys'
@@ -67,7 +72,11 @@ select
 ---Luokittelevat---
 
 f.tilastointivuosi
-,d1.oppilaitos
+,case 
+	when d1.oppilaitos='Tampereen tekn. yliopisto' then 'Tampereen teknillinen yliopisto'
+	when d1.oppilaitos='Lappeenrannan tekn. yliopisto' then 'Lappeenrannan teknillinen yliopisto'
+	else d1.oppilaitos
+	end as Yliopisto
 ,d5.sukupuoli
 ,d6.kansalaisuus_versio2
 ,null --Opiskelijan olo syys
