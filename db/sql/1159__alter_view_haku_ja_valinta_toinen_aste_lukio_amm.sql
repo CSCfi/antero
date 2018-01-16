@@ -9,14 +9,15 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
+IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dw].[v_haku_ja_valinta_toinen_aste_lukio_amm]'))
+EXEC dbo.sp_executesql @statement = N'
 
 
 
 
 
 
-
-ALTER VIEW [dw].[v_haku_ja_valinta_toinen_aste_lukio_amm] AS
+CREATE VIEW [dw].[v_haku_ja_valinta_toinen_aste_lukio_amm] AS
 
 SELECT --top 10
 		cast(f.loadtime as date) as Päivitysaika
@@ -34,7 +35,7 @@ SELECT --top 10
 	  ,[Haku] = d25.hakuryhma_fi
 	  ,[Haun nimi] = d25.haun_nimi_fi
 	  ,[Hakukohde] = d10.selite_fi
-	  ,[Hakutapa] = case d25.hakutapa_fi when 'Jatkuva haku' then 'Erillishaku' else d25.hakutapa_fi end
+	  ,[Hakutapa] = case d25.hakutapa_fi when ''Jatkuva haku'' then ''Erillishaku'' else d25.hakutapa_fi end
 	  ,[Hakutyyppi] = d25.hakutyyppi_fi
 	  ,[Hakukohteen organisaatio] = d16a.organisaatio_fi
 	  ,[Koulutuksen järjestäjä (hakukohde)] = d16a.organisaatio_fi
@@ -65,11 +66,11 @@ SELECT --top 10
 	  ,[Koulutuksen alkamisvuosi] = f.koulutuksen_alkamisvuosi
 	  ,[Koulutuksen alkamiskausi] = d2.selite_fi
 	  ,[Koulutuksen kieli] = d27.kieli_fi
-	  ,[Pohjakoulutuksen päättövuosi] = case when f.pohjakoulutuksen_paattovuosi is null or f.pohjakoulutuksen_paattovuosi='0' then 'Tuntematon' else f.pohjakoulutuksen_paattovuosi end --coalesce(cast([perusopetuksen_paattovuosi] as varchar(50)), 'Tuntematon') -- tän vois fiksata latauksessa jo	 
-	  ,[Pohjakoulutus] = case when d22.selite_fi in('Perusopetuksen oppimäärä','Perusopetuksen osittain yksilöllistetty oppimäärä','Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä','Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain') then 'Perusopetuksen oppimäärä' else d22.selite_fi end
-	  ,[Erityisopetuspohja] = case when d22.selite_fi not in ('Perusopetuksen osittain yksilöllistetty oppimäärä','Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä','Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain') then 'Ei erityisopetuspohja' else d22.selite_fi end
+	  ,[Pohjakoulutuksen päättövuosi] = case when f.pohjakoulutuksen_paattovuosi is null or f.pohjakoulutuksen_paattovuosi=''0'' then ''Tuntematon'' else f.pohjakoulutuksen_paattovuosi end --coalesce(cast([perusopetuksen_paattovuosi] as varchar(50)), ''Tuntematon'') -- tän vois fiksata latauksessa jo	 
+	  ,[Pohjakoulutus] = case when d22.selite_fi in(''Perusopetuksen oppimäärä'',''Perusopetuksen osittain yksilöllistetty oppimäärä'',''Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä'',''Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain'') then ''Perusopetuksen oppimäärä'' else d22.selite_fi end
+	  ,[Erityisopetuspohja] = case when d22.selite_fi not in (''Perusopetuksen osittain yksilöllistetty oppimäärä'',''Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä'',''Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain'') then ''Ei erityisopetuspohja'' else d22.selite_fi end
 	  ,[Pohjakoulutusvaatimus] = d5.selite_fi
-	  ,[Päättöluokka] = case when f.paattoluokka in ('9','10') then f.paattoluokka else 'Muu' end
+	  ,[Päättöluokka] = case when f.paattoluokka in (''9'',''10'') then f.paattoluokka else ''Muu'' end
 	  ,[Sukupuoli] = d7.sukupuoli_fi
 	  ,[Äidinkieli] = d8.kieliryhma1_fi
 
@@ -82,7 +83,7 @@ SELECT --top 10
 	  ,[Grundutbildningens landskap] = d29.maakunta_SV
 	  ,[Ansökning] = d25.hakuryhma_sv
 	  ,[Sökobjekt] = d10.selite_sv
-	  ,[Gemensam/separat ansökan] = case when d25.hakutapa_fi in ('Jatkuva haku','Erillishaku') then 'Separata antagningar' else d25.hakutapa_sv end
+	  ,[Gemensam/separat ansökan] = case when d25.hakutapa_fi in (''Jatkuva haku'',''Erillishaku'') then ''Separata antagningar'' else d25.hakutapa_sv end
 	  ,[Typ av ansökan] = d25.hakutyyppi_sv
 	  ,[Utbildningsanordnare (sökobjet)] = d16a.organisaatio_sv
 	  ,[Läroanstalt (sökobjekt)] = d16b.organisaatio_sv
@@ -107,12 +108,12 @@ SELECT --top 10
 	  ,[Begynnelseår] = f.koulutuksen_alkamisvuosi
 	  ,[Begynnelsetermin] = d2.selite_sv
 	  ,[Utbildningens språk] = d27.kieli_SV
-	  ,[År då grundutbildning avslutades] = case when f.pohjakoulutuksen_paattovuosi is null or f.pohjakoulutuksen_paattovuosi='0' then 'Okänd' else f.pohjakoulutuksen_paattovuosi end --coalesce(cast([perusopetuksen_paattovuosi] as varchar(50)), 'Tuntematon') -- tän vois fiksata latauksessa jo	 
-	  ,[Grundutbildning] = case when d22.selite_fi in ('Perusopetuksen oppimäärä','Perusopetuksen osittain yksilöllistetty oppimäärä','Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä','Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain') then 'Den grundläggande utbildningens lärokurs' else d22.selite_sv end
-	  ,[Specialundervisningsgrund] = case when d22.selite_fi not in ('Perusopetuksen osittain yksilöllistetty oppimäärä','Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä','Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain') then 'Ej specialundervisningsbakrund' else d22.selite_sv end
+	  ,[År då grundutbildning avslutades] = case when f.pohjakoulutuksen_paattovuosi is null or f.pohjakoulutuksen_paattovuosi=''0'' then ''Okänd'' else f.pohjakoulutuksen_paattovuosi end --coalesce(cast([perusopetuksen_paattovuosi] as varchar(50)), ''Tuntematon'') -- tän vois fiksata latauksessa jo	 
+	  ,[Grundutbildning] = case when d22.selite_fi in (''Perusopetuksen oppimäärä'',''Perusopetuksen osittain yksilöllistetty oppimäärä'',''Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä'',''Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain'') then ''Den grundläggande utbildningens lärokurs'' else d22.selite_sv end
+	  ,[Specialundervisningsgrund] = case when d22.selite_fi not in (''Perusopetuksen osittain yksilöllistetty oppimäärä'',''Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä'',''Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain'') then ''Ej specialundervisningsbakrund'' else d22.selite_sv end
 	  --Specialundervisningsbakgrund
 	  ,[Grundutbildningskrav] = d5.selite_sv
-	  ,[Avslutningsklass] = case when f.paattoluokka in ('9','10') then f.paattoluokka else 'Annan' end
+	  ,[Avslutningsklass] = case when f.paattoluokka in (''9'',''10'') then f.paattoluokka else ''Annan'' end
 	  --Sista klass
 	  ,[Kön] = d7.sukupuoli_SV
 	  ,[Modersmål] = d8.kieliryhma1_sv
@@ -125,7 +126,7 @@ SELECT --top 10
 	  ,[Region of prior education] = d29.maakunta_EN
 	  ,[Application] = d25.hakuryhma_en
 	  ,[Applied study programme] = d10.selite_en
-	  ,[Joint/separate application] = case when d25.hakutapa_fi in ('Jatkuva haku','Erillishaku') then 'Separate application' when d25.hakutapa_fi='Yhteishaku' then 'Joint application' end --Application system
+	  ,[Joint/separate application] = case when d25.hakutapa_fi in (''Jatkuva haku'',''Erillishaku'') then ''Separate application'' when d25.hakutapa_fi=''Yhteishaku'' then ''Joint application'' end --Application system
 	  ,[Application round] = d25.hakutyyppi_en
 	  ,[Education provider (study programme)] = d16a.organisaatio_en
 	  ,[Ed. institution (study programme)] = d16b.organisaatio_en
@@ -150,11 +151,11 @@ SELECT --top 10
 	  ,[Year (start of studies)] = f.koulutuksen_alkamisvuosi
 	  ,[Term (start of studies)] = d2.selite_en
 	  ,[Language of education] = d27.kieli_EN
-	  ,[Graduation year (prior education)] = case when f.pohjakoulutuksen_paattovuosi is null or f.pohjakoulutuksen_paattovuosi='0' then 'Unknown' else f.pohjakoulutuksen_paattovuosi end --coalesce(cast([perusopetuksen_paattovuosi] as varchar(50)), 'Tuntematon') -- tän vois fiksata latauksessa jo	 
-	  ,[Prior education] = case when d22.selite_fi in ('Perusopetuksen oppimäärä','Perusopetuksen osittain yksilöllistetty oppimäärä','Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä','Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain') then '-' else d22.selite_en end
-	  ,[Special needs ed. background] = case when d22.selite_fi not in ('Perusopetuksen osittain yksilöllistetty oppimäärä','Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä','Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain') then 'No special needs ed. background' else d22.selite_en end
+	  ,[Graduation year (prior education)] = case when f.pohjakoulutuksen_paattovuosi is null or f.pohjakoulutuksen_paattovuosi=''0'' then ''Unknown'' else f.pohjakoulutuksen_paattovuosi end --coalesce(cast([perusopetuksen_paattovuosi] as varchar(50)), ''Tuntematon'') -- tän vois fiksata latauksessa jo	 
+	  ,[Prior education] = case when d22.selite_fi in (''Perusopetuksen oppimäärä'',''Perusopetuksen osittain yksilöllistetty oppimäärä'',''Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä'',''Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain'') then ''-'' else d22.selite_en end
+	  ,[Special needs ed. background] = case when d22.selite_fi not in (''Perusopetuksen osittain yksilöllistetty oppimäärä'',''Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä'',''Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain'') then ''No special needs ed. background'' else d22.selite_en end
 	  ,[Admission criteria] = d5.selite_en
-	  ,[Last year of comprehensive school] = case when f.paattoluokka in ('9','10') then f.paattoluokka else 'Other' end
+	  ,[Last year of comprehensive school] = case when f.paattoluokka in (''9'',''10'') then f.paattoluokka else ''Other'' end
 	  ,[Gender] = d7.sukupuoli_EN
 	  ,[Mother tongue] = d8.kieliryhma1_en
 
@@ -180,13 +181,13 @@ SELECT --top 10
 	 /* Mittarit */
 
 	  ,[Hakijat3] = case when f.loadtime>=d1.hakijat then 1 else 0 end
-	  ,[Hakijat3 perusopetuksen päättävät] = case when f.loadtime>=d1.hakijat and d22.koodi in ('1','2','3','6') and f.pohjakoulutuksen_paattovuosi=d1.hakuvuosi then 1 else 0 end
+	  ,[Hakijat3 perusopetuksen päättävät] = case when f.loadtime>=d1.hakijat and d22.koodi in (''1'',''2'',''3'',''6'') and f.pohjakoulutuksen_paattovuosi=d1.hakuvuosi then 1 else 0 end
 	  ,[Ensisijaiset hakijat3] = case when f.loadtime>=d1.hakijat and hakutoive=1 then 1 else 0 end
-	  ,[Valitut3] = case when f.loadtime>=d1.valitut and f.valinnan_tila IN ('HYVAKSYTTY','VARASIJALTA_HYVAKSYTTY','PERUNUT') then 1 else 0 end
-	  ,[Valitut3 perusopetuksen päättävät] = case when f.loadtime>=d1.valitut and f.valinnan_tila IN ('HYVAKSYTTY','VARASIJALTA_HYVAKSYTTY','PERUNUT') and d22.koodi in ('1','2','3','6') and f.pohjakoulutuksen_paattovuosi=d1.hakuvuosi then 1 else 0 end
-	  ,[Paikan vastaanottaneet3] = case when f.loadtime>=d1.vastaanottaneet and f.vastaanoton_tila IN ('VASTAANOTTANUT_SITOVASTI','EHDOLLISESTI_VASTAANOTTANUT') then 1 else 0	end		
-	  ,[Paikan vastaanottaneet3 perusopetuksen päättävät] = case when f.loadtime>=d1.vastaanottaneet and f.vastaanoton_tila IN ('VASTAANOTTANUT_SITOVASTI','EHDOLLISESTI_VASTAANOTTANUT') and d22.koodi in ('1','2','3','6') and f.pohjakoulutuksen_paattovuosi=d1.hakuvuosi then 1 else 0 end
-	  ,[Aloittaneet3] = case when f.loadtime>=d1.aloittaneet and f.ilmoittautumisen_tila IN ('LASNA','LASNA_KOKO_LUKUVUOSI','LASNA_SYKSY') then 1 else 0 end
+	  ,[Valitut3] = case when f.loadtime>=d1.valitut and f.valinnan_tila IN (''HYVAKSYTTY'',''VARASIJALTA_HYVAKSYTTY'',''PERUNUT'') then 1 else 0 end
+	  ,[Valitut3 perusopetuksen päättävät] = case when f.loadtime>=d1.valitut and f.valinnan_tila IN (''HYVAKSYTTY'',''VARASIJALTA_HYVAKSYTTY'',''PERUNUT'') and d22.koodi in (''1'',''2'',''3'',''6'') and f.pohjakoulutuksen_paattovuosi=d1.hakuvuosi then 1 else 0 end
+	  ,[Paikan vastaanottaneet3] = case when f.loadtime>=d1.vastaanottaneet and f.vastaanoton_tila IN (''VASTAANOTTANUT_SITOVASTI'',''EHDOLLISESTI_VASTAANOTTANUT'') then 1 else 0	end		
+	  ,[Paikan vastaanottaneet3 perusopetuksen päättävät] = case when f.loadtime>=d1.vastaanottaneet and f.vastaanoton_tila IN (''VASTAANOTTANUT_SITOVASTI'',''EHDOLLISESTI_VASTAANOTTANUT'') and d22.koodi in (''1'',''2'',''3'',''6'') and f.pohjakoulutuksen_paattovuosi=d1.hakuvuosi then 1 else 0 end
+	  ,[Aloittaneet3] = case when f.loadtime>=d1.aloittaneet and f.ilmoittautumisen_tila IN (''LASNA'',''LASNA_KOKO_LUKUVUOSI'',''LASNA_SYKSY'') then 1 else 0 end
 
 	  --Suomi
 	  ,[Hakeutuminen] = NULL--d32.haut
@@ -205,7 +206,7 @@ SELECT --top 10
 	  /* Järjestys-kentät */
 
 
-      ,[Erityisopetuspohja järjestys] = case when d22.selite_fi not in ('Perusopetuksen osittain yksilöllistetty oppimäärä','Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä','Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain') then 99 else d22.jarjestys end
+      ,[Erityisopetuspohja järjestys] = case when d22.selite_fi not in (''Perusopetuksen osittain yksilöllistetty oppimäärä'',''Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä'',''Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain'') then 99 else d22.jarjestys end
 	  ,[Haku järjestys] = d25.hakuryhma_koodi
 	  ,[Hakutoive järjestys] = f.hakutoive
       ,[Hakijan pohjakoulutuksen maakunta järjestys] = d29.jarjestys_maakunta_koodi
@@ -217,7 +218,7 @@ SELECT --top 10
 	  ,[Koulutusala, taso 3 järjestys] = d20.jarjestys_koulutusalataso3_koodi
  	  ,[Hakukohteen maakunta järjestys] = d19.jarjestys_maakunta_koodi
 	  ,[Hakukohteen koulutustyyppi järjestys] = d18.jarjestys
-	  ,[Hakukohteen toimipiste järjestys] = case when d16c.organisaatio_fi='Tieto puuttuu' then 'ööö' else left(d16c.organisaatio_fi,20) end
+	  ,[Hakukohteen toimipiste järjestys] = case when d16c.organisaatio_fi=''Tieto puuttuu'' then ''ööö'' else left(d16c.organisaatio_fi,20) end
 	  ,[Hakutyyppi järjestys] = d25.jarjestys_hakutyyppi
 	  ,[Ikä 5v järjestys] = d26.jarjestys_ikaryhma1
 	  ,[Kansalaisuus (maanosa) järjestys] = d33.jarjestys_maanosa0_koodi
@@ -229,15 +230,15 @@ SELECT --top 10
 	  ,[Kotipaikan ELY järjestys] = d6.jarjestys_ely_koodi
 	  ,[Kotipaikan suuralue (OKM) järjestys] = NULL--d6.jarjestys_suuralue_okm
 	  ,[Koulutuksen kieli järjestys] = d27.kieli_koodi
-	  ,[Pohjakoulutus järjestys] = case when d22.selite_fi in('Perusopetuksen oppimäärä','Perusopetuksen osittain yksilöllistetty oppimäärä','Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä','Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain') then '1' else d22.jarjestys end
+	  ,[Pohjakoulutus järjestys] = case when d22.selite_fi in(''Perusopetuksen oppimäärä'',''Perusopetuksen osittain yksilöllistetty oppimäärä'',''Perusopetuksen pääosin tai kokonaan yksilöllistetty oppimäärä'',''Perusopetuksen yksilöllistetty oppimäärä, opetus järjestetty toiminta-alueittain'') then ''1'' else d22.jarjestys end
 	  ,[Pohjakoulutuksen suuralue (OKM) järjestys] = NULL--d29.jarjestys_suuralue_okm
 	  ,[Pohjakoulutuksen maakunta järjestys] = d29.jarjestys_maakunta_koodi
-	  ,[Pohjakoulutuksen kunta järjestys] = case d29.kunta_koodi when '-1' then '9998' else d29.kunta_koodi end
-	  ,[Pohjakoulutuksen järjestäjä järjestys] = case when NULLIF(d30a.organisaatio_fi,'') is null then 'ööö' else left(d30a.organisaatio_en,15) end
-	  ,[Pohjakoulutuksen oppilaitos järjestys] = case when NULLIF(d30b.organisaatio_fi,'') is null then 'ööö' else left(d30b.organisaatio_fi,15) end
+	  ,[Pohjakoulutuksen kunta järjestys] = case d29.kunta_koodi when ''-1'' then ''9998'' else d29.kunta_koodi end
+	  ,[Pohjakoulutuksen järjestäjä järjestys] = case when NULLIF(d30a.organisaatio_fi,'''') is null then ''ööö'' else left(d30a.organisaatio_en,15) end
+	  ,[Pohjakoulutuksen oppilaitos järjestys] = case when NULLIF(d30b.organisaatio_fi,'''') is null then ''ööö'' else left(d30b.organisaatio_fi,15) end
 	  ,[Pohjakoulutusvaatimus järjestys] = d5.jarjestys
-	  ,[Pohjakoulutuksen päättövuosi järjestys] = case when f.pohjakoulutuksen_paattovuosi in ('Tieto puuttuu','0') then '9999' else 2050-f.pohjakoulutuksen_paattovuosi end
-	  ,[Päättöluokka järjestys] = case when f.paattoluokka in ('9','10') then f.paattoluokka else '998' end
+	  ,[Pohjakoulutuksen päättövuosi järjestys] = case when f.pohjakoulutuksen_paattovuosi in (''Tieto puuttuu'',''0'') then ''9999'' else 2050-f.pohjakoulutuksen_paattovuosi end
+	  ,[Päättöluokka järjestys] = case when f.paattoluokka in (''9'',''10'') then f.paattoluokka else ''998'' end
 	  ,[Sukupuoli järjestys] = d7.jarjestys_sukupuoli_koodi
 	  ,[Äidinkieli versio1 järjestys] = d8.jarjestys_kieliryhma1
 	  ,[Hakeutuminen järjestys] = NULL--coalesce(d32.haut_jarjestys,99)
@@ -247,7 +248,7 @@ SELECT --top 10
 
   LEFT JOIN dw.d_haku d25 ON d25.id = f.d_haku_id
   LEFT JOIN dw.d_kausi d2 ON d2.id = f.d_kausi_koulutuksen_alkamiskausi_id
-  INNER JOIN sa.sa_haku_ja_valinta_vuosikello_toinen_aste d1 on ((d1.haku_oid=d25.haku_oid and d1.haku_oid is not null) OR (d1.koulutuksen_alkamiskausi=cast(f.koulutuksen_alkamisvuosi as varchar)+cast(d2.jarjestys as varchar) and d25.hakutapa_koodi <> '01' and d1.haku_oid is null)) and f.loadtime >= d1.hakijat
+  INNER JOIN sa.sa_haku_ja_valinta_vuosikello_toinen_aste d1 on ((d1.haku_oid=d25.haku_oid and d1.haku_oid is not null) OR (d1.koulutuksen_alkamiskausi=cast(f.koulutuksen_alkamisvuosi as varchar)+cast(d2.jarjestys as varchar) and d25.hakutapa_koodi <> ''01'' and d1.haku_oid is null)) and f.loadtime >= d1.hakijat
   --LEFT JOIN dw.d_kausi d1 ON d1.id = f.[hakukausi_id]
   LEFT JOIN dw.d_kytkin d3 ON d3.id=f.d_kytkin_kiinnostunut_oppisopimuksesta_id
   --LEFT JOIN dw.d_paattoluokka d4 ON d4.id = f.paattoluokka_id
@@ -275,7 +276,7 @@ SELECT --top 10
   LEFT JOIN dw.d_organisaatioluokitus d30b ON d30b.id = f.d_organisaatio_lahtokoulu_oppilaitos_id
   LEFT JOIN dw.d_maatjavaltiot2 d33 on d33.id=f.d_maatjavaltiot_kansalaisuus_id
 
-where  f.koulutuksen_alkamisvuosi>2013 and d25.korkeakouluhaku=0 and d25.hakuryhma_koodi = '1'
+where  f.koulutuksen_alkamisvuosi>2013 and d25.korkeakouluhaku=0 and d25.hakuryhma_koodi = ''1''
 
 
 
@@ -300,7 +301,7 @@ SELECT distinct
 	  ,[Haku] = d1.hakuryhma_fi
 	  ,[Haun nimi] = d1.haun_nimi_fi
 	  ,Hakukohde = d3.selite_fi
-	  ,[Hakutapa] = case d1.hakutapa_fi when 'Jatkuva haku' then 'Erillishaku' else d1.hakutapa_fi end
+	  ,[Hakutapa] = case d1.hakutapa_fi when ''Jatkuva haku'' then ''Erillishaku'' else d1.hakutapa_fi end
       ,Hakutyyppi = d1.hakutyyppi_fi
 	  ,d8a.organisaatio_fi
 	  ,d8a.organisaatio_fi 
@@ -348,7 +349,7 @@ SELECT distinct
 	  ,[Grundutbildningens landskap] = null
 	  ,[Ansökning] = d1.hakuryhma_sv
 	  ,[Sökobjekt] = d3.selite_sv
-	  ,[Gemensam/separat ansökan] = case when d1.hakutapa_fi in ('Jatkuva haku','Erillishaku') then 'Separata antagningar' when d1.hakutapa_fi='Yhteishaku' then d1.hakutapa_sv end
+	  ,[Gemensam/separat ansökan] = case when d1.hakutapa_fi in (''Jatkuva haku'',''Erillishaku'') then ''Separata antagningar'' when d1.hakutapa_fi=''Yhteishaku'' then d1.hakutapa_sv end
 	  ,[Typ av ansökan] = d1.hakutyyppi_sv
 	  ,[Utbildningsanordnare (sökobjet)] = d8a.organisaatio_sv
 	  ,[Läroanstalt (sökobjekt)] = d8b.organisaatio_sv
@@ -389,7 +390,7 @@ SELECT distinct
 	  ,[Region of prior education] = null
 	  ,[Application] = d1.hakuryhma_en
 	  ,[Applied study programme] = d3.selite_en
-	  ,[Joint/separate application] = case when d1.hakutapa_fi in ('Jatkuva haku','Erillishaku') then 'Separate application' when d1.hakutapa_fi='Yhteishaku' then 'Joint application' end --Application system
+	  ,[Joint/separate application] = case when d1.hakutapa_fi in (''Jatkuva haku'',''Erillishaku'') then ''Separate application'' when d1.hakutapa_fi=''Yhteishaku'' then ''Joint application'' end --Application system
 	  ,[Application round] = d1.hakutyyppi_EN
 	  ,[Education provider (study programme)] = d8a.organisaatio_en
 	  ,[Ed. institution (study programme)] = d8b.organisaatio_en
@@ -466,7 +467,7 @@ SELECT distinct
 	  ,[Erityisopetuspohja järjestys] = 999
 	  ,[Haku järjestys] = d1.hakuryhma_koodi
 	  ,[Hakutoive järjestys] = 99
-      ,[Hakijan pohjakoulutuksen maakunta järjestys] = '99'
+      ,[Hakijan pohjakoulutuksen maakunta järjestys] = ''99''
  	  ,[Hakukohteen koulutusaste 2002 järjestys] = d6.jarjestys_koulutusaste2002_koodi
  	  ,[Hakukohteen koulutusala 2002 järjestys] = d6.jarjestys_koulutusala2002_koodi
  	  ,[Hakukohteen opintoala 2002 järjestys] = d6.jarjestys_opintoala2002_koodi
@@ -475,27 +476,27 @@ SELECT distinct
 	  ,[Koulutusala taso 3 järjestys] = d6.jarjestys_koulutusalataso3_koodi
  	  ,[Hakukohteen maakunta järjestys] = d5.jarjestys_maakunta_koodi
 	  ,[Hakukohteen koulutustyyppi järjestys] = d10.jarjestys
-	  ,[Hakukohteen toimipiste järjestys] = case when d8c.organisaatio_fi='Tieto puuttuu' then 'ööö' else left(d8c.organisaatio_fi,20) end
+	  ,[Hakukohteen toimipiste järjestys] = case when d8c.organisaatio_fi=''Tieto puuttuu'' then ''ööö'' else left(d8c.organisaatio_fi,20) end
 	  ,[Hakutyyppi järjestys] = d1.jarjestys_hakutyyppi
-	  ,[Ikä 5v järjestys] = '999999'
-	  ,[Kansalaisuus (maanosa) järjestys] = 'ööööö'
-	  ,[Kansalaisuus järjestys] = 'ööö'
+	  ,[Ikä 5v järjestys] = ''999999''
+	  ,[Kansalaisuus (maanosa) järjestys] = ''ööööö''
+	  ,[Kansalaisuus järjestys] = ''ööö''
 	  ,[Kiinnostunut oppiksesta järjestys] = 999999
-	  ,[Kotipaikan maakunta järjestys] = '999999'
-	  ,[Kotipaikan kunta järjestys] = 'ööö'
+	  ,[Kotipaikan maakunta järjestys] = ''999999''
+	  ,[Kotipaikan kunta järjestys] = ''ööö''
 	  ,[Kotipaikan AVI järjestys] = NULL
 	  ,[Kotipaikan ELY järjestys] = NULL
-	  ,[Kotipaikan suuralue (OKM) järjestys] = NULL--'999999'
+	  ,[Kotipaikan suuralue (OKM) järjestys] = NULL--''999999''
 	  ,[Koulutuksen kieli järjestys] = d7.kieli_koodi
-	  ,[Pohjakoulutus järjestys] = 'ööö'
-	  ,[Pohjakoulutuksen suuralue (OKM) järjestys] = NULL--'999999'
-	  ,[Pohjakoulutuksen maakunta järjestys] = '999999'
-	  ,[Pohjakoulutuksen kunta järjestys] = '999999'
-	  ,[Pohjakoulutuksen järjestäjä järjestys] = 'ööö'
-	  ,[Pohjakoulutuksen oppilaitos järjestys] = 'ööö'
-	  ,[Pohjakoulutusvaatimus järjestys] = '99'
-	  ,[Pohjakoulutuksen päättövuosi järjestys] = '9999'
-	  ,[Päättöluokka järjestys] = '999'
+	  ,[Pohjakoulutus järjestys] = ''ööö''
+	  ,[Pohjakoulutuksen suuralue (OKM) järjestys] = NULL--''999999''
+	  ,[Pohjakoulutuksen maakunta järjestys] = ''999999''
+	  ,[Pohjakoulutuksen kunta järjestys] = ''999999''
+	  ,[Pohjakoulutuksen järjestäjä järjestys] = ''ööö''
+	  ,[Pohjakoulutuksen oppilaitos järjestys] = ''ööö''
+	  ,[Pohjakoulutusvaatimus järjestys] = ''99''
+	  ,[Pohjakoulutuksen päättövuosi järjestys] = ''9999''
+	  ,[Päättöluokka järjestys] = ''999''
 	  ,[Sukupuoli järjestys] = 999999
 	  ,[Äidinkieli versio1 järjestys] = 999999
 	  ,[Hakeutuminen järjestys] = 99
@@ -504,7 +505,7 @@ SELECT distinct
 FROM dw.f_haku_ja_valinta_aloituspaikat_ja_pistemaarat f
 	  left JOIN dw.d_haku d1 on d1.id=f.d_haku_id
 	  LEFT JOIN dw.d_kausi d9 on d9.id=f.d_kausi_koulutuksen_alkamiskausi_id
-	  INNER JOIN ANTERO.sa.sa_haku_ja_valinta_vuosikello_toinen_aste d4 on ((d4.haku_oid=d1.haku_oid and d4.haku_oid is not null) OR (d4.koulutuksen_alkamiskausi=cast(f.koulutuksen_alkamisvuosi as varchar)+cast(d9.jarjestys as varchar) and d1.hakutapa_koodi <> '01' and d4.haku_oid is null)) and f.loadtime >= d4.aloituspaikat	
+	  INNER JOIN ANTERO.sa.sa_haku_ja_valinta_vuosikello_toinen_aste d4 on ((d4.haku_oid=d1.haku_oid and d4.haku_oid is not null) OR (d4.koulutuksen_alkamiskausi=cast(f.koulutuksen_alkamisvuosi as varchar)+cast(d9.jarjestys as varchar) and d1.hakutapa_koodi <> ''01'' and d4.haku_oid is null)) and f.loadtime >= d4.aloituspaikat	
 	  left JOIN dw.d_hakukohde d3 on d3.id=f.d_hakukohde_id
 	  --left JOIN d_hakutyyppi d4 on d4.id=f.hakutyyppi_id
 	  left JOIN dw.d_alueluokitus d5 on d5.id=f.d_alueluokitus_hakukohde_id
@@ -518,7 +519,8 @@ FROM dw.f_haku_ja_valinta_aloituspaikat_ja_pistemaarat f
 	  LEFT JOIN dw.d_pohjakoulutusvaatimus d11 on d11.id=f.d_pohjakoulutusvaatimus_id
 	  --LEFT JOIN OPHV_SA.dbo.organisaatioluokitus d34 on d34.organisaatio_oid=d8.Oid
 	  --LEFT JOIN dw.d_alueluokitus d35 on d35.alueluokitus_avain=d34.kunta_koodi
-WHERE d1.korkeakouluhaku=0 and f.koulutuksen_alkamisvuosi>2013 and d1.hakuryhma_koodi = '1'
+WHERE d1.korkeakouluhaku=0 and f.koulutuksen_alkamisvuosi>2013 and d1.hakuryhma_koodi = ''1''
 	
+'
 
 
