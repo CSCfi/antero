@@ -5,7 +5,6 @@ Geocoding
 
 - Give address as an input, and get geo-coordinates as a result
 - Requires "requests" package to be installed: pip install requests
-- Requires a valid API-key (taken from environment variable: GEO_COORDINATES_API_KEY)
 
 returns a dictionary:
 
@@ -20,6 +19,7 @@ import os
 import sys
 import json
 import requests
+import time
 
 
 def usage():
@@ -34,52 +34,48 @@ def get_result_dictionary(status_ok, result):
 
 
 def get_geo_coordinates_from_server(address, postalcode, city):
+    """
+    API-KEY not needed when using http://nominatim.openstreetmap.org
+
     try:
         api_key = os.environ['GEO_COORDINATES_API_KEY']
     except KeyError:
         return get_result_dictionary(False, "API-key missing")
+    """
 
-    geocode_server_api_base_url = "https://search.mapzen.com/v1/search/structured?"
-    address_url = "address=" + address + "&postalcode=" + postalcode + "&locality=" + city + "&country=finland"
-    complete_url = geocode_server_api_base_url + address_url + "&api_key=" + api_key + "&size=1"  # limit the query size to only one top-result
+    geocode_server_api_base_url = "http://nominatim.openstreetmap.org/search/?q="
+    address_url = address + "+" + postalcode + "+" + city + "+finland"
+    complete_url = geocode_server_api_base_url + address_url + "&polygon_geojson=1&format=json&limit=1"  # limit the query size to only one top-result
 
-    try:
-        r = requests.get(complete_url, headers={"Accept": "application/json"})
-    except requests.exceptions.RequestException as e:
-        return get_result_dictionary(False, e)
+    # Try 5 times if not getting result
+    TIMES_TRIED = 0
+    RESULT_NOT_FOUND = True
+    while TIMES_TRIED < 5 and RESULT_NOT_FOUND:
+        try:
+            r = requests.get(complete_url, headers={"Accept": "application/json"})
+        except requests.exceptions.RequestException as e:
+            return get_result_dictionary(False, e)
 
-    # GET-request sent successfully to server, and a reply was received.
-    try:
-        result_json = json.loads(r.text)
-    except ValueError, e:
-        return get_result_dictionary(False, "Invalid JSON from server.")
+        # GET-request sent successfully to server, and a reply was received.
+        try:
+            result_json = json.loads(r.text)
+        except ValueError, e:
+            return get_result_dictionary(False, "Invalid JSON from server.")
 
-    # Check HTTP error codes
-    if r.status_code == 400:
-        return get_result_dictionary(False, result_json)  # Bad Request: An input parameter was invalid. An error message is included in the response body with more details.
+        # Check HTTP error codes
+        if r.status_code == 200:
+            RESULT_NOT_FOUND = False
+            coordinate_results = {}
+            results = result_json[0]
+            coordinate_results["latitude"] = json.loads(results["lat"])
+            coordinate_results["longitude"] = json.loads(results["lon"])
+            coordinate_results["confidence"] = 1
+            return get_result_dictionary(True, coordinate_results)
+        else:  # Request failed. nominatim.openstreetmap.org has a limit of 1 req/s.
+            TIMES_TRIED = TIMES_TRIED + 1
+            time.sleep(1)
 
-    elif r.status_code == 404:
-        return get_result_dictionary(False, "Not Found: The URL is invalid or the path is no longer valid.")
-
-    elif r.status_code == 408:
-        return get_result_dictionary(False, "Request Timeout: The Elasticsearch cluster took too long to respond.")
-
-    elif r.status_code == 500:
-        return get_result_dictionary(False, "Internal Server Error: Generic fatal error.")
-
-    elif r.status_code == 502:
-        return get_result_dictionary(False, "Bad Gateway: Connection was lost to the Elasticsearch cluster.")
-
-    elif r.status_code == 200:
-        coordinate_results = {}
-        results = result_json[u'features'][0][u'geometry'][u'coordinates']
-        coordinate_results["latitude"] = results[1]
-        coordinate_results["longitude"] = results[0]
-        coordinate_results["confidence"] = result_json[u'features'][0][u'properties'][u'confidence']
-        return get_result_dictionary(True, coordinate_results)
-    else:
-        return get_result_dictionary(False, "Unknown HTTP-error code: " + str(r.status_code))
-
+    return get_result_dictionary(False, "Unknown HTTP-error code: " + str(r.status_code))
 
 def parse_url_address(argument_array):
     address_string = ""
