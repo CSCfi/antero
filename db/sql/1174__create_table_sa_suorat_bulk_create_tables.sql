@@ -1,5 +1,5 @@
 
-USE VipunenKK_SA
+USE ANTERO
 IF  EXISTS
 		(select * from INFORMATION_SCHEMA.TABLES
 			where TABLE_SCHEMA='sa' and TABLE_NAME='sa_suorat_amk7a_rekrytointihaut')
