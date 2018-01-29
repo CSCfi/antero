@@ -34,10 +34,3 @@ GO
 
 ALTER TABLE [dw].[d_organisaatiot_ohjauksen_alat] ADD  CONSTRAINT [DF_d_organisaatiot_ohjauksen_alat_username]  DEFAULT (suser_sname()) FOR [username]
 GO
-
-ALTER TABLE [dw].[d_organisaatiot_ohjauksen_alat] ADD [jarjestys_korkeakoulu_koodi] AS (case when [korkeakoulu_koodi]=(-1) then '99999' else CONVERT([varchar](10),[korkeakoulu_koodi]) end)
-GO
-ALTER TABLE [dw].[d_organisaatiot_ohjauksen_alat] ADD [jarjestys_alayksikkö_koodi]  AS (case when [alayksikkö_koodi]=(-1) then 'ZzZzZ' else CONVERT([varchar](100),[alayksikkö_koodi]) end)
-GO
-ALTER TABLE [dw].[d_organisaatiot_ohjauksen_alat] ADD [jarjestys_ohjauksen_ala_koodi] AS (case when [ohjauksen_ala_koodi]=(-1) then '999' else CONVERT([varchar](3),[ohjauksen_ala_koodi]) end)
-GO
