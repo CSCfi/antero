@@ -21,10 +21,7 @@ CREATE TABLE [dw].[d_organisaatiot_ohjauksen_alat]
 	[loadtime] [datetime] NOT NULL,
 	[source] [varchar](100) NOT NULL,
 	[username] [varchar](30) NOT NULL,
-	--[jarjestys_korkeakoulu_koodi] [varchar](10)  NOT NULL,
-	--[jarjestys_alayksikkö_koodi]  [varchar](100) NOT NULL,
-	--[jarjestys_ohjauksen_ala_koodi]	[varchar](3) NOT NULL,
-	CONSTRAINT [PK__d_organisaatiot_ohjauksenalat] PRIMARY KEY CLUSTERED
+	CONSTRAINT [PK__d_organisaatiot_ohjauksen_alat] PRIMARY KEY CLUSTERED
 	(
 	[id] ASC
 	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
