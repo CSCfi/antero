@@ -11,7 +11,7 @@ BEGIN
 	INSERT dw.d_organisaatiot_ohjauksen_alat (
 		[Vuosi]
 		,[korkeakoulu_koodi]
-		,[alayksikko_koodi]a
+		,[alayksikko_koodi]
 		,[ohjauksen_ala_koodi]
 		,[jyvitys]
 		,[max_100_%]
