@@ -546,12 +546,6 @@
             "dataType": "string",
             "isHidden": true,
             "sourceColumn": "jarjestys_koulutusala3"
-          },
-          {
-            "name": "vuosi_tilasto",
-            "dataType": "int64",
-            "isHidden": true,
-            "sourceColumn": "vuosi_tilasto"
           }
         ],
         "partitions": [
@@ -1151,14 +1145,6 @@
                   "        <int>138</int>",
                   "      </value>",
                   "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>vuosi_tilasto</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>90</int>",
-                  "      </value>",
-                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -1737,14 +1723,6 @@
                   "        <int>71</int>",
                   "      </value>",
                   "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>vuosi_tilasto</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>72</int>",
-                  "      </value>",
-                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -1948,14 +1926,6 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>vuosi_tilasto</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <boolean>true</boolean>",
-                  "      </value>",
-                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -2108,47 +2078,47 @@
           },
           {
             "name": "vast-avop-amk-tilasto",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),FILTER(Muuttujat,Muuttujat[kyselypohja]=\"AVOP-AMK\" && Muuttujat[vuosi_tilasto]=1 && Muuttujat[valtakunnallinen]=TRUE()))",
+            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),FILTER(Muuttujat,Muuttujat[kyselypohja]=\"AVOP-AMK\" && Muuttujat[Kyselyvuosi]<YEAR(NOW()) && Muuttujat[valtakunnallinen]=TRUE()))",
             "isHidden": true
           },
           {
             "name": "vast-avop-yamk-tilasto",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),FILTER(Muuttujat,Muuttujat[kyselypohja]=\"AVOP-YAMK\" && Muuttujat[vuosi_tilasto]=1 && Muuttujat[valtakunnallinen]=TRUE()))",
+            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),FILTER(Muuttujat,Muuttujat[kyselypohja]=\"AVOP-YAMK\"),FILTER(Muuttujat,Muuttujat[Kyselyvuosi]<YEAR(NOW())),FILTER(Muuttujat,Muuttujat[valtakunnallinen]=TRUE()))",
             "isHidden": true
           },
           {
             "name": "vast-kandi-tilasto",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),FILTER(Muuttujat,Muuttujat[kyselypohja]=\"KANDIPALAUTE\" && Muuttujat[vuosi_tilasto]=1 && Muuttujat[valtakunnallinen]=TRUE()))",
+            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),FILTER(Muuttujat,Muuttujat[kyselypohja]=\"KANDIPALAUTE\" && Muuttujat[Kyselyvuosi]<YEAR(NOW()) && Muuttujat[valtakunnallinen]=TRUE()))",
             "isHidden": true
           },
           {
             "name": "ka-avop-amk-tilasto",
-            "expression": "CALCULATE(AVERAGE(Muuttujat[avop-numerovalinta]),FILTER(Muuttujat,Muuttujat[vastaustyyppi]=\"arvosana7\"),FILTER(Muuttujat,Muuttujat[kyselypohja]=\"AVOP-AMK\"),FILTER(Muuttujat,Muuttujat[vuosi_tilasto]=1),FILTER(Muuttujat, Muuttujat[valtakunnallinen]=TRUE()))",
+            "expression": "CALCULATE(AVERAGE(Muuttujat[avop-numerovalinta]),FILTER(Muuttujat,Muuttujat[vastaustyyppi]=\"arvosana7\"),FILTER(Muuttujat,Muuttujat[kyselypohja]=\"AVOP-AMK\"),FILTER(Muuttujat,Muuttujat[Kyselyvuosi]<YEAR(NOW())),FILTER(Muuttujat, Muuttujat[valtakunnallinen]=TRUE()))",
             "isHidden": true
           },
           {
             "name": "ka-avop-yamk-tilasto",
-            "expression": "CALCULATE(AVERAGE(Muuttujat[avop-numerovalinta]),FILTER(Muuttujat,Muuttujat[vastaustyyppi]=\"arvosana7\"),FILTER(Muuttujat,Muuttujat[kyselypohja]=\"AVOP-yAMK\"),FILTER(Muuttujat,Muuttujat[vuosi_tilasto]=1),FILTER(Muuttujat, Muuttujat[valtakunnallinen]=TRUE()))",
+            "expression": "CALCULATE(AVERAGE(Muuttujat[avop-numerovalinta]),FILTER(Muuttujat,Muuttujat[vastaustyyppi]=\"arvosana7\"),FILTER(Muuttujat,Muuttujat[kyselypohja]=\"AVOP-yAMK\"),FILTER(Muuttujat,Muuttujat[Kyselyvuosi]<YEAR(NOW())),FILTER(Muuttujat, Muuttujat[valtakunnallinen]=TRUE()))",
             "isHidden": true
           },
           {
             "name": "ka-kandi-tilasto",
-            "expression": "CALCULATE(AVERAGE(Muuttujat[numerovalinta]),FILTER(Muuttujat,Muuttujat[vuosi_tilasto]=1 && Muuttujat[valtakunnallinen]=TRUE() && Muuttujat[kyselypohja]=\"KANDIPALAUTE\"))",
+            "expression": "CALCULATE(AVERAGE(Muuttujat[numerovalinta]),FILTER(Muuttujat,Muuttujat[Kyselyvuosi]<YEAR(NOW()) && Muuttujat[valtakunnallinen]=TRUE() && Muuttujat[kyselypohja]=\"KANDIPALAUTE\"))",
             "isHidden": true
           },
           {
             "name": "kh-avop-amk-tilasto",
-            "expression": "CALCULATE(STDEV.P(Muuttujat[avop-numerovalinta]),FILTER(Muuttujat,Muuttujat[vuosi_tilasto]=1),FILTER(Muuttujat,Muuttujat[valtakunnallinen]=TRUE()),FILTER(Muuttujat,Muuttujat[vastaustyyppi]=\"arvosana7\"),FILTER(Muuttujat,Muuttujat[kyselypohja]=\"AVOP-AMK\"))",
+            "expression": "CALCULATE(STDEV.P(Muuttujat[avop-numerovalinta]),FILTER(Muuttujat,Muuttujat[Kyselyvuosi]<YEAR(NOW())),FILTER(Muuttujat,Muuttujat[valtakunnallinen]=TRUE()),FILTER(Muuttujat,Muuttujat[vastaustyyppi]=\"arvosana7\"),FILTER(Muuttujat,Muuttujat[kyselypohja]=\"AVOP-AMK\"))",
             "isHidden": true
           },
           {
             "name": "kh-avop-yamk-tilasto",
-            "expression": "CALCULATE(STDEV.P(Muuttujat[avop-numerovalinta]),FILTER(Muuttujat,Muuttujat[vuosi_tilasto]=1),FILTER(Muuttujat,Muuttujat[valtakunnallinen]=TRUE()),FILTER(Muuttujat,Muuttujat[vastaustyyppi]=\"arvosana7\"),FILTER(Muuttujat,Muuttujat[kyselypohja]=\"AVOP-YAMK\"))",
+            "expression": "CALCULATE(STDEV.P(Muuttujat[avop-numerovalinta]),FILTER(Muuttujat,Muuttujat[Kyselyvuosi]<YEAR(NOW())),FILTER(Muuttujat,Muuttujat[valtakunnallinen]=TRUE()),FILTER(Muuttujat,Muuttujat[vastaustyyppi]=\"arvosana7\"),FILTER(Muuttujat,Muuttujat[kyselypohja]=\"AVOP-YAMK\"))",
             "isHidden": true
           },
           {
             "name": "kh-kandi-tilasto",
-            "expression": "CALCULATE(STDEV.P(Muuttujat[numerovalinta]),FILTER(Muuttujat,Muuttujat[vuosi_tilasto]=1 && Muuttujat[valtakunnallinen]=TRUE() && Muuttujat[kyselypohja]=\"KANDIPALAUTE\"))",
+            "expression": "CALCULATE(STDEV.P(Muuttujat[numerovalinta]),FILTER(Muuttujat,Muuttujat[Kyselyvuosi]<YEAR(NOW()) && Muuttujat[valtakunnallinen]=TRUE() && Muuttujat[kyselypohja]=\"KANDIPALAUTE\"))",
             "isHidden": true
           },
           {
@@ -2183,13 +2153,13 @@
           },
           {
             "name": "pisteet-avop-amk-tilasto",
-            "expression": "calculate(sum(Muuttujat[avop-numerovalinta]),FILTER(Muuttujat,Muuttujat[kyselypohja]=\"AVOP-AMK\" && Muuttujat[Rahoitusmallikysymys]=\"Kyllä\" && Muuttujat[vuosi_tilasto]=1))",
+            "expression": "calculate(sum(Muuttujat[avop-numerovalinta]),FILTER(Muuttujat,Muuttujat[kyselypohja]=\"AVOP-AMK\" && Muuttujat[Rahoitusmallikysymys]=\"Kyllä\" && Muuttujat[Kyselyvuosi]<YEAR(NOW())-1))",
             "isHidden": true
           },
           {
             "name": "pisteet-avop-yamk-tilasto",
             "expression": [
-              "calculate(sum(Muuttujat[avop-numerovalinta]),FILTER(Muuttujat,Muuttujat[kyselypohja]=\"AVOP-YAMK\" && Muuttujat[Rahoitusmallikysymys]=\"Kyllä\" && Muuttujat[vuosi_tilasto]=1))",
+              "calculate(sum(Muuttujat[avop-numerovalinta]),FILTER(Muuttujat,Muuttujat[kyselypohja]=\"AVOP-YAMK\" && Muuttujat[Rahoitusmallikysymys]=\"Kyllä\" && Muuttujat[Kyselyvuosi]<YEAR(NOW())-1))",
               ""
             ],
             "isHidden": true
@@ -2197,7 +2167,7 @@
           {
             "name": "pisteet-kandi-tilasto",
             "expression": [
-              "calculate(sum(Muuttujat[numerovalinta]),FILTER(Muuttujat,Muuttujat[kyselypohja]=\"KANDIPALAUTE\" && Muuttujat[Rahoitusmallikysymys]=\"Kyllä\" && Muuttujat[vuosi_tilasto]=1))",
+              "calculate(sum(Muuttujat[numerovalinta]),FILTER(Muuttujat,Muuttujat[kyselypohja]=\"KANDIPALAUTE\" && Muuttujat[Rahoitusmallikysymys]=\"Kyllä\" && Muuttujat[Kyselyvuosi]<YEAR(NOW())))",
               ""
             ],
             "isHidden": true
@@ -2244,12 +2214,12 @@
           },
           {
             "name": "vast-ura-tilasto",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),OR(Muuttujat[Kysely]=\"Tampereen yliopiston uraseurantakysely vuonna 2010 valmistuneille\",OR(Muuttujat[Kysely]=\"Uraseurantakysely Tampereen yliopistosta vuonna 2010 valmistuneille\",Muuttujat[Kysely]=\"Uraseuranta 2010 valmistuneille maistereille\")),FILTER(Muuttujat,Muuttujat[vuosi_tilasto]=1),FILTER(Muuttujat,Muuttujat[valtakunnallinen]=TRUE()))",
+            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),OR(Muuttujat[Kysely]=\"Tampereen yliopiston uraseurantakysely vuonna 2010 valmistuneille\",OR(Muuttujat[Kysely]=\"Uraseurantakysely Tampereen yliopistosta vuonna 2010 valmistuneille\",Muuttujat[Kysely]=\"Uraseuranta 2010 valmistuneille maistereille\")),FILTER(Muuttujat,Muuttujat[Kyselyvuosi]<YEAR(NOW())),FILTER(Muuttujat,Muuttujat[valtakunnallinen]=TRUE()))",
             "isHidden": true
           },
           {
             "name": "ka-ura-tilasto",
-            "expression": "CALCULATE(AVERAGE(Muuttujat[numerovalinta]),Muuttujat[vuosi_tilasto]=1,Muuttujat[valtakunnallinen]=TRUE(),OR(Muuttujat[Kysely]=\"Tampereen yliopiston uraseurantakysely vuonna 2010 valmistuneille\",OR(Muuttujat[Kysely]=\"Uraseurantakysely Tampereen yliopistosta vuonna 2010 valmistuneille\",Muuttujat[Kysely]=\"Uraseuranta 2010 valmistuneille maistereille\")))",
+            "expression": "CALCULATE(AVERAGE(Muuttujat[numerovalinta]),Muuttujat[Kyselyvuosi]<YEAR(NOW()),Muuttujat[valtakunnallinen]=TRUE(),OR(Muuttujat[Kysely]=\"Tampereen yliopiston uraseurantakysely vuonna 2010 valmistuneille\",OR(Muuttujat[Kysely]=\"Uraseurantakysely Tampereen yliopistosta vuonna 2010 valmistuneille\",Muuttujat[Kysely]=\"Uraseuranta 2010 valmistuneille maistereille\")))",
             "isHidden": true
           },
           {
@@ -2880,14 +2850,6 @@
               "        <int>138</int>",
               "      </value>",
               "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>vuosi_tilasto</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>90</int>",
-              "      </value>",
-              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -3466,14 +3428,6 @@
               "        <int>71</int>",
               "      </value>",
               "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>vuosi_tilasto</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>72</int>",
-              "      </value>",
-              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -3672,14 +3626,6 @@
               "    <item>",
               "      <key>",
               "        <string>jarjestys_koulutusala3</string>",
-              "      </key>",
-              "      <value>",
-              "        <boolean>true</boolean>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>vuosi_tilasto</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
