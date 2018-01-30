@@ -111,12 +111,14 @@ def coordinate_length_ok(latitude, longitude):
 
 def fetch_coordinates_from_server(osoite_array):
   api_fetch_successful = False
+  geocoding_api_answer = None
 
   try:
     geocoding_api_answer = geocoding.main(osoite_array)
     api_fetch_successful = True
   except Exception, e:
     print "Error: " + str(e)
+    print "Osoite: " + ''.join(osoite_array)  # convert osoite_array to string
   except SystemExit:
     pass  # catch the sys.exit from geocoding. It prints the usage().
 
