@@ -30,7 +30,7 @@ SELECT
 	,COALESCE(s9.id, - 1) AS [d_hakijan_maanosa_id]
 	,COALESCE(s10.id, - 1) AS [d_hakijan_maanosa2_id]
 	,s1.tilastovuosi AS vuosi
-	,COALESCE(s1.[Hakijoiden määrä per maanosa], - 1) AS [hakijat_lkm]
+	,COALESCE(s1.[Hakijoiden määrä], - 1) AS [hakijat_lkm]
 	,getdate()
 	,'etl: p_lataa_f_yo_rekrytointihaut - sa_suorat_yo8a_rekrytointihaut' AS source
 	,suser_sname()
