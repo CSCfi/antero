@@ -22,14 +22,16 @@ def show(message):
     print strftime("%Y-%m-%d %H:%M:%S", localtime()) + " " + message
 
 
-def load(url, schema, table):
+def load(url, schema, table, condition):
     """
     Results from ARVO-API can come in multiple pages. If that's the case,
     we need to make multiple requests to the ARVO API, using the "next_url" parameter.
     """
 
+    FIRST_LOOP = True  # This is used to make possible DELETE operation (due to condition) only once.
+
     while True:
-        show("begin " + url + " " + schema + " " + table)
+        show("begin " + url + " " + schema + " " + table + " " + (condition or ""))
         show("load from " + url)
 
         reqheaders = {'Content-Type': 'application/json'}
@@ -132,6 +134,16 @@ def load(url, schema, table):
 
         address = url.split("?")[0]  # Save in DB only the part before ?-mark: https://arvo.csc.fi/api/vipunen?alkupvm=2018-01-01&loppupvm=2018-02-01
 
+        # remove data conditionally, otherwise empty
+        # merge operation could be considered here...
+        if FIRST_LOOP:  # This is done only on the first go (no matter if Arvo returns one or multiple pages)
+            if condition:
+                show("remove from %s.%s with condition '%s'" % (schema, table, condition))
+                dboperator.execute("DELETE FROM %s.%s WHERE %s" % (schema, table, condition))
+            else:
+                show("empty %s.%s" % (schema, table))
+                dboperator.empty(schema, table)
+
         show("insert data")
         cnt = 0
         for row in result["data"]:
@@ -160,10 +172,11 @@ def load(url, schema, table):
             break  # exit while-loop. We are done.
         else:
             url = result["pagination"]["next_url"]
+            FIRST_LOOP = False  # Do not make the possible DELETE-operation anymore!
 
 
 def usage():
-    print "usage: load.py -u|--url <url> -e|--schema <schema> -t|--table <table>"
+    print "usage: load.py -u|--url <url> -e|--schema <schema> -t|--table <table> [-c|--condition <condition>]"
 
 
 def main(argv):
@@ -171,9 +184,10 @@ def main(argv):
     url = ""
     schema = ""
     table = ""
+    condition = None
 
     try:
-        opts, args = getopt.getopt(argv, "u:e:t", ["url=", "schema=", "table="])
+        opts, args = getopt.getopt(argv, "u:e:t:c", ["url=", "schema=", "table=", "condition="])
     except getopt.GetoptError as err:
         print(err)
         usage()
@@ -185,11 +199,13 @@ def main(argv):
             schema = arg
         elif opt in ("-t", "--table"):
             table = arg
+        elif opt in ("-c", "--condition"):
+            condition = arg
     if not url or not schema or not table:
         usage()
         sys.exit(2)
 
-    load(url, schema, table)
+    load(url, schema, table, condition)
     dboperator.close()
 
 
