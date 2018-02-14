@@ -2450,8 +2450,8 @@
             "formatString": "# ### ###"
           },
           {
-            "name": "Pisteet (uraseuranta)",
-            "expression": "IF([vast-ura]<5,BLANK(),[pisteet-ura])",
+            "name": "Pisteet (URASEURANTA-MAISTERIT)",
+            "expression": "IF([vast-ura-mais-tilasto]<5,BLANK(),[pisteet-ura-mais])",
             "formatString": "#,0"
           },
           {
@@ -2460,43 +2460,43 @@
             "formatString": "#,0"
           },
           {
-            "name": "Keskiarvo / Vastausjakauma (uraseuranta)",
-            "expression": "IF([vast-ura]<6,BLANK(),IF([ka-ura]=0,FORMAT([ka-ura2],\"0%\"),FORMAT([ka-ura],\"0.0\")))",
+            "name": "Keskiarvo / Vastausjakauma (URASEURANTA-MAISTERIT)",
+            "expression": "IF([vast-ura-mais-tilasto]<6,BLANK(),IF([ka-ura-mais-tilasto]=0,FORMAT([ka-ura-mais-tilasto],\"0%\"),FORMAT([ka-ura-mais-tilasto],\"0.0\")))",
             "formatString": "0.0"
           },
           {
-            "name": "Keskihajonta (uraseuranta)",
-            "expression": "IF([vast-ura]<6,BLANK(),[kh-ura])",
+            "name": "Keskihajonta (URASEURANTA-MAISTERIT)",
+            "expression": "IF([vast-ura-mais-tilasto]<6,BLANK(),[kh-ura-mais-tilasto])",
             "formatString": "0.0"
           },
           {
-            "name": "vast-ura",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]))",
+            "name": "vast-ura-toht",
+            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),Muuttujat[ura_tohtori]=1)",
             "isHidden": true
           },
           {
-            "name": "vast-ura-tilasto",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),FILTER(Muuttujat,Muuttujat[vuosi_tilasto]=1))",
+            "name": "vast-ura-toht-tilasto",
+            "expression": "CALCULATE([vast-ura-toht],FILTER(Muuttujat,Muuttujat[vuosi_tilasto]=1))",
             "isHidden": true
           },
           {
-            "name": "kh-ura-tilasto",
-            "expression": "CALCULATE(STDEV.P(Muuttujat[numerovalinta]),FILTER(Muuttujat,[vuosi_tilasto]=1))",
+            "name": "kh-ura-toht-tilasto",
+            "expression": "CALCULATE([kh-ura-toht],FILTER(Muuttujat,[vuosi_tilasto]=1))",
             "isHidden": true
           },
           {
-            "name": "ka-ura",
-            "expression": "CALCULATE(AVERAGE(Muuttujat[numerovalinta]),FILTER(Muuttujat,Muuttujat[monivalinta]=0))",
+            "name": "ka-ura-toht",
+            "expression": "CALCULATE(AVERAGE(Muuttujat[numerovalinta]),FILTER(Muuttujat, Muuttujat[ura_tohtori]=1))",
             "isHidden": true
           },
           {
-            "name": "kh-ura",
+            "name": "kh-ura-toht",
             "expression": "CALCULATE(STDEV.P(Muuttujat[numerovalinta]))",
             "isHidden": true
           },
           {
-            "name": "pisteet-ura",
-            "expression": "calculate(sum(Muuttujat[numerovalinta]))",
+            "name": "pisteet-ura-toht",
+            "expression": "CALCULATE(SUM(Muuttujat[numerovalinta]),Muuttujat[ura_tohtori]=1)",
             "isHidden": true
           },
           {
@@ -2510,8 +2510,9 @@
             "expression": "IF(AND([vast-ura-yamk-tilasto]>0,[vast-ura-yamk-tilasto]<6),\"<5\",[vast-ura-yamk-tilasto])"
           },
           {
-            "name": "Vastaajamäärä (uraseuranta-MAISTERI)",
-            "expression": "IF(AND([vast-ura-mais-tilasto]>0,[vast-ura-mais-tilasto]<6),\"<5\",[vast-ura-mais-tilasto])"
+            "name": "Vastaajamäärä (URASEURANTA-MAISTERIT)",
+            "expression": "IF(AND([vast-ura-mais-tilasto]>0,[vast-ura-mais-tilasto]<6),\"<5\",[vast-ura-mais-tilasto])",
+            "formatString": "#,0"
           },
           {
             "name": "vast-ura-amk",
@@ -2550,7 +2551,7 @@
           },
           {
             "name": "vast-ura-mais-tilasto",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),FILTER(Muuttujat,Muuttujat[ura_maisteri]=1 && [vuosi_tilasto]=1))",
+            "expression": "CALCULATE([vast-ura-mais],FILTER(Muuttujat,Muuttujat[vuosi_tilasto]=1))",
             "isHidden": true
           },
           {
@@ -2590,26 +2591,26 @@
           },
           {
             "name": "ka-ura-mais-tilasto",
-            "expression": "CALCULATE(AVERAGE(Muuttujat[numerovalinta]),FILTER(Muuttujat,Muuttujat[ura_maisteri]=1 && [vuosi_tilasto]=1))",
+            "expression": "CALCULATE([ka-ura-mais],FILTER(Muuttujat,Muuttujat[vuosi_tilasto]=1))",
             "isHidden": true
           },
           {
-            "name": "kh-ura-amki",
+            "name": "kh-ura-amk",
             "expression": "CALCULATE(STDEV.P(Muuttujat[numerovalinta]),FILTER(Muuttujat,Muuttujat[ura_amk]=1))",
             "isHidden": true
           },
           {
-            "name": "kh-ura-yamki",
+            "name": "kh-ura-yamk",
             "expression": "CALCULATE(STDEV.P(Muuttujat[numerovalinta]),FILTER(Muuttujat,Muuttujat[ura_yamk]=1))",
             "isHidden": true
           },
           {
-            "name": "kh-ura-kandii",
+            "name": "kh-ura-kandi",
             "expression": "CALCULATE(STDEV.P(Muuttujat[numerovalinta]),FILTER(Muuttujat,Muuttujat[ura_kandi]=1))",
             "isHidden": true
           },
           {
-            "name": "kh-ura-maisi",
+            "name": "kh-ura-mais",
             "expression": "CALCULATE(STDEV.P(Muuttujat[numerovalinta]),FILTER(Muuttujat,Muuttujat[ura_maisteri]=1))",
             "isHidden": true
           },
@@ -2630,7 +2631,7 @@
           },
           {
             "name": "kh-ura-mais-tilasto",
-            "expression": "CALCULATE(STDEV.P(Muuttujat[numerovalinta]),FILTER(Muuttujat,[ura_maisteri]=1 && Muuttujat[vuosi_tilasto]=1))",
+            "expression": "CALCULATE([kh-ura-mais],FILTER(Muuttujat,Muuttujat[vuosi_tilasto]=1))",
             "isHidden": true
           },
           {
@@ -2638,8 +2639,8 @@
             "expression": "IF(AND([vast-ura-kandi-tilasto]>0,[vast-ura-kandi-tilasto]<6),\"<5\",[vast-ura-kandi-tilasto])"
           },
           {
-            "name": "ka-ura-tilasto",
-            "expression": "CALCULATE(AVERAGE(Muuttujat[numerovalinta]),FILTER(Muuttujat,[vuosi_tilasto]=1))",
+            "name": "ka-ura-toht-tilasto",
+            "expression": "CALCULATE([ka-ura-toht],FILTER(Muuttujat,[vuosi_tilasto]=1))",
             "isHidden": true
           },
           {
@@ -2735,8 +2736,39 @@
             "expression": "IF(AND([vast-ura-kandi]>0,[vast-ura-kandi]<6),3,[vast-ura-kandi])"
           },
           {
-            "name": "Vastaajamäärä (uraseuranta-MAISTERI, LIVE)",
-            "expression": "IF(AND([vast-ura-mais]>0,[vast-ura-mais]<6),\"<5\",[vast-ura-mais])"
+            "name": "Vastaajamäärä (URASEURANTA-MAISTERIT, LIVE)",
+            "expression": "IF(AND([vast-ura-mais]>0,[vast-ura-mais]<6),\"<5\",[vast-ura-mais])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "pisteet-ura-mais",
+            "expression": "CALCULATE(SUM(Muuttujat[numerovalinta]),Muuttujat[ura_maisteri]=1)",
+            "isHidden": true
+          },
+          {
+            "name": "Vastaajamäärä (URASEURANTA-TOHTORIT)",
+            "expression": "IF(AND([vast-ura-toht-tilasto]>0,[vast-ura-toht-tilasto]<6),\"<5\",[vast-ura-toht-tilasto])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Vastaajamäärä (URASEURANTA-TOHTORIT, LIVE)",
+            "expression": "IF(AND([vast-ura-toht]>0,[vast-ura-toht]<6),\"<5\",[vast-ura-toht])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Keskihajonta (URASEURANTA-TOHTORIT)",
+            "expression": "IF([vast-ura-toht-tilasto]<6,BLANK(),[kh-ura-toht-tilasto])",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Pisteet (URASEURANTA-TOHTORIT)",
+            "expression": "IF([vast-ura-toht-tilasto]<5,BLANK(),[pisteet-ura-toht])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Keskiarvo / Vastausjakauma (URASEURANTA-TOHTORIT)",
+            "expression": "IF([vast-ura-toht-tilasto]<6,BLANK(),IF([ka-ura-toht-tilasto]=0,FORMAT([ka-ura-toht-tilasto],\"0%\"),FORMAT([ka-ura-toht-tilasto],\"0.0\")))",
+            "formatString": "0.0"
           }
         ],
         "annotations": [
@@ -4978,7 +5010,7 @@
         ]
       },
       {
-        "name": "URASEURANTA",
+        "name": "URA_MAISTERI",
         "tables": [
           {
             "name": "Muuttujat",
@@ -5037,16 +5069,16 @@
             ],
             "measures": [
               {
-                "name": "Keskiarvo / Vastausjakauma (uraseuranta)"
+                "name": "Keskiarvo / Vastausjakauma (URASEURANTA-MAISTERIT)"
               },
               {
-                "name": "Keskihajonta (uraseuranta)"
+                "name": "Keskihajonta (URASEURANTA-MAISTERIT)"
               },
               {
-                "name": "Pisteet (uraseuranta)"
+                "name": "Pisteet (URASEURANTA-MAISTERIT)"
               },
               {
-                "name": "Vastaajamäärä (uraseuranta-AMK)"
+                "name": "Vastaajamäärä (URASEURANTA-MAISTERIT)"
               }
             ]
           },
@@ -5064,7 +5096,7 @@
         ]
       },
       {
-        "name": "URASEURANTA LIVE",
+        "name": "URA_TOHTORI",
         "tables": [
           {
             "name": "Sarakeleveys",
@@ -5074,6 +5106,73 @@
               },
               {
                 "name": "Sarakeleveys"
+              }
+            ]
+          },
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Kieli"
+              },
+              {
+                "name": "Koodit Koulutus"
+              },
+              {
+                "name": "Koodit Organisaatio"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "Koulutusnimike"
+              },
+              {
+                "name": "Kyselyvuosi"
+              },
+              {
+                "name": "Kysymys"
+              },
+              {
+                "name": "Kysymysryhmä"
+              },
+              {
+                "name": "Kysymystyyppi"
+              },
+              {
+                "name": "monivalintavaihtoehto"
+              },
+              {
+                "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Organisaatio"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Keskiarvo / Vastausjakauma (URASEURANTA-TOHTORIT)"
+              },
+              {
+                "name": "Keskihajonta (URASEURANTA-TOHTORIT)"
+              },
+              {
+                "name": "Pisteet (URASEURANTA-TOHTORIT)"
+              },
+              {
+                "name": "Vastaajamäärä (URASEURANTA-TOHTORIT)"
               }
             ]
           }
