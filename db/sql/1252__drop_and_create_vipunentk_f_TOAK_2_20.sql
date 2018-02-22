@@ -1,167 +1,165 @@
 USE [VipunenTK]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_ylempi_kk_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_ylempi_kk_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_viimeisimmasta_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_viimeisimmasta_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_viimeisimman_koulutuksen_suoritusvuosi_d_kausi]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_viimeisimman_koulutuksen_suoritusvuosi_d_kausi]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_sukupuoli_d_sukupuoli]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_sukupuoli_d_sukupuoli]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_rahoituslahde_d_rahoituslahde_amm]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_rahoituslahde_d_rahoituslahde_amm]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_oppilaitoksen_oppilaitostyyppi_d_oppilaitoksen_taustatiedot]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_oppilaitoksen_oppilaitostyyppi_d_oppilaitoksen_taustatiedot]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_opiskelijan_olo_syys_d_opiskelijan_olo]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_opiskelijan_olo_syys_d_opiskelijan_olo]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_opiskelijan_asuinkunta_historia_d_alueluokitus_historia]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_opiskelijan_asuinkunta_historia_d_alueluokitus_historia]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_opiskelijan_asuinkunta_d_alueluokitus]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_opiskelijan_asuinkunta_d_alueluokitus]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_opetushallinnon_koulutus_d_opetushallinnon_koulutus]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_opetushallinnon_koulutus_d_opetushallinnon_koulutus]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_nuorten_aikuisten_koulutus_d_nuorten_aikuisten_koulutus]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_nuorten_aikuisten_koulutus_d_nuorten_aikuisten_koulutus]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_nuorten_aikuisten_koulutus_amm_d_nuorten_aikuisten_koulutus_amm]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_nuorten_aikuisten_koulutus_amm_d_nuorten_aikuisten_koulutus_amm]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_lahde_d_lahde]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_lahde_d_lahde]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_koulutusluokitus_historia_d_koulutusluokitus_historia]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_koulutusluokitus_historia_d_koulutusluokitus_historia]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_koulutuksen_kunta_historia_d_alueluokitus_historia]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_koulutuksen_kunta_historia_d_alueluokitus_historia]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_koulutuksen_kunta_d_alueluokitus]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_koulutuksen_kunta_d_alueluokitus]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_koulutuksen_jarjestamismuoto_d_koulutuksen_jarjestamismuoto]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_koulutuksen_jarjestamismuoto_d_koulutuksen_jarjestamismuoto]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_kirjoihintulovuosi_d_kausi]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_kirjoihintulovuosi_d_kausi]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_kirjoihintulolukukausi_d_kausi]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_kirjoihintulolukukausi_d_kausi]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_ika5v_d_ika]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_ika5v_d_ika]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_ika1v_d_ika]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_ika1v_d_ika]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_ika_14_65_d_ika]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_ika_14_65_d_ika]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_d_opiskelijan_aikaisempi_yleissivistava_koulutus]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_d_opiskelijan_aikaisempi_yleissivistava_koulutus]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_d_opetussuunnitelmaperusteinen_koulutus_nayttotutkintoon_valmistava_koulutus]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_d_opetussuunnitelmaperusteinen_koulutus_nayttotutkintoon_valmistava_koulutus]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_ammpk_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_ammpk_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_ammlisa_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_ammlisa_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_ammatillisen_koulutuksen_koulutuslaji_d_ammatillisen_koulutuksen_koulutuslaji]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_ammatillisen_koulutuksen_koulutuslaji_d_ammatillisen_koulutuksen_koulutuslaji]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_alempi_kk_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_alempi_kk_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_aikaisempi_korkein_tutkinto_d_aikaisempi_korkein_tutkinto]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_aikaisempi_korkein_tutkinto_d_aikaisempi_korkein_tutkinto]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_aikaisemman_ylemman_kk_suoritusvuosi_d_kausi]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_aikaisemman_ylemman_kk_suoritusvuosi_d_kausi]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_aikaisemman_ylemman_kk_opintoala2002_d_koulutusluokitus_historia]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_aikaisemman_ylemman_kk_opintoala2002_d_koulutusluokitus_historia]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_aikaisemman_ylemman_kk_opintoala1995_d_koulutusluokitus_historia]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_aikaisemman_ylemman_kk_opintoala1995_d_koulutusluokitus_historia]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_aikaisemman_ylemman_kk_koulutusaste2002_d_koulutusluokitus_historia]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_aikaisemman_ylemman_kk_koulutusaste2002_d_koulutusluokitus_historia]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_aikaisemman_ylemman_kk_koulutusala2002_d_koulutusluokitus_historia]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_aikaisemman_ylemman_kk_koulutusala2002_d_koulutusluokitus_historia]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_aikaisemman_ylemman_kk_koulutusala1995_d_koulutusluokitus_historia]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_aikaisemman_ylemman_kk_koulutusala1995_d_koulutusluokitus_historia]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_aikaisemman_ammpk_suoritusvuosi_d_kausi]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_aikaisemman_ammpk_suoritusvuosi_d_kausi]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_aikaisemman_ammpk_opintoala2002_d_koulutusluokitus_historia]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_aikaisemman_ammpk_opintoala2002_d_koulutusluokitus_historia]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_aikaisemman_ammpk_koulutusaste2002_d_koulutusluokitus_historia]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_aikaisemman_ammpk_koulutusaste2002_d_koulutusluokitus_historia]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_aikaisemman_ammpk_koulutusala2002_d_koulutusluokitus_historia]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_aikaisemman_ammpk_koulutusala2002_d_koulutusluokitus_historia]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_aikaisemman_ammlisa_suoritusvuosi_d_kausi]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_aikaisemman_ammlisa_suoritusvuosi_d_kausi]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_aikaisemman_ammlisa_opintoala2002_d_koulutusluokitus_historia]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_aikaisemman_ammlisa_opintoala2002_d_koulutusluokitus_historia]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_aikaisemman_ammlisa_koulutusaste2002_d_koulutusluokitus_historia]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_aikaisemman_ammlisa_koulutusaste2002_d_koulutusluokitus_historia]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_aikaisemman_ammlisa_koulutusala2002_d_koulutusluokitus_historia]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_aikaisemman_ammlisa_koulutusala2002_d_koulutusluokitus_historia]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_aikaisemman_alemman_kk_suoritusvuosi_d_kausi]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_aikaisemman_alemman_kk_suoritusvuosi_d_kausi]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_aikaisemman_alemman_kk_opintoala2002_d_koulutusluokitus_historia]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_aikaisemman_alemman_kk_opintoala2002_d_koulutusluokitus_historia]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_aikaisemman_alemman_kk_opintoala1995_d_koulutusluokitus_historia]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_aikaisemman_alemman_kk_opintoala1995_d_koulutusluokitus_historia]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_aikaisemman_alemman_kk_koulutusaste2002_d_koulutusluokitus_historia]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_aikaisemman_alemman_kk_koulutusaste2002_d_koulutusluokitus_historia]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_aikaisemman_alemman_kk_koulutusala2002_d_koulutusluokitus_historia]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_aikaisemman_alemman_kk_koulutusala2002_d_koulutusluokitus_historia]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_aikaisemman_alemman_kk_koulutusala1995_d_koulutusluokitus_historia]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_aikaisemman_alemman_kk_koulutusala1995_d_koulutusluokitus_historia]
 GO
-
-ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT [FK_2_20_aidinkieli_versio1_d_aidinkieli_versio1]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] DROP CONSTRAINT IF EXISTS [FK_2_20_aidinkieli_versio1_d_aidinkieli_versio1]
 GO
-
-/****** Object:  Table [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]    Script Date: 21.2.2018 17:39:40 ******/
-DROP TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]
+/****** Object:  Table [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]    Script Date: 22.2.2018 21:22:41 ******/
+DROP TABLE IF EXISTS [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]
 GO
-
-/****** Object:  Table [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]    Script Date: 21.2.2018 17:39:40 ******/
+/****** Object:  Table [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]    Script Date: 22.2.2018 21:22:41 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]') AND type in (N'U'))
+BEGIN
 CREATE TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan](
 	[tilastovuosi] [nvarchar](4) NULL,
 	[tilv_date] [date] NULL,
@@ -255,358 +253,356 @@ CREATE TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan](
 	[viimeisimmasta_koulutuksesta_kulunut_aika_id] [int] NULL,
 	[hallinnonala2_id] [int] NULL
 ) ON [PRIMARY]
-
+END
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aidinkieli_versio1_d_aidinkieli_versio1]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_aidinkieli_versio1_d_aidinkieli_versio1] FOREIGN KEY([aidinkieli_versio1_id])
 REFERENCES [dbo].[d_aidinkieli_versio1] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aidinkieli_versio1_d_aidinkieli_versio1]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_aidinkieli_versio1_d_aidinkieli_versio1]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_alemman_kk_koulutusala1995_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_aikaisemman_alemman_kk_koulutusala1995_d_koulutusluokitus_historia] FOREIGN KEY([aikaisemman_alemman_kk_koulutusala1995_id])
 REFERENCES [dbo].[d_koulutusluokitus_historia] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_alemman_kk_koulutusala1995_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_aikaisemman_alemman_kk_koulutusala1995_d_koulutusluokitus_historia]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_alemman_kk_koulutusala2002_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_aikaisemman_alemman_kk_koulutusala2002_d_koulutusluokitus_historia] FOREIGN KEY([aikaisemman_alemman_kk_koulutusala2002_id])
 REFERENCES [dbo].[d_koulutusluokitus_historia] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_alemman_kk_koulutusala2002_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_aikaisemman_alemman_kk_koulutusala2002_d_koulutusluokitus_historia]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_alemman_kk_koulutusaste2002_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_aikaisemman_alemman_kk_koulutusaste2002_d_koulutusluokitus_historia] FOREIGN KEY([aikaisemman_alemman_kk_koulutusaste2002_id])
 REFERENCES [dbo].[d_koulutusluokitus_historia] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_alemman_kk_koulutusaste2002_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_aikaisemman_alemman_kk_koulutusaste2002_d_koulutusluokitus_historia]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_alemman_kk_opintoala1995_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_aikaisemman_alemman_kk_opintoala1995_d_koulutusluokitus_historia] FOREIGN KEY([aikaisemman_alemman_kk_opintoala1995_id])
 REFERENCES [dbo].[d_koulutusluokitus_historia] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_alemman_kk_opintoala1995_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_aikaisemman_alemman_kk_opintoala1995_d_koulutusluokitus_historia]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_alemman_kk_opintoala2002_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_aikaisemman_alemman_kk_opintoala2002_d_koulutusluokitus_historia] FOREIGN KEY([aikaisemman_alemman_kk_opintoala2002_id])
 REFERENCES [dbo].[d_koulutusluokitus_historia] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_alemman_kk_opintoala2002_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_aikaisemman_alemman_kk_opintoala2002_d_koulutusluokitus_historia]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_alemman_kk_suoritusvuosi_d_kausi]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_aikaisemman_alemman_kk_suoritusvuosi_d_kausi] FOREIGN KEY([aikaisemman_alemman_kk_suoritusvuosi_id])
 REFERENCES [dbo].[d_kausi] ([kausi_id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_alemman_kk_suoritusvuosi_d_kausi]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_aikaisemman_alemman_kk_suoritusvuosi_d_kausi]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ammlisa_koulutusala2002_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_aikaisemman_ammlisa_koulutusala2002_d_koulutusluokitus_historia] FOREIGN KEY([aikaisemman_ammlisa_koulutusala2002_id])
 REFERENCES [dbo].[d_koulutusluokitus_historia] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ammlisa_koulutusala2002_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_aikaisemman_ammlisa_koulutusala2002_d_koulutusluokitus_historia]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ammlisa_koulutusaste2002_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_aikaisemman_ammlisa_koulutusaste2002_d_koulutusluokitus_historia] FOREIGN KEY([aikaisemman_ammlisa_koulutusaste2002_id])
 REFERENCES [dbo].[d_koulutusluokitus_historia] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ammlisa_koulutusaste2002_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_aikaisemman_ammlisa_koulutusaste2002_d_koulutusluokitus_historia]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ammlisa_opintoala2002_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_aikaisemman_ammlisa_opintoala2002_d_koulutusluokitus_historia] FOREIGN KEY([aikaisemman_ammlisa_opintoala2002_id])
 REFERENCES [dbo].[d_koulutusluokitus_historia] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ammlisa_opintoala2002_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_aikaisemman_ammlisa_opintoala2002_d_koulutusluokitus_historia]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ammlisa_suoritusvuosi_d_kausi]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_aikaisemman_ammlisa_suoritusvuosi_d_kausi] FOREIGN KEY([aikaisemman_ammlisa_suoritusvuosi_id])
 REFERENCES [dbo].[d_kausi] ([kausi_id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ammlisa_suoritusvuosi_d_kausi]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_aikaisemman_ammlisa_suoritusvuosi_d_kausi]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ammpk_koulutusala2002_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_aikaisemman_ammpk_koulutusala2002_d_koulutusluokitus_historia] FOREIGN KEY([aikaisemman_ammpk_koulutusala2002_id])
 REFERENCES [dbo].[d_koulutusluokitus_historia] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ammpk_koulutusala2002_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_aikaisemman_ammpk_koulutusala2002_d_koulutusluokitus_historia]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ammpk_koulutusaste2002_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_aikaisemman_ammpk_koulutusaste2002_d_koulutusluokitus_historia] FOREIGN KEY([aikaisemman_ammpk_koulutusaste2002_id])
 REFERENCES [dbo].[d_koulutusluokitus_historia] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ammpk_koulutusaste2002_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_aikaisemman_ammpk_koulutusaste2002_d_koulutusluokitus_historia]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ammpk_opintoala2002_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_aikaisemman_ammpk_opintoala2002_d_koulutusluokitus_historia] FOREIGN KEY([aikaisemman_ammpk_opintoala2002_id])
 REFERENCES [dbo].[d_koulutusluokitus_historia] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ammpk_opintoala2002_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_aikaisemman_ammpk_opintoala2002_d_koulutusluokitus_historia]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ammpk_suoritusvuosi_d_kausi]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_aikaisemman_ammpk_suoritusvuosi_d_kausi] FOREIGN KEY([aikaisemman_ammpk_suoritusvuosi_id])
 REFERENCES [dbo].[d_kausi] ([kausi_id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ammpk_suoritusvuosi_d_kausi]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_aikaisemman_ammpk_suoritusvuosi_d_kausi]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ylemman_kk_koulutusala1995_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_aikaisemman_ylemman_kk_koulutusala1995_d_koulutusluokitus_historia] FOREIGN KEY([aikasemman_ylemman_kk_koulutusala1995_id])
 REFERENCES [dbo].[d_koulutusluokitus_historia] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ylemman_kk_koulutusala1995_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_aikaisemman_ylemman_kk_koulutusala1995_d_koulutusluokitus_historia]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ylemman_kk_koulutusala2002_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_aikaisemman_ylemman_kk_koulutusala2002_d_koulutusluokitus_historia] FOREIGN KEY([aikasemman_ylemman_kk_koulutusala2002_id])
 REFERENCES [dbo].[d_koulutusluokitus_historia] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ylemman_kk_koulutusala2002_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_aikaisemman_ylemman_kk_koulutusala2002_d_koulutusluokitus_historia]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ylemman_kk_koulutusaste2002_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_aikaisemman_ylemman_kk_koulutusaste2002_d_koulutusluokitus_historia] FOREIGN KEY([aikasemman_ylemman_kk_koulutusaste2002_id])
 REFERENCES [dbo].[d_koulutusluokitus_historia] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ylemman_kk_koulutusaste2002_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_aikaisemman_ylemman_kk_koulutusaste2002_d_koulutusluokitus_historia]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ylemman_kk_opintoala1995_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_aikaisemman_ylemman_kk_opintoala1995_d_koulutusluokitus_historia] FOREIGN KEY([aikasemman_ylemman_kk_opintoala1995_id])
 REFERENCES [dbo].[d_koulutusluokitus_historia] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ylemman_kk_opintoala1995_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_aikaisemman_ylemman_kk_opintoala1995_d_koulutusluokitus_historia]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ylemman_kk_opintoala2002_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_aikaisemman_ylemman_kk_opintoala2002_d_koulutusluokitus_historia] FOREIGN KEY([aikasemman_ylemman_kk_opintoala2002_id])
 REFERENCES [dbo].[d_koulutusluokitus_historia] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ylemman_kk_opintoala2002_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_aikaisemman_ylemman_kk_opintoala2002_d_koulutusluokitus_historia]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ylemman_kk_suoritusvuosi_d_kausi]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_aikaisemman_ylemman_kk_suoritusvuosi_d_kausi] FOREIGN KEY([aikaisemman_ylemman_kk_suoritusvuosi_id])
 REFERENCES [dbo].[d_kausi] ([kausi_id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisemman_ylemman_kk_suoritusvuosi_d_kausi]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_aikaisemman_ylemman_kk_suoritusvuosi_d_kausi]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisempi_korkein_tutkinto_d_aikaisempi_korkein_tutkinto]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_aikaisempi_korkein_tutkinto_d_aikaisempi_korkein_tutkinto] FOREIGN KEY([aikaisempi_korkein_tutkinto_id])
 REFERENCES [dbo].[d_aikaisempi_korkein_tutkinto] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_aikaisempi_korkein_tutkinto_d_aikaisempi_korkein_tutkinto]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_aikaisempi_korkein_tutkinto_d_aikaisempi_korkein_tutkinto]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_alempi_kk_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_alempi_kk_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika] FOREIGN KEY([aikaisemmasta_koulutuksesta_alempi_kk_kulunut_aika_id])
 REFERENCES [dbo].[d_koulutuksesta_kulunut_aika] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_alempi_kk_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_alempi_kk_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_ammatillisen_koulutuksen_koulutuslaji_d_ammatillisen_koulutuksen_koulutuslaji]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_ammatillisen_koulutuksen_koulutuslaji_d_ammatillisen_koulutuksen_koulutuslaji] FOREIGN KEY([ammatillisen_koulutuksen_koulutuslaji_id])
 REFERENCES [dbo].[d_ammatillisen_koulutuksen_koulutuslaji] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_ammatillisen_koulutuksen_koulutuslaji_d_ammatillisen_koulutuksen_koulutuslaji]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_ammatillisen_koulutuksen_koulutuslaji_d_ammatillisen_koulutuksen_koulutuslaji]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_ammlisa_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_ammlisa_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika] FOREIGN KEY([aikaisemmasta_koulutuksesta_ammlisa_kulunut_aika_id])
 REFERENCES [dbo].[d_koulutuksesta_kulunut_aika] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_ammlisa_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_ammlisa_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_ammpk_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_ammpk_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika] FOREIGN KEY([aikaisemmasta_koulutuksesta_ammpk_kulunut_aika_id])
 REFERENCES [dbo].[d_koulutuksesta_kulunut_aika] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_ammpk_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_ammpk_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_d_opetussuunnitelmaperusteinen_koulutus_nayttotutkintoon_valmistava_koulutus]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_d_opetussuunnitelmaperusteinen_koulutus_nayttotutkintoon_valmistava_koulutus] FOREIGN KEY([opetussuunnitelmaperusteinen_koulutus_nayttotutkintoon_valmistava_koulutus_id])
 REFERENCES [dbo].[d_opetussuunnitelmaperusteinen_koulutus_nayttotutkintoon_valmistava_koulutus] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_d_opetussuunnitelmaperusteinen_koulutus_nayttotutkintoon_valmistava_koulutus]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_d_opetussuunnitelmaperusteinen_koulutus_nayttotutkintoon_valmistava_koulutus]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_d_opiskelijan_aikaisempi_yleissivistava_koulutus]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_d_opiskelijan_aikaisempi_yleissivistava_koulutus] FOREIGN KEY([aikaisempi_ylsk_koulutus_id])
 REFERENCES [dbo].[d_opiskelijan_aikaisempi_yleissivistava_koulutus] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_d_opiskelijan_aikaisempi_yleissivistava_koulutus]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_d_opiskelijan_aikaisempi_yleissivistava_koulutus]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_ika_14_65_d_ika]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_ika_14_65_d_ika] FOREIGN KEY([ika_14_65_id])
 REFERENCES [dbo].[d_ika] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_ika_14_65_d_ika]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_ika_14_65_d_ika]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_ika1v_d_ika]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_ika1v_d_ika] FOREIGN KEY([ika1v_id])
 REFERENCES [dbo].[d_ika] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_ika1v_d_ika]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_ika1v_d_ika]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_ika5v_d_ika]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_ika5v_d_ika] FOREIGN KEY([ika5v_id])
 REFERENCES [dbo].[d_ika] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_ika5v_d_ika]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_ika5v_d_ika]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_kirjoihintulolukukausi_d_kausi]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_kirjoihintulolukukausi_d_kausi] FOREIGN KEY([kirjoihintulolukukausi_id])
 REFERENCES [dbo].[d_kausi] ([kausi_id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_kirjoihintulolukukausi_d_kausi]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_kirjoihintulolukukausi_d_kausi]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_kirjoihintulovuosi_d_kausi]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_kirjoihintulovuosi_d_kausi] FOREIGN KEY([kirjoihintulovuosi_id])
 REFERENCES [dbo].[d_kausi] ([kausi_id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_kirjoihintulovuosi_d_kausi]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_kirjoihintulovuosi_d_kausi]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_koulutuksen_jarjestamismuoto_d_koulutuksen_jarjestamismuoto]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_koulutuksen_jarjestamismuoto_d_koulutuksen_jarjestamismuoto] FOREIGN KEY([koulutuksen_jarjestamismuoto_id])
 REFERENCES [dbo].[d_koulutuksen_jarjestamismuoto] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_koulutuksen_jarjestamismuoto_d_koulutuksen_jarjestamismuoto]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_koulutuksen_jarjestamismuoto_d_koulutuksen_jarjestamismuoto]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_koulutuksen_kunta_d_alueluokitus]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_koulutuksen_kunta_d_alueluokitus] FOREIGN KEY([koulutuksen_kunta_id])
 REFERENCES [dbo].[d_alueluokitus] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_koulutuksen_kunta_d_alueluokitus]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_koulutuksen_kunta_d_alueluokitus]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_koulutuksen_kunta_historia_d_alueluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_koulutuksen_kunta_historia_d_alueluokitus_historia] FOREIGN KEY([koulutuksen_kunta_historia_id])
 REFERENCES [dbo].[d_alueluokitus_historia] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_koulutuksen_kunta_historia_d_alueluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_koulutuksen_kunta_historia_d_alueluokitus_historia]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_koulutusluokitus_historia_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_koulutusluokitus_historia_d_koulutusluokitus_historia] FOREIGN KEY([koulutusluokitus_historia_id])
 REFERENCES [dbo].[d_koulutusluokitus_historia] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_koulutusluokitus_historia_d_koulutusluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_koulutusluokitus_historia_d_koulutusluokitus_historia]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_lahde_d_lahde]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_lahde_d_lahde] FOREIGN KEY([lahde_id])
 REFERENCES [dbo].[d_lahde] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_lahde_d_lahde]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_lahde_d_lahde]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_nuorten_aikuisten_koulutus_amm_d_nuorten_aikuisten_koulutus_amm]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_nuorten_aikuisten_koulutus_amm_d_nuorten_aikuisten_koulutus_amm] FOREIGN KEY([nuorten_aikuisten_koulutus_amm_id])
 REFERENCES [dbo].[d_nuorten_aikuisten_koulutus_amm] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_nuorten_aikuisten_koulutus_amm_d_nuorten_aikuisten_koulutus_amm]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_nuorten_aikuisten_koulutus_amm_d_nuorten_aikuisten_koulutus_amm]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_nuorten_aikuisten_koulutus_d_nuorten_aikuisten_koulutus]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_nuorten_aikuisten_koulutus_d_nuorten_aikuisten_koulutus] FOREIGN KEY([nuorten_aikuisten_koulutus_id])
 REFERENCES [dbo].[d_nuorten_aikuisten_koulutus] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_nuorten_aikuisten_koulutus_d_nuorten_aikuisten_koulutus]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_nuorten_aikuisten_koulutus_d_nuorten_aikuisten_koulutus]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_opetushallinnon_koulutus_d_opetushallinnon_koulutus]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_opetushallinnon_koulutus_d_opetushallinnon_koulutus] FOREIGN KEY([opetushallinnon_koulutus_id])
 REFERENCES [dbo].[d_opetushallinnon_koulutus] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_opetushallinnon_koulutus_d_opetushallinnon_koulutus]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_opetushallinnon_koulutus_d_opetushallinnon_koulutus]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_opiskelijan_asuinkunta_d_alueluokitus]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_opiskelijan_asuinkunta_d_alueluokitus] FOREIGN KEY([opiskelijan_asuinkunta_id])
 REFERENCES [dbo].[d_alueluokitus] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_opiskelijan_asuinkunta_d_alueluokitus]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_opiskelijan_asuinkunta_d_alueluokitus]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_opiskelijan_asuinkunta_historia_d_alueluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_opiskelijan_asuinkunta_historia_d_alueluokitus_historia] FOREIGN KEY([opiskelijan_asuinkunta_historia_id])
 REFERENCES [dbo].[d_alueluokitus_historia] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_opiskelijan_asuinkunta_historia_d_alueluokitus_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_opiskelijan_asuinkunta_historia_d_alueluokitus_historia]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_opiskelijan_olo_syys_d_opiskelijan_olo]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_opiskelijan_olo_syys_d_opiskelijan_olo] FOREIGN KEY([opiskelijan_olo_syys_id])
 REFERENCES [dbo].[d_opiskelijan_olo] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_opiskelijan_olo_syys_d_opiskelijan_olo]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_opiskelijan_olo_syys_d_opiskelijan_olo]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_oppilaitoksen_oppilaitostyyppi_d_oppilaitoksen_taustatiedot]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_oppilaitoksen_oppilaitostyyppi_d_oppilaitoksen_taustatiedot] FOREIGN KEY([oppilaitoksen_oppilaitostyyppi_id])
 REFERENCES [dbo].[d_oppilaitoksen_taustatiedot] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_oppilaitoksen_oppilaitostyyppi_d_oppilaitoksen_taustatiedot]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_oppilaitoksen_oppilaitostyyppi_d_oppilaitoksen_taustatiedot]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_rahoituslahde_d_rahoituslahde_amm]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_rahoituslahde_d_rahoituslahde_amm] FOREIGN KEY([rahoituslahde_id])
 REFERENCES [dbo].[d_rahoituslahde_amm] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_rahoituslahde_d_rahoituslahde_amm]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_rahoituslahde_d_rahoituslahde_amm]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_sukupuoli_d_sukupuoli]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_sukupuoli_d_sukupuoli] FOREIGN KEY([sukupuoli_id])
 REFERENCES [dbo].[d_sukupuoli] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_sukupuoli_d_sukupuoli]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_sukupuoli_d_sukupuoli]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_viimeisimman_koulutuksen_suoritusvuosi_d_kausi]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_viimeisimman_koulutuksen_suoritusvuosi_d_kausi] FOREIGN KEY([viimeisimman_koulutuksen_suorituvuosi_id])
 REFERENCES [dbo].[d_kausi] ([kausi_id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_viimeisimman_koulutuksen_suoritusvuosi_d_kausi]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_viimeisimman_koulutuksen_suoritusvuosi_d_kausi]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_viimeisimmasta_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_viimeisimmasta_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika] FOREIGN KEY([viimeisimmasta_koulutuksesta_kulunut_aika_id])
 REFERENCES [dbo].[d_koulutuksesta_kulunut_aika] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_viimeisimmasta_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_viimeisimmasta_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_ylempi_kk_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]  WITH CHECK ADD  CONSTRAINT [FK_2_20_ylempi_kk_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika] FOREIGN KEY([aikaisemmasta_koulutuksesta_ylempi_kk_kulunut_aika_id])
 REFERENCES [dbo].[d_koulutuksesta_kulunut_aika] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_2_20_ylempi_kk_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan]'))
 ALTER TABLE [dbo].[f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan] CHECK CONSTRAINT [FK_2_20_ylempi_kk_koulutuksesta_kulunut_aika_d_koulutuksesta_kulunut_aika]
 GO
-
-
 USE [ANTERO]
