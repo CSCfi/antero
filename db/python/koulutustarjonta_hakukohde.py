@@ -36,7 +36,7 @@ def makerow():
     #--painotettavatOppiaineet (array[PainotettavaOppiaineV1RDTO], optional),
     #--hakukohteenNimet": None, #nvarchar (max) (Map[string,string], optional): Hashmap containing hakukohde names and name language,
     #--aloituspaikatKuvaukset (Map[string,string], optional),
-    
+
     "ammatillinenPerustutkinto": None, # bit null, --(boolean, optional),
     "hakulomakeUrl": None, # nvarchar(max) null, --(string, optional): Hakulomakkeen www-osoite,
     "koulutuksenAlkamisvuosi": None, # int null, --(integer, optional),
@@ -137,13 +137,16 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
     except ValueError, e:
       show("-- %d -- could not load %s"%(cnt,ii["oid"]))
     else:
-      i = j["result"]
-      row = makerow()
+      if j["status"] == "NOT FOUND":
+          continue
+      if j["status"] == "OK":
+          i = j["result"]
+          row = makerow()
 
-      for col in row:
-        row[col] = None if col not in i else i[col]
-        if type(row[col]) is list:
-          row[col] = ''.join(map(str,json.dumps(row[col])))
+          for col in row:
+              row[col] = None if col not in i else i[col]
+              if type(row[col]) is list:
+                  row[col] = ''.join(map(str,json.dumps(row[col])))
 
       if verbose: show("%d -- %s"%(cnt,row["oid"]))
       if debug: print row
