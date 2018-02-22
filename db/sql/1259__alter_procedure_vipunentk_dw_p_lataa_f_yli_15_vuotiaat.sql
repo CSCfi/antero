@@ -27,6 +27,3 @@ SELECT [tilv]
   LEFT JOIN [VipunenTK].[dbo].[d_koulutusluokitus] d8 ON 'KASTET2'+f.kaste_t2=d8.koulutusluokitus_avain
 
 
-  GO
-
-  USE [ANTERO]
