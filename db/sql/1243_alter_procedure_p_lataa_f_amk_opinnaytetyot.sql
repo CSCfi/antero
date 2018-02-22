@@ -1,13 +1,13 @@
 USE [ANTERO]
 GO
 
-/****** Object:  StoredProcedure [dw].[p_lataa_f_amk_opinnaytetyot]    Script Date: 20.2.2018 10:12:05 ******/
-
+/****** Object:  StoredProcedure [dw].[p_lataa_f_amk_opinnaytetyot]    Script Date: 22.2.2018 15:19:38 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 ALTER PROCEDURE [dw].[p_lataa_f_amk_opinnaytetyot]
 AS
@@ -58,6 +58,7 @@ JOIN  [dw].[d_amk] v2 ON v1.organisaatio = v2.amk_tunnus
 LEFT JOIN [dw].d_ohjauksenala v4 ON v1.ohjausala = v4.ohjauksenala_koodi
 LEFT JOIN [dw].d_amk_koulutustyyppi v5 ON v1.koulutustyyppi = v5.koodi
 ;
+
 
 GO
 
