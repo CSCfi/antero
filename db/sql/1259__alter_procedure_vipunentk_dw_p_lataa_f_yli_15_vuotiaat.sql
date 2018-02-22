@@ -1,11 +1,5 @@
 USE [VipunenTK_DW]
 GO
-/****** Object:  StoredProcedure [dbo].[p_lataa_f_yli_15-vuotiaat_koulutuksen_kielen_ja_asuinkunnan_mukaan]    Script Date: 22.2.2018 10:26:15 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-
 
 ALTER PROCEDURE [dbo].[p_lataa_f_yli_15-vuotiaat_koulutuksen_kielen_ja_asuinkunnan_mukaan] AS
 
