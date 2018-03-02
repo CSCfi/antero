@@ -4,7 +4,7 @@ begin
   set identity_insert dw.d_nimitystapa on;
 insert into dw.d_nimitystapa (
     id,
-	koodi,a
+	koodi,
     selite_fi,
     selite_sv,
     selite_en,
