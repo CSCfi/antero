@@ -18,7 +18,7 @@ INSERT INTO dw.f_yo_toimipisteet (
 SELECT s2.id
 	,s3.id
 	,s4.id
-	,s.1[Vuosi]
+	,s1.[Vuosi]
 	,COALESCE(toimipaikan_htv_lkm,0)
 	,COALESCE(tutkaseman_henk_max_maara,0)
 	,COALESCE(tutkaseman_henk_min_maara,0)
