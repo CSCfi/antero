@@ -1,10 +1,3 @@
-USE [ANTERO]
-GO
-/****** Object:  StoredProcedure [dw].[p_lataa_f_amk_henkilon_tyo]    Script Date: 1.3.2018 12:47:49 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 ALTER PROCEDURE [dw].[p_lataa_f_amk_henkilon_tyo]
 AS
 TRUNCATE TABLE dw.f_amk_henkilon_tyo;

@@ -1,10 +1,10 @@
-
+ALTER PROCEDURE [dw].[p_lataa_f_amk_henkilon_tyo] AS
 if not exists (select * from dw.d_nimitystapa where id=-1)
 begin
   set identity_insert dw.d_nimitystapa on;
 insert into dw.d_nimitystapa (
     id,
-	koodi,
+	  koodi,
     selite_fi,
     selite_sv,
     selite_en,
@@ -15,7 +15,7 @@ insert into dw.d_nimitystapa (
   )
   select
      -1,koodi,
-     nimi,nimi_sv,nimi_en
+     nimi,nimi_sv,nimi_en,
 	 nimi,nimi_sv,nimi_en,
      source
    from sa.sa_koodistot
