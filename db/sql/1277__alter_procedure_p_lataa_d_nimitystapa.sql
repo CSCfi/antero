@@ -1,4 +1,4 @@
-ALTER PROCEDURE [dw].[p_lataa_f_amk_henkilon_tyo] AS
+ALTER PROCEDURE [dw].[p_lataa_d_nimitystapa] AS
 if not exists (select * from dw.d_nimitystapa where id=-1)
 begin
   set identity_insert dw.d_nimitystapa on;
