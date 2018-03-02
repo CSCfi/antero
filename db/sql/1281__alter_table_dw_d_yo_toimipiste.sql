@@ -1,0 +1,9 @@
+USE [ANTERO]
+
+IF NOT EXISTS (
+	SELECT * FROM INFORMATION_SCHEMA.COLUMNS
+	WHERE TABLE_SCHEMA='dw' AND TABLE_NAME='d_yo_toimipiste' AND COLUMN_NAME='vuosi')
+
+BEGIN
+	ALTER TABLE dw.d_yo_toimipiste ADD vuosi  varchar(5)
+END
