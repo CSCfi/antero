@@ -36,8 +36,8 @@ USING (
 		,COALESCE(nimi_en, nimi, nimi_sv) as selite_en
 		,'etl: p_lataa_d_koulutusala_1995' AS source
 	FROM sa.sa_koodistot
-	-- koodirajaus 2015 suorien käsikirjasta   
-	where koodisto = 'opintoalaoph1995' AND where koodi <95 and koodi >74
+	-- koodirajaus 2015 suorien käsikirjasta
+	where koodisto = 'opintoalaoph1995' AND koodi <95 AND koodi >74
 
 	) AS src
 	ON target.koodi = src.koodi
