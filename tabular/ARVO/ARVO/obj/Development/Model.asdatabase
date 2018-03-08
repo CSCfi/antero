@@ -67,7 +67,6 @@
           {
             "name": "vastaajaid",
             "dataType": "int64",
-            "isHidden": true,
             "sourceColumn": "vastaajaid",
             "sourceProviderType": "Integer"
           },
@@ -2281,7 +2280,7 @@
           {
             "name": "Keskihajonta (AVOP-AMK)",
             "expression": "IF([vast-avop-amk-tilasto]<6,BLANK(),[kh-avop-amk-tilasto])",
-            "formatString": "0"
+            "formatString": "0.0"
           },
           {
             "name": "Keskihajonta (AVOP-AMK, LIVE)",
@@ -2291,7 +2290,7 @@
           {
             "name": "Keskihajonta (AVOP-YAMK)",
             "expression": "IF([vast-avop-yamk-tilasto]<6,BLANK(),[kh-avop-yamk-tilasto])",
-            "formatString": "0"
+            "formatString": "0.0"
           },
           {
             "name": "Keskihajonta (AVOP-YAMK, LIVE)",
@@ -2301,7 +2300,7 @@
           {
             "name": "Keskihajonta (KANDI)",
             "expression": "IF([vast-kandi-tilasto]<6,BLANK(),[kh-kandi-tilasto])",
-            "formatString": "0"
+            "formatString": "0.0"
           },
           {
             "name": "Keskiarvo (KANDI, LIVE)",
@@ -2781,6 +2780,46 @@
             "name": "ka-ura-toht2",
             "expression": "CALCULATE([vast-ura-toht-tilasto])/CALCULATE([vast-ura-toht-tilasto],ALL(Muuttujat[monivalintavaihtoehto]))",
             "isHidden": true
+          },
+          {
+            "name": "Vastaajamäärä (AVOP-AMK ja AVOP-YAMK)",
+            "expression": "IF(AND([vast-avop-amk-yamk-tilasto]>0,[vast-avop-amk-yamk-tilasto]<6),3,[vast-avop-amk-yamk-tilasto])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Keskiarvo (AVOP-AMK ja AVOP-YAMK)",
+            "expression": "IF([vast-avop-amk-yamk-tilasto]<6,BLANK(),[ka-avop-amk-yamk-tilasto])",
+            "formatString": "0.0"
+          },
+          {
+            "name": "vast-avop-amk-yamk-tilasto",
+            "expression": "[vast-avop-amk-tilasto]+[vast-avop-yamk-tilasto]",
+            "isHidden": true
+          },
+          {
+            "name": "ka-avop-amk-yamk-tilasto",
+            "expression": "CALCULATE(AVERAGE(Muuttujat[avop-numerovalinta]),FILTER(Muuttujat,Muuttujat[vastaustyyppi]=\"arvosana7\" && OR(Muuttujat[avop_amk]=1,Muuttujat[avop_yamk]=1) && [vuosi_tilasto]=1))",
+            "isHidden": true
+          },
+          {
+            "name": "kh-avop-amk-yamk-tilasto",
+            "expression": "CALCULATE(STDEV.P(Muuttujat[avop-numerovalinta]),FILTER(Muuttujat,Muuttujat[vastaustyyppi]=\"arvosana7\" && OR(Muuttujat[avop_amk]=1,[avop_yamk]=1) && [vuosi_tilasto]=1))",
+            "isHidden": true
+          },
+          {
+            "name": "pisteet-avop-amk-yamk-tilasto",
+            "expression": "calculate(sum(Muuttujat[avop-numerovalinta]),FILTER(Muuttujat,OR([avop_amk]=1,[avop_yamk]=1) && Muuttujat[Rahoitusmallikysymys]=\"Kyllä\" && [vuosi_tilasto]=1))",
+            "isHidden": true
+          },
+          {
+            "name": "Keskihajonta (AVOP-AMK JA AVOP-YAMK)",
+            "expression": "IF([vast-avop-amk-yamk-tilasto]<6,BLANK(),[kh-avop-amk-yamk-tilasto])",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Pisteet (AVOP-AMK ja AVOP-YAMK)",
+            "expression": "IF([vast-avop-amk-yamk-tilasto]<5,BLANK(),[pisteet-avop-amk-yamk-tilasto])",
+            "formatString": "#,0"
           }
         ],
         "annotations": [
@@ -5185,6 +5224,104 @@
               },
               {
                 "name": "Vastaajamäärä (URASEURANTA-TOHTORIT)"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "AVOP_RAHOITUSMALLI",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Hallinnonala"
+              },
+              {
+                "name": "Ikä"
+              },
+              {
+                "name": "Kieli"
+              },
+              {
+                "name": "Koodit Koulutus"
+              },
+              {
+                "name": "Koodit Organisaatio"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "Koulutusnimike"
+              },
+              {
+                "name": "Kyselykerta"
+              },
+              {
+                "name": "kyselypohja"
+              },
+              {
+                "name": "Kyselyvuosi"
+              },
+              {
+                "name": "Kysymys"
+              },
+              {
+                "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Organisaatio"
+              },
+              {
+                "name": "Pohjakoulutus"
+              },
+              {
+                "name": "Rahoitusmallikysymys"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Vastauskuukausi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Keskiarvo (AVOP-AMK ja AVOP-YAMK)"
+              },
+              {
+                "name": "Vastaajamäärä (AVOP-AMK ja AVOP-YAMK)"
+              },
+              {
+                "name": "Keskihajonta (AVOP-AMK JA AVOP-YAMK)"
+              },
+              {
+                "name": "Pisteet (AVOP-AMK ja AVOP-YAMK)"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
               }
             ]
           }
