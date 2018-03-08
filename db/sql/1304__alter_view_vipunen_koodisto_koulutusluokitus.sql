@@ -36,9 +36,9 @@ ALTER VIEW [dbo].[v_koulutusluokitus] AS
 -- 2.6.2016 lisätty kaste_taso2-kentät	
 -- 9.1.2018 lisätty join, jolla haetaan erikoisammattitutkinnoille (3-alkuiset koodit vaihtuivat 4-alkuisiksi) uuden koulutusluokituksen tiedot -Anssi
 -- 22.2.2018 lisätty ISCFIBROAD, ISCFINARROW, KASTET2
--- iscfibroad2013		= koulutusaste, taso 1
+-- iscle2011		= koulutusaste, taso 1
 -- kaste_t2			= koulutusaste, taso 2
--- iscfibroad2013	= koulutusala, taso 1
+-- iscle2011	= koulutusala, taso 1
 -- iscfinarrow2013	= koulutusala, taso 2
 -- iscfi2013		= koulutusala, taso 3
 
@@ -120,15 +120,15 @@ SELECT DISTINCT
       ,kaikkirivit.[koulutusaste1995selite_FI]
       ,kaikkirivit.[koulutusaste1995selite_SV]
       ,kaikkirivit.[koulutusaste1995selite_EN]
-      --,kaikkirivit.[iscfibroad2013koodi] = ISNULL([iscfibroad2013koodi],kaikkirivit. '-1') 
-      --,kaikkirivit.[iscfibroad2013selite_FI] = case when [iscfibroad2013selite_FI]='Tuntematon' and iscfibroad2013koodi is not null and iscfibroad2013koodi<>'-1' then (select top 1 kv.iscfibroad2013selite_FI from Vipunen_koodisto.dbo._v_koulutusluokitus_kaikkivuodet kv where kv.iscfibroad2013koodi=kaikkirivit.iscfibroad2013koodi and isnull(kv.iscfibroad2013selite_FI,kaikkirivit.'')<>'') else kaikkirivit.[iscfibroad2013selite_FI] end
-      --,kaikkirivit.[iscfibroad2013selite_SV] = case when [iscfibroad2013selite_SV]='Information saknas' and iscfibroad2013koodi is not null and iscfibroad2013koodi<>'-1' then (select top 1 kv.iscfibroad2013selite_SV from Vipunen_koodisto.dbo._v_koulutusluokitus_kaikkivuodet kv where kv.iscfibroad2013koodi=kaikkirivit.iscfibroad2013koodi and isnull(kv.iscfibroad2013selite_SV,kaikkirivit.'')<>'') else kaikkirivit.[iscfibroad2013selite_SV] end
-      --,kaikkirivit.[iscfibroad2013selite_EN] = case when [iscfibroad2013selite_EN]='Missing data' and iscfibroad2013koodi is not null and iscfibroad2013koodi<>'-1' then (select top 1 kv.iscfibroad2013selite_EN from Vipunen_koodisto.dbo._v_koulutusluokitus_kaikkivuodet kv where kv.iscfibroad2013koodi=kaikkirivit.iscfibroad2013koodi and isnull(kv.iscfibroad2013selite_EN,kaikkirivit.'')<>'') else kaikkirivit.[iscfibroad2013selite_EN] end
+      --,kaikkirivit.[iscle2011koodi] = ISNULL([iscle2011koodi],kaikkirivit. '-1') 
+      --,kaikkirivit.[iscle2011selite_FI] = case when [iscle2011selite_FI]='Tuntematon' and iscle2011koodi is not null and iscle2011koodi<>'-1' then (select top 1 kv.iscle2011selite_FI from Vipunen_koodisto.dbo._v_koulutusluokitus_kaikkivuodet kv where kv.iscle2011koodi=kaikkirivit.iscle2011koodi and isnull(kv.iscle2011selite_FI,kaikkirivit.'')<>'') else kaikkirivit.[iscle2011selite_FI] end
+      --,kaikkirivit.[iscle2011selite_SV] = case when [iscle2011selite_SV]='Information saknas' and iscle2011koodi is not null and iscle2011koodi<>'-1' then (select top 1 kv.iscle2011selite_SV from Vipunen_koodisto.dbo._v_koulutusluokitus_kaikkivuodet kv where kv.iscle2011koodi=kaikkirivit.iscle2011koodi and isnull(kv.iscle2011selite_SV,kaikkirivit.'')<>'') else kaikkirivit.[iscle2011selite_SV] end
+      --,kaikkirivit.[iscle2011selite_EN] = case when [iscle2011selite_EN]='Missing data' and iscle2011koodi is not null and iscle2011koodi<>'-1' then (select top 1 kv.iscle2011selite_EN from Vipunen_koodisto.dbo._v_koulutusluokitus_kaikkivuodet kv where kv.iscle2011koodi=kaikkirivit.iscle2011koodi and isnull(kv.iscle2011selite_EN,kaikkirivit.'')<>'') else kaikkirivit.[iscle2011selite_EN] end
 	  -- yo selitteet tulevat nyt tilastokeskukselta / CSC Jarmo 2.6.2016
-      ,[iscfibroad2013koodi] = ISNULL(COALESCE(kaikkirivit.[iscfibroad2013koodi],v.iscfibroad2013koodi), '-1') 
-      ,[iscfibroad2013selite_FI] = coalesce(v.iscfibroad2013selite_FI,kaikkirivit.iscfibroad2013selite_FI) --= case when [iscfibroad2013selite_FI]='Tuntematon' and iscfibroad2013koodi is not null and iscfibroad2013koodi<>'-1' then (select top 1 kv.iscfibroad2013selite_FI from Vipunen_koodisto.dbo._v_koulutusluokitus_kaikkivuodet kv where kv.iscfibroad2013koodi=kaikkirivit.iscfibroad2013koodi and isnull(kv.iscfibroad2013selite_FI,kaikkirivit.'')<>'') else kaikkirivit.[iscfibroad2013selite_FI] end
-      ,[iscfibroad2013selite_SV] = coalesce(v.iscfibroad2013selite_SV,kaikkirivit.iscfibroad2013selite_SV) --= case when [iscfibroad2013selite_SV]='Information saknas' and iscfibroad2013koodi is not null and iscfibroad2013koodi<>'-1' then (select top 1 kv.iscfibroad2013selite_SV from Vipunen_koodisto.dbo._v_koulutusluokitus_kaikkivuodet kv where kv.iscfibroad2013koodi=kaikkirivit.iscfibroad2013koodi and isnull(kv.iscfibroad2013selite_SV,kaikkirivit.'')<>'') else kaikkirivit.[iscfibroad2013selite_SV] end
-      ,[iscfibroad2013selite_EN] = coalesce(v.iscfibroad2013selite_EN,kaikkirivit.iscfibroad2013selite_EN) --= case when [iscfibroad2013selite_EN]='Missing data' and iscfibroad2013koodi is not null and iscfibroad2013koodi<>'-1' then (select top 1 kv.iscfibroad2013selite_EN from Vipunen_koodisto.dbo._v_koulutusluokitus_kaikkivuodet kv where kv.iscfibroad2013koodi=kaikkirivit.iscfibroad2013koodi and isnull(kv.iscfibroad2013selite_EN,kaikkirivit.'')<>'') else kaikkirivit.[iscfibroad2013selite_EN] end
+      ,[iscle2011koodi] = ISNULL(COALESCE(kaikkirivit.[iscle2011koodi],v.iscle2011koodi), '-1') 
+      ,[iscle2011selite_FI] = coalesce(v.iscle2011selite_FI,kaikkirivit.iscle2011selite_FI) --= case when [iscle2011selite_FI]='Tuntematon' and iscle2011koodi is not null and iscle2011koodi<>'-1' then (select top 1 kv.iscle2011selite_FI from Vipunen_koodisto.dbo._v_koulutusluokitus_kaikkivuodet kv where kv.iscle2011koodi=kaikkirivit.iscle2011koodi and isnull(kv.iscle2011selite_FI,kaikkirivit.'')<>'') else kaikkirivit.[iscle2011selite_FI] end
+      ,[iscle2011selite_SV] = coalesce(v.iscle2011selite_SV,kaikkirivit.iscle2011selite_SV) --= case when [iscle2011selite_SV]='Information saknas' and iscle2011koodi is not null and iscle2011koodi<>'-1' then (select top 1 kv.iscle2011selite_SV from Vipunen_koodisto.dbo._v_koulutusluokitus_kaikkivuodet kv where kv.iscle2011koodi=kaikkirivit.iscle2011koodi and isnull(kv.iscle2011selite_SV,kaikkirivit.'')<>'') else kaikkirivit.[iscle2011selite_SV] end
+      ,[iscle2011selite_EN] = coalesce(v.iscle2011selite_EN,kaikkirivit.iscle2011selite_EN) --= case when [iscle2011selite_EN]='Missing data' and iscle2011koodi is not null and iscle2011koodi<>'-1' then (select top 1 kv.iscle2011selite_EN from Vipunen_koodisto.dbo._v_koulutusluokitus_kaikkivuodet kv where kv.iscle2011koodi=kaikkirivit.iscle2011koodi and isnull(kv.iscle2011selite_EN,kaikkirivit.'')<>'') else kaikkirivit.[iscle2011selite_EN] end
       ,[isccat2011koodi] = ISNULL(kaikkirivit.[isccat2011koodi], '-1') 
       ,kaikkirivit.[isccat2011selite_FI]
       ,kaikkirivit.[isccat2011selite_SV]
@@ -176,7 +176,7 @@ SELECT DISTINCT
       ,[jarjestys_iscdu] = Cast(Left(Case when kaikkirivit.iscduselite_FI='Tuntematon' then 'ööö' else Isnull(nullif(kaikkirivit.[iscdukoodi],'-1'),'ööö') end, 10) as nvarchar(10))
       ,[jarjestys_iscle] = Cast(Left(Case when kaikkirivit.iscleselite_FI='Tuntematon' then 'ööö' else Isnull(nullif(kaikkirivit.[isclekoodi],'-1'),'ööö') end, 10) as nvarchar(10))
       ,[jarjestys_iscfik] = Cast(Left(Case when kaikkirivit.iscfikselite_FI='Tuntematon' then 'ööö' else Isnull(nullif(kaikkirivit.[iscfikkoodi],'-1'),'ööö') end, 10) as nvarchar(10))
-      ,[jarjestys_iscfibroad2013] = Cast(Left(Case when coalesce(v.iscfibroad2013selite_FI,kaikkirivit.iscfibroad2013selite_FI)='Tuntematon' then 'ööö' else Isnull(nullif(kaikkirivit.[iscfibroad2013koodi],'-1'),coalesce(v.iscfibroad2013koodi,'ööö')) end, 10) as nvarchar(10))
+      ,[jarjestys_iscle2011] = Cast(Left(Case when coalesce(v.iscle2011selite_FI,kaikkirivit.iscle2011selite_FI)='Tuntematon' then 'ööö' else Isnull(nullif(kaikkirivit.[iscle2011koodi],'-1'),coalesce(v.iscle2011koodi,'ööö')) end, 10) as nvarchar(10))
       ,[jarjestys_isccat2011] = Cast(Left(Case when kaikkirivit.isccat2011selite_FI='Tuntematon' then 'ööö' else Isnull(nullif(kaikkirivit.[isccat2011koodi],'-1'),'ööö') end, 10) as nvarchar(10))
       ,[jarjestys_iscsubcat2011] = Cast(Left(Case when kaikkirivit.iscsubcat2011selite_FI='Tuntematon' then 'ööö' else Isnull(nullif(kaikkirivit.[iscsubcat2011koodi],'-1'),'ööö') end, 10) as nvarchar(10))
       ,[jarjestys_iscfi2013] = Cast(Left(Case when coalesce(v.iscfi2013selite_FI,kaikkirivit.iscfi2013selite_FI)='Tuntematon' then 'ööö' else Isnull(nullif(kaikkirivit.[iscfi2013koodi],'-1'),coalesce(v.iscfi2013koodi,'ööö')) end, 10) as nvarchar(10))
@@ -262,10 +262,10 @@ SELECT DISTINCT
       ,[koulutusaste1995selite_FI]
       ,[koulutusaste1995selite_SV]
       ,[koulutusaste1995selite_EN]
-	  ,[iscfibroad2013koodi]
-	  ,[iscfibroad2013selite_FI]
-	  ,[iscfibroad2013selite_SV]
-	  ,[iscfibroad2013selite_EN]
+	  ,[iscle2011koodi]
+	  ,[iscle2011selite_FI]
+	  ,[iscle2011selite_SV]
+	  ,[iscle2011selite_EN]
 	  ,[isccat2011koodi]
 	  ,[isccat2011selite_FI]
 	  ,[isccat2011selite_SV]
@@ -313,7 +313,7 @@ SELECT DISTINCT
       ,[jarjestys_iscdu] = Case when iscduselite_FI='Tuntematon' then 'ööö' else Isnull(Nullif([iscdukoodi],'-1'),'ööö') end
       ,[jarjestys_iscle] = Case when iscleselite_FI='Tuntematon' then 'ööö' else Isnull(Nullif([isclekoodi],'-1'),'ööö') end
       ,[jarjestys_iscfik] = Case when iscfikselite_FI='Tuntematon' then 'ööö' else Isnull(Nullif([iscfikkoodi],'-1'),'ööö') end
-      ,[jarjestys_iscfibroad2013] = Case when iscfibroad2013selite_FI='Tuntematon' then 'ööö' else Isnull(Nullif([iscfibroad2013koodi],'-1'),'ööö') end
+      ,[jarjestys_iscle2011] = Case when iscle2011selite_FI='Tuntematon' then 'ööö' else Isnull(Nullif([iscle2011koodi],'-1'),'ööö') end
       ,[jarjestys_isccat2011] = Case when isccat2011selite_FI='Tuntematon' then 'ööö' else Isnull(Nullif([isccat2011koodi],'-1'),'ööö') end
       ,[jarjestys_iscsubcat2011] = Case when iscsubcat2011selite_FI='Tuntematon' then 'ööö' else Isnull(Nullif([iscsubcat2011koodi],'-1'),'ööö') end
       ,[jarjestys_iscfi2013] = Case when iscfi2013selite_FI='Tuntematon' then 'ööö' else Isnull(Nullif([iscfi2013koodi],'-1'),'ööö') end
@@ -414,10 +414,10 @@ SELECT --DISTINCT
       ,[koulutusaste1995selite_FI]
       ,[koulutusaste1995selite_SV]
       ,[koulutusaste1995selite_EN]
-	  ,[iscfibroad2013koodi]
-	  ,[iscfibroad2013selite_FI]
-	  ,[iscfibroad2013selite_SV]
-	  ,[iscfibroad2013selite_EN]
+	  ,[iscle2011koodi]
+	  ,[iscle2011selite_FI]
+	  ,[iscle2011selite_SV]
+	  ,[iscle2011selite_EN]
 	  ,[isccat2011koodi]
 	  ,[isccat2011selite_FI]
 	  ,[isccat2011selite_SV]
@@ -527,10 +527,10 @@ SELECT DISTINCT
       ,[koulutusaste1995selite_FI] = 'Tuntematon'
       ,[koulutusaste1995selite_SV] = 'Okänd'
       ,[koulutusaste1995selite_EN] = 'Unknown'
-	  ,[iscfibroad2013koodi] = '-1'
-	  ,[iscfibroad2013selite_FI] = 'Tuntematon'
-	  ,[iscfibroad2013selite_SV] = 'Okänd'
-	  ,[iscfibroad2013selite_EN] = 'Unknown'
+	  ,[iscle2011koodi] = '-1'
+	  ,[iscle2011selite_FI] = 'Tuntematon'
+	  ,[iscle2011selite_SV] = 'Okänd'
+	  ,[iscle2011selite_EN] = 'Unknown'
 	  ,[isccat2011koodi] = '-1'
 	  ,[isccat2011selite_FI] = 'Tuntematon'
 	  ,[isccat2011selite_SV] = 'Okänd'
@@ -547,10 +547,10 @@ SELECT DISTINCT
 	  ,[iscfinarrow2013selite_FI] = 'Tuntematon'
 	  ,[iscfinarrow2013selite_SV] = 'Okänd'
 	  ,[iscfinarrow2013selite_EN] = 'Unknown'
-	  ,[iscfibroad2013koodi] = '-1'
-	  ,[iscfibroad2013selite_FI] = 'Tuntematon'
-	  ,[iscfibroad2013selite_SV] = 'Okänd'
-	  ,[iscfibroad2013selite_EN] = 'Unknown'
+	  ,[iscle2011koodi] = '-1'
+	  ,[iscle2011selite_FI] = 'Tuntematon'
+	  ,[iscle2011selite_SV] = 'Okänd'
+	  ,[iscle2011selite_EN] = 'Unknown'
 	  ,[kaste_t2koodi] = '-1'
 	  ,[kaste_t2_FI] = 'Tuntematon'
 	  ,[kaste_t2_SV] = 'Okänd'
@@ -576,12 +576,12 @@ SELECT DISTINCT
       ,[jarjestys_iscdu] =  'ööö'
       ,[jarjestys_iscle] =  'ööö'
       ,[jarjestys_iscfik] =  'ööö'
-      ,[jarjestys_iscfibroad2013] = 'ööö'
+      ,[jarjestys_iscle2011] = 'ööö'
       ,[jarjestys_isccat2011] = 'ööö'
       ,[jarjestys_iscsubcat2011] = 'ööö'
       ,[jarjestys_iscfi2013] = 'ööö'
       ,[jarjestys_iscfinarrow2013] = 'ööö'
-      ,[jarjestys_iscfibroad2013] = 'ööö'
+      ,[jarjestys_iscle2011] = 'ööö'
       ,[jarjestys_kaste_t2] = 'ööö'
 
 
@@ -746,10 +746,10 @@ SELECT DISTINCT
       ,[koulutusaste1995selite_FI] = 'Tuntematon'
       ,[koulutusaste1995selite_SV] = 'Okänd'
       ,[koulutusaste1995selite_EN] = 'Unknown'
-	  ,[iscfibroad2013koodi] = '-1'
-	  ,[iscfibroad2013selite_FI] = 'Tuntematon'
-	  ,[iscfibroad2013selite_SV] = 'Okänd'
-	  ,[iscfibroad2013selite_EN] = 'Unknown'
+	  ,[iscle2011koodi] = '-1'
+	  ,[iscle2011selite_FI] = 'Tuntematon'
+	  ,[iscle2011selite_SV] = 'Okänd'
+	  ,[iscle2011selite_EN] = 'Unknown'
 	  ,[isccat2011koodi] = '-1'
 	  ,[isccat2011selite_FI] = 'Tuntematon'
 	  ,[isccat2011selite_SV] = 'Okänd'
@@ -766,10 +766,10 @@ SELECT DISTINCT
 	  ,[iscfinarrow2013selite_FI] = 'Tuntematon'
 	  ,[iscfinarrow2013selite_SV] = 'Okänd'
 	  ,[iscfinarrow2013selite_EN] = 'Unknown'
-	  ,[iscfibroad2013koodi] = '-1'
-	  ,[iscfibroad2013selite_FI] = 'Tuntematon'
-	  ,[iscfibroad2013selite_SV] = 'Okänd'
-	  ,[iscfibroad2013selite_EN] = 'Unknown'
+	  ,[iscle2011koodi] = '-1'
+	  ,[iscle2011selite_FI] = 'Tuntematon'
+	  ,[iscle2011selite_SV] = 'Okänd'
+	  ,[iscle2011selite_EN] = 'Unknown'
 	  ,[kaste_t2koodi] = '-1'
 	  ,[kaste_t2_FI] = 'Tuntematon'
 	  ,[kaste_t2_SV] = 'Okänd'
@@ -795,12 +795,12 @@ SELECT DISTINCT
       ,[jarjestys_iscdu] =  'ööö'
       ,[jarjestys_iscle] =  'ööö'
       ,[jarjestys_iscfik] =  'ööö'
-      ,[jarjestys_iscfibroad2013] = 'ööö'
+      ,[jarjestys_iscle2011] = 'ööö'
       ,[jarjestys_isccat2011] = 'ööö'
       ,[jarjestys_iscsubcat2011] = 'ööö'
       ,[jarjestys_iscfi2013] = 'ööö'
       ,[jarjestys_iscfinarrow2013] = 'ööö'
-      ,[jarjestys_iscfibroad2013] = 'ööö'
+      ,[jarjestys_iscle2011] = 'ööö'
       ,[jarjestys_kaste_t2] = 'ööö'
 
 
@@ -967,10 +967,10 @@ SELECT DISTINCT
       ,[koulutusaste1995selite_FI] = 'Tuntematon'
       ,[koulutusaste1995selite_SV] = 'Okänd'
       ,[koulutusaste1995selite_EN] = 'Unknown'
-	  ,[iscfibroad2013koodi] = '-1'
-	  ,[iscfibroad2013selite_FI] = 'Tuntematon'
-	  ,[iscfibroad2013selite_SV] = 'Okänd'
-	  ,[iscfibroad2013selite_EN] = 'Unknown'
+	  ,[iscle2011koodi] = '-1'
+	  ,[iscle2011selite_FI] = 'Tuntematon'
+	  ,[iscle2011selite_SV] = 'Okänd'
+	  ,[iscle2011selite_EN] = 'Unknown'
 	  ,[isccat2011koodi] = '-1'
 	  ,[isccat2011selite_FI] = 'Tuntematon'
 	  ,[isccat2011selite_SV] = 'Okänd'
@@ -987,10 +987,10 @@ SELECT DISTINCT
 	  ,[iscfinarrow2013selite_FI] = 'Tuntematon'
 	  ,[iscfinarrow2013selite_SV] = 'Okänd'
 	  ,[iscfinarrow2013selite_EN] = 'Unknown'
-	  ,[iscfibroad2013koodi] = '-1'
-	  ,[iscfibroad2013selite_FI] = 'Tuntematon'
-	  ,[iscfibroad2013selite_SV] = 'Okänd'
-	  ,[iscfibroad2013selite_EN] = 'Unknown'
+	  ,[iscle2011koodi] = '-1'
+	  ,[iscle2011selite_FI] = 'Tuntematon'
+	  ,[iscle2011selite_SV] = 'Okänd'
+	  ,[iscle2011selite_EN] = 'Unknown'
 	  ,[kaste_t2koodi] = '-1'
 	  ,[kaste_t2_FI] = 'Tuntematon'
 	  ,[kaste_t2_SV] = 'Okänd'
@@ -1017,12 +1017,12 @@ SELECT DISTINCT
       ,[jarjestys_iscdu] =  'ööö'
       ,[jarjestys_iscle] =  'ööö'
       ,[jarjestys_iscfik] =  'ööö'
-      ,[jarjestys_iscfibroad2013] = 'ööö'
+      ,[jarjestys_iscle2011] = 'ööö'
       ,[jarjestys_isccat2011] = 'ööö'
       ,[jarjestys_iscsubcat2011] = 'ööö'
       ,[jarjestys_iscfi2013] = 'ööö'
       ,[jarjestys_iscfinarrow2013] = 'ööö'
-      ,[jarjestys_iscfibroad2013] = 'ööö'
+      ,[jarjestys_iscle2011] = 'ööö'
       ,[jarjestys_kaste_t2] = 'ööö'
 
 
@@ -1188,10 +1188,10 @@ SELECT DISTINCT
       ,[koulutusaste1995selite_FI] = 'Tuntematon'
       ,[koulutusaste1995selite_SV] = 'Okänd'
       ,[koulutusaste1995selite_EN] = 'Unknown'
-	  ,[iscfibroad2013koodi] = '-1'
-	  ,[iscfibroad2013selite_FI] = 'Tuntematon'
-	  ,[iscfibroad2013selite_SV] = 'Okänd'
-	  ,[iscfibroad2013selite_EN] = 'Unknown'
+	  ,[iscle2011koodi] = '-1'
+	  ,[iscle2011selite_FI] = 'Tuntematon'
+	  ,[iscle2011selite_SV] = 'Okänd'
+	  ,[iscle2011selite_EN] = 'Unknown'
 	  ,[isccat2011koodi] = '-1'
 	  ,[isccat2011selite_FI] = 'Tuntematon'
 	  ,[isccat2011selite_SV] = 'Okänd'
@@ -1208,10 +1208,10 @@ SELECT DISTINCT
 	  ,[iscfinarrow2013selite_FI] = 'Tuntematon'
 	  ,[iscfinarrow2013selite_SV] = 'Okänd'
 	  ,[iscfinarrow2013selite_EN] = 'Unknown'
-	  ,[iscfibroad2013koodi] = '-1'
-	  ,[iscfibroad2013selite_FI] = 'Tuntematon'
-	  ,[iscfibroad2013selite_SV] = 'Okänd'
-	  ,[iscfibroad2013selite_EN] = 'Unknown'
+	  ,[iscle2011koodi] = '-1'
+	  ,[iscle2011selite_FI] = 'Tuntematon'
+	  ,[iscle2011selite_SV] = 'Okänd'
+	  ,[iscle2011selite_EN] = 'Unknown'
 	  ,[kaste_t2koodi] = '-1'
 	  ,[kaste_t2_FI] = 'Tuntematon'
 	  ,[kaste_t2_SV] = 'Okänd'
@@ -1238,12 +1238,12 @@ SELECT DISTINCT
       ,[jarjestys_iscdu] =  'ööö'
       ,[jarjestys_iscle] =  'ööö'
       ,[jarjestys_iscfik] =  'ööö'
-      ,[jarjestys_iscfibroad2013] = 'ööö'
+      ,[jarjestys_iscle2011] = 'ööö'
       ,[jarjestys_isccat2011] = 'ööö'
       ,[jarjestys_iscsubcat2011] = 'ööö'
       ,[jarjestys_iscfi2013] = 'ööö'
       ,[jarjestys_iscfinarrow2013] = 'ööö'
-      ,[jarjestys_iscfibroad2013] = 'ööö'
+      ,[jarjestys_iscle2011] = 'ööö'
       ,[jarjestys_kaste_t2] = 'ööö'
 
 
@@ -1412,10 +1412,10 @@ SELECT DISTINCT
       ,[koulutusaste1995selite_FI] = 'Tuntematon'
       ,[koulutusaste1995selite_SV] = 'Okänd'
       ,[koulutusaste1995selite_EN] = 'Unknown'
-	  ,[iscfibroad2013koodi] = '-1'
-	  ,[iscfibroad2013selite_FI] = 'Tuntematon'
-	  ,[iscfibroad2013selite_SV] = 'Okänd'
-	  ,[iscfibroad2013selite_EN] = 'Unknown'
+	  ,[iscle2011koodi] = '-1'
+	  ,[iscle2011selite_FI] = 'Tuntematon'
+	  ,[iscle2011selite_SV] = 'Okänd'
+	  ,[iscle2011selite_EN] = 'Unknown'
 	  ,[isccat2011koodi] = '-1'
 	  ,[isccat2011selite_FI] = 'Tuntematon'
 	  ,[isccat2011selite_SV] = 'Okänd'
@@ -1432,10 +1432,10 @@ SELECT DISTINCT
 	  ,[iscfinarrow2013selite_FI] = 'Tuntematon'
 	  ,[iscfinarrow2013selite_SV] = 'Okänd'
 	  ,[iscfinarrow2013selite_EN] = 'Unknown'
-	  ,[iscfibroad2013koodi] = '-1'
-	  ,[iscfibroad2013selite_FI] = 'Tuntematon'
-	  ,[iscfibroad2013selite_SV] = 'Okänd'
-	  ,[iscfibroad2013selite_EN] = 'Unknown'
+	  ,[iscle2011koodi] = '-1'
+	  ,[iscle2011selite_FI] = 'Tuntematon'
+	  ,[iscle2011selite_SV] = 'Okänd'
+	  ,[iscle2011selite_EN] = 'Unknown'
 	  ,[kaste_t2koodi] = '-1'
 	  ,[kaste_t2_FI] = 'Tuntematon'
 	  ,[kaste_t2_SV] = 'Okänd'
@@ -1462,12 +1462,12 @@ SELECT DISTINCT
       ,[jarjestys_iscdu] =  'ööö'
       ,[jarjestys_iscle] =  'ööö'
       ,[jarjestys_iscfik] =  'ööö'
-      ,[jarjestys_iscfibroad2013] = 'ööö'
+      ,[jarjestys_iscle2011] = 'ööö'
       ,[jarjestys_isccat2011] = 'ööö'
       ,[jarjestys_iscsubcat2011] = 'ööö'
       ,[jarjestys_iscfi2013] = 'ööö'
       ,[jarjestys_iscfinarrow2013] = 'ööö'
-      ,[jarjestys_iscfibroad2013] = 'ööö'
+      ,[jarjestys_iscle2011] = 'ööö'
       ,[jarjestys_kaste_t2] = 'ööö'
 
 
@@ -1635,10 +1635,10 @@ SELECT DISTINCT
       ,[koulutusaste1995selite_FI] = 'Tuntematon'
       ,[koulutusaste1995selite_SV] = 'Okänd'
       ,[koulutusaste1995selite_EN] = 'Unknown'
-	  ,[iscfibroad2013koodi] = '-1'
-	  ,[iscfibroad2013selite_FI] = 'Tuntematon'
-	  ,[iscfibroad2013selite_SV] = 'Okänd'
-	  ,[iscfibroad2013selite_EN] = 'Unknown'
+	  ,[iscle2011koodi] = '-1'
+	  ,[iscle2011selite_FI] = 'Tuntematon'
+	  ,[iscle2011selite_SV] = 'Okänd'
+	  ,[iscle2011selite_EN] = 'Unknown'
 	  ,[isccat2011koodi] = '-1'
 	  ,[isccat2011selite_FI] = 'Tuntematon'
 	  ,[isccat2011selite_SV] = 'Okänd'
@@ -1655,10 +1655,10 @@ SELECT DISTINCT
 	  ,[iscfinarrow2013selite_FI] = 'Tuntematon'
 	  ,[iscfinarrow2013selite_SV] = 'Okänd'
 	  ,[iscfinarrow2013selite_EN] = 'Unknown'
-	  ,[iscfibroad2013koodi] = '-1'
-	  ,[iscfibroad2013selite_FI] = 'Tuntematon'
-	  ,[iscfibroad2013selite_SV] = 'Okänd'
-	  ,[iscfibroad2013selite_EN] = 'Unknown'
+	  ,[iscle2011koodi] = '-1'
+	  ,[iscle2011selite_FI] = 'Tuntematon'
+	  ,[iscle2011selite_SV] = 'Okänd'
+	  ,[iscle2011selite_EN] = 'Unknown'
 	  ,[kaste_t2koodi] = '-1'
 	  ,[kaste_t2_FI] = 'Tuntematon'
 	  ,[kaste_t2_SV] = 'Okänd'
@@ -1685,12 +1685,12 @@ SELECT DISTINCT
       ,[jarjestys_iscdu] =  'ööö'
       ,[jarjestys_iscle] =  'ööö'
       ,[jarjestys_iscfik] =  'ööö'
-      ,[jarjestys_iscfibroad2013] = 'ööö'
+      ,[jarjestys_iscle2011] = 'ööö'
       ,[jarjestys_isccat2011] = 'ööö'
       ,[jarjestys_iscsubcat2011] = 'ööö'
       ,[jarjestys_iscfi2013] = 'ööö'
       ,[jarjestys_iscfinarrow2013] = 'ööö'
-      ,[jarjestys_iscfibroad2013] = 'ööö'
+      ,[jarjestys_iscle2011] = 'ööö'
       ,[jarjestys_kaste_t2] = 'ööö'
 
 
@@ -1858,10 +1858,10 @@ SELECT DISTINCT
       ,[koulutusaste1995selite_FI] = 'Tuntematon'
       ,[koulutusaste1995selite_SV] = 'Okänd'
       ,[koulutusaste1995selite_EN] = 'Unknown'
-	  ,[iscfibroad2013koodi] = '-1'
-	  ,[iscfibroad2013selite_FI] = 'Tuntematon'
-	  ,[iscfibroad2013selite_SV] = 'Okänd'
-	  ,[iscfibroad2013selite_EN] = 'Unknown'
+	  ,[iscle2011koodi] = '-1'
+	  ,[iscle2011selite_FI] = 'Tuntematon'
+	  ,[iscle2011selite_SV] = 'Okänd'
+	  ,[iscle2011selite_EN] = 'Unknown'
 	  ,[isccat2011koodi] = '-1'
 	  ,[isccat2011selite_FI] = 'Tuntematon'
 	  ,[isccat2011selite_SV] = 'Okänd'
@@ -1908,12 +1908,12 @@ SELECT DISTINCT
       ,[jarjestys_iscdu] =  'ööö'
       ,[jarjestys_iscle] =  'ööö'
       ,[jarjestys_iscfik] =  'ööö'
-      ,[jarjestys_iscfibroad2013] = 'ööö'
+      ,[jarjestys_iscle2011] = 'ööö'
       ,[jarjestys_isccat2011] = 'ööö'
       ,[jarjestys_iscsubcat2011] = 'ööö'
       ,[jarjestys_iscfi2013] = 'ööö'
       ,[jarjestys_iscfinarrow2013] = 'ööö'
-      ,[jarjestys_iscfibroad2013] = 'ööö'
+      ,[jarjestys_iscle2011] = 'ööö'
       ,[jarjestys_kaste_t2] = 'ööö'
 
 
@@ -1930,10 +1930,10 @@ SELECT DISTINCT
 	  ,[lakkautusvuosi]
       ,[korvaava_koulutuskoodi]
   FROM [Vipunen_koodisto].[dbo]._v_koulutusluokitus_kaikkivuodet
-  where [iscfibroad2013koodi]  ! = '-1'
-  and [iscfibroad2013koodi] != '-2' 
-  and [iscfibroad2013koodi] != '' 
-  and [iscfibroad2013selite_FI] != 'Tuntematon' 
+  where [iscle2011koodi]  ! = '-1'
+  and [iscle2011koodi] != '-2' 
+  and [iscle2011koodi] != '' 
+  and [iscle2011selite_FI] != 'Tuntematon' 
  ) iscfibroad
   
 
@@ -2013,10 +2013,10 @@ SELECT DISTINCT
       ,[koulutusaste1995selite_FI] = 'Tuntematon'
       ,[koulutusaste1995selite_SV] = 'Okänd'
       ,[koulutusaste1995selite_EN] = 'Unknown'
-	  ,[iscfibroad2013koodi] = '-1'
-	  ,[iscfibroad2013selite_FI] = 'Tuntematon'
-	  ,[iscfibroad2013selite_SV] = 'Okänd'
-	  ,[iscfibroad2013selite_EN] = 'Unknown'
+	  ,[iscle2011koodi] = '-1'
+	  ,[iscle2011selite_FI] = 'Tuntematon'
+	  ,[iscle2011selite_SV] = 'Okänd'
+	  ,[iscle2011selite_EN] = 'Unknown'
 	  ,[isccat2011koodi] = '-1'
 	  ,[isccat2011selite_FI] = 'Tuntematon'
 	  ,[isccat2011selite_SV] = 'Okänd'
@@ -2063,12 +2063,12 @@ SELECT DISTINCT
       ,[jarjestys_iscdu] =  'ööö'
       ,[jarjestys_iscle] =  'ööö'
       ,[jarjestys_iscfik] =  'ööö'
-      ,[jarjestys_iscfibroad2013] = 'ööö'
+      ,[jarjestys_iscle2011] = 'ööö'
       ,[jarjestys_isccat2011] = 'ööö'
       ,[jarjestys_iscsubcat2011] = 'ööö'
       ,[jarjestys_iscfi2013] = 'ööö'
       ,[jarjestys_iscfinarrow2013] = 'ööö'
-      ,[jarjestys_iscfibroad2013] = 'ööö'
+      ,[jarjestys_iscle2011] = 'ööö'
       ,[jarjestys_kaste_t2] = 'ööö'
 
 
@@ -2172,10 +2172,10 @@ SELECT DISTINCT
       ,[koulutusaste1995selite_FI] = 'Tuntematon'
       ,[koulutusaste1995selite_SV] = 'Okänd'
       ,[koulutusaste1995selite_EN] = 'Unknown'
-	  ,[iscfibroad2013koodi] 
-	  ,[iscfibroad2013selite_FI] 
-	  ,[iscfibroad2013selite_SV]
-	  ,[iscfibroad2013selite_EN]
+	  ,[iscle2011koodi] 
+	  ,[iscle2011selite_FI] 
+	  ,[iscle2011selite_SV]
+	  ,[iscle2011selite_EN]
 	  ,[isccat2011koodi] = '-1'
 	  ,[isccat2011selite_FI] = 'Tuntematon'
 	  ,[isccat2011selite_SV] = 'Okänd'
@@ -2192,10 +2192,10 @@ SELECT DISTINCT
 	  ,[iscfinarrow2013selite_FI] = 'Tuntematon'
 	  ,[iscfinarrow2013selite_SV] = 'Okänd'
 	  ,[iscfinarrow2013selite_EN] = 'Unknown'
-	  ,[iscfibroad2013koodi] = '-1'
-	  ,[iscfibroad2013selite_FI] = 'Tuntematon'
-	  ,[iscfibroad2013selite_SV] = 'Okänd'
-	  ,[iscfibroad2013selite_EN] = 'Unknown'
+	  ,[iscle2011koodi] = '-1'
+	  ,[iscle2011selite_FI] = 'Tuntematon'
+	  ,[iscle2011selite_SV] = 'Okänd'
+	  ,[iscle2011selite_EN] = 'Unknown'
 	  ,[kaste_t2koodi] 
 	  ,[kaste_t2_FI] 
 	  ,[kaste_t2_SV] 
@@ -2222,12 +2222,12 @@ SELECT DISTINCT
       ,[jarjestys_iscdu] =  'ööö'
       ,[jarjestys_iscle] =  'ööö'
       ,[jarjestys_iscfik] =  'ööö'
-      ,[jarjestys_iscfibroad2013] = 'ööö'
+      ,[jarjestys_iscle2011] = 'ööö'
       ,[jarjestys_isccat2011] = 'ööö'
       ,[jarjestys_iscsubcat2011] = 'ööö'
       ,[jarjestys_iscfi2013] = 'ööö'
       ,[jarjestys_iscfinarrow2013] = 'ööö'
-      ,[jarjestys_iscfibroad2013] = 'ööö'
+      ,[jarjestys_iscle2011] = 'ööö'
       ,[jarjestys_kaste_t2] = 'ööö'
 
 
@@ -2237,10 +2237,10 @@ SELECT DISTINCT
        [alkaa]
       ,[paattyy]
       ,[tilv]
-	  ,[iscfibroad2013koodi] 
-	  ,[iscfibroad2013selite_FI] 
-	  ,[iscfibroad2013selite_SV]
-	  ,[iscfibroad2013selite_EN]
+	  ,[iscle2011koodi] 
+	  ,[iscle2011selite_FI] 
+	  ,[iscle2011selite_SV]
+	  ,[iscle2011selite_EN]
 	  ,[kaste_t2koodi] 
 	  ,[kaste_t2_FI] 
 	  ,[kaste_t2_SV] 
@@ -2331,10 +2331,10 @@ SELECT DISTINCT
       ,[koulutusaste1995selite_FI]
       ,[koulutusaste1995selite_SV]
       ,[koulutusaste1995selite_EN]
-	  ,[iscfibroad2013koodi]
-	  ,[iscfibroad2013selite_FI]
-	  ,[iscfibroad2013selite_SV]
-	  ,[iscfibroad2013selite_EN]
+	  ,[iscle2011koodi]
+	  ,[iscle2011selite_FI]
+	  ,[iscle2011selite_SV]
+	  ,[iscle2011selite_EN]
 	  ,[isccat2011koodi]
 	  ,[isccat2011selite_FI]
 	  ,[isccat2011selite_SV]
@@ -2381,7 +2381,7 @@ SELECT DISTINCT
       ,[jarjestys_iscdu] = iscduselite_FI
       ,[jarjestys_iscle] = iscleselite_FI
       ,[jarjestys_iscfik] = iscfikselite_FI
-      ,[jarjestys_iscfibroad2013] = iscfibroad2013selite_FI
+      ,[jarjestys_iscle2011] = iscle2011selite_FI
       ,[jarjestys_isccat2011] = isccat2011selite_FI
       ,[jarjestys_iscsubcat2011] = iscsubcat2011selite_FI
       ,[jarjestys_iscfi2013] = iscfi2013selite_FI
@@ -2465,10 +2465,10 @@ SELECT --DISTINCT
       ,[koulutusaste1995selite_FI]
       ,[koulutusaste1995selite_SV]
       ,[koulutusaste1995selite_EN]
-	  ,[iscfibroad2013koodi]
-	  ,[iscfibroad2013selite_FI]
-	  ,[iscfibroad2013selite_SV]
-	  ,[iscfibroad2013selite_EN]
+	  ,[iscle2011koodi]
+	  ,[iscle2011selite_FI]
+	  ,[iscle2011selite_SV]
+	  ,[iscle2011selite_EN]
 	  ,[isccat2011koodi]
 	  ,[isccat2011selite_FI]
 	  ,[isccat2011selite_SV]

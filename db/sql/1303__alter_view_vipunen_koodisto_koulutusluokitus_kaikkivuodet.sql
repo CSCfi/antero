@@ -149,10 +149,10 @@ SELECT
     ,[lakkautusvuosi] = ISNULL (CAST (KaikkiVuodet.lakkv AS nvarchar(255)),'Tuntematon')
     ,[korvaava_koulutuskoodi] = ISNULL (CAST (KaikkiVuodet.korvkoulk AS nvarchar(6)),'')
     ,[muutosvuosi] = ISNULL (CAST (KaikkiVuodet.nmuutosv AS nvarchar(255)),'Tuntematon')
-	,[iscfibroad2013koodi] = CAST (KaikkiVuodet.iscfibroad2013 AS nvarchar(255))
-	,[iscfibroad2013selite_FI] = case KaikkiVuodet.iscleni2011 when 'Bachelors or equivalent level' then 'Bachelor''s or equivalent level' when 'Masters or equivalent level' then 'Master''s or equivalent level' else ISNULL (CAST (KaikkiVuodet.iscleni2011 AS nvarchar(255)),'Tuntematon') end
-	,[iscfibroad2013selite_SV] = case KaikkiVuodet.iscleni2011_r when 'Bachelors or equivalent level' then 'Bachelor''s or equivalent level' when 'Masters or equivalent level' then 'Master''s or equivalent level' else ISNULL (CAST (KaikkiVuodet.iscleni2011_r AS nvarchar(255)),'Information saknas') end	
-	,[iscfibroad2013selite_EN] = case KaikkiVuodet.iscleni2011_e when 'Bachelors or equivalent level' then 'Bachelor''s or equivalent level' when 'Masters or equivalent level' then 'Master''s or equivalent level' else ISNULL (CAST (KaikkiVuodet.iscleni2011_e AS nvarchar(255)),'Missing data') end
+	,[iscle2011koodi] = CAST (KaikkiVuodet.iscle2011 AS nvarchar(255))
+	,[iscle2011selite_FI] = case KaikkiVuodet.iscleni2011 when 'Bachelors or equivalent level' then 'Bachelor''s or equivalent level' when 'Masters or equivalent level' then 'Master''s or equivalent level' else ISNULL (CAST (KaikkiVuodet.iscleni2011 AS nvarchar(255)),'Tuntematon') end
+	,[iscle2011selite_SV] = case KaikkiVuodet.iscleni2011_r when 'Bachelors or equivalent level' then 'Bachelor''s or equivalent level' when 'Masters or equivalent level' then 'Master''s or equivalent level' else ISNULL (CAST (KaikkiVuodet.iscleni2011_r AS nvarchar(255)),'Information saknas') end	
+	,[iscle2011selite_EN] = case KaikkiVuodet.iscleni2011_e when 'Bachelors or equivalent level' then 'Bachelor''s or equivalent level' when 'Masters or equivalent level' then 'Master''s or equivalent level' else ISNULL (CAST (KaikkiVuodet.iscleni2011_e AS nvarchar(255)),'Missing data') end
 	,[isccat2011koodi] = CAST (KaikkiVuodet.isccat2011 AS nvarchar(255))
 	,[isccat2011selite_FI] = ISNULL (CAST (KaikkiVuodet.isccatni2011 AS nvarchar(255)),'Tuntematon')
 	,[isccat2011selite_SV] = ISNULL (CAST (KaikkiVuodet.isccatni2011_r AS nvarchar(255)),'Information saknas')
@@ -244,7 +244,7 @@ SELECT [koulutuskoodi]
 	   ,[iscor]
 	   ,[iscst]
 	   ,[iscdu]
-	   ,[iscfibroad2013] = NULL
+	   ,[iscle2011] = NULL
 	   ,[iscleni2011] = NULL
 	   ,[iscleni2011_r] = NULL
 	   ,[iscleni2011_e] = NULL
