@@ -9,7 +9,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-CREATE view [dw].[v_st_henkilosto] as
+ALTER view [dw].[v_st_henkilosto] as
 --amk
 select
 Tilastovuosi = vuosi
