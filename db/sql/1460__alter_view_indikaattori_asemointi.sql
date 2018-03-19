@@ -4,10 +4,10 @@ alter view [dw].[v_indikaattori_asemointi] as
 /****** Korkeakoulututkinnot ******/
 SELECT
 	[tilastointivuosi] as 'Tilastovuosi'
-	  ,Null as 'Aloituslukuvuosi (l‰p‰isy)' 
+	  ,Null as 'Aloituslukuvuosi (l√§p√§isy)' 
       ,d50.organisaatio_fi as 'Oppilaitos'
 	  ,[Sektori]=case  when d50.organisaatio_fi in 
-			('Aalto-yliopisto','Helsingin yliopisto','It‰-Suomen yliopisto','Jyv‰skyl‰n yliopisto','Lapin yliopisto','Lappeenrannan tekn. yliopisto','Oulun yliopisto','Svenska handelshˆgskolan','Taideyliopisto','Tampereen tekn. yliopisto','Tampereen yliopisto','Turun yliopisto','Vaasan yliopisto','≈bo Akademi','Kuvataideakatemia','Sibelius-Akatemia','Teatterikorkeakoulu','Lappeenrannan teknillinen yliopisto', 'Tampereen teknillinen yliopisto') 
+			('Aalto-yliopisto','Helsingin yliopisto','It√§-Suomen yliopisto','Jyv√§skyl√§n yliopisto','Lapin yliopisto','Lappeenrannan tekn. yliopisto','Oulun yliopisto','Svenska handelsh√∂gskolan','Taideyliopisto','Tampereen tekn. yliopisto','Tampereen yliopisto','Turun yliopisto','Vaasan yliopisto','√Öbo Akademi','Kuvataideakatemia','Sibelius-Akatemia','Teatterikorkeakoulu','Lappeenrannan teknillinen yliopisto', 'Tampereen teknillinen yliopisto') 
 		then 'Yliopisto'
 			else 'Ammattikorkeakoulu'
 		end
@@ -25,19 +25,19 @@ SELECT
 	  ,NULL AS '5v_Aloittaneet_lkm'
 	  ,NULL AS '7v_suorittaneet_lkm'
 	  ,NULL AS '5v_suorittaneet_lkm'
-	  ,NULL AS 'L‰sn‰olevat opiskelijat (55op)'--lasna
+	  ,NULL AS 'L√§sn√§olevat opiskelijat (55op)'--lasna
 	  ,NULL AS '55op suorittaneet' --suorittanut55
-	  ,NULL as 'L‰sn‰olleet opiskelijat (1-14op)'
+	  ,NULL as 'L√§sn√§olleet opiskelijat (1-14op)'
 	  ,NULL AS '1-14op suorittaneet' --lkm_op1_14
-	  ,NULL AS 'Yliopiston opetus- ja tutkimushenkilˆtyˆvuodet'
-	  ,NULL AS 'IV tutkijanuraportaan henkilˆtyˆvuodet'
-	  ,NULL AS 'Ammattikorkeakoulun opetushenkilˆkunta'
-	  ,NULL AS 'Ammattikorkeakoulun TKI-henkilˆkunta'
+	  ,NULL AS 'Yliopiston opetus- ja tutkimushenkil√∂ty√∂vuodet'
+	  ,NULL AS 'IV tutkijanuraportaan henkil√∂ty√∂vuodet'
+	  ,NULL AS 'Ammattikorkeakoulun opetushenkil√∂kunta'
+	  ,NULL AS 'Ammattikorkeakoulun TKI-henkil√∂kunta'
 	  ,NULL AS 'AMK Julkaisut (A-E)'
 	  ,NULL AS 'AMK julkaisut (F ja I)'
 	  ,NULL AS 'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
 	  ,NULL AS 'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 1-3'
-	  ,NULL AS 'YO kansainv‰linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
+	  ,NULL AS 'YO kansainv√§linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
 	  ,NULL AS 'Kilpailtu tutkimusrahoitus'
 	  ,NULL AS 'kv_vaihtoopiskelijat_op_lkm'
 	  ,NULL AS 'ulkom_hyv_luetut_op_lkm'
@@ -46,14 +46,14 @@ SELECT
 	  ,NULL AS 'mamu_op_lkm'
 	  ,NULL AS 'erikoul_suor_op_lkm'
 	  ,NULL AS 'sijoittuminen_1v_tutkinnon_jalkeen'
-	  ,null as 'tyˆlliset 1v tutkinnon j‰lkeen'
-	  ,null AS 'Kandikyselyn pistem‰‰r‰'
-	  ,null AS 'AVOP-AMK pistem‰‰r‰'
+	  ,null as 'ty√∂lliset 1v tutkinnon j√§lkeen'
+	  ,null AS 'Kandikyselyn pistem√§√§r√§'
+	  ,null AS 'AVOP-AMK pistem√§√§r√§'
 	  , d2.OKM_ohjauksen_ala_koodi as 'Koodit OKM ohjauksen ala'
 	  , d50.organisaatio_koodi as 'Koodit oppilaitos'
 	  , d20.kunta_koodi as 'Koodit kunta'
-  	  , case when d2.jarjestys_iscle2011='ˆˆˆ' then null else d2.jarjestys_iscle2011 end as 'jarj. koulutusaste, taso 1'
-  	  , case when d2.jarjestys_Koulutusaste_taso2='ˆˆˆ' then null else d2.jarjestys_Koulutusaste_taso2 end as 'jarj. koulutusaste, taso 2'
+  	  , case when d2.jarjestys_iscle2011='√∂√∂√∂' then null else d2.jarjestys_iscle2011 end as 'jarj. koulutusaste, taso 1'
+  	  , case when d2.jarjestys_Koulutusaste_taso2='√∂√∂√∂' then null else d2.jarjestys_Koulutusaste_taso2 end as 'jarj. koulutusaste, taso 2'
 	  , case 
 			when d2.OKM_ohjauksen_ala_koodi='1' then 1 
 			when d2.OKM_ohjauksen_ala_koodi='2' then 2 
@@ -79,15 +79,15 @@ SELECT
 
 
  union all
-/****** L‰p‰isy ******/
+/****** L√§p√§isy ******/
  SELECT
 		case when tarkastelujakso='7,5' and lukukausi='1' then d10.vuosiselite+7 When  tarkastelujakso='7,5' and lukukausi='2' then d10.vuosiselite+8
 			When  tarkastelujakso='5,5' and lukukausi='1' then d10.vuosiselite+5 When  tarkastelujakso='5,5' and lukukausi='2' then d10.vuosiselite+6
 			end as 'Tilastovuosi'
-	  ,d10.lukuvuosi as 'Aloituslukuvuosi (l‰p‰isy)' 
+	  ,d10.lukuvuosi as 'Aloituslukuvuosi (l√§p√§isy)' 
       ,d50.organisaatio_fi
 	  ,[Sektori]=case  when d50.organisaatio_fi in 
-			('Aalto-yliopisto','Helsingin yliopisto','It‰-Suomen yliopisto','Jyv‰skyl‰n yliopisto','Lapin yliopisto','Lappeenrannan tekn. yliopisto','Oulun yliopisto','Svenska handelshˆgskolan','Taideyliopisto','Tampereen tekn. yliopisto','Tampereen yliopisto','Turun yliopisto','Vaasan yliopisto','≈bo Akademi','Kuvataideakatemia','Sibelius-Akatemia','Teatterikorkeakoulu','Lappeenrannan teknillinen yliopisto', 'Tampereen teknillinen yliopisto') 
+			('Aalto-yliopisto','Helsingin yliopisto','It√§-Suomen yliopisto','Jyv√§skyl√§n yliopisto','Lapin yliopisto','Lappeenrannan tekn. yliopisto','Oulun yliopisto','Svenska handelsh√∂gskolan','Taideyliopisto','Tampereen tekn. yliopisto','Tampereen yliopisto','Turun yliopisto','Vaasan yliopisto','√Öbo Akademi','Kuvataideakatemia','Sibelius-Akatemia','Teatterikorkeakoulu','Lappeenrannan teknillinen yliopisto', 'Tampereen teknillinen yliopisto') 
 		then 'Yliopisto'
 			else 'Ammattikorkeakoulu'
 		end
@@ -103,21 +103,21 @@ SELECT
       ,[tutkinnot] = NULL
 	  ,case when tarkastelujakso='7,5' and (d6.koulutuslaji2_koodi='51b'  OR (d2.koulutus_koodi in (612101, 613101,613401,672401,634101))) then f_aloittaneiden_lapaisy.lkm_int else 0 end AS 'YO_7v_aloittaneet_lkm'
 	  ,case when tarkastelujakso='5,5' AND d2.koulutusaste2002_koodi=62 then f_aloittaneiden_lapaisy.lkm_int else 0 end AS 'AMK_5v_Aloittaneet_lkm'
-	  ,case when tarkastelujakso='7,5' and (d6.koulutuslaji2_koodi='51b'  OR (d2.koulutus_koodi in (612101, 613101,613401,672401,634101))) and [1a Aloittaneiden opintojen kulku koulutuslajin mukaan prioriteettina mik‰ tahansa tutkinto]='Tutkinto alkuper‰isess‰ tutkintolajissa' then f_aloittaneiden_lapaisy.lkm_int else 0 end AS '7v_suorittaneet_lkm'
-	  ,case when tarkastelujakso='5,5' AND d2.koulutusaste2002_koodi=62 and [1a Aloittaneiden opintojen kulku koulutuslajin mukaan prioriteettina mik‰ tahansa tutkinto]='Tutkinto alkuper‰isess‰ tutkintolajissa' then f_aloittaneiden_lapaisy.lkm_int else 0 end AS '5v_suorittaneet_lkm'
+	  ,case when tarkastelujakso='7,5' and (d6.koulutuslaji2_koodi='51b'  OR (d2.koulutus_koodi in (612101, 613101,613401,672401,634101))) and [1a Aloittaneiden opintojen kulku koulutuslajin mukaan prioriteettina mik√§ tahansa tutkinto]='Tutkinto alkuper√§isess√§ tutkintolajissa' then f_aloittaneiden_lapaisy.lkm_int else 0 end AS '7v_suorittaneet_lkm'
+	  ,case when tarkastelujakso='5,5' AND d2.koulutusaste2002_koodi=62 and [1a Aloittaneiden opintojen kulku koulutuslajin mukaan prioriteettina mik√§ tahansa tutkinto]='Tutkinto alkuper√§isess√§ tutkintolajissa' then f_aloittaneiden_lapaisy.lkm_int else 0 end AS '5v_suorittaneet_lkm'
 	  ,NULL --lasna
 	  ,NULL --suorittanut55
-	  ,NULL -- 'L‰sn‰olleet opiskelijat (1-14op)'
+	  ,NULL -- 'L√§sn√§olleet opiskelijat (1-14op)'
 	  ,NULL --lkm_op1_14
-	  ,NULL --opetus- tutkimushenkilˆkunta HTV
+	  ,NULL --opetus- tutkimushenkil√∂kunta HTV
 	  ,NULL --IV porras HTV
-	  ,NULL --'Opetus- ja TKI henkilˆkunta'
-	  ,NULL AS 'Ammattikorkeakoulun TKI-henkilˆkunta'
+	  ,NULL --'Opetus- ja TKI henkil√∂kunta'
+	  ,NULL AS 'Ammattikorkeakoulun TKI-henkil√∂kunta'
 	  ,NULL -- 'AMK Julkaisut (A-E)'
 	  ,NULL -- 'AMK julkaisut (F ja I)'
 	  ,NULL --'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
 	  ,NULL --'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 1-3'
-	  ,NULL --'YO kansainv‰linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
+	  ,NULL --'YO kansainv√§linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
 	  ,NULL --'Kilpailtu tutkimusrahoitus'
 	  ,NULL --kv_vaihtoopiskelijat_op_lkm
 	  ,NULL --ulkom_hyv_luetut_op_lkm
@@ -126,14 +126,14 @@ SELECT
 	  ,NULL --mamu_op_lkm
 	  ,NULL --erikoul_suor_op_lkm
 	  ,NULL --sijoittuminen_1v_tutkinnon_jalkeen
-	  ,null --tyˆlliset 1v tutkinnon j‰lkeen
-	  ,null --'Kandikyselyn pistem‰‰r‰'
-	  ,null --'AVOP-AMK pistem‰‰r‰'
+	  ,null --ty√∂lliset 1v tutkinnon j√§lkeen
+	  ,null --'Kandikyselyn pistem√§√§r√§'
+	  ,null --'AVOP-AMK pistem√§√§r√§'
 	  , d2.OKM_ohjauksen_ala_koodi as 'Koodit OKM ohjauksen ala'
 	  , d50.organisaatio_koodi as 'Koodit oppilaitos'
 	  , NULL as 'Koodit kunta'
-  	  , case when d2.jarjestys_iscle2011='ˆˆˆ' then null else d2.jarjestys_iscle2011 end as 'jarj. koulutusaste, taso 1'
-  	  , case when d2.jarjestys_Koulutusaste_taso2='ˆˆˆ' then null else d2.jarjestys_Koulutusaste_taso2 end as 'jarj. koulutusaste, taso 2'
+  	  , case when d2.jarjestys_iscle2011='√∂√∂√∂' then null else d2.jarjestys_iscle2011 end as 'jarj. koulutusaste, taso 1'
+  	  , case when d2.jarjestys_Koulutusaste_taso2='√∂√∂√∂' then null else d2.jarjestys_Koulutusaste_taso2 end as 'jarj. koulutusaste, taso 2'
 	  , case 
 			when d2.OKM_ohjauksen_ala_koodi='1' then 1 
 			when d2.OKM_ohjauksen_ala_koodi='2' then 2 
@@ -156,7 +156,7 @@ SELECT
  left join VipunenTK.dbo.d_koulutusluokitus as d2 on koulk_id= d2.id
  left join VipunenTK.dbo.d_koulutuslaji2 AS d6 ON d6.id = koulutuslaji2_id
  where 
-[1a Aloittaneiden opintojen kulku koulutuslajin mukaan prioriteettina mik‰ tahansa tutkinto] <> 'Virhetilanne'
+[1a Aloittaneiden opintojen kulku koulutuslajin mukaan prioriteettina mik√§ tahansa tutkinto] <> 'Virhetilanne'
 AND ((tarkastelujakso = '5,5' and koulutussektori= 'Ammattikorkeakoulukoulutus'AND koulutusaste2002_koodi=62)) 
 OR (tarkastelujakso= '7,5' and  koulutussektori= 'Yiopistokoulutus' ) 
 
@@ -165,10 +165,10 @@ union all
 SELECT 
       
       [Tilastovuosi] = f.[vuosi]
-	  ,NULL as 'Aloituslukuvuosi (l‰p‰isy)'
+	  ,NULL as 'Aloituslukuvuosi (l√§p√§isy)'
 	  ,[Korkeakoulu] = d1.organisaatio_fi
 	  ,[Sektori]=case  when d1.organisaatio_fi in 
-			('Aalto-yliopisto','Helsingin yliopisto','It‰-Suomen yliopisto','Jyv‰skyl‰n yliopisto','Lapin yliopisto','Lappeenrannan tekn. yliopisto','Oulun yliopisto','Svenska handelshˆgskolan','Taideyliopisto','Tampereen tekn. yliopisto','Tampereen yliopisto','Turun yliopisto','Vaasan yliopisto','≈bo Akademi','Kuvataideakatemia','Sibelius-Akatemia','Teatterikorkeakoulu','Lappeenrannan teknillinen yliopisto', 'Tampereen teknillinen yliopisto') 
+			('Aalto-yliopisto','Helsingin yliopisto','It√§-Suomen yliopisto','Jyv√§skyl√§n yliopisto','Lapin yliopisto','Lappeenrannan tekn. yliopisto','Oulun yliopisto','Svenska handelsh√∂gskolan','Taideyliopisto','Tampereen tekn. yliopisto','Tampereen yliopisto','Turun yliopisto','Vaasan yliopisto','√Öbo Akademi','Kuvataideakatemia','Sibelius-Akatemia','Teatterikorkeakoulu','Lappeenrannan teknillinen yliopisto', 'Tampereen teknillinen yliopisto') 
 		then 'Yliopisto'
 			else 'Ammattikorkeakoulu'
 		end
@@ -188,17 +188,17 @@ SELECT
 	  ,NULL AS '5v_suorittaneet_lkm'
 	  ,[Lasna] = case when f.edellinenSyysolo=1 or f.olok=1 then 1 else 0 end
 	  ,[Suorittanut55] = case when f.[suorittanut27]=1 or f.[suorittanut55ilmanPankkia]=1 or f.[suorittanut55PankinAvulla]=1 then 1 else 0 end
-	  ,NULL -- 'L‰sn‰olleet opiskelijat (1-14op)'
+	  ,NULL -- 'L√§sn√§olleet opiskelijat (1-14op)'
 	  ,NULL --lkm_op1_14
-	  ,NULL --opetus- tutkimushenkilˆkunta HTV
+	  ,NULL --opetus- tutkimushenkil√∂kunta HTV
 	  ,NULL --IV porras HTV
-	  ,NULL --'Opetus- ja TKI henkilˆkunta'
-	  ,NULL AS 'Ammattikorkeakoulun TKI-henkilˆkunta'
+	  ,NULL --'Opetus- ja TKI henkil√∂kunta'
+	  ,NULL AS 'Ammattikorkeakoulun TKI-henkil√∂kunta'
 	  ,NULL -- 'AMK Julkaisut (A-E)'
 	  ,NULL --'AMK julkaisut (F ja I)'
 	  ,NULL --'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
 	  ,NULL --'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 1-3'
-	  ,NULL --'YO kansainv‰linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
+	  ,NULL --'YO kansainv√§linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
 	  ,NULL --'Kilpailtu tutkimusrahoitus'
 	  ,NULL --kv_vaihtoopiskelijat_op_lkm
 	  ,NULL --ulkom_hyv_luetut_op_lkm
@@ -207,14 +207,14 @@ SELECT
 	  ,NULL --mamu_op_lkm
 	  ,NULL --erikoul_suor_op_lkm
 	  ,NULL --sijoittuminen_1v_tutkinnon_jalkeen
-	  ,null --tyˆlliset 1v tutkinnon j‰lkeen
-	  ,null --'Kandikyselyn pistem‰‰r‰'
-	  ,null --'AVOP-AMK pistem‰‰r‰'
+	  ,null --ty√∂lliset 1v tutkinnon j√§lkeen
+	  ,null --'Kandikyselyn pistem√§√§r√§'
+	  ,null --'AVOP-AMK pistem√§√§r√§'
 	  , d2.okmohjauksenala_koodi 'Koodit OKM ohjauksen ala'
 	  , d1.organisaatio_koodi as 'Koodit oppilaitos'
 	  , NULL as 'Koodit kunta'
-  	  , case when d2.jarjestys_koulutusastetaso1_koodi ='ˆˆˆ' then null else d2.jarjestys_koulutusastetaso1_koodi end as 'jarj. koulutusaste, taso 1'
-  	  , case when d2.jarjestys_koulutusastetaso2_koodi ='ˆˆˆ' then null else d2.jarjestys_koulutusastetaso2_koodi end as 'jarj. koulutusaste, taso 2'
+  	  , case when d2.jarjestys_koulutusastetaso1_koodi ='√∂√∂√∂' then null else d2.jarjestys_koulutusastetaso1_koodi end as 'jarj. koulutusaste, taso 1'
+  	  , case when d2.jarjestys_koulutusastetaso2_koodi ='√∂√∂√∂' then null else d2.jarjestys_koulutusastetaso2_koodi end as 'jarj. koulutusaste, taso 2'
 	  , case 
 			when d2.okmohjauksenala_koodi='1' then 1 
 			when d2.okmohjauksenala_koodi='2' then 2 
@@ -239,10 +239,10 @@ where vuosi>2010
 union all
 /****** 1-14op suorittaneet ******/
 SELECT [tilastointivuosi]
-	  ,NULL as 'Aloituslukuvuosi (l‰p‰isy)'
+	  ,NULL as 'Aloituslukuvuosi (l√§p√§isy)'
       ,d50.organisaatio_fi
 	  ,[Sektori]=case  when d50.organisaatio_fi in 
-			('Aalto-yliopisto','Helsingin yliopisto','It‰-Suomen yliopisto','Jyv‰skyl‰n yliopisto','Lapin yliopisto','Lappeenrannan tekn. yliopisto','Oulun yliopisto','Svenska handelshˆgskolan','Taideyliopisto','Tampereen tekn. yliopisto','Tampereen yliopisto','Turun yliopisto','Vaasan yliopisto','≈bo Akademi','Kuvataideakatemia','Sibelius-Akatemia','Teatterikorkeakoulu','Lappeenrannan teknillinen yliopisto', 'Tampereen teknillinen yliopisto') 
+			('Aalto-yliopisto','Helsingin yliopisto','It√§-Suomen yliopisto','Jyv√§skyl√§n yliopisto','Lapin yliopisto','Lappeenrannan tekn. yliopisto','Oulun yliopisto','Svenska handelsh√∂gskolan','Taideyliopisto','Tampereen tekn. yliopisto','Tampereen yliopisto','Turun yliopisto','Vaasan yliopisto','√Öbo Akademi','Kuvataideakatemia','Sibelius-Akatemia','Teatterikorkeakoulu','Lappeenrannan teknillinen yliopisto', 'Tampereen teknillinen yliopisto') 
 		then 'Yliopisto'
 			else 'Ammattikorkeakoulu'
 		end
@@ -260,19 +260,19 @@ SELECT [tilastointivuosi]
 	  ,NULL AS '5v_Aloittaneet_lkm'
 	  ,NULL AS '7v_suorittaneet_lkm'
 	  ,NULL AS '5v_suorittaneet_lkm'
-	  ,NULL AS 'L‰sn‰olevat opiskelijat'--lasna
+	  ,NULL AS 'L√§sn√§olevat opiskelijat'--lasna
 	  ,NULL AS '55op suorittaneet' --suorittanut55
 	  ,[1-14 lasna]= case when f_OTV_2_8_Korkeakouluopiskelijat.opiskelijan_olo_syys=1 then f_OTV_2_8_Korkeakouluopiskelijat.lukumaara else 0 END
 	  ,lkm_op1_14
-	  ,NULL --opetus- tutkimushenkilˆkunta HTV
+	  ,NULL --opetus- tutkimushenkil√∂kunta HTV
 	  ,NULL --IV porras HTV
-	  ,NULL --'Opetus- ja TKI henkilˆkunta'
-	  ,NULL AS 'Ammattikorkeakoulun TKI-henkilˆkunta'
+	  ,NULL --'Opetus- ja TKI henkil√∂kunta'
+	  ,NULL AS 'Ammattikorkeakoulun TKI-henkil√∂kunta'
 	  ,NULL -- 'AMK Julkaisut (A-E)'
 	  ,NULL -- 'AMK julkaisut (F ja I)'
 	  ,NULL --'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
 	  ,NULL --'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 1-3'
-	  ,NULL --'YO kansainv‰linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
+	  ,NULL --'YO kansainv√§linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
 	  ,NULL --'Kilpailtu tutkimusrahoitus'
 	  ,NULL --kv_vaihtoopiskelijat_op_lkm
 	  ,NULL --ulkom_hyv_luetut_op_lkm
@@ -281,14 +281,14 @@ SELECT [tilastointivuosi]
 	  ,NULL --mamu_op_lkm
 	  ,NULL --erikoul_suor_op_lkm
 	  ,NULL --sijoittuminen_1v_tutkinnon_jalkeen
-	  ,null --tyˆlliset 1v tutkinnon j‰lkeen
-	  ,null --'Kandikyselyn pistem‰‰r‰'
-	  ,null --'AVOP-AMK pistem‰‰r‰'
+	  ,null --ty√∂lliset 1v tutkinnon j√§lkeen
+	  ,null --'Kandikyselyn pistem√§√§r√§'
+	  ,null --'AVOP-AMK pistem√§√§r√§'
 	  , d2.OKM_ohjauksen_ala_koodi as 'Koodit OKM ohjauksen ala'
 	  , d50.organisaatio_koodi as 'Koodit oppilaitos'
 	  , d20.kunta_koodi as 'Koodit kunta'
-  	  , case when d2.jarjestys_iscle2011='ˆˆˆ' then null else d2.jarjestys_iscle2011 end as 'jarj. koulutusaste, taso 1'
-	  , case when d2.jarjestys_Koulutusaste_taso2 ='ˆˆˆ' then null else d2.jarjestys_Koulutusaste_taso2 end as 'jarj. koulutusaste, taso 2'
+  	  , case when d2.jarjestys_iscle2011='√∂√∂√∂' then null else d2.jarjestys_iscle2011 end as 'jarj. koulutusaste, taso 1'
+	  , case when d2.jarjestys_Koulutusaste_taso2 ='√∂√∂√∂' then null else d2.jarjestys_Koulutusaste_taso2 end as 'jarj. koulutusaste, taso 2'
 	  , case 
 			when d2.OKM_ohjauksen_ala_koodi='1' then 1 
 			when d2.OKM_ohjauksen_ala_koodi='2' then 2 
@@ -313,12 +313,12 @@ SELECT [tilastointivuosi]
  Where aineisto = 'L' and tilastointivuosi>2010 and d2.koulutusaste2002_koodi in ('62','71')
 
  union all
- /****** YO opetus- ja tutkimushenkilˆkunta sek‰ IV tutkijanuraporras ******/
+ /****** YO opetus- ja tutkimushenkil√∂kunta sek√§ IV tutkijanuraporras ******/
 SELECT [vuosi]
-	  ,NULL as 'Aloituslukuvuosi (l‰p‰isy)'
+	  ,NULL as 'Aloituslukuvuosi (l√§p√§isy)'
       , d50.organisaatio_fi
 	  ,[Sektori]=case  when d50.organisaatio_fi in 
-			('Aalto-yliopisto','Helsingin yliopisto','It‰-Suomen yliopisto','Jyv‰skyl‰n yliopisto','Lapin yliopisto','Lappeenrannan tekn. yliopisto','Oulun yliopisto','Svenska handelshˆgskolan','Taideyliopisto','Tampereen tekn. yliopisto','Tampereen yliopisto','Turun yliopisto','Vaasan yliopisto','≈bo Akademi','Kuvataideakatemia','Sibelius-Akatemia','Teatterikorkeakoulu','Lappeenrannan teknillinen yliopisto', 'Tampereen teknillinen yliopisto') 
+			('Aalto-yliopisto','Helsingin yliopisto','It√§-Suomen yliopisto','Jyv√§skyl√§n yliopisto','Lapin yliopisto','Lappeenrannan tekn. yliopisto','Oulun yliopisto','Svenska handelsh√∂gskolan','Taideyliopisto','Tampereen tekn. yliopisto','Tampereen yliopisto','Turun yliopisto','Vaasan yliopisto','√Öbo Akademi','Kuvataideakatemia','Sibelius-Akatemia','Teatterikorkeakoulu','Lappeenrannan teknillinen yliopisto', 'Tampereen teknillinen yliopisto') 
 		then 'Yliopisto'
 			else 'Ammattikorkeakoulu'
 		end
@@ -336,19 +336,19 @@ SELECT [vuosi]
 	  ,NULL AS '5v_Aloittaneet_lkm'
 	  ,NULL AS '7v_suorittaneet_lkm'
 	  ,NULL AS '5v_suorittaneet_lkm'
-	  ,NULL AS 'L‰sn‰olevat opiskelijat'--lasna
+	  ,NULL AS 'L√§sn√§olevat opiskelijat'--lasna
 	  ,NULL AS '55op suorittaneet' --suorittanut55
-	  ,NULL -- 'L‰sn‰olleet opiskelijat (1-14op)'
+	  ,NULL -- 'L√§sn√§olleet opiskelijat (1-14op)'
 	  ,NULL --lkm_op1_14
-	  ,case when d_tehtavanjaottelu_id=0 then henkilotyovuosi else 0 end AS 'Opetus- ja tutkimushenkilˆkunta'
+	  ,case when d_tehtavanjaottelu_id=0 then henkilotyovuosi else 0 end AS 'Opetus- ja tutkimushenkil√∂kunta'
 	  ,case when d_tutkijanuravaihe_id=3 then henkilotyovuosi else 0 end as 'IV tutkijanuraporras'
-	  ,NULL --'Opetus- ja TKI henkilˆkunta'
-	  ,NULL AS 'Ammattikorkeakoulun TKI-henkilˆkunta'
+	  ,NULL --'Opetus- ja TKI henkil√∂kunta'
+	  ,NULL AS 'Ammattikorkeakoulun TKI-henkil√∂kunta'
 	  ,NULL -- 'AMK Julkaisut (A-E)'
 	  ,NULL -- 'AMK julkaisut (F ja I)'
 	  ,NULL --'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
 	  ,NULL --'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 1-3'
-	  ,NULL --'YO kansainv‰linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
+	  ,NULL --'YO kansainv√§linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
 	  ,NULL --'Kilpailtu tutkimusrahoitus'
 	  ,NULL --kv_vaihtoopiskelijat_op_lkm
 	  ,NULL --ulkom_hyv_luetut_op_lkm
@@ -357,9 +357,9 @@ SELECT [vuosi]
 	  ,NULL --mamu_op_lkm
 	  ,NULL --erikoul_suor_op_lkm
 	  ,NULL --sijoittuminen_1v_tutkinnon_jalkeen
-	  ,null --tyˆlliset 1v tutkinnon j‰lkeen
-	  ,null --'Kandikyselyn pistem‰‰r‰'
-	  ,null --'AVOP-AMK pistem‰‰r‰'
+	  ,null --ty√∂lliset 1v tutkinnon j√§lkeen
+	  ,null --'Kandikyselyn pistem√§√§r√§'
+	  ,null --'AVOP-AMK pistem√§√§r√§'
 	  , d4.ohjauksenala_koodi as 'Koodit OKM ohjauksen ala'
 	  , d50.organisaatio_koodi as 'Koodit oppilaitos'
 	  , NULL as 'Koodit kunta'	  
@@ -389,9 +389,9 @@ SELECT [vuosi]
  where d_tehtavanjaottelu_id in (0,2) OR d_tutkijanuravaihe_id=3
 
   union all
-  /****** AMK opetus- ja TKI henkilˆkunta ******/
+  /****** AMK opetus- ja TKI henkil√∂kunta ******/
 SELECT [vuosi]
-	  ,NULL as 'Aloituslukuvuosi (l‰p‰isy)'
+	  ,NULL as 'Aloituslukuvuosi (l√§p√§isy)'
       , d50.organisaatio_fi
 	  , [Sektori]='Ammattikorkeakoulu'
 	  , NULL --d2.koulutusaste2002
@@ -403,26 +403,26 @@ SELECT [vuosi]
 	  , NULL --d2.iscfi2013 as 'Koulutusala, taso 3'
       ,NULL --[koulutuksen_kunta]
       ,case when d60.maatjavaltiot2_fi in ('Suomi','Ahvenanmaa') then 'Suomi' when d60.maatjavaltiot2_fi in 
-	  ('Islanti', 'Liechtenstein', 'Norja', 'Alankomaat', 'Belgia', 'Bulgaria', 'Espanja', 'Irlanti', 'Italia', 'It‰valta', 'Kreikka', 'Kroatia','Kypros', 'Latvia', 'Liettua', 'Luxemburg', 'Malta', 'Portugali', 'Puola', 'Ranska', 'Romania', 'Ruotsi', 'Saksa', 'Slovakia', 'Slovenia', 'Tanska', 'Töekki', 'Unkari', 'Viro', 'Britannia') 
+	  ('Islanti', 'Liechtenstein', 'Norja', 'Alankomaat', 'Belgia', 'Bulgaria', 'Espanja', 'Irlanti', 'Italia', 'It√§valta', 'Kreikka', 'Kroatia','Kypros', 'Latvia', 'Liettua', 'Luxemburg', 'Malta', 'Portugali', 'Puola', 'Ranska', 'Romania', 'Ruotsi', 'Saksa', 'Slovakia', 'Slovenia', 'Tanska', 'T≈°ekki', 'Unkari', 'Viro', 'Britannia') 
 	  then 'EU/ETA' else 'Muu' end as 'Kansalaisuus'
       ,NULL --tutkinnot
 	  ,NULL AS '7v_aloittaneet_lkm'
 	  ,NULL AS '5v_Aloittaneet_lkm'
 	  ,NULL AS '7v_suorittaneet_lkm'
 	  ,NULL AS '5v_suorittaneet_lkm'
-	  ,NULL AS 'L‰sn‰olevat opiskelijat'--lasna
+	  ,NULL AS 'L√§sn√§olevat opiskelijat'--lasna
 	  ,NULL AS '55op suorittaneet' --suorittanut55
-	  ,NULL -- 'L‰sn‰olleet opiskelijat (1-14op)'
+	  ,NULL -- 'L√§sn√§olleet opiskelijat (1-14op)'
 	  ,NULL --lkm_op1_14
-	  ,NULL -- 'Opetus- ja tutkimushenkilˆkunta'
+	  ,NULL -- 'Opetus- ja tutkimushenkil√∂kunta'
 	  ,NULL -- 'IV tutkijanuraporras'
-	  ,case when d_tehtavanjaottelu=0 then henkilotyovuosi end AS 'AMK Opetushenkilˆkunta'
-	  ,case when d_tehtavanjaottelu=1 then henkilotyovuosi end AS 'AMK TKI-henkilˆkunta'
+	  ,case when d_tehtavanjaottelu=0 then henkilotyovuosi end AS 'AMK Opetushenkil√∂kunta'
+	  ,case when d_tehtavanjaottelu=1 then henkilotyovuosi end AS 'AMK TKI-henkil√∂kunta'
 	  ,NULL -- 'AMK Julkaisut (A-E)'
 	  ,NULL -- 'AMK julkaisut (F ja I)'
 	  ,NULL --'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
 	  ,NULL --'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 1-3'
-	  ,NULL --'YO kansainv‰linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
+	  ,NULL --'YO kansainv√§linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
 	  ,NULL --'Kilpailtu tutkimusrahoitus'
 	  ,NULL --kv_vaihtoopiskelijat_op_lkm
 	  ,NULL --ulkom_hyv_luetut_op_lkm
@@ -431,9 +431,9 @@ SELECT [vuosi]
 	  ,NULL --mamu_op_lkm
 	  ,NULL --erikoul_suor_op_lkm
 	  ,NULL --sijoittuminen_1v_tutkinnon_jalkeen
-	  ,null --tyˆlliset 1v tutkinnon j‰lkeen
-	  ,null --'Kandikyselyn pistem‰‰r‰'
-	  ,null --'AVOP-AMK pistem‰‰r‰'
+	  ,null --ty√∂lliset 1v tutkinnon j√§lkeen
+	  ,null --'Kandikyselyn pistem√§√§r√§'
+	  ,null --'AVOP-AMK pistem√§√§r√§'
 	  , d4.ohjauksenala_koodi as 'Koodit OKM ohjauksen ala'
 	  , d50.organisaatio_koodi as 'Koodit oppilaitos'
 	  , NULL 'Koodit kunta'
@@ -468,10 +468,10 @@ union all
  /****** Julkaisut ******/
 
 SELECT tilastovuosi
-	  ,NULL as 'Aloituslukuvuosi (l‰p‰isy)'
+	  ,NULL as 'Aloituslukuvuosi (l√§p√§isy)'
       , d3.organisaatio_fi
 	  ,[Sektori]=case  when d3.organisaatio_fi in 
-			('Aalto-yliopisto','Helsingin yliopisto','It‰-Suomen yliopisto','Jyv‰skyl‰n yliopisto','Lapin yliopisto','Lappeenrannan tekn. yliopisto','Oulun yliopisto','Svenska handelshˆgskolan','Taideyliopisto','Tampereen tekn. yliopisto','Tampereen yliopisto','Turun yliopisto','Vaasan yliopisto','≈bo Akademi','Kuvataideakatemia','Sibelius-Akatemia','Teatterikorkeakoulu','Lappeenrannan teknillinen yliopisto', 'Tampereen teknillinen yliopisto') 
+			('Aalto-yliopisto','Helsingin yliopisto','It√§-Suomen yliopisto','Jyv√§skyl√§n yliopisto','Lapin yliopisto','Lappeenrannan tekn. yliopisto','Oulun yliopisto','Svenska handelsh√∂gskolan','Taideyliopisto','Tampereen tekn. yliopisto','Tampereen yliopisto','Turun yliopisto','Vaasan yliopisto','√Öbo Akademi','Kuvataideakatemia','Sibelius-Akatemia','Teatterikorkeakoulu','Lappeenrannan teknillinen yliopisto', 'Tampereen teknillinen yliopisto') 
 		then 'Yliopisto'
 			else 'Ammattikorkeakoulu'
 		end
@@ -489,19 +489,19 @@ SELECT tilastovuosi
 	  ,NULL AS '5v_Aloittaneet_lkm'
 	  ,NULL AS '7v_suorittaneet_lkm'
 	  ,NULL AS '5v_suorittaneet_lkm'
-	  ,NULL AS 'L‰sn‰olevat opiskelijat'--lasna
+	  ,NULL AS 'L√§sn√§olevat opiskelijat'--lasna
 	  ,NULL AS '55op suorittaneet' --suorittanut55
-	  ,NULL -- 'L‰sn‰olleet opiskelijat (1-14op)'
+	  ,NULL -- 'L√§sn√§olleet opiskelijat (1-14op)'
 	  ,NULL --lkm_op1_14
-	  ,NULL -- 'Opetus- ja tutkimushenkilˆkunta'
+	  ,NULL -- 'Opetus- ja tutkimushenkil√∂kunta'
 	  ,NULL -- 'IV tutkijanuraporras'
-	  ,NULL -- 'Opetus- ja TKI henkilˆkunta'
-	  ,NULL AS 'Ammattikorkeakoulun TKI-henkilˆkunta'
+	  ,NULL -- 'Opetus- ja TKI henkil√∂kunta'
+	  ,NULL AS 'Ammattikorkeakoulun TKI-henkil√∂kunta'
 	  ,case when d3.oppilaitostyyppi_koodi='41' then lukumaara else NULL end AS 'AMK Julkaisut (A-E)'
 	  ,NULL as 'AMK julkaisut (F ja I)'
 	  ,case when d3.oppilaitostyyppi_koodi='42' AND julkaisutyyppi_koodi in ('A1','A2','A3','A4','C1','C2') AND d_julkaisufoorumitaso_id in (4,5) then lukumaara else NULL end AS 'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
 	  ,case when d3.oppilaitostyyppi_koodi='42' AND julkaisutyyppi_koodi in ('A1','A2','A3','A4','C1','C2') AND d_julkaisufoorumitaso_id in (1,4,5) then lukumaara else NULL end AS 'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 1-3'
-	  ,case when d3.oppilaitostyyppi_koodi='42' AND julkaisutyyppi_koodi in ('A1','A2','A3','A4','C1','C2') AND d_julkaisufoorumitaso_id in (1,4,5) AND d_kansainvalinen_yhteisjulkaisu_id=2 then lukumaara else NULL end AS 'YO kansainv‰linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
+	  ,case when d3.oppilaitostyyppi_koodi='42' AND julkaisutyyppi_koodi in ('A1','A2','A3','A4','C1','C2') AND d_julkaisufoorumitaso_id in (1,4,5) AND d_kansainvalinen_yhteisjulkaisu_id=2 then lukumaara else NULL end AS 'YO kansainv√§linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
 	  ,NULL --'Kilpailtu tutkimusrahoitus'
 	  ,NULL --kv_vaihtoopiskelijat_op_lkm
 	  ,NULL --ulkom_hyv_luetut_op_lkm
@@ -510,9 +510,9 @@ SELECT tilastovuosi
 	  ,NULL --mamu_op_lkm
 	  ,NULL --erikoul_suor_op_lkm
 	  ,NULL --sijoittuminen_1v_tutkinnon_jalkeen
-	  ,null --tyˆlliset 1v tutkinnon j‰lkeen
-	  ,null --'Kandikyselyn pistem‰‰r‰'
-	  ,null --'AVOP-AMK pistem‰‰r‰'
+	  ,null --ty√∂lliset 1v tutkinnon j√§lkeen
+	  ,null --'Kandikyselyn pistem√§√§r√§'
+	  ,null --'AVOP-AMK pistem√§√§r√§'
 	  , d4.ohjauksenala_koodi as 'Koodit OKM ohjauksen ala'
 	  , d3.organisaatio_koodi as 'Koodit oppilaitos'
 	  , NULL as 'Koodit kunta'
@@ -544,10 +544,10 @@ SELECT tilastovuosi
 
  /****** AMK julkaisut F ja I ******/
  SELECT vuosi as 'tilastovuosi'
-	  ,NULL as 'Aloituslukuvuosi (l‰p‰isy)'
+	  ,NULL as 'Aloituslukuvuosi (l√§p√§isy)'
       , d3.organisaatio_fi
 	  ,[Sektori]=case  when d3.organisaatio_fi in 
-			('Aalto-yliopisto','Helsingin yliopisto','It‰-Suomen yliopisto','Jyv‰skyl‰n yliopisto','Lapin yliopisto','Lappeenrannan tekn. yliopisto','Oulun yliopisto','Svenska handelshˆgskolan','Taideyliopisto','Tampereen tekn. yliopisto','Tampereen yliopisto','Turun yliopisto','Vaasan yliopisto','≈bo Akademi','Kuvataideakatemia','Sibelius-Akatemia','Teatterikorkeakoulu','Lappeenrannan teknillinen yliopisto', 'Tampereen teknillinen yliopisto') 
+			('Aalto-yliopisto','Helsingin yliopisto','It√§-Suomen yliopisto','Jyv√§skyl√§n yliopisto','Lapin yliopisto','Lappeenrannan tekn. yliopisto','Oulun yliopisto','Svenska handelsh√∂gskolan','Taideyliopisto','Tampereen tekn. yliopisto','Tampereen yliopisto','Turun yliopisto','Vaasan yliopisto','√Öbo Akademi','Kuvataideakatemia','Sibelius-Akatemia','Teatterikorkeakoulu','Lappeenrannan teknillinen yliopisto', 'Tampereen teknillinen yliopisto') 
 		then 'Yliopisto'
 			else 'Ammattikorkeakoulu'
 		end
@@ -565,19 +565,19 @@ SELECT tilastovuosi
 	  ,NULL AS '5v_Aloittaneet_lkm'
 	  ,NULL AS '7v_suorittaneet_lkm'
 	  ,NULL AS '5v_suorittaneet_lkm'
-	  ,NULL AS 'L‰sn‰olevat opiskelijat'--lasna
+	  ,NULL AS 'L√§sn√§olevat opiskelijat'--lasna
 	  ,NULL AS '55op suorittaneet' --suorittanut55
-	  ,NULL -- 'L‰sn‰olleet opiskelijat (1-14op)'
+	  ,NULL -- 'L√§sn√§olleet opiskelijat (1-14op)'
 	  ,NULL --lkm_op1_14
-	  ,NULL -- 'Opetus- ja tutkimushenkilˆkunta'
+	  ,NULL -- 'Opetus- ja tutkimushenkil√∂kunta'
 	  ,NULL -- 'IV tutkijanuraporras'
-	  ,NULL -- 'Opetus- ja TKI henkilˆkunta'
-	  ,NULL AS 'Ammattikorkeakoulun TKI-henkilˆkunta'
+	  ,NULL -- 'Opetus- ja TKI henkil√∂kunta'
+	  ,NULL AS 'Ammattikorkeakoulun TKI-henkil√∂kunta'
 	  ,NULL --case when d3.oppilaitostyyppi_koodi='41' then lukumaara else NULL end AS 'AMK Julkaisut (A-E)'
 	  ,f.julkaisujen_maara as 'AMK julkaisut (F ja I)'
 	  ,NULL --case when d3.oppilaitostyyppi_koodi='42' AND julkaisutyyppi_koodi in ('A1','A2','A3','A4','C1','C2') AND d_julkaisufoorumitaso_id in (4,5) then lukumaara else NULL end AS 'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
 	  ,NULL --case when d3.oppilaitostyyppi_koodi='42' AND julkaisutyyppi_koodi in ('A1','A2','A3','A4','C1','C2') AND d_julkaisufoorumitaso_id in (1,4,5) then lukumaara else NULL end AS 'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 1-3'
-	  ,null--case when d3.oppilaitostyyppi_koodi='42' AND julkaisutyyppi_koodi in ('A1','A2','A3','A4','C1','C2') AND d_julkaisufoorumitaso_id in (1,4,5) AND d_kansainvalinen_yhteisjulkaisu_id=2 then lukumaara else NULL end AS 'YO kansainv‰linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
+	  ,null--case when d3.oppilaitostyyppi_koodi='42' AND julkaisutyyppi_koodi in ('A1','A2','A3','A4','C1','C2') AND d_julkaisufoorumitaso_id in (1,4,5) AND d_kansainvalinen_yhteisjulkaisu_id=2 then lukumaara else NULL end AS 'YO kansainv√§linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
 	  ,NULL --'Kilpailtu tutkimusrahoitus'
 	  ,NULL --kv_vaihtoopiskelijat_op_lkm
 	  ,NULL --ulkom_hyv_luetut_op_lkm
@@ -586,9 +586,9 @@ SELECT tilastovuosi
 	  ,NULL --mamu_op_lkm
 	  ,NULL --erikoul_suor_op_lkm
 	  ,NULL --sijoittuminen_1v_tutkinnon_jalkeen
-	  ,null --tyˆlliset 1v tutkinnon j‰lkeen
-	  ,null --'Kandikyselyn pistem‰‰r‰'
-	  ,null --'AVOP-AMK pistem‰‰r‰'
+	  ,null --ty√∂lliset 1v tutkinnon j√§lkeen
+	  ,null --'Kandikyselyn pistem√§√§r√§'
+	  ,null --'AVOP-AMK pistem√§√§r√§'
 	  , d4.ohjauksenala_koodi as 'Koodit OKM ohjauksen ala'
 	  , d3.organisaatio_koodi as 'Koodit oppilaitos'
 	  , NULL as 'Koodit kunta'
@@ -621,7 +621,7 @@ SELECT tilastovuosi
    /****** YO talous ******/
 
 SELECT tilikausi as 'Tilastointivuosi'
-	  ,NULL as 'Aloituslukuvuosi (l‰p‰isy)'
+	  ,NULL as 'Aloituslukuvuosi (l√§p√§isy)'
       , d50.organisaatio_fi
 	  ,[Sektori]='Yliopisto'
 	  , NULL --d2.koulutusaste2002
@@ -638,20 +638,20 @@ SELECT tilikausi as 'Tilastointivuosi'
 	  ,NULL AS '5v_Aloittaneet_lkm'
 	  ,NULL AS '7v_suorittaneet_lkm'
 	  ,NULL AS '5v_suorittaneet_lkm'
-	  ,NULL AS 'L‰sn‰olevat opiskelijat'--lasna
+	  ,NULL AS 'L√§sn√§olevat opiskelijat'--lasna
 	  ,NULL AS '55op suorittaneet' --suorittanut55
-	  ,NULL -- 'L‰sn‰olleet opiskelijat (1-14op)'
+	  ,NULL -- 'L√§sn√§olleet opiskelijat (1-14op)'
 	  ,NULL --lkm_op1_14
-	  ,NULL -- 'Opetus- ja tutkimushenkilˆkunta'
+	  ,NULL -- 'Opetus- ja tutkimushenkil√∂kunta'
 	  ,NULL -- 'IV tutkijanuraporras'
-	  ,NULL -- 'Opetus- ja TKI henkilˆkunta'
-	  ,NULL AS 'Ammattikorkeakoulun TKI-henkilˆkunta'
+	  ,NULL -- 'Opetus- ja TKI henkil√∂kunta'
+	  ,NULL AS 'Ammattikorkeakoulun TKI-henkil√∂kunta'
 	  ,NULL -- 'AMK Julkaisut (A-E)'
 	  ,NULL -- 'AMK julkaisut (F ja I)'
 	  ,NULL -- 'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
 	  ,NULL -- 'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 1-3'
-	  ,NULL -- 'YO kansainv‰linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
-	  ,case when tili_taso2_fi IN ('Suomen Akatemia','Tekes','Kotimaiset yritykset','Ulkomaiset yritykset','EU-puiteohjelmarahoitus ja muu laadullisesti kilpailtu EU-rahoitus','Ulkomaiset rahastot ja s‰‰tiˆt','Kansainv‰liset j‰rjestˆt', 'Muu ulkomainen rahoitus') then arvo else 0 end AS 'Kilpailtu tutkimusrahoitus'
+	  ,NULL -- 'YO kansainv√§linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
+	  ,case when tili_taso2_fi IN ('Suomen Akatemia','Tekes','Kotimaiset yritykset','Ulkomaiset yritykset','EU-puiteohjelmarahoitus ja muu laadullisesti kilpailtu EU-rahoitus','Ulkomaiset rahastot ja s√§√§ti√∂t','Kansainv√§liset j√§rjest√∂t', 'Muu ulkomainen rahoitus') then arvo else 0 end AS 'Kilpailtu tutkimusrahoitus'
 	  ,NULL --kv_vaihtoopiskelijat_op_lkm
 	  ,NULL --ulkom_hyv_luetut_op_lkm
 	  ,NULL --erilopintooik_op_lkm
@@ -659,9 +659,9 @@ SELECT tilikausi as 'Tilastointivuosi'
 	  ,NULL --mamu_op_lkm
 	  ,NULL --erikoul_suor_op_lkm
 	  ,NULL --sijoittuminen_1v_tutkinnon_jalkeen
-	  ,null --tyˆlliset 1v tutkinnon j‰lkeen
-	  ,null --'Kandikyselyn pistem‰‰r‰'
-	  ,null --'AVOP-AMK pistem‰‰r‰'
+	  ,null --ty√∂lliset 1v tutkinnon j√§lkeen
+	  ,null --'Kandikyselyn pistem√§√§r√§'
+	  ,null --'AVOP-AMK pistem√§√§r√§'
 	  , d4.ohjauksenala_koodi as 'Koodit OKM ohjauksen ala'
 	  , d50.organisaatio_koodi as 'Koodit oppilaitos'
 	  , NULL as 'Koodit kunta'
@@ -693,10 +693,10 @@ SELECT tilikausi as 'Tilastointivuosi'
 
  union all
 
-   /****** YO Vaihto-opiskelijoiden (l‰hteneet ja saapuneet) opintopisteet ******/
+   /****** YO Vaihto-opiskelijoiden (l√§hteneet ja saapuneet) opintopisteet ******/
 
 SELECT vuosi
-	  ,NULL as 'Aloituslukuvuosi (l‰p‰isy)'
+	  ,NULL as 'Aloituslukuvuosi (l√§p√§isy)'
       , d3.organisaatio_fi
 	  ,[Sektori]='Yliopisto'
 	  , NULL --d2.koulutusaste2002
@@ -713,19 +713,19 @@ SELECT vuosi
 	  ,NULL AS '5v_Aloittaneet_lkm'
 	  ,NULL AS '7v_suorittaneet_lkm'
 	  ,NULL AS '5v_suorittaneet_lkm'
-	  ,NULL AS 'L‰sn‰olevat opiskelijat'--lasna
+	  ,NULL AS 'L√§sn√§olevat opiskelijat'--lasna
 	  ,NULL AS '55op suorittaneet' --suorittanut55
-	  ,NULL -- 'L‰sn‰olleet opiskelijat (1-14op)'
+	  ,NULL -- 'L√§sn√§olleet opiskelijat (1-14op)'
 	  ,NULL --lkm_op1_14
-	  ,NULL -- 'Opetus- ja tutkimushenkilˆkunta'
+	  ,NULL -- 'Opetus- ja tutkimushenkil√∂kunta'
 	  ,NULL -- 'IV tutkijanuraporras'
-	  ,NULL -- 'Opetus- ja TKI henkilˆkunta'
-	  ,NULL AS 'Ammattikorkeakoulun TKI-henkilˆkunta'
+	  ,NULL -- 'Opetus- ja TKI henkil√∂kunta'
+	  ,NULL AS 'Ammattikorkeakoulun TKI-henkil√∂kunta'
 	  ,NULL -- 'AMK Julkaisut (A-E)'
 	  ,NULL -- 'AMK julkaisut (F ja I)'
 	  ,NULL -- 'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
 	  ,NULL -- 'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 1-3'
-	  ,NULL -- 'YO kansainv‰linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
+	  ,NULL -- 'YO kansainv√§linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
 	  ,NULL -- 'Kilpailtu tutkimusrahoitus'
 	  ,kv_vaihtoopiskelijat_op_lkm
 	  ,ulkom_hyv_luetut_op_lkm
@@ -734,9 +734,9 @@ SELECT vuosi
 	  ,NULL --mamu_op_lkm
 	  ,NULL --erikoul_suor_op_lkm
 	  ,NULL --sijoittuminen_1v_tutkinnon_jalkeen
-	  ,null --tyˆlliset 1v tutkinnon j‰lkeen
-	  ,null --'Kandikyselyn pistem‰‰r‰'
-	  ,null --'AVOP-AMK pistem‰‰r‰'
+	  ,null --ty√∂lliset 1v tutkinnon j√§lkeen
+	  ,null --'Kandikyselyn pistem√§√§r√§'
+	  ,null --'AVOP-AMK pistem√§√§r√§'
 	  , d4.ohjauksenala_koodi as 'Koodit OKM ohjauksen ala'
 	  , d3.organisaatio_koodi as 'Koodit oppilaitos'
 	  , NULL as 'Koodit kunta'
@@ -766,10 +766,10 @@ SELECT vuosi
 
   union all
 
-   /****** AMK Vaihto-opiskelijoiden (l‰hteneet ja saapuneet) opintopisteet ******/
+   /****** AMK Vaihto-opiskelijoiden (l√§hteneet ja saapuneet) opintopisteet ******/
 
 SELECT vuosi
-	  ,NULL as 'Aloituslukuvuosi (l‰p‰isy)'
+	  ,NULL as 'Aloituslukuvuosi (l√§p√§isy)'
       , d3.organisaatio_fi
 	  ,[Sektori]='Ammattikorkeakoulu'
 	  , NULL --d2.koulutusaste2002
@@ -786,19 +786,19 @@ SELECT vuosi
 	  ,NULL AS '5v_Aloittaneet_lkm'
 	  ,NULL AS '7v_suorittaneet_lkm'
 	  ,NULL AS '5v_suorittaneet_lkm'
-	  ,NULL AS 'L‰sn‰olevat opiskelijat'--lasna
+	  ,NULL AS 'L√§sn√§olevat opiskelijat'--lasna
 	  ,NULL AS '55op suorittaneet' --suorittanut55
-	  ,NULL -- 'L‰sn‰olleet opiskelijat (1-14op)'
+	  ,NULL -- 'L√§sn√§olleet opiskelijat (1-14op)'
 	  ,NULL --lkm_op1_14
-	  ,NULL -- 'Opetus- ja tutkimushenkilˆkunta'
+	  ,NULL -- 'Opetus- ja tutkimushenkil√∂kunta'
 	  ,NULL -- 'IV tutkijanuraporras'
-	  ,NULL -- 'Opetus- ja TKI henkilˆkunta'
-	  ,NULL AS 'Ammattikorkeakoulun TKI-henkilˆkunta'
+	  ,NULL -- 'Opetus- ja TKI henkil√∂kunta'
+	  ,NULL AS 'Ammattikorkeakoulun TKI-henkil√∂kunta'
 	  ,NULL -- 'AMK Julkaisut (A-E)'
 	  ,NULL -- 'AMK julkaisut (F ja I)'
 	  ,NULL -- 'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
 	  ,NULL -- 'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 1-3'
-	  ,NULL -- 'YO kansainv‰linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
+	  ,NULL -- 'YO kansainv√§linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
 	  ,NULL -- 'Kilpailtu tutkimusrahoitus'
 	  ,kv_vaihtoopiskelijat_op_lkm
 	  ,ulkom_hyv_op_lkm
@@ -807,9 +807,9 @@ SELECT vuosi
 	  ,mamu_op_lkm
 	  ,erikoul_suor_op_lkm
 	  ,NULL --sijoittuminen_1v_tutkinnon_jalkeen
-	  ,null --tyˆlliset 1v tutkinnon j‰lkeen
-	  ,null --'Kandikyselyn pistem‰‰r‰'
-	  ,null --'AVOP-AMK pistem‰‰r‰'
+	  ,null --ty√∂lliset 1v tutkinnon j√§lkeen
+	  ,null --'Kandikyselyn pistem√§√§r√§'
+	  ,null --'AVOP-AMK pistem√§√§r√§'
 	  , d4.ohjauksenala_koodi as 'Koodit OKM ohjauksen ala'
 	  , d3.organisaatio_koodi as 'Koodit oppilaitos'
 	  , NULL as 'Koodit kunta'
@@ -840,13 +840,13 @@ SELECT vuosi
 
  UNION ALL
 
-    /****** Tyˆllistyneet 1v j‰lkeen ******/
+    /****** Ty√∂llistyneet 1v j√§lkeen ******/
 
 SELECT tilastointivuosi
-	  ,NULL as 'Aloituslukuvuosi (l‰p‰isy)'
+	  ,NULL as 'Aloituslukuvuosi (l√§p√§isy)'
       , d3.organisaatio_fi
 	  ,[Sektori]=case  when d3.organisaatio_fi in 
-			('Aalto-yliopisto','Helsingin yliopisto','It‰-Suomen yliopisto','Jyv‰skyl‰n yliopisto','Lapin yliopisto','Lappeenrannan tekn. yliopisto','Oulun yliopisto','Svenska handelshˆgskolan','Taideyliopisto','Tampereen tekn. yliopisto','Tampereen yliopisto','Turun yliopisto','Vaasan yliopisto','≈bo Akademi','Kuvataideakatemia','Sibelius-Akatemia','Teatterikorkeakoulu','Lappeenrannan teknillinen yliopisto', 'Tampereen teknillinen yliopisto') 
+			('Aalto-yliopisto','Helsingin yliopisto','It√§-Suomen yliopisto','Jyv√§skyl√§n yliopisto','Lapin yliopisto','Lappeenrannan tekn. yliopisto','Oulun yliopisto','Svenska handelsh√∂gskolan','Taideyliopisto','Tampereen tekn. yliopisto','Tampereen yliopisto','Turun yliopisto','Vaasan yliopisto','√Öbo Akademi','Kuvataideakatemia','Sibelius-Akatemia','Teatterikorkeakoulu','Lappeenrannan teknillinen yliopisto', 'Tampereen teknillinen yliopisto') 
 		then 'Yliopisto'
 			else 'Ammattikorkeakoulu'
 		end
@@ -864,19 +864,19 @@ SELECT tilastointivuosi
 	  ,NULL AS '5v_Aloittaneet_lkm'
 	  ,NULL AS '7v_suorittaneet_lkm'
 	  ,NULL AS '5v_suorittaneet_lkm'
-	  ,NULL AS 'L‰sn‰olevat opiskelijat'--lasna
+	  ,NULL AS 'L√§sn√§olevat opiskelijat'--lasna
 	  ,NULL AS '55op suorittaneet' --suorittanut55
-	  ,NULL -- 'L‰sn‰olleet opiskelijat (1-14op)'
+	  ,NULL -- 'L√§sn√§olleet opiskelijat (1-14op)'
 	  ,NULL --lkm_op1_14
-	  ,NULL -- 'Opetus- ja tutkimushenkilˆkunta'
+	  ,NULL -- 'Opetus- ja tutkimushenkil√∂kunta'
 	  ,NULL -- 'IV tutkijanuraporras'
-	  ,NULL -- 'Opetus- ja TKI henkilˆkunta'
-	  ,NULL AS 'Ammattikorkeakoulun TKI-henkilˆkunta'
+	  ,NULL -- 'Opetus- ja TKI henkil√∂kunta'
+	  ,NULL AS 'Ammattikorkeakoulun TKI-henkil√∂kunta'
 	  ,NULL -- 'AMK Julkaisut (A-E)'
 	  ,NULL -- 'AMK julkaisut (F ja I)'
 	  ,NULL -- 'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
 	  ,NULL -- 'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 1-3'
-	  ,NULL -- 'YO kansainv‰linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
+	  ,NULL -- 'YO kansainv√§linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
 	  ,NULL -- 'Kilpailtu tutkimusrahoitus'
 	  ,null --kv_vaihtoopiskelijat_op_lkm
 	  ,null --ulkom_hyv_op_lkm
@@ -885,14 +885,14 @@ SELECT tilastointivuosi
 	  ,null --mamu_op_lkm
 	  ,null --erikoul_suor_op_lkm
 	  ,sijoittuminen_1v_tutkinnon_jalkeen
-	  ,case when paaasiallinen_toiminta_okm_id=1 then sijoittuminen_1v_tutkinnon_jalkeen else null end as 'Tyˆlliset 1v tutkinnon j‰lkeen'
-	  ,null --'Kandikyselyn pistem‰‰r‰'
-	  ,null --'AVOP-AMK pistem‰‰r‰'
+	  ,case when paaasiallinen_toiminta_okm_id=1 then sijoittuminen_1v_tutkinnon_jalkeen else null end as 'Ty√∂lliset 1v tutkinnon j√§lkeen'
+	  ,null --'Kandikyselyn pistem√§√§r√§'
+	  ,null --'AVOP-AMK pistem√§√§r√§'
 	  , d11.OKM_ohjauksen_ala_koodi as 'Koodit OKM ohjauksen ala'
 	  , d3.organisaatio_koodi as 'Koodit oppilaitos'
 	  , NULL as 'Koodit kunta'
-  	  , case when d11.jarjestys_iscle2011 ='ˆˆˆ' then null else d11.jarjestys_iscle2011 end as 'jarj. koulutusaste, taso 1'
-	  , case when d11.jarjestys_Koulutusaste_taso2 ='ˆˆˆ' then null else d11.jarjestys_Koulutusaste_taso2 end as 'jarj. koulutusaste, taso 2'
+  	  , case when d11.jarjestys_iscle2011 ='√∂√∂√∂' then null else d11.jarjestys_iscle2011 end as 'jarj. koulutusaste, taso 1'
+	  , case when d11.jarjestys_Koulutusaste_taso2 ='√∂√∂√∂' then null else d11.jarjestys_Koulutusaste_taso2 end as 'jarj. koulutusaste, taso 2'
 	  , case 
 			when d11.OKM_ohjauksen_ala_koodi='1' then 1 
 			when d11.OKM_ohjauksen_ala_koodi='2' then 2 
@@ -921,10 +921,10 @@ SELECT tilastointivuosi
      /****** ARVO ******/
 
 SELECT vuosi
-	  ,NULL as 'Aloituslukuvuosi (l‰p‰isy)'
+	  ,NULL as 'Aloituslukuvuosi (l√§p√§isy)'
       , d3.organisaatio_fi
 	  ,[Sektori]=case  when d3.organisaatio_fi in 
-			('Aalto-yliopisto','Helsingin yliopisto','It‰-Suomen yliopisto','Jyv‰skyl‰n yliopisto','Lapin yliopisto','Lappeenrannan tekn. yliopisto','Oulun yliopisto','Svenska handelshˆgskolan','Taideyliopisto','Tampereen tekn. yliopisto','Tampereen yliopisto','Turun yliopisto','Vaasan yliopisto','≈bo Akademi','Kuvataideakatemia','Sibelius-Akatemia','Teatterikorkeakoulu','Lappeenrannan teknillinen yliopisto', 'Tampereen teknillinen yliopisto') 
+			('Aalto-yliopisto','Helsingin yliopisto','It√§-Suomen yliopisto','Jyv√§skyl√§n yliopisto','Lapin yliopisto','Lappeenrannan tekn. yliopisto','Oulun yliopisto','Svenska handelsh√∂gskolan','Taideyliopisto','Tampereen tekn. yliopisto','Tampereen yliopisto','Turun yliopisto','Vaasan yliopisto','√Öbo Akademi','Kuvataideakatemia','Sibelius-Akatemia','Teatterikorkeakoulu','Lappeenrannan teknillinen yliopisto', 'Tampereen teknillinen yliopisto') 
 		then 'Yliopisto'
 			else 'Ammattikorkeakoulu'
 		end
@@ -942,19 +942,19 @@ SELECT vuosi
 	  ,NULL AS '5v_Aloittaneet_lkm'
 	  ,NULL AS '7v_suorittaneet_lkm'
 	  ,NULL AS '5v_suorittaneet_lkm'
-	  ,NULL AS 'L‰sn‰olevat opiskelijat'--lasna
+	  ,NULL AS 'L√§sn√§olevat opiskelijat'--lasna
 	  ,NULL AS '55op suorittaneet' --suorittanut55
-	  ,NULL -- 'L‰sn‰olleet opiskelijat (1-14op)'
+	  ,NULL -- 'L√§sn√§olleet opiskelijat (1-14op)'
 	  ,NULL --lkm_op1_14
-	  ,NULL -- 'Opetus- ja tutkimushenkilˆkunta'
+	  ,NULL -- 'Opetus- ja tutkimushenkil√∂kunta'
 	  ,NULL -- 'IV tutkijanuraporras'
-	  ,NULL -- 'Opetus- ja TKI henkilˆkunta'
-	  ,NULL AS 'Ammattikorkeakoulun TKI-henkilˆkunta'
+	  ,NULL -- 'Opetus- ja TKI henkil√∂kunta'
+	  ,NULL AS 'Ammattikorkeakoulun TKI-henkil√∂kunta'
 	  ,NULL -- 'AMK Julkaisut (A-E)'
 	  ,NULL -- 'AMK julkaisut (F ja I)'
 	  ,NULL -- 'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3'
 	  ,NULL -- 'YO Julkaisut (A1-A4, C1 ja C2) jufotaso 1-3'
-	  ,NULL -- 'YO kansainv‰linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
+	  ,NULL -- 'YO kansainv√§linen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3'
 	  ,NULL -- 'Kilpailtu tutkimusrahoitus'
 	  ,null --kv_vaihtoopiskelijat_op_lkm
 	  ,null --ulkom_hyv_op_lkm
@@ -963,8 +963,8 @@ SELECT vuosi
 	  ,null --mamu_op_lkm
 	  ,null --erikoul_suor_op_lkm
 	  ,null --sijoittuminen_1v_tutkinnon_jalkeen
-	  ,NULL --'Tyˆlliset 1v tutkinnon j‰lkeen'
-	  ,case when (kyselypohja='KANDIPALAUTE') AND (d14.kysymysid in ('1150','1116','1168','1119','1147','1142','1139','1138','1117','1140','1120','1149','1136')) then numerovalinta else null end as 'Kandikyselyn pistem‰‰r‰'
+	  ,NULL --'Ty√∂lliset 1v tutkinnon j√§lkeen'
+	  ,case when (kyselypohja='KANDIPALAUTE') AND (d14.kysymysid in ('1150','1116','1168','1119','1147','1142','1139','1138','1117','1140','1120','1149','1136')) then numerovalinta else null end as 'Kandikyselyn pistem√§√§r√§'
 	  ,case when kyselypohja='AVOP-AMK' and rahoitusmallikysymys=1 then 
 		 case when d14.kysymysid in (1477,73) and numerovalinta='0' then '7'
 			when  d14.kysymysid in (1477,73) and numerovalinta='1' then '5,5'
@@ -973,12 +973,12 @@ SELECT vuosi
 			when d14.kysymysid in (1477,73) and numerovalinta='4' then '1'
 			when d14.vastaustyyppi='arvosana7' then numerovalinta else null
 			end
-		end as 'AVOP-AMK pistem‰‰r‰'
+		end as 'AVOP-AMK pistem√§√§r√§'
 	  , d12.okmohjauksenala_koodi as 'Koodit OKM ohjauksen ala'
 	  , d3.organisaatio_koodi as 'Koodit oppilaitos'
 	  ,NULL as 'Koodit kunta'
-	  , case when d12.jarjestys_koulutusastetaso1_koodi ='ˆˆˆ' then null else d12.jarjestys_koulutusastetaso1_koodi end as 'jarj. koulutusaste, taso 1'
-	  , case when d12.jarjestys_koulutusastetaso2_koodi ='ˆˆˆ' then null else d12.jarjestys_koulutusastetaso2_koodi end as 'jarj. koulutusaste, taso 2'
+	  , case when d12.jarjestys_koulutusastetaso1_koodi ='√∂√∂√∂' then null else d12.jarjestys_koulutusastetaso1_koodi end as 'jarj. koulutusaste, taso 1'
+	  , case when d12.jarjestys_koulutusastetaso2_koodi ='√∂√∂√∂' then null else d12.jarjestys_koulutusastetaso2_koodi end as 'jarj. koulutusaste, taso 2'
 	  , case 
 			when d12.okmohjauksenala_koodi='1' then 1 
 			when d12.okmohjauksenala_koodi='2' then 2 
