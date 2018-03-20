@@ -377,4 +377,5 @@ d1.aineisto_koodi=
 	else 'L' 
 end)
 
+GO
 USE [ANTERO]

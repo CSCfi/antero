@@ -416,5 +416,5 @@ d1.aineisto_koodi=
 	 end	
 )
 
-
+GO
 USE [ANTERO]
