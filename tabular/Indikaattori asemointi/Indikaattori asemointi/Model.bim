@@ -1833,6 +1833,96 @@
           {
             "name": "7v aloittaneet mround",
             "expression": "CALCULATE(IF(CALCULATE(SUM([Yo 7v aloittaneet lkm])=0),BLANK(),IF(CALCULATE(SUM([Yo 7v aloittaneet lkm]))=1,3,MROUND(CALCULATE(SUM([Yo 7v aloittaneet lkm])),3))))"
+          },
+          {
+            "name": "AMK tutkinnot 2015-2017 KA",
+            "expression": " CALCULATE(AVERAGE(Muuttujat[tutkinnot]),AND(Muuttujat[Tilastovuosi]>2014,Muuttujat[Tilastovuosi]<2018))"
+          },
+          {
+            "name": "Osuus alan AMK-tutkinnoista",
+            "expression": [
+              " ",
+              "var kaikki=CALCULATE([Tutkinnot lkm],ALL(Muuttujat[Organisaatio]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",AND(Muuttujat[Tilastovuosi]>2014,Muuttujat[Tilastovuosi]<2018))",
+              "var kk=CALCULATE([Tutkinnot lkm],AND(Muuttujat[Tilastovuosi]>2014,Muuttujat[Tilastovuosi]<2018))",
+              "return DIVIDE(kk,kaikki)"
+            ]
+          },
+          {
+            "name": "Ulkomaalaisten AMK-tutkintojen osuus 2015-2017 KA",
+            "expression": [
+              "",
+              "var ukk_tut=CALCULATE(AVERAGE([tutkinnot]),Muuttujat[Kansalaisuus]<>\"Suomi\",AND(Muuttujat[Tilastovuosi]>2014,Muuttujat[Tilastovuosi]<2018))",
+              "var kk_tut=CALCULATE([Tutkinnot lkm],AND(Muuttujat[Tilastovuosi]>2014,Muuttujat[Tilastovuosi]<2018))",
+              "",
+              "return CALCULATE(DIVIDE(ukk_tut,kk_tut),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\")"
+            ]
+          },
+          {
+            "name": "Työllisten osuus 2014-2016",
+            "expression": [
+              "",
+              "var osuus= CALCULATE([Työllisten osuus (1v tutkinnon jälkeen)],AND(Muuttujat[Tilastovuosi]>2014,Muuttujat[Tilastovuosi]<2018))",
+              "return osuus"
+            ]
+          },
+          {
+            "name": "AMK TKI-henkilötyövuodet 2017",
+            "expression": " CALCULATE([Amk tki htv],Muuttujat[Tilastovuosi]=2017)"
+          },
+          {
+            "name": "AMK Opetuksen henkilötyövuodet 2017",
+            "expression": " CALCULATE([Amk opetus htv],Muuttujat[Tilastovuosi]=2017)"
+          },
+          {
+            "name": "Osuus kilpaillusta tutkimusrahoituksesta 2017",
+            "expression": [
+              "",
+              "var kaikki=CALCULATE([Kilpailtu tki-rahoitus],ALL(Muuttujat[Organisaatio]),Muuttujat[Tilastovuosi]=2017)",
+              "var kk=CALCULATE([Kilpailtu tki-rahoitus],Muuttujat[Tilastovuosi]=2017)",
+              "return DIVIDE(kk,kaikki)"
+            ]
+          },
+          {
+            "name": "IV portaan HTV 2017",
+            "expression": "CALCULATE([Tutkijanuraporras IV henkilötyövuodet],Muuttujat[Tilastovuosi]=2017)"
+          },
+          {
+            "name": "IV portaan HTV osuus 2017",
+            "expression": [
+              "",
+              "var kaikki=CALCULATE([IV portaan HTV 2017],ALL(Muuttujat[Organisaatio]))",
+              "var kk=CALCULATE([IV portaan HTV 2017])",
+              "",
+              "return DIVIDE(kk,kaikki)"
+            ]
+          },
+          {
+            "name": "Tohtorin tutkinno 2015-2017 KA",
+            "expression": "CALCULATE(AVERAGE(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Tohtorintutkinto\",AND(Muuttujat[Tilastovuosi]>2014,Muuttujat[Tilastovuosi]<2018))"
+          },
+          {
+            "name": "Ylemmät kk-tutkinnot 2015-2017 KA",
+            "expression": " CALCULATE(AVERAGE(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\",AND(Muuttujat[Tilastovuosi]>2014,Muuttujat[Tilastovuosi]<2018))"
+          },
+          {
+            "name": "Osuus ylemmistä kk-tutkinnoista 2015-2017",
+            "expression": [
+              "",
+              "var kaikki=CALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\",ALL(Muuttujat[Organisaatio]),AND(Muuttujat[Tilastovuosi]>2014,Muuttujat[Tilastovuosi]<2017))",
+              "var kk=CALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\",AND(Muuttujat[Tilastovuosi]>2014,Muuttujat[Tilastovuosi]<2017))",
+              "",
+              "return DIVIDE(kk,kaikki)"
+            ]
+          },
+          {
+            "name": "Työllistyminen 2015-2017",
+            "expression": [
+              "",
+              "var tv=CALCULATE(AVERAGE(Muuttujat[sijoittuminen_1v_tutkinnon_jalkeen]),AND(Muuttujat[Tilastovuosi]>2014,Muuttujat[Tilastovuosi]<2018),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\")",
+              "var t=CALCULATE(AVERAGE(Muuttujat[työlliset 1v tutkinnon jälkeen]),AND(Muuttujat[Tilastovuosi]>2014,Muuttujat[Tilastovuosi]<2018),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\")",
+              "",
+              "return CALCULATE(DIVIDE(t,tv))"
+            ]
           }
         ],
         "annotations": [
