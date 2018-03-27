@@ -52,4 +52,5 @@ export OPINTOPOLKU="virkailija.opintopolku.fi"
 
 # extra "help". set usual begin and end dates already
 export begindate=$(date --date="-1 day" +"%Y-%m-%d")
+export begindate5=$(date --date="-5 days" +"%Y-%m-%d")
 export enddate=$(date +"%Y-%m-%d")

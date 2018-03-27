@@ -37,6 +37,7 @@ while ($reader.Read())
 $reader.Close()
 
 #git clone https://github.com/CSCfi/antero.git
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Invoke-WebRequest https://github.com/CSCfi/antero/archive/master.zip -OutFile "$gitdir\antero.zip"
 
 Unzip "$gitdir\antero.zip" "$gitdir"
