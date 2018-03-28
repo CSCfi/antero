@@ -1,16 +1,18 @@
 ﻿USE [ANTERO]
 GO
-
-/****** Object:  StoredProcedure [dw].[p_lataa_f_virta_otp_55_summa_amk]    Script Date: 27.3.2018 16:10:23 ******/
+/****** Object:  StoredProcedure [dw].[p_lataa_f_virta_otp_55_summa_amk]    Script Date: 28.3.2018 15:16:15 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[p_lataa_f_virta_otp_55_summa_amk]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dw].[p_lataa_f_virta_otp_55_summa_amk] AS' 
+END
 GO
 
 
-
-CREATE PROCEDURE [dw].[p_lataa_f_virta_otp_55_summa_amk] AS
+ALTER PROCEDURE [dw].[p_lataa_f_virta_otp_55_summa_amk] AS
 
 --TRUNCATE TABLE dw.f_virta_otp_55_summa
 
@@ -46,5 +48,3 @@ GROUP BY f.vuosi, month(f.loadtime), d1.id, d2.id, f.source
 
 
 GO
-
-
