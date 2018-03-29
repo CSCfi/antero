@@ -200,7 +200,7 @@ LEFT JOIN VipunenTK..d_kylla_ei AS d52 ON d52.kylla_ei_koodi = f.opisk_yo_koulal
 LEFT JOIN VipunenTK..d_kylla_ei AS d53 ON d53.kylla_ei_koodi = f.opisk_vah2_koulala
 LEFT JOIN VipunenTK..d_kylla_ei AS d54 ON d54.kylla_ei_koodi = f.haku_amm
 LEFT JOIN VipunenTK..d_kylla_ei AS d55 ON d55.kylla_ei_koodi = f.haku_amk
-LEFT JOIN VipunenTK..d_kylla_ei AS d56 ON d56.kylla_ei_koodi = f.haku_yo
+LEFT JOIN VipunenTK..d_kylla_ei AS d56 ON d56.kylla_ei_koodi = f.haku_yo;
 
 
 
