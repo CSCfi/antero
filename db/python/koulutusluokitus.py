@@ -44,7 +44,7 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
 
   row = makerow()
   dboperator.columns(row,debug)
-  
+
   if verbose: print strftime("%Y-%m-%d %H:%M:%S", localtime())+" empty %s.%s"%(schema,table)
   dboperator.empty(schema,table,debug)
 
@@ -67,7 +67,7 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
     row["koodi"] = i["koodiArvo"]
     row["nimi"] = getnimi(i,"FI")
     row["nimi_sv"] = getnimi(i,"SV")
-    row["nimi_en"] = getnimi(i,"FI")
+    row["nimi_en"] = getnimi(i,"EN")
     row["alkupvm"] = i["voimassaAlkuPvm"]
     row["loppupvm"] = i["voimassaLoppuPvm"]
 
@@ -179,13 +179,13 @@ codeset defaults to "koulutus" (probably not going to change -- ever)
 def main(argv):
   # variables from arguments with possible defaults
   secure = True # default secure, so always secure!
-  hostname = os.getenv("OPINTOPOLKU") or "testi.virkailija.opintopolku.fi"
+  hostname = os.getenv("OPINTOPOLKU") or "virkailija.testiopintopolku.fi"
   url = "/koodisto-service/rest/json/%s/koodi" # nb %s
   schema = os.getenv("SCHEMA") or ""
   table = os.getenv("TABLE") or "sa_koulutusluokitus"
   codeset = "koulutus"
   verbose,debug = False,False
-  
+
   try:
     opts, args = getopt.getopt(argv,"sH:u:e:t:c:vd",["secure","hostname=","url=","schema=","table=","codeset=","verbose","debug"])
   except getopt.GetoptError as err:
