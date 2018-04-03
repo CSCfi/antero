@@ -2227,13 +2227,35 @@
           },
           {
             "name": "Seitsemän vuoden läpäisy (yo)",
-            "expression": " DIVIDE(CALCULATE(SUM([7v_suorittaneet_lkm])),SUM([Yo 7v aloittaneet lkm]))",
+            "expression": [
+              " ",
+              "var suo=SUM([7v_suorittaneet_lkm])",
+              "var alo=SUM(Muuttujat[Yo 7v aloittaneet lkm])",
+              "var user=USERNAME()",
+              "",
+              "var mjako=DIVIDE([7v suorittaneet mround],[7v aloittaneet mround])",
+              "var jako=DIVIDE(suo,alo)",
+              "",
+              "return IF(user=\"NT AUTHORITY\\IUSR\",mjako,jako)",
+              ""
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Läpäisy\\Asemointi"
           },
           {
             "name": "Viiden vuoden läpäisy (amk)",
-            "expression": " DIVIDE(SUM([5v_suorittaneet_lkm]),SUM([5v_Aloittaneet_lkm]))",
+            "expression": [
+              " ",
+              "var suo=SUM(Muuttujat[5v_suorittaneet_lkm])",
+              "var alo=SUM(Muuttujat[5v_Aloittaneet_lkm])",
+              "var user=USERNAME()",
+              "",
+              "var mjako=DIVIDE([5v suorittaneet mround],[5v aloittaneet mround])",
+              "var jako=DIVIDE(suo,alo)",
+              "",
+              "return IF(user=\"NT AUTHORITY\\IUSR\",mjako,jako)",
+              ""
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Läpäisy\\Asemointi"
           },
@@ -2292,16 +2314,6 @@
             "displayFolder": "Tutkinnot\\Asemointi"
           },
           {
-            "name": "Amk julkaisut (A-F, I) lkm",
-            "expression": " SUM(Muuttujat[AMK Julkaisut (A-E)])+SUM([AMK julkaisut (F ja I)])",
-            "displayFolder": "Julkaisut\\Asemointi"
-          },
-          {
-            "name": "AMK julkaisut (A-F, I) / opetus- ja tutkimushenkilökunta",
-            "expression": " DIVIDE([Amk julkaisut (A-F, I) lkm],SUM([Ammattikorkeakoulun opetushenkilökunta])+SUM([Ammattikorkeakoulun TKI-henkilökunta]))",
-            "displayFolder": "Julkaisut\\Asemointi"
-          },
-          {
             "name": "Saapuneiuden ja lähteneiden vaihto-opiskelijoiden pisteet",
             "expression": " IF(SUM([kv_vaihtoopiskelijat_op_lkm])+SUM(Muuttujat[ulkom_hyv_luetut_op_lkm])=0,BLANK(),SUM([kv_vaihtoopiskelijat_op_lkm])+SUM(Muuttujat[ulkom_hyv_luetut_op_lkm]))",
             "formatString": "### ### ###.###",
@@ -2346,7 +2358,8 @@
           {
             "name": "Tutkijanuraporras IV henkilötyövuodet",
             "expression": "SUM([IV tutkijanuraportaan henkilötyövuodet])",
-            "formatString": "### ### ###.###"
+            "formatString": "### ### ###.###",
+            "displayFolder": "Henkilöstö\\Asemointi"
           },
           {
             "name": "lasna (55)",
@@ -2391,25 +2404,48 @@
           },
           {
             "name": "7v suorittaneet",
-            "expression": "SUM([7v_suorittaneet_lkm])",
+            "expression": [
+              "",
+              "var suo=SUM([7v_suorittaneet_lkm])",
+              "var user=USERNAME()",
+              "return IF(NOT(user=\"NT AUTHORITY\\IUSR\"),BLANK(),suo)"
+            ],
             "formatString": "### ### ###.###",
             "displayFolder": "Läpäisy\\Asemointi"
           },
           {
             "name": "7v aloittaneet",
-            "expression": " SUM([Yo 7v aloittaneet lkm])",
+            "expression": [
+              " ",
+              "var alo=SUM([Yo 7v aloittaneet lkm])",
+              "var user=USERNAME()",
+              "return IF(NOT(user=\"NT AUTHORITY\\IUSR\"),BLANK(),alo)",
+              ""
+            ],
             "formatString": "### ### ###.###",
             "displayFolder": "Läpäisy\\Asemointi"
           },
           {
             "name": "5v aloittaneet",
-            "expression": " SUM([5v_Aloittaneet_lkm])",
+            "expression": [
+              " ",
+              "var alo=SUM([5v_Aloittaneet_lkm])",
+              "var user=USERNAME()",
+              "return IF(NOT(user=\"NT AUTHORITY\\IUSR\"),BLANK(),alo)",
+              ""
+            ],
             "formatString": "### ### ###.###",
             "displayFolder": "Läpäisy\\Asemointi"
           },
           {
             "name": "5v suorittaneet",
-            "expression": " SUM([5v_suorittaneet_lkm])",
+            "expression": [
+              "",
+              "var suo= SUM([5v_suorittaneet_lkm])",
+              "var user=USERNAME()",
+              "return IF(NOT(user=\"NT AUTHORITY\\IUSR\"),BLANK(),suo)",
+              ""
+            ],
             "formatString": "### ### ###.###",
             "displayFolder": "Läpäisy\\Asemointi"
           },
@@ -2423,6 +2459,16 @@
             "name": "Yo kansainväliset yhteisjulkaisut",
             "expression": "SUM(Muuttujat[YO kansainvälinen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3])",
             "formatString": "### ### ###.###",
+            "displayFolder": "Julkaisut\\Asemointi"
+          },
+          {
+            "name": "Amk julkaisut (A-F, I) lkm",
+            "expression": " SUM(Muuttujat[AMK Julkaisut (A-E)])+SUM([AMK julkaisut (F ja I)])",
+            "displayFolder": "Julkaisut\\Asemointi"
+          },
+          {
+            "name": "AMK julkaisut (A-F, I) / opetus- ja tutkimushenkilökunta",
+            "expression": " DIVIDE([Amk julkaisut (A-F, I) lkm],SUM([Ammattikorkeakoulun opetushenkilökunta])+SUM([Ammattikorkeakoulun TKI-henkilökunta]))",
             "displayFolder": "Julkaisut\\Asemointi"
           },
           {
@@ -2486,12 +2532,12 @@
           {
             "name": "AMK TKI-henkilötyövuodet 2017",
             "expression": " CALCULATE([Amk tki htv],Muuttujat[Tilastovuosi]=2017)",
-            "displayFolder": "Henkilökunta\\Rakenteellinen kehittäminen"
+            "displayFolder": "Henkilöstö\\Rakenteellinen kehittäminen"
           },
           {
             "name": "AMK Opetuksen henkilötyövuodet 2017",
             "expression": " CALCULATE([Amk opetus htv],Muuttujat[Tilastovuosi]=2017)",
-            "displayFolder": "Henkilökunta\\Rakenteellinen kehittäminen"
+            "displayFolder": "Henkilöstö\\Rakenteellinen kehittäminen"
           },
           {
             "name": "Osuus kilpaillusta tutkimusrahoituksesta 2017",
@@ -2506,7 +2552,7 @@
           {
             "name": "IV portaan HTV 2017",
             "expression": "CALCULATE([Tutkijanuraporras IV henkilötyövuodet],Muuttujat[Tilastovuosi]=2017)",
-            "displayFolder": "Henkilökunta\\Rakenteellinen kehittäminen"
+            "displayFolder": "Henkilöstö\\Rakenteellinen kehittäminen"
           },
           {
             "name": "IV portaan HTV osuus 2017",
@@ -2517,12 +2563,12 @@
               "",
               "return DIVIDE(kk,kaikki)"
             ],
-            "displayFolder": "Henkilökunta\\Rakenteellinen kehittäminen"
+            "displayFolder": "Henkilöstö\\Rakenteellinen kehittäminen"
           },
           {
             "name": "Tohtorin tutkinnot 2015-2017 KA",
             "expression": "CALCULATE(AVERAGE(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Tohtorintutkinto\",AND(Muuttujat[Tilastovuosi]>2014,Muuttujat[Tilastovuosi]<2018))",
-            "displayFolder": "Tutkinnot/Rakenteellinen kehittäminen"
+            "displayFolder": "Tutkinnot\\Rakenteellinen kehittäminen"
           },
           {
             "name": "Ylemmät kk-tutkinnot 2015-2017 KA",
@@ -2618,12 +2664,13 @@
               "var osuus= CALCULATE([Työllisten osuus (3v tutkinnon jälkeen)],AND(Muuttujat[Tilastovuosi]>2013,Muuttujat[Tilastovuosi]<2017))",
               "return osuus",
               ""
-            ]
+            ],
+            "displayFolder": "Työllisyys\\Rakenteellinen kehittäminen"
           },
           {
             "name": "Työllisten osuus (3v tutkinnon jälkeen)",
             "expression": "DIVIDE([Työlliset (3v tutkinnon jälkeen)],[sijoittuminen perusjoukko 3v tutkinnon jälkeen])",
-            "displayFolder": "Työllisyys\\Rakenteellinen kehittäminen"
+            "displayFolder": "Työllisyys\\Asemointi"
           },
           {
             "name": "Työllistyminen 3v (Ylempi kk-tutkinto) KA 2015-2017",
@@ -2643,11 +2690,27 @@
               "CALCULATE(IF(CALCULATE(SUM([5v_suorittaneet_lkm])=0),BLANK(),IF(CALCULATE(SUM([5v_suorittaneet_lkm]))=1,3,MROUND(CALCULATE(SUM([5v_suorittaneet_lkm])),3))))",
               "\t\t",
               ""
-            ]
+            ],
+            "displayFolder": "Läpäisy\\Asemointi"
           },
           {
             "name": "5v aloittaneet mround",
-            "expression": "CALCULATE(IF(CALCULATE(SUM([5v_Aloittaneet_lkm])=0),BLANK(),IF(CALCULATE(SUM([5v_Aloittaneet_lkm]))=1,3,MROUND(CALCULATE(SUM([5v_Aloittaneet_lkm])),3))))"
+            "expression": "CALCULATE(IF(CALCULATE(SUM([5v_Aloittaneet_lkm])=0),BLANK(),IF(CALCULATE(SUM([5v_Aloittaneet_lkm]))=1,3,MROUND(CALCULATE(SUM([5v_Aloittaneet_lkm])),3))))",
+            "displayFolder": "Läpäisy\\Asemointi"
+          },
+          {
+            "name": "Tutkijanuraporras II-IV henkilötyövuodet",
+            "expression": [
+              "",
+              "CALCULATE(SUM(Muuttujat[Yliopiston opetus- ja tutkimushenkilötyövuodet]),",
+              "\tOR(Muuttujat[Tutkijanuravaihe]=\"II porras (Tutkijatohtori jne.)\",",
+              "\t\tOR(Muuttujat[Tutkijanuravaihe]=\"III porras (Yliopistonlehtori jne.)\",",
+              "\t\tMuuttujat[Tutkijanuravaihe]=\"IV porras (Professori/Akatemiaprofessori/Tutkimusprofessori/Tutkimusjohtaja jne.)\"",
+              "\t\t)",
+              "\t)",
+              ")"
+            ],
+            "displayFolder": "Henkilöstö\\Asemointi"
           }
         ],
         "annotations": [
