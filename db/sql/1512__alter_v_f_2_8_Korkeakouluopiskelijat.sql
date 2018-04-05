@@ -429,4 +429,4 @@ FROM VipunenTK_DW.dbo.sa_2_8_Korkeakoulut_opiskelijat
 
 GO
 
-
+USE [ANTERO]
