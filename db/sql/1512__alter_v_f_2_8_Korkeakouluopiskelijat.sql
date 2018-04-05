@@ -1,4 +1,4 @@
-USE [VipunenTK_DW]
+ÔªøUSE [VipunenTK_DW]
 GO
 
 /****** Object:  View [dbo].[v_f_2_8_Korkeakouluopiskelijat]    Script Date: 5.4.2018 9:41:33 ******/
@@ -131,7 +131,7 @@ SELECT
 		end
 	)
 	as nvarchar(4))
-	--Tehd‰‰n lukum‰‰r‰muuttuja Aloittaneet, joka saa arvoja seuraavasti:
+	--Tehd√§√§n lukum√§√§r√§muuttuja Aloittaneet, joka saa arvoja seuraavasti:
 	---JOS  Aineisto= 2.8a-c JA alvv_kk_lasna = tilv NIIN Aloittaneet = lkm
 	---JOS Aineisto=2.8b-d JA koultyp=6 JA alvv=tilv JA olosyys=1 NIIN Aloittaneet=lkm
 
@@ -214,32 +214,32 @@ when alvv /*kirjoihintulovuosi*/=tilv /*tilastointivuosi*/
 
 
 	--Aloittaneet_alvv
-	--Tehd‰‰n lukum‰‰r‰muuttuja Aloittaneet_alvv, joka saa arvon seuraavasti:
+	--Tehd√§√§n lukum√§√§r√§muuttuja Aloittaneet_alvv, joka saa arvon seuraavasti:
 	---JOS  Aineisto= 2.8a-c JA alvv = tilv NIIN Aloittaneet_alvv = lkm
 	--Aloittaneet_alvv_kksek
-	--Tehd‰‰n lukum‰‰r‰muuttuja Aloittaneet_alvv_kksek, joka saa arvon seuraavasti:
+	--Tehd√§√§n lukum√§√§r√§muuttuja Aloittaneet_alvv_kksek, joka saa arvon seuraavasti:
 	---JOS  Aineisto= 2.8a-c JA alvv_kksek = tilv NIIN Aloittaneet_alvv_kksek = lkm
 	--Aloittaneet_alvv_kksek_lasna
-	--Tehd‰‰n lukum‰‰r‰muuttuja Aloittaneet_alvv_kksek_lasna, joka saa arvon seuraavasti:
+	--Tehd√§√§n lukum√§√§r√§muuttuja Aloittaneet_alvv_kksek_lasna, joka saa arvon seuraavasti:
 	---JOS  Aineisto= 2.8a-c JA alvv_kksek_lasna = tilv NIIN Aloittaneet_alvv_kksek_lasna = lkm
 	--Aloittaneet_alvv_sek
-	--Tehd‰‰n lukum‰‰r‰muuttuja Aloittaneet_alvv_sek, joka saa arvon seuraavasti:
+	--Tehd√§√§n lukum√§√§r√§muuttuja Aloittaneet_alvv_sek, joka saa arvon seuraavasti:
 	---JOS  Aineisto= 2.8a-c JA alvv_sek = tilv NIIN Aloittaneet_alvv_sek = lkm
 	--Aloittaneet_alvv_sek_lasna
-	--Tehd‰‰n lukum‰‰r‰muuttuja Aloittaneet_alvv_sek_lasna, joka saa arvon seuraavasti:
+	--Tehd√§√§n lukum√§√§r√§muuttuja Aloittaneet_alvv_sek_lasna, joka saa arvon seuraavasti:
 	---JOS  Aineisto= 2.8a-c JA alvv_sek_lasna = tilv NIIN Aloittaneet_alvv_sek_lasna = lkm
 	--Aloittaneet_alvv_kk
-	--Tehd‰‰n lukum‰‰r‰muuttuja Aloittaneet_alvv_kk, joka saa arvon seuraavasti:
+	--Tehd√§√§n lukum√§√§r√§muuttuja Aloittaneet_alvv_kk, joka saa arvon seuraavasti:
 	---JOS  Aineisto= 2.8a-c JA alvv_kk = tilv NIIN Aloittaneet_alvv_kk= lkm
 	--Aloittaneet_alvv_kk_lasna
-	--Tehd‰‰n lukum‰‰r‰muuttuja Aloittaneet_alvv_kk_lasna, joka saa arvon seuraavasti:
+	--Tehd√§√§n lukum√§√§r√§muuttuja Aloittaneet_alvv_kk_lasna, joka saa arvon seuraavasti:
 	---JOS  Aineisto= 2.8a-c JA alvv_kk_lasna = tilv NIIN Aloittaneet_alvv_kk_lasna= lkm
-	--HUOM! TƒMƒ TARKOITUKSELLA íUUDELLEENí VRT. KOHTA Aloittaneet
+	--HUOM! T√ÑM√Ñ TARKOITUKSELLA ‚ÄôUUDELLEEN‚Äô VRT. KOHTA Aloittaneet
 	--Aloittaneet_alvv_opa
-	--Tehd‰‰n lukum‰‰r‰muuttuja Aloittaneet_alvv_opa, joka saa arvon seuraavasti:
+	--Tehd√§√§n lukum√§√§r√§muuttuja Aloittaneet_alvv_opa, joka saa arvon seuraavasti:
 	---JOS  Aineisto= 2.8a-c JA alvv_opa = tilv NIIN Aloittaneet_alvv_opa = lkm
 	--Aloittaneet_alvv_opa_lasna
-	--Tehd‰‰n lukum‰‰r‰muuttuja Aloittaneet_alvv_opa_lasna, joka saa arvon seuraavasti:
+	--Tehd√§√§n lukum√§√§r√§muuttuja Aloittaneet_alvv_opa_lasna, joka saa arvon seuraavasti:
 	---JOS  Aineisto= 2.8a-c JA alvv_opa_lasna = tilv NIIN Aloittaneet_alvv_opa_lasna= lkm
 	,aloittaneet_kirjoihintulovuosi = CAST(
 	case when alvv=tilv and koulk NOT IN (SELECT DISTINCT koulutusluokitus_avain FROM vipunentk_dw..d_koulutusluokitus where koulutusaste2002_koodi IN ('73','81','82','91'))then lkm end
@@ -319,7 +319,7 @@ when alvv /*kirjoihintulovuosi*/=tilv /*tilastointivuosi*/
 							FROM [VipunenTK_DW].[dbo].[d_koulutusluokitus]
 							where koulutusaste2002_koodi = 73
 							)
-				THEN 18	--L‰‰k‰rien erikoistumiskoulutus
+				THEN 18	--L√§√§k√§rien erikoistumiskoulutus
 			WHEN koulk IN (
 							SELECT distinct [koulutusluokitus_avain]
 							FROM [VipunenTK_DW].[dbo].[d_koulutusluokitus]
@@ -363,7 +363,7 @@ when alvv /*kirjoihintulovuosi*/=tilv /*tilastointivuosi*/
 							FROM [VipunenTK_DW].[dbo].[d_koulutusluokitus]
 							where koulutusaste2002_koodi = 73
 							)
-				THEN '52'	--L‰‰k‰rien erikoistumiskoulutus
+				THEN '52'	--L√§√§k√§rien erikoistumiskoulutus
 			WHEN koulk IN (
 							SELECT distinct [koulutusluokitus_avain]
 							FROM [VipunenTK_DW].[dbo].[d_koulutusluokitus]
