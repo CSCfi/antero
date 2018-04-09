@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <job>
-  <name>master_valos</name>
+  <name>valos_master</name>
     <description/>
     <extended_description/>
     <job_version/>
@@ -62,7 +62,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>112</xloc>
-      <yloc>384</yloc>
+      <yloc>464</yloc>
       </entry>
     <entry>
       <name>load_valos.ktr</name>
@@ -130,17 +130,89 @@
       <xloc>112</xloc>
       <yloc>160</yloc>
       </entry>
+    <entry>
+      <name>FAILURE MAIL</name>
+      <description/>
+      <type>MAIL</type>
+      <server>smtp.csc.fi</server>
+      <port>25</port>
+      <destination>ville.hamalainen&#x40;csc.fi</destination>
+      <destinationCc/>
+      <destinationBCc/>
+      <replyto>ville.hamalainen&#x40;csc.fi</replyto>
+      <replytoname>PDI&#x40;&#x24;&#x7b;VAR_ANTERO&#x7d;</replytoname>
+      <subject>Failure in PDI job&#x3a; &#x24;&#x7b;Internal.Job.Name&#x7d;</subject>
+      <include_date>N</include_date>
+      <contact_person/>
+      <contact_phone/>
+      <comment>Failure in PDI job&#x3a; &#x24;&#x7b;Internal.Job.Name&#x7d;</comment>
+      <include_files>N</include_files>
+      <zip_files>N</zip_files>
+      <zip_name/>
+      <use_auth>N</use_auth>
+      <use_secure_auth>N</use_secure_auth>
+      <auth_user/>
+      <auth_password>Encrypted </auth_password>
+      <only_comment>N</only_comment>
+      <use_HTML>N</use_HTML>
+      <use_Priority>N</use_Priority>
+      <encoding>UTF-8</encoding>
+      <priority>normal</priority>
+      <importance>normal</importance>
+      <sensitivity>normal</sensitivity>
+      <secureconnectiontype>SSL</secureconnectiontype>
+      <replyToAddresses/>
+      <filetypes>      </filetypes>      <embeddedimages>
+      </embeddedimages>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>288</xloc>
+      <yloc>224</yloc>
+      </entry>
+    <entry>
+      <name>Success mail</name>
+      <description/>
+      <type>MAIL</type>
+      <server>smtp.csc.fi</server>
+      <port>25</port>
+      <destination>ville.hamalainen&#x40;csc.fi</destination>
+      <destinationCc/>
+      <destinationBCc/>
+      <replyto>vhamalai&#x40;csc.fi</replyto>
+      <replytoname>PDI&#x40;&#x24;&#x7b;VAR_ANTERO&#x7d;</replytoname>
+      <subject>&#x24;&#x7b;Internal.Job.Name&#x7d; loaded successfully </subject>
+      <include_date>N</include_date>
+      <contact_person/>
+      <contact_phone/>
+      <comment>&#x24;&#x7b;Internal.Job.Name&#x7d; loaded successfully </comment>
+      <include_files>Y</include_files>
+      <zip_files>N</zip_files>
+      <zip_name/>
+      <use_auth>N</use_auth>
+      <use_secure_auth>N</use_secure_auth>
+      <auth_user/>
+      <auth_password>Encrypted </auth_password>
+      <only_comment>N</only_comment>
+      <use_HTML>N</use_HTML>
+      <use_Priority>N</use_Priority>
+      <encoding>UTF-8</encoding>
+      <priority>normal</priority>
+      <importance>normal</importance>
+      <sensitivity>normal</sensitivity>
+      <secureconnectiontype>SSL</secureconnectiontype>
+      <replyToAddresses/>
+      <filetypes>        <filetype>GENERAL</filetype>
+      </filetypes>      <embeddedimages>
+      </embeddedimages>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>112</xloc>
+      <yloc>368</yloc>
+      </entry>
   </entries>
   <hops>
-    <hop>
-      <from>load_valos.ktr</from>
-      <to>Success</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
-    </hop>
     <hop>
       <from>START</from>
       <to>set_environment</to>
@@ -153,6 +225,42 @@
     <hop>
       <from>set_environment</from>
       <to>load_valos.ktr</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>set_environment</from>
+      <to>FAILURE MAIL</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>load_valos.ktr</from>
+      <to>FAILURE MAIL</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>load_valos.ktr</from>
+      <to>Success mail</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Success mail</from>
+      <to>Success</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
