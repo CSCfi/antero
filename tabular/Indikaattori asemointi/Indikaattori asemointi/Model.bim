@@ -272,6 +272,7 @@
           {
             "name": "Oppilaitos",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "Oppilaitos",
             "displayFolder": "Organisaatiomuuttujat"
           },
@@ -2591,7 +2592,7 @@
               "var jako= DIVIDE(tutkinnot,tut_okmOA)",
               "var jako2=DIVIDE(tutkinnot,tut_2)",
               "",
-              "var Ohenk=CALCULATE(SUM(calc_amk_htv[calc_amk_TKI_htv]),FILTER(VALUES(calc_amk_htv[Tilastovuosi]),calc_amk_htv[Tilastovuosi]=2017))",
+              "var Ohenk=CALCULATE(SUM(calc_amk_htv[calc_amk_TKI_htv 2017]))",
               "",
               "var os=Ohenk*jako",
               "var os2=Ohenk*jako2",
@@ -2612,7 +2613,7 @@
               "var jako= DIVIDE(tutkinnot,tut_okmOA)",
               "var jako2=DIVIDE(tutkinnot,tut_2)",
               "",
-              "var Ohenk=CALCULATE(SUM(calc_amk_htv[calc_amk_opetus_htv]),FILTER(VALUES(calc_amk_htv[Tilastovuosi]),calc_amk_htv[Tilastovuosi]=2017))",
+              "var Ohenk=CALCULATE(SUM(calc_amk_htv[calc_amk_opetus_htv_207]))",
               "",
               "var os=Ohenk*jako",
               "var os2=Ohenk*jako2",
@@ -2927,7 +2928,7 @@
               "var jako= DIVIDE(tutkinnot,tut_okmOA)",
               "var jako2=DIVIDE(tutkinnot,tut_2)",
               "",
-              "var Ohenk=CALCULATE(SUM(calc_amk_htv[calc_amk_opetus_htv]),FILTER(VALUES(calc_amk_htv[Tilastovuosi]),calc_amk_htv[Tilastovuosi]=2016))",
+              "var Ohenk=CALCULATE(SUM(calc_amk_htv[calc_amk_opetus_htv_2016]))",
               "",
               "var os=Ohenk*jako",
               "var os2=Ohenk*jako2",
@@ -2948,7 +2949,7 @@
               "var jako= DIVIDE(tutkinnot,tut_okmOA)",
               "var jako2=DIVIDE(tutkinnot,tut_2)",
               "",
-              "var Ohenk=CALCULATE(SUM(calc_amk_htv[calc_amk_TKI_htv]),FILTER(VALUES(calc_amk_htv[Tilastovuosi]),calc_amk_htv[Tilastovuosi]=2016))",
+              "var Ohenk=CALCULATE(SUM(calc_amk_htv[calc_amk_TKI_htv 2016]))",
               "",
               "var os=Ohenk*jako",
               "var os2=Ohenk*jako2",
@@ -4817,27 +4818,35 @@
           },
           {
             "type": "calculatedTableColumn",
-            "name": "Tilastovuosi",
-            "dataType": "int64",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "Muuttujat[Tilastovuosi]"
-          },
-          {
-            "type": "calculatedTableColumn",
-            "name": "calc_amk_opetus_htv",
+            "name": "calc_amk_TKI_htv 2017",
             "dataType": "double",
             "isNameInferred": true,
             "isDataTypeInferred": true,
-            "sourceColumn": "[calc_amk_opetus_htv]"
+            "sourceColumn": "[calc_amk_TKI_htv 2017]"
           },
           {
             "type": "calculatedTableColumn",
-            "name": "calc_amk_TKI_htv",
+            "name": "calc_amk_opetus_htv_207",
             "dataType": "double",
             "isNameInferred": true,
             "isDataTypeInferred": true,
-            "sourceColumn": "[calc_amk_TKI_htv]"
+            "sourceColumn": "[calc_amk_opetus_htv_207]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "calc_amk_TKI_htv 2016",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[calc_amk_TKI_htv 2016]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "calc_amk_opetus_htv_2016",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[calc_amk_opetus_htv_2016]"
           }
         ],
         "partitions": [
@@ -4845,7 +4854,15 @@
             "name": "CalculatedTable 1",
             "source": {
               "type": "calculated",
-              "expression": "SUMMARIZE(FILTER(Muuttujat,Muuttujat[Sektori]=\"Ammattikorkeakoulu\"),Muuttujat[Organisaatio],Muuttujat[Organisaatio_koodi],Muuttujat[Tilastovuosi],\"calc_amk_opetus_htv\",SUM(Muuttujat[Ammattikorkeakoulun TKI-henkilökunta]),\"calc_amk_TKI_htv\",SUM(Muuttujat[Ammattikorkeakoulun opetushenkilökunta]))"
+              "expression": [
+                "SUMMARIZE(FILTER(Muuttujat,Muuttujat[Sektori]=\"Ammattikorkeakoulu\"),Muuttujat[Organisaatio],Muuttujat[Organisaatio_koodi],",
+                "\"calc_amk_TKI_htv 2017\",CALCULATE(SUM(Muuttujat[Ammattikorkeakoulun TKI-henkilökunta]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017)),",
+                "\"calc_amk_opetus_htv_207\",CALCULATE(SUM(Muuttujat[Ammattikorkeakoulun opetushenkilökunta]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017)),",
+                "\"calc_amk_TKI_htv 2016\",CALCULATE(SUM(Muuttujat[Ammattikorkeakoulun TKI-henkilökunta]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016)),",
+                "\"calc_amk_opetus_htv_2016\",CALCULATE(SUM(Muuttujat[Ammattikorkeakoulun opetushenkilökunta]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016))",
+                "",
+                ")"
+              ]
             }
           }
         ]
@@ -4857,6 +4874,14 @@
         "fromTable": "Muuttujat",
         "fromColumn": "Organisaatio_koodi",
         "toTable": "calc_amk_julk",
+        "toColumn": "Organisaatio_koodi",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "1bc7ff5c-7cbd-4731-b3b2-5315d1248f3a",
+        "fromTable": "Muuttujat",
+        "fromColumn": "Organisaatio_koodi",
+        "toTable": "calc_amk_htv",
         "toColumn": "Organisaatio_koodi",
         "crossFilteringBehavior": "bothDirections"
       }
