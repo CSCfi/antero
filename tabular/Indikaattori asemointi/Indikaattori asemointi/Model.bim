@@ -554,6 +554,14 @@
             "dataType": "string",
             "sourceColumn": "Koulutusnimike",
             "displayFolder": "Koulutusmuuttujat"
+          },
+          {
+            "type": "calculated",
+            "name": "org_päätieteenala",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "expression": "IF(ISBLANK(Muuttujat[Päätieteenala]),BLANK(),Muuttujat[Organisaatio_koodi]&\"_\"&Muuttujat[Päätieteenala])"
           }
         ],
         "partitions": [
@@ -2703,7 +2711,6 @@
           {
             "name": "AMK_julkaisut (A-E) 2015-2017",
             "expression": "CALCULATE(SUM([AMK Julkaisut (A-E)]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
-            "isHidden": true,
             "displayFolder": "Julkaisut\\Rakenteellinen kehittäminen"
           },
           {
@@ -2746,7 +2753,7 @@
               "var eka=CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]),CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
               "",
               "",
-              "var toka=CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]), CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Oppilaitos]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
+              "var toka=CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]), CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Oppilaitos]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017),FILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
               "",
               "var jako=CALCULATE(DIVIDE(eka,toka))",
               "",
@@ -2913,7 +2920,6 @@
           {
             "name": "AMK_julkaisut (A-E) 2014-2016",
             "expression": "CALCULATE(SUM([AMK Julkaisut (A-E)]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
-            "isHidden": true,
             "displayFolder": "Julkaisut\\Rakenteellinen kehittäminen"
           },
           {
@@ -3017,7 +3023,7 @@
               "var eka=CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]),CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
               "",
               "",
-              "var toka=CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]), CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Oppilaitos]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
+              "var toka=CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]), CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Oppilaitos]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),FILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
               "",
               "var jako=CALCULATE(DIVIDE(eka,toka))",
               "",
@@ -3043,6 +3049,7 @@
               "",
               "var os=julk*jako",
               "var os2=julk*jako2",
+              "",
               "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),os2,os)",
               ""
             ],
@@ -3068,6 +3075,35 @@
               ""
             ],
             "displayFolder": "Julkaisut\\Rakenteellinen kehittäminen"
+          },
+          {
+            "name": "eka",
+            "expression": [
+              "CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]),CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
+              ""
+            ],
+            "isHidden": true
+          },
+          {
+            "name": "toka",
+            "expression": [
+              "CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]), CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Oppilaitos]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017),FILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
+              ""
+            ],
+            "isHidden": true
+          },
+          {
+            "name": "kokeilu_suht",
+            "expression": [
+              "",
+              "",
+              "var jako1=DIVIDE([calc jufo av_eka],[toka])",
+              "var jako2=DIVIDE([eka],[toka])",
+              "var jako3=CALCULATE(MIN(Muuttujat[tutkinnot])*jako1,USERELATIONSHIP(Muuttujat[org_päätieteenala],Tieteenala_Koulutusnimikkeet[Org_päätieteenala]))",
+              "",
+              "return SWITCH(HASONEVALUE(Muuttujat[Koulutusnimike]),TRUE(),jako3,FALSE(),IF(HASONEVALUE(Muuttujat[Organisaatio]),jako2,jako1))"
+            ],
+            "isHidden": true
           }
         ],
         "annotations": [
@@ -4867,6 +4903,75 @@
             }
           }
         ]
+      },
+      {
+        "name": "Tieteenala_Koulutusnimikkeet",
+        "isHidden": true,
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "Organisaatio",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Organisaatio]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Organisaatio_koodi",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Organisaatio_koodi]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Päätieteenala",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Päätieteenala]"
+          },
+          {
+            "type": "calculated",
+            "name": "Org_päätieteenala",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": "Tieteenala_Koulutusnimikkeet[Organisaatio_koodi]&\"_\"&Tieteenala_Koulutusnimikkeet[Päätieteenala]"
+          },
+          {
+            "type": "calculated",
+            "name": "calc_jufo",
+            "dataType": "double",
+            "isDataTypeInferred": true,
+            "expression": [
+              "divide(CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]),CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017)),",
+              "CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]), CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),ALL(Muuttujat[Organisaatio]),ALL(Tieteenala_Koulutusnimikkeet[Organisaatio])))"
+            ]
+          },
+          {
+            "type": "calculated",
+            "name": "calc_jufo_eka",
+            "dataType": "double",
+            "isDataTypeInferred": true,
+            "expression": "CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]),CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))"
+          },
+          {
+            "type": "calculated",
+            "name": "calc_jufo_toka",
+            "dataType": "int64",
+            "isDataTypeInferred": true
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": "CALCULATETABLE(SUMMARIZE(Muuttujat,Muuttujat[Organisaatio],Muuttujat[Organisaatio_koodi],Muuttujat[Päätieteenala]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017),NOT(ISBLANK(Muuttujat[Päätieteenala])),Muuttujat[Sektori]=\"Yliopisto\",ALL(Muuttujat[Organisaatio]))"
+            }
+          }
+        ]
       }
     ],
     "relationships": [
@@ -4884,6 +4989,14 @@
         "fromColumn": "Organisaatio_koodi",
         "toTable": "calc_amk_htv",
         "toColumn": "Organisaatio_koodi",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "3588509c-b7bd-4e28-83d6-453bb455295d",
+        "fromTable": "Muuttujat",
+        "fromColumn": "org_päätieteenala",
+        "toTable": "Tieteenala_Koulutusnimikkeet",
+        "toColumn": "Org_päätieteenala",
         "crossFilteringBehavior": "bothDirections"
       }
     ],
