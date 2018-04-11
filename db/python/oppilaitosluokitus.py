@@ -27,7 +27,7 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
   row = makerow()
   # setup dboperator so other calls work
   dboperator.columns(row,debug)
-  
+
   if verbose: print strftime("%Y-%m-%d %H:%M:%S", localtime())+" empty %s.%s"%(schema,table)
   dboperator.empty(schema,table,debug)
 
@@ -38,7 +38,7 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
   else:
     httpconn = httplib.HTTPConnection(hostname)
     print strftime("%Y-%m-%d %H:%M:%S", localtime())+" load from "+hostname+url
-  
+
   links = [
       "/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?organisaatiotyyppi=Koulutustoimija&aktiiviset=true&suunnitellut=true&lakkautetut=false",
       "/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?organisaatiotyyppi=Koulutustoimija&aktiiviset=false&suunnitellut=false&lakkautetut=true"
@@ -52,7 +52,7 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
     for i in j["organisaatiot"]:
       # make "row" (clear values)
       row = makerow()
-      
+
       row["jarjestajaoid"] = i["oid"]
       row["jarjestajakoodi"] = None if "ytunnus" not in i else i["ytunnus"] # may be None
       row["jarjestajanimi"] = None if "fi" not in i["nimi"] else i["nimi"]["fi"]
@@ -70,7 +70,7 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
           row["nimi_en"] = None if "en" not in o["nimi"] else o["nimi"]["en"]
           row["alkupvm"] = "1900-1-1" if "alkuPvm" not in o or o["alkuPvm"]<0 else strftime("%Y-%m-%d",localtime(o["alkuPvm"]/1000))
           row["loppupvm"] = None if "lakkautusPvm" not in o else strftime("%Y-%m-%d",localtime(o["lakkautusPvm"]/1000))
-          
+
           row["kuntakoodi"] = o["kotipaikkaUri"].replace("kunta_","")
           # => text values separately
           row["oppilaitostyyppikoodi"] = o["oppilaitostyyppi"].replace("oppilaitostyyppi_","").replace("#1","")
@@ -92,7 +92,7 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
             row["postitoimipaikka"] = jj["postiosoite"]["postitoimipaikka"]
           # todo get coordinates (see geocoding.py)
 
-  
+
           if verbose: print strftime("%Y-%m-%d %H:%M:%S", localtime())+" %d -- %s"%(cnt,row["koodi"])
           dboperator.insert(hostname+url,schema,table,row,debug)
 
@@ -105,7 +105,7 @@ def usage():
 usage: oppilaitosluokitus.py [-s|--secure] [-H|--hostname <hostname>] [-u|--url <url>] [-e|--schema <schema>] [-t|--table <table>] -c|--codeset <codeset> [-v|--verbose] [-d|--debug]
 
 secure defaults to being secure (HTTPS) (so no point in using this argument at all)
-hostname defaults to $OPINTOPOLKU then to "testi.virkailija.opintopolku.fi"
+hostname defaults to $OPINTOPOLKU then to "virkailija.testiopintopolku.fi"
 url not used
 schema defaults to $SCHEMA then to "" (for database default if set)
 table defaults to $TABLE then to "sa_oppilaitosluokitus"
@@ -115,13 +115,13 @@ codeset not used
 def main(argv):
   # variables from arguments with possible defaults
   secure = True # default secure, so always secure!
-  hostname = os.getenv("OPINTOPOLKU") or "testi.virkailija.opintopolku.fi"
+  hostname = os.getenv("OPINTOPOLKU") or "virkailija.testiopintopolku.fi"
   url = "N/A" # nb argument not used!
   schema = os.getenv("SCHEMA") or ""
   table = os.getenv("TABLE") or "sa_oppilaitosluokitus"
   codeset = "N/A" # nb argument not used!
   verbose,debug = False,False
-  
+
   try:
     opts, args = getopt.getopt(argv,"sH:u:e:t:c:vd",["secure","hostname=","url=","schema=","table=","codeset=","verbose","debug"])
   except getopt.GetoptError as err:

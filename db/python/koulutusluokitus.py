@@ -169,7 +169,7 @@ def usage():
 usage: koulutusluokitus.py [-s|--secure] [-H|--hostname <hostname>] [-u|--url <url>] [-e|--schema <schema>] [-t|--table <table>] -c|--codeset <codeset> [-v|--verbose] [-d|--debug]
 
 secure defaults to being secure (HTTPS) (so no point in using this argument at all)
-hostname defaults to "testi.virkailija.opintopolku.fi"
+hostname defaults to "virkailija.testiopintopolku.fi"
 url defaults to "/koodisto-service/rest/json/%s/koodi" (do notice the %s in middle which is a placeholder for codeset argument)
 schema defaults to $SCHEMA then to "" (for database default if set)
 table defaults to $TABLE then to "sa_koulutusluokitus"

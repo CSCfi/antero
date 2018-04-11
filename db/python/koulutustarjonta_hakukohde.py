@@ -158,7 +158,7 @@ def usage():
   print """
 usage: koulutustarjonta_hakukohde.py [-H|--hostname <hostname>] [-u|--url <url>] [-e|--schema <schema>] [-t|--table <table>] [-v|--verbose] [-d|--debug]
 
-hostname defaults to "testi.virkailija.opintopolku.fi"
+hostname defaults to "virkailija.testiopintopolku.fi"
 url defaults to "/tarjonta-service/rest/v1/haku/findAll"
 schema defaults to $SCHEMA then to "sa"
 table defaults to $TABLE then to "koulutustarjonta_haku"
@@ -166,7 +166,7 @@ table defaults to $TABLE then to "koulutustarjonta_haku"
 
 def main(argv):
   # variables from arguments with possible defaults
-  hostname = os.getenv("OPINTOPOLKU") or "testi.virkailija.opintopolku.fi"
+  hostname = os.getenv("OPINTOPOLKU") or "virkailija.testiopintopolku.fi"
   url = "/tarjonta-service/rest/v1/hakukohde"
   schema = os.getenv("SCHEMA") or "sa"
   table = os.getenv("TABLE") or "koulutustarjonta_hakukohde"

@@ -85,7 +85,7 @@ def usage():
 usage: tieteenalaluokitus.py [-s|--secure] [-H|--hostname <hostname>] [-u|--url <url>] [-e|--schema <schema>] [-t|--table <table>] -c|--codeset <codeset> [-v|--verbose] [-d|--debug]
 
 secure defaults to being secure (HTTPS) (so no point in using this argument at all)
-hostname defaults to $OPINTOPOLKU then to "testi.virkailija.opintopolku.fi"
+hostname defaults to $OPINTOPOLKU then to "virkailija.testiopintopolku.fi"
 url defaults to "/koodisto-service/rest/json/%s/koodi" (do notice the %s in middle which is a placeholder for codeset argument)
 schema defaults to $SCHEMA then to "" (for database default if set)
 table defaults to $TABLE then to "sa_tieteenalaluokitus"
@@ -95,7 +95,7 @@ codeset defaults to "tieteenala" (probably not going to change -- ever)
 def main(argv):
   # variables from arguments with possible defaults
   secure = True # default secure, so always secure!
-  hostname = os.getenv("OPINTOPOLKU") or "testi.virkailija.opintopolku.fi"
+  hostname = os.getenv("OPINTOPOLKU") or "virkailija.testiopintopolku.fi"
   url = "/koodisto-service/rest/json/%s/koodi" # nb %s
   schema = os.getenv("SCHEMA") or ""
   table = os.getenv("TABLE") or "sa_tieteenalaluokitus"

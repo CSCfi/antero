@@ -41,7 +41,7 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
 
   row = makerow()
   dboperator.columns(row,debug)
-  
+
   if verbose: print strftime("%Y-%m-%d %H:%M:%S", localtime())+" empty %s.%s"%(schema,table)
   dboperator.empty(schema,table,debug)
 
@@ -128,7 +128,7 @@ def usage():
 usage: alueluokitus.py [-s|--secure] [-H|--hostname <hostname>] [-u|--url <url>] [-e|--schema <schema>] [-t|--table <table>] -c|--codeset <codeset> [-v|--verbose] [-d|--debug]
 
 secure defaults to being secure (HTTPS) (so no point in using this argument at all)
-hostname defaults to $OPINTOPOLKU then to "testi.virkailija.opintopolku.fi"
+hostname defaults to $OPINTOPOLKU then to "virkailija.testiopintopolku.fi"
 url defaults to "/koodisto-service/rest/json/%s/koodi" (do notice the %s in middle which is a placeholder for codeset argument)
 schema defaults to $SCHEMA then to "" (for database default if set)
 table defaults to $TABLE then to "sa_alueluokitus"
@@ -138,13 +138,13 @@ codeset defaults to "kunta" (probably not going to change -- ever)
 def main(argv):
   # variables from arguments with possible defaults
   secure = True # default secure, so always secure!
-  hostname = os.getenv("OPINTOPOLKU") or "testi.virkailija.opintopolku.fi"
+  hostname = os.getenv("OPINTOPOLKU") or "virkailija.testiopintopolku.fi"
   url = "/koodisto-service/rest/json/%s/koodi" # nb %s
   schema = os.getenv("SCHEMA") or ""
   table = os.getenv("TABLE") or "sa_alueluokitus"
   codeset = "kunta"
   verbose,debug = False,False
-  
+
   try:
     opts, args = getopt.getopt(argv,"sH:u:e:t:c:vd",["secure","hostname=","url=","schema=","table=","codeset=","verbose","debug"])
   except getopt.GetoptError as err:

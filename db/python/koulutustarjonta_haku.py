@@ -75,7 +75,7 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
 
   row = makerow()
   dboperator.columns(row,debug)
-  
+
   if verbose: show("empty %s.%s"%(schema,table))
   dboperator.empty(schema,table,debug)
 
@@ -117,7 +117,7 @@ def usage():
   print """
 usage: koulutustarjonta_haku.py [-H|--hostname <hostname>] [-u|--url <url>] [-e|--schema <schema>] [-t|--table <table>] [-v|--verbose] [-d|--debug]
 
-hostname defaults to "testi.virkailija.opintopolku.fi"
+hostname defaults to "virkailija.testiopintopolku.fi"
 url defaults to "/tarjonta-service/rest/v1/haku/findAll"
 schema defaults to $SCHEMA then to "sa"
 table defaults to $TABLE then to "koulutustarjonta_haku"
@@ -125,12 +125,12 @@ table defaults to $TABLE then to "koulutustarjonta_haku"
 
 def main(argv):
   # variables from arguments with possible defaults
-  hostname = os.getenv("OPINTOPOLKU") or "testi.virkailija.opintopolku.fi"
+  hostname = os.getenv("OPINTOPOLKU") or "virkailija.testiopintopolku.fi"
   url = "/tarjonta-service/rest/v1/haku/findAll"
   schema = os.getenv("SCHEMA") or "sa"
   table = os.getenv("TABLE") or "koulutustarjonta_haku"
   verbose,debug = False,False
-  
+
   try:
     opts, args = getopt.getopt(argv,"H:u:e:t:c:vd",["hostname=","url=","schema=","table=","verbose","debug"])
   except getopt.GetoptError as err:

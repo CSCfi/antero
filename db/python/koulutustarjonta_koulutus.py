@@ -138,7 +138,11 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
       except ValueError, e:
         show("-- %d -- could not load %s"%(cnt,ii["oid"]))
       else:
-        i = j["result"]
+        # some results may give KeyError
+        try:
+          i = j["result"]
+        except KeyError, details:
+          show("-- %d -- could not load result for %s"%(cnt,ii["oid"]))
         row = makerow()
 
         for col in row:
@@ -192,7 +196,7 @@ table defaults to $TABLE then to "koulutustarjonta_koulutus"
 
 def main(argv):
   # variables from arguments with possible defaults
-  hostname = os.getenv("OPINTOPOLKU") or "testi.virkailija.opintopolku.fi"
+  hostname = os.getenv("OPINTOPOLKU") or "virkailija.testiopintopolku.fi"
   url = "/tarjonta-service/rest/v1/koulutus/search"
   schema = os.getenv("SCHEMA") or "sa"
   table = os.getenv("TABLE") or "koulutustarjonta_koulutus"
