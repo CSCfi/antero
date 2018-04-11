@@ -1,4 +1,5 @@
 
+
 alter view [dw].[v_indikaattori_asemointi] as
 /****** Korkeakoulututkinnot ******/
 SELECT
