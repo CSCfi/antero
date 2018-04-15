@@ -64,8 +64,6 @@ SELECT [id]
   FROM [VipunenTK_lisatiedot].[dbo].[v_tarkastelujakso]
   WHERE virhetilanne = 'K'
 
-
 GO
-
 
 USE [ANTERO]
