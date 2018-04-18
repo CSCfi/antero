@@ -578,26 +578,31 @@
             "name": "org_TA-avain",
             "dataType": "string",
             "isDataTypeInferred": true,
+            "isHidden": true,
             "expression": "Muuttujat[Koodit organisaatio]&\"_\"&Muuttujat[Tieteenala_avain]"
           },
           {
             "name": "Työlliset 3v (ver2 10,13)",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "Työlliset 3v (ver2 10,13)"
           },
           {
             "name": "Työttömät 3v (ver2, 12)",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "Työttömät 3v (ver2, 12)"
           },
           {
             "name": "Organisaatio 1",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "Organisaatio"
           },
           {
             "name": "Koodit organisaatio",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "Koodit organisaatio"
           },
           {
@@ -2795,6 +2800,7 @@
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
+            "isHidden": true,
             "displayFolder": "Talous\\Rakenteellinen kehittäminen"
           },
           {
@@ -2813,6 +2819,7 @@
               "return DIVIDE(kk,kaikki)"
             ],
             "formatString": "0.00 %;-0.00 %;0.00 %",
+            "isHidden": true,
             "displayFolder": "Henkilöstö\\Rakenteellinen kehittäminen"
           },
           {
@@ -3200,6 +3207,7 @@
               ""
             ],
             "formatString": "0.00 %;-0.00 %;0.00 %",
+            "isHidden": true,
             "displayFolder": "Henkilöstö\\Rakenteellinen kehittäminen"
           },
           {
@@ -3211,6 +3219,7 @@
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
+            "isHidden": true,
             "displayFolder": "Talous\\Rakenteellinen kehittäminen"
           },
           {
@@ -3282,7 +3291,8 @@
               "CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]),CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))",
               ""
             ],
-            "formatString": "0.00"
+            "formatString": "0.00",
+            "isHidden": true
           },
           {
             "name": "toka",
@@ -3295,7 +3305,8 @@
               "ALL(Muuttujat[Organisaatio]),FILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"),",
               "NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))"
             ],
-            "formatString": "0.00"
+            "formatString": "0.00",
+            "isHidden": true
           },
           {
             "name": "Vetovoima 2016 (Ylempi kk-tutkinto)",
@@ -3337,8 +3348,8 @@
             "expression": [
               "",
               "var tut=CALCULATE(MIN(Muuttujat[tutkinnot]),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
-              "var eka=AVERAGE('Org_TA jufo'[juf])",
-              "var toka=AVERAGE('Tieteenala jufo'[juf2])",
+              "var eka=AVERAGE('Org_TA jufo'[eka_juf15-17])",
+              "var toka=AVERAGE('Tieteenala jufo'[toka_juf15-17])",
               "",
               "var jako=DIVIDE(eka,toka)",
               "",
@@ -3347,13 +3358,13 @@
             "formatString": "0.00"
           },
           {
-            "name": "eka2_calc",
-            "expression": "AVERAGE('Org_TA jufo'[juf])",
+            "name": "eka2_calc_15-17",
+            "expression": "AVERAGE('Org_TA jufo'[eka_juf15-17])",
             "formatString": "0.00"
           },
           {
-            "name": "toka2_calc",
-            "expression": "AVERAGE('Tieteenala jufo'[juf2])",
+            "name": "toka2_calc:14-16",
+            "expression": "AVERAGE('Tieteenala jufo'[toka_juf14-16])",
             "formatString": "0.00"
           },
           {
@@ -3372,11 +3383,12 @@
               " ",
               "var tut=SUM(Org_tohtorit[Tohtorit calc])",
               "var tut2=CALCULATE(MIN(Muuttujat[tutkinnot]),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Tohtorintutkinto\"))",
+              "var tut3=CALCULATE(MIN(Muuttujat[tutkinnot]),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
               "var vuosia= CALCULATE(DISTINCTCOUNT(Muuttujat[Tilastovuosi]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
               "",
               "var jako=DIVIDE(tut,3)",
               "",
-              "return tut2*jako",
+              "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),tut3*jako,jako)",
               ""
             ],
             "formatString": "0.00",
@@ -3385,6 +3397,98 @@
           {
             "name": "dc juf",
             "expression": "CALCULATE(DISTINCTCOUNT([JulkaisuID]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))"
+          },
+          {
+            "name": "IV portaan HTV osuus 2017 (tieteenala)",
+            "expression": [
+              "",
+              "var kaikki=CALCULATE(SUM(TA_IV[IV 2017 calc]))",
+              "var kk=CALCULATE(SUM(Org_IV[IV 2017 calc]))",
+              "var tut=CALCULATE(MIN(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\")",
+              "",
+              "var jako=DIVIDE(kk,kaikki)",
+              "",
+              "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),CALCULATE(jako*tut),jako)",
+              ""
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "Henkilöstö\\Rakenteellinen kehittäminen"
+          },
+          {
+            "name": "IV portaan HTV osuus 2016 (tieteenala)",
+            "expression": [
+              "",
+              "var kaikki=CALCULATE(SUM(TA_IV[IV 2016 calc]))",
+              "var kk=CALCULATE(SUM(Org_IV[IV 2016 calc]))",
+              "var tut=CALCULATE(MIN(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\")",
+              "",
+              "var jako=DIVIDE(kk,kaikki)",
+              "",
+              "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),CALCULATE(jako*tut),jako)",
+              ""
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "Henkilöstö\\Rakenteellinen kehittäminen"
+          },
+          {
+            "name": "Osuus kilpaillusta tutkimusrahoituksesta 2016 (Tieteenala, SA,TEKES, EU-puite)",
+            "expression": [
+              "",
+              "var kk= SUM(Org_kilprah[kilp_rah 2016 calc])",
+              "var kaik=SUM(TA_kilprah[kilp_rah 2016 calc])",
+              "var tut=CALCULATE(MIN(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\")",
+              "",
+              "var jako=DIVIDE(kk,kaik)",
+              "",
+              "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),CALCULATE(jako*tut),jako)"
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "Talous\\Rakenteellinen kehittäminen"
+          },
+          {
+            "name": "Osuus kilpaillusta tutkimusrahoituksesta 2017 (Tieteenala, SA,TEKES, EU-puite)",
+            "expression": [
+              "",
+              "var kk= SUM(Org_kilprah[kilp_rah 2017 calc])",
+              "var kaik=SUM(TA_kilprah[kilp_rah 2017 calc])",
+              "var tut=CALCULATE(MIN(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\")",
+              "",
+              "var jako=DIVIDE(kk,kaik)",
+              "",
+              "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),CALCULATE(jako*tut),jako)",
+              ""
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "Talous\\Rakenteellinen kehittäminen"
+          },
+          {
+            "name": "eka_laskentaan(jufo)",
+            "expression": [
+              "CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]),CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))",
+              ""
+            ]
+          },
+          {
+            "name": "toka_laskentaan (jufo)",
+            "expression": [
+              "CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]), \t\t",
+              "\tCALCULATE(AVERAGE(Muuttujat[Jufotaso]),",
+              "\tNOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])),",
+              "\tALLSELECTED(Muuttujat[Tilastovuosi]))),",
+              "ALL(Muuttujat[Organisaatio]),FILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"),",
+              "NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))",
+              ""
+            ]
+          },
+          {
+            "name": "eka2_calc_14-16",
+            "expression": "AVERAGE('Org_TA jufo'[eka_juf14-16])",
+            "formatString": "0.00"
+          },
+          {
+            "name": "toka2_calc:15-17",
+            "expression": "AVERAGE('Tieteenala jufo'[toka_juf15-17])",
+            "formatString": "0.00"
           }
         ],
         "annotations": [
@@ -5302,19 +5406,27 @@
           },
           {
             "type": "calculatedTableColumn",
-            "name": "juf",
-            "dataType": "double",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "[juf]"
-          },
-          {
-            "type": "calculatedTableColumn",
             "name": "Organisaatio koodi",
             "dataType": "string",
             "isNameInferred": true,
             "isDataTypeInferred": true,
             "sourceColumn": "Muuttujat[Organisaatio koodi]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "eka_juf15-17",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[eka_juf15-17]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "eka_juf14-16",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[eka_juf14-16]"
           }
         ],
         "partitions": [
@@ -5324,11 +5436,9 @@
               "type": "calculated",
               "expression": [
                 "CALCULATETABLE(",
-                "\tSUMMARIZE(Muuttujat,Muuttujat[Organisaatio koodi],Muuttujat[Tieteenala_avain],\"juf\",",
-                "\t\tCALCULATE(AVERAGE(Muuttujat[Jufotaso]),",
-                "\t\tNOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])),",
-                "\t\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),",
-                "\t\tDISTINCT(Muuttujat[JulkaisuID]))),",
+                "\tSUMMARIZE(Muuttujat,Muuttujat[Organisaatio koodi],Muuttujat[Tieteenala_avain],",
+                "\t\"eka_juf15-17\",CALCULATE(Muuttujat[eka_laskentaan(jufo)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018)),",
+                "\t\"eka_juf14-16\",CALCULATE(Muuttujat[eka_laskentaan(jufo)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))),",
                 "\tNOT(ISBLANK(Muuttujat[Tieteenala_avain])),",
                 "\tMuuttujat[Sektori]=\"Yliopisto\",",
                 "\tALL(Muuttujat[Organisaatio]),",
@@ -5352,11 +5462,19 @@
           },
           {
             "type": "calculatedTableColumn",
-            "name": "juf2",
+            "name": "toka_juf15-17",
             "dataType": "double",
             "isNameInferred": true,
             "isDataTypeInferred": true,
-            "sourceColumn": "[juf2]"
+            "sourceColumn": "[toka_juf15-17]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "toka_juf14-16",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[toka_juf14-16]"
           }
         ],
         "partitions": [
@@ -5366,14 +5484,12 @@
               "type": "calculated",
               "expression": [
                 "CALCULATETABLE(",
-                "\tSUMMARIZE(Muuttujat,Muuttujat[Tieteenala_avain],\"juf2\", \t",
-                "\tCALCULATE(AVERAGE(Muuttujat[Jufotaso]),",
-                "\t\tNOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])),",
-                "\t\tVALUES(Muuttujat[JulkaisuID]),",
-                "\t\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018)",
-                "\t\t)),",
-                "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2016),",
+                "\tSUMMARIZE(Muuttujat,Muuttujat[Tieteenala_avain],",
+                "\t\"toka_juf15-17\",CALCULATE(Muuttujat[toka_laskentaan (jufo)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018)),",
+                "\t\"toka_juf14-16\",CALCULATE(Muuttujat[toka_laskentaan (jufo)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))),",
                 "\tNOT(ISBLANK(Muuttujat[Tieteenala_avain])),",
+                "\tMuuttujat[Sektori]=\"Yliopisto\",",
+                "\tALL(Muuttujat[Organisaatio]),",
                 "\tNOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))",
                 ""
               ]
@@ -5431,15 +5547,47 @@
         ]
       },
       {
-        "name": "CalculatedTable 1",
+        "name": "Org_IV",
+        "isHidden": true,
         "columns": [
           {
             "type": "calculatedTableColumn",
-            "name": "Koodit organisaatio",
+            "name": "IV 2016 calc",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[IV 2016 calc]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "IV 2017 calc",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[IV 2017 calc]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Organisaatio koodi",
             "dataType": "string",
             "isNameInferred": true,
             "isDataTypeInferred": true,
-            "sourceColumn": "Muuttujat[Koodit organisaatio]"
+            "sourceColumn": "Muuttujat[Organisaatio koodi]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Tieteenala_avain",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Tieteenala_avain]"
+          },
+          {
+            "type": "calculated",
+            "name": "Org_TA-avain",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": "Org_IV[Organisaatio koodi]&\"_\"&Org_IV[Tieteenala_avain]"
           }
         ],
         "partitions": [
@@ -5447,7 +5595,164 @@
             "name": "CalculatedTable 1",
             "source": {
               "type": "calculated",
-              "expression": "CALCULATETABLE(SUMMARIZE(Muuttujat,Muuttujat[Koodit organisaatio]))"
+              "expression": "CALCULATETABLE(SUMMARIZE(Muuttujat,Muuttujat[Organisaatio koodi],Muuttujat[Tieteenala_avain],\"IV 2016 calc\",[IV portaan HTV 2016],\"IV 2017 calc\",[IV portaan HTV 2017]),Muuttujat[Sektori]=\"Yliopisto\",NOT(ISBLANK(Muuttujat[IV tutkijanuraportaan henkilötyövuodet])),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2015&&Muuttujat[Tilastovuosi]<2018))"
+            }
+          }
+        ]
+      },
+      {
+        "name": "TA_IV",
+        "isHidden": true,
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "Tieteenala_avain",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Tieteenala_avain]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "IV 2016 calc",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[IV 2016 calc]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "IV 2017 calc",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[IV 2017 calc]"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": [
+                "CALCULATETABLE(SUMMARIZE(Muuttujat,Muuttujat[Tieteenala_avain],\"IV 2016 calc\",[IV portaan HTV 2016],\"IV 2017 calc\",[IV portaan HTV 2017]),",
+                "Muuttujat[Sektori]=\"Yliopisto\",",
+                "NOT(ISBLANK(Muuttujat[IV tutkijanuraportaan henkilötyövuodet])),",
+                "NOT(ISBLANK(Muuttujat[Tieteenala_avain])),",
+                "FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2015&&Muuttujat[Tilastovuosi]<2018))"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Org_kilprah",
+        "isHidden": true,
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "Organisaatio koodi",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Organisaatio koodi]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Tieteenala_avain",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Tieteenala_avain]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "kilp_rah 2017 calc",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[kilp_rah 2017 calc]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "kilp_rah 2016 calc",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[kilp_rah 2016 calc]"
+          },
+          {
+            "type": "calculated",
+            "name": "Org_TA-avain",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": "'Org_kilprah'[Organisaatio koodi]&\"_\"&'Org_kilprah'[Tieteenala_avain]"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": [
+                "CALCULATETABLE(SUMMARIZE(Muuttujat,Muuttujat[Organisaatio koodi],Muuttujat[Tieteenala_avain],",
+                "\t\"kilp_rah 2017 calc\",CALCULATE([Kilpailtu tki-rahoitus (SA,Tekes, EU-puite)],",
+                "\t\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017)),",
+                "\t\"kilp_rah 2016 calc\", CALCULATE([Kilpailtu tki-rahoitus (SA,Tekes, EU-puite)],",
+                "\t\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016))),",
+                "NOT(ISBLANK(Muuttujat[Tieteenala_avain])),",
+                "FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2015&&Muuttujat[Tilastovuosi]<2018),",
+                "Muuttujat[Sektori]=\"Yliopisto\")"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "TA_kilprah",
+        "isHidden": true,
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "Tieteenala_avain",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Tieteenala_avain]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "kilp_rah 2017 calc",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[kilp_rah 2017 calc]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "kilp_rah 2016 calc",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[kilp_rah 2016 calc]"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": [
+                "CALCULATETABLE(SUMMARIZE(Muuttujat,Muuttujat[Tieteenala_avain],",
+                "\t\"kilp_rah 2017 calc\",CALCULATE([Kilpailtu tki-rahoitus (SA,Tekes, EU-puite)],",
+                "\t\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017)),",
+                "\t\"kilp_rah 2016 calc\", CALCULATE([Kilpailtu tki-rahoitus (SA,Tekes, EU-puite)],",
+                "\t\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016))),",
+                "NOT(ISBLANK(Muuttujat[Tieteenala_avain])),",
+                "FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2015&&Muuttujat[Tilastovuosi]<2018),",
+                "Muuttujat[Sektori]=\"Yliopisto\")",
+                ""
+              ]
             }
           }
         ]
@@ -5468,6 +5773,62 @@
         "fromColumn": "org_TA-avain",
         "toTable": "Org_tohtorit",
         "toColumn": "Org_TA-avain",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "5267215e-b208-4ad3-8207-caef574b1c03",
+        "fromTable": "Muuttujat",
+        "fromColumn": "Organisaatio koodi",
+        "toTable": "calc_amk_julk",
+        "toColumn": "Organisaatio koodi",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "333f7567-a5b7-4175-befe-b06b034068ed",
+        "fromTable": "Muuttujat",
+        "fromColumn": "Organisaatio koodi",
+        "toTable": "calc_amk_htv",
+        "toColumn": "Organisaatio koodi",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "fe315a39-5ba8-422b-9443-29cffb177a63",
+        "fromTable": "Muuttujat",
+        "fromColumn": "org_TA-avain",
+        "toTable": "Org_IV",
+        "toColumn": "Org_TA-avain",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "22cab35f-a2d0-49b4-9f54-ba4e4c86b094",
+        "fromTable": "Muuttujat",
+        "fromColumn": "Tieteenala_avain",
+        "toTable": "TA_IV",
+        "toColumn": "Tieteenala_avain",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "77299eb2-02ca-45ec-8e6a-604ff119d3ce",
+        "fromTable": "Muuttujat",
+        "fromColumn": "org_TA-avain",
+        "toTable": "Org_kilprah",
+        "toColumn": "Org_TA-avain",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "e4a69b2a-e508-49f3-b746-8eff932c26e3",
+        "fromTable": "Muuttujat",
+        "fromColumn": "Tieteenala_avain",
+        "toTable": "TA_kilprah",
+        "toColumn": "Tieteenala_avain",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "622721ed-8380-498c-a30e-55e191b53ed1",
+        "fromTable": "Muuttujat",
+        "fromColumn": "org_TA-avain",
+        "toTable": "Org_TA jufo",
+        "toColumn": "org_TA-avain",
         "crossFilteringBehavior": "bothDirections"
       }
     ],
