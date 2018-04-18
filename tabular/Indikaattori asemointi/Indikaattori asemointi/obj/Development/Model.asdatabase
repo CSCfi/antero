@@ -26,6 +26,40 @@
             "value": "SqlServer"
           }
         ]
+      },
+      {
+        "name": "SqlServer DWITVIPUSQL16 VipunenTK",
+        "connectionString": "Provider=SQLNCLI11;Data Source=DWITVIPUSQL16;Initial Catalog=VipunenTK;Integrated Security=SSPI;Persist Security Info=false",
+        "impersonationMode": "impersonateServiceAccount",
+        "annotations": [
+          {
+            "name": "ConnectionEditUISource",
+            "value": "SqlServer"
+          }
+        ]
+      },
+      {
+        "name": "SqlServer dwitvipusql16 VipunenTK_lisatiedot",
+        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=VipunenTK_lisatiedot;Integrated Security=SSPI;Persist Security Info=false",
+        "impersonationMode": "impersonateServiceAccount",
+        "annotations": [
+          {
+            "name": "ConnectionEditUISource",
+            "value": "SqlServer"
+          }
+        ]
+      },
+      {
+        "name": "SqlServer dwitvipusql16 VipunenTK_lisatiedot 2",
+        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=VipunenTK_lisatiedot;Integrated Security=SSPI;Persist Security Info=false",
+        "impersonationMode": "impersonateAccount",
+        "account": "dwi\\jkarin",
+        "annotations": [
+          {
+            "name": "ConnectionEditUISource",
+            "value": "SqlServer"
+          }
+        ]
       }
     ],
     "tables": [
@@ -270,13 +304,6 @@
             "displayFolder": "Aikamuuttujat"
           },
           {
-            "name": "Oppilaitos",
-            "dataType": "string",
-            "isHidden": true,
-            "sourceColumn": "Oppilaitos",
-            "displayFolder": "Organisaatiomuuttujat"
-          },
-          {
             "name": "Sektori",
             "dataType": "string",
             "sourceColumn": "Sektori",
@@ -358,12 +385,6 @@
             "displayFolder": "Koodimuuttujat"
           },
           {
-            "name": "Koodit oppilaitos",
-            "dataType": "string",
-            "sourceColumn": "Koodit oppilaitos",
-            "displayFolder": "Koodimuuttujat"
-          },
-          {
             "name": "Koodit kunta",
             "dataType": "string",
             "sourceColumn": "Koodit kunta",
@@ -399,35 +420,16 @@
             "dataType": "string",
             "isDataTypeInferred": true,
             "expression": [
-              "SWITCH(IF(NOT(ISBLANK([Aloituslukuvuosi (läpäisy)])),Muuttujat[Oppilaitos]),",
+              "SWITCH(IF(NOT(ISBLANK([Aloituslukuvuosi (läpäisy)])),Muuttujat[Organisaatio 1]),",
               "\t\"Sibelius-Akatemia\",\"Taideyliopisto\",",
               "\t\"Teatterikorkeakoulu\",\"Taideyliopisto\",",
               "\t\"Kuvataideakatemia\",\"Taideyliopisto\",",
-              "SWITCH(Muuttujat[Oppilaitos],",
+              "SWITCH(Muuttujat[Organisaatio 1],",
               "\t\"Mikkelin Ammattikorkeakoulu\",\"Kaakkois-Suomen Ammattikorkeakoulu\",",
               "\t\"Kymenlaakson Ammattikorkeakoulu\",\"Kaakkois-Suomen Ammattikorkeakoulu\",",
               "\t\"Kemi-Tornion Ammattikorkeakoulu\",\"Lapin Ammattikorkeakoulu\",",
               "\t\"Rovaniemen Ammattikorkeakoulu\",\"Lapin Ammattikorkeakoulu\",",
-              "\tMuuttujat[Oppilaitos]))"
-            ],
-            "displayFolder": "Organisaatiomuuttujat"
-          },
-          {
-            "type": "calculated",
-            "name": "Organisaatio_koodi",
-            "dataType": "string",
-            "isDataTypeInferred": true,
-            "expression": [
-              "SWITCH(IF(NOT(ISBLANK([Aloituslukuvuosi (läpäisy)])),Muuttujat[Koodit oppilaitos]),",
-              "\t\"01742\",\"10103\",",
-              "\t\"01717\",\"10103\",",
-              "\t\"01740\",\"10103\",",
-              "SWITCH([Koodit oppilaitos],",
-              "\t\"02506\",\"10118\",",
-              "\t\"02608\",\"10118\",",
-              "\t\"02505\",\"10108\",",
-              "\t\"02538\",\"10108\",",
-              "\t[Koodit oppilaitos]))"
+              "\tMuuttujat[Organisaatio 1]))"
             ],
             "displayFolder": "Organisaatiomuuttujat"
           },
@@ -534,8 +536,8 @@
           {
             "name": "JulkaisuID",
             "dataType": "string",
-            "isHidden": true,
-            "sourceColumn": "JulkaisuID"
+            "sourceColumn": "JulkaisuID",
+            "displayFolder": "Koodimuuttujat"
           },
           {
             "name": "Jufotaso",
@@ -561,7 +563,70 @@
             "dataType": "string",
             "isDataTypeInferred": true,
             "isHidden": true,
-            "expression": "IF(ISBLANK(Muuttujat[Päätieteenala]),BLANK(),Muuttujat[Organisaatio_koodi]&\"_\"&Muuttujat[Päätieteenala])"
+            "expression": "IF(ISBLANK(Muuttujat[Päätieteenala]),BLANK(),Muuttujat[Koodit organisaatio]&\"_\"&Muuttujat[Päätieteenala])"
+          },
+          {
+            "name": "Koodit Koulutusnimike",
+            "dataType": "string",
+            "sourceColumn": "Koodit Koulutusnimike",
+            "displayFolder": "Koodimuuttujat"
+          },
+          {
+            "name": "Tieteenala_avain",
+            "dataType": "string",
+            "sourceColumn": "Tieteenala_avain",
+            "displayFolder": "Koodimuuttujat"
+          },
+          {
+            "type": "calculated",
+            "name": "org_TA-avain",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "expression": "Muuttujat[Koodit organisaatio]&\"_\"&Muuttujat[Tieteenala_avain]"
+          },
+          {
+            "name": "Työlliset 3v (ver2 10,13)",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "Työlliset 3v (ver2 10,13)"
+          },
+          {
+            "name": "Työttömät 3v (ver2, 12)",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "Työttömät 3v (ver2, 12)"
+          },
+          {
+            "name": "Organisaatio 1",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "Organisaatio"
+          },
+          {
+            "name": "Koodit organisaatio",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "Koodit organisaatio"
+          },
+          {
+            "type": "calculated",
+            "name": "Organisaatio koodi",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": [
+              "SWITCH(IF(NOT(ISBLANK([Aloituslukuvuosi (läpäisy)])),Muuttujat[Koodit organisaatio]),",
+              "\t\"01742\",\"10103\",",
+              "\t\"01717\",\"10103\",",
+              "\t\"01740\",\"10103\",",
+              "SWITCH([Koodit organisaatio],",
+              "\t\"02506\",\"10118\",",
+              "\t\"02608\",\"10118\",",
+              "\t\"02505\",\"10108\",",
+              "\t\"02538\",\"10108\",",
+              "\t[Koodit organisaatio]))"
+            ],
+            "displayFolder": "Koodimuuttujat"
           }
         ],
         "partitions": [
@@ -587,10 +652,10 @@
                   "  <ColumnWidths>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Oppilaitos</string>",
+                  "        <string>Koodit organisaatio</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>77</int>",
+                  "        <int>122</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -875,10 +940,10 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Koodit oppilaitos</string>",
+                  "        <string>Organisaatio</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>108</int>",
+                  "        <int>91</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1129,14 +1194,46 @@
                   "        <int>100</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koodit Koulutusnimike</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>133</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Työlliset 3v (ver2 10,13)</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>148</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Tieteenala_avain</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>112</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Työttömät 3v (ver2, 12)</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>147</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Oppilaitos</string>",
+                  "        <string>Koodit organisaatio</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>1</int>",
+                  "        <int>71</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1152,7 +1249,7 @@
                   "        <string>jarj. OKM ohjauksen ala</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>40</int>",
+                  "        <int>39</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1160,7 +1257,7 @@
                   "        <string>jarj. koulutusaste, taso 2</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>39</int>",
+                  "        <int>38</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1168,7 +1265,7 @@
                   "        <string>jarj. koulutusaste, taso 1</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>38</int>",
+                  "        <int>37</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1176,7 +1273,7 @@
                   "        <string>Koulutusala, taso 1</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>2</int>",
+                  "        <int>1</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1184,7 +1281,7 @@
                   "        <string>Koulutusala, taso 2</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>3</int>",
+                  "        <int>2</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1192,7 +1289,7 @@
                   "        <string>Koulutusala, taso 3</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>4</int>",
+                  "        <int>3</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1200,7 +1297,7 @@
                   "        <string>Kunta</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>5</int>",
+                  "        <int>4</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1208,7 +1305,7 @@
                   "        <string>Koodit kunta</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>43</int>",
+                  "        <int>41</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1216,7 +1313,7 @@
                   "        <string>tutkinnot</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>6</int>",
+                  "        <int>5</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1224,7 +1321,7 @@
                   "        <string>Yo 7v aloittaneet lkm</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>7</int>",
+                  "        <int>6</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1232,7 +1329,7 @@
                   "        <string>5v_Aloittaneet_lkm</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>8</int>",
+                  "        <int>7</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1240,7 +1337,7 @@
                   "        <string>7v_suorittaneet_lkm</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>9</int>",
+                  "        <int>8</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1248,7 +1345,7 @@
                   "        <string>5v_suorittaneet_lkm</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>10</int>",
+                  "        <int>9</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1256,7 +1353,7 @@
                   "        <string>Sektori</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>29</int>",
+                  "        <int>28</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1264,7 +1361,7 @@
                   "        <string>55op suorittaneet</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>11</int>",
+                  "        <int>10</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1272,7 +1369,7 @@
                   "        <string>1-14op suorittaneet</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>12</int>",
+                  "        <int>11</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1280,7 +1377,7 @@
                   "        <string>Yliopiston opetus- ja tutkimushenkilötyövuodet</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>13</int>",
+                  "        <int>12</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1288,7 +1385,7 @@
                   "        <string>IV tutkijanuraportaan henkilötyövuodet</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>14</int>",
+                  "        <int>13</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1296,7 +1393,7 @@
                   "        <string>Ammattikorkeakoulun opetushenkilökunta</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>46</int>",
+                  "        <int>44</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1304,7 +1401,7 @@
                   "        <string>AMK Julkaisut (A-E)</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>44</int>",
+                  "        <int>42</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1312,7 +1409,7 @@
                   "        <string>YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>15</int>",
+                  "        <int>14</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1320,7 +1417,7 @@
                   "        <string>YO Julkaisut (A1-A4, C1 ja C2) jufotaso 1-3</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>16</int>",
+                  "        <int>15</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1328,7 +1425,7 @@
                   "        <string>YO kansainvälinen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>17</int>",
+                  "        <int>16</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1336,7 +1433,7 @@
                   "        <string>Kilpailtu tutkimusrahoitus</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>18</int>",
+                  "        <int>17</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1344,7 +1441,7 @@
                   "        <string>kv_vaihtoopiskelijat_op_lkm</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>19</int>",
+                  "        <int>18</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1352,7 +1449,7 @@
                   "        <string>ulkom_hyv_luetut_op_lkm</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>20</int>",
+                  "        <int>19</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1360,7 +1457,7 @@
                   "        <string>erilopintooik_op_lkm</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>21</int>",
+                  "        <int>20</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1368,7 +1465,7 @@
                   "        <string>avoinamk_op_amk_lkm</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>22</int>",
+                  "        <int>21</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1376,7 +1473,7 @@
                   "        <string>mamu_op_lkm</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>23</int>",
+                  "        <int>22</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1384,7 +1481,7 @@
                   "        <string>erikoul_suor_op_lkm</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>24</int>",
+                  "        <int>23</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1392,7 +1489,7 @@
                   "        <string>sijoittuminen_1v_tutkinnon_jalkeen</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>25</int>",
+                  "        <int>24</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1400,7 +1497,7 @@
                   "        <string>työlliset 1v tutkinnon jälkeen</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>26</int>",
+                  "        <int>25</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1408,7 +1505,7 @@
                   "        <string>Kandikyselyn pistemäärä</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>27</int>",
+                  "        <int>26</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1416,15 +1513,15 @@
                   "        <string>AVOP-AMK pistemäärä</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>28</int>",
+                  "        <int>27</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Koodit oppilaitos</string>",
+                  "        <string>Organisaatio</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>42</int>",
+                  "        <int>70</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1432,7 +1529,7 @@
                   "        <string>Koodit OKM ohjauksen ala</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>41</int>",
+                  "        <int>40</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1440,7 +1537,7 @@
                   "        <string>Kansalaisuus</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>37</int>",
+                  "        <int>36</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1448,7 +1545,7 @@
                   "        <string>Koulutusaste, taso 2</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>36</int>",
+                  "        <int>35</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1456,7 +1553,7 @@
                   "        <string>Koulutusaste, taso 1</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>35</int>",
+                  "        <int>34</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1464,7 +1561,7 @@
                   "        <string>OKM ohjauksen ala</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>34</int>",
+                  "        <int>33</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1472,7 +1569,7 @@
                   "        <string>Koulutusaste 2002</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>33</int>",
+                  "        <int>32</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1480,7 +1577,7 @@
                   "        <string>Aloituslukuvuosi (läpäisy)</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>32</int>",
+                  "        <int>31</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1488,7 +1585,7 @@
                   "        <string>Läsnäolevat opiskelijat (55op)</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>30</int>",
+                  "        <int>29</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1496,7 +1593,7 @@
                   "        <string>Läsnäolleet opiskelijat (1-14op)</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>31</int>",
+                  "        <int>30</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1504,7 +1601,7 @@
                   "        <string>AMK julkaisut (F ja I)</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>45</int>",
+                  "        <int>43</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1512,7 +1609,7 @@
                   "        <string>Ammattikorkeakoulun TKI-henkilökunta</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>47</int>",
+                  "        <int>45</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1520,7 +1617,7 @@
                   "        <string>Rahoitusmalliala, amk</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>48</int>",
+                  "        <int>46</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1528,7 +1625,7 @@
                   "        <string>Rahoitusmalliala, yo</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>49</int>",
+                  "        <int>47</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1536,7 +1633,7 @@
                   "        <string>Päätieteenala</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>50</int>",
+                  "        <int>48</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1544,7 +1641,7 @@
                   "        <string>Tieteenala</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>51</int>",
+                  "        <int>49</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1552,7 +1649,7 @@
                   "        <string>Tutkijanuravaihe</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>52</int>",
+                  "        <int>50</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1560,7 +1657,7 @@
                   "        <string>YO Julkaisut (A1-A4, C1) jufotaso 1-3</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>53</int>",
+                  "        <int>51</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1568,7 +1665,7 @@
                   "        <string>sijoittuminen_3v_tutkinnon_jalkeen</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>54</int>",
+                  "        <int>52</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1576,7 +1673,7 @@
                   "        <string>Työlliset 3v tutkinnon jälkeen</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>55</int>",
+                  "        <int>53</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1584,7 +1681,7 @@
                   "        <string>AVOP-AMK Opiskelijapalaute_työelämä</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>56</int>",
+                  "        <int>54</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1592,7 +1689,7 @@
                   "        <string>AVOP-YAMK Opiskelijapalaute_työelämä</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>57</int>",
+                  "        <int>55</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1600,7 +1697,7 @@
                   "        <string>Ensisijainen hakija</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>58</int>",
+                  "        <int>56</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1608,7 +1705,7 @@
                   "        <string>Paikan vastaanottaneet</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>59</int>",
+                  "        <int>57</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1616,7 +1713,7 @@
                   "        <string>jarj. rahoitusmalliala amk</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>60</int>",
+                  "        <int>58</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1624,7 +1721,7 @@
                   "        <string>jarj. rahoitusmalliala yo</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>61</int>",
+                  "        <int>59</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1632,7 +1729,7 @@
                   "        <string>jarj. paatieteenala</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>62</int>",
+                  "        <int>60</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1640,7 +1737,7 @@
                   "        <string>jarj. tieteenala</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>63</int>",
+                  "        <int>61</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1648,7 +1745,7 @@
                   "        <string>JulkaisuID</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>64</int>",
+                  "        <int>62</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1656,7 +1753,7 @@
                   "        <string>Jufotaso</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>65</int>",
+                  "        <int>63</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1664,7 +1761,7 @@
                   "        <string>Kilpailtu tutkimusrahoitus (SA,Tekes, EU-puiteohjelma)</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>66</int>",
+                  "        <int>64</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1672,7 +1769,39 @@
                   "        <string>Koulutusnimike</string>",
                   "      </key>",
                   "      <value>",
+                  "        <int>65</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koodit Koulutusnimike</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>66</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Työlliset 3v (ver2 10,13)</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>68</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Tieteenala_avain</string>",
+                  "      </key>",
+                  "      <value>",
                   "        <int>67</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Työttömät 3v (ver2, 12)</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>69</int>",
                   "      </value>",
                   "    </item>",
                   "  </ColumnDisplayIndex>",
@@ -1680,7 +1809,7 @@
                   "  <ColumnChecked>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Oppilaitos</string>",
+                  "        <string>Koodit organisaatio</string>",
                   "      </key>",
                   "      <value>",
                   "        <boolean>true</boolean>",
@@ -1776,7 +1905,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Koodit oppilaitos</string>",
+                  "        <string>Organisaatio</string>",
                   "      </key>",
                   "      <value>",
                   "        <boolean>true</boolean>",
@@ -2217,6 +2346,38 @@
                   "    <item>",
                   "      <key>",
                   "        <string>Koulutusnimike</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koodit Koulutusnimike</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Työlliset 3v (ver2 10,13)</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Tieteenala_avain</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Työttömät 3v (ver2, 12)</string>",
                   "      </key>",
                   "      <value>",
                   "        <boolean>true</boolean>",
@@ -2545,7 +2706,7 @@
               "",
               "return DIVIDE(tut,vuosia)"
             ],
-            "formatString": "0.00",
+            "formatString": "0.0",
             "displayFolder": "Tutkinnot\\Rakenteellinen kehittäminen"
           },
           {
@@ -2553,7 +2714,7 @@
             "expression": [
               " ",
               "var kaikki=CALCULATE([Tutkinnot lkm],",
-              "\tALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Oppilaitos]),",
+              "\tALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Organisaatio]),",
               "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"),",
               "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
               "var kk=CALCULATE([Tutkinnot lkm],",
@@ -2562,7 +2723,7 @@
               "",
               "return DIVIDE(kk,kaikki)"
             ],
-            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Tutkinnot\\Rakenteellinen kehittäminen"
           },
           {
@@ -2577,7 +2738,7 @@
               "",
               "return lask"
             ],
-            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Tutkinnot\\Rakenteellinen kehittäminen"
           },
           {
@@ -2587,7 +2748,7 @@
               "var osuus= CALCULATE([Työllisten osuus (1v tutkinnon jälkeen)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
               "return osuus"
             ],
-            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Työllisyys\\Rakenteellinen kehittäminen"
           },
           {
@@ -2609,7 +2770,7 @@
               "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),os2,os)",
               ""
             ],
-            "formatString": "0.00",
+            "formatString": "0.0",
             "displayFolder": "Henkilöstö\\Rakenteellinen kehittäminen"
           },
           {
@@ -2631,7 +2792,7 @@
               "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),os2,os)",
               ""
             ],
-            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Henkilöstö\\Rakenteellinen kehittäminen"
           },
           {
@@ -2643,37 +2804,41 @@
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
+            "isHidden": true,
             "displayFolder": "Talous\\Rakenteellinen kehittäminen"
           },
           {
-            "name": "IV portaan HTV 2017",
+            "name": "IV portaan HTV 2017_vanha",
             "expression": "CALCULATE(SUM([Yliopiston opetus- ja tutkimushenkilötyövuodet]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),FILTER(VALUES(Muuttujat[Tutkijanuravaihe]),Muuttujat[Tutkijanuravaihe]=\"IV porras (Professori/Akatemiaprofessori/Tutkimusprofessori/Tutkimusjohtaja jne.)\"))",
-            "formatString": "0.00",
+            "formatString": "0.0",
+            "isHidden": true,
             "displayFolder": "Henkilöstö\\Rakenteellinen kehittäminen"
           },
           {
             "name": "IV portaan HTV osuus 2017",
             "expression": [
               "",
-              "var kaikki=CALCULATE([IV portaan HTV 2017],ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Oppilaitos]))",
-              "var kk=CALCULATE([IV portaan HTV 2017])",
+              "var kaikki=CALCULATE([IV portaan HTV 2017_vanha],ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Organisaatio]))",
+              "var kk=CALCULATE([IV portaan HTV 2017_vanha])",
               "",
               "return DIVIDE(kk,kaikki)"
             ],
             "formatString": "0.00 %;-0.00 %;0.00 %",
+            "isHidden": true,
             "displayFolder": "Henkilöstö\\Rakenteellinen kehittäminen"
           },
           {
-            "name": "Tohtorin tutkinnot 2015-2017 KA",
+            "name": "Tohtorin tutkinnot 2015-2017 KA_koulutusnimikkeet",
             "expression": [
               " ",
-              "var tut=CALCULATE(SUM(Muuttujat[tutkinnot]),FILTER(VALUES(Muuttujat[koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Tohtorintutkinto\"),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),ALL(Muuttujat[Koulutusnimike]))",
+              "var tut=CALCULATE(SUM(Muuttujat[tutkinnot]),FILTER(VALUES(Muuttujat[koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Tohtorintutkinto\"),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),ALL(Muuttujat[Koulutusnimike]),ALL(Muuttujat[Koodit Koulutusnimike]))",
               "var vuosia= CALCULATE(DISTINCTCOUNT(Muuttujat[Tilastovuosi]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
               "",
               "return DIVIDE(tut,vuosia)",
               ""
             ],
             "formatString": "0.00",
+            "isHidden": true,
             "displayFolder": "Tutkinnot\\Rakenteellinen kehittäminen"
           },
           {
@@ -2686,7 +2851,7 @@
               "return DIVIDE(tut,vuosia)",
               ""
             ],
-            "formatString": "0.00",
+            "formatString": "0.0",
             "displayFolder": "Tutkinnot\\Rakenteellinen kehittäminen"
           },
           {
@@ -2695,7 +2860,7 @@
               "",
               "var kaikki=CALCULATE([Tutkinnot lkm],",
               "\t\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"),",
-              "\t\tALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Oppilaitos]),",
+              "\t\tALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Organisaatio]),",
               "\t\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
               "var kk=CALCULATE([Tutkinnot lkm],",
               "\t\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"),",
@@ -2703,7 +2868,7 @@
               "",
               "return DIVIDE(kk,kaikki)"
             ],
-            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Tutkinnot\\Rakenteellinen kehittäminen"
           },
           {
@@ -2715,23 +2880,28 @@
               "\t",
               "\treturn CALCULATE(DIVIDE(t,tv))"
             ],
-            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Työllisyys\\Rakenteellinen kehittäminen"
           },
           {
-            "name": "AMK_julkaisut (A-E) 2015-2017",
+            "name": "AMK julkaisut (A-E) 2015-2017",
             "expression": "CALCULATE(SUM([AMK Julkaisut (A-E)]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
+            "formatString": "### ### ###.###",
             "displayFolder": "Julkaisut\\Rakenteellinen kehittäminen"
           },
           {
             "name": "Vetovoima 2017",
             "expression": [
               "",
-              "var hak=CALCULATE(SUM([Ensisijainen hakija]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017))",
-              "var vast=CALCULATE(SUM(Muuttujat[Paikan vastaanottaneet]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017))",
+              "var hak=CALCULATE(DISTINCTCOUNT([Ensisijainen hakija]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
+              "\tNOT(ISBLANK(Muuttujat[Ensisijainen hakija])))",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])))",
               "return DIVIDE(hak,vast)"
             ],
-            "formatString": "0.00",
+            "formatString": "0.0",
             "displayFolder": "Haku ja valinta"
           },
           {
@@ -2743,6 +2913,7 @@
               "var jako=DIVIDE(numero,kaik)",
               "return jako"
             ],
+            "formatString": "### ### ###.###",
             "displayFolder": "Opiskelijapalaute\\Rakenteellinen kehittäminen"
           },
           {
@@ -2755,6 +2926,7 @@
               "return jako",
               ""
             ],
+            "formatString": "### ### ###.###",
             "displayFolder": "Opiskelijapalaute\\Rakenteellinen kehittäminen"
           },
           {
@@ -2764,7 +2936,7 @@
               "var eka=CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]),CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
               "",
               "",
-              "var toka=CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]), CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Oppilaitos]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017),FILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
+              "var toka=CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]), CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),ALL(Muuttujat[Organisaatio]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017),FILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
               "",
               "var jako=CALCULATE(DIVIDE(eka,toka))",
               "",
@@ -2772,21 +2944,25 @@
               "return jako"
             ],
             "formatString": "0.00",
+            "isHidden": true,
             "displayFolder": "Julkaisut\\Rakenteellinen kehittäminen"
           },
           {
             "name": "Kilpailtu tki-rahoitus (SA,Tekes, EU-puite)",
             "expression": " CALCULATE(SUM([Kilpailtu tutkimusrahoitus (SA,Tekes, EU-puiteohjelma)]))",
+            "formatString": "### ### ###.###",
             "displayFolder": "Talous\\rakenteellinen kehittäminen"
           },
           {
             "name": "Työlliset (3v tutkinnon jälkeen)",
             "expression": "SUM([Työlliset 3v tutkinnon jälkeen])",
+            "formatString": "### ### ###.###",
             "displayFolder": "Työllisyys"
           },
           {
             "name": "sijoittuminen perusjoukko 3v tutkinnon jälkeen",
             "expression": " SUM(Muuttujat[sijoittuminen_3v_tutkinnon_jalkeen])",
+            "formatString": "### ### ###.###",
             "displayFolder": "Työllisyys"
           },
           {
@@ -2802,28 +2978,28 @@
               "return jako",
               ""
             ],
-            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Työllisyys\\Rakenteellinen kehittäminen"
           },
           {
             "name": "Työllisten osuus (3v tutkinnon jälkeen)",
             "expression": "DIVIDE([Työlliset (3v tutkinnon jälkeen)],[sijoittuminen perusjoukko 3v tutkinnon jälkeen])",
-            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Työllisyys\\Asemointi"
           },
           {
-            "name": "Työllistyminen 3v (Ylempi kk-tutkinto) KA 2015-2017",
+            "name": "Työllistyminen 3v, (RAKE, ykk) KA 2015-2017",
             "expression": [
               "",
-              "var osuus1= CALCULATE([Työllisten osuus (3v tutkinnon jälkeen)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2015),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
-              "var osuus2= CALCULATE([Työllisten osuus (3v tutkinnon jälkeen)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
-              "var osuus3= CALCULATE([Työllisten osuus (3v tutkinnon jälkeen)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
+              "var osuus1= CALCULATE([Työllisten osuus 3v (RAKE-määritelmä)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2015),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
+              "var osuus2= CALCULATE([Työllisten osuus 3v (RAKE-määritelmä)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
+              "var osuus3= CALCULATE([Työllisten osuus 3v (RAKE-määritelmä)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
               "",
               "var jako=DIVIDE((osuus1+osuus2+osuus3),3)",
               "",
               "return jako"
             ],
-            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Työllisyys\\Rakenteellinen kehittäminen"
           },
           {
@@ -2867,7 +3043,7 @@
               "return lask",
               ""
             ],
-            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Tutkinnot\\Rakenteellinen kehittäminen"
           },
           {
@@ -2883,19 +3059,23 @@
               "return DIVIDE(tut,vuosia)",
               ""
             ],
-            "formatString": "0.00",
+            "formatString": "0.0",
             "displayFolder": "Tutkinnot\\Rakenteellinen kehittäminen"
           },
           {
             "name": "Vetovoima 2016",
             "expression": [
               "",
-              "var hak=CALCULATE(SUM([Ensisijainen hakija]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016))",
-              "var vast=CALCULATE(SUM(Muuttujat[Paikan vastaanottaneet]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016))",
+              "var hak=CALCULATE(DISTINCTCOUNT([Ensisijainen hakija]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
+              "\tNOT(ISBLANK(Muuttujat[Ensisijainen hakija])))",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])))",
               "return DIVIDE(hak,vast)",
               ""
             ],
-            "formatString": "0.00",
+            "formatString": "0.0",
             "displayFolder": "Haku ja valinta"
           },
           {
@@ -2906,7 +3086,7 @@
               "return osuus",
               ""
             ],
-            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Työllisyys\\Rakenteellinen kehittäminen"
           },
           {
@@ -2922,7 +3102,7 @@
               "return jako",
               ""
             ],
-            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Työllisyys\\Rakenteellinen kehittäminen"
           },
           {
@@ -2934,6 +3114,7 @@
               "return summ",
               ""
             ],
+            "formatString": "### ### ###.###",
             "displayFolder": "Opiskelijapalaute\\Rakenteellinen kehittäminen"
           },
           {
@@ -2945,11 +3126,13 @@
               "return summ",
               ""
             ],
+            "formatString": "### ### ###.###",
             "displayFolder": "Opiskelijapalaute\\Rakenteellinen kehittäminen"
           },
           {
-            "name": "AMK_julkaisut (A-E) 2014-2016",
+            "name": "AMK julkaisut (A-E) 2014-2016",
             "expression": "CALCULATE(SUM([AMK Julkaisut (A-E)]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
+            "formatString": "### ### ###.###",
             "displayFolder": "Julkaisut\\Rakenteellinen kehittäminen"
           },
           {
@@ -2971,7 +3154,7 @@
               "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),os2,os)",
               ""
             ],
-            "formatString": "0.00",
+            "formatString": "0.0",
             "displayFolder": "Henkilöstö\\Rakenteellinen kehittäminen"
           },
           {
@@ -2993,7 +3176,7 @@
               "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),os2,os)",
               ""
             ],
-            "formatString": "0.00",
+            "formatString": "0.0",
             "displayFolder": "Henkilöstö\\Rakenteellinen kehittäminen"
           },
           {
@@ -3006,7 +3189,7 @@
               "return DIVIDE(kk,kaikki)",
               ""
             ],
-            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Tutkinnot\\Rakenteellinen kehittäminen"
           },
           {
@@ -3019,26 +3202,28 @@
               "return DIVIDE(tut,vuosia)",
               ""
             ],
-            "formatString": "0.00",
+            "formatString": "0.0",
             "displayFolder": "Tutkinnot\\Rakenteellinen kehittäminen"
           },
           {
-            "name": "IV portaan HTV 2016",
+            "name": "IV portaan HTV 2016_vanha",
             "expression": "CALCULATE(SUM([Yliopiston opetus- ja tutkimushenkilötyövuodet]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),FILTER(VALUES(Muuttujat[Tutkijanuravaihe]),Muuttujat[Tutkijanuravaihe]=\"IV porras (Professori/Akatemiaprofessori/Tutkimusprofessori/Tutkimusjohtaja jne.)\"))",
-            "formatString": "0.00",
+            "formatString": "0.0",
+            "isHidden": true,
             "displayFolder": "Henkilöstö\\Rakenteellinen kehittäminen"
           },
           {
             "name": "IV portaan HTV osuus 2016",
             "expression": [
               "",
-              "var kaikki=CALCULATE([IV portaan HTV 2016],ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Oppilaitos]))",
-              "var kk=CALCULATE([IV portaan HTV 2016])",
+              "var kaikki=CALCULATE([IV portaan HTV 2016_vanha],ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Organisaatio]))",
+              "var kk=CALCULATE([IV portaan HTV 2016_vanha])",
               "",
               "return DIVIDE(kk,kaikki)",
               ""
             ],
             "formatString": "0.00 %;-0.00 %;0.00 %",
+            "isHidden": true,
             "displayFolder": "Henkilöstö\\Rakenteellinen kehittäminen"
           },
           {
@@ -3050,6 +3235,7 @@
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
+            "isHidden": true,
             "displayFolder": "Talous\\Rakenteellinen kehittäminen"
           },
           {
@@ -3059,7 +3245,7 @@
               "var eka=CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]),CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
               "",
               "",
-              "var toka=CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]), CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Oppilaitos]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),FILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
+              "var toka=CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]), CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),ALL(Muuttujat[Organisaatio]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),FILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
               "",
               "var jako=CALCULATE(DIVIDE(eka,toka))",
               "",
@@ -3068,6 +3254,7 @@
               ""
             ],
             "formatString": "0.00",
+            "isHidden": true,
             "displayFolder": "Julkaisut\\Rakenteellinen kehittäminen"
           },
           {
@@ -3090,7 +3277,7 @@
               "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),os2,os)",
               ""
             ],
-            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Julkaisut\\Rakenteellinen kehittäminen"
           },
           {
@@ -3112,24 +3299,272 @@
               "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),os2,os)",
               ""
             ],
-            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Julkaisut\\Rakenteellinen kehittäminen"
           },
           {
             "name": "eka",
             "expression": [
-              "CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]),CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
+              "CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]),CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))",
               ""
             ],
+            "formatString": "0.00",
             "isHidden": true
           },
           {
             "name": "toka",
             "expression": [
-              "CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]), CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Oppilaitos]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017),FILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
+              "CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]), \t\t",
+              "\tCALCULATE(AVERAGE(Muuttujat[Jufotaso]),",
+              "\tNOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])),",
+              "\tALLSELECTED(Muuttujat[Tilastovuosi]))),",
+              "FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),",
+              "ALL(Muuttujat[Organisaatio]),FILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"),",
+              "NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))"
+            ],
+            "formatString": "0.00",
+            "isHidden": true
+          },
+          {
+            "name": "Vetovoima 2016 (Ylempi kk-tutkinto)",
+            "expression": [
+              "",
+              "var hak=CALCULATE(DISTINCTCOUNT([Ensisijainen hakija]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
+              "\tNOT(ISBLANK(Muuttujat[Ensisijainen hakija])),",
+              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
+              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
+              "return DIVIDE(hak,vast)",
+              ""
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
+          },
+          {
+            "name": "Vetovoima 2017 (Ylempi kk-tutkinto)",
+            "expression": [
+              "",
+              "var hak=CALCULATE(DISTINCTCOUNT([Ensisijainen hakija]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
+              "\tNOT(ISBLANK(Muuttujat[Ensisijainen hakija])),",
+              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
+              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
+              "return DIVIDE(hak,vast)"
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
+          },
+          {
+            "name": "Jufo suht (1-3, A1-A4, C1) 2015-2017 (Tieteenala)",
+            "expression": [
+              "",
+              "var tut=CALCULATE(MIN(Muuttujat[tutkinnot]),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
+              "var eka=AVERAGE('Org_TA jufo'[eka_juf15-17])",
+              "var toka=AVERAGE('Tieteenala jufo'[toka_juf15-17])",
+              "",
+              "var jako=DIVIDE(eka,toka)",
+              "",
+              "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),CALCULATE(jako*tut),jako)"
+            ],
+            "formatString": "0.00",
+            "displayFolder": "Julkaisut\\Rakenteellinen kehittäminen"
+          },
+          {
+            "name": "eka2_calc_15-17",
+            "expression": "AVERAGE('Org_TA jufo'[eka_juf15-17])",
+            "formatString": "0.00",
+            "isHidden": true
+          },
+          {
+            "name": "toka2_calc:14-16",
+            "expression": "AVERAGE('Tieteenala jufo'[toka_juf14-16])",
+            "formatString": "0.00",
+            "isHidden": true
+          },
+          {
+            "name": "Yo julkaisut (jufo 1-3, A1-A4, C1) lkm",
+            "expression": " SUM([YO Julkaisut (A1-A4, C1) jufotaso 1-3])",
+            "displayFolder": "Julkaisut\\Rakenteellinen kehittäminen"
+          },
+          {
+            "name": "Työllisten osuus 3v (RAKE-määritelmä)",
+            "expression": "DIVIDE(SUM(Muuttujat[Työlliset 3v (ver2 10,13)]),(SUM(Muuttujat[Työlliset 3v (ver2 10,13)])+SUM(Muuttujat[Työttömät 3v (ver2, 12)])))",
+            "formatString": "0.0 %;-0.0 %;0.0 %",
+            "displayFolder": "Työllisyys\\Rakenteellinen kehittäminen"
+          },
+          {
+            "name": "Tohtorin tutkinnot (tieteenala) 2015-2017 KA",
+            "expression": [
+              " ",
+              "var tut=SUM(Org_tohtorit[Tohtorit calc])",
+              "var tut2=CALCULATE(MIN(Muuttujat[tutkinnot]),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Tohtorintutkinto\"))",
+              "var tut3=CALCULATE(MIN(Muuttujat[tutkinnot]),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
+              "var vuosia= CALCULATE(DISTINCTCOUNT(Muuttujat[Tilastovuosi]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
+              "",
+              "var jako=DIVIDE(tut,3)",
+              "",
+              "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),tut3*jako,jako)",
+              ""
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Tutkinnot\\Rakenteellinen kehittäminen"
+          },
+          {
+            "name": "dc juf",
+            "expression": "CALCULATE(DISTINCTCOUNT([JulkaisuID]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))",
+            "isHidden": true
+          },
+          {
+            "name": "IV portaan HTV osuus 2017 (tieteenala)",
+            "expression": [
+              "",
+              "var kaikki=CALCULATE(SUM(TA_IV[IV 2017 calc]))",
+              "var kk=CALCULATE(SUM(Org_IV[IV 2017 calc]))",
+              "var tut=CALCULATE(MIN(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\")",
+              "",
+              "var jako=DIVIDE(kk,kaikki)",
+              "",
+              "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),CALCULATE(jako*tut),jako)",
+              ""
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %",
+            "displayFolder": "Henkilöstö\\Rakenteellinen kehittäminen"
+          },
+          {
+            "name": "IV portaan HTV osuus 2016 (tieteenala)",
+            "expression": [
+              "",
+              "var kaikki=CALCULATE(SUM(TA_IV[IV 2016 calc]))",
+              "var kk=CALCULATE(SUM(Org_IV[IV 2016 calc]))",
+              "var tut=CALCULATE(MIN(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\")",
+              "",
+              "var jako=DIVIDE(kk,kaikki)",
+              "",
+              "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),CALCULATE(jako*tut),jako)",
+              ""
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %",
+            "displayFolder": "Henkilöstö\\Rakenteellinen kehittäminen"
+          },
+          {
+            "name": "Osuus kilpaillusta tutkimusrahoituksesta 2016 (Tieteenala, SA,TEKES, EU-puite)",
+            "expression": [
+              "",
+              "var kk= SUM(Org_kilprah[kilp_rah 2016 calc])",
+              "var kaik=SUM(TA_kilprah[kilp_rah 2016 calc])",
+              "var tut=CALCULATE(MIN(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\")",
+              "",
+              "var jako=DIVIDE(kk,kaik)",
+              "",
+              "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),CALCULATE(jako*tut),jako)"
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %",
+            "displayFolder": "Talous\\Rakenteellinen kehittäminen"
+          },
+          {
+            "name": "Osuus kilpaillusta tutkimusrahoituksesta 2017 (Tieteenala, SA,TEKES, EU-puite)",
+            "expression": [
+              "",
+              "var kk= SUM(Org_kilprah[kilp_rah 2017 calc])",
+              "var kaik=SUM(TA_kilprah[kilp_rah 2017 calc])",
+              "var tut=CALCULATE(MIN(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\")",
+              "",
+              "var jako=DIVIDE(kk,kaik)",
+              "",
+              "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),CALCULATE(jako*tut),jako)",
+              ""
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %",
+            "displayFolder": "Talous\\Rakenteellinen kehittäminen"
+          },
+          {
+            "name": "eka_laskentaan(jufo)",
+            "expression": [
+              "CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]),CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))",
               ""
             ],
             "isHidden": true
+          },
+          {
+            "name": "toka_laskentaan (jufo)",
+            "expression": [
+              "CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]), \t\t",
+              "\tCALCULATE(AVERAGE(Muuttujat[Jufotaso]),",
+              "\tNOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])),",
+              "\tALLSELECTED(Muuttujat[Tilastovuosi]))),",
+              "ALL(Muuttujat[Organisaatio]),FILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"),",
+              "NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))",
+              ""
+            ],
+            "isHidden": true
+          },
+          {
+            "name": "eka2_calc_14-16",
+            "expression": "AVERAGE('Org_TA jufo'[eka_juf14-16])",
+            "formatString": "0.00",
+            "isHidden": true
+          },
+          {
+            "name": "toka2_calc:15-17",
+            "expression": "AVERAGE('Tieteenala jufo'[toka_juf15-17])",
+            "formatString": "0.00",
+            "isHidden": true
+          },
+          {
+            "name": "Jufo suht (1-3, A1-A4, C1) 2014-2016 (Tieteenala)",
+            "expression": [
+              "",
+              "var tut=CALCULATE(MIN(Muuttujat[tutkinnot]),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
+              "var eka=AVERAGE('Org_TA jufo'[eka_juf14-16])",
+              "var toka=AVERAGE('Tieteenala jufo'[toka_juf14-16])",
+              "",
+              "var jako=DIVIDE(eka,toka)",
+              "",
+              "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),CALCULATE(jako*tut),jako)",
+              ""
+            ],
+            "formatString": "0.00",
+            "displayFolder": "Julkaisut\\Rakenteellinen kehittäminen"
+          },
+          {
+            "name": "Jufo keskiarvo",
+            "expression": [
+              "CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]),CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))",
+              ""
+            ],
+            "formatString": "0.00",
+            "displayFolder": "Julkaisut\\Rakenteellinen kehittäminen"
+          },
+          {
+            "name": "IV portaan HTV 2017",
+            "expression": [
+              "",
+              "var kk=CALCULATE(SUM(Org_IV[IV 2017 calc]))",
+              "var tut=CALCULATE(MIN(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\")",
+              "",
+              "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),CALCULATE(tut*kk),kk)",
+              ""
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Henkilöstö\\Rakenteellinen kehittäminen"
+          },
+          {
+            "name": "IV portaan HTV 2016",
+            "expression": [
+              "",
+              "var kk=CALCULATE(SUM(Org_IV[IV 2016 calc]))",
+              "var tut=CALCULATE(MIN(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\")",
+              "",
+              "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),CALCULATE(tut*kk),kk)"
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Henkilöstö\\Rakenteellinen kehittäminen"
           }
         ],
         "annotations": [
@@ -3159,10 +3594,10 @@
               "  <ColumnWidths>",
               "    <item>",
               "      <key>",
-              "        <string>Oppilaitos</string>",
+              "        <string>Koodit organisaatio</string>",
               "      </key>",
               "      <value>",
-              "        <int>77</int>",
+              "        <int>122</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3447,10 +3882,10 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Koodit oppilaitos</string>",
+              "        <string>Organisaatio</string>",
               "      </key>",
               "      <value>",
-              "        <int>108</int>",
+              "        <int>91</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3701,14 +4136,46 @@
               "        <int>100</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koodit Koulutusnimike</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>133</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Työlliset 3v (ver2 10,13)</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>148</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Tieteenala_avain</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>112</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Työttömät 3v (ver2, 12)</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>147</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
               "      <key>",
-              "        <string>Oppilaitos</string>",
+              "        <string>Koodit organisaatio</string>",
               "      </key>",
               "      <value>",
-              "        <int>1</int>",
+              "        <int>71</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3724,7 +4191,7 @@
               "        <string>jarj. OKM ohjauksen ala</string>",
               "      </key>",
               "      <value>",
-              "        <int>40</int>",
+              "        <int>39</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3732,7 +4199,7 @@
               "        <string>jarj. koulutusaste, taso 2</string>",
               "      </key>",
               "      <value>",
-              "        <int>39</int>",
+              "        <int>38</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3740,7 +4207,7 @@
               "        <string>jarj. koulutusaste, taso 1</string>",
               "      </key>",
               "      <value>",
-              "        <int>38</int>",
+              "        <int>37</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3748,7 +4215,7 @@
               "        <string>Koulutusala, taso 1</string>",
               "      </key>",
               "      <value>",
-              "        <int>2</int>",
+              "        <int>1</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3756,7 +4223,7 @@
               "        <string>Koulutusala, taso 2</string>",
               "      </key>",
               "      <value>",
-              "        <int>3</int>",
+              "        <int>2</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3764,7 +4231,7 @@
               "        <string>Koulutusala, taso 3</string>",
               "      </key>",
               "      <value>",
-              "        <int>4</int>",
+              "        <int>3</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3772,7 +4239,7 @@
               "        <string>Kunta</string>",
               "      </key>",
               "      <value>",
-              "        <int>5</int>",
+              "        <int>4</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3780,7 +4247,7 @@
               "        <string>Koodit kunta</string>",
               "      </key>",
               "      <value>",
-              "        <int>43</int>",
+              "        <int>41</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3788,7 +4255,7 @@
               "        <string>tutkinnot</string>",
               "      </key>",
               "      <value>",
-              "        <int>6</int>",
+              "        <int>5</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3796,7 +4263,7 @@
               "        <string>Yo 7v aloittaneet lkm</string>",
               "      </key>",
               "      <value>",
-              "        <int>7</int>",
+              "        <int>6</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3804,7 +4271,7 @@
               "        <string>5v_Aloittaneet_lkm</string>",
               "      </key>",
               "      <value>",
-              "        <int>8</int>",
+              "        <int>7</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3812,7 +4279,7 @@
               "        <string>7v_suorittaneet_lkm</string>",
               "      </key>",
               "      <value>",
-              "        <int>9</int>",
+              "        <int>8</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3820,7 +4287,7 @@
               "        <string>5v_suorittaneet_lkm</string>",
               "      </key>",
               "      <value>",
-              "        <int>10</int>",
+              "        <int>9</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3828,7 +4295,7 @@
               "        <string>Sektori</string>",
               "      </key>",
               "      <value>",
-              "        <int>29</int>",
+              "        <int>28</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3836,7 +4303,7 @@
               "        <string>55op suorittaneet</string>",
               "      </key>",
               "      <value>",
-              "        <int>11</int>",
+              "        <int>10</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3844,7 +4311,7 @@
               "        <string>1-14op suorittaneet</string>",
               "      </key>",
               "      <value>",
-              "        <int>12</int>",
+              "        <int>11</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3852,7 +4319,7 @@
               "        <string>Yliopiston opetus- ja tutkimushenkilötyövuodet</string>",
               "      </key>",
               "      <value>",
-              "        <int>13</int>",
+              "        <int>12</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3860,7 +4327,7 @@
               "        <string>IV tutkijanuraportaan henkilötyövuodet</string>",
               "      </key>",
               "      <value>",
-              "        <int>14</int>",
+              "        <int>13</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3868,7 +4335,7 @@
               "        <string>Ammattikorkeakoulun opetushenkilökunta</string>",
               "      </key>",
               "      <value>",
-              "        <int>46</int>",
+              "        <int>44</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3876,7 +4343,7 @@
               "        <string>AMK Julkaisut (A-E)</string>",
               "      </key>",
               "      <value>",
-              "        <int>44</int>",
+              "        <int>42</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3884,7 +4351,7 @@
               "        <string>YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3</string>",
               "      </key>",
               "      <value>",
-              "        <int>15</int>",
+              "        <int>14</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3892,7 +4359,7 @@
               "        <string>YO Julkaisut (A1-A4, C1 ja C2) jufotaso 1-3</string>",
               "      </key>",
               "      <value>",
-              "        <int>16</int>",
+              "        <int>15</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3900,7 +4367,7 @@
               "        <string>YO kansainvälinen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3</string>",
               "      </key>",
               "      <value>",
-              "        <int>17</int>",
+              "        <int>16</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3908,7 +4375,7 @@
               "        <string>Kilpailtu tutkimusrahoitus</string>",
               "      </key>",
               "      <value>",
-              "        <int>18</int>",
+              "        <int>17</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3916,7 +4383,7 @@
               "        <string>kv_vaihtoopiskelijat_op_lkm</string>",
               "      </key>",
               "      <value>",
-              "        <int>19</int>",
+              "        <int>18</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3924,7 +4391,7 @@
               "        <string>ulkom_hyv_luetut_op_lkm</string>",
               "      </key>",
               "      <value>",
-              "        <int>20</int>",
+              "        <int>19</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3932,7 +4399,7 @@
               "        <string>erilopintooik_op_lkm</string>",
               "      </key>",
               "      <value>",
-              "        <int>21</int>",
+              "        <int>20</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3940,7 +4407,7 @@
               "        <string>avoinamk_op_amk_lkm</string>",
               "      </key>",
               "      <value>",
-              "        <int>22</int>",
+              "        <int>21</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3948,7 +4415,7 @@
               "        <string>mamu_op_lkm</string>",
               "      </key>",
               "      <value>",
-              "        <int>23</int>",
+              "        <int>22</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3956,7 +4423,7 @@
               "        <string>erikoul_suor_op_lkm</string>",
               "      </key>",
               "      <value>",
-              "        <int>24</int>",
+              "        <int>23</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3964,7 +4431,7 @@
               "        <string>sijoittuminen_1v_tutkinnon_jalkeen</string>",
               "      </key>",
               "      <value>",
-              "        <int>25</int>",
+              "        <int>24</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3972,7 +4439,7 @@
               "        <string>työlliset 1v tutkinnon jälkeen</string>",
               "      </key>",
               "      <value>",
-              "        <int>26</int>",
+              "        <int>25</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3980,7 +4447,7 @@
               "        <string>Kandikyselyn pistemäärä</string>",
               "      </key>",
               "      <value>",
-              "        <int>27</int>",
+              "        <int>26</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3988,15 +4455,15 @@
               "        <string>AVOP-AMK pistemäärä</string>",
               "      </key>",
               "      <value>",
-              "        <int>28</int>",
+              "        <int>27</int>",
               "      </value>",
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Koodit oppilaitos</string>",
+              "        <string>Organisaatio</string>",
               "      </key>",
               "      <value>",
-              "        <int>42</int>",
+              "        <int>70</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4004,7 +4471,7 @@
               "        <string>Koodit OKM ohjauksen ala</string>",
               "      </key>",
               "      <value>",
-              "        <int>41</int>",
+              "        <int>40</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4012,7 +4479,7 @@
               "        <string>Kansalaisuus</string>",
               "      </key>",
               "      <value>",
-              "        <int>37</int>",
+              "        <int>36</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4020,7 +4487,7 @@
               "        <string>Koulutusaste, taso 2</string>",
               "      </key>",
               "      <value>",
-              "        <int>36</int>",
+              "        <int>35</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4028,7 +4495,7 @@
               "        <string>Koulutusaste, taso 1</string>",
               "      </key>",
               "      <value>",
-              "        <int>35</int>",
+              "        <int>34</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4036,7 +4503,7 @@
               "        <string>OKM ohjauksen ala</string>",
               "      </key>",
               "      <value>",
-              "        <int>34</int>",
+              "        <int>33</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4044,7 +4511,7 @@
               "        <string>Koulutusaste 2002</string>",
               "      </key>",
               "      <value>",
-              "        <int>33</int>",
+              "        <int>32</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4052,7 +4519,7 @@
               "        <string>Aloituslukuvuosi (läpäisy)</string>",
               "      </key>",
               "      <value>",
-              "        <int>32</int>",
+              "        <int>31</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4060,7 +4527,7 @@
               "        <string>Läsnäolevat opiskelijat (55op)</string>",
               "      </key>",
               "      <value>",
-              "        <int>30</int>",
+              "        <int>29</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4068,7 +4535,7 @@
               "        <string>Läsnäolleet opiskelijat (1-14op)</string>",
               "      </key>",
               "      <value>",
-              "        <int>31</int>",
+              "        <int>30</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4076,7 +4543,7 @@
               "        <string>AMK julkaisut (F ja I)</string>",
               "      </key>",
               "      <value>",
-              "        <int>45</int>",
+              "        <int>43</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4084,7 +4551,7 @@
               "        <string>Ammattikorkeakoulun TKI-henkilökunta</string>",
               "      </key>",
               "      <value>",
-              "        <int>47</int>",
+              "        <int>45</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4092,7 +4559,7 @@
               "        <string>Rahoitusmalliala, amk</string>",
               "      </key>",
               "      <value>",
-              "        <int>48</int>",
+              "        <int>46</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4100,7 +4567,7 @@
               "        <string>Rahoitusmalliala, yo</string>",
               "      </key>",
               "      <value>",
-              "        <int>49</int>",
+              "        <int>47</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4108,7 +4575,7 @@
               "        <string>Päätieteenala</string>",
               "      </key>",
               "      <value>",
-              "        <int>50</int>",
+              "        <int>48</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4116,7 +4583,7 @@
               "        <string>Tieteenala</string>",
               "      </key>",
               "      <value>",
-              "        <int>51</int>",
+              "        <int>49</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4124,7 +4591,7 @@
               "        <string>Tutkijanuravaihe</string>",
               "      </key>",
               "      <value>",
-              "        <int>52</int>",
+              "        <int>50</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4132,7 +4599,7 @@
               "        <string>YO Julkaisut (A1-A4, C1) jufotaso 1-3</string>",
               "      </key>",
               "      <value>",
-              "        <int>53</int>",
+              "        <int>51</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4140,7 +4607,7 @@
               "        <string>sijoittuminen_3v_tutkinnon_jalkeen</string>",
               "      </key>",
               "      <value>",
-              "        <int>54</int>",
+              "        <int>52</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4148,7 +4615,7 @@
               "        <string>Työlliset 3v tutkinnon jälkeen</string>",
               "      </key>",
               "      <value>",
-              "        <int>55</int>",
+              "        <int>53</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4156,7 +4623,7 @@
               "        <string>AVOP-AMK Opiskelijapalaute_työelämä</string>",
               "      </key>",
               "      <value>",
-              "        <int>56</int>",
+              "        <int>54</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4164,7 +4631,7 @@
               "        <string>AVOP-YAMK Opiskelijapalaute_työelämä</string>",
               "      </key>",
               "      <value>",
-              "        <int>57</int>",
+              "        <int>55</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4172,7 +4639,7 @@
               "        <string>Ensisijainen hakija</string>",
               "      </key>",
               "      <value>",
-              "        <int>58</int>",
+              "        <int>56</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4180,7 +4647,7 @@
               "        <string>Paikan vastaanottaneet</string>",
               "      </key>",
               "      <value>",
-              "        <int>59</int>",
+              "        <int>57</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4188,7 +4655,7 @@
               "        <string>jarj. rahoitusmalliala amk</string>",
               "      </key>",
               "      <value>",
-              "        <int>60</int>",
+              "        <int>58</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4196,7 +4663,7 @@
               "        <string>jarj. rahoitusmalliala yo</string>",
               "      </key>",
               "      <value>",
-              "        <int>61</int>",
+              "        <int>59</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4204,7 +4671,7 @@
               "        <string>jarj. paatieteenala</string>",
               "      </key>",
               "      <value>",
-              "        <int>62</int>",
+              "        <int>60</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4212,7 +4679,7 @@
               "        <string>jarj. tieteenala</string>",
               "      </key>",
               "      <value>",
-              "        <int>63</int>",
+              "        <int>61</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4220,7 +4687,7 @@
               "        <string>JulkaisuID</string>",
               "      </key>",
               "      <value>",
-              "        <int>64</int>",
+              "        <int>62</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4228,7 +4695,7 @@
               "        <string>Jufotaso</string>",
               "      </key>",
               "      <value>",
-              "        <int>65</int>",
+              "        <int>63</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4236,7 +4703,7 @@
               "        <string>Kilpailtu tutkimusrahoitus (SA,Tekes, EU-puiteohjelma)</string>",
               "      </key>",
               "      <value>",
-              "        <int>66</int>",
+              "        <int>64</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -4244,7 +4711,39 @@
               "        <string>Koulutusnimike</string>",
               "      </key>",
               "      <value>",
+              "        <int>65</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koodit Koulutusnimike</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>66</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Työlliset 3v (ver2 10,13)</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>68</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Tieteenala_avain</string>",
+              "      </key>",
+              "      <value>",
               "        <int>67</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Työttömät 3v (ver2, 12)</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>69</int>",
               "      </value>",
               "    </item>",
               "  </ColumnDisplayIndex>",
@@ -4252,7 +4751,7 @@
               "  <ColumnChecked>",
               "    <item>",
               "      <key>",
-              "        <string>Oppilaitos</string>",
+              "        <string>Koodit organisaatio</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -4348,7 +4847,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Koodit oppilaitos</string>",
+              "        <string>Organisaatio</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -4789,6 +5288,38 @@
               "    <item>",
               "      <key>",
               "        <string>Koulutusnimike</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koodit Koulutusnimike</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Työlliset 3v (ver2 10,13)</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Tieteenala_avain</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Työttömät 3v (ver2, 12)</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -4818,14 +5349,6 @@
           },
           {
             "type": "calculatedTableColumn",
-            "name": "Organisaatio_koodi",
-            "dataType": "string",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "Muuttujat[Organisaatio_koodi]"
-          },
-          {
-            "type": "calculatedTableColumn",
             "name": "Calc_amk_julk_2014-2016",
             "dataType": "double",
             "isNameInferred": true,
@@ -4847,6 +5370,14 @@
             "isNameInferred": true,
             "isDataTypeInferred": true,
             "sourceColumn": "Muuttujat[Sektori]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Organisaatio koodi",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Organisaatio koodi]"
           }
         ],
         "partitions": [
@@ -4854,7 +5385,7 @@
             "name": "CalculatedTable 1",
             "source": {
               "type": "calculated",
-              "expression": "SUMMARIZE(FILTER(Muuttujat,Muuttujat[Sektori]=\"Ammattikorkeakoulu\"),Muuttujat[Organisaatio],Muuttujat[Organisaatio_koodi],Muuttujat[Sektori],\"Calc_amk_julk_2014-2016\",[AMK_julkaisut (A-E) 2014-2016],\"calc_amk_julk_2015-2017\",[AMK_julkaisut (A-E) 2015-2017])"
+              "expression": "SUMMARIZE(FILTER(Muuttujat,Muuttujat[Sektori]=\"Ammattikorkeakoulu\"),Muuttujat[Organisaatio],Muuttujat[Organisaatio koodi],Muuttujat[Sektori],\"Calc_amk_julk_2014-2016\",[AMK julkaisut (A-E) 2014-2016],\"calc_amk_julk_2015-2017\",[AMK julkaisut (A-E) 2015-2017])"
             }
           }
         ]
@@ -4870,14 +5401,6 @@
             "isNameInferred": true,
             "isDataTypeInferred": true,
             "sourceColumn": "Muuttujat[Organisaatio]"
-          },
-          {
-            "type": "calculatedTableColumn",
-            "name": "Organisaatio_koodi",
-            "dataType": "string",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "Muuttujat[Organisaatio_koodi]"
           },
           {
             "type": "calculatedTableColumn",
@@ -4910,6 +5433,14 @@
             "isNameInferred": true,
             "isDataTypeInferred": true,
             "sourceColumn": "[calc_amk_opetus_htv_2016]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Organisaatio koodi",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Organisaatio koodi]"
           }
         ],
         "partitions": [
@@ -4918,7 +5449,7 @@
             "source": {
               "type": "calculated",
               "expression": [
-                "SUMMARIZE(FILTER(Muuttujat,Muuttujat[Sektori]=\"Ammattikorkeakoulu\"),Muuttujat[Organisaatio],Muuttujat[Organisaatio_koodi],",
+                "SUMMARIZE(FILTER(Muuttujat,Muuttujat[Sektori]=\"Ammattikorkeakoulu\"),Muuttujat[Organisaatio],Muuttujat[Organisaatio koodi],",
                 "\"calc_amk_TKI_htv 2017\",CALCULATE(SUM(Muuttujat[Ammattikorkeakoulun TKI-henkilökunta]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017)),",
                 "\"calc_amk_opetus_htv_207\",CALCULATE(SUM(Muuttujat[Ammattikorkeakoulun opetushenkilökunta]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017)),",
                 "\"calc_amk_TKI_htv 2016\",CALCULATE(SUM(Muuttujat[Ammattikorkeakoulun TKI-henkilökunta]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016)),",
@@ -4931,62 +5462,47 @@
         ]
       },
       {
-        "name": "Tieteenala_Koulutusnimikkeet",
+        "name": "Org_TA jufo",
         "isHidden": true,
         "columns": [
           {
-            "type": "calculatedTableColumn",
-            "name": "Organisaatio",
-            "dataType": "string",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "Muuttujat[Organisaatio]"
-          },
-          {
-            "type": "calculatedTableColumn",
-            "name": "Organisaatio_koodi",
-            "dataType": "string",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "Muuttujat[Organisaatio_koodi]"
-          },
-          {
-            "type": "calculatedTableColumn",
-            "name": "Päätieteenala",
-            "dataType": "string",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "Muuttujat[Päätieteenala]"
-          },
-          {
             "type": "calculated",
-            "name": "Org_päätieteenala",
+            "name": "org_TA-avain",
             "dataType": "string",
             "isDataTypeInferred": true,
-            "expression": "Tieteenala_Koulutusnimikkeet[Organisaatio_koodi]&\"_\"&Tieteenala_Koulutusnimikkeet[Päätieteenala]"
+            "expression": "[Organisaatio koodi]&\"_\"&[Tieteenala_avain]"
           },
           {
-            "type": "calculated",
-            "name": "calc_jufo",
+            "type": "calculatedTableColumn",
+            "name": "Tieteenala_avain",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Tieteenala_avain]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Organisaatio koodi",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Organisaatio koodi]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "eka_juf15-17",
             "dataType": "double",
+            "isNameInferred": true,
             "isDataTypeInferred": true,
-            "expression": [
-              "divide(CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]),CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017)),",
-              "CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]), CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),ALL(Muuttujat[Organisaatio]),ALL(Tieteenala_Koulutusnimikkeet[Organisaatio])))"
-            ]
+            "sourceColumn": "[eka_juf15-17]"
           },
           {
-            "type": "calculated",
-            "name": "calc_jufo_eka",
+            "type": "calculatedTableColumn",
+            "name": "eka_juf14-16",
             "dataType": "double",
+            "isNameInferred": true,
             "isDataTypeInferred": true,
-            "expression": "CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]),CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))"
-          },
-          {
-            "type": "calculated",
-            "name": "calc_jufo_toka",
-            "dataType": "int64",
-            "isDataTypeInferred": true
+            "sourceColumn": "[eka_juf14-16]"
           }
         ],
         "partitions": [
@@ -4994,7 +5510,325 @@
             "name": "CalculatedTable 1",
             "source": {
               "type": "calculated",
-              "expression": "CALCULATETABLE(SUMMARIZE(Muuttujat,Muuttujat[Organisaatio],Muuttujat[Organisaatio_koodi],Muuttujat[Päätieteenala]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017),NOT(ISBLANK(Muuttujat[Päätieteenala])),Muuttujat[Sektori]=\"Yliopisto\",ALL(Muuttujat[Organisaatio]))"
+              "expression": [
+                "CALCULATETABLE(",
+                "\tSUMMARIZE(Muuttujat,Muuttujat[Organisaatio koodi],Muuttujat[Tieteenala_avain],",
+                "\t\"eka_juf15-17\",CALCULATE(Muuttujat[eka_laskentaan(jufo)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018)),",
+                "\t\"eka_juf14-16\",CALCULATE(Muuttujat[eka_laskentaan(jufo)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))),",
+                "\tNOT(ISBLANK(Muuttujat[Tieteenala_avain])),",
+                "\tMuuttujat[Sektori]=\"Yliopisto\",",
+                "\tALL(Muuttujat[Organisaatio]),",
+                "\tNOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Tieteenala jufo",
+        "isHidden": true,
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "Tieteenala_avain",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Tieteenala_avain]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "toka_juf15-17",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[toka_juf15-17]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "toka_juf14-16",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[toka_juf14-16]"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": [
+                "CALCULATETABLE(",
+                "\tSUMMARIZE(Muuttujat,Muuttujat[Tieteenala_avain],",
+                "\t\"toka_juf15-17\",CALCULATE(Muuttujat[toka_laskentaan (jufo)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018)),",
+                "\t\"toka_juf14-16\",CALCULATE(Muuttujat[toka_laskentaan (jufo)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))),",
+                "\tNOT(ISBLANK(Muuttujat[Tieteenala_avain])),",
+                "\tMuuttujat[Sektori]=\"Yliopisto\",",
+                "\tALL(Muuttujat[Organisaatio]),",
+                "\tNOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))",
+                ""
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Org_tohtorit",
+        "isHidden": true,
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "Tohtorit calc",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Tohtorit calc]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Tieteenala_avain",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Tieteenala_avain]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Koodit organisaatio",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Koodit organisaatio]"
+          },
+          {
+            "type": "calculated",
+            "name": "Org_TA-avain",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": "[Koodit organisaatio]&\"_\"&[Tieteenala_avain]"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": [
+                "CALCULATETABLE(SUMMARIZE(Muuttujat,muuttujat[Koodit organisaatio],Muuttujat[Tieteenala_avain],\"Tohtorit calc\",",
+                "\tCALCULATE(SUM(Muuttujat[tutkinnot]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),Muuttujat[Koulutusaste, taso 2]=\"Tohtorintutkinto\")))"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Org_IV",
+        "isHidden": true,
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "IV 2016 calc",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[IV 2016 calc]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "IV 2017 calc",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[IV 2017 calc]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Organisaatio koodi",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Organisaatio koodi]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Tieteenala_avain",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Tieteenala_avain]"
+          },
+          {
+            "type": "calculated",
+            "name": "Org_TA-avain",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": "Org_IV[Organisaatio koodi]&\"_\"&Org_IV[Tieteenala_avain]"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": "CALCULATETABLE(SUMMARIZE(Muuttujat,Muuttujat[Organisaatio koodi],Muuttujat[Tieteenala_avain],\"IV 2016 calc\",[IV portaan HTV 2016_vanha],\"IV 2017 calc\",[IV portaan HTV 2017_vanha]),Muuttujat[Sektori]=\"Yliopisto\",NOT(ISBLANK(Muuttujat[IV tutkijanuraportaan henkilötyövuodet])),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2015&&Muuttujat[Tilastovuosi]<2018))"
+            }
+          }
+        ]
+      },
+      {
+        "name": "TA_IV",
+        "isHidden": true,
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "Tieteenala_avain",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Tieteenala_avain]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "IV 2016 calc",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[IV 2016 calc]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "IV 2017 calc",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[IV 2017 calc]"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": [
+                "CALCULATETABLE(SUMMARIZE(Muuttujat,Muuttujat[Tieteenala_avain],\"IV 2016 calc\",[IV portaan HTV 2016_vanha],\"IV 2017 calc\",[IV portaan HTV 2017_vanha]),",
+                "Muuttujat[Sektori]=\"Yliopisto\",",
+                "NOT(ISBLANK(Muuttujat[IV tutkijanuraportaan henkilötyövuodet])),",
+                "NOT(ISBLANK(Muuttujat[Tieteenala_avain])),",
+                "FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2015&&Muuttujat[Tilastovuosi]<2018))"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Org_kilprah",
+        "isHidden": true,
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "Organisaatio koodi",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Organisaatio koodi]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Tieteenala_avain",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Tieteenala_avain]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "kilp_rah 2017 calc",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[kilp_rah 2017 calc]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "kilp_rah 2016 calc",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[kilp_rah 2016 calc]"
+          },
+          {
+            "type": "calculated",
+            "name": "Org_TA-avain",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": "'Org_kilprah'[Organisaatio koodi]&\"_\"&'Org_kilprah'[Tieteenala_avain]"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": [
+                "CALCULATETABLE(SUMMARIZE(Muuttujat,Muuttujat[Organisaatio koodi],Muuttujat[Tieteenala_avain],",
+                "\t\"kilp_rah 2017 calc\",CALCULATE([Kilpailtu tki-rahoitus (SA,Tekes, EU-puite)],",
+                "\t\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017)),",
+                "\t\"kilp_rah 2016 calc\", CALCULATE([Kilpailtu tki-rahoitus (SA,Tekes, EU-puite)],",
+                "\t\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016))),",
+                "NOT(ISBLANK(Muuttujat[Tieteenala_avain])),",
+                "FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2015&&Muuttujat[Tilastovuosi]<2018),",
+                "Muuttujat[Sektori]=\"Yliopisto\")"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "TA_kilprah",
+        "isHidden": true,
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "Tieteenala_avain",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Tieteenala_avain]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "kilp_rah 2017 calc",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[kilp_rah 2017 calc]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "kilp_rah 2016 calc",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[kilp_rah 2016 calc]"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": [
+                "CALCULATETABLE(SUMMARIZE(Muuttujat,Muuttujat[Tieteenala_avain],",
+                "\t\"kilp_rah 2017 calc\",CALCULATE([Kilpailtu tki-rahoitus (SA,Tekes, EU-puite)],",
+                "\t\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017)),",
+                "\t\"kilp_rah 2016 calc\", CALCULATE([Kilpailtu tki-rahoitus (SA,Tekes, EU-puite)],",
+                "\t\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016))),",
+                "NOT(ISBLANK(Muuttujat[Tieteenala_avain])),",
+                "FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2015&&Muuttujat[Tilastovuosi]<2018),",
+                "Muuttujat[Sektori]=\"Yliopisto\")",
+                ""
+              ]
             }
           }
         ]
@@ -5002,27 +5836,75 @@
     ],
     "relationships": [
       {
-        "name": "89bce6a3-92a7-4ca0-900a-0c1d853f9ffc",
+        "name": "4e8efa6b-3378-4cce-a603-f46c2513eaef",
+        "fromTable": "Org_TA jufo",
+        "fromColumn": "Tieteenala_avain",
+        "toTable": "Tieteenala jufo",
+        "toColumn": "Tieteenala_avain",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "0eb16a04-0194-4df4-8d45-261feea392c3",
         "fromTable": "Muuttujat",
-        "fromColumn": "Organisaatio_koodi",
+        "fromColumn": "org_TA-avain",
+        "toTable": "Org_tohtorit",
+        "toColumn": "Org_TA-avain",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "5267215e-b208-4ad3-8207-caef574b1c03",
+        "fromTable": "Muuttujat",
+        "fromColumn": "Organisaatio koodi",
         "toTable": "calc_amk_julk",
-        "toColumn": "Organisaatio_koodi",
+        "toColumn": "Organisaatio koodi",
         "crossFilteringBehavior": "bothDirections"
       },
       {
-        "name": "1bc7ff5c-7cbd-4731-b3b2-5315d1248f3a",
+        "name": "333f7567-a5b7-4175-befe-b06b034068ed",
         "fromTable": "Muuttujat",
-        "fromColumn": "Organisaatio_koodi",
+        "fromColumn": "Organisaatio koodi",
         "toTable": "calc_amk_htv",
-        "toColumn": "Organisaatio_koodi",
+        "toColumn": "Organisaatio koodi",
         "crossFilteringBehavior": "bothDirections"
       },
       {
-        "name": "3588509c-b7bd-4e28-83d6-453bb455295d",
+        "name": "fe315a39-5ba8-422b-9443-29cffb177a63",
         "fromTable": "Muuttujat",
-        "fromColumn": "org_päätieteenala",
-        "toTable": "Tieteenala_Koulutusnimikkeet",
-        "toColumn": "Org_päätieteenala",
+        "fromColumn": "org_TA-avain",
+        "toTable": "Org_IV",
+        "toColumn": "Org_TA-avain",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "22cab35f-a2d0-49b4-9f54-ba4e4c86b094",
+        "fromTable": "Muuttujat",
+        "fromColumn": "Tieteenala_avain",
+        "toTable": "TA_IV",
+        "toColumn": "Tieteenala_avain",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "77299eb2-02ca-45ec-8e6a-604ff119d3ce",
+        "fromTable": "Muuttujat",
+        "fromColumn": "org_TA-avain",
+        "toTable": "Org_kilprah",
+        "toColumn": "Org_TA-avain",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "e4a69b2a-e508-49f3-b746-8eff932c26e3",
+        "fromTable": "Muuttujat",
+        "fromColumn": "Tieteenala_avain",
+        "toTable": "TA_kilprah",
+        "toColumn": "Tieteenala_avain",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "622721ed-8380-498c-a30e-55e191b53ed1",
+        "fromTable": "Muuttujat",
+        "fromColumn": "org_TA-avain",
+        "toTable": "Org_TA jufo",
+        "toColumn": "org_TA-avain",
         "crossFilteringBehavior": "bothDirections"
       }
     ],
