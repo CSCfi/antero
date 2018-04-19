@@ -631,7 +631,8 @@
           {
             "name": "Tutkinnon aloitussykli",
             "dataType": "string",
-            "sourceColumn": "Tutkinnon aloitussykli"
+            "sourceColumn": "Tutkinnon aloitussykli",
+            "displayFolder": "Koulutusmuuttujat"
           }
         ],
         "partitions": [
@@ -3423,7 +3424,16 @@
           },
           {
             "name": "Työllisten osuus 3v (RAKE-määritelmä)",
-            "expression": "DIVIDE(SUM(Muuttujat[Työlliset 3v (ver2 10,13)]),(SUM(Muuttujat[Työlliset 3v (ver2 10,13)])+SUM(Muuttujat[Työttömät 3v (ver2, 12)])))",
+            "expression": [
+              "",
+              "",
+              "var tyol=CALCULATE(SUM(Muuttujat[Työlliset 3v (ver2 10,13)]),Muuttujat[Työlliset 3v (ver2 10,13)]<>0,NOT(ISBLANK(Muuttujat[Työlliset 3v (ver2 10,13)])))",
+              "var tyot=CALCULATE(SUM(Muuttujat[Työttömät 3v (ver2, 12)]),Muuttujat[Työttömät 3v (ver2, 12)]<>0,NOT(ISBLANK(Muuttujat[Työttömät 3v (ver2, 12)])))",
+              "",
+              "var jako = DIVIDE(tyol,tyol+tyot)",
+              "return jako",
+              ""
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Työllisyys\\Rakenteellinen kehittäminen"
           },
@@ -3618,11 +3628,11 @@
               "var hak=CALCULATE(DISTINCTCOUNT([Ensisijainen hakija]),",
               "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
               "\tNOT(ISBLANK(Muuttujat[Ensisijainen hakija])),",
-              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"||Muuttujat[Tutkinnon aloitussykli]=\"I sykli siirtohaku\"))",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"))",
               "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
               "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
               "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
-              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"||Muuttujat[Tutkinnon aloitussykli]=\"I sykli siirtohaku\"))",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"))",
               "return DIVIDE(hak,vast)"
             ],
             "formatString": "0.0",
@@ -3635,15 +3645,31 @@
               "var hak=CALCULATE(DISTINCTCOUNT([Ensisijainen hakija]),",
               "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
               "\tNOT(ISBLANK(Muuttujat[Ensisijainen hakija])),",
-              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"||Muuttujat[Tutkinnon aloitussykli]=\"I sykli siirtohaku\"))",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"))",
               "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
               "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
               "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
-              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"||Muuttujat[Tutkinnon aloitussykli]=\"I sykli siirtohaku\"))",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"))",
               "return DIVIDE(hak,vast)"
             ],
             "formatString": "0.0",
             "displayFolder": "Haku ja valinta"
+          },
+          {
+            "name": "Työllistyminen 3v, (RAKE, ykk) KA 2014-2016 V2",
+            "expression": [
+              "",
+              "var osuus1= CALCULATE([Työllisten osuus 3v (RAKE-määritelmä)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2014),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
+              "var osuus2= CALCULATE([Työllisten osuus 3v (RAKE-määritelmä)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2015),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
+              "var osuus3= CALCULATE([Työllisten osuus 3v (RAKE-määritelmä)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
+              "",
+              "var vuosia=CALCULATE((SWITCH(ISBLANK(osuus1),TRUE(),0,1)+SWITCH(ISBLANK(osuus2),TRUE(),0,1)+SWITCH(ISBLANK(osuus3),TRUE(),0,1)))",
+              "var jako=CALCULATE(DIVIDE((osuus1+osuus2+osuus3),vuosia))",
+              "",
+              "return jako",
+              ""
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
           }
         ],
         "annotations": [
