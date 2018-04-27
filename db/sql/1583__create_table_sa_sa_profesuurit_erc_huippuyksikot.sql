@@ -12,7 +12,7 @@ CREATE TABLE [sa].[SA_profesuurit_erc_huippuyksikot](
 	[SA_prof_13-16] [nvarchar](50) NULL,
 	[ERC_StG_CoG_AdG_15-17] [nvarchar](50) NULL
 ) ON [PRIMARY]
-
+END
 GO
 
 USE [ANTERO]
