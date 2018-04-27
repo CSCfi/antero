@@ -11,7 +11,7 @@ CREATE TABLE [sa].[SA_profesuurit_erc_huippuyksikot](
 	[Osal_hui_yks_14-19_18-25] [nvarchar](50) NULL,
 	[SA_prof_13-16] [nvarchar](50) NULL,
 	[ERC_StG_CoG_AdG_15-17] [nvarchar](50) NULL
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY]
 
 GO
 
