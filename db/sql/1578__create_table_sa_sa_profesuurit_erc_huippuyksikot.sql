@@ -1,4 +1,7 @@
+GO USE [ANTERO]
 
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[SA_profesuurit_erc_huippuyksikot]') AND type in (N'U'))
+BEGIN
 CREATE TABLE [sa].[SA_profesuurit_erc_huippuyksikot](
 	[Tieteenala] [nvarchar](max) NOT NULL,
 	[TA10] [nvarchar](50) NOT NULL,
