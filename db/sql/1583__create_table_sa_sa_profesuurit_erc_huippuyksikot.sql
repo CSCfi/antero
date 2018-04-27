@@ -1,4 +1,5 @@
-GO USE [ANTERO]
+USE [ANTERO]
+go
 
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[SA_profesuurit_erc_huippuyksikot]') AND type in (N'U'))
 BEGIN
