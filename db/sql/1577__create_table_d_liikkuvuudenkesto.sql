@@ -1,12 +1,7 @@
 ﻿USE [ANTERO]
 GO
 
-/****** Object:  Table [dw].[d_liikkuvuudenkesto]    Script Date: 27.4.2018 9:21:04 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
+IF NOT EXISTS (select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='dw' and TABLE_NAME='d_liikkuvuudenkesto') begin
 
 CREATE TABLE [dw].[d_liikkuvuudenkesto](
 	[id] [int] IDENTITY(-1,1) NOT NULL,
@@ -27,12 +22,16 @@ CREATE TABLE [dw].[d_liikkuvuudenkesto](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
-GO
+;
 
 ALTER TABLE [dw].[d_liikkuvuudenkesto] ADD  CONSTRAINT [DF__d_liikkuvuudenkesto__loadtime]  DEFAULT (getdate()) FOR [loadtime]
-GO
+
+;
 
 ALTER TABLE [dw].[d_liikkuvuudenkesto] ADD  CONSTRAINT [DF__d_liikkuvuudenkesto__username]  DEFAULT (suser_sname()) FOR [username]
-GO
+
+;
+
+END
 
 
