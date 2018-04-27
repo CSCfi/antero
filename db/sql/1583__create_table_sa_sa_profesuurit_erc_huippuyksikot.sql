@@ -16,4 +16,5 @@ CREATE TABLE [sa].[SA_profesuurit_erc_huippuyksikot](
 END
 GO
 
+
 USE [ANTERO]
