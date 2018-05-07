@@ -182,3 +182,4 @@ INSERT [sa].[SA_profesuurit_erc_huippuyksikot] ([Tieteenala], [TA10], [TTHV], [Y
 GO
 INSERT [sa].[SA_profesuurit_erc_huippuyksikot] ([Tieteenala], [TA10], [TTHV], [Yliopisto], [Organisaatio_koodi], [Osal_hui_yks_14-19_18-25], [SA_prof_13-16], [ERC_StG_CoG_AdG_15-17]) VALUES (N'Historia ja arkeologia', N'TA10_615', N'TTHV_615', N'TY', N'10089', NULL, N'1', NULL)
 GO
+use [antero]
