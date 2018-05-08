@@ -30,8 +30,8 @@ def makerow():
     'isced2011koulutusalataso1koodi':None, 'isced2011koulutusalataso1nimi':None, 'isced2011koulutusalataso1nimi_sv':None, 'isced2011koulutusalataso1nimi_en':None,
     'isced2011koulutusalataso2koodi':None, 'isced2011koulutusalataso2nimi':None, 'isced2011koulutusalataso2nimi_sv':None, 'isced2011koulutusalataso2nimi_en':None,
     'isced2011koulutusalataso3koodi':None, 'isced2011koulutusalataso3nimi':None, 'isced2011koulutusalataso3nimi_sv':None, 'isced2011koulutusalataso3nimi_en':None,
-    'okmohjauksenalakoodi':None, 'okmohjauksenalanimi':None, 'okmohjauksenalanimi_sv':None, 'okmohjauksenalanimi_en':None,
-    'erikoistumiskoulutuskoodi':None,'erikoistumiskoulutusnimi':None,'erikoistumiskoulutusnimi_sv':None,'erikoistumiskoulutusnimi_en':None
+    'okmohjauksenalakoodi':None, 'okmohjauksenalanimi':None, 'okmohjauksenalanimi_sv':None, 'okmohjauksenalanimi_en':None
+
   }
 
 def getnimi(i,kieli):
@@ -158,11 +158,6 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
         row["okmohjauksenalanimi"] = getnimi(ii,"FI")
         row["okmohjauksenalanimi_sv"] = getnimi(ii,"SV")
         row["okmohjauksenalanimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "erikoistumiskoulutukset":
-        row["erikoistumiskoulutuskoodi"] = ii["koodiArvo"]
-        row["erikoistumiskoulutusnimi"] = getnimi(ii,"FI")
-        row["erikoistumiskoulutusnimi_sv"] = getnimi(ii,"SV")
-        row["erikoistumiskoulutusnimi_en"] = getnimi(ii,"EN")
 
     if verbose: print strftime("%Y-%m-%d %H:%M:%S", localtime())+" %d -- %s"%(cnt,row["koodi"])
     dboperator.insert(hostname+url,schema,table,row,debug)
