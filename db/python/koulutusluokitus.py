@@ -31,7 +31,7 @@ def makerow():
     'isced2011koulutusalataso2koodi':None, 'isced2011koulutusalataso2nimi':None, 'isced2011koulutusalataso2nimi_sv':None, 'isced2011koulutusalataso2nimi_en':None,
     'isced2011koulutusalataso3koodi':None, 'isced2011koulutusalataso3nimi':None, 'isced2011koulutusalataso3nimi_sv':None, 'isced2011koulutusalataso3nimi_en':None,
     'okmohjauksenalakoodi':None, 'okmohjauksenalanimi':None, 'okmohjauksenalanimi_sv':None, 'okmohjauksenalanimi_en':None,
-    'erikoistumiskoulutuskoodi':None,'erikoistumiskoulutusnimi':None,'erikoistumiskoulutusnimi_sv':None,'erikoistumiskoulutusnimi_en':None,
+    'erikoistumiskoulutuskoodi':None,'erikoistumiskoulutusnimi':None,'erikoistumiskoulutusnimi_sv':None,'erikoistumiskoulutusnimi_en':None
   }
 
 def getnimi(i,kieli):
