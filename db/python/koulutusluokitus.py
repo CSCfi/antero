@@ -158,7 +158,7 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
         row["okmohjauksenalanimi"] = getnimi(ii,"FI")
         row["okmohjauksenalanimi_sv"] = getnimi(ii,"SV")
         row["okmohjauksenalanimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "erikoistumiskoulutus":
+      if ii["koodisto"]["koodistoUri"] == "erikoistumiskoulutukset":
         row["erikoistumiskoulutuskoodi"] = ii["koodiArvo"]
         row["erikoistumiskoulutusnimi"] = getnimi(ii,"FI")
         row["erikoistumiskoulutusnimi_sv"] = getnimi(ii,"SV")
