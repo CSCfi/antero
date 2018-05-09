@@ -89,6 +89,27 @@
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
+    <notepad>
+      <note>column jarjestys is splitted into columns jarjestys and jarjestys2 because order might have a number</note>
+      <xloc>176</xloc>
+      <yloc>128</yloc>
+      <width>536</width>
+      <heigth>26</heigth>
+      <fontname>Segoe UI</fontname>
+      <fontsize>9</fontsize>
+      <fontbold>N</fontbold>
+      <fontitalic>N</fontitalic>
+      <fontcolorred>0</fontcolorred>
+      <fontcolorgreen>0</fontcolorgreen>
+      <fontcolorblue>0</fontcolorblue>
+      <backgroundcolorred>255</backgroundcolorred>
+      <backgroundcolorgreen>205</backgroundcolorgreen>
+      <backgroundcolorblue>112</backgroundcolorblue>
+      <bordercolorred>100</bordercolorred>
+      <bordercolorgreen>100</bordercolorgreen>
+      <bordercolorblue>100</bordercolorblue>
+      <drawshadow>Y</drawshadow>
+    </notepad>
   </notepads>
   <connection>
     <name>Antero</name>
@@ -117,11 +138,11 @@
     </attributes>
   </connection>
   <order>
-  <hop> <from>uraseuranta.csv  input</from><to>Get System Info</to><enabled>Y</enabled> </hop>
   <hop> <from>Get System Info</from><to>Add constants</to><enabled>Y</enabled> </hop>
   <hop> <from>Add constants</from><to>Select values</to><enabled>Y</enabled> </hop>
-  <hop> <from>Select values</from><to>load into sa.sa_arvo_uraseuranta</to><enabled>N</enabled> </hop>
   <hop> <from>Select values</from><to>Table output</to><enabled>Y</enabled> </hop>
+  <hop> <from>uraseuranta.csv  input</from><to>Split Fields</to><enabled>Y</enabled> </hop>
+  <hop> <from>Split Fields</from><to>Get System Info</to><enabled>Y</enabled> </hop>
   </order>
   <step>
     <name>Add constants</name>
@@ -151,7 +172,7 @@
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
       <xloc>80</xloc>
-      <yloc>240</yloc>
+      <yloc>272</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -180,7 +201,7 @@
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
       <xloc>80</xloc>
-      <yloc>160</yloc>
+      <yloc>192</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -197,6 +218,10 @@
            <schema_name/>
            </partitioning>
     <fields>      <field>        <name>jarjestys</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>jarjestys2</name>
         <rename/>
         <length>-2</length>
         <precision>-2</precision>
@@ -408,13 +433,13 @@
     </fields>     <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
       <xloc>80</xloc>
-      <yloc>336</yloc>
+      <yloc>368</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
 
   <step>
-    <name>load into sa.sa_arvo_uraseuranta</name>
+    <name>Table output</name>
     <type>TableOutput</type>
     <description/>
     <distribute>Y</distribute>
@@ -443,80 +468,12 @@
     <return_field/>
     <fields>
         <field>
-          <column_name>kyselyid</column_name>
-          <stream_name>kyselyid</stream_name>
-        </field>
-        <field>
-          <column_name>koulutustoimija</column_name>
-          <stream_name>koulutustoimija</stream_name>
-        </field>
-        <field>
-          <column_name>kysely_fi</column_name>
-          <stream_name>kysely_fi</stream_name>
-        </field>
-        <field>
-          <column_name>kysely_sv</column_name>
-          <stream_name>kysely_sv</stream_name>
-        </field>
-        <field>
-          <column_name>kysely_en</column_name>
-          <stream_name>kysely_en</stream_name>
-        </field>
-        <field>
-          <column_name>kyselykertaid</column_name>
-          <stream_name>kyselykertaid</stream_name>
-        </field>
-        <field>
-          <column_name>kyselykerta</column_name>
-          <stream_name>kyselykerta</stream_name>
-        </field>
-        <field>
-          <column_name>kysymysryhmaid</column_name>
-          <stream_name>kysymysryhmaid</stream_name>
-        </field>
-        <field>
-          <column_name>kysymysryhma_fi</column_name>
-          <stream_name>kysymysryhma_fi</stream_name>
-        </field>
-        <field>
-          <column_name>kysymysryhma_sv</column_name>
-          <stream_name>kysymysryhma_sv</stream_name>
-        </field>
-        <field>
-          <column_name>kysymysryhma_en</column_name>
-          <stream_name>kysymysryhma_en</stream_name>
-        </field>
-        <field>
-          <column_name>valtakunnallinen</column_name>
-          <stream_name>valtakunnallinen</stream_name>
-        </field>
-        <field>
-          <column_name>kysymysryhma_jarjestys</column_name>
-          <stream_name>kysymysryhma_jarjestys</stream_name>
-        </field>
-        <field>
-          <column_name>kysymysid</column_name>
-          <stream_name>kysymysid</stream_name>
-        </field>
-        <field>
           <column_name>jarjestys</column_name>
           <stream_name>jarjestys</stream_name>
         </field>
         <field>
-          <column_name>vastaustyyppi</column_name>
-          <stream_name>vastaustyyppi</stream_name>
-        </field>
-        <field>
-          <column_name>kysymys_fi</column_name>
-          <stream_name>kysymys_fi</stream_name>
-        </field>
-        <field>
-          <column_name>kysymys_sv</column_name>
-          <stream_name>kysymys_sv</stream_name>
-        </field>
-        <field>
-          <column_name>kysymys_en</column_name>
-          <stream_name>kysymys_en</stream_name>
+          <column_name>jarjestys2</column_name>
+          <stream_name>jarjestys2</stream_name>
         </field>
         <field>
           <column_name>jatkokysymys</column_name>
@@ -527,16 +484,72 @@
           <stream_name>jatkokysymys_kysymysid</stream_name>
         </field>
         <field>
-          <column_name>vastausid</column_name>
-          <stream_name>vastausid</stream_name>
+          <column_name>koulutustoimija</column_name>
+          <stream_name>koulutustoimija</stream_name>
         </field>
         <field>
-          <column_name>numerovalinta</column_name>
-          <stream_name>numerovalinta</stream_name>
+          <column_name>kysely_en</column_name>
+          <stream_name>kysely_en</stream_name>
         </field>
         <field>
-          <column_name>vapaateksti</column_name>
-          <stream_name>vapaateksti</stream_name>
+          <column_name>kysely_fi</column_name>
+          <stream_name>kysely_fi</stream_name>
+        </field>
+        <field>
+          <column_name>kysely_sv</column_name>
+          <stream_name>kysely_sv</stream_name>
+        </field>
+        <field>
+          <column_name>kyselyid</column_name>
+          <stream_name>kyselyid</stream_name>
+        </field>
+        <field>
+          <column_name>kyselykerta</column_name>
+          <stream_name>kyselykerta</stream_name>
+        </field>
+        <field>
+          <column_name>kyselykertaid</column_name>
+          <stream_name>kyselykertaid</stream_name>
+        </field>
+        <field>
+          <column_name>kysymys_en</column_name>
+          <stream_name>kysymys_en</stream_name>
+        </field>
+        <field>
+          <column_name>kysymys_fi</column_name>
+          <stream_name>kysymys_fi</stream_name>
+        </field>
+        <field>
+          <column_name>kysymys_sv</column_name>
+          <stream_name>kysymys_sv</stream_name>
+        </field>
+        <field>
+          <column_name>kysymysid</column_name>
+          <stream_name>kysymysid</stream_name>
+        </field>
+        <field>
+          <column_name>kysymysryhma_en</column_name>
+          <stream_name>kysymysryhma_en</stream_name>
+        </field>
+        <field>
+          <column_name>kysymysryhma_fi</column_name>
+          <stream_name>kysymysryhma_fi</stream_name>
+        </field>
+        <field>
+          <column_name>kysymysryhma_jarjestys</column_name>
+          <stream_name>kysymysryhma_jarjestys</stream_name>
+        </field>
+        <field>
+          <column_name>kysymysryhma_sv</column_name>
+          <stream_name>kysymysryhma_sv</stream_name>
+        </field>
+        <field>
+          <column_name>kysymysryhmaid</column_name>
+          <stream_name>kysymysryhmaid</stream_name>
+        </field>
+        <field>
+          <column_name>monivalintavaihtoehto_en</column_name>
+          <stream_name>monivalintavaihtoehto_en</stream_name>
         </field>
         <field>
           <column_name>monivalintavaihtoehto_fi</column_name>
@@ -547,40 +560,12 @@
           <stream_name>monivalintavaihtoehto_sv</stream_name>
         </field>
         <field>
-          <column_name>monivalintavaihtoehto_en</column_name>
-          <stream_name>monivalintavaihtoehto_en</stream_name>
+          <column_name>numerovalinta</column_name>
+          <stream_name>numerovalinta</stream_name>
         </field>
         <field>
-          <column_name>vaihtoehto</column_name>
-          <stream_name>vaihtoehto</stream_name>
-        </field>
-        <field>
-          <column_name>vastaajaid</column_name>
-          <stream_name>vastaajaid</stream_name>
-        </field>
-        <field>
-          <column_name>vastaajatunnus</column_name>
-          <stream_name>vastaajatunnus</stream_name>
-        </field>
-        <field>
-          <column_name>valmistavan_koulutuksen_jarjestaja</column_name>
-          <stream_name>valmistavan_koulutuksen_jarjestaja</stream_name>
-        </field>
-        <field>
-          <column_name>valmistavan_koulutuksen_oppilaitos</column_name>
-          <stream_name>valmistavan_koulutuksen_oppilaitos</stream_name>
-        </field>
-        <field>
-          <column_name>tutkintotunnus</column_name>
-          <stream_name>tutkintotunnus</stream_name>
-        </field>
-        <field>
-          <column_name>taustatiedot.laajuus</column_name>
-          <stream_name>taustatiedot.laajuus</stream_name>
-        </field>
-        <field>
-          <column_name>taustatiedot.paaaine</column_name>
-          <stream_name>taustatiedot.paaaine</stream_name>
+          <column_name>taustatiedot.aidinkieli</column_name>
+          <stream_name>taustatiedot.aidinkieli</stream_name>
         </field>
         <field>
           <column_name>taustatiedot.arvosana</column_name>
@@ -591,26 +576,6 @@
           <stream_name>taustatiedot.asteikko</stream_name>
         </field>
         <field>
-          <column_name>taustatiedot.sukupuoli</column_name>
-          <stream_name>taustatiedot.sukupuoli</stream_name>
-        </field>
-        <field>
-          <column_name>taustatiedot.aidinkieli</column_name>
-          <stream_name>taustatiedot.aidinkieli</stream_name>
-        </field>
-        <field>
-          <column_name>taustatiedot.kansalaisuus</column_name>
-          <stream_name>taustatiedot.kansalaisuus</stream_name>
-        </field>
-        <field>
-          <column_name>taustatiedot.valintavuosi</column_name>
-          <stream_name>taustatiedot.valintavuosi</stream_name>
-        </field>
-        <field>
-          <column_name>taustatiedot.tutkinnon_taso</column_name>
-          <stream_name>taustatiedot.tutkinnon_taso</stream_name>
-        </field>
-        <field>
           <column_name>taustatiedot.asuinkunta_koodi</column_name>
           <stream_name>taustatiedot.asuinkunta_koodi</stream_name>
         </field>
@@ -619,24 +584,88 @@
           <stream_name>taustatiedot.ika_valmistuessa</stream_name>
         </field>
         <field>
+          <column_name>taustatiedot.kansalaisuus</column_name>
+          <stream_name>taustatiedot.kansalaisuus</stream_name>
+        </field>
+        <field>
+          <column_name>taustatiedot.kirjoilla_olo_kuukausia</column_name>
+          <stream_name>taustatiedot.kirjoilla_olo_kuukausia</stream_name>
+        </field>
+        <field>
           <column_name>taustatiedot.koulutusalakoodi</column_name>
           <stream_name>taustatiedot.koulutusalakoodi</stream_name>
         </field>
         <field>
-          <column_name>taustatiedot.valmistumisvuosi</column_name>
-          <stream_name>taustatiedot.valmistumisvuosi</stream_name>
+          <column_name>taustatiedot.laajuus</column_name>
+          <stream_name>taustatiedot.laajuus</stream_name>
         </field>
         <field>
           <column_name>taustatiedot.lasnaolo_lukukausia</column_name>
           <stream_name>taustatiedot.lasnaolo_lukukausia</stream_name>
         </field>
         <field>
+          <column_name>taustatiedot.paaaine</column_name>
+          <stream_name>taustatiedot.paaaine</stream_name>
+        </field>
+        <field>
+          <column_name>taustatiedot.sukupuoli</column_name>
+          <stream_name>taustatiedot.sukupuoli</stream_name>
+        </field>
+        <field>
+          <column_name>taustatiedot.tutkinnon_taso</column_name>
+          <stream_name>taustatiedot.tutkinnon_taso</stream_name>
+        </field>
+        <field>
+          <column_name>taustatiedot.valintavuosi</column_name>
+          <stream_name>taustatiedot.valintavuosi</stream_name>
+        </field>
+        <field>
           <column_name>taustatiedot.valmistumisajankohta</column_name>
           <stream_name>taustatiedot.valmistumisajankohta</stream_name>
         </field>
         <field>
-          <column_name>taustatiedot.kirjoilla_olo_kuukausia</column_name>
-          <stream_name>taustatiedot.kirjoilla_olo_kuukausia</stream_name>
+          <column_name>taustatiedot.valmistumisvuosi</column_name>
+          <stream_name>taustatiedot.valmistumisvuosi</stream_name>
+        </field>
+        <field>
+          <column_name>tutkintotunnus</column_name>
+          <stream_name>tutkintotunnus</stream_name>
+        </field>
+        <field>
+          <column_name>vaihtoehto</column_name>
+          <stream_name>vaihtoehto</stream_name>
+        </field>
+        <field>
+          <column_name>valmistavan_koulutuksen_jarjestaja</column_name>
+          <stream_name>valmistavan_koulutuksen_jarjestaja</stream_name>
+        </field>
+        <field>
+          <column_name>valmistavan_koulutuksen_oppilaitos</column_name>
+          <stream_name>valmistavan_koulutuksen_oppilaitos</stream_name>
+        </field>
+        <field>
+          <column_name>valtakunnallinen</column_name>
+          <stream_name>valtakunnallinen</stream_name>
+        </field>
+        <field>
+          <column_name>vapaateksti</column_name>
+          <stream_name>vapaateksti</stream_name>
+        </field>
+        <field>
+          <column_name>vastaajaid</column_name>
+          <stream_name>vastaajaid</stream_name>
+        </field>
+        <field>
+          <column_name>vastaajatunnus</column_name>
+          <stream_name>vastaajatunnus</stream_name>
+        </field>
+        <field>
+          <column_name>vastausid</column_name>
+          <stream_name>vastausid</stream_name>
+        </field>
+        <field>
+          <column_name>vastaustyyppi</column_name>
+          <stream_name>vastaustyyppi</stream_name>
         </field>
         <field>
           <column_name>loadtime</column_name>
@@ -654,7 +683,7 @@
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
       <xloc>80</xloc>
-      <yloc>416</yloc>
+      <yloc>464</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -1233,8 +1262,8 @@
     </step>
 
   <step>
-    <name>Table output</name>
-    <type>TableOutput</type>
+    <name>Split Fields</name>
+    <type>FieldSplitter</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -1243,254 +1272,44 @@
            <method>none</method>
            <schema_name/>
            </partitioning>
-    <connection>Antero</connection>
-    <schema>sa</schema>
-    <table>sa_arvo_uraseuranta</table>
-    <commit>1000</commit>
-    <truncate>Y</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>N</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>N</return_keys>
-    <return_field/>
-    <fields>
-        <field>
-          <column_name>jarjestys</column_name>
-          <stream_name>jarjestys</stream_name>
-        </field>
-        <field>
-          <column_name>jatkokysymys</column_name>
-          <stream_name>jatkokysymys</stream_name>
-        </field>
-        <field>
-          <column_name>jatkokysymys_kysymysid</column_name>
-          <stream_name>jatkokysymys_kysymysid</stream_name>
-        </field>
-        <field>
-          <column_name>koulutustoimija</column_name>
-          <stream_name>koulutustoimija</stream_name>
-        </field>
-        <field>
-          <column_name>kysely_en</column_name>
-          <stream_name>kysely_en</stream_name>
-        </field>
-        <field>
-          <column_name>kysely_fi</column_name>
-          <stream_name>kysely_fi</stream_name>
-        </field>
-        <field>
-          <column_name>kysely_sv</column_name>
-          <stream_name>kysely_sv</stream_name>
-        </field>
-        <field>
-          <column_name>kyselyid</column_name>
-          <stream_name>kyselyid</stream_name>
-        </field>
-        <field>
-          <column_name>kyselykerta</column_name>
-          <stream_name>kyselykerta</stream_name>
-        </field>
-        <field>
-          <column_name>kyselykertaid</column_name>
-          <stream_name>kyselykertaid</stream_name>
-        </field>
-        <field>
-          <column_name>kysymys_en</column_name>
-          <stream_name>kysymys_en</stream_name>
-        </field>
-        <field>
-          <column_name>kysymys_fi</column_name>
-          <stream_name>kysymys_fi</stream_name>
-        </field>
-        <field>
-          <column_name>kysymys_sv</column_name>
-          <stream_name>kysymys_sv</stream_name>
-        </field>
-        <field>
-          <column_name>kysymysid</column_name>
-          <stream_name>kysymysid</stream_name>
-        </field>
-        <field>
-          <column_name>kysymysryhma_en</column_name>
-          <stream_name>kysymysryhma_en</stream_name>
-        </field>
-        <field>
-          <column_name>kysymysryhma_fi</column_name>
-          <stream_name>kysymysryhma_fi</stream_name>
-        </field>
-        <field>
-          <column_name>kysymysryhma_jarjestys</column_name>
-          <stream_name>kysymysryhma_jarjestys</stream_name>
-        </field>
-        <field>
-          <column_name>kysymysryhma_sv</column_name>
-          <stream_name>kysymysryhma_sv</stream_name>
-        </field>
-        <field>
-          <column_name>kysymysryhmaid</column_name>
-          <stream_name>kysymysryhmaid</stream_name>
-        </field>
-        <field>
-          <column_name>monivalintavaihtoehto_en</column_name>
-          <stream_name>monivalintavaihtoehto_en</stream_name>
-        </field>
-        <field>
-          <column_name>monivalintavaihtoehto_fi</column_name>
-          <stream_name>monivalintavaihtoehto_fi</stream_name>
-        </field>
-        <field>
-          <column_name>monivalintavaihtoehto_sv</column_name>
-          <stream_name>monivalintavaihtoehto_sv</stream_name>
-        </field>
-        <field>
-          <column_name>numerovalinta</column_name>
-          <stream_name>numerovalinta</stream_name>
-        </field>
-        <field>
-          <column_name>taustatiedot.aidinkieli</column_name>
-          <stream_name>taustatiedot.aidinkieli</stream_name>
-        </field>
-        <field>
-          <column_name>taustatiedot.arvosana</column_name>
-          <stream_name>taustatiedot.arvosana</stream_name>
-        </field>
-        <field>
-          <column_name>taustatiedot.asteikko</column_name>
-          <stream_name>taustatiedot.asteikko</stream_name>
-        </field>
-        <field>
-          <column_name>taustatiedot.asuinkunta_koodi</column_name>
-          <stream_name>taustatiedot.asuinkunta_koodi</stream_name>
-        </field>
-        <field>
-          <column_name>taustatiedot.ika_valmistuessa</column_name>
-          <stream_name>taustatiedot.ika_valmistuessa</stream_name>
-        </field>
-        <field>
-          <column_name>taustatiedot.kansalaisuus</column_name>
-          <stream_name>taustatiedot.kansalaisuus</stream_name>
-        </field>
-        <field>
-          <column_name>taustatiedot.kirjoilla_olo_kuukausia</column_name>
-          <stream_name>taustatiedot.kirjoilla_olo_kuukausia</stream_name>
-        </field>
-        <field>
-          <column_name>taustatiedot.koulutusalakoodi</column_name>
-          <stream_name>taustatiedot.koulutusalakoodi</stream_name>
-        </field>
-        <field>
-          <column_name>taustatiedot.laajuus</column_name>
-          <stream_name>taustatiedot.laajuus</stream_name>
-        </field>
-        <field>
-          <column_name>taustatiedot.lasnaolo_lukukausia</column_name>
-          <stream_name>taustatiedot.lasnaolo_lukukausia</stream_name>
-        </field>
-        <field>
-          <column_name>taustatiedot.paaaine</column_name>
-          <stream_name>taustatiedot.paaaine</stream_name>
-        </field>
-        <field>
-          <column_name>taustatiedot.sukupuoli</column_name>
-          <stream_name>taustatiedot.sukupuoli</stream_name>
-        </field>
-        <field>
-          <column_name>taustatiedot.tutkinnon_taso</column_name>
-          <stream_name>taustatiedot.tutkinnon_taso</stream_name>
-        </field>
-        <field>
-          <column_name>taustatiedot.valintavuosi</column_name>
-          <stream_name>taustatiedot.valintavuosi</stream_name>
-        </field>
-        <field>
-          <column_name>taustatiedot.valmistumisajankohta</column_name>
-          <stream_name>taustatiedot.valmistumisajankohta</stream_name>
-        </field>
-        <field>
-          <column_name>taustatiedot.valmistumisvuosi</column_name>
-          <stream_name>taustatiedot.valmistumisvuosi</stream_name>
-        </field>
-        <field>
-          <column_name>tutkintotunnus</column_name>
-          <stream_name>tutkintotunnus</stream_name>
-        </field>
-        <field>
-          <column_name>vaihtoehto</column_name>
-          <stream_name>vaihtoehto</stream_name>
-        </field>
-        <field>
-          <column_name>valmistavan_koulutuksen_jarjestaja</column_name>
-          <stream_name>valmistavan_koulutuksen_jarjestaja</stream_name>
-        </field>
-        <field>
-          <column_name>valmistavan_koulutuksen_oppilaitos</column_name>
-          <stream_name>valmistavan_koulutuksen_oppilaitos</stream_name>
-        </field>
-        <field>
-          <column_name>valtakunnallinen</column_name>
-          <stream_name>valtakunnallinen</stream_name>
-        </field>
-        <field>
-          <column_name>vapaateksti</column_name>
-          <stream_name>vapaateksti</stream_name>
-        </field>
-        <field>
-          <column_name>vastaajaid</column_name>
-          <stream_name>vastaajaid</stream_name>
-        </field>
-        <field>
-          <column_name>vastaajatunnus</column_name>
-          <stream_name>vastaajatunnus</stream_name>
-        </field>
-        <field>
-          <column_name>vastausid</column_name>
-          <stream_name>vastausid</stream_name>
-        </field>
-        <field>
-          <column_name>vastaustyyppi</column_name>
-          <stream_name>vastaustyyppi</stream_name>
-        </field>
-        <field>
-          <column_name>loadtime</column_name>
-          <stream_name>loadtime</stream_name>
-        </field>
-        <field>
-          <column_name>username</column_name>
-          <stream_name>username</stream_name>
-        </field>
-        <field>
-          <column_name>source</column_name>
-          <stream_name>source</stream_name>
-        </field>
-    </fields>
-     <cluster_schema/>
+   <splitfield>jarjestys</splitfield>
+   <delimiter>.</delimiter>
+   <enclosure/>
+    <fields>      <field>        <name>jarjestys</name>
+        <id/>
+        <idrem>N</idrem>
+        <type>Integer</type>
+        <format/>
+        <group/>
+        <decimal/>
+        <currency/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <nullif/>
+        <ifnull/>
+        <trimtype>none</trimtype>
+      </field>      <field>        <name>jarjestys2</name>
+        <id/>
+        <idrem>N</idrem>
+        <type>Integer</type>
+        <format/>
+        <group/>
+        <decimal/>
+        <currency/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <nullif/>
+        <ifnull/>
+        <trimtype>none</trimtype>
+      </field>    </fields>     <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>208</xloc>
-      <yloc>336</yloc>
+      <xloc>80</xloc>
+      <yloc>112</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
 
   <step_error_handling>
-      <error>
-        <source_step>load into sa.sa_arvo_uraseuranta</source_step>
-        <target_step/>
-        <is_enabled>Y</is_enabled>
-        <nr_valuename/>
-        <descriptions_valuename/>
-        <fields_valuename/>
-        <codes_valuename/>
-        <max_errors/>
-        <max_pct_errors/>
-        <min_pct_rows/>
-      </error>
   </step_error_handling>
    <slave-step-copy-partition-distribution>
 </slave-step-copy-partition-distribution>
