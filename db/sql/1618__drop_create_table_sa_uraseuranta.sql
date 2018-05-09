@@ -67,8 +67,7 @@ CREATE TABLE sa.sa_uraseuranta
 	[taustatiedot.valmistumisvuosi] [int] NULL,
 	[taustatiedot.lasnaolo_lukukausia] [text] NULL,
 	[taustatiedot.valmistumisajankohta] [text] NULL,
-	[taustatiedot.kirjoilla_olo_kuukausia] [int] NULL,
-
+	[taustatiedot.kirjoilla_olo_kuukausia] [int] NULL
   , loadtime DATETIME
   , username VARCHAR(100)
   , source VARCHAR(100)
