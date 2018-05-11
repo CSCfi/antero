@@ -64,13 +64,12 @@ CREATE TABLE [sa].[sa_ytl_FT3001](
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+) ON [PRIMARY]
+END
 GO
 
 ALTER TABLE [sa].[sa_ytl_FT3001] ADD  CONSTRAINT [DF__sa_ytl_FT3001__loadtime]  DEFAULT (getdate()) FOR [loadtime]
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[DF__sa_ytl_FT3001__username]') AND type = 'D')
 
 ALTER TABLE [sa].[sa_ytl_FT3001] ADD  CONSTRAINT [DF__sa_ytl_FTSD3001__username]  DEFAULT (suser_name()) FOR [username]
-GO
-
-END
