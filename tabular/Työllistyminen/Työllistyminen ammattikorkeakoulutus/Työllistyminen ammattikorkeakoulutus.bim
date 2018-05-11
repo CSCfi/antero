@@ -12664,15 +12664,6 @@
                       <AttributeID>Landskap där examen avlagts</AttributeID>
                     </Attribute>
                     <Attribute>
-                      <AttributeID>Statistikår</AttributeID>
-                    </Attribute>
-                    <Attribute>
-                      <AttributeID>Utbildnområde nivå 1</AttributeID>
-                    </Attribute>
-                    <Attribute>
-                      <AttributeID>Koodit Ammattiluokitus taso 1</AttributeID>
-                    </Attribute>
-                    <Attribute>
                       <AttributeID>Studieområde 2002</AttributeID>
                     </Attribute>
                     <Attribute>
@@ -12761,6 +12752,15 @@
                     </Attribute>
                     <Attribute>
                       <AttributeID>Yrkesgrupp 1</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Statistikår</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Utbildnområde nivå 1</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Koodit Ammattiluokitus taso 1</AttributeID>
                     </Attribute>
                   </Attributes>
                 </Dimension>
@@ -13137,9 +13137,6 @@
                       <AttributeID>Utbildningsområde 2002</AttributeID>
                     </Attribute>
                     <Attribute>
-                      <AttributeID>Utbildnnivå nivå 2</AttributeID>
-                    </Attribute>
-                    <Attribute>
                       <AttributeID>Utbildningsnivå 2002</AttributeID>
                     </Attribute>
                     <Attribute>
@@ -13171,6 +13168,9 @@
                     </Attribute>
                     <Attribute>
                       <AttributeID>Studieområde 2002</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Utbildnnivå nivå 2</AttributeID>
                     </Attribute>
                   </Attributes>
                 </Dimension>
@@ -19411,7 +19411,7 @@
               <Commands>
                 <Command>
                   <Text>CALCULATE; 
-CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1; 
+CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1, VISIBLE = 0; 
 ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measures defined]; </Text>
                 </Command>
                 <Command>
@@ -20262,6 +20262,63 @@ CREATE MEASURE 'Muuttujat'[Completers]=[1 v. tutkinnon jälkeen];
                     <Annotation>
                       <Name>FullName</Name>
                       <Value>Completers</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[1 v. tutkinnon jälkeen (suojaamaton)]=SUM([lkm_1vr2]);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>1 v. tutkinnon jälkeen (suojaamaton)</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[3 v. tutkinnon jälkeen (suojaamaton)]=SUM([lkm_3vr2]);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>3 v. tutkinnon jälkeen (suojaamaton)</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[5 v. tutkinnon jälkeen (suojaamaton)]= SUM([lkm_5vr2]);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>5 v. tutkinnon jälkeen (suojaamaton)</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -21215,6 +21272,69 @@ CREATE MEASURE 'Muuttujat'[Completers]=[1 v. tutkinnon jälkeen];
                   <CalculationReference>[Completers]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="General" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[1 v. tutkinnon jälkeen (suojaamaton)]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>''</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="General" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[3 v. tutkinnon jälkeen (suojaamaton)]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>''</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="General" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[5 v. tutkinnon jälkeen (suojaamaton)]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>''</FormatString>
                 </CalculationProperty>
                 <CalculationProperty>
                   <CalculationReference>Measures.[__No measures defined]</CalculationReference>
