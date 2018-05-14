@@ -2,7 +2,7 @@ USE [ANTERO]
 
 IF EXISTS (
   select * from INFORMATION_SCHEMA.TABLES
-  where TABLE_SCHEMA='dw' and TABLE_NAME='erikoistumiskoulutus')
+  where TABLE_SCHEMA='dw' and TABLE_NAME='d_erikoistumiskoulutus')
 
 BEGIN
 ALTER TABLE [dw].[d_erikoistumiskoulutus] DROP  CONSTRAINT [DF__d_erikoistumiskoulutus __loadtime__5224328E]
@@ -10,15 +10,12 @@ ALTER TABLE [dw].[d_erikoistumiskoulutus] DROP  CONSTRAINT [DF__d_erikoistumisko
 ALTER TABLE [dw].[d_erikoistumiskoulutus] DROP CONSTRAINT [DF__d_erikoistumiskoulutus __username__531856C7]
 
 DROP TABLE [dw].[d_erikoistumiskoulutus]
-
-GO
-
 END
 
 
-IF NOTEXISTS (
+IF NOT EXISTS (
   select * from INFORMATION_SCHEMA.TABLES
-  where TABLE_SCHEMA='dw' and TABLE_NAME='erikoistumiskoulutus')
+  where TABLE_SCHEMA='dw' and TABLE_NAME='d_erikoistumiskoulutus')
 
 BEGIN
 CREATE TABLE [dw].[d_erikoistumiskoulutus](
