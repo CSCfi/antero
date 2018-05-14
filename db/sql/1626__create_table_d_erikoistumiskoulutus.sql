@@ -5,14 +5,6 @@ IF NOT EXISTS (
   where TABLE_SCHEMA='dw' and TABLE_NAME='erikoistumiskoulutus')
 
 BEGIN
-GO
-
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
 CREATE TABLE [dw].[d_erikoistumiskoulutus ](
 	[id] [int] IDENTITY(0,1) NOT NULL,
 	[erikoistumiskoulutus _koodi] [varchar](3) NOT NULL,
