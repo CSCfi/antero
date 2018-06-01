@@ -20,7 +20,7 @@ CREATE TABLE sa.sa_virta_otp_erikoistumiskoulutukset(
 		source nvarchar(255) NULL,
 		username nvarchar(128) NOT NULL,
 
-	CONSTRAINT PK_korkeakouluhaut_hakijat_tutkinnot PRIMARY KEY CLUSTERED (id ASC)
+	CONSTRAINT PK_erikoistumiskoulutukset PRIMARY KEY CLUSTERED (id ASC)
 )
 ;
 
