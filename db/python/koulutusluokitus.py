@@ -28,6 +28,7 @@ def makerow():
     'isced2011koulutusastetaso1koodi':None, 'isced2011koulutusastetaso1nimi':None, 'isced2011koulutusastetaso1nimi_sv':None, 'isced2011koulutusastetaso1nimi_en':None,
     'isced2011koulutusastetaso2koodi':None, 'isced2011koulutusastetaso2nimi':None, 'isced2011koulutusastetaso2nimi_sv':None, 'isced2011koulutusastetaso2nimi_en':None,
     'isced2011koulutusalataso1koodi':None, 'isced2011koulutusalataso1nimi':None, 'isced2011koulutusalataso1nimi_sv':None, 'isced2011koulutusalataso1nimi_en':None,
+    'koulutusluokitus2016koulutusalataso1koodi':None, 'koulutusluokitus2016koulutusalataso1nimi':None, 'koulutusluokitus2016koulutusalataso1nimi_sv':None, 'koulutusluokitus2016koulutusalataso1nimi_en':None,
     'isced2011koulutusalataso2koodi':None, 'isced2011koulutusalataso2nimi':None, 'isced2011koulutusalataso2nimi_sv':None, 'isced2011koulutusalataso2nimi_en':None,
     'isced2011koulutusalataso3koodi':None, 'isced2011koulutusalataso3nimi':None, 'isced2011koulutusalataso3nimi_sv':None, 'isced2011koulutusalataso3nimi_en':None,
     'okmohjauksenalakoodi':None, 'okmohjauksenalanimi':None, 'okmohjauksenalanimi_sv':None, 'okmohjauksenalanimi_en':None
@@ -143,6 +144,11 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
         row["isced2011koulutusalataso1nimi"] = getnimi(ii,"FI")
         row["isced2011koulutusalataso1nimi_sv"] = getnimi(ii,"SV")
         row["isced2011koulutusalataso1nimi_en"] = getnimi(ii,"EN")
+      if ii["koodisto"]["koodistoUri"] == "kansallinenkoulutusluokitus2016koulutusalataso1":
+        row["koulutusluokitus2016koulutusalataso1koodi"] = ii["koodiArvo"]
+        row["koulutusluokitus2016koulutusalataso1nimi"] = getnimi(ii,"FI")
+        row["koulutusluokitus2016koulutusalataso1nimi_sv"] = getnimi(ii,"SV")
+        row["koulutusluokitus2016koulutusalataso1nimi_en"] = getnimi(ii,"EN")
       if ii["koodisto"]["koodistoUri"] == "isced2011koulutusalataso2":
         row["isced2011koulutusalataso2koodi"] = ii["koodiArvo"]
         row["isced2011koulutusalataso2nimi"] = getnimi(ii,"FI")
