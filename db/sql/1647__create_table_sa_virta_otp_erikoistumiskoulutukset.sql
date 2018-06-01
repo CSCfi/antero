@@ -14,7 +14,7 @@ CREATE TABLE sa.sa_virta_otp_erikoistumiskoulutukset(
 		ohjauksenalakoodi nvarchar(20) NULL,
 		opiskeluoikeudenalkamispaivamaara bigint NULL,
 		oppilaitoskoodi nvarchar(8) NULL,
-		sukupuolikoodi (5) NOT NULL,
+		sukupuolikoodi nvarchar (5) NOT NULL,
 
 		loadtime datetime2(4) NOT NULL,
 		source nvarchar(255) NULL,
