@@ -2373,7 +2373,7 @@
           },
           {
             "name": "Aidosti ensikertaiset hakijat",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Muun opiskeluoikeuden aloitusvuosi]=\"Ei aiempaa opiskeluoikeutta\",Muuttujat[Aiemman tutkinnon suoritusvuosi]=\"Ei aiempaa tutkintoa\")",
+            "expression": "CALCULATE([Kaikki hakijat],FILTER(VALUES(Muuttujat[Muun opiskeluoikeuden aloitusvuosi]),[Muun opiskeluoikeuden aloitusvuosi]=\"Ei aiempaa opiskeluoikeutta\"),FILTER(VALUES(Muuttujat[Aiemman tutkinnon suoritusvuosi]),[Aiemman tutkinnon suoritusvuosi]=\"Ei aiempaa tutkintoa\"))",
             "formatString": "#,0"
           },
           {
@@ -2388,17 +2388,17 @@
           },
           {
             "name": "Ensikertaisena kohdeltavat hakijat",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Ensikertaisena kohdeltava hakija]=\"Ensikertainen hakija\")",
+            "expression": "CALCULATE([Kaikki hakijat],FILTER(VALUES(Muuttujat[Ensikertaisena kohdeltava hakija]),[Ensikertaisena kohdeltava hakija]=\"Ensikertainen hakija\"))",
             "formatString": "#,0"
           },
           {
             "name": "Hakijat joilla aiempi tutkinto",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Aiemman tutkinnon suoritusvuosi]<>\"Ei aiempaa tutkintoa\")",
+            "expression": "CALCULATE([Kaikki hakijat],FILTER(VALUES(Muuttujat[Aiemman tutkinnon suoritusvuosi]),[Aiemman tutkinnon suoritusvuosi]<>\"Ei aiempaa tutkintoa\"))",
             "formatString": "#,0"
           },
           {
             "name": "Hakijat joilla aiempi opiskeluoikeus",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Muun opiskeluoikeuden aloitusvuosi]<>\"Ei aiempaa opiskeluoikeutta\")",
+            "expression": "CALCULATE([Kaikki hakijat],FILTER(VALUES(Muuttujat[Muun opiskeluoikeuden aloitusvuosi]),[Muun opiskeluoikeuden aloitusvuosi]<>\"Ei aiempaa opiskeluoikeutta\"))",
             "formatString": "#,0"
           },
           {
@@ -2418,22 +2418,22 @@
           },
           {
             "name": "Valitut (kaikki)",
-            "expression": "CALCULATE(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Valitut2]=1)",
+            "expression": "CALCULATE([Kaikki hakijat],FILTER(VALUES(Muuttujat[Valitut2]),[Valitut2]=1))",
             "formatString": "#,0"
           },
           {
             "name": "Valitut (aidosti ensikertaiset hakijat)",
-            "expression": "CALCULATE(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Valitut2]=1,Muuttujat[Muun opiskeluoikeuden aloitusvuosi]=\"Ei aiempaa opiskeluoikeutta\",Muuttujat[Aiemman tutkinnon suoritusvuosi]=\"Ei aiempaa tutkintoa\")",
+            "expression": "CALCULATE([Aidosti ensikertaiset hakijat],FILTER(VALUES(Muuttujat[Valitut2]),[Valitut2]=1))",
             "formatString": "#,0"
           },
           {
             "name": "Valitut (aiempi tutkinto)",
-            "expression": "CALCULATE(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Valitut2]=1,Muuttujat[Aiemman tutkinnon suoritusvuosi]<>\"Ei aiempaa tutkintoa\")",
+            "expression": "CALCULATE([Hakijat joilla aiempi tutkinto],FILTER(VALUES(Muuttujat[Valitut2]),[Valitut2]=1))",
             "formatString": "#,0"
           },
           {
             "name": "Valitut (aiempi opiskeluoikeus)",
-            "expression": "CALCULATE(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Valitut2]=1,Muuttujat[Muun opiskeluoikeuden aloitusvuosi]<>\"Ei aiempaa opiskeluoikeutta\")",
+            "expression": "CALCULATE([Hakijat joilla aiempi opiskeluoikeus],FILTER(VALUES(Muuttujat[Valitut2]),[Valitut2]=1))",
             "formatString": "#,0"
           },
           {
@@ -2443,7 +2443,7 @@
           },
           {
             "name": "Valitut (ensikertaisena kohdeltavat)",
-            "expression": "CALCULATE(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Valitut2]=1,Muuttujat[Ensikertaisena kohdeltava hakija]=\"Ensikertainen hakija\")",
+            "expression": "CALCULATE([Ensikertaisena kohdeltavat hakijat],FILTER(VALUES(Muuttujat[Valitut2]),[Valitut2]=1))",
             "formatString": "#,0"
           },
           {
@@ -2453,22 +2453,22 @@
           },
           {
             "name": "Paikan vastaanottaneet (kaikki)",
-            "expression": "calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Paikan vastaanottaneet2]=1)",
+            "expression": "calculate([Kaikki hakijat],FILTER(VALUES(Muuttujat[Paikan vastaanottaneet2]),[Paikan vastaanottaneet2]=1))",
             "formatString": "#,0"
           },
           {
             "name": "Paikan vastaanottaneet (aidosti ensikertaiset)",
-            "expression": "calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Paikan vastaanottaneet2]=1,Muuttujat[Muun opiskeluoikeuden aloitusvuosi]=\"Ei aiempaa opiskeluoikeutta\",Muuttujat[Aiemman tutkinnon suoritusvuosi]=\"Ei aiempaa tutkintoa\")",
+            "expression": "calculate([Aidosti ensikertaiset hakijat],FILTER(VALUES(Muuttujat[Paikan vastaanottaneet2]),[Paikan vastaanottaneet2]=1))",
             "formatString": "#,0"
           },
           {
             "name": "Paikan vastaanottaneet (aiempi tutkinto)",
-            "expression": "calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Paikan vastaanottaneet2]=1,Muuttujat[Aiemman tutkinnon suoritusvuosi]<>\"Ei aiempaa tutkintoa\")",
+            "expression": "calculate([Hakijat joilla aiempi tutkinto],FILTER(VALUES(Muuttujat[Paikan vastaanottaneet2]),[Paikan vastaanottaneet2]=1))",
             "formatString": "#,0"
           },
           {
             "name": "Paikan vastaanottaneet (aiempi opiskeluoikeus)",
-            "expression": "calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Paikan vastaanottaneet2]=1,Muuttujat[Muun opiskeluoikeuden aloitusvuosi]<>\"Ei aiempaa opiskeluoikeutta\")",
+            "expression": "calculate([Hakijat joilla aiempi opiskeluoikeus],FILTER(VALUES(Muuttujat[Paikan vastaanottaneet2]),[Paikan vastaanottaneet2]=1))",
             "formatString": "#,0"
           },
           {
@@ -2478,22 +2478,22 @@
           },
           {
             "name": "Aloittaneet (kaikki)",
-            "expression": "calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet2]=1)",
+            "expression": "calculate([Kaikki hakijat],FILTER(VALUES(Muuttujat[Aloittaneet2]),[Aloittaneet2]=1))",
             "formatString": "#,0"
           },
           {
             "name": "Aloittaneet (aidosti ensikertaiset)",
-            "expression": "calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet2]=1,Muuttujat[Muun opiskeluoikeuden aloitusvuosi]=\"Ei aiempaa opiskeluoikeutta\",Muuttujat[Aiemman tutkinnon suoritusvuosi]=\"Ei aiempaa tutkintoa\")",
+            "expression": "calculate([Aidosti ensikertaiset hakijat],FILTER(VALUES(Muuttujat[Aloittaneet2]),[Aloittaneet2]=1))",
             "formatString": "#,0"
           },
           {
             "name": "Aloittaneet (aiempi tutkinto)",
-            "expression": "calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet2]=1,Muuttujat[Aiemman tutkinnon suoritusvuosi]<>\"Ei aiempaa tutkintoa\")",
+            "expression": "calculate([Hakijat joilla aiempi tutkinto],FILTER(VALUES(Muuttujat[Aloittaneet2]),[Aloittaneet2]=1))",
             "formatString": "#,0"
           },
           {
             "name": "Aloittaneet (aiempi opiskeluoikeus)",
-            "expression": "calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet2]=1,Muuttujat[Muun opiskeluoikeuden aloitusvuosi]<>\"Ei aiempaa opiskeluoikeutta\")",
+            "expression": "calculate([Hakijat joilla aiempi opiskeluoikeus],FILTER(VALUES(Muuttujat[Aloittaneet2]),[Aloittaneet2]=1))",
             "formatString": "#,0"
           },
           {
@@ -2503,12 +2503,13 @@
           },
           {
             "name": "Paikan vastaanottaneet (ensikertaisena kohdeltavat)",
-            "expression": "calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Paikan vastaanottaneet2]=1,Muuttujat[Ensikertaisena kohdeltava hakija]=\"Ensikertainen hakija\")",
+            "expression": "calculate([Ensikertaisena kohdeltavat hakijat],FILTER(VALUES(Muuttujat[Paikan vastaanottaneet2]),[Paikan vastaanottaneet2]=1))",
             "formatString": "#,0"
           },
           {
             "name": "Aloittaneet (ensikertaisena kohdeltavat)",
-            "expression": "calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet2]=1,Muuttujat[Ensikertaisena kohdeltava hakija]=\"Ensikertainen hakija\")"
+            "expression": "calculate([Ensikertaisena kohdeltavat hakijat],FILTER(VALUES(Muuttujat[Aloittaneet2]),[Aloittaneet2]=1))",
+            "formatString": "#,0"
           },
           {
             "name": "Ensikertaisena kohdeltavien osuus paikan vastaanottaneista",
