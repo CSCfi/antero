@@ -508,6 +508,29 @@
             "name": "Art discipline",
             "dataType": "string",
             "sourceColumn": "Art discipline"
+          },
+          {
+            "type": "calculated",
+            "name": "Jufo-painotus 2015-2016",
+            "dataType": "double",
+            "isDataTypeInferred": false,
+            "expression": [
+              "if(AND([Koodit Julkaisun pääluokka]=\"A\",[Koodit Julkaisufoorumitaso]=\"0\"),1,if(AND([Koodit Julkaisun pääluokka]=\"A\",[Koodit Julkaisufoorumitaso]=\"1\"),1.5,if(AND([Koodit Julkaisun pääluokka]=\"A\",[Koodit Julkaisufoorumitaso]=\"2\"),3,if(AND([Koodit Julkaisun pääluokka]=\"A\",[Koodit Julkaisufoorumitaso]=\"3\"),3,if([Koodit Julkaisutyyppi]=\"B1\",0.1,if([Koodit Julkaisutyyppi]=\"B2\",0.1,if([Koodit Julkaisutyyppi]=\"B3\",0.1,if(AND([Koodit Julkaisutyyppi]=\"C1\",[Koodit Julkaisufoorumitaso]=\"0\"),4,if(AND([Koodit Julkaisutyyppi]=\"C1\",[Koodit Julkaisufoorumitaso]=\"1\"),6,",
+              "if(AND([Koodit Julkaisutyyppi]=\"C1\",[Koodit Julkaisufoorumitaso]=\"2\"),12,if(AND([Koodit Julkaisutyyppi]=\"C1\",[Koodit Julkaisufoorumitaso]=\"3\"),12,if([Koodit Julkaisutyyppi]=\"C2\",0.1,if([Koodit Julkaisutyyppi]=\"D1\",0.1,if([Koodit Julkaisutyyppi]=\"D2\",0.1,if([Koodit Julkaisutyyppi]=\"D3\",0.1,if([Koodit Julkaisutyyppi]=\"D4\",0.1,if([Koodit Julkaisutyyppi]=\"D5\",0.4,if([Koodit Julkaisutyyppi]=\"E1\",0.1,if([Koodit Julkaisutyyppi]=\"E2\",0.4,0)))))))))))))))))))"
+            ],
+            "displayFolder": "Julkaisumuuttujat"
+          },
+          {
+            "type": "calculated",
+            "name": "Jufo-painotus nykyinen",
+            "dataType": "double",
+            "isDataTypeInferred": false,
+            "expression": [
+              "if(AND([Koodit Julkaisun pääluokka]=\"A\",[Koodit Julkaisufoorumitaso]=\"0\"),0.1,if(AND([Koodit Julkaisun pääluokka]=\"A\",[Koodit Julkaisufoorumitaso]=\"1\"),1,if(AND([Koodit Julkaisun pääluokka]=\"A\",[Koodit Julkaisufoorumitaso]=\"2\"),3,if(AND([Koodit Julkaisun pääluokka]=\"A\",[Koodit Julkaisufoorumitaso]=\"3\"),4,if([Koodit Julkaisutyyppi]=\"B1\",0.1,if([Koodit Julkaisutyyppi]=\"B2\",0.1,if([Koodit Julkaisutyyppi]=\"B3\",0.1,if(AND([Koodit Julkaisutyyppi]=\"C1\",[Koodit Julkaisufoorumitaso]=\"0\"),0.4,if(AND([Koodit Julkaisutyyppi]=\"C1\",[Koodit Julkaisufoorumitaso]=\"1\"),4,",
+              "if(AND([Koodit Julkaisutyyppi]=\"C1\",[Koodit Julkaisufoorumitaso]=\"2\"),12,if(AND([Koodit Julkaisutyyppi]=\"C1\",[Koodit Julkaisufoorumitaso]=\"3\"),16,if(AND([Koodit Julkaisutyyppi]=\"C2\",[Koodit Julkaisufoorumitaso]=\"0\"),0.1,if(AND([Koodit Julkaisutyyppi]=\"C2\",[Koodit Julkaisufoorumitaso]=\"1\"),1,if(AND([Koodit Julkaisutyyppi]=\"C2\",[Koodit Julkaisufoorumitaso]=\"2\"),3,if(AND([Koodit Julkaisutyyppi]=\"C2\",[Koodit Julkaisufoorumitaso]=\"3\"),4,if([Koodit Julkaisutyyppi]=\"D1\",0.1,if([Koodit Julkaisutyyppi]=\"D2\",0.1,if([Koodit Julkaisutyyppi]=\"D3\",0.1,if([Koodit Julkaisutyyppi]=\"D4\",0.1,",
+              "if([Koodit Julkaisutyyppi]=\"D5\",0.4,if([Koodit Julkaisutyyppi]=\"D6\",0.1,if([Koodit Julkaisutyyppi]=\"E1\",0.1,if([Koodit Julkaisutyyppi]=\"E2\",0.4,if([Koodit Julkaisutyyppi]=\"E3\",0.1,0))))))))))))))))))))))))"
+            ],
+            "displayFolder": "Julkaisumuuttujat"
           }
         ],
         "partitions": [
@@ -2467,6 +2490,11 @@
           {
             "name": "Jufot (Suhteellinen)",
             "expression": "CONCATENATE(FORMAT([apufunktio]/CALCULATE([apufunktio],ALL(Muuttujat[Yliopisto])),\"FIXED\"),\" (\"&CALCULATE(DISTINCTCOUNT(Muuttujat[JulkaisunTunnus]),FILTER(Muuttujat,OR(OR(Muuttujat[Jufotaso uusi int]=1,Muuttujat[Jufotaso uusi int]=2),Muuttujat[Jufotaso uusi int]=3)),FILTER(Muuttujat,OR(Muuttujat[Koodit Julkaisun pääluokka]=\"A\",Muuttujat[Koodit Julkaisun pääluokka]=\"C\")))&\")\")"
+          },
+          {
+            "name": "Julkaisut jufo-painotetut",
+            "expression": "if(sum([Jufo-painotus nykyinen])=0,blank(),sum([Jufo-painotus nykyinen]))",
+            "formatString": "#,0.0"
           }
         ],
         "annotations": [
@@ -5456,6 +5484,122 @@
             "measures": [
               {
                 "name": "Publications"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Julkaisut_jufo_painotetut",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Avoin saatavuus"
+              },
+              {
+                "name": "Jufotaso"
+              },
+              {
+                "name": "Jufotaso uusi 2015->"
+              },
+              {
+                "name": "Jufotaso vanha 2011-2014"
+              },
+              {
+                "name": "Julkaisu rinnakkaistallennettu"
+              },
+              {
+                "name": "Julkaisun kansainvälisyys"
+              },
+              {
+                "name": "Julkaisun pääluokka"
+              },
+              {
+                "name": "Julkaisutyyppi"
+              },
+              {
+                "name": "Kansainvälinen yhteisjulkaisu"
+              },
+              {
+                "name": "Koodit Julkaisufoorumitaso"
+              },
+              {
+                "name": "Koodit Julkaisun kansainvälisyys"
+              },
+              {
+                "name": "Koodit Julkaisun pääluokka"
+              },
+              {
+                "name": "Koodit Julkaisutyyppi"
+              },
+              {
+                "name": "Koodit Kansainvälinen yhteisjulkaisu"
+              },
+              {
+                "name": "Koodit Koulutusala 95"
+              },
+              {
+                "name": "Koodit OKM ohjauksen ala"
+              },
+              {
+                "name": "Koodit Päätieteenala"
+              },
+              {
+                "name": "Koodit Tieteenala"
+              },
+              {
+                "name": "Koulutusala 95"
+              },
+              {
+                "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Päätieteenala"
+              },
+              {
+                "name": "Taiteenala"
+              },
+              {
+                "name": "Tieteenala"
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Yhteisjulk. muu kotim. tutkimusorganisaatio"
+              },
+              {
+                "name": "Yhteisjulk. valtion sektoritutkimuslaitos"
+              },
+              {
+                "name": "Yhteisjulk. yliop. sairaanhoitopiiri"
+              },
+              {
+                "name": "Yhteisjulkaisu yrityksen kanssa"
+              },
+              {
+                "name": "Yliopisto"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Julkaisut"
+              },
+              {
+                "name": "Julkaisut jufo-painotetut"
               }
             ]
           },
