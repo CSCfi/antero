@@ -85,7 +85,7 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
             row["postinumero"] = None if "postinumeroUri" not in jj["kayntiosoite"] else jj["kayntiosoite"]["postinumeroUri"].replace("posti_","")
             if "postitoimipaikka" in jj["kayntiosoite"]:
                 row["postitoimipaikka"] = jj["kayntiosoite"]["postitoimipaikka"]
-            elif "postitoimikauppa" in jj["postiosoite"]:
+            elif "postitoimipaikka" in jj["postiosoite"]:
                 row["postitoimipaikka"] = jj["postiosoite"]["postitoimipaikka"]
             else:
                 row["postitoimipaikka"] = None
