@@ -1,7 +1,7 @@
 ﻿USE [VipunenTK_lisatiedot]
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[rahoituslahde]') AND type in (N'U')) BEGIN
+IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='dbo' and TABLE_NAME='rahoituslahde') BEGIN
 
 update [dbo].[rahoituslahde]
 set     [rahoituslahde] = 'Lukukausimaksu' --old Lukukausimaksukokeilu
@@ -11,6 +11,7 @@ set     [rahoituslahde] = 'Lukukausimaksu' --old Lukukausimaksukokeilu
   where rahoituslahde_koodi = '5'
  
  END
+
   GO 
 
-USE ANTERO
+USE [ANTERO]
