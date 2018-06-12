@@ -13,5 +13,3 @@ set     [rahoituslahde] = 'Lukukausimaksu' --old Lukukausimaksukokeilu
   GO 
 
 USE ANTERO
-
-GO
