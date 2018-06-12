@@ -1,4 +1,4 @@
-﻿USE [VipunenTK_lisatiedot]
+﻿USE [VipunenTK_lisatiedot];
 GO
 
 IF EXISTS (SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='dbo' and TABLE_NAME='rahoituslahde') BEGIN
@@ -10,7 +10,7 @@ set     [rahoituslahde] = 'Lukukausimaksu' --old Lukukausimaksukokeilu
 	  ,kommentti = 'CSC Teemu' --old CSC Jarmo
   where rahoituslahde_koodi = '5'
  
- END
+ END;
 
   GO 
 
