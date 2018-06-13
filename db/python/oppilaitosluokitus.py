@@ -82,14 +82,20 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
           jj = json.loads(rr.read())
           if jj["kayntiosoite"]:
             row["osoite"] = jj["kayntiosoite"]["osoite"]
-            if jj["kayntiosoite"]["postinumeroUri"]:
-              row["postinumero"] = jj["kayntiosoite"]["postinumeroUri"].replace("posti_","")
-            row["postitoimipaikka"] = jj["kayntiosoite"]["postitoimipaikka"]
+            row["postinumero"] = None if "postinumeroUri" not in jj["kayntiosoite"] else jj["kayntiosoite"]["postinumeroUri"].replace("posti_","")
+            if "postitoimipaikka" in jj["kayntiosoite"]:
+                row["postitoimipaikka"] = jj["kayntiosoite"]["postitoimipaikka"]
+            elif "postitoimipaikka" in jj["postiosoite"]:
+                row["postitoimipaikka"] = jj["postiosoite"]["postitoimipaikka"]
+            else:
+                row["postitoimipaikka"] = None
+
           elif jj["postiosoite"]:
             row["osoite"] = jj["postiosoite"]["osoite"]
             if jj["postiosoite"]["postinumeroUri"]:
               row["postinumero"] = jj["postiosoite"]["postinumeroUri"].replace("posti_","")
             row["postitoimipaikka"] = jj["postiosoite"]["postitoimipaikka"]
+
           # todo get coordinates (see geocoding.py)
 
 
