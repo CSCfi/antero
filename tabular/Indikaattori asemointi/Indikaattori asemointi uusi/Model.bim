@@ -7,7 +7,8 @@
       {
         "name": "SqlServer dwitvipusql16 ANTERO",
         "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Integrated Security=SSPI;Persist Security Info=false;Initial Catalog=ANTERO",
-        "impersonationMode": "impersonateUnattendedAccount",
+        "impersonationMode": "impersonateAccount",
+        "account": "dwi\\t_viputk_kuutio",
         "annotations": [
           {
             "name": "ConnectionEditUISource",
@@ -19,7 +20,7 @@
         "name": "SqlServer dwitvipusql16 ANTERO 2",
         "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
         "impersonationMode": "impersonateAccount",
-        "account": "DWI\\jkarin",
+        "account": "DWI\\t_viputk_kuutio",
         "annotations": [
           {
             "name": "ConnectionEditUISource",
@@ -30,7 +31,8 @@
       {
         "name": "SqlServer DWITVIPUSQL16 VipunenTK",
         "connectionString": "Provider=SQLNCLI11;Data Source=DWITVIPUSQL16;Initial Catalog=VipunenTK;Integrated Security=SSPI;Persist Security Info=false",
-        "impersonationMode": "impersonateServiceAccount",
+        "impersonationMode": "impersonateAccount",
+        "account": "dwi\\t_viputk_kuutio",
         "annotations": [
           {
             "name": "ConnectionEditUISource",
@@ -41,7 +43,8 @@
       {
         "name": "SqlServer dwitvipusql16 VipunenTK_lisatiedot",
         "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=VipunenTK_lisatiedot;Integrated Security=SSPI;Persist Security Info=false",
-        "impersonationMode": "impersonateServiceAccount",
+        "impersonationMode": "impersonateAccount",
+        "account": "dwi\\t_viputk_kuutio",
         "annotations": [
           {
             "name": "ConnectionEditUISource",
@@ -53,7 +56,7 @@
         "name": "SqlServer dwitvipusql16 VipunenTK_lisatiedot 2",
         "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=VipunenTK_lisatiedot;Integrated Security=SSPI;Persist Security Info=false",
         "impersonationMode": "impersonateAccount",
-        "account": "dwi\\jkarin",
+        "account": "dwi\\t_viputk_kuutio",
         "annotations": [
           {
             "name": "ConnectionEditUISource",
@@ -2973,16 +2976,19 @@
             "displayFolder": "Tutkinnot\\Rakenteellinen kehittäminen"
           },
           {
-            "name": "Ulkomaalaisten AMK-tutkintojen osuus 2015-2017 KA",
+            "name": "Ulkomaalaisten AMK-tutkintojen osuus 2015-2017",
             "expression": [
               "",
-              "var lask=",
-              "CALCULATE(DIVIDE(",
-              "\tCALCULATE([Tutkinnot lkm],FILTER(VALUES(Muuttujat[Kansalaisuus]),Muuttujat[Kansalaisuus]<>\"Suomi\")),",
-              "\tCALCULATE([Tutkinnot lkm])),",
-              "FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
+              "var kaikki=CALCULATE([Tutkinnot lkm],",
+              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
+              "var ulk=CALCULATE([Tutkinnot lkm],",
+              "\tFILTER(VALUES(Muuttujat[Kansalaisuus]),Muuttujat[Kansalaisuus]<>\"Suomi\"),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),",
+              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
               "",
-              "return lask"
+              "",
+              "return DIVIDE(ulk,kaikki)"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Tutkinnot\\Rakenteellinen kehittäminen"
@@ -3092,7 +3098,7 @@
               "var jako=DIVIDE(numero,kaik)",
               "return jako"
             ],
-            "formatString": "### ### ###.###",
+            "formatString": "0.00",
             "displayFolder": "Opiskelijapalaute\\Rakenteellinen kehittäminen"
           },
           {
@@ -3223,16 +3229,19 @@
             "displayFolder": "Henkilöstö\\Asemointi"
           },
           {
-            "name": "Ulkomaalaisten AMK-tutkintojen osuus 2014-2016 KA",
+            "name": "Ulkomaalaisten AMK-tutkintojen osuus 2014-2016",
             "expression": [
               "",
-              "var lask=",
-              "CALCULATE(DIVIDE(",
-              "\tCALCULATE([Tutkinnot lkm],FILTER(VALUES(Muuttujat[Kansalaisuus]),Muuttujat[Kansalaisuus]<>\"Suomi\")),",
-              "\tCALCULATE([Tutkinnot lkm])),",
-              "FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
+              "var kaikki=CALCULATE([Tutkinnot lkm],",
+              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
+              "var ulk=CALCULATE([Tutkinnot lkm],",
+              "\tFILTER(VALUES(Muuttujat[Kansalaisuus]),Muuttujat[Kansalaisuus]<>\"Suomi\"),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017),",
+              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
               "",
-              "return lask",
+              "",
+              "return DIVIDE(ulk,kaikki)",
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
@@ -3389,7 +3398,7 @@
             "expression": [
               " ",
               "var tut=CALCULATE(SUM(Muuttujat[tutkinnot]),FILTER(VALUES(Muuttujat[koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
-              "var vuosia= CALCULATE(DISTINCTCOUNT(Muuttujat[Tilastovuosi]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
+              "var vuosia= CALCULATE(DISTINCTCOUNT(Muuttujat[Tilastovuosi]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
               "",
               "return DIVIDE(tut,vuosia)",
               ""
@@ -3900,11 +3909,13 @@
               "var hak=CALCULATE(DISTINCTCOUNT([Ensisijainen hakija]),",
               "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
               "\tNOT(ISBLANK(Muuttujat[Ensisijainen hakija])),",
-              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"))",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
               "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
               "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
               "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
-              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"))",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
               "return DIVIDE(hak,vast)"
             ],
             "formatString": "0.0",
@@ -3917,11 +3928,13 @@
               "var hak=CALCULATE(DISTINCTCOUNT([Ensisijainen hakija]),",
               "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
               "\tNOT(ISBLANK(Muuttujat[Ensisijainen hakija])),",
-              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"))",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
               "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
               "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
               "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
-              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"))",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
               "return DIVIDE(hak,vast)"
             ],
             "formatString": "0.0",
@@ -4127,6 +4140,44 @@
             ],
             "formatString": "0.0",
             "displayFolder": "Tutkinnot\\Rakenteellinen kehittäminen"
+          },
+          {
+            "name": "Vetovoima 2017 (I sykli, amk)",
+            "expression": [
+              "",
+              "var hak=CALCULATE(DISTINCTCOUNT([Ensisijainen hakija]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
+              "\tNOT(ISBLANK(Muuttujat[Ensisijainen hakija])),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"))",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"))",
+              "return DIVIDE(hak,vast)"
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
+          },
+          {
+            "name": "Vetovoima 2016 (I sykli, amk)",
+            "expression": [
+              "",
+              "var hak=CALCULATE(DISTINCTCOUNT([Ensisijainen hakija]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
+              "\tNOT(ISBLANK(Muuttujat[Ensisijainen hakija])),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"))",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"))",
+              "return DIVIDE(hak,vast)"
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
           }
         ],
         "annotations": [
@@ -6712,6 +6763,81 @@
               },
               {
                 "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "rakenteellinen_kehittaminen_AMK",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Koulutusnimike"
+              },
+              {
+                "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Organisaatio"
+              },
+              {
+                "name": "Rahoitusmalliala, amk"
+              }
+            ],
+            "measures": [
+              {
+                "name": "AMK julkaisut 2014-2016 (OKM OA)"
+              },
+              {
+                "name": "AMK julkaisut 2015-2017 (OKM OA)"
+              },
+              {
+                "name": "Amk opetuksen henkilötyövuodet 2016 (os OKM OA)"
+              },
+              {
+                "name": "Amk opetuksen henkilötyövuodet 2017 (os OKM OA)"
+              },
+              {
+                "name": "Amk tki-henkilötyövuodet 2016 (os OKM OA)"
+              },
+              {
+                "name": "Amk tki-henkilötyövuodet 2017 (os OKM OA)"
+              },
+              {
+                "name": "AMK tutkinnot 2014-2016 KA"
+              },
+              {
+                "name": "AMK tutkinnot 2015-2017 KA"
+              },
+              {
+                "name": "AVOP-AMK työelämävalmiudet KA 2016"
+              },
+              {
+                "name": "AVOP-AMK työelämävalmiudet KA 2017"
+              },
+              {
+                "name": "Osuus alan AMK-tutkinnoista 2015-2017"
+              },
+              {
+                "name": "Työllisten osuus 1v valmistumisesta 2013-2015"
+              },
+              {
+                "name": "Työllisten osuus 1v valmistumisesta 2014-2016"
+              },
+              {
+                "name": "Ulkomaalaisten AMK-tutkintojen osuus 2014-2016"
+              },
+              {
+                "name": "Ulkomaalaisten AMK-tutkintojen osuus 2015-2017"
+              },
+              {
+                "name": "Vetovoima 2016 (I sykli, amk)"
+              },
+              {
+                "name": "Vetovoima 2017 (I sykli, amk)"
               }
             ]
           }
