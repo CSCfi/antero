@@ -211,5 +211,6 @@ WHERE alvv + period >= suorv) a) f
   LEFT JOIN [VipunenTK].[dbo].[d_koulutusluokitus] d8 ON d8.koulutusluokitus_avain='ISCFIBROAD'+f.iscfibroad2013
   LEFT JOIN [VipunenTK].[dbo].[d_koulutusluokitus] d9 ON d9.koulutusluokitus_avain='ISCFIBROAD'+f.suoriscfibroad2013
 
- GO
- USE [ANTERO]
+GO
+ 
+USE [ANTERO]
