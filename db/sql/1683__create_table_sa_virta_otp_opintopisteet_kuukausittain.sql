@@ -1,9 +1,12 @@
 --  Opintopisteet kuukausittain ja vuosittain 
+USE ANTERO
+GO
 
 IF NOT EXISTS (
   SELECT * FROM INFORMATION_SCHEMA.TABLES
   WHERE TABLE_SCHEMA='sa' AND TABLE_NAME='sa_virta_otp_opintopisteet_kuukausittain'
-) BEGIN
+) 
+BEGIN
 
 CREATE TABLE sa.sa_virta_otp_opintopisteet_kuukausittain  (
 
@@ -26,9 +29,12 @@ CREATE TABLE sa.sa_virta_otp_opintopisteet_kuukausittain  (
 )
 END
 
+GO
 
 
 ALTER TABLE sa.sa_virta_otp_opintopisteet_kuukausittain ADD  CONSTRAINT DF__sa_virta_otp_opintopisteet_kuukausittain__loadtime  DEFAULT (getdate()) FOR loadtime
-;
+GO
+
 ALTER TABLE sa.sa_virta_otp_opintopisteet_kuukausittain ADD  CONSTRAINT DF__sa_virta_otp_opintopisteet_kuukausittain__username  DEFAULT (suser_name()) FOR username
-;
+GO
+ 
