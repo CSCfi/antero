@@ -24,7 +24,9 @@ CREATE TABLE sa.sa_virta_otp_opintopisteet_kuukausittain  (
 	
   CONSTRAINT PK__sa_virta_otp_opintopisteet_kuukausittain PRIMARY KEY CLUSTERED (id ASC)
 )
-;
+END
+
+
 
 ALTER TABLE sa.sa_virta_otp_opintopisteet_kuukausittain ADD  CONSTRAINT DF__sa_virta_otp_opintopisteet_kuukausittain__loadtime  DEFAULT (getdate()) FOR loadtime
 ;
