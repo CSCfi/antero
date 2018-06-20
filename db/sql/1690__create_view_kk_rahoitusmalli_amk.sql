@@ -1,12 +1,6 @@
 USE [ANTERO]
 GO
 
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
 Create view [dw].[v_kk_rahoitusmalli_amk] as
   
 /****** Korkeakoulututkinnot ******/
@@ -1533,24 +1527,23 @@ SELECT
   ,NULL  AS 'Toiminto'
   ,NULL  AS 'Talousarvo'
   ,NULL as 'Talouserittely'
-	  FROM [ANTERO].dw.f_haku_ja_valinta_hakeneet_korkea_aste as f
-	LEFT JOIN ANTERO.dw.d_haku d25 ON d25.id = f.d_haku_id
-	 LEFT JOIN ANTERO.dw.d_kausi d2 ON d2.id = f.d_kausi_koulutuksen_alkamiskausi_id
-    INNER JOIN ANTERO.sa.sa_haku_ja_valinta_vuosikello_korkea_aste d1 on ((d1.haku_oid=d25.haku_oid and d1.haku_oid is not null) OR (d1.koulutuksen_alkamiskausi=cast(f.koulutuksen_alkamisvuosi as varchar)+cast(d2.jarjestys as varchar) and d25.hakutapa_koodi <> '01' and d1.haku_oid is null)) and f.loadtime >= d1.hakijat	
-	left join antero.dw.d_organisaatioluokitus d3 on f.d_organisaatio_oppilaitos_id = d3.id
-	left JOIN ANTERO.dw.d_koulutusluokitus d12 on d_koulutusluokitus_hakukohde_id=d12.id
-	left join VipunenTK.dbo.d_koulutusluokitus d7 on d7.koulutusluokitus_avain=d12.koulutusluokitus_koodi
-	left join VipunenTK_lisatiedot.dbo.koulutuskoodin_tieteenala d59 on d59.koulutuskoodi=d7.koulutusluokitus_avain
-    left join VipunenTK.dbo.d_tieteenala d90 on d90.tieteenala_avain=d59.tieteenala_avain
-	left join antero.dw.d_hakukohde as d5 on f.d_hakukohde_id=d5.id
-	left join antero.dw.d_tutkinnon_aloitussykli_kk as d6 on f.d_tutkinnon_aloitussykli_kk_id=d6.id
-	left join VipunenTK_lisatiedot.dbo.Haku_valinta_kandi_maisteri d10 on d7.koulutus_koodi=d10.I_sykli_kandi
-	left join VipunenTK.dbo.d_koulutusluokitus d7a on d10.I_sykli_maisteri=d7a.koulutus_koodi
-	
-
+FROM [ANTERO].dw.f_haku_ja_valinta_hakeneet_korkea_aste as f
+LEFT JOIN ANTERO.dw.d_haku d25 ON d25.id = f.d_haku_id
+LEFT JOIN ANTERO.dw.d_kausi d2 ON d2.id = f.d_kausi_koulutuksen_alkamiskausi_id
+INNER JOIN ANTERO.sa.sa_haku_ja_valinta_vuosikello_korkea_aste d1 on ((d1.haku_oid=d25.haku_oid and d1.haku_oid is not null) OR (d1.koulutuksen_alkamiskausi=cast(f.koulutuksen_alkamisvuosi as varchar)+cast(d2.jarjestys as varchar) and d25.hakutapa_koodi <> '01' and d1.haku_oid is null)) and f.loadtime >= d1.hakijat	
+left join antero.dw.d_organisaatioluokitus d3 on f.d_organisaatio_oppilaitos_id = d3.id
+left JOIN ANTERO.dw.d_koulutusluokitus d12 on d_koulutusluokitus_hakukohde_id=d12.id
+left join VipunenTK.dbo.d_koulutusluokitus d7 on d7.koulutusluokitus_avain=d12.koulutusluokitus_koodi
+left join VipunenTK_lisatiedot.dbo.koulutuskoodin_tieteenala d59 on d59.koulutuskoodi=d7.koulutusluokitus_avain
+   left join VipunenTK.dbo.d_tieteenala d90 on d90.tieteenala_avain=d59.tieteenala_avain
+left join antero.dw.d_hakukohde as d5 on f.d_hakukohde_id=d5.id
+left join antero.dw.d_tutkinnon_aloitussykli_kk as d6 on f.d_tutkinnon_aloitussykli_kk_id=d6.id
+left join VipunenTK_lisatiedot.dbo.Haku_valinta_kandi_maisteri d10 on d7.koulutus_koodi=d10.I_sykli_kandi
+left join VipunenTK.dbo.d_koulutusluokitus d7a on d10.I_sykli_maisteri=d7a.koulutus_koodi
 	where d12.koulutussektori_koodi=5  and d3.organisaatio_koodi not in ('02358', '01740', '01742', '01717') and d3.oppilaitostyyppi_koodi='41'
 
 
 
 
-	GO
+GO
+USE [ANTERO]
