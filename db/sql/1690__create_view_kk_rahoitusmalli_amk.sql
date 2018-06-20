@@ -1,6 +1,7 @@
 USE [ANTERO]
 GO
 
+
 Create view [dw].[v_kk_rahoitusmalli_amk] as
   
 /****** Korkeakoulututkinnot ******/
