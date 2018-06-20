@@ -1,8 +1,6 @@
-
 USE [ANTERO]
 GO
 
-/****** Object:  View [dw].[v_kk_rahoitusmalli_yo]    Script Date: 20.6.2018 9:39:39 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -1556,5 +1554,3 @@ SELECT
 
 
 	GO
-	
-	USE [ANTERO]
