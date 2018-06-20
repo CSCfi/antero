@@ -6905,6 +6905,68 @@
             }
           }
         ]
+      },
+      {
+        "name": "calc_amk_tutk_opisk",
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "Organisaatio",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Organisaatio]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Organisaatio koodi",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Organisaatio koodi]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Sektori",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Sektori]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Koodit OKM ohjauksen ala",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Koodit OKM ohjauksen ala]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Calc_amk_tutk_2014-2016",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Calc_amk_tutk_2014-2016]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "calc_amk_tutk_2015-2017",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[calc_amk_tutk_2015-2017]"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": "SUMMARIZE(FILTER(Muuttujat,Muuttujat[Sektori]=\"Ammattikorkeakoulu\"),Muuttujat[Organisaatio],Muuttujat[Organisaatio koodi],Muuttujat[Sektori],[Koodit OKM ohjauksen ala],\"Calc_amk_tutk_2014-2016\",CALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017),\"calc_amk_tutk_2015-2017\",CALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))"
+            }
+          }
+        ]
       }
     ],
     "relationships": [
