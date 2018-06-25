@@ -137,11 +137,11 @@ for k in maaraykset:
         row = makerow_maaraykset()
         row["id"] = key_check("id", m)
         row["lupaId"] = key_check("lupaId", m)
-        row["kohde.tunniste"] = key_check("kohde", m["tunniste"])
+        row["kohde.tunniste"] = key_check("tunniste", m["kohde"])
         row["koodisto"] = key_check("koodisto", m)
         row["koodiarvo"] = key_check("koodiarvo", m)
         row["arvo"] = key_check("arvo", m)
-        row["maaraystyyppi.tunniste"] =  key_check("maaraystyyppi", m)
+        row["maaraystyyppi.tunniste"] =  key_check("tunniste", m["maaraystyyppi"])
         #row["meta"] = m["meta"]	 if "meta" in m else  None
         row["luoja"] = key_check("luoja", m)
         row["luontipvm"] = key_check("luontipvm", m)
