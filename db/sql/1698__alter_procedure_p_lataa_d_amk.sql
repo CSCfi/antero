@@ -1,4 +1,4 @@
-USE [Test_VHA]
+USE [ANTERO]
 GO
 ALTER PROCEDURE [dw].[p_lataa_d_amk]
 AS
