@@ -765,16 +765,19 @@
           {
             "name": "Opiskelijat",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "Opiskelijat"
           },
           {
             "name": "Opiskelijat_fte",
             "dataType": "double",
+            "isHidden": true,
             "sourceColumn": "Opiskelijat_fte"
           },
           {
             "name": "Opiskelijat_lasna",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "Opiskelijat_lasna"
           },
           {
@@ -782,6 +785,7 @@
             "name": "Org_OA",
             "dataType": "string",
             "isDataTypeInferred": true,
+            "isHidden": true,
             "expression": "Muuttujat[Organisaatio koodi]&\"_\"&Muuttujat[Koodit OKM ohjauksen ala]"
           }
         ],
@@ -3441,19 +3445,17 @@
             "name": "Amk opetuksen henkilötyövuodet 2016 (os OKM OA)",
             "expression": [
               "",
-              "var tutkinnot=CALCULATE(SUM(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016))",
+              "var opisk_kk=CALCULATE(SUM(Muuttujat[Opiskelijat]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",ALL(Muuttujat[OKM ohjauksen ala],Muuttujat[Koodit OKM ohjauksen ala]),Muuttujat[Tilastovuosi]=2016,ALL(Muuttujat[Koulutusnimike]))",
+              "var tut=CALCULATE(MIN([tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2016)",
+              "var opiskelijat=tut*CALCULATE(SUM(calc_amk_tutk_opisk[calc_amk_opisk_2016]))",
               "",
-              "var tut_okmOA=CALCULATE(SUM(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",ALL(Muuttujat[OKM ohjauksen ala]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016))",
-              "var tut_2=CALCULATE(SUM(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",ALL(Muuttujat[OKM ohjauksen ala]),ALL(Muuttujat[Koulutusnimike]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016))",
-              "",
-              "var jako= DIVIDE(tutkinnot,tut_okmOA)",
-              "var jako2=DIVIDE(tutkinnot,tut_2)",
+              "var jako= DIVIDE(opiskelijat,opisk_kk)",
               "",
               "var Ohenk=CALCULATE(SUM(calc_amk_htv[calc_amk_opetus_htv_2016]))",
               "",
               "var os=Ohenk*jako",
-              "var os2=Ohenk*jako2",
-              "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),os2,os)",
+              "",
+              "return os",
               ""
             ],
             "formatString": "0.0",
@@ -3463,19 +3465,16 @@
             "name": "Amk tki-henkilötyövuodet 2016 (os OKM OA)",
             "expression": [
               "",
-              "var tutkinnot=CALCULATE(SUM(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016))",
+              "var opisk_kk=CALCULATE(SUM(Muuttujat[Opiskelijat]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",ALL(Muuttujat[OKM ohjauksen ala],Muuttujat[Koodit OKM ohjauksen ala]),Muuttujat[Tilastovuosi]=2016,ALL(Muuttujat[Koulutusnimike]))",
+              "var tut=CALCULATE(MIN([tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2016)",
+              "var opiskelijat=tut*CALCULATE(SUM(calc_amk_tutk_opisk[calc_amk_opisk_2016]))",
               "",
-              "var tut_okmOA=CALCULATE(SUM(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",ALL(Muuttujat[OKM ohjauksen ala]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016))",
-              "var tut_2=CALCULATE(SUM(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",ALL(Muuttujat[OKM ohjauksen ala]),ALL(Muuttujat[Koulutusnimike]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016))",
-              "",
-              "var jako= DIVIDE(tutkinnot,tut_okmOA)",
-              "var jako2=DIVIDE(tutkinnot,tut_2)",
+              "var jako= DIVIDE(opiskelijat,opisk_kk)",
               "",
               "var Ohenk=CALCULATE(SUM(calc_amk_htv[calc_amk_TKI_htv 2016]))",
               "",
               "var os=Ohenk*jako",
-              "var os2=Ohenk*jako2",
-              "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),os2,os)",
+              "return os",
               ""
             ],
             "formatString": "0.0",
@@ -3562,20 +3561,18 @@
             "name": "AMK julkaisut 2014-2016 (OKM OA)",
             "expression": [
               "",
-              "var tutkinnot=CALCULATE(SUM(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
               "",
-              "var tut_okmOA=CALCULATE(SUM(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",ALL(Muuttujat[OKM ohjauksen ala]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
-              "var tut_2=CALCULATE(SUM(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",ALL(Muuttujat[OKM ohjauksen ala]),ALL(Muuttujat[Koulutusnimike]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
+              "var opisk_kk=CALCULATE(SUM(Muuttujat[Opiskelijat]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",ALL(Muuttujat[OKM ohjauksen ala],Muuttujat[Koodit OKM ohjauksen ala]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017,ALL(Muuttujat[Koulutusnimike]))",
+              "var tut=CALCULATE(MIN([tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017)",
+              "var opiskelijat=tut*CALCULATE(SUM(calc_amk_tutk_opisk[calc_amk_opisk_2014-2016]))",
               "",
-              "var jako= DIVIDE(tutkinnot,tut_okmOA)",
-              "var jako2=DIVIDE(tutkinnot,tut_2)",
+              "var jako= DIVIDE(opiskelijat,opisk_kk)",
               "",
-              "var julk=CALCULATE(SUM('calc_amk_julk'[calc_amk_julk_2014-2016]))",
+              "var julk=CALCULATE(SUM('calc_amk_julk'[Calc_amk_julk_2014-2016]))",
               "",
               "var os=julk*jako",
-              "var os2=julk*jako2",
+              "return os",
               "",
-              "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),os2,os)",
               ""
             ],
             "formatString": "0.00",
@@ -4193,19 +4190,16 @@
             "name": "Amk tki-henkilötyövuodet 2017 (os OKM OA)",
             "expression": [
               "",
-              "var tutkinnot=CALCULATE(SUM(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017))",
+              "var opisk_kk=CALCULATE(SUM(Muuttujat[Opiskelijat]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",ALL(Muuttujat[OKM ohjauksen ala],Muuttujat[Koodit OKM ohjauksen ala]),Muuttujat[Tilastovuosi]=2017,ALL(Muuttujat[Koulutusnimike]))",
+              "var tut=CALCULATE(MIN([tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2017)",
+              "var opiskelijat=tut*CALCULATE(SUM(calc_amk_tutk_opisk[calc_amk_opisk_2017]))",
               "",
-              "var tut_okmOA=CALCULATE(SUM(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",ALL(Muuttujat[OKM ohjauksen ala]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017))",
-              "var tut_2=CALCULATE(SUM(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",ALL(Muuttujat[OKM ohjauksen ala]),ALL(Muuttujat[Koulutusnimike]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017))",
-              "",
-              "var jako= DIVIDE(tutkinnot,tut_okmOA)",
-              "var jako2=DIVIDE(tutkinnot,tut_2)",
+              "var jako= DIVIDE(opiskelijat,opisk_kk)",
               "",
               "var Ohenk=CALCULATE(SUM(calc_amk_htv[calc_amk_TKI_htv 2017]))",
               "",
               "var os=Ohenk*jako",
-              "var os2=Ohenk*jako2",
-              "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),os2,os)",
+              "return os",
               ""
             ],
             "formatString": "0.0",
@@ -4215,19 +4209,17 @@
             "name": "Amk opetuksen henkilötyövuodet 2017 (os OKM OA)",
             "expression": [
               "",
-              "var tutkinnot=CALCULATE(SUM(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017))",
+              "var opisk_kk=CALCULATE(SUM(Muuttujat[Opiskelijat]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",ALL(Muuttujat[OKM ohjauksen ala],Muuttujat[Koodit OKM ohjauksen ala]),Muuttujat[Tilastovuosi]=2017,ALL(Muuttujat[Koulutusnimike]))",
+              "var tut=CALCULATE(MIN([tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2017)",
+              "var opiskelijat=tut*CALCULATE(SUM(calc_amk_tutk_opisk[calc_amk_opisk_2017]))",
               "",
-              "var tut_okmOA=CALCULATE(SUM(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",ALL(Muuttujat[OKM ohjauksen ala]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017))",
-              "var tut_2=CALCULATE(SUM(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",ALL(Muuttujat[OKM ohjauksen ala]),ALL(Muuttujat[Koulutusnimike]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017))",
+              "var jako= DIVIDE(opiskelijat,opisk_kk)",
               "",
-              "var jako= DIVIDE(tutkinnot,tut_okmOA)",
-              "var jako2=DIVIDE(tutkinnot,tut_2)",
-              "",
-              "var Ohenk=CALCULATE(SUM(calc_amk_htv[calc_amk_opetus_htv_207]))",
+              "var Ohenk=CALCULATE(SUM(calc_amk_htv[calc_amk_opetus_htv_2017]))",
               "",
               "var os=Ohenk*jako",
-              "var os2=Ohenk*jako2",
-              "return IF(HASONEVALUE(Muuttujat[Koulutusnimike]),os2,os)",
+              "",
+              "return os",
               ""
             ],
             "formatString": "0.00",
@@ -6590,14 +6582,6 @@
           },
           {
             "type": "calculatedTableColumn",
-            "name": "calc_amk_opetus_htv_207",
-            "dataType": "double",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "[calc_amk_opetus_htv_207]"
-          },
-          {
-            "type": "calculatedTableColumn",
             "name": "calc_amk_TKI_htv 2016",
             "dataType": "double",
             "isNameInferred": true,
@@ -6619,6 +6603,14 @@
             "isNameInferred": true,
             "isDataTypeInferred": true,
             "sourceColumn": "Muuttujat[Organisaatio koodi]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "calc_amk_opetus_htv_2017",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[calc_amk_opetus_htv_2017]"
           }
         ],
         "partitions": [
@@ -6629,7 +6621,7 @@
               "expression": [
                 "SUMMARIZE(FILTER(Muuttujat,Muuttujat[Sektori]=\"Ammattikorkeakoulu\"),Muuttujat[Organisaatio],Muuttujat[Organisaatio koodi],",
                 "\"calc_amk_TKI_htv 2017\",CALCULATE(SUM(Muuttujat[Ammattikorkeakoulun TKI-henkilökunta]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017)),",
-                "\"calc_amk_opetus_htv_207\",CALCULATE(SUM(Muuttujat[Ammattikorkeakoulun opetushenkilökunta]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017)),",
+                "\"calc_amk_opetus_htv_2017\",CALCULATE(SUM(Muuttujat[Ammattikorkeakoulun opetushenkilökunta]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017)),",
                 "\"calc_amk_TKI_htv 2016\",CALCULATE(SUM(Muuttujat[Ammattikorkeakoulun TKI-henkilökunta]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016)),",
                 "\"calc_amk_opetus_htv_2016\",CALCULATE(SUM(Muuttujat[Ammattikorkeakoulun opetushenkilökunta]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016))",
                 "",
@@ -7182,6 +7174,54 @@
             "isNameInferred": true,
             "isDataTypeInferred": true,
             "sourceColumn": "[calc_amk_op_lasna_2015-2017]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "calc_amk_opisk_2016",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[calc_amk_opisk_2016]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "calc_amk_opisk_2017",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[calc_amk_opisk_2017]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "calc_amk_op_fte_2016",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[calc_amk_op_fte_2016]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "calc_amk_op_fte_2017",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[calc_amk_op_fte_2017]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "calc_amk_op_lasna_2016",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[calc_amk_op_lasna_2016]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "calc_amk_op_lasna_2017",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[calc_amk_op_lasna_2017]"
           }
         ],
         "partitions": [
@@ -7198,7 +7238,13 @@
                 "\"calc_amk_op_fte_2015-2017\",CALCULATE([Opiskelijat fte],Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),",
                 "\"calc_amk_op_fte_2014-2016\",CALCULATE([Opiskelijat fte],Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017),",
                 "\"calc_amk_op_lasna_2014-2016\",CALCULATE([Opiskelijat läsnä],Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017),",
-                "\"calc_amk_op_lasna_2015-2017\",CALCULATE([Opiskelijat läsnä],Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
+                "\"calc_amk_op_lasna_2015-2017\",CALCULATE([Opiskelijat läsnä],Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),",
+                "\"calc_amk_opisk_2016\",CALCULATE([Opiskelijat lkm],Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2016),",
+                "\"calc_amk_opisk_2017\",CALCULATE([Opiskelijat lkm],Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2017),",
+                "\"calc_amk_op_fte_2016\",CALCULATE([Opiskelijat fte],Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2016),",
+                "\"calc_amk_op_fte_2017\",CALCULATE([Opiskelijat fte],Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2017),",
+                "\"calc_amk_op_lasna_2016\",CALCULATE([Opiskelijat läsnä],Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2016),",
+                "\"calc_amk_op_lasna_2017\",CALCULATE([Opiskelijat läsnä],Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2017))",
                 ""
               ]
             }
@@ -7236,6 +7282,30 @@
           {
             "name": "calc_tutk 2015-2017",
             "expression": "CALCULATE(SUM(calc_amk_tutk_opisk[calc_amk_tutk_2015-2017]))"
+          },
+          {
+            "name": "calc_opiskelijat 2016",
+            "expression": " CALCULATE(SUM(calc_amk_tutk_opisk[calc_amk_opisk_2016]))"
+          },
+          {
+            "name": "calc_opiskelijat 2017",
+            "expression": " CALCULATE(SUM(calc_amk_tutk_opisk[calc_amk_opisk_2017]))"
+          },
+          {
+            "name": "calc_fte 2016",
+            "expression": " CALCULATE(SUM(calc_amk_tutk_opisk[calc_amk_op_fte_2016]))"
+          },
+          {
+            "name": "calc_fte 2017",
+            "expression": " CALCULATE(SUM(calc_amk_tutk_opisk[calc_amk_op_fte_2017]))"
+          },
+          {
+            "name": "calc_opisk_lasna 2016",
+            "expression": " CALCULATE(SUM(calc_amk_tutk_opisk[calc_amk_op_lasna_2016]))"
+          },
+          {
+            "name": "calc_opisk_lasna 2017",
+            "expression": " CALCULATE(SUM(calc_amk_tutk_opisk[calc_amk_op_lasna_2017]))"
           }
         ]
       }
@@ -7322,7 +7392,7 @@
         "crossFilteringBehavior": "bothDirections"
       },
       {
-        "name": "bfc93af0-f821-45d6-beda-4248831bbede",
+        "name": "b464cc95-8587-4f75-bc2a-15ca8ba53dbb",
         "fromTable": "Muuttujat",
         "fromColumn": "Org_OA",
         "toTable": "calc_amk_tutk_opisk",
