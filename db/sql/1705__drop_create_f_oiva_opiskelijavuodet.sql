@@ -5,7 +5,7 @@ GO
 IF EXISTS
 	(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='dw' AND TABLE_NAME='f_oiva_opiskelijavuodet')
 BEGIN
-DROP TABLE [dw].[d_organisaation_alayksikot]
+DROP TABLE [dw].[f_oiva_opiskelijavuodet]
 END
 GO
 
@@ -27,11 +27,10 @@ CREATE TABLE [dw].[f_oiva_opiskelijavuodet](
 (
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+) ON [PRIMARY];
+END
 
-ALTER TABLE [dw].[f_oiva_opiskelijavuodet] ADD  CONSTRAINT [DF__f_oiva_opiskelijavuodet__loadtime]  DEFAULT (getdate()) FOR [loadtime]
-
+ALTER TABLE [dw].[f_oiva_opiskelijavuodet] ADD  CONSTRAINT [DF__f_oiva_opiskelijavuodet__loadtime]  DEFAULT (getdate()) FOR [loadtime];
 
 ALTER TABLE [dw].[f_oiva_opiskelijavuodet] ADD  CONSTRAINT [DF__f_oiva_opiskelijavuodet__username]  DEFAULT (suser_name()) FOR [username]
 GO
