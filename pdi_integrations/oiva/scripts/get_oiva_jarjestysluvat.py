@@ -22,7 +22,6 @@ try:
     api_key = os.environ['AUTH_API_KEY']
 except KeyError:
     print("API-key missing")
-url = 'https://oiva.minedu.fi/api/export/jarjestysluvat'
 try:
     api_user = os.environ['AUTH_API_USER']
 except KeyError:
