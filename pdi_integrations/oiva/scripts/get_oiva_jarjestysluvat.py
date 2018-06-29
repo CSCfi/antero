@@ -97,7 +97,7 @@ else:
    exit
 
 # Loading the data into response  list (jarjestysluvat) 
-response = requests.get(url, auth=('oivaexport','Ik8dDDaz')).json()
+response = requests.get(url,  auth=(api_user, api_key)).json()
   
 # select jarjestysluvat
 for i in response:
