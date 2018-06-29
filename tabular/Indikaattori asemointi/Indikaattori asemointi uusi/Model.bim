@@ -3446,7 +3446,7 @@
             "expression": [
               " ",
               "var htv=CALCULATE(SUM(calc_amk_htv[calc_amk_opetus_htv_2016]))",
-              "var tut=CALCULATE(MIN([tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2016)",
+              "var tut=CALCULATE(MIN([tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2016||Muuttujat[Tilastovuosi]=2015||Muuttujat[Tilastovuosi]=2014)",
               "",
               "return htv*tut",
               ""
@@ -3459,7 +3459,7 @@
             "expression": [
               " ",
               "var htv=CALCULATE(SUM(calc_amk_htv[calc_amk_TKI_htv 2016]))",
-              "var tut=CALCULATE(MIN([tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2016)",
+              "var tut=CALCULATE(MIN([tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2016||Muuttujat[Tilastovuosi]=2015||Muuttujat[Tilastovuosi]=2014)",
               "",
               "return htv*tut",
               ""
@@ -4139,7 +4139,7 @@
             "expression": [
               " ",
               "var htv=CALCULATE(SUM(calc_amk_htv[calc_amk_TKI_htv 2017]))",
-              "var tut=CALCULATE(MIN([tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2017)",
+              "var tut=CALCULATE(MIN([tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2017||Muuttujat[Tilastovuosi]=2016)",
               "",
               "return htv*tut",
               ""
@@ -4152,7 +4152,7 @@
             "expression": [
               "",
               "var htv=CALCULATE(SUM(calc_amk_htv[calc_amk_opetus_htv_2017]))",
-              "var tut=CALCULATE(MIN([tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2017)",
+              "var tut=CALCULATE(MIN([tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2017||Muuttujat[Tilastovuosi]=2016||Muuttujat[Tilastovuosi]=2015)",
               "",
               "return htv*tut"
             ],
@@ -4509,23 +4509,30 @@
             "displayFolder": "Opiskelijat"
           },
           {
-            "name": "AMK julkaisut 2016-2017",
+            "name": "AMK julkaisut 2016-2017 KA",
             "expression": [
               "",
               "var julk=CALCULATE(SUM(calc_amk_julk[calc_amk_julk_2016-2017]))",
               "var tut=CALCULATE(MIN([tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2017||Muuttujat[Tilastovuosi]=2016)",
-              "var lask=julk*tut",
+              "var lask=CALCULATE(julk*tut,FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2015&&Muuttujat[Tilastovuosi]<2018))",
               "",
-              "var vuosia= CALCULATE(DISTINCTCOUNT(Muuttujat[Tilastovuosi]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2015&&Muuttujat[Tilastovuosi]<2018))",
-              "",
-              "var jako=DIVIDE(lask,vuosia)",
+              "var jako=DIVIDE(lask,2)",
               "return jako"
             ],
+            "formatString": "0.0",
             "displayFolder": "Julkaisut\\Rakenteellinen kehittäminen"
           },
           {
             "name": "AMK julkaisut (A-E) 2016-2017",
             "expression": "CALCULATE(SUM([AMK Julkaisut (A-E)]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2015&&Muuttujat[Tilastovuosi]<2018))"
+          },
+          {
+            "name": "AVOP-AMK työelämävalmiudet pisteet 2017",
+            "expression": [
+              " ",
+              "CALCULATE(SUM(Muuttujat[AVOP-AMK Opiskelijapalaute_työelämä]),FILTER(Muuttujat,Muuttujat[Tilastovuosi]=2017))",
+              ""
+            ]
           }
         ],
         "annotations": [
@@ -7293,7 +7300,7 @@
                 "name": "Vetovoima 2018 (I sykli, amk)"
               },
               {
-                "name": "AMK julkaisut 2016-2017"
+                "name": "AMK julkaisut 2016-2017 KA"
               }
             ]
           }
