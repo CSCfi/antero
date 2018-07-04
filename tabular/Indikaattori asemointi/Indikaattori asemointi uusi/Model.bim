@@ -3455,8 +3455,9 @@
             "expression": [
               " ",
               "var numero=CALCULATE(AVERAGE([AVOP-YAMK Opiskelijapalaute_työelämä]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016))",
-              "var summ\t= VALUE(numero)",
-              "return summ",
+              "var kaik=CALCULATE(AVERAGE([AVOP-YAMK Opiskelijapalaute_työelämä]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),ALL(Muuttujat[Organisaatio]))",
+              "var jako=DIVIDE(numero,kaik)",
+              "return jako",
               ""
             ],
             "formatString": "0.00",
@@ -4179,7 +4180,7 @@
               "",
               "return htv*tut"
             ],
-            "formatString": "0",
+            "formatString": "0.0",
             "displayFolder": "Henkilöstö\\Rakenteellinen kehittäminen"
           },
           {
@@ -4247,7 +4248,7 @@
               "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
               "var vuosia= CALCULATE(DISTINCTCOUNT(Muuttujat[Tilastovuosi]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
               "",
-              "return DIVIDE(tut,vuosia)",
+              "return DIVIDE(tut,3)",
               ""
             ],
             "formatString": "0.0",
@@ -4263,7 +4264,7 @@
               "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
               "var vuosia= CALCULATE(DISTINCTCOUNT(Muuttujat[Tilastovuosi]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
               "",
-              "return DIVIDE(tut,vuosia)"
+              "return DIVIDE(tut,3)"
             ],
             "formatString": "0.0",
             "displayFolder": "Tutkinnot\\Rakenteellinen kehittäminen"
@@ -4465,15 +4466,11 @@
             "expression": [
               "",
               "",
-              "var osuus1= CALCULATE([Työllisten osuus (1v tutkinnon jälkeen)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2014),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\"))",
-              "var osuus2= CALCULATE([Työllisten osuus (1v tutkinnon jälkeen)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2015),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\"))",
-              "var osuus3= CALCULATE([Työllisten osuus (1v tutkinnon jälkeen)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\"))",
+              "var tyolliset=CALCULATE(SUM(Muuttujat[työlliset 1v tutkinnon jälkeen]),FILTER(VALUEs(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\"))",
+              "var kaik=CALCULATE(SUM(Muuttujat[sijoittuminen_1v_tutkinnon_jalkeen]),FILTER(VALUEs(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\"))",
+              "var jako=CALCULATE(DIVIDE(tyolliset,kaik))",
               "",
-              "var vuosia=CALCULATE((SWITCH(ISBLANK(osuus1),TRUE(),0,1)+SWITCH(ISBLANK(osuus2),TRUE(),0,1)+SWITCH(ISBLANK(osuus3),TRUE(),0,1)))",
-              "var jako=CALCULATE(DIVIDE((osuus1+osuus2+osuus3),vuosia))",
-              "",
-              "return jako",
-              ""
+              "return jako"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Työllisyys\\Rakenteellinen kehittäminen"
