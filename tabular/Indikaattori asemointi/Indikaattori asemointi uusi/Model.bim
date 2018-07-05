@@ -3089,15 +3089,13 @@
             "name": "Osuus alan AMK-tutkinnoista 2015-2017",
             "expression": [
               " ",
-              "var kaikki=CALCULATE([Tutkinnot lkm],",
-              "\tALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Organisaatio]),",
-              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
-              "var kk=CALCULATE([Tutkinnot lkm],",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),",
-              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
+              "var kk=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kk\",",
+              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2015||Muuttujat[Tilastovuosi]=2016\t\t\t||Muuttujat[Tilastovuosi]=2017)),[kk]),ALL(Muuttujat[Tilastovuosi]))",
+              "var kaik=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kaikki\",",
+              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2015||Muuttujat[Tilastovuosi]=2016\t\t\t||Muuttujat[Tilastovuosi]=2017)),[kaikki]),ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Tilastovuosi]))",
               "",
-              "return DIVIDE(kk,kaikki)"
+              "return DIVIDE(kk,kaik)",
+              ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Tutkinnot\\Rakenteellinen kehittäminen"
@@ -3170,15 +3168,12 @@
             "name": "Osuus ylemmistä kk-tutkinnoista 2015-2017",
             "expression": [
               "",
-              "var kaikki=CALCULATE([Tutkinnot lkm],",
-              "\t\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"),",
-              "\t\tALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Organisaatio]),",
-              "\t\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
-              "var kk=CALCULATE([Tutkinnot lkm],",
-              "\t\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"),",
-              "\t\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
+              "var kk=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kk\",",
+              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\",Muuttujat[Tilastovuosi]=2015||Muuttujat[Tilastovuosi]=2016\t\t\t||Muuttujat[Tilastovuosi]=2017)),[kk]),ALL(Muuttujat[Tilastovuosi]))",
+              "var kaik=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kaikki\",",
+              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\",Muuttujat[Tilastovuosi]=2015||Muuttujat[Tilastovuosi]=2016\t\t\t||Muuttujat[Tilastovuosi]=2017)),[kaikki]),ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Tilastovuosi]))",
               "",
-              "return DIVIDE(kk,kaikki)"
+              "return DIVIDE(kk,kaik)"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Tutkinnot\\Rakenteellinen kehittäminen"
@@ -3223,7 +3218,7 @@
               "var numero=CALCULATE(AVERAGE([AVOP-AMK Opiskelijapalaute_työelämä]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017))",
               "var kaik=CALCULATE(AVERAGE([AVOP-AMK Opiskelijapalaute_työelämä]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),ALL(Muuttujat[Organisaatio]))",
               "var jako=DIVIDE(numero,kaik)",
-              "return jako"
+              "return jako&\"_\"&numero&\"_\"&kaik"
             ],
             "formatString": "0.00",
             "displayFolder": "Opiskelijapalaute\\Rakenteellinen kehittäminen"
@@ -3499,10 +3494,12 @@
             "name": "Osuus ylemmistä kk-tutkinnoista 2014-2016",
             "expression": [
               "",
-              "var kaikki=CALCULATE([Tutkinnot lkm],FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"),ALL(Muuttujat[Organisaatio]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
-              "var kk=CALCULATE([Tutkinnot lkm],FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
+              "var kk=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kk\",",
+              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\",Muuttujat[Tilastovuosi]=2014||Muuttujat[Tilastovuosi]=2015\t\t\t||Muuttujat[Tilastovuosi]=2016)),[kk]),ALL(Muuttujat[Tilastovuosi]))",
+              "var kaik=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kaikki\",",
+              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\",Muuttujat[Tilastovuosi]=2014||Muuttujat[Tilastovuosi]=2015\t\t\t||Muuttujat[Tilastovuosi]=2016)),[kaikki]),ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Tilastovuosi]))",
               "",
-              "return DIVIDE(kk,kaikki)",
+              "return DIVIDE(kk,kaik)",
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
@@ -4273,16 +4270,12 @@
             "name": "YAMK-tutkintojen osuus 2014-2016",
             "expression": [
               "",
-              "var kaikki=CALCULATE([Tutkinnot lkm],",
-              "\tALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Organisaatio]),",
-              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\"),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
-              "var kk=CALCULATE([Tutkinnot lkm],",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017),",
-              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\"))",
+              "var kk=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kk\",",
+              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2014||Muuttujat[Tilastovuosi]=2015\t\t\t||Muuttujat[Tilastovuosi]=2016)),[kk]),ALL(Muuttujat[Tilastovuosi]))",
+              "var kaik=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kaikki\",",
+              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2014||Muuttujat[Tilastovuosi]=2015\t\t\t||Muuttujat[Tilastovuosi]=2016)),[kaikki]),ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Tilastovuosi]))",
               "",
-              "",
-              "return DIVIDE(kk,kaikki)",
+              "return DIVIDE(kk,kaik)",
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
@@ -4292,16 +4285,13 @@
             "name": "YAMK-tutkintojen osuus 2015-2017",
             "expression": [
               "",
-              "var kaikki=CALCULATE([Tutkinnot lkm],",
-              "\tALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Organisaatio]),",
-              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\"),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
-              "var kk=CALCULATE([Tutkinnot lkm],",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),",
-              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\"))",
+              "var kk=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kk\",",
+              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2015||Muuttujat[Tilastovuosi]=2016\t\t\t||Muuttujat[Tilastovuosi]=2017)),[kk]),ALL(Muuttujat[Tilastovuosi]))",
+              "var kaik=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kaikki\",",
+              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2015||Muuttujat[Tilastovuosi]=2016\t\t\t||Muuttujat[Tilastovuosi]=2017)),[kaikki]),ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Tilastovuosi]))",
               "",
-              "",
-              "return DIVIDE(kk,kaikki)"
+              "return DIVIDE(kk,kaik)",
+              ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Tutkinnot\\Rakenteellinen kehittäminen"
@@ -4497,15 +4487,13 @@
             "name": "Osuus alan AMK-tutkinnoista 2014-2016",
             "expression": [
               " ",
-              "var kaikki=CALCULATE([Tutkinnot lkm],",
-              "\tALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Organisaatio]),",
-              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
-              "var kk=CALCULATE([Tutkinnot lkm],",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017),",
-              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
+              "var kk=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kk\",",
+              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2014||Muuttujat[Tilastovuosi]=2015\t\t\t||Muuttujat[Tilastovuosi]=2016)),[kk]),ALL(Muuttujat[Tilastovuosi]))",
+              "var kaik=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kaikki\",",
+              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2014||Muuttujat[Tilastovuosi]=2015\t\t\t||Muuttujat[Tilastovuosi]=2016)),[kaikki]),ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Tilastovuosi]))",
               "",
-              "return DIVIDE(kk,kaikki)"
+              "return DIVIDE(kk,kaik)",
+              ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Tutkinnot\\Rakenteellinen kehittäminen"
@@ -4555,6 +4543,35 @@
               ""
             ],
             "displayFolder": "Opiskelijapalaute\\Rakenteellinen kehittäminen"
+          },
+          {
+            "name": "YAMK-tutkintojen osuus test",
+            "expression": [
+              "",
+              "CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kaikki\",",
+              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2015||Muuttujat[Tilastovuosi]=2016\t\t\t||Muuttujat[Tilastovuosi]=2017)),[kaikki]),ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Tilastovuosi]))"
+            ]
+          },
+          {
+            "name": "YAMK tutkintojen osuus test 2",
+            "expression": [
+              "",
+              "CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kk\",",
+              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2015||Muuttujat[Tilastovuosi]=2016\t\t\t||Muuttujat[Tilastovuosi]=2017)),[kk]),ALL(Muuttujat[Tilastovuosi]))",
+              ""
+            ]
+          },
+          {
+            "name": "Yamk osuus test 3",
+            "expression": [
+              "",
+              "var kk=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kk\",",
+              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2015||Muuttujat[Tilastovuosi]=2016\t\t\t||Muuttujat[Tilastovuosi]=2017)),[kk]),ALL(Muuttujat[Tilastovuosi]))",
+              "var kaik=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kaikki\",",
+              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2015||Muuttujat[Tilastovuosi]=2016\t\t\t||Muuttujat[Tilastovuosi]=2017)),[kaikki]),ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Tilastovuosi]))",
+              "",
+              "return DIVIDE(kk,kaik)"
+            ]
           }
         ],
         "annotations": [
