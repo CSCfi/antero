@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>load_sa_hakukohteet</name>
+    <name>load_data</name>
     <description/>
     <extended_description/>
     <trans_version/>
@@ -11,17 +11,17 @@
     <parameters>
         <parameter>
             <name>DBPWD</name>
-            <default_value>error</default_value>
+            <default_value/>
             <description/>
         </parameter>
         <parameter>
             <name>DBUSER</name>
-            <default_value>error</default_value>
+            <default_value/>
             <description/>
         </parameter>
         <parameter>
             <name>SERVER</name>
-            <default_value>error</default_value>
+            <default_value/>
             <description/>
         </parameter>
     </parameters>
@@ -82,41 +82,20 @@
     <clusterschemas>
     </clusterschemas>
   <created_user>-</created_user>
-  <created_date>2017&#x2f;11&#x2f;22 10&#x3a;13&#x3a;50.834</created_date>
+  <created_date>2018&#x2f;03&#x2f;20 15&#x3a;47&#x3a;51.625</created_date>
   <modified_user>-</modified_user>
-  <modified_date>2017&#x2f;11&#x2f;22 10&#x3a;13&#x3a;50.834</modified_date>
+  <modified_date>2018&#x2f;03&#x2f;20 15&#x3a;47&#x3a;51.625</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA&#x3d;</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
-    <notepad>
-      <note>Change limit if necessary</note>
-      <xloc>416</xloc>
-      <yloc>48</yloc>
-      <width>142</width>
-      <heigth>26</heigth>
-      <fontname>Segoe UI</fontname>
-      <fontsize>9</fontsize>
-      <fontbold>N</fontbold>
-      <fontitalic>N</fontitalic>
-      <fontcolorred>0</fontcolorred>
-      <fontcolorgreen>0</fontcolorgreen>
-      <fontcolorblue>0</fontcolorblue>
-      <backgroundcolorred>255</backgroundcolorred>
-      <backgroundcolorgreen>205</backgroundcolorgreen>
-      <backgroundcolorblue>112</backgroundcolorblue>
-      <bordercolorred>100</bordercolorred>
-      <bordercolorgreen>100</bordercolorgreen>
-      <bordercolorblue>100</bordercolorblue>
-      <drawshadow>Y</drawshadow>
-    </notepad>
   </notepads>
   <connection>
     <name>Antero</name>
     <server>&#x24;&#x7b;SERVER&#x7d;</server>
     <type>MSSQLNATIVE</type>
     <access>Native</access>
-    <database>antero</database>
+    <database>Antero</database>
     <port>1433</port>
     <username>&#x24;&#x7b;DBUSER&#x7d;</username>
     <password>&#x24;&#x7b;DBPWD&#x7d;</password>
@@ -138,20 +117,18 @@
     </attributes>
   </connection>
   <order>
-  <hop> <from>JSON Input 2 2</from><to>JSON Input 2 3</to><enabled>Y</enabled> </hop>
-  <hop> <from>JSON Input 2</from><to>JSON Input 2 2</to><enabled>Y</enabled> </hop>
-  <hop> <from>REST Client 2</from><to>JSON Input 3</to><enabled>Y</enabled> </hop>
-  <hop> <from>https&#x3a;&#x2f;&#x2f;virkailija.opintopolku.fi&#x3a;443&#x2f;tarjonta-service&#x2f;rest&#x2f;v1&#x2f;hakukohde</from><to>REST Client 2</to><enabled>Y</enabled> </hop>
-  <hop> <from>JSON Input 3</from><to>JSON Input</to><enabled>Y</enabled> </hop>
-  <hop> <from>JSON Input</from><to>JSON Input 2</to><enabled>Y</enabled> </hop>
-  <hop> <from>Add constants 2 2</from><to>Get System Info 2 2</to><enabled>Y</enabled> </hop>
-  <hop> <from>Select values</from><to>Add constants 2 2</to><enabled>Y</enabled> </hop>
-  <hop> <from>Get System Info 2 2</from><to>Table output</to><enabled>Y</enabled> </hop>
-  <hop> <from>JSON Input 2 3</from><to>Select values</to><enabled>Y</enabled> </hop>
+  <hop> <from>Generate Rows &#x28;yleiset&#x29;</from><to>REST Client Y</to><enabled>Y</enabled> </hop>
+  <hop> <from>REST Client Y</from><to>JSON to Rows</to><enabled>Y</enabled> </hop>
+  <hop> <from>Get  first layer data Y</from><to>Get metadata Y</to><enabled>Y</enabled> </hop>
+  <hop> <from>Get metadata Y</from><to>Select values</to><enabled>Y</enabled> </hop>
+  <hop> <from>JSON to Rows</from><to>Get  first layer data Y</to><enabled>Y</enabled> </hop>
+  <hop> <from>Select values</from><to>Sort rows</to><enabled>Y</enabled> </hop>
+  <hop> <from>Sort rows</from><to>Row denormaliser</to><enabled>Y</enabled> </hop>
+  <hop> <from>Row denormaliser</from><to>Table output</to><enabled>Y</enabled> </hop>
   </order>
   <step>
-    <name>Add constants 2 2</name>
-    <type>Constant</type>
+    <name>Generate Rows &#x28;yleiset&#x29;</name>
+    <type>RowGenerator</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -162,53 +139,33 @@
            </partitioning>
     <fields>
       <field>
-        <name>source</name>
+        <name>URL</name>
         <type>String</type>
         <format/>
         <currency/>
         <decimal/>
         <group/>
-        <nullif>https&#x3a;&#x2f;&#x2f;virkailija.opintopolku.fi&#x3a;443&#x2f;tarjonta-service&#x2f;rest&#x2f;v1&#x2f;hakukohde</nullif>
+        <nullif>https&#x3a;&#x2f;&#x2f;virkailija.opintopolku.fi&#x2f;koodisto-service&#x2f;rest&#x2f;json&#x2f;vardayleiset&#x2f;koodi</nullif>
         <length>-1</length>
         <precision>-1</precision>
         <set_empty_string>N</set_empty_string>
       </field>
     </fields>
+    <limit>1</limit>
+    <never_ending>N</never_ending>
+    <interval_in_ms>5000</interval_in_ms>
+    <row_time_field>now</row_time_field>
+    <last_time_field>FiveSecondsAgo</last_time_field>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>176</xloc>
-      <yloc>768</yloc>
+      <xloc>304</xloc>
+      <yloc>32</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
 
   <step>
-    <name>Get System Info 2 2</name>
-    <type>SystemInfo</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <fields>
-      <field>
-        <name>latausaika</name>
-        <type>system date &#x28;fixed&#x29;</type>
-        </field>
-      </fields>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>176</xloc>
-      <yloc>848</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>JSON Input</name>
+    <name>Get  first layer data Y</name>
     <type>JsonInput</type>
     <description/>
     <distribute>Y</distribute>
@@ -224,7 +181,7 @@
     <addresultfile>N</addresultfile>
     <readurl>N</readurl>
     <removeSourceField>N</removeSourceField>
-    <IsIgnoreEmptyFile>Y</IsIgnoreEmptyFile>
+    <IsIgnoreEmptyFile>N</IsIgnoreEmptyFile>
     <doNotFailIfNoFile>Y</doNotFailIfNoFile>
     <ignoreMissingPath>Y</ignoreMissingPath>
     <defaultPathLeafToNull>N</defaultPathLeafToNull>
@@ -238,8 +195,8 @@
     </file>
     <fields>
       <field>
-        <name>hakukohdeOid</name>
-        <path>&#x24;.oid</path>
+        <name>KoodiUri</name>
+        <path>&#x24;.koodisto.koodistoUri</path>
         <type>String</type>
         <format/>
         <currency/>
@@ -251,8 +208,8 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>nimipaketti</name>
-        <path>&#x24;.nimi</path>
+        <name>Koodiarvo</name>
+        <path>&#x24;.koodiArvo</path>
         <type>String</type>
         <format/>
         <currency/>
@@ -264,8 +221,34 @@
         <repeat>N</repeat>
       </field>
       <field>
-        <name>tila</name>
-        <path>&#x24;.tila</path>
+        <name>VoimassaAlkuPvm</name>
+        <path>&#x24;.voimassaAlkuPvm</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>VoimassaLoppuPvm</name>
+        <path>&#x24;.voimassaLoppuPvm</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Metadata</name>
+        <path>&#x24;.metadata</path>
         <type>String</type>
         <format/>
         <currency/>
@@ -280,7 +263,7 @@
     <limit>0</limit>
     <IsInFields>Y</IsInFields>
     <IsAFile>N</IsAFile>
-    <valueField>tulokset</valueField>
+    <valueField>Rivi</valueField>
     <shortFileFieldName/>
     <pathFieldName/>
     <hiddenFieldName/>
@@ -291,14 +274,14 @@
     <sizeFieldName/>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>176</xloc>
-      <yloc>336</yloc>
+      <xloc>304</xloc>
+      <yloc>288</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
 
   <step>
-    <name>JSON Input 2</name>
+    <name>Get metadata Y</name>
     <type>JsonInput</type>
     <description/>
     <distribute>Y</distribute>
@@ -314,7 +297,7 @@
     <addresultfile>N</addresultfile>
     <readurl>N</readurl>
     <removeSourceField>N</removeSourceField>
-    <IsIgnoreEmptyFile>Y</IsIgnoreEmptyFile>
+    <IsIgnoreEmptyFile>N</IsIgnoreEmptyFile>
     <doNotFailIfNoFile>Y</doNotFailIfNoFile>
     <ignoreMissingPath>Y</ignoreMissingPath>
     <defaultPathLeafToNull>N</defaultPathLeafToNull>
@@ -328,8 +311,34 @@
     </file>
     <fields>
       <field>
-        <name>nimi_fi</name>
-        <path>&#x24;.fi</path>
+        <name>Kieli</name>
+        <path>&#x24;.&#x5b;&#x2a;&#x5d;.kieli</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Nimi</name>
+        <path>&#x24;.&#x5b;&#x2a;&#x5d;.nimi</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Kuvaus</name>
+        <path>&#x24;.&#x5b;&#x2a;&#x5d;.kuvaus</path>
         <type>String</type>
         <format/>
         <currency/>
@@ -344,7 +353,7 @@
     <limit>0</limit>
     <IsInFields>Y</IsInFields>
     <IsAFile>N</IsAFile>
-    <valueField>nimipaketti</valueField>
+    <valueField>Metadata</valueField>
     <shortFileFieldName/>
     <pathFieldName/>
     <hiddenFieldName/>
@@ -355,14 +364,14 @@
     <sizeFieldName/>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>176</xloc>
-      <yloc>416</yloc>
+      <xloc>304</xloc>
+      <yloc>368</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
 
   <step>
-    <name>JSON Input 2 2</name>
+    <name>JSON to Rows</name>
     <type>JsonInput</type>
     <description/>
     <distribute>Y</distribute>
@@ -378,7 +387,7 @@
     <addresultfile>N</addresultfile>
     <readurl>N</readurl>
     <removeSourceField>N</removeSourceField>
-    <IsIgnoreEmptyFile>Y</IsIgnoreEmptyFile>
+    <IsIgnoreEmptyFile>N</IsIgnoreEmptyFile>
     <doNotFailIfNoFile>Y</doNotFailIfNoFile>
     <ignoreMissingPath>Y</ignoreMissingPath>
     <defaultPathLeafToNull>N</defaultPathLeafToNull>
@@ -392,136 +401,8 @@
     </file>
     <fields>
       <field>
-        <name>nimi_sv</name>
-        <path>&#x24;.sv</path>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-    </fields>
-    <limit>0</limit>
-    <IsInFields>Y</IsInFields>
-    <IsAFile>N</IsAFile>
-    <valueField>nimipaketti</valueField>
-    <shortFileFieldName/>
-    <pathFieldName/>
-    <hiddenFieldName/>
-    <lastModificationTimeFieldName/>
-    <uriNameFieldName/>
-    <rootUriNameFieldName/>
-    <extensionFieldName/>
-    <sizeFieldName/>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>176</xloc>
-      <yloc>496</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>JSON Input 2 3</name>
-    <type>JsonInput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <include>N</include>
-    <include_field/>
-    <rownum>N</rownum>
-    <addresultfile>N</addresultfile>
-    <readurl>N</readurl>
-    <removeSourceField>N</removeSourceField>
-    <IsIgnoreEmptyFile>Y</IsIgnoreEmptyFile>
-    <doNotFailIfNoFile>Y</doNotFailIfNoFile>
-    <ignoreMissingPath>Y</ignoreMissingPath>
-    <defaultPathLeafToNull>N</defaultPathLeafToNull>
-    <rownum_field/>
-    <file>
-      <name/>
-      <filemask/>
-      <exclude_filemask/>
-      <file_required>N</file_required>
-      <include_subfolders>N</include_subfolders>
-    </file>
-    <fields>
-      <field>
-        <name>nimi_en</name>
-        <path>&#x24;.en</path>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <length>-1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-        <repeat>N</repeat>
-      </field>
-    </fields>
-    <limit>0</limit>
-    <IsInFields>Y</IsInFields>
-    <IsAFile>N</IsAFile>
-    <valueField>nimipaketti</valueField>
-    <shortFileFieldName/>
-    <pathFieldName/>
-    <hiddenFieldName/>
-    <lastModificationTimeFieldName/>
-    <uriNameFieldName/>
-    <rootUriNameFieldName/>
-    <extensionFieldName/>
-    <sizeFieldName/>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>176</xloc>
-      <yloc>576</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>JSON Input 3</name>
-    <type>JsonInput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <include>N</include>
-    <include_field/>
-    <rownum>N</rownum>
-    <addresultfile>N</addresultfile>
-    <readurl>Y</readurl>
-    <removeSourceField>N</removeSourceField>
-    <IsIgnoreEmptyFile>Y</IsIgnoreEmptyFile>
-    <doNotFailIfNoFile>Y</doNotFailIfNoFile>
-    <ignoreMissingPath>Y</ignoreMissingPath>
-    <defaultPathLeafToNull>N</defaultPathLeafToNull>
-    <rownum_field/>
-    <file>
-      <name/>
-      <filemask/>
-      <exclude_filemask/>
-      <file_required>N</file_required>
-      <include_subfolders>N</include_subfolders>
-    </file>
-    <fields>
-      <field>
-        <name>tulokset</name>
-        <path>&#x24;.result.tulokset&#x5b;&#x2a;&#x5d;.tulokset&#x5b;&#x2a;&#x5d;</path>
+        <name>Rivi</name>
+        <path>&#x24;.&#x5b;&#x2a;&#x5d;</path>
         <type>String</type>
         <format/>
         <currency/>
@@ -547,17 +428,17 @@
     <sizeFieldName/>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>176</xloc>
-      <yloc>240</yloc>
+      <xloc>304</xloc>
+      <yloc>208</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
 
   <step>
-    <name>REST Client 2</name>
+    <name>REST Client Y</name>
     <type>Rest</type>
     <description/>
-    <distribute>Y</distribute>
+    <distribute>N</distribute>
     <custom_distribution/>
     <copies>1</copies>
          <partitioning>
@@ -570,7 +451,7 @@
     <urlInField>Y</urlInField>
     <dynamicMethod>N</dynamicMethod>
     <methodFieldName/>
-    <urlField>Uri</urlField>
+    <urlField>URL</urlField>
     <bodyField/>
     <httpLogin/>
     <httpPassword>Encrypted </httpPassword>
@@ -592,8 +473,131 @@
       </result>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>176</xloc>
-      <yloc>144</yloc>
+      <xloc>304</xloc>
+      <yloc>112</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Row denormaliser</name>
+    <type>Denormaliser</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+      <key_field>Kieli</key_field>
+      <group>
+        <field>
+          <name>Koodiarvo</name>
+          </field>
+        <field>
+          <name>URL</name>
+          </field>
+        <field>
+          <name>KoodiUri</name>
+          </field>
+        <field>
+          <name>VoimassaAlkuPvm</name>
+          </field>
+        <field>
+          <name>VoimassaLoppuPvm</name>
+          </field>
+        </group>
+      <fields>
+        <field>
+          <field_name>Nimi</field_name>
+          <key_value>FI</key_value>
+          <target_name>Nimi_fi</target_name>
+          <target_type>String</target_type>
+          <target_format/>
+          <target_length>-1</target_length>
+          <target_precision>-1</target_precision>
+          <target_decimal_symbol/>
+          <target_grouping_symbol/>
+          <target_currency_symbol/>
+          <target_null_string/>
+          <target_aggregation_type>-</target_aggregation_type>
+          </field>
+        <field>
+          <field_name>Kuvaus</field_name>
+          <key_value>FI</key_value>
+          <target_name>Kuvaus_fi</target_name>
+          <target_type>String</target_type>
+          <target_format/>
+          <target_length>-1</target_length>
+          <target_precision>-1</target_precision>
+          <target_decimal_symbol/>
+          <target_grouping_symbol/>
+          <target_currency_symbol/>
+          <target_null_string/>
+          <target_aggregation_type>-</target_aggregation_type>
+          </field>
+        <field>
+          <field_name>Nimi</field_name>
+          <key_value>SV</key_value>
+          <target_name>Nimi_sv</target_name>
+          <target_type>String</target_type>
+          <target_format/>
+          <target_length>-1</target_length>
+          <target_precision>-1</target_precision>
+          <target_decimal_symbol/>
+          <target_grouping_symbol/>
+          <target_currency_symbol/>
+          <target_null_string/>
+          <target_aggregation_type>-</target_aggregation_type>
+          </field>
+        <field>
+          <field_name>Kuvaus</field_name>
+          <key_value>SV</key_value>
+          <target_name>Kuvaus_sv</target_name>
+          <target_type>String</target_type>
+          <target_format/>
+          <target_length>-1</target_length>
+          <target_precision>-1</target_precision>
+          <target_decimal_symbol/>
+          <target_grouping_symbol/>
+          <target_currency_symbol/>
+          <target_null_string/>
+          <target_aggregation_type>-</target_aggregation_type>
+          </field>
+        <field>
+          <field_name>Nimi</field_name>
+          <key_value>EN</key_value>
+          <target_name>Nimi_en</target_name>
+          <target_type>String</target_type>
+          <target_format/>
+          <target_length>-1</target_length>
+          <target_precision>-1</target_precision>
+          <target_decimal_symbol/>
+          <target_grouping_symbol/>
+          <target_currency_symbol/>
+          <target_null_string/>
+          <target_aggregation_type>-</target_aggregation_type>
+          </field>
+        <field>
+          <field_name>Kuvaus</field_name>
+          <key_value>EN</key_value>
+          <target_name>Kuvaus_en</target_name>
+          <target_type>String</target_type>
+          <target_format/>
+          <target_length>-1</target_length>
+          <target_precision>-1</target_precision>
+          <target_decimal_symbol/>
+          <target_grouping_symbol/>
+          <target_currency_symbol/>
+          <target_null_string/>
+          <target_aggregation_type>-</target_aggregation_type>
+          </field>
+        </fields>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>528</xloc>
+      <yloc>464</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -609,35 +613,101 @@
            <method>none</method>
            <schema_name/>
            </partitioning>
-    <fields>      <field>        <name>hakukohdeOid</name>
+    <fields>      <field>        <name>URL</name>
         <rename/>
         <length>-2</length>
         <precision>-2</precision>
-      </field>      <field>        <name>nimi_fi</name>
+      </field>      <field>        <name>KoodiUri</name>
         <rename/>
         <length>-2</length>
         <precision>-2</precision>
-      </field>      <field>        <name>nimi_sv</name>
+      </field>      <field>        <name>Koodiarvo</name>
         <rename/>
         <length>-2</length>
         <precision>-2</precision>
-      </field>      <field>        <name>nimi_en</name>
+      </field>      <field>        <name>Kieli</name>
         <rename/>
         <length>-2</length>
         <precision>-2</precision>
-      </field>      <field>        <name>tila</name>
+      </field>      <field>        <name>Nimi</name>
         <rename/>
         <length>-2</length>
         <precision>-2</precision>
-      </field>      <field>        <name>Uri</name>
+      </field>      <field>        <name>Kuvaus</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>VoimassaAlkuPvm</name>
+        <rename/>
+        <length>-2</length>
+        <precision>-2</precision>
+      </field>      <field>        <name>VoimassaLoppuPvm</name>
         <rename/>
         <length>-2</length>
         <precision>-2</precision>
       </field>        <select_unspecified>N</select_unspecified>
     </fields>     <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>176</xloc>
-      <yloc>672</yloc>
+      <xloc>304</xloc>
+      <yloc>464</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Sort rows</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+      <directory>&#x25;&#x25;java.io.tmpdir&#x25;&#x25;</directory>
+      <prefix>out</prefix>
+      <sort_size>1000000</sort_size>
+      <free_memory/>
+      <compress>N</compress>
+      <compress_variable/>
+      <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>URL</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <presorted>N</presorted>
+      </field>
+      <field>
+        <name>KoodiUri</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <presorted>N</presorted>
+      </field>
+      <field>
+        <name>Koodiarvo</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <presorted>N</presorted>
+      </field>
+      <field>
+        <name>VoimassaAlkuPvm</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <presorted>N</presorted>
+      </field>
+      <field>
+        <name>VoimassaLoppuPvm</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>416</xloc>
+      <yloc>464</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -655,11 +725,11 @@
            </partitioning>
     <connection>Antero</connection>
     <schema>sa</schema>
-    <table>sa_hakukohteet</table>
+    <table>sa_varda_koodistot</table>
     <commit>1000</commit>
     <truncate>Y</truncate>
     <ignore_errors>N</ignore_errors>
-    <use_batch>N</use_batch>
+    <use_batch>Y</use_batch>
     <specify_fields>Y</specify_fields>
     <partitioning_enabled>N</partitioning_enabled>
     <partitioning_field/>
@@ -672,84 +742,62 @@
     <return_field/>
     <fields>
         <field>
-          <column_name>hakukohdeOid</column_name>
-          <stream_name>hakukohdeOid</stream_name>
+          <column_name>source</column_name>
+          <stream_name>URL</stream_name>
+        </field>
+        <field>
+          <column_name>koodisto</column_name>
+          <stream_name>KoodiUri</stream_name>
+        </field>
+        <field>
+          <column_name>koodi</column_name>
+          <stream_name>Koodiarvo</stream_name>
         </field>
         <field>
           <column_name>nimi_fi</column_name>
-          <stream_name>nimi_fi</stream_name>
+          <stream_name>Nimi_fi</stream_name>
+        </field>
+        <field>
+          <column_name>kuvaus_fi</column_name>
+          <stream_name>Kuvaus_fi</stream_name>
         </field>
         <field>
           <column_name>nimi_sv</column_name>
-          <stream_name>nimi_sv</stream_name>
+          <stream_name>Nimi_sv</stream_name>
+        </field>
+        <field>
+          <column_name>kuvaus_sv</column_name>
+          <stream_name>Kuvaus_sv</stream_name>
         </field>
         <field>
           <column_name>nimi_en</column_name>
-          <stream_name>nimi_en</stream_name>
+          <stream_name>Nimi_en</stream_name>
         </field>
         <field>
-          <column_name>tila</column_name>
-          <stream_name>tila</stream_name>
+          <column_name>kuvaus_en</column_name>
+          <stream_name>Kuvaus_en</stream_name>
         </field>
         <field>
-          <column_name>latausaika</column_name>
-          <stream_name>latausaika</stream_name>
+          <column_name>alkupvm</column_name>
+          <stream_name>VoimassaAlkuPvm</stream_name>
         </field>
         <field>
-          <column_name>source</column_name>
-          <stream_name>source</stream_name>
+          <column_name>loppupvm</column_name>
+          <stream_name>VoimassaLoppuPvm</stream_name>
         </field>
     </fields>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>176</xloc>
-      <yloc>928</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>https&#x3a;&#x2f;&#x2f;virkailija.opintopolku.fi&#x3a;443&#x2f;tarjonta-service&#x2f;rest&#x2f;v1&#x2f;hakukohde</name>
-    <type>RowGenerator</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <fields>
-      <field>
-        <name>Uri</name>
-        <type>String</type>
-        <format/>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif>https&#x3a;&#x2f;&#x2f;virkailija.opintopolku.fi&#x3a;443&#x2f;tarjonta-service&#x2f;rest&#x2f;v1&#x2f;hakukohde&#x2f;search&#x3f;offset&#x3d;0&#x26;limit&#x3d;7000000</nullif>
-        <length>-1</length>
-        <precision>-1</precision>
-        <set_empty_string>N</set_empty_string>
-      </field>
-    </fields>
-    <limit>1</limit>
-    <never_ending>N</never_ending>
-    <interval_in_ms>5000</interval_in_ms>
-    <row_time_field>now</row_time_field>
-    <last_time_field>FiveSecondsAgo</last_time_field>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>176</xloc>
-      <yloc>48</yloc>
+      <xloc>640</xloc>
+      <yloc>464</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
 
   <step_error_handling>
       <error>
-        <source_step>Table output</source_step>
-        <target_step/>
+        <source_step>REST Client Y</source_step>
+        <target_step>Generate Rows &#x28;yleiset&#x29;</target_step>
         <is_enabled>Y</is_enabled>
         <nr_valuename/>
         <descriptions_valuename/>

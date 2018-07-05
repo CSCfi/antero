@@ -22,7 +22,6 @@ try:
     api_key = os.environ['AUTH_API_KEY']
 except KeyError:
     print("API-key missing")
-url = 'https://oiva.minedu.fi/api/export/jarjestysluvat'
 try:
     api_user = os.environ['AUTH_API_USER']
 except KeyError:
@@ -97,7 +96,7 @@ else:
    exit
 
 # Loading the data into response  list (jarjestysluvat) 
-response = requests.get(url, auth=('oivaexport','Ik8dDDaz')).json()
+response = requests.get(url,  auth=(api_user, api_key)).json()
   
 # select jarjestysluvat
 for i in response:

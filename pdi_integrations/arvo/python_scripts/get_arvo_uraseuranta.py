@@ -1,8 +1,3 @@
-#!/usr/bin/python
-# vim: set fileencoding=UTF-8 :
-"""
-Simple import script to load data from an API and push to csv
-"""
 #import json
 import requests
 #import os
