@@ -578,14 +578,30 @@
             "name": "Jufotaso uusi int",
             "dataType": "int64",
             "isDataTypeInferred": false,
-            "expression": "IF(OR(OR([Koodit Julkaisufoorumitaso_uusi]=\"1\",[Koodit Julkaisufoorumitaso_uusi]=\"2\"),[Koodit Julkaisufoorumitaso_uusi]=\"3\"),[Koodit Julkaisufoorumitaso_uusi],BLANK())"
+            "expression": "IF(OR(OR([Koodit Julkaisufoorumitaso_uusi]=\"1\",[Koodit Julkaisufoorumitaso_uusi]=\"2\"),[Koodit Julkaisufoorumitaso_uusi]=\"3\"),[Koodit Julkaisufoorumitaso_uusi],BLANK())",
+            "displayFolder": "Julkaisumuuttujat"
           },
           {
             "type": "calculated",
             "name": "Jufotaso int",
             "dataType": "int64",
             "isDataTypeInferred": false,
-            "expression": " IF(OR(OR([Koodit Julkaisufoorumitaso]=\"1\",[Koodit Julkaisufoorumitaso]=\"2\"),[Koodit Julkaisufoorumitaso]=\"3\"),[Koodit Julkaisufoorumitaso],BLANK())"
+            "expression": " IF(OR(OR([Koodit Julkaisufoorumitaso]=\"1\",[Koodit Julkaisufoorumitaso]=\"2\"),[Koodit Julkaisufoorumitaso]=\"3\"),[Koodit Julkaisufoorumitaso],BLANK())",
+            "displayFolder": "Julkaisumuuttujat"
+          },
+          {
+            "type": "calculated",
+            "name": "Julkaisufoorumitaso 2011-2014",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": " [Julkaisufoorumitaso vanha luokitus]"
+          },
+          {
+            "type": "calculated",
+            "name": "Julkaisufoorumitaso 2015-2018",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": "[Julkaisufoorumitaso uusi luokitus]"
           }
         ],
         "partitions": [
@@ -1888,7 +1904,7 @@
             "isHidden": true
           },
           {
-            "name": "Yhteisjulkaisut (netto)",
+            "name": "Yhteisjulkaisut",
             "expression": "[Yhteisjulkaisujen lkm (pl. yhteisjulkaisut joissa vain kv-kumppani)]+[Yhteisjulkaisut joissa vain kv-yhteistyöorganisaatio]"
           },
           {
@@ -1947,8 +1963,8 @@
             ]
           },
           {
-            "name": "Jufot 2011_2014",
-            "expression": "CALCULATE(AVERAGE([Jufotaso int]),FILTER(Muuttujat,OR(OR([Jufotaso int]=1,[Jufotaso int]=2),[Jufotaso int]=3)),FILTER(Muuttujat,OR([Koodit Julkaisun pääluokka]=\"A\",[Koodit Julkaisun pääluokka]=\"C\")),FILTER(Muuttujat,[Tilastovuosi]<2015))"
+            "name": "Jufot 2011-2014",
+            "expression": "CALCULATE(AVERAGE([Jufotaso int]),FILTER(Muuttujat,OR(OR([Jufotaso int]=1,[Jufotaso int]=2),[Jufotaso int]=3)),FILTER(Muuttujat,OR([Koodit Julkaisun pääluokka]=\"A\",[Koodit Julkaisun pääluokka]=\"C\")),FILTER(Muuttujat,Muuttujat[Tilastovuosi]>2010&&[Tilastovuosi]<2015))"
           }
         ],
         "annotations": [
@@ -3217,12 +3233,6 @@
                 "name": "Julkaisufoorumitaso"
               },
               {
-                "name": "Julkaisufoorumitaso uusi luokitus"
-              },
-              {
-                "name": "Julkaisufoorumitaso vanha luokitus"
-              },
-              {
                 "name": "Julkaisun kansainvälisyys"
               },
               {
@@ -3284,6 +3294,12 @@
               },
               {
                 "name": "Yhteistyöorganisaatio"
+              },
+              {
+                "name": "Julkaisufoorumitaso 2011-2014"
+              },
+              {
+                "name": "Julkaisufoorumitaso 2015-2018"
               }
             ],
             "measures": [
@@ -3297,7 +3313,7 @@
                 "name": "Jufot (Suhteellinen)"
               },
               {
-                "name": "Jufot 2011_2014"
+                "name": "Jufot 2011-2014"
               },
               {
                 "name": "Kansainvälisten yhteisjulkaisujen lkm"
@@ -3306,7 +3322,7 @@
                 "name": "Yhteisjulkaisujen lkm (pl. yhteisjulkaisut joissa vain kv-kumppani)"
               },
               {
-                "name": "Yhteisjulkaisut (netto)"
+                "name": "Yhteisjulkaisut"
               },
               {
                 "name": "Yhteisjulkaisut (pl. vain kv-kumppaneita)/htv"
