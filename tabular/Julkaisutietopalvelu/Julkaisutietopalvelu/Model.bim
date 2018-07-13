@@ -300,7 +300,7 @@
             "displayFolder": "Koodimuuttujat"
           },
           {
-            "name": "Jufotaso vanha 2011-2014",
+            "name": "Jufotaso 2011-2014",
             "dataType": "string",
             "sourceColumn": "Julkaisufoorumitaso vanha luokitus",
             "displayFolder": "Julkaisumuuttujat"
@@ -312,7 +312,7 @@
             "displayFolder": "Koodimuuttujat"
           },
           {
-            "name": "Jufotaso uusi 2015->",
+            "name": "Jufotaso 2015->",
             "dataType": "string",
             "sourceColumn": "Julkaisufoorumitaso uusi luokitus",
             "displayFolder": "Julkaisumuuttujat"
@@ -2529,7 +2529,15 @@
           },
           {
             "name": "Jufot (Suhteellinen)",
-            "expression": "CONCATENATE(FORMAT([apufunktio]/CALCULATE([apufunktio],ALL(Muuttujat[Yliopisto])),\"FIXED\"),\" (\"&CALCULATE(DISTINCTCOUNT(Muuttujat[JulkaisunTunnus]),FILTER(Muuttujat,OR(OR(Muuttujat[Jufotaso uusi int]=1,Muuttujat[Jufotaso uusi int]=2),Muuttujat[Jufotaso uusi int]=3)),FILTER(Muuttujat,OR(Muuttujat[Koodit Julkaisun pääluokka]=\"A\",Muuttujat[Koodit Julkaisun pääluokka]=\"C\")))&\")\")"
+            "expression": [
+              "",
+              "",
+              "var lasku=CONCATENATE(FORMAT([apufunktio]/CALCULATE([apufunktio],ALL(Muuttujat[Yliopisto])),\"FIXED\"),\" (\"&CALCULATE(DISTINCTCOUNT(Muuttujat[JulkaisunTunnus]),FILTER(Muuttujat,OR(OR(Muuttujat[Jufotaso uusi int]=1,Muuttujat[Jufotaso uusi int]=2),Muuttujat[Jufotaso uusi int]=3)),FILTER(Muuttujat,OR(Muuttujat[Koodit Julkaisun pääluokka]=\"A\",Muuttujat[Koodit Julkaisun pääluokka]=\"C\")))&\")\")",
+              "var lasku_julk=CALCULATE(DISTINCTCOUNT(Muuttujat[JulkaisunTunnus]),FILTER(Muuttujat,OR(OR(Muuttujat[Jufotaso uusi int]=1,Muuttujat[Jufotaso uusi int]=2),Muuttujat[Jufotaso uusi int]=3)),FILTER(Muuttujat,OR(Muuttujat[Koodit Julkaisun pääluokka]=\"A\",Muuttujat[Koodit Julkaisun pääluokka]=\"C\")))",
+              "",
+              "return IF(AND(HASONEVALUE(Ulkoasu[Piilota boolean]),FIRSTNONBLANK(Ulkoasu[Piilota boolean],TRUE())),",
+              "\tIF(lasku_julk<20,BLANK(),lasku),lasku)"
+            ]
           },
           {
             "name": "Julkaisut painotetut",
@@ -4496,6 +4504,47 @@
             "value": "dw"
           }
         ]
+      },
+      {
+        "name": "Ulkoasu",
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "Piilota boolean",
+            "dataType": "boolean",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "sourceColumn": "[Piilota boolean]",
+            "formatString": "\"TRUE\";\"TRUE\";\"FALSE\""
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Piilota suht. jufo jos julkaisuja < 20",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "sourceColumn": "[Piilota suht. jufo jos julkaisuja < 20]",
+            "tableDetailPosition": 0
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": [
+                "DATATABLE(",
+                "\"Piilota suht. jufo jos julkaisuja < 20\",STRING,\"Piilota boolean\",BOOLEAN,",
+                "{",
+                "\t{\"Kyllä\",1},",
+                "\t{\"Ei\",0}",
+                "})"
+              ]
+            }
+          }
+        ]
       }
     ],
     "cultures": [
@@ -4632,10 +4681,10 @@
                 "name": "Taiteenala"
               },
               {
-                "name": "Jufotaso uusi 2015->"
+                "name": "Jufotaso 2015->"
               },
               {
-                "name": "Jufotaso vanha 2011-2014"
+                "name": "Jufotaso 2011-2014"
               }
             ],
             "measures": [
@@ -4748,10 +4797,10 @@
                 "name": "Taiteenala"
               },
               {
-                "name": "Jufotaso uusi 2015->"
+                "name": "Jufotaso 2015->"
               },
               {
-                "name": "Jufotaso vanha 2011-2014"
+                "name": "Jufotaso 2011-2014"
               }
             ],
             "measures": [
@@ -4861,10 +4910,10 @@
                 "name": "Taiteenala"
               },
               {
-                "name": "Jufotaso uusi 2015->"
+                "name": "Jufotaso 2015->"
               },
               {
-                "name": "Jufotaso vanha 2011-2014"
+                "name": "Jufotaso 2011-2014"
               }
             ],
             "measures": [
@@ -4932,10 +4981,10 @@
                 "name": "Tieteenala"
               },
               {
-                "name": "Jufotaso uusi 2015->"
+                "name": "Jufotaso 2015->"
               },
               {
-                "name": "Jufotaso vanha 2011-2014"
+                "name": "Jufotaso 2011-2014"
               },
               {
                 "name": "Yliopisto"
@@ -4988,6 +5037,14 @@
               },
               {
                 "name": "Sarakeleveys"
+              }
+            ]
+          },
+          {
+            "name": "Ulkoasu",
+            "columns": [
+              {
+                "name": "Piilota suht. jufo jos julkaisuja < 20"
               }
             ]
           }
@@ -5558,10 +5615,10 @@
                 "name": "Jufotaso"
               },
               {
-                "name": "Jufotaso uusi 2015->"
+                "name": "Jufotaso 2015->"
               },
               {
-                "name": "Jufotaso vanha 2011-2014"
+                "name": "Jufotaso 2011-2014"
               },
               {
                 "name": "Julkaisu rinnakkaistallennettu"
