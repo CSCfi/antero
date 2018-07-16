@@ -32,7 +32,7 @@ SELECT
 ,d_koulutusluokitus.koulutusalataso1_sv as 'Utbildningsområde, nivå 1'
 ,d_koulutusluokitus.koulutusalataso2_sv as 'Utbildningsområde, nivå 2'
 ,d_koulutusluokitus.koulutusalataso3_sv as 'Utbildningsområde, nivå 3'
-,d_koulutusluokitus.okmohjauksenala_sv as 'UKM-styrningsområde?'
+,d_koulutusluokitus.okmohjauksenala_sv as 'UKM-styrningsområde'
 ,d_koulutusluokitus.koulutusluokitus_sv as 'Utbildningsbenämning'
 
 ,d_koulutusluokitus.koulutusastetaso1_en as 'Level of education, tier 1'
