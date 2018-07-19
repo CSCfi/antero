@@ -62,7 +62,7 @@
         ]
       },
       {
-        "name": "Rekrytointi",
+        "name": "_Muuttujat",
         "columns": [
           {
             "name": "Tilastovuosi",
@@ -136,11 +136,13 @@
           {
             "name": "Hakuavain",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "Hakuavain"
           },
           {
             "name": "hakunumero",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "hakunumero"
           },
           {
@@ -586,17 +588,17 @@
         "measures": [
           {
             "name": "Hakijat",
-            "expression": "SUM([hakijat_lkm])",
+            "expression": "IF(SUM([hakijat_lkm])=0,BLANK(),SUM([hakijat_lkm]))",
             "formatString": "#,0"
           },
           {
             "name": "Valitut",
-            "expression": "SUM('CalculatedTable 2'[Valittuja])",
+            "expression": "IF(CALCULATE(SUM('CalculatedTable 2'[Valittuja]))=0,BLANK(),CALCULATE(SUM('CalculatedTable 2'[Valittuja])))",
             "formatString": "#,0"
           },
           {
             "name": "Ulkomaalaiset hakijat",
-            "expression": "CALCULATE(SUM([hakijat_lkm]),'Rekrytointi'[Kansalaisuus Suomi]=\"Ei\")",
+            "expression": "IF(CALCULATE(SUM([hakijat_lkm]),'_Muuttujat'[Kansalaisuus Suomi]=\"Ei\")=0,BLANK(),CALCULATE(SUM([hakijat_lkm]),'_Muuttujat'[Kansalaisuus Suomi]=\"Ei\"))",
             "formatString": "#,0"
           },
           {
@@ -606,17 +608,17 @@
           },
           {
             "name": "Hakijoita per valittu",
-            "expression": "[Hakijat]/[Valitut]",
+            "expression": "IF([Hakijat]=0,BLANK(),[Hakijat]/[Valitut])",
             "formatString": "#,0"
           },
           {
             "name": "Keskihajonta (hakijoita per valittu)",
-            "expression": "STDEVX.P('Rekrytointi',[Hakijat]/[Valitut])",
+            "expression": "STDEVX.P('_Muuttujat',IF(ISERROR([Hakijat]/[Valitut]),0,[Hakijat]/[Valitut]))",
             "formatString": "0.0"
           },
           {
             "name": "Keskihajonta (ulk. hakijoita per valittu)",
-            "expression": "CALCULATE(STDEVX.P('Rekrytointi',[Hakijat]/[Valitut]),'Rekrytointi'[Kansalaisuus Suomi]=\"Ei\")",
+            "expression": "CALCULATE(STDEVX.P('_Muuttujat',IF(ISERROR([Hakijat]/[Valitut]),0,[Hakijat]/[Valitut])),'_Muuttujat'[Kansalaisuus Suomi]=\"Ei\")",
             "formatString": "0.0"
           },
           {
@@ -1473,11 +1475,13 @@
           {
             "name": "Hakuavain",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "Hakuavain"
           },
           {
             "name": "henkilonumero",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "henkilonumero"
           },
           {
@@ -4305,15 +4309,18 @@
           },
           {
             "name": "Hakijat2",
-            "expression": "SUM('CalculatedTable 1'[Hakijoita])"
+            "expression": "SUM('CalculatedTable 1'[Hakijoita])",
+            "isHidden": true
           },
           {
             "name": "Valitut2",
-            "expression": "DISTINCTCOUNT('Muuttujat'[henkilonumero])"
+            "expression": "DISTINCTCOUNT('Muuttujat'[henkilonumero])",
+            "isHidden": true
           },
           {
             "name": "Ulkomaalaiset hakijat2",
-            "expression": "SUM('CalculatedTable 1'[Ulk hakijat])"
+            "expression": "SUM('CalculatedTable 1'[Ulk hakijat])",
+            "isHidden": true
           }
         ],
         "annotations": [
@@ -6822,6 +6829,7 @@
       },
       {
         "name": "CalculatedTable 1",
+        "isHidden": true,
         "columns": [
           {
             "type": "calculatedTableColumn",
@@ -6845,7 +6853,7 @@
             "dataType": "string",
             "isNameInferred": true,
             "isDataTypeInferred": true,
-            "sourceColumn": "Rekrytointi[Hakuavain]"
+            "sourceColumn": "_Muuttujat[Hakuavain]"
           }
         ],
         "partitions": [
@@ -6853,13 +6861,14 @@
             "name": "CalculatedTable 1",
             "source": {
               "type": "calculated",
-              "expression": "SUMMARIZE(Rekrytointi,[Hakuavain],\"Hakijoita\",SUM(Rekrytointi[hakijat_lkm]),\"Ulk hakijat\",CALCULATE(SUM(Rekrytointi[hakijat_lkm]),Rekrytointi[Kansalaisuus Suomi]=\"Ei\"))"
+              "expression": "SUMMARIZE(_Muuttujat,[Hakuavain],\"Hakijoita\",SUM(_Muuttujat[hakijat_lkm]),\"Ulk hakijat\",CALCULATE(SUM(_Muuttujat[hakijat_lkm]),_Muuttujat[Kansalaisuus Suomi]=\"Ei\"))"
             }
           }
         ]
       },
       {
         "name": "CalculatedTable 2",
+        "isHidden": true,
         "columns": [
           {
             "type": "calculatedTableColumn",
@@ -6890,6 +6899,7 @@
       },
       {
         "name": "CalculatedTable 3",
+        "isHidden": true,
         "columns": [
           {
             "type": "calculatedTableColumn",
@@ -6897,6 +6907,7 @@
             "dataType": "string",
             "isNameInferred": true,
             "isDataTypeInferred": true,
+            "isHidden": true,
             "sourceColumn": "Muuttujat[Hakuavain]"
           },
           {
@@ -6930,18 +6941,27 @@
     "relationships": [
       {
         "name": "11c6a09f-7a26-4b2a-9649-a9ae161f7070",
-        "fromTable": "Rekrytointi",
+        "fromTable": "_Muuttujat",
         "fromColumn": "Hakuavain",
         "toTable": "CalculatedTable 2",
         "toColumn": "Hakuavain",
         "crossFilteringBehavior": "bothDirections"
       },
       {
-        "name": "94005a62-58a8-472a-b49b-20942c879a9f",
+        "name": "9507e628-89d7-4f28-b23e-287f15c25c44",
         "fromTable": "Muuttujat",
         "fromColumn": "Hakuavain",
         "toTable": "CalculatedTable 1",
-        "toColumn": "Hakuavain"
+        "toColumn": "Hakuavain",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "a853c5c7-3b2c-4cd9-89b0-432010f02dc2",
+        "fromTable": "CalculatedTable 3",
+        "fromColumn": "Hakuavain",
+        "toTable": "CalculatedTable 2",
+        "toColumn": "Hakuavain",
+        "crossFilteringBehavior": "bothDirections"
       }
     ],
     "perspectives": [
@@ -6949,7 +6969,7 @@
         "name": "Hakijat",
         "tables": [
           {
-            "name": "Rekrytointi",
+            "name": "_Muuttujat",
             "columns": [
               {
                 "name": "Kansainvälinen haku"
@@ -7011,6 +7031,17 @@
               },
               {
                 "name": "Sarakeleveys"
+              }
+            ]
+          },
+          {
+            "name": "CalculatedTable 3",
+            "columns": [
+              {
+                "name": "Tieteenala"
+              },
+              {
+                "name": "Tutkijanuravaihe"
               }
             ]
           }
@@ -7781,7 +7812,7 @@
         "name": "Hakijat_ulk",
         "tables": [
           {
-            "name": "Rekrytointi",
+            "name": "_Muuttujat",
             "columns": [
               {
                 "name": "Kansainvälinen haku"
