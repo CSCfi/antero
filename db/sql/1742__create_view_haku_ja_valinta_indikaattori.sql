@@ -22,7 +22,7 @@ SELECT
 ,Hakutoive
 ,Vastaanottotieto
 ,Vastaanottanut
-,Koulutusaste_jarj = case f.Koulutusaste2 when ''2'' then 1 when ''3'' then 2 when ''4'' then 3 when ''5'' then 4 else 9 end
+,Koulutusaste_jarj = case f.Koulutusaste2 when '2' then 1 when '3' then 2 when '4' then 3 when '5' then 4 else 9 end
 ,År
 ,Utbildningsnivå
 ,Landskap
@@ -36,24 +36,24 @@ FROM (
 	[Koulutuksen alkamisvuosi] = f.koulutuksen_alkamisvuosi
 	,Haku = d1.haun_nimi_fi
 	,koulutusaste2 = d3.koulutussektori_koodi
-	,Koulutusaste = d3.koulutussektori_fi--case when ka.koulutussektori_fi in (''Alempi korkeakoulututkinto'',''Ylempi korkeakoulututkinto'') then ''Yliopistokoulutus'' when ka.Nimi_FI in (''Ammattikorkeakoulututkinto'',''Ylempi ammattikorkeakoulututkinto'') then ''Ammattikorkeakoulutus'' else ka.Nimi_FI end
+	,Koulutusaste = d3.koulutussektori_fi--case when ka.koulutussektori_fi in ('Alempi korkeakoulututkinto','Ylempi korkeakoulututkinto') then 'Yliopistokoulutus' when ka.Nimi_FI in ('Ammattikorkeakoulututkinto','Ylempi ammattikorkeakoulututkinto') then 'Ammattikorkeakoulutus' else ka.Nimi_FI end
 	,Hakukohde = d2.selite_fi
 	,[Oppilaitoksen maakunta] = d5.maakunta_fi
 	,Maakunta_jarj = d5.jarjestys_maakunta_koodi
-	,[Amk päivätoteutus] = case when d3.koulutussektori_koodi=''4'' and (d2.selite_fi like ''%päivätoteutus%'' or d2.selite_fi like ''%päivätotetutus%'' or d2.selite_fi like ''%dagstudier%'') then 1 else 0 end
+	,[Amk päivätoteutus] = case when d3.koulutussektori_koodi='4' and (d2.selite_fi like '%päivätoteutus%' or d2.selite_fi like '%päivätotetutus%' or d2.selite_fi like '%dagstudier%') then 1 else 0 end
 	,Henkilö_oid = f.henkilo_oid
 	,Hakutoive = f.hakutoive
 	,Vastaanottotieto = f.vastaanoton_tila
-	,Vastaanottanut = case when f.vastaanoton_tila IN (''VASTAANOTTANUT'',''VASTAANOTTANUT_POISSAOLEVA'',''VASTAANOTTANUT_LASNA'',''VASTAANOTTANUT_SITOVASTI'',''EHDOLLISESTI_VASTAANOTTANUT'') then 1 else 0 end
+	,Vastaanottanut = case when f.vastaanoton_tila IN ('VASTAANOTTANUT','VASTAANOTTANUT_POISSAOLEVA','VASTAANOTTANUT_LASNA','VASTAANOTTANUT_SITOVASTI','EHDOLLISESTI_VASTAANOTTANUT') then 1 else 0 end
 
 	--Ruotsi
 	,[År] = f.koulutuksen_alkamisvuosi
-	,Utbildningsnivå = d3.koulutussektori_sv--case when ka.Nimi_FI in (''Alempi korkeakoulututkinto'',''Ylempi korkeakoulututkinto'') then ''Universitetsutbildning'' when ka.Nimi_FI in (''Ammattikorkeakoulututkinto'',''Ylempi ammattikorkeakoulututkinto'') then ''Yrkeshögskoleutbildning'' else ka.Nimi_SV end
+	,Utbildningsnivå = d3.koulutussektori_sv--case when ka.Nimi_FI in ('Alempi korkeakoulututkinto','Ylempi korkeakoulututkinto') then 'Universitetsutbildning' when ka.Nimi_FI in ('Ammattikorkeakoulututkinto','Ylempi ammattikorkeakoulututkinto') then 'Yrkeshögskoleutbildning' else ka.Nimi_SV end
 	,Landskap = d5.maakunta_sv
 
 	--Englanti
 	,[Year] = f.koulutuksen_alkamisvuosi
-	,[Level of education] = d3.koulutussektori_en--case when ka.Nimi_FI in (''Alempi korkeakoulututkinto'',''Ylempi korkeakoulututkinto'') then ''University education'' when ka.Nimi_FI in (''Ammattikorkeakoulututkinto'',''Ylempi ammattikorkeakoulututkinto'') then ''University of applied sciences education'' else ka.Nimi_EN end
+	,[Level of education] = d3.koulutussektori_en--case when ka.Nimi_FI in ('Alempi korkeakoulututkinto','Ylempi korkeakoulututkinto') then 'University education' when ka.Nimi_FI in ('Ammattikorkeakoulututkinto','Ylempi ammattikorkeakoulututkinto') then 'University of applied sciences education' else ka.Nimi_EN end
 	,Region = d5.maakunta_en
 
 
@@ -67,7 +67,7 @@ FROM (
 	
 
 	WHERE f.koulutuksen_alkamisvuosi between 2015 and year(GETDATE())-1
-	AND d1.hakuryhma_koodi = ''1'' --Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku
+	AND d1.hakuryhma_koodi = '1' --Ammatillisen koulutuksen ja lukiokoulutuksen yhteishaku
 
 	UNION ALL
 
@@ -75,24 +75,24 @@ FROM (
 	[Koulutuksen alkamisvuosi] = f.koulutuksen_alkamisvuosi
 	,Haku = d1.haun_nimi_fi
 	,koulutusaste2 = d3.koulutussektori_koodi
-	,Koulutusaste = d3.koulutussektori_fi--case when ka.koulutussektori_fi in (''Alempi korkeakoulututkinto'',''Ylempi korkeakoulututkinto'') then ''Yliopistokoulutus'' when ka.Nimi_FI in (''Ammattikorkeakoulututkinto'',''Ylempi ammattikorkeakoulututkinto'') then ''Ammattikorkeakoulutus'' else ka.Nimi_FI end
+	,Koulutusaste = d3.koulutussektori_fi--case when ka.koulutussektori_fi in ('Alempi korkeakoulututkinto','Ylempi korkeakoulututkinto') then 'Yliopistokoulutus' when ka.Nimi_FI in ('Ammattikorkeakoulututkinto','Ylempi ammattikorkeakoulututkinto') then 'Ammattikorkeakoulutus' else ka.Nimi_FI end
 	,Hakukohde = d2.selite_fi
 	,[Oppilaitoksen maakunta] = d5.maakunta_fi
 	,Maakunta_jarj = d5.jarjestys_maakunta_koodi
-	,[Amk päivätoteutus] = case when d3.koulutussektori_koodi=''4'' and (d2.selite_fi like ''%päivätoteutus%'' or d2.selite_fi like ''%päivätotetutus%'' or d2.selite_fi like ''%dagstudier%'') then 1 else 0 end
+	,[Amk päivätoteutus] = case when d3.koulutussektori_koodi='4' and (d2.selite_fi like '%päivätoteutus%' or d2.selite_fi like '%päivätotetutus%' or d2.selite_fi like '%dagstudier%') then 1 else 0 end
 	,Henkilö_oid = f.henkilo_oid
 	,Hakutoive = f.hakutoive
 	,Vastaanottotieto = f.vastaanoton_tila
-	,Vastaanottanut = case when f.vastaanoton_tila IN (''VASTAANOTTANUT'',''VASTAANOTTANUT_POISSAOLEVA'',''VASTAANOTTANUT_LASNA'',''VASTAANOTTANUT_SITOVASTI'',''EHDOLLISESTI_VASTAANOTTANUT'') then 1 else 0 end
+	,Vastaanottanut = case when f.vastaanoton_tila IN ('VASTAANOTTANUT','VASTAANOTTANUT_POISSAOLEVA','VASTAANOTTANUT_LASNA','VASTAANOTTANUT_SITOVASTI','EHDOLLISESTI_VASTAANOTTANUT') then 1 else 0 end
 
 	--Ruotsi
 	,[År] = f.koulutuksen_alkamisvuosi
-	,Utbildningsnivå = d3.koulutussektori_sv--case when ka.Nimi_FI in (''Alempi korkeakoulututkinto'',''Ylempi korkeakoulututkinto'') then ''Universitetsutbildning'' when ka.Nimi_FI in (''Ammattikorkeakoulututkinto'',''Ylempi ammattikorkeakoulututkinto'') then ''Yrkeshögskoleutbildning'' else ka.Nimi_SV end
+	,Utbildningsnivå = d3.koulutussektori_sv--case when ka.Nimi_FI in ('Alempi korkeakoulututkinto','Ylempi korkeakoulututkinto') then 'Universitetsutbildning' when ka.Nimi_FI in ('Ammattikorkeakoulututkinto','Ylempi ammattikorkeakoulututkinto') then 'Yrkeshögskoleutbildning' else ka.Nimi_SV end
 	,Landskap = d5.maakunta_sv
 
 	--Englanti
 	,[Year] = f.koulutuksen_alkamisvuosi
-	,[Level of education] = d3.koulutussektori_en--case when ka.Nimi_FI in (''Alempi korkeakoulututkinto'',''Ylempi korkeakoulututkinto'') then ''University education'' when ka.Nimi_FI in (''Ammattikorkeakoulututkinto'',''Ylempi ammattikorkeakoulututkinto'') then ''University of applied sciences education'' else ka.Nimi_EN end
+	,[Level of education] = d3.koulutussektori_en--case when ka.Nimi_FI in ('Alempi korkeakoulututkinto','Ylempi korkeakoulututkinto') then 'University education' when ka.Nimi_FI in ('Ammattikorkeakoulututkinto','Ylempi ammattikorkeakoulututkinto') then 'University of applied sciences education' else ka.Nimi_EN end
 	,Region = d5.maakunta_en
 
 
@@ -106,11 +106,9 @@ FROM (
 	
 
 	WHERE f.koulutuksen_alkamisvuosi between 2015 and year(GETDATE())-1
-	AND d1.hakuryhma_koodi = ''4'' --Korkeakoulujen yhteishaku
+	AND d1.hakuryhma_koodi = '4' --Korkeakoulujen yhteishaku
 
 ) f
-
-
 
 
 
