@@ -14,7 +14,7 @@ SELECT
 
 ----suomi
  d_kalenteri.vuosi AS 'Tilastovuosi'
- ,d_arvokyselykerta.vuosi as 'Kyselyvuosi'
+,d_arvokyselykerta.vuosi as 'Kyselyvuosi'
 ,d_kalenteri.vuosi as 'Vastausvuosi'
 ,d_kalenteri.kuukausi_fi as 'Vastauskuukausi'
 ,d_kalenteri.paiva as 'Vastauspäivä'
