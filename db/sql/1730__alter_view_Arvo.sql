@@ -1,25 +1,11 @@
 USE [ANTERO]
 GO
 
-/****** Object:  View [dw].[v_arvo]    Script Date: 11.7.2018 14:00:31 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
-
-
-
-
-
-
-
 
 ALTER VIEW [dw].[v_arvo] AS
 SELECT
  d_kalenteri.vuosi AS 'Tilastovuosi'
-,d_kalenteri.vuosi AS 'StatistikÂr'
+,d_kalenteri.vuosi AS 'Statistik√•r'
 ,d_kalenteri.vuosi AS 'Statistical year'
 
 ,d_organisaatioluokitus.organisaatio_koodi as 'Koodit Organisaatio'
@@ -41,13 +27,13 @@ SELECT
 ,d_koulutusluokitus.okmohjauksenala_fi as 'OKM ohjauksen ala'
 ,d_koulutusluokitus.koulutusluokitus_fi as 'Koulutusnimike'
 
-,d_koulutusluokitus.koulutusastetaso1_sv as 'UtbildningsnivÂ, nivÂ 1'
-,d_koulutusluokitus.koulutusastetaso2_sv as 'UtbildningsnivÂ, nivÂ 2'
-,d_koulutusluokitus.koulutusalataso1_sv as 'UtbildningsomrÂde, nivÂ 1'
-,d_koulutusluokitus.koulutusalataso2_sv as 'UtbildningsomrÂde, nivÂ 2'
-,d_koulutusluokitus.koulutusalataso3_sv as 'UtbildningsomrÂde, nivÂ 3'
-,d_koulutusluokitus.okmohjauksenala_sv as 'UKM-styrningsomrÂde?'
-,d_koulutusluokitus.koulutusluokitus_sv as 'Utbildningsben‰mning'
+,d_koulutusluokitus.koulutusastetaso1_sv as 'Utbildningsniv√•, niv√• 1'
+,d_koulutusluokitus.koulutusastetaso2_sv as 'Utbildningsniv√•, niv√• 2'
+,d_koulutusluokitus.koulutusalataso1_sv as 'Utbildningsomr√•de, niv√• 1'
+,d_koulutusluokitus.koulutusalataso2_sv as 'Utbildningsomr√•de, niv√• 2'
+,d_koulutusluokitus.koulutusalataso3_sv as 'Utbildningsomr√•de, niv√• 3'
+,d_koulutusluokitus.okmohjauksenala_sv as 'UKM-styrningsomr√•de'
+,d_koulutusluokitus.koulutusluokitus_sv as 'Utbildningsben√§mning'
 
 ,d_koulutusluokitus.koulutusastetaso1_en as 'Level of education, tier 1'
 ,d_koulutusluokitus.koulutusastetaso2_en as 'Level of education, tier 2'
@@ -59,7 +45,7 @@ SELECT
 
 ,d_kieli.kieli_koodi as 'Koodit Kieli'
 ,d_kieli.kieli_fi as 'Kieli'
-,d_kieli.kieli_sv as'SprÂk'
+,d_kieli.kieli_sv as'Spr√•k'
 ,d_kieli.kieli_en as 'Language'
 
 ,d_alueluokitus.kunta_koodi as 'Koodit Kunta'
@@ -75,41 +61,41 @@ SELECT
 ,d_kalenteri.vuosi as 'Vastausvuosi'
 ,d_kalenteri.kuukausi as 'Koodit Kuukausi'
 ,d_kalenteri.kuukausi_fi as 'Vastauskuukausi'
-,d_kalenteri.kuukausi_sv as 'Svaret mÂnad'
+,d_kalenteri.kuukausi_sv as 'Svaret m√•nad'
 ,d_kalenteri.kuukausi_en as 'Answer month'
-,d_kalenteri.paiva as 'Vastausp‰iv‰'
+,d_kalenteri.paiva as 'Vastausp√§iv√§'
 
 ,d_arvokysymys.kysymys_fi as 'Kysymys'
-,d_arvokysymys.kysymys_sv as 'FrÂga'
+,d_arvokysymys.kysymys_sv as 'Fr√•ga'
 ,d_arvokysymys.kysymys_en as 'Question'
 
 ,case when organisaatio_fi = 'Poliisiammattikorkeakoulu' then 'Muiden hallinnonalojen alainen koulutus' else 'Opetushallinnon alainen koulutus' end as 'Hallinnonala'
-,case when organisaatio_fi = 'Poliisiammattikorkeakoulu' then 'Annan ‰n utbildning som ‰r underst‰lld utbildningsfˆrvaltningen' else 'Utbildning som ‰r underst‰lld utbildningsfˆrvaltningen' end as 'FˆrvaltningsomrÂde'
+,case when organisaatio_fi = 'Poliisiammattikorkeakoulu' then 'Annan √§n utbildning som √§r underst√§lld utbildningsf√∂rvaltningen' else 'Utbildning som √§r underst√§lld utbildningsf√∂rvaltningen' end as 'F√∂rvaltningsomr√•de'
 ,case when organisaatio_fi = 'Poliisiammattikorkeakoulu' then 'Oher than education under the education administration' else 'Education under the education administration' end as 'Administrative sector'
 
 ,case 
-	when kysymys_fi = 'Tyˆel‰m‰n asiantuntijoiden osaamista hyˆdynnettiin onnistuneesti korkeakouluni toiminnassa.' and (kyselypohja = 'AVOP-AMK' or (kyselypohja = 'AVOP-YAMK' and d_arvokyselykerta.vuosi = 2016)) then 'Ei'--purkkaa
-	when d_arvokysymys.rahoitusmallikysymys = 1 then 'Kyll‰' 
+	when kysymys_fi = 'Ty√∂el√§m√§n asiantuntijoiden osaamista hy√∂dynnettiin onnistuneesti korkeakouluni toiminnassa.' and (kyselypohja = 'AVOP-AMK' or (kyselypohja = 'AVOP-YAMK' and d_arvokyselykerta.vuosi = 2016)) then 'Ei'--purkkaa
+	when d_arvokysymys.rahoitusmallikysymys = 1 then 'Kyll√§' 
 	when d_arvokysymys.rahoitusmallikysymys = 0 then 'Ei' 
 	else 'Tieto puuttuu' 
 end as rahoitusmallikysymys
 
 ,case 
-	when kysymys_fi = 'Tyˆel‰m‰n asiantuntijoiden osaamista hyˆdynnettiin onnistuneesti korkeakouluni toiminnassa.' and (kyselypohja = 'AVOP-AMK' or (kyselypohja = 'AVOP-YAMK' and d_arvokyselykerta.vuosi = 2016)) then 'Nej'--purkkaa
+	when kysymys_fi = 'Ty√∂el√§m√§n asiantuntijoiden osaamista hy√∂dynnettiin onnistuneesti korkeakouluni toiminnassa.' and (kyselypohja = 'AVOP-AMK' or (kyselypohja = 'AVOP-YAMK' and d_arvokyselykerta.vuosi = 2016)) then 'Nej'--purkkaa
 	when d_arvokysymys.rahoitusmallikysymys = 1 then 'Ja' 
 	when d_arvokysymys.rahoitusmallikysymys = 0 then 'Nej' 
 	else 'Information saknas' 
-end as FinansieringsmodellsfrÂga  
+end as Finansieringsmodellsfr√•ga  
 
 ,case 
-	when kysymys_fi = 'Tyˆel‰m‰n asiantuntijoiden osaamista hyˆdynnettiin onnistuneesti korkeakouluni toiminnassa.' and (kyselypohja = 'AVOP-AMK' or (kyselypohja = 'AVOP-YAMK' and d_arvokyselykerta.vuosi = 2016)) then 'No'--purkkaa
+	when kysymys_fi = 'Ty√∂el√§m√§n asiantuntijoiden osaamista hy√∂dynnettiin onnistuneesti korkeakouluni toiminnassa.' and (kyselypohja = 'AVOP-AMK' or (kyselypohja = 'AVOP-YAMK' and d_arvokyselykerta.vuosi = 2016)) then 'No'--purkkaa
 	when d_arvokysymys.rahoitusmallikysymys = 1 then 'Yes' 
 	when d_arvokysymys.rahoitusmallikysymys = 0 then 'No' 
 	else 'Missing data' 
 end as 'Funding model question'
 
 ,d_arvokyselykerta.kysely_fi as 'Kysely'
-,d_arvokyselykerta.kysely_sv as 'FrÂgeformul‰r'  --***
+,d_arvokyselykerta.kysely_sv as 'Fr√•geformul√§r'  --***
 ,d_arvokyselykerta.kysely_en as 'Survey' --***
 
 ,d_arvokyselykerta.kyselykerta
@@ -117,21 +103,21 @@ end as 'Funding model question'
 ,d_arvokyselykerta.kyselypohja 
 
 ,d_arvokyselykerta.vuosi as 'Kyselyvuosi'
-,d_arvokyselykerta.vuosi as '≈r'
+,d_arvokyselykerta.vuosi as '√Ör'
 ,d_arvokyselykerta.vuosi as 'Survey year'
 
 ,koulutusmuoto
 ,d_arvokysymys.vastaustyyppi
 ,vaihtoehto
-,case when monivalintavaihtoehto is null then case when vaihtoehto='1' then 'Kyll‰' when vaihtoehto='0' then 'Ei' else NULL end else monivalintavaihtoehto end as monivalintavaihtoehto
+,case when monivalintavaihtoehto is null then case when vaihtoehto='1' then 'Kyll√§' when vaihtoehto='0' then 'Ei' else NULL end else monivalintavaihtoehto end as monivalintavaihtoehto
 ,numerovalinta
 
 ,coalesce(taustakysymys_ika,'Tieto puuttuu') as 'taustakysymys_ika'
-,coalesce(taustakysymys_ika,'Information saknas') as '≈lder'
+,coalesce(taustakysymys_ika,'Information saknas') as '√Ölder'
 ,coalesce(taustakysymys_ika,'Missing data') as 'Age'
 
 ,coalesce(taustakysymys_sukupuoli,'Tieto puuttuu') as 'taustakysymys_sukupuoli'
-, case when taustakysymys_sukupuoli ='Mies' then 'Man' when taustakysymys_sukupuoli='Nainen' then 'Kvinna' else 'Information saknas' end as Kˆn
+, case when taustakysymys_sukupuoli ='Mies' then 'Man' when taustakysymys_sukupuoli='Nainen' then 'Kvinna' else 'Information saknas' end as K√∂n
 , case when taustakysymys_sukupuoli ='Mies' then 'Male' when taustakysymys_sukupuoli='Nainen' then 'Female' else 'Missing data' end as Gender
 
 ,coalesce(taustakysymys_pohjakoulutus,'Tieto puuttuu') as 'taustakysymys_pohjakoulutus'
@@ -158,8 +144,8 @@ end as 'Funding model question'
 ,case when kyselypohja = 'URASEURANTA-TOHTORI' then 1 else 0 end as ura_tohtori
 --
 ,d_arvokysymys.kysymysjarjestys
-,d_arvokysymys.kysymysryhma_fi as 'Kysymysryhm‰'
-,d_arvokysymys.kysymysryhma_sv as 'Grupper av frÂgor'
+,d_arvokysymys.kysymysryhma_fi as 'Kysymysryhm√§'
+,d_arvokysymys.kysymysryhma_sv as 'Grupper av fr√•gor'
 ,d_arvokysymys.kysymysryhma_en as 'Question group'
 ,d_arvokysymys.kysymysryhmajarjestys
 ,case when monivalintavaihtoehto is null then case when vaihtoehto='1' then 'Ky' when vaihtoehto='0' then 'Ei' else '99' end else left(monivalintavaihtoehto,2) end as jarjestys_monivalintavaihtoehto
@@ -169,14 +155,14 @@ end as 'Funding model question'
 	when 'Ylioppilastutkinto' then 1
 	when 'Ylioppilastutkinto / IB-tutkinto' then 2
 	when 'Ammatillinen perustutkinto/ammattitutkinto' then 3
-	when 'Ylioppilastutkinto sek‰ ammatillinen perustutkinto/ammattitutkinto' then 4
+	when 'Ylioppilastutkinto sek√§ ammatillinen perustutkinto/ammattitutkinto' then 4
 	when 'Opistoasteen tai ammatillisen korkea-asteen tutkinto' then 5
 	when 'Ammattikorkeakoulututkinto' then 6
 	when 'Korkeakoulututkinto' then 7
 	when 'Alempi korkeakoulututkinto' then 8
 	when 'Ylempi korkeakoulututkinto' then 9
 	when 'Ulkomailla suoritettu tutkinto' then 10
-	when 'Ei peruskoulun j‰lkeist‰ tutkintoa' then 11
+	when 'Ei peruskoulun j√§lkeist√§ tutkintoa' then 11
 	when 'Muu' then 12
 	else 99
 end as jarjestys_pohjakoulutus
@@ -203,3 +189,4 @@ where valtakunnallinen=1 and kyselypohja not like '%URASEURANTA%'
 
 
 GO
+USE[ANTERO]
