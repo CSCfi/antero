@@ -21,7 +21,7 @@ CREATE TABLE [dbo].[f_3_1a_Oppisopimus_paaasiallinen_toiminta](
 	[opetushallinnon_koulutusala] [nvarchar](1) NULL,
 	[opetushallinnon_koulutusaste] [nvarchar](2) NULL,
 	[koulutusala_taso_1_avain] [nvarchar](12) NULL,
-	[koulutusaste_taso_2][nvarchar](9) NULL,
+	[koulutusaste_taso_2_avain][nvarchar](9) NULL,
 	[ammatillisen_koulutuksen_koulutuslaji] [nvarchar](1) NULL,
 	[koulutuksen_sijaintimaakunta] [nvarchar](2) NULL,
 	[paaasiallinen_toiminta_versio3] [nvarchar](2) NULL,
