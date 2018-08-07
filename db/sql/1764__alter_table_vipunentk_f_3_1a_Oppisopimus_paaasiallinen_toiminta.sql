@@ -127,3 +127,4 @@ GO
 ALTER TABLE [dbo].[f_3_1a_Oppisopimus_paaasiallinen_toiminta] CHECK CONSTRAINT [FK_3_1a_d_koulutusluokitus_koulutusaste_taso_2]
 GO
 
+USE[ANTERO]
