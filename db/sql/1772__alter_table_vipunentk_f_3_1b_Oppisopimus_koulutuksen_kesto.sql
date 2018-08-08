@@ -99,18 +99,18 @@ GO
 ALTER TABLE [dbo].[f_3_1b_Oppisopimus_koulutuksen_kesto] CHECK CONSTRAINT [FK_3_1b_sukupuoli_d_sukupuoli]
 GO
 
-ALTER TABLE [dbo].[f_3_1a_Oppisopimus_paaasiallinen_toiminta]  WITH CHECK ADD  CONSTRAINT [FK_3_1b_d_koulutusluokitus_koulutusala_taso_1] FOREIGN KEY([koulutusala_taso_1_id])
+ALTER TABLE [dbo].[f_3_1b_Oppisopimus_koulutuksen_kesto]  WITH CHECK ADD  CONSTRAINT [FK_3_1b_d_koulutusluokitus_koulutusala_taso_1] FOREIGN KEY([koulutusala_taso_1_id])
 REFERENCES [dbo].[d_koulutusluokitus] ([id])
 GO
 
-ALTER TABLE [dbo].[f_3_1a_Oppisopimus_paaasiallinen_toiminta] CHECK CONSTRAINT [FK_3_1b_d_koulutusluokitus_koulutusala_taso_1]
+ALTER TABLE [dbo].[f_3_1b_Oppisopimus_koulutuksen_kesto] CHECK CONSTRAINT [FK_3_1b_d_koulutusluokitus_koulutusala_taso_1]
 GO
 
-ALTER TABLE [dbo].[f_3_1a_Oppisopimus_paaasiallinen_toiminta]  WITH CHECK ADD  CONSTRAINT [FK_3_1b_d_koulutusluokitus_koulutusaste_taso_2] FOREIGN KEY([koulutusaste_taso_2_id])
+ALTER TABLE [dbo].[f_3_1b_Oppisopimus_koulutuksen_kesto]  WITH CHECK ADD  CONSTRAINT [FK_3_1b_d_koulutusluokitus_koulutusaste_taso_2] FOREIGN KEY([koulutusaste_taso_2_id])
 REFERENCES [dbo].[d_koulutusluokitus] ([id])
 GO
 
-ALTER TABLE [dbo].[f_3_1a_Oppisopimus_paaasiallinen_toiminta] CHECK CONSTRAINT [FK_3_1b_d_koulutusluokitus_koulutusaste_taso_2]
+ALTER TABLE [dbo].[f_3_1b_Oppisopimus_koulutuksen_kesto] CHECK CONSTRAINT [FK_3_1b_d_koulutusluokitus_koulutusaste_taso_2]
 GO
 
 USE[ANTERO]
