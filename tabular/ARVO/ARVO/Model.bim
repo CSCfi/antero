@@ -1,6 +1,5 @@
 {
   "name": "SemanticModel",
-  "id": "SemanticModel",
   "compatibilityLevel": 1200,
   "model": {
     "culture": "fi-FI",
@@ -979,12 +978,18 @@
           },
           {
             "name": "pisteet-avop-yamk-tilasto",
-            "expression": "calculate([pisteet-avop-yamk],FILTER(VALUES(Muuttujat[vuosi_tilasto]),[vuosi_tilasto]=1))\n",
+            "expression": [
+              "calculate([pisteet-avop-yamk],FILTER(VALUES(Muuttujat[vuosi_tilasto]),[vuosi_tilasto]=1))",
+              ""
+            ],
             "isHidden": true
           },
           {
             "name": "pisteet-kandi-tilasto",
-            "expression": "calculate([pisteet-kandi],FILTER(VALUES(Muuttujat[vuosi_tilasto]),[vuosi_tilasto]=1))\n",
+            "expression": [
+              "calculate([pisteet-kandi],FILTER(VALUES(Muuttujat[vuosi_tilasto]),[vuosi_tilasto]=1))",
+              ""
+            ],
             "isHidden": true
           },
           {
@@ -1405,6 +1410,84 @@
           {
             "name": "Poäng (AVOP-YH)",
             "expression": "IF([vast-avop-amk-tilasto]<5,BLANK(),[pisteet-avop-amk-tilasto])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Score (AVOP-Higher UAS)",
+            "expression": "IF([vast-avop-yamk-tilasto]<5,BLANK(),[pisteet-avop-yamk-tilasto])"
+          },
+          {
+            "name": "Standard deviation (AVOP-Higher UAS)",
+            "expression": "IF([vast-avop-yamk-tilasto]<6,BLANK(),[kh-avop-yamk-tilasto])",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Poäng (AVOP-Högre YH)",
+            "expression": "IF([vast-avop-yamk-tilasto]<5,BLANK(),[pisteet-avop-yamk-tilasto])"
+          },
+          {
+            "name": "Standardavvikelse (AVOP-Högra YH)",
+            "expression": "IF([vast-avop-yamk-tilasto]<6,BLANK(),[kh-avop-yamk-tilasto])",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Number of respondents (AVOP-Higher UAS)",
+            "expression": "IF(AND([vast-avop-yamk-tilasto]>0,[vast-avop-yamk-tilasto]<6),3,[vast-avop-yamk-tilasto])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Antal personer som svarat (AVOP-Högra YH)",
+            "expression": "IF(AND([vast-avop-yamk-tilasto]>0,[vast-avop-yamk-tilasto]<6),3,[vast-avop-yamk-tilasto])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Average (AVOP-Higher UAS)",
+            "expression": "IF([vast-avop-yamk-tilasto]<6,BLANK(),[ka-avop-yamk-tilasto])",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Medeltal (AVOP-Högra UAS)",
+            "expression": "IF([vast-avop-yamk-tilasto]<6,BLANK(),[ka-avop-yamk-tilasto])",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Number of respondents (AVOP)",
+            "expression": "IF(AND([vast-avop-amk-yamk-tilasto]>0,[vast-avop-amk-yamk-tilasto]<6),3,[vast-avop-amk-yamk-tilasto])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Antal personer som svarat (AVOP)",
+            "expression": "IF(AND([vast-avop-amk-yamk-tilasto]>0,[vast-avop-amk-yamk-tilasto]<6),3,[vast-avop-amk-yamk-tilasto])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Average (AVOP)",
+            "expression": "IF([vast-avop-amk-yamk-tilasto]<6,BLANK(),[ka-avop-amk-yamk-tilasto])",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Medeltal (AVOP)",
+            "expression": "IF([vast-avop-amk-yamk-tilasto]<6,BLANK(),[ka-avop-amk-yamk-tilasto])",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Standard deviation (AVOP)",
+            "expression": "IF([vast-avop-amk-yamk-tilasto]<6,BLANK(),[kh-avop-amk-yamk-tilasto])",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Standardavvikelse (AVOP)",
+            "expression": "IF([vast-avop-amk-yamk-tilasto]<6,BLANK(),[kh-avop-amk-yamk-tilasto])",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Score (AVOP)",
+            "expression": "IF([vast-avop-amk-yamk-tilasto]<5,BLANK(),[pisteet-avop-amk-yamk-tilasto])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Poäng (AVOP)",
+            "expression": "IF([vast-avop-amk-yamk-tilasto]<5,BLANK(),[pisteet-avop-amk-yamk-tilasto])",
             "formatString": "#,0"
           }
         ],
@@ -2829,16 +2912,16 @@
             ],
             "measures": [
               {
-                "name": "Keskiarvo (AVOP-YAMK)"
+                "name": "Standard deviation (AVOP-Higher UAS)"
               },
               {
-                "name": "Keskihajonta (AVOP-YAMK)"
+                "name": "Number of respondents (AVOP-Higher UAS)"
               },
               {
-                "name": "Pisteet (AVOP-YAMK)"
+                "name": "Average (AVOP-Higher UAS)"
               },
               {
-                "name": "Vastaajamäärä (AVOP-YAMK)"
+                "name": "Score (AVOP-Higher UAS)"
               }
             ]
           },
@@ -2930,19 +3013,16 @@
             ],
             "measures": [
               {
-                "name": "Antal personer som svarat (AVOP-YH)"
+                "name": "Standardavvikelse (AVOP-Högra YH)"
               },
               {
-                "name": "Keskiarvo (AVOP-YAMK)"
+                "name": "Medeltal (AVOP-Högra UAS)"
               },
               {
-                "name": "Keskihajonta (AVOP-YAMK)"
+                "name": "Poäng (AVOP-Högre YH)"
               },
               {
-                "name": "Pisteet (AVOP-YAMK)"
-              },
-              {
-                "name": "Vastaajamäärä (AVOP-YAMK)"
+                "name": "Antal personer som svarat (AVOP-Högra YH)"
               }
             ]
           },
@@ -3031,16 +3111,16 @@
             ],
             "measures": [
               {
-                "name": "Keskiarvo (AVOP)"
+                "name": "Standard deviation (AVOP)"
               },
               {
-                "name": "Keskihajonta (AVOP)"
+                "name": "Number of respondents (AVOP)"
               },
               {
-                "name": "Pisteet (AVOP)"
+                "name": "Score (AVOP)"
               },
               {
-                "name": "Vastaajamäärä (AVOP)"
+                "name": "Average (AVOP)"
               }
             ]
           },
@@ -3129,16 +3209,16 @@
             ],
             "measures": [
               {
-                "name": "Keskiarvo (AVOP)"
+                "name": "Standardavvikelse (AVOP)"
               },
               {
-                "name": "Keskihajonta (AVOP)"
+                "name": "Medeltal (AVOP)"
               },
               {
-                "name": "Pisteet (AVOP)"
+                "name": "Poäng (AVOP)"
               },
               {
-                "name": "Vastaajamäärä (AVOP)"
+                "name": "Antal personer som svarat (AVOP)"
               }
             ]
           },
@@ -3190,5 +3270,6 @@
         "value": "400"
       }
     ]
-  }
+  },
+  "id": "SemanticModel"
 }
