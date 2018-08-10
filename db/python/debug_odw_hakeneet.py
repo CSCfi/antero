@@ -13,7 +13,7 @@ import dboperator
 
 
 class Client:
-    def __init__(self, host="localhost", path="/vipunendata", port=None, ssl=None, verbose=0,
+    def __init__(self, host="localhost", path="/vipunendata", port=None, ssl=None, verbose=1,
                  schema='sa', table='sa_odw_hakeneet'):
         self.host = host
         self.path = path
@@ -55,7 +55,7 @@ class Client:
         data = ""
         print("Inserting data...")
         with closing(dboperator) as db:
-            self._clear_data(db)
+            #self._clear_data(db)
             while True:
                 chunk_size = self._get_chunk_size(response)
                 if chunk_size == 0:
@@ -98,10 +98,10 @@ class Client:
         #    db.columns(json_data, self.verbose)
         #db.insert(self.source, self.schema, self.table, json_data, self.verbose)
 
-    def _clear_data(self, db):
-        db.empty(self.schema,
-                 self.table,
-                 self.verbose)
+    #def _clear_data(self, db):
+    #    db.empty(self.schema,
+    #             self.table,
+    #             self.verbose)
 
     def _debug(self, message=""):
         if self.verbose:
