@@ -13,7 +13,7 @@ import dboperator
 
 
 class Client:
-    def __init__(self, host="localhost", path="/vipunendata", port=None, ssl=None, verbose=1,
+    def __init__(self, host="localhost", path="/vipunendata", port=None, ssl=None, verbose=0,
                  schema='sa', table='sa_odw_hakeneet'):
         self.host = host
         self.path = path
@@ -94,6 +94,7 @@ class Client:
     def _insert_data(self, db, json_data, count):
         if count == 0:
             print(json_data)
+            exit(0)
             # First json will define columns.
         #    db.columns(json_data, self.verbose)
         #db.insert(self.source, self.schema, self.table, json_data, self.verbose)
