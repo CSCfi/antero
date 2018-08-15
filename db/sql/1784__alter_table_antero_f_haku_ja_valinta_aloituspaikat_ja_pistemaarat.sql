@@ -1,7 +1,7 @@
 USE [ANTERO]
 GO
 /****** Object:  Table [dw].[f_haku_ja_valinta_aloituspaikat_ja_pistemaarat]******/
-DROP TABLE [dbo].[f_haku_ja_valinta_aloituspaikat_ja_pistemaarat]
+DROP TABLE [dw].[f_haku_ja_valinta_aloituspaikat_ja_pistemaarat]
 GO
 
 /************************************************************************************/
