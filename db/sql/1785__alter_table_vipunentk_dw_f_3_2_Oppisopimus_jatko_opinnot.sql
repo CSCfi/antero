@@ -34,7 +34,6 @@ CREATE TABLE [dbo].[f_3_2_Oppisopimus_jatko_opinnot](
 	[jatko_opintojen_koulutusala_taso_1_avain] [nvarchar](12) NULL
 ) ON [PRIMARY]
 
-GO
 END
 GO
 USE [ANTERO]
