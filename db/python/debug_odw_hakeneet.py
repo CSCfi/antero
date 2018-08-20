@@ -35,11 +35,13 @@ class Client:
             headers = {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
-                "Authorization": "Basic %s" % base64.b64encode("%s:%s" % ("antero", self.password)),
+                "Authorization": "Basic %s" % base64.b64encode("%s:%s" % ("antero", self.password))
+            }
+            params = {
                 "hakuOid": self.hakuOid,
                 "updatedAfter": self.updatedAfter
             }
-            conn.request("GET", self.path, headers=headers)
+            conn.request("GET", self.path, headers=headers, params=params)
             response = conn.getresponse()
             transfer_encoding = response.getheader("Transfer-Encoding", "")
             if response.status != 200:
