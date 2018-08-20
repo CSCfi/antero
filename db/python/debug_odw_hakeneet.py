@@ -37,11 +37,12 @@ class Client:
                 "Accept": "application/json",
                 "Authorization": "Basic %s" % base64.b64encode("%s:%s" % ("antero", self.password))
             }
-            params = {
-                "hakuOid": self.hakuOid,
-                "updatedAfter": self.updatedAfter
-            }
-            conn.request("GET", self.path, headers=headers, params=params)
+            #params = {
+            #    "hakuOid": self.hakuOid,
+            #    "updatedAfter": self.updatedAfter
+            #}
+            path2=self.path+"?hakuOid="+self.hakuOid+"&updatedAfter="+self.updatedAfter
+            conn.request("GET", path2, headers=headers)
             response = conn.getresponse()
             transfer_encoding = response.getheader("Transfer-Encoding", "")
             if response.status != 200:
