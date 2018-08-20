@@ -14,7 +14,7 @@ import dboperator
 
 class Client:
     def __init__(self, host="localhost", path="/vipunendata", port=None, ssl=None, verbose=0,
-                 schema='sa', table='sa_odw_hakeneet_debug', hakuOid='', updatedAfter=''):
+                 schema='sa', table='sa_odw_hakeneet_debug', hakuOid="", updatedAfter=""):
         self.host = host
         self.path = path
         self.port = port
@@ -131,8 +131,8 @@ if __name__ == "__main__":
         arg_parser.add_argument('--schema', type=str, default='sa', help='database schema, default=sa')
         arg_parser.add_argument('--table', type=str, default='sa_odw_hakeneet_debug',
                                 help='database table name, default=sa_odw_hakeneet_debug'),
-        arg_parser.add_argument('-oid', '--hakuOid', type=str, help='insert hakuOid'),
-        arg_parser.add_argument('-updated', '--updatedAfter', type=str, help='2017-09-29')
+        arg_parser.add_argument('-oid', '--hakuOid', type=str, help='insert hakuOid', default=""),
+        arg_parser.add_argument('-updated', '--updatedAfter', type=str, help='2017-09-29', default="")
         args = arg_parser.parse_args(args=sys.argv[1:])
         success = Client(**vars(args)).load()
         sys.exit(0 if success else 1)
