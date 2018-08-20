@@ -14,7 +14,7 @@ import dboperator
 
 class Client:
     def __init__(self, host="localhost", path="/vipunendata", port=None, ssl=None, verbose=0,
-                 schema='sa', table='sa_odw_hakeneet_debug', hakuOid='', updateAfter=''):
+                 schema='sa', table='sa_odw_hakeneet_debug', hakuOid='', updatedAfter=''):
         self.host = host
         self.path = path
         self.port = port
@@ -25,7 +25,7 @@ class Client:
         self.table = table
         self.password = os.getenv("API_PASSWORD", "")
         self.hakuOid = hakuOid
-        self.updateAfter = updateAfter
+        self.updatedAfter = updatedAfter
 
     def load(self):
         http_connection = httplib.HTTPSConnection(self.host, port=self.port) if self.ssl else httplib.HTTPConnection(
@@ -37,7 +37,7 @@ class Client:
                 "Accept": "application/json",
                 "Authorization": "Basic %s" % base64.b64encode("%s:%s" % ("antero", self.password)),
                 "hakuOid": self.hakuOid,
-                "updateAfter": self.updateAfter
+                "updatedAfter": self.updatedAfter
             }
             conn.request("GET", self.path, headers=headers)
             response = conn.getresponse()
