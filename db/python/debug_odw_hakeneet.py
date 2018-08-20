@@ -14,7 +14,7 @@ import dboperator
 
 class Client:
     def __init__(self, host="localhost", path="/vipunendata", port=None, ssl=None, verbose=0,
-                 schema='sa', table='sa_odw_hakeneet'):
+                 schema='sa', table='sa_odw_hakeneet_debug', hakuOid='', updateAfter=''):
         self.host = host
         self.path = path
         self.port = port
@@ -24,6 +24,8 @@ class Client:
         self.schema = schema
         self.table = table
         self.password = os.getenv("API_PASSWORD", "")
+        self.hakuOid = hakuOid
+        self.updateAfter = updateAfter
 
     def load(self):
         http_connection = httplib.HTTPSConnection(self.host, port=self.port) if self.ssl else httplib.HTTPConnection(
@@ -33,7 +35,9 @@ class Client:
             headers = {
                 "Content-Type": "application/json",
                 "Accept": "application/json",
-                "Authorization": "Basic %s" % base64.b64encode("%s:%s" % ("antero", self.password))
+                "Authorization": "Basic %s" % base64.b64encode("%s:%s" % ("antero", self.password)),
+                "hakuOid": self.hakuOid,
+                "updateAfter": self.updateAfter
             }
             conn.request("GET", self.path, headers=headers)
             response = conn.getresponse()
@@ -65,6 +69,7 @@ class Client:
                     # Complete json object.
                     json_data = json.loads(data)
                     data = ""
+                    #self._insert_all(db, json_data, count)
                     self._insert_data(db, json_data, count)
                     count += 1
                     self._print_progress(count)
@@ -121,8 +126,10 @@ if __name__ == "__main__":
         arg_parser.add_argument('-v', '--verbose', default=0, action='store_const', const=1,
                                 help='increase output verbosity')
         arg_parser.add_argument('--schema', type=str, default='sa', help='database schema, default=sa')
-        arg_parser.add_argument('--table', type=str, default='sa_odw_hakeneet',
-                                help='database table name, default=sa_odw_hakeneet')
+        arg_parser.add_argument('--table', type=str, default='sa_odw_hakeneet_debug',
+                                help='database table name, default=sa_odw_hakeneet_debug'),
+        arg_parser.add_argument('-oid', '--hakuOid', type=str, help='insert hakuOid'),
+        arg_parser.add_argument('-updated', '--updatedAfter', type=str, help='2017-09-29')
         args = arg_parser.parse_args(args=sys.argv[1:])
         success = Client(**vars(args)).load()
         sys.exit(0 if success else 1)
