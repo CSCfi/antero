@@ -184,7 +184,7 @@ def insertMany(source, schema, table, rows, debug=False):
   statement = "INSERT INTO %s.%s (%s,source) VALUES (%s,'%s');"%(schema,table,columnstr,placeholders,source)
   for row in rows:
       cur.executemany(statement,tuple([row[c.replace('_source_','')] for c in columnlist]))
-      count = cur.rowcount
+  count = cur.rowcount
   conn.commit()
 
 def commitLines():
