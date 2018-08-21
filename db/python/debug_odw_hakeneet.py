@@ -75,7 +75,7 @@ class Client:
                             if manyCount!=0:
                                 self._commit()
                                 manyCount=0
-                        break
+                            break
                     data += self._get_chunk_data(response, chunk_size)
                     if data.endswith('}'):
                         # Complete json object.
