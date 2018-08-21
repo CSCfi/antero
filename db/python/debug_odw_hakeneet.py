@@ -14,7 +14,7 @@ import debug_dboperator
 
 class Client:
     def __init__(self, host="localhost", path="/vipunendata", port=None, ssl=None, verbose=0,
-                 schema='sa', table='sa_odw_hakeneet_debug', hakuOid="", updatedAfter=""):
+                 schema='sa', table='sa_odw_hakeneet_debug', hakuOid="", updatedAfter="", initCounter = 0):
         self.host = host
         self.path = path
         self.port = port
@@ -26,6 +26,7 @@ class Client:
         self.password = os.getenv("API_PASSWORD", "")
         self.hakuOid = hakuOid
         self.updatedAfter = updatedAfter
+        self.initCounter = initCounter
 
     def load(self):
         http_connection = httplib.HTTPSConnection(self.host, port=self.port) if self.ssl else httplib.HTTPConnection(
@@ -85,11 +86,11 @@ class Client:
                     manyCount +=1
                     count += 1
                     self._print_progress(count)
-                if manyCount == 10:
+                if manyCount == 1000:
                     #print(json_data)
                     #exit(0)
                     self._insert_data(db, json_data, count)
-                    sys.exit(0)
+                    #sys.exit(0)
                     json_data = []
                     #self._commit(db)
                     manyCount=0
@@ -117,11 +118,12 @@ class Client:
         return data
 
     def _insert_data(self, db, json_data, count):
-        if count == 0:
+        if self.initCounter == 0:
+            self.initCounter = 1
             #print(json_data)
             #exit(0)
             # First json will define columns.
-            db.columns(json_data, self.verbose)
+            db.columns(json_data[0], self.verbose)
         db.insertMany(self.source, self.schema, self.table, json_data, self.verbose)
 
     def _commit(self, db):
