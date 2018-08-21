@@ -183,10 +183,10 @@ def insertMany(source, schema, table, rows, debug=False):
 
   statement = "INSERT INTO %s.%s (%s,source) VALUES (%s,'%s');"%(schema,table,columnstr,placeholders,source)
   for row in rows:
-      print(row)
+      print("rivi: " + row)
       print("\n")
-      print(tuple([row[c.replace('_source_','')] for c in columnlist]))
-      cur.executemany(statement,tuple([row[c.replace('_source_','')] for c in columnlist]))
+      print("tuple: " + tuple([row[c.replace('_source_','')] for c in columnlist]))
+      cur.execute(statement,tuple([row[c.replace('_source_','')] for c in columnlist]))
   count = cur.rowcount
   conn.commit()
 
