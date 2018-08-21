@@ -37,14 +37,15 @@ class Client:
                 "Accept": "application/json",
                 "Authorization": "Basic %s" % base64.b64encode("%s:%s" % ("antero", self.password))
             }
-            parameters = {
-                "hakuOid": self.hakuOid,
-                "updatedAfter": self.updatedAfter
-            }
+#            parameters = {
+#                "hakuOid": self.hakuOid,
+#                "updatedAfter": self.updatedAfter
+#            }
             path2=self.path+"?hakuOid="+self.hakuOid+"&updatedAfter="+self.updatedAfter
             print(path2)
+            print("hakuOid: " + self.hakuOid + " updatedAfter: " + self.updatedAfter)
             #conn.request("GET", path2, headers=headers)
-            conn.request("GET", self.path, headers=headers, params=parameters)
+            conn.request("GET", path2, headers=headers)
             response = conn.getresponse()
             transfer_encoding = response.getheader("Transfer-Encoding", "")
             if response.status != 200:
@@ -133,8 +134,8 @@ if __name__ == "__main__":
         arg_parser.add_argument('--schema', type=str, default='sa', help='database schema, default=sa')
         arg_parser.add_argument('--table', type=str, default='sa_odw_hakeneet_debug',
                                 help='database table name, default=sa_odw_hakeneet_debug'),
-        arg_parser.add_argument('-oid', '--hakuOid', type=str, help='insert hakuOid', default=""),
-        arg_parser.add_argument('-updated', '--updatedAfter', type=str, help='2017-09-29', default="")
+        arg_parser.add_argument('-oid', '--hakuOid', type=str, help='insert hakuOid', default=''),
+        arg_parser.add_argument('-updated', '--updatedAfter', type=str, help='2017-09-29', default='')
         args = arg_parser.parse_args(args=sys.argv[1:])
         success = Client(**vars(args)).load()
         sys.exit(0 if success else 1)
