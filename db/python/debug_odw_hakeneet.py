@@ -69,25 +69,24 @@ class Client:
         with closing(debug_dboperator) as db:
             self._clear_data(db)
             while True:
-                while manyCount != 1000:
-                    chunk_size = self._get_chunk_size(response)
-                    if chunk_size == 0:
-                            if manyCount!=0:
-                                self._commit(db)
-                                manyCount=0
-                            break
-                    data += self._get_chunk_data(response, chunk_size)
-                    if data.endswith('}'):
-                        # Complete json object.
-                        json_data = json.loads(data)
-                        data = ""
-                        self._insert_data(db, json_data, count)
-                        manyCount +=1
-                        count += 1
-                        self._print_progress(count)
-                    if manyCount == 1000:
-                        self._commit(db)
-                        manyCount=0
+                chunk_size = self._get_chunk_size(response)
+                if chunk_size == 0:
+                        if manyCount!=0:
+                            self._commit(db)
+                            manyCount=0
+                        break
+                data += self._get_chunk_data(response, chunk_size)
+                if data.endswith('}'):
+                    # Complete json object.
+                    json_data = json.loads(data)
+                    data = ""
+                    self._insert_data(db, json_data, count)
+                    manyCount +=1
+                    count += 1
+                    self._print_progress(count)
+                if manyCount == 1000:
+                    self._commit(db)
+                    manyCount=0
         print("Count: %d" % count)
 
     @staticmethod
