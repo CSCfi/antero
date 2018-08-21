@@ -73,11 +73,11 @@ class Client:
             while True:
                 chunk_size = self._get_chunk_size(response)
                 if chunk_size == 0:
-                        if manyCount!=0:
-                            self._insert_data(db, json_data, count)
-                            json_data = ''
-                            manyCount=0
-                        break
+                    if manyCount!=0:
+                        self._insert_data(db, json_data, count)
+                        json_data = ''
+                        manyCount=0
+                    break
                 data += self._get_chunk_data(response, chunk_size)
                 if data.endswith('}'):
                     # Complete json object.
