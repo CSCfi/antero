@@ -175,15 +175,16 @@ def insert(source,schema,table,row,debug=False):
   conn.commit()
 
 # insert - many rows at a time @hpetrell  
-def insertMany(source, schema, table, row, debug=False):
+def insertMany(source, schema, table, rows, debug=False):
   global conn, cur, count, columnlist
   if debug: print("dboperator.insert: columnlist="+(",".join(columnlist)))
   columnstr = ",".join(columnlist)
   placeholders = ','.join(['%s' for s in columnlist])
 
   statement = "INSERT INTO %s.%s (%s,source) VALUES (%s,'%s');"%(schema,table,columnstr,placeholders,source)
-  cur.execute(statement,tuple([row[c.replace('_source_','')] for c in columnlist]))
+  cur.executemany(statement,tuple([rows[c.replace('_source_','')] for c in columnlist]))
   count = cur.rowcount
+  conn.commit()
 
 def commitLines():
   global conn

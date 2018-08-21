@@ -44,7 +44,7 @@ class Client:
             #path2=self.path+"?hakuOid="+self.hakuOid+"&updatedAfter="+self.updatedAfter
             #print(path2)
             #print("hakuOid: " + self.hakuOid + " updatedAfter: " + self.updatedAfter)
-            #print("self.path= " + self.path)
+            print("self.path= " + self.path)
             #conn.request("GET", path2, headers=headers)
             conn.request("GET", self.path, headers=headers)
             response = conn.getresponse()
@@ -80,12 +80,12 @@ class Client:
                     # Complete json object.
                     json_data = json.loads(data)
                     data = ""
-                    self._insert_data(db, json_data, count)
                     manyCount +=1
                     count += 1
                     self._print_progress(count)
                 if manyCount == 1000:
-                    self._commit(db)
+                    self._insert_data(db, json_data, count)
+                    #self._commit(db)
                     manyCount=0
         print("Count: %d" % count)
 
