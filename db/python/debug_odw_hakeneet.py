@@ -64,6 +64,7 @@ class Client:
         response.chunked = False
         count = 0
         manyCount = 0
+        json_data = []
         data = ""
         print("Inserting data...")
         with closing(debug_dboperator) as db:
@@ -73,20 +74,22 @@ class Client:
                 if chunk_size == 0:
                         if manyCount!=0:
                             self._insert_data(db, json_data, count)
+                            json_data = ''
                             manyCount=0
                         break
                 data += self._get_chunk_data(response, chunk_size)
                 if data.endswith('}'):
                     # Complete json object.
-                    json_data = json.loads(data)
+                    json_data.append(data)
                     data = ""
                     manyCount +=1
                     count += 1
                     self._print_progress(count)
-                if manyCount == 10:
-                    print(json_data)
-                    sys.exit(0)
-                    #self._insert_data(db, json_data, count)
+                if manyCount == 1000:
+                    #print(json_data)
+                    #exit(0)
+                    self._insert_data(db, json_data, count)
+                    json_data = []
                     #self._commit(db)
                     manyCount=0
         print("Count: %d" % count)
