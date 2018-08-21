@@ -80,15 +80,15 @@ class Client:
                 data += self._get_chunk_data(response, chunk_size)
                 if data.endswith('}'):
                     # Complete json object.
-                    json_data.append(data)
+                    json_data.add(data)
                     data = ""
                     manyCount +=1
                     count += 1
                     self._print_progress(count)
-                if manyCount == 1000:
-                    #print(json_data)
-                    #exit(0)
-                    self._insert_data(db, json_data, count)
+                if manyCount == 10:
+                    print(json_data)
+                    exit(0)
+                    ##self._insert_data(db, json_data, count)
                     json_data = []
                     #self._commit(db)
                     manyCount=0
