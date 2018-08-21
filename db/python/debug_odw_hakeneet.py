@@ -42,9 +42,9 @@ class Client:
                 "updatedAfter": self.updatedAfter
             }
             path2=self.path+"?hakuOid="+self.hakuOid+"&updatedAfter="+self.updatedAfter
-			print(path2)
+            print(path2)
             #conn.request("GET", path2, headers=headers)
-			conn.request("GET", self.path, headers=headers, params=parameters)
+            conn.request("GET", self.path, headers=headers, params=parameters)
             response = conn.getresponse()
             transfer_encoding = response.getheader("Transfer-Encoding", "")
             if response.status != 200:
