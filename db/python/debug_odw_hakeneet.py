@@ -80,7 +80,7 @@ class Client:
                 data += self._get_chunk_data(response, chunk_size)
                 if data.endswith('}'):
                     # Complete json object.
-                    json_data.add(data)
+                    json_data.append(data)
                     data = ""
                     manyCount +=1
                     count += 1
