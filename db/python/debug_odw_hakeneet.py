@@ -73,7 +73,7 @@ class Client:
                     chunk_size = self._get_chunk_size(response)
                     if chunk_size == 0:
                             if manyCount!=0:
-                                self._commit()
+                                self._commit(db)
                                 manyCount=0
                             break
                     data += self._get_chunk_data(response, chunk_size)
@@ -86,7 +86,7 @@ class Client:
                         count += 1
                         self._print_progress(count)
                     if manyCount == 1000:
-                        self._commit()
+                        self._commit(db)
                         manyCount=0
         print("Count: %d" % count)
 
