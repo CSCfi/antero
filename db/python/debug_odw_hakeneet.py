@@ -44,6 +44,7 @@ class Client:
             path2=self.path+"?hakuOid="+self.hakuOid+"&updatedAfter="+self.updatedAfter
             print(path2)
             print("hakuOid: " + self.hakuOid + " updatedAfter: " + self.updatedAfter)
+            print("self.path= " + self.path)
             #conn.request("GET", path2, headers=headers)
             conn.request("GET", path2, headers=headers)
             response = conn.getresponse()
