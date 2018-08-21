@@ -72,7 +72,7 @@ class Client:
                 chunk_size = self._get_chunk_size(response)
                 if chunk_size == 0:
                         if manyCount!=0:
-                            self._commit(db)
+                            self._insert_data(db, json_data, count)
                             manyCount=0
                         break
                 data += self._get_chunk_data(response, chunk_size)
@@ -83,8 +83,10 @@ class Client:
                     manyCount +=1
                     count += 1
                     self._print_progress(count)
-                if manyCount == 1000:
-                    self._insert_data(db, json_data, count)
+                if manyCount == 10:
+                    print(json_data)
+                    sys.exit(0)
+                    #self._insert_data(db, json_data, count)
                     #self._commit(db)
                     manyCount=0
         print("Count: %d" % count)
