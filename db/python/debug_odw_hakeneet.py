@@ -120,7 +120,7 @@ class Client:
         db.insertMany(self.source, self.schema, self.table, json_data, self.verbose)
 
     def _commit(self, db):
-        db.commitLines(db)
+        db.commitLines()
 
     def _clear_data(self, db):
         db.empty(self.schema,
