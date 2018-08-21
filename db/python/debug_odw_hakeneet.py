@@ -9,7 +9,7 @@ import timeit
 from argparse import ArgumentParser
 from contextlib import closing
 
-import dboperator
+import debug_dboperator
 
 
 class Client:
@@ -41,12 +41,12 @@ class Client:
 #                "hakuOid": self.hakuOid,
 #                "updatedAfter": self.updatedAfter
 #            }
-            path2=self.path+"?hakuOid="+self.hakuOid+"&updatedAfter="+self.updatedAfter
-            print(path2)
-            print("hakuOid: " + self.hakuOid + " updatedAfter: " + self.updatedAfter)
-            print("self.path= " + self.path)
+            #path2=self.path+"?hakuOid="+self.hakuOid+"&updatedAfter="+self.updatedAfter
+            #print(path2)
+            #print("hakuOid: " + self.hakuOid + " updatedAfter: " + self.updatedAfter)
+            #print("self.path= " + self.path)
             #conn.request("GET", path2, headers=headers)
-            conn.request("GET", path2, headers=headers)
+            conn.request("GET", self.path, headers=headers)
             response = conn.getresponse()
             transfer_encoding = response.getheader("Transfer-Encoding", "")
             if response.status != 200:
@@ -63,23 +63,31 @@ class Client:
         # so we have to do it by our self.
         response.chunked = False
         count = 0
+        manyCount = 0
         data = ""
         print("Inserting data...")
-        with closing(dboperator) as db:
+        with closing(debug_dboperator) as db:
             self._clear_data(db)
             while True:
-                chunk_size = self._get_chunk_size(response)
-                if chunk_size == 0:
-                    break
-                data += self._get_chunk_data(response, chunk_size)
-                if data.endswith('}'):
-                    # Complete json object.
-                    json_data = json.loads(data)
-                    data = ""
-                    #self._insert_all(db, json_data, count)
-                    self._insert_data(db, json_data, count)
-                    count += 1
-                    self._print_progress(count)
+                while manyCount != 1000:
+                    chunk_size = self._get_chunk_size(response)
+                    if chunk_size == 0:
+                            if manyCount!=0:
+                                self._commit()
+                                manyCount=0
+                        break
+                    data += self._get_chunk_data(response, chunk_size)
+                    if data.endswith('}'):
+                        # Complete json object.
+                        json_data = json.loads(data)
+                        data = ""
+                        self._insert_data(db, json_data, count)
+                        manyCount +=1
+                        count += 1
+                        self._print_progress(count)
+                    if manyCount == 1000:
+                        self._commit()
+                        manyCount=0
         print("Count: %d" % count)
 
     @staticmethod
@@ -109,7 +117,10 @@ class Client:
             #exit(0)
             # First json will define columns.
             db.columns(json_data, self.verbose)
-        db.insert(self.source, self.schema, self.table, json_data, self.verbose)
+        db.insertMany(self.source, self.schema, self.table, json_data, self.verbose)
+
+    def _commit(self, db):
+        db.commitLines(db)
 
     def _clear_data(self, db):
         db.empty(self.schema,
