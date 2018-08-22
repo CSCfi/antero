@@ -86,7 +86,7 @@ class Client:
                     manyCount +=1
                     count += 1
                     self._print_progress(count)
-                if manyCount == 1000:
+                if manyCount == 5:
                     #print(json_data)
                     #exit(0)
                     self._insert_data(db, json_data, count)
@@ -123,6 +123,9 @@ class Client:
             #print(json_data)
             #exit(0)
             # First json will define columns.
+            print(json_data[0])
+            print(json_data[1])
+            sys.exit(0)
             db.columns(json_data[0], self.verbose)
         db.insertMany(self.source, self.schema, self.table, json_data, self.verbose)
 
