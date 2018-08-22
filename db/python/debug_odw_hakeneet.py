@@ -43,9 +43,11 @@ class Client:
 #                "updatedAfter": self.updatedAfter
 #            }
             #path2=self.path+"?hakuOid="+self.hakuOid+"&updatedAfter="+self.updatedAfter
-            #print(path2)
+            #path2 = self.path + '/?updatedAfter="2018-08-22"'
+            print("self path=" + self.path)
+            #print("path2=" + path2)
             #print("hakuOid: " + self.hakuOid + " updatedAfter: " + self.updatedAfter)
-            print("self.path= " + self.path)
+            #print("self.path= " + self.path)
             #conn.request("GET", path2, headers=headers)
             conn.request("GET", self.path, headers=headers)
             response = conn.getresponse()
@@ -86,7 +88,7 @@ class Client:
                     manyCount +=1
                     count += 1
                     self._print_progress(count)
-                if manyCount == 1000:
+                if manyCount == 5:
                     #print(json_data)
                     #exit(0)
                     self._insert_data(db, json_data, count)
@@ -123,6 +125,8 @@ class Client:
             #print(json_data)
             #exit(0)
             # First json will define columns.
+            #print(json_data[0])
+            #sys.exit(0)
             db.columns(json_data[0], self.verbose)
         db.insertMany(self.source, self.schema, self.table, json_data, self.verbose)
 
