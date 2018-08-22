@@ -43,13 +43,13 @@ class Client:
 #                "updatedAfter": self.updatedAfter
 #            }
             #path2=self.path+"?hakuOid="+self.hakuOid+"&updatedAfter="+self.updatedAfter
-            path2 = self.path + '/?updatedAfter="2018-08-22"'
+            #path2 = self.path + '/?updatedAfter="2018-08-22"'
             print("self path=" + self.path)
-            print("path2=" + path2)
+            #print("path2=" + path2)
             #print("hakuOid: " + self.hakuOid + " updatedAfter: " + self.updatedAfter)
             #print("self.path= " + self.path)
-            conn.request("GET", path2, headers=headers)
-            #conn.request("GET", self.path, headers=headers)
+            #conn.request("GET", path2, headers=headers)
+            conn.request("GET", self.path, headers=headers)
             response = conn.getresponse()
             transfer_encoding = response.getheader("Transfer-Encoding", "")
             if response.status != 200:
@@ -83,7 +83,7 @@ class Client:
                 data += self._get_chunk_data(response, chunk_size)
                 if data.endswith('}'):
                     # Complete json object.
-                    json_data.append(data)
+                    json_data.append(json.loads(data))
                     data = ""
                     manyCount +=1
                     count += 1
