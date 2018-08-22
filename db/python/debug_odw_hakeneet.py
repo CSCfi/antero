@@ -43,11 +43,12 @@ class Client:
 #                "updatedAfter": self.updatedAfter
 #            }
             #path2=self.path+"?hakuOid="+self.hakuOid+"&updatedAfter="+self.updatedAfter
+            path2 = self.path + '&updatedAfter=""'
             #print(path2)
             #print("hakuOid: " + self.hakuOid + " updatedAfter: " + self.updatedAfter)
             print("self.path= " + self.path)
-            #conn.request("GET", path2, headers=headers)
-            conn.request("GET", self.path, headers=headers)
+            conn.request("GET", path2, headers=headers)
+            #conn.request("GET", self.path, headers=headers)
             response = conn.getresponse()
             transfer_encoding = response.getheader("Transfer-Encoding", "")
             if response.status != 200:
@@ -123,9 +124,8 @@ class Client:
             #print(json_data)
             #exit(0)
             # First json will define columns.
-            print(json_data[0])
-            print(json_data[1])
-            sys.exit(0)
+            #print(json_data[0])
+            #sys.exit(0)
             db.columns(json_data[0], self.verbose)
         db.insertMany(self.source, self.schema, self.table, json_data, self.verbose)
 
