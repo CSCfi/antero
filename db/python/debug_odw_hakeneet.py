@@ -43,7 +43,7 @@ class Client:
 #                "updatedAfter": self.updatedAfter
 #            }
             #path2=self.path+"?hakuOid="+self.hakuOid+"&updatedAfter="+self.updatedAfter
-            path2 = self.path + '&updatedAfter=""'
+            path2 = self.path + '?updatedAfter="2018-08-22"'
             print("self path=" + self.path)
             print("path2=" + path2)
             #print("hakuOid: " + self.hakuOid + " updatedAfter: " + self.updatedAfter)
