@@ -255,6 +255,4 @@ where valtakunnallinen=1 and kyselypohja not like '%URASEURANTA%'
 
 
 
-GO
-
 
