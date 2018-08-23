@@ -35,13 +35,13 @@ class Client:
         print("oid:" + self.hakuOid + " updatedAfter: " + self.updatedAfter)
         path2 = self.path
         if(self.hakuOid != '' and self.updatedAfter == ''):
-            path2 += "?" + self.hakuOid
+            path2 += "?hakuOid" + self.hakuOid
             
         elif(self.hakuOid == '' and self.updatedAfter != ''):
-            path2 += "?" + self.updatedAfter
+            path2 += "?updatedAfter" + self.updatedAfter
             
         elif(self.hakuOid != '' and self.updatedAfter != ''):
-            path2 += "?" + self.hakuOid + "&" + self.updatedAfter
+            path2 += "?hakuOid" + self.hakuOid + "&updatedAfter" + self.updatedAfter
         with closing(http_connection) as conn:
             headers = {
                 "Content-Type": "application/json",
@@ -98,6 +98,9 @@ class Client:
                     manyCount +=1
                     if (count == 0):
                         self._set_columns(db,json_data[0])
+                        json_data = []
+                        manyCount = 0
+                        continue
                     count += 1
                     self._print_progress(count)
                 if manyCount == 1000:
