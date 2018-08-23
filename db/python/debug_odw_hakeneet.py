@@ -34,13 +34,13 @@ class Client:
         http_connection.set_debuglevel(self.verbose)
         print("oid:" + self.hakuOid + " updatedAfter: " + self.updatedAfter)
         path2 = self.path
-        if(self.hakuOid != '' && self.updatedAfter == ''):
+        if(self.hakuOid != '' and self.updatedAfter == ''):
             path2 += "?" + self.hakuOid
             
-        elif(self.hakuOid == '' && self.updatedAfter != ''):
+        elif(self.hakuOid == '' and self.updatedAfter != ''):
             path2 += "?" + self.updatedAfter
             
-        elif(self.hakuOid != '' && self.updatedAfter != ''):
+        elif(self.hakuOid != '' and self.updatedAfter != ''):
             path2 += "?" + self.hakuOid + "&" + self.updatedAfter
         with closing(http_connection) as conn:
             headers = {
