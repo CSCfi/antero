@@ -86,12 +86,14 @@ class Client:
                     json_data.append(json.loads(data))
                     data = ""
                     manyCount +=1
+                    if (count == 0):
+                        self._set_columns(db,json_data)
                     count += 1
                     self._print_progress(count)
                 if manyCount == 5:
                     #print(json_data)
                     #exit(0)
-                    self._insert_data(db, json_data, count)
+                    self._insert_data(db, json_data)
                     #sys.exit(0)
                     json_data = []
                     #self._commit(db)
@@ -119,16 +121,12 @@ class Client:
         resp.read(2)
         return data
 
-    def _insert_data(self, db, json_data, count):
-        if self.initCounter == 0:
-            self.initCounter = 1
-            #print(json_data)
-            #exit(0)
-            # First json will define columns.
-            #print(json_data[0])
-            #sys.exit(0)
-            db.columns(json_data[0], self.verbose)
+    def _insert_data(self, db, json_data):
         db.insertMany(self.source, self.schema, self.table, json_data, self.verbose)
+
+    def _set_columns(self, db, json_data):
+        # First json will define columns.
+        db.columns(json_data[0], self.verbose)
 
     def _commit(self, db):
         db.commitLines()
