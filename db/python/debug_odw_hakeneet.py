@@ -87,10 +87,10 @@ class Client:
                     data = ""
                     manyCount +=1
                     if (count == 0):
-                        self._set_columns(db,json_data)
+                        self._set_columns(db,json_data[0])
                     count += 1
                     self._print_progress(count)
-                if manyCount == 5:
+                if manyCount == 1000:
                     #print(json_data)
                     #exit(0)
                     self._insert_data(db, json_data)
