@@ -33,6 +33,15 @@ class Client:
             host=self.host, port=self.port)
         http_connection.set_debuglevel(self.verbose)
         print("oid:" + self.hakuOid + " updatedAfter: " + self.updatedAfter)
+        path2 = self.path
+        if(self.hakuOid != '' && self.updatedAfter == ''):
+            path2 += "?" + self.hakuOid
+            
+        elif(self.hakuOid == '' && self.updatedAfter != ''):
+            path2 += "?" + self.updatedAfter
+            
+        elif(self.hakuOid != '' && self.updatedAfter != ''):
+            path2 += "?" + self.hakuOid + "&" + self.updatedAfter
         with closing(http_connection) as conn:
             headers = {
                 "Content-Type": "application/json",
@@ -46,11 +55,11 @@ class Client:
             #path2=self.path+"?hakuOid="+self.hakuOid+"&updatedAfter="+self.updatedAfter
             #path2 = self.path + '/?updatedAfter="2018-08-22"'
             print("self path=" + self.path)
-            #print("path2=" + path2)
+            print("path2=" + path2)
             #print("hakuOid: " + self.hakuOid + " updatedAfter: " + self.updatedAfter)
             #print("self.path= " + self.path)
-            #conn.request("GET", path2, headers=headers)
-            conn.request("GET", self.path, headers=headers)
+            conn.request("GET", path2, headers=headers)
+            #conn.request("GET", self.path, headers=headers)
             response = conn.getresponse()
             transfer_encoding = response.getheader("Transfer-Encoding", "")
             if response.status != 200:
@@ -128,7 +137,7 @@ class Client:
     def _set_columns(self, db, json_data):
         # First json will define columns.
         db.columns(json_data, self.verbose)
-        self._insert_data(db, json_data)
+        db.insert(self.source, self.schema, self.table, json_data, self.verbose)
 
     def _commit(self, db):
         db.commitLines()
