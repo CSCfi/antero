@@ -126,7 +126,8 @@ class Client:
 
     def _set_columns(self, db, json_data):
         # First json will define columns.
-        db.columns(json_data[0], self.verbose)
+        db.columns(json_data, self.verbose)
+        self._insert_data(self, db, json_data)
 
     def _commit(self, db):
         db.commitLines()
