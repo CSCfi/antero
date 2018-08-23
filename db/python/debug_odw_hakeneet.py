@@ -32,6 +32,7 @@ class Client:
         http_connection = httplib.HTTPSConnection(self.host, port=self.port) if self.ssl else httplib.HTTPConnection(
             host=self.host, port=self.port)
         http_connection.set_debuglevel(self.verbose)
+        print("oid:" + self.hakuOid + " updatedAfter: " + self.updatedAfter)
         with closing(http_connection) as conn:
             headers = {
                 "Content-Type": "application/json",
@@ -127,7 +128,7 @@ class Client:
     def _set_columns(self, db, json_data):
         # First json will define columns.
         db.columns(json_data, self.verbose)
-        self._insert_data(self, db, json_data)
+        self._insert_data(db, json_data)
 
     def _commit(self, db):
         db.commitLines()
