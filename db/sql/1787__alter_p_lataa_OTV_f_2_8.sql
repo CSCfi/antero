@@ -423,4 +423,3 @@ GO
 
 USE [ANTERO]
 
-GO
