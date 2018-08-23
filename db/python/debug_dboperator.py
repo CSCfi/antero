@@ -186,10 +186,10 @@ def insertMany(source, schema, table, rows, debug=False):
       print("rivi: " + row)
       print(statement)
       print("tuple: " + tuple([row[c.replace('_source_','')] for c in columnlist]))
-      cur.execute(statement,tuple([row[c.replace('_source_','')] for c in columnlist]))
+      #cur.execute(statement,tuple([row[c.replace('_source_','')] for c in columnlist]))
       #print(cur.execute(statement,tuple([row[c.replace('_source_','')] for c in columnlist])))
-  count = cur.rowcount
-  conn.commit()
+  #count = cur.rowcount
+  #conn.commit()
 
 def commitLines():
   global conn
