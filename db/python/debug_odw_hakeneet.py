@@ -104,7 +104,7 @@ class Client:
                         continue
                     count += 1
                     self._print_progress(count)
-                if manyCount == 1000:
+                if manyCount == 5:
                     #print(json_data)
                     #exit(0)
                     self._insert_data(db, json_data)
