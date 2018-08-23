@@ -100,6 +100,7 @@ class Client:
                         self._set_columns(db,json_data[0])
                         json_data = []
                         manyCount = 0
+                        count += 1
                         continue
                     count += 1
                     self._print_progress(count)
