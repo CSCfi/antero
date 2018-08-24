@@ -180,22 +180,16 @@ def insertMany(source, schema, table, rows, debug=False):
   if debug: print("dboperator.insert: columnlist="+(",".join(columnlist)))
   columnstr = ",".join(columnlist)
   placeholders = ','.join(['%s' for s in columnlist])
-
+  tmpdata = []
   statement = "INSERT INTO %s.%s (%s,source) VALUES (%s,'%s');"%(schema,table,columnstr,placeholders,source)
-  print(statement)
-  print(rows)
-  for c in columnlist:
-      print(c)
-# =============================================================================
-#   for row in rows:
-#       print("rivi: " + row)
-#       print(statement)
-#       print("tuple: " + tuple([row[c.replace('_source_','')] for c in columnlist]))
-#       #cur.execute(statement,tuple([row[c.replace('_source_','')] for c in columnlist]))
-#       #print(cur.execute(statement,tuple([row[c.replace('_source_','')] for c in columnlist])))
-#   #count = cur.rowcount
-#   #conn.commit()
-# =============================================================================
+  for row in rows:
+       #cur.execute(statement,tuple([row[c.replace('_source_','')] for c in columnlist]))
+       #print(cur.execute(statement,tuple([row[c.replace('_source_','')] for c in columnlist])))
+       tmpdata.append(tuple([row[c.replace('_source_','')] for c in columnlist]))
+
+  cur.executemany(statement, tmpdata)
+  count = cur.rowcount
+  conn.commit()
 
 def commitLines():
   global conn
