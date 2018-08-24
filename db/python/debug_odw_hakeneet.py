@@ -86,8 +86,8 @@ class Client:
                 chunk_size = self._get_chunk_size(response)
                 if chunk_size == 0:
                     if manyCount!=0:
-                        self._insert_data(db, json_data, count)
-                        json_data = ''
+                        self._insert_data(db, json_data)
+                        json_data = []
                         manyCount=0
                     break
                 data += self._get_chunk_data(response, chunk_size)
@@ -104,7 +104,7 @@ class Client:
                         continue
                     count += 1
                     self._print_progress(count)
-                if manyCount == 10000:
+                if manyCount == 500:
                     #print(json_data)
                     #exit(0)
                     self._insert_data(db, json_data)
