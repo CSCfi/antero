@@ -34,7 +34,8 @@ class Client:
             host=self.host, port=self.port)
         http_connection.set_debuglevel(self.verbose)
         print("oid:" + self.hakuOid + " updatedAfter: " + self.updatedAfter)
-        print("rowcount=" + self.rowcount)
+        print("rowcount=", self.rowcount)
+        sys.exit(0)
         path2 = self.path
         if(self.hakuOid != '' and self.updatedAfter == ''):
             path2 += "?hakuOid=" + self.hakuOid
