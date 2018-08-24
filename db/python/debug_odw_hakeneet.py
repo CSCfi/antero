@@ -110,7 +110,6 @@ class Client:
                     self._insert_data(db, json_data)
                     #sys.exit(0)
                     json_data = []
-                    #self._commit(db)
                     manyCount=0
         print("Count: %d" % count)
 
