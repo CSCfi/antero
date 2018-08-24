@@ -14,7 +14,7 @@ import debug_dboperator
 
 class Client:
     def __init__(self, host="localhost", path="/vipunendata", port=None, ssl=None, verbose=0,
-                 schema='sa', table='sa_odw_hakeneet_debug', hakuOid="", updatedAfter="", initCounter = 0):
+                 schema='sa', table='sa_odw_hakeneet_debug', hakuOid="", updatedAfter="", initCounter = 0, rowcount = 500):
         self.host = host
         self.path = path
         self.port = port
@@ -27,12 +27,14 @@ class Client:
         self.hakuOid = hakuOid
         self.updatedAfter = updatedAfter
         self.initCounter = initCounter
+        self.rowcount = rowcount
 
     def load(self):
         http_connection = httplib.HTTPSConnection(self.host, port=self.port) if self.ssl else httplib.HTTPConnection(
             host=self.host, port=self.port)
         http_connection.set_debuglevel(self.verbose)
         print("oid:" + self.hakuOid + " updatedAfter: " + self.updatedAfter)
+        print("rowcount=" + self.rowcount)
         path2 = self.path
         if(self.hakuOid != '' and self.updatedAfter == ''):
             path2 += "?hakuOid=" + self.hakuOid
@@ -170,7 +172,8 @@ if __name__ == "__main__":
         arg_parser.add_argument('--table', type=str, default='sa_odw_hakeneet_debug',
                                 help='database table name, default=sa_odw_hakeneet_debug'),
         arg_parser.add_argument('-oid', '--hakuOid', type=str, help='insert hakuOid', default=''),
-        arg_parser.add_argument('-updated', '--updatedAfter', type=str, help='2017-09-29', default='')
+        arg_parser.add_argument('-updated', '--updatedAfter', type=str, help='2017-09-29', default=''),
+        arg_parser.add_argument('-rc', '--rowcount', type=int, default=500, help='rows inserted at time')
         args = arg_parser.parse_args(args=sys.argv[1:])
         success = Client(**vars(args)).load()
         sys.exit(0 if success else 1)
