@@ -35,7 +35,6 @@ class Client:
         http_connection.set_debuglevel(self.verbose)
         print("oid:" + self.hakuOid + " updatedAfter: " + self.updatedAfter)
         print("rowcount=", self.rowcount)
-        sys.exit(0)
         path2 = self.path
         if(self.hakuOid != '' and self.updatedAfter == ''):
             path2 += "?hakuOid=" + self.hakuOid
@@ -107,7 +106,7 @@ class Client:
                         continue
                     count += 1
                     self._print_progress(count)
-                if manyCount == 500:
+                if manyCount == self.rowcount:
                     #print(json_data)
                     #exit(0)
                     self._insert_data(db, json_data)
