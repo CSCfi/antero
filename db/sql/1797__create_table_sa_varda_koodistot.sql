@@ -31,14 +31,11 @@ CREATE TABLE [sa].[sa_varda_koodistot](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
+;
+ALTER TABLE [sa].[sa_varda_koodistot] ADD  CONSTRAINT [DF__sa_varda_koodistot__loadtime]  DEFAULT (getdate()) FOR [loadtime]
+;
+ALTER TABLE [sa].[sa_varda_koodistot] ADD  CONSTRAINT [DF__sa_varda_koodistot__username]  DEFAULT (suser_name()) FOR [username]
+;
 END
 
 GO
-
-ALTER TABLE [sa].[sa_varda_koodistot] ADD  CONSTRAINT [DF__sa_varda_koodistot__loadtime]  DEFAULT (getdate()) FOR [loadtime]
-GO
-
-ALTER TABLE [sa].[sa_varda_koodistot] ADD  CONSTRAINT [DF__sa_varda_koodistot__username]  DEFAULT (suser_name()) FOR [username]
-GO
-
-
