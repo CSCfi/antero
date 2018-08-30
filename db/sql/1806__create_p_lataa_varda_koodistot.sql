@@ -15,7 +15,7 @@ EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dw].[p_lataa_varda_koodi
 END
 GO
 
-CREATE procedure [dw].[p_lataa_varda_koodistot] as 
+ALTER procedure [dw].[p_lataa_varda_koodistot] as 
 
 truncate table dw.d_varda_jarjestamismuoto
 INSERT INTO [dw].[d_varda_jarjestamismuoto]
