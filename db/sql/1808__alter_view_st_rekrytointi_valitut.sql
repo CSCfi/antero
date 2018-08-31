@@ -1,10 +1,11 @@
 USE [ANTERO]
 GO
-
-/****** Object:  View [dw].[v_st_rekrytointi_valitut]    Script Date: 31.8.2018 14:33:37 ******/
+/****** Object:  View [dw].[v_st_rekrytointi_valitut]    Script Date: 31.8.2018 16:39:04 ******/
+DROP VIEW [dw].[v_st_rekrytointi_valitut]
+GO
+/****** Object:  View [dw].[v_st_rekrytointi_valitut]    Script Date: 31.8.2018 16:39:04 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
 
@@ -13,7 +14,7 @@ GO
 
 
 
-ALTER VIEW [dw].[v_st_rekrytointi_valitut] AS
+CREATE VIEW [dw].[v_st_rekrytointi_valitut] AS
 
  SELECT
 	 [Tilastovuosi] = f.vuosi
@@ -362,5 +363,3 @@ ALTER VIEW [dw].[v_st_rekrytointi_valitut] AS
 
 
 GO
-
-
