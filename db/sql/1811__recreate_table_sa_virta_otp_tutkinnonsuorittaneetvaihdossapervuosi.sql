@@ -1,4 +1,14 @@
 -- Tutkinnonsuorittaneetvaihdossapervuosi Virrasta
+USE ANTERO
+GO
+
+IF EXISTS (
+  select * from INFORMATION_SCHEMA.TABLES
+  where TABLE_SCHEMA='sa' and TABLE_NAME='sa_virta_otp_tutkinnonsuorittaneetvaihdossapervuosi'
+) BEGIN
+DROP TABLE sa.sa_virta_otp_tutkinnonsuorittaneetvaihdossapervuosi
+END
+
 
 IF NOT EXISTS (
   select * from INFORMATION_SCHEMA.TABLES
