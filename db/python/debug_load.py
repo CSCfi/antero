@@ -89,7 +89,7 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
         dboperator.insert(address,schema,table,row)
         manycount = 0
         rows = []
-    else:
+    elif cnt > 1:
         if manycount == rowcount:
             insert(address,schema,table,rows)
             manycount = 0
