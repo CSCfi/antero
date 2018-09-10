@@ -33,6 +33,7 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
     reqheaders['Authorization'] = 'Basic %s' % base64.b64encode(apiuser+":"+apipass)
 
   # automatic POST with (post)data
+  print("rowcount=", rowcount)
   request = urllib2.Request(address, data=postdata, headers=reqheaders)
   try:
     response = urllib2.urlopen(request)
@@ -89,7 +90,7 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
         dboperator.insert(address,schema,table,row)
         manycount = 0
         rows = []
-    elif cnt > 1:
+    if cnt > 1:
         if manycount == rowcount:
             insert(address,schema,table,rows)
             manycount = 0
