@@ -95,9 +95,10 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
                 insert(address,schema,table,rows)
                 manycount = 0
                 rows = []
-  if len(rows) > 0:
+  if len(rows) <= manycount and len(rows) > 0: 
       insert(address,schema,table,rows)
       rows = []
+      manycount = 0
 
   show("wrote %d"%(cnt))
   show("ready")
