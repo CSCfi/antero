@@ -21,7 +21,7 @@ dbname = os.getenv("DATABASE_NAME")
 dbuser = os.getenv("DATABASE_USER")
 dbpass = os.getenv("DATABASE_PASS")
 if not dbhost or not dbname or not dbuser or not dbpass:
-  print "Missing database settings. Exiting."
+  print("Missing database settings. Exiting.")
   sys.exit(2)
 
 # global vars; information maintains between calls
@@ -74,19 +74,19 @@ def columns(row,debug=False):
       if lenkey not in columntypes or strlen > columntypes[lenkey]:
         columntypes[lenkey] = strlen
         columntypes[key] = "varchar("+str(strlen)+")"
-        if debug: print "dboperator.columns: key:%s, type:%s, columntype:%s, strlen:%s" % (key,type(row[col]),columntypes[key],columntypes[lenkey])
+        if debug: print("dboperator.columns: key:%s, type:%s, columntype:%s, strlen:%s" % (key,type(row[col]),columntypes[key],columntypes[lenkey]))
     # ignore dict type altogether (for now)
     if type(row[col]) is not dict:
       # default to string type. NoneType goes here also
       if key not in columntypes:
         columntypes[key] = 'varchar(max)'
-      if debug: print "dboperator.columns: key:%s, type:%s, columntype:%s, (col:%s)" % (key,type(row[col]),columntypes[key],col)
+      if debug: print("dboperator.columns: key:%s, type:%s, columntype:%s, (col:%s)" % (key,type(row[col]),columntypes[key],col))
       if key not in columnlist:
         columnlist.append(key)
   for ignr in columnlistignore:
     if ignr in columnlist:
       columnlist.remove(ignr)
-  if debug: print "dboperator.columns: columnlist="+(",".join(columnlist))
+  if debug: print("dboperator.columns: columnlist="+(",".join(columnlist)))
 
 def resetcolumns(row,debug=False):
   global columnlist, columntypes
@@ -125,13 +125,13 @@ def create(schema,table,debug=False):
   conn.commit()
   # empty
   empty(schema,table,debug)
-  if debug: print "dboperator.create: columnlist="+(",".join(columnlist))
+  if debug: print("dboperator.create: columnlist="+(",".join(columnlist)))
 
 # drop - drop a table
 # todo: drop other objects as well...
 def drop(schema,table,debug=False):
   global conn, cur
-  if debug: print "dboperator.drop: "+schema+"."+table
+  if debug: print("dboperator.drop: "+schema+"."+table)
   sql = """
   IF EXISTS (
     SELECT 1 FROM INFORMATION_SCHEMA.TABLES
@@ -148,7 +148,7 @@ def drop(schema,table,debug=False):
 # empty - with truncate
 def empty(schema,table,debug=False):
   global conn, cur, count
-  if debug: print "dboperator.empty: %s.%s"%(schema,table)
+  if debug: print("dboperator.empty: %s.%s"%(schema,table))
   cur.execute("TRUNCATE TABLE %s.%s"%(schema,table))
   count = cur.rowcount
   conn.commit()
@@ -156,16 +156,16 @@ def empty(schema,table,debug=False):
 # remove - delete with condition (column==value)
 def remove(schema,table,column,value,debug=False):
   global conn, cur, count
-  if debug: print "dboperator.remove: schema=%s table=%s column=%s value=%s"%(schema,table,column,value)
+  if debug: print("dboperator.remove: schema=%s table=%s column=%s value=%s"%(schema,table,column,value))
   cur.execute("DELETE FROM %s.%s WHERE %s='%s'"%(schema,table,column,value))
   count = cur.rowcount
   conn.commit()
 
 # insert - one row at a time
 # nb! columns must be known already (see columns)
-def insert(source,schema,table,row,debug=False):
+def insert(source,schema,table,row,debug=False):  # insert single row
   global conn, cur, count, columnlist
-  if debug: print "dboperator.insert: columnlist="+(",".join(columnlist))
+  if debug: print("dboperator.insert: columnlist="+(",".join(columnlist)))
   columnstr = ",".join(columnlist)
   placeholders = ','.join(['%s' for s in columnlist])
 
@@ -174,10 +174,25 @@ def insert(source,schema,table,row,debug=False):
   count = cur.rowcount
   conn.commit()
 
+# insert - many rows at a time @hpetrell  
+def insertMany(source, schema, table, rows, debug=False): #insert array 
+  global conn, cur, count, columnlist
+  if debug: print("dboperator.insert: columnlist="+(",".join(columnlist)))
+  columnstr = ",".join(columnlist)
+  placeholders = ','.join(['%s' for s in columnlist])
+  tmpdata = []
+  statement = "INSERT INTO %s.%s (%s,source) VALUES (%s,'%s');"%(schema,table,columnstr,placeholders,source)
+  for row in rows:
+       tmpdata.append(tuple([row[c.replace('_source_','')] for c in columnlist]))
+
+  cur.executemany(statement, tmpdata)
+  count = cur.rowcount
+  conn.commit()
+
 # for procedure calls and ready made statements
 def execute(sql,debug=False):
   global conn, cur, count
-  if debug: print "dboperator.execute: sql="+sql
+  if debug: print("dboperator.execute: sql="+sql)
   cur.execute(sql)
   count = cur.rowcount
   conn.commit()
@@ -185,7 +200,7 @@ def execute(sql,debug=False):
 # get results of a query as an array of dicts
 def get(sql,debug=False):
   global conn, cur, count
-  if debug: print "dboperator.get: sql="+sql
+  if debug: print("dboperator.get: sql="+sql)
   cur.execute(sql)
   count = cur.rowcount
   result = cur.fetchall()
@@ -193,6 +208,6 @@ def get(sql,debug=False):
 
 def close(debug=False):
   global conn, cur
-  if debug: print "dboperator.close: closing"
+  if debug: print("dboperator.close: closing")
   cur.close()
   conn.close()
