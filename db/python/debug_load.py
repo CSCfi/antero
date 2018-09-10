@@ -36,15 +36,15 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
   request = urllib2.Request(address, data=postdata, headers=reqheaders)
   try:
     response = urllib2.urlopen(request)
-  except (httplib.IncompleteRead, e):
+  except httplib.IncompleteRead, e:
     show('IncompleteRead exception.')
     show('Received: %d'%(e.partial))
     sys.exit(2)
-  except(urllib2.HTTPError, e):
+  except urllib2.HTTPError, e:
     show('The server couldn\'t fulfill the request.')
     show('Error code: %d'%(e.code))
     sys.exit(2)
-  except(urllib2.URLError, e):
+  except urllib2.URLError, e:
     show('We failed to reach a server.')
     show('Reason: %s'%(e.reason))
     sys.exit(2)
