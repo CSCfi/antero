@@ -103,7 +103,7 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
   show("ready")
 
 def insert(address,schema,table,rows):
-    dboperator.insertmany(address,schema,table,rows)
+    dboperator.insertMany(address,schema,table,rows)
 
 def usage():
   print("""
