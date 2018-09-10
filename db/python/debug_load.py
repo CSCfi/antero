@@ -90,14 +90,19 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
         manycount = 0
         rows = []
     else:
-        if manycount == rowcount or row == 0:
-            dboperator.insertmany(address,schema,table,rows)
+        if manycount == rowcount:
+            insert(address,schema,table,rows)
             manycount = 0
             rows = []
-            
+  if len(rows) > 0:
+      insert(address,schema,table,rows)
+      rows = []
 
   show("wrote %d"%(cnt))
   show("ready")
+
+def insert(address,schema,table,rows):
+    dboperator.insertmany(address,schema,table,rows)
 
 def usage():
   print("""
