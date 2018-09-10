@@ -68,33 +68,33 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
   rows = []
   
   for row in ijson.items(response,'item'):
-    cnt+=1
-    manycount+=1
-    # show some sign of being alive
-    if cnt%100 == 0:
-      sys.stdout.write('.')
-      sys.stdout.flush()
-    if cnt%1000 == 0:
-      show("-- %d" % (cnt))
-    if verbose: show("%d -- %s"%(cnt,row))
-
-    # find out which columns to use on insert
-    dboperator.resetcolumns(row)
-
-    # flatten arrays/lists
-    for col in row:
-      if type(row[col]) is list:
-        row[col] = ''.join(map(str,json.dumps(row[col])))
-        rows.append(row)
-    if cnt == 1:
-        dboperator.insert(address,schema,table,row)
-        manycount = 0
-        rows = []
-    if cnt > 1:
-        if manycount == rowcount:
-            insert(address,schema,table,rows)
+        cnt+=1
+        manycount+=1
+        # show some sign of being alive
+        if cnt%100 == 0:
+          sys.stdout.write('.')
+          sys.stdout.flush()
+        if cnt%1000 == 0:
+          show("-- %d" % (cnt))
+        if verbose: show("%d -- %s"%(cnt,row))
+    
+        # find out which columns to use on insert
+        dboperator.resetcolumns(row)
+    
+        # flatten arrays/lists
+        for col in row:
+            if type(row[col]) is list:
+                row[col] = ''.join(map(str,json.dumps(row[col])))
+        rows.append(row)        
+        if cnt == 1:
+            dboperator.insert(address,schema,table,row)
             manycount = 0
             rows = []
+        if cnt > 1:
+            if manycount == rowcount:
+                insert(address,schema,table,rows)
+                manycount = 0
+                rows = []
   if len(rows) > 0:
       insert(address,schema,table,rows)
       rows = []
