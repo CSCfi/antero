@@ -36,15 +36,15 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
   request = urllib2.Request(address, data=postdata, headers=reqheaders)
   try:
     response = urllib2.urlopen(request)
-  except httplib.IncompleteRead, e:
+  except httplib.IncompleteRead as e:
     show('IncompleteRead exception.')
     show('Received: %d'%(e.partial))
     sys.exit(2)
-  except urllib2.HTTPError, e:
+  except urllib2.HTTPError as e:
     show('The server couldn\'t fulfill the request.')
     show('Error code: %d'%(e.code))
     sys.exit(2)
-  except urllib2.URLError, e:
+  except urllib2.URLError as e:
     show('We failed to reach a server.')
     show('Reason: %s'%(e.reason))
     sys.exit(2)
@@ -65,7 +65,7 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
   cnt=0
   manycount = 0
   rows = []
-  length = len(ijson.items(response,'item'))
+  
   for row in ijson.items(response,'item'):
     cnt+=1
     manycount+=1
@@ -90,7 +90,7 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
         manycount = 0
         rows = []
     else:
-        if manycount == rowcount or length == cnt:
+        if manycount == rowcount or row == 0:
             dboperator.insertmany(address,schema,table,rows)
             manycount = 0
             rows = []
