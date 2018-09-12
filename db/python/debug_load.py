@@ -33,18 +33,19 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
     reqheaders['Authorization'] = 'Basic %s' % base64.b64encode(apiuser+":"+apipass)
 
   # automatic POST with (post)data
+  print("rowcount=", rowcount)
   request = urllib2.Request(address, data=postdata, headers=reqheaders)
   try:
     response = urllib2.urlopen(request)
-  except (httplib.IncompleteRead, e):
+  except httplib.IncompleteRead as e:
     show('IncompleteRead exception.')
     show('Received: %d'%(e.partial))
     sys.exit(2)
-  except(urllib2.HTTPError, e):
+  except urllib2.HTTPError as e:
     show('The server couldn\'t fulfill the request.')
     show('Error code: %d'%(e.code))
     sys.exit(2)
-  except(urllib2.URLError, e):
+  except urllib2.URLError as e:
     show('We failed to reach a server.')
     show('Reason: %s'%(e.reason))
     sys.exit(2)
@@ -65,39 +66,45 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
   cnt=0
   manycount = 0
   rows = []
-  length = len(ijson.items(response,'item'))
+  
   for row in ijson.items(response,'item'):
-    cnt+=1
-    manycount+=1
-    # show some sign of being alive
-    if cnt%100 == 0:
-      sys.stdout.write('.')
-      sys.stdout.flush()
-    if cnt%1000 == 0:
-      show("-- %d" % (cnt))
-    if verbose: show("%d -- %s"%(cnt,row))
-
-    # find out which columns to use on insert
-    dboperator.resetcolumns(row)
-
-    # flatten arrays/lists
-    for col in row:
-      if type(row[col]) is list:
-        row[col] = ''.join(map(str,json.dumps(row[col])))
-        rows.append(row)
-    if cnt == 1:
-        dboperator.insert(address,schema,table,row)
-        manycount = 0
-        rows = []
-    else:
-        if manycount == rowcount or length == cnt:
-            dboperator.insertmany(address,schema,table,rows)
+        cnt+=1
+        manycount+=1
+        # show some sign of being alive
+        if cnt%100 == 0:
+          sys.stdout.write('.')
+          sys.stdout.flush()
+        if cnt%1000 == 0:
+          show("-- %d" % (cnt))
+        if verbose: show("%d -- %s"%(cnt,row))
+    
+        # find out which columns to use on insert
+        dboperator.resetcolumns(row)
+    
+        # flatten arrays/lists
+        for col in row:
+            if type(row[col]) is list:
+                row[col] = ''.join(map(str,json.dumps(row[col])))
+        rows.append(row)        
+        if cnt == 1:
+            dboperator.insert(address,schema,table,row)
             manycount = 0
             rows = []
-            
+        if cnt > 1:
+            if manycount == rowcount:
+                insert(address,schema,table,rows)
+                manycount = 0
+                rows = []
+  if len(rows) <= manycount and len(rows) > 0: 
+      insert(address,schema,table,rows)
+      rows = []
+      manycount = 0
 
   show("wrote %d"%(cnt))
   show("ready")
+
+def insert(address,schema,table,rows):
+    dboperator.insertMany(address,schema,table,rows)
 
 def usage():
   print("""
