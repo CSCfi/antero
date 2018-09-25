@@ -11,6 +11,20 @@ from contextlib import closing
 
 import debug_dboperator
 
+# =============================================================================
+# @author hpetrell@csc.fi
+# Parameters:
+#
+# !!!
+# Use following formats for launch parameters E.g. Jenkins. 
+# -oid, --hakuOid="1.2.246.562.29.12345678900" - Use program to find results with given hakuOid number
+# -updated, --updatedAfter="'2018-08-01' - use ' character in date! Results that are greater than given date
+# !!!
+#
+# -rc, --rowcount = 500 - How many rows are inserted before commit. default = 500
+# See main method for further parameters.
+# =============================================================================
+
 
 class Client:
     def __init__(self, host="localhost", path="/vipunendata", port=None, ssl=None, verbose=0,
