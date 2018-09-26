@@ -32890,7 +32890,7 @@
               <Commands>
                 <Command>
                   <Text>CALCULATE; 
-CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1; 
+CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1, VISIBLE = 0; 
 ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measures defined]; </Text>
                 </Command>
                 <Command>
@@ -32899,7 +32899,7 @@ ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measure
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Henkilöt lkm]=IF(SUM([lkm_int]) = 0, BLANK(),IF(SUM([lkm_int]) = 1, 3, MROUND(SUM([lkm_int]),3)));
+CREATE MEASURE 'Muuttujat'[Henkilöt lkm]=CALCULATE(IF(SUM([lkm_int]) = 0, BLANK(),IF(SUM([lkm_int]) = 1, 3, MROUND(SUM([lkm_int]),3))),Muuttujat[Aineisto]="Lopullinen");
 </Text>
                   <Annotations>
                     <Annotation>
@@ -32956,7 +32956,7 @@ CREATE MEASURE 'Muuttujat'[Keskeyttäneiden osuus]=CALCULATE([Henkilöt lkm], FI
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Personer antal]=IF(SUM([lkm_int]) = 0, BLANK(),IF(SUM([lkm_int]) = 1, 3, MROUND(SUM([lkm_int]),3)));
+CREATE MEASURE 'Muuttujat'[Personer antal]=CALCULATE(IF(SUM([lkm_int]) = 0, BLANK(),IF(SUM([lkm_int]) = 1, 3, MROUND(SUM([lkm_int]),3))),Muuttujat[Aineisto]="Lopullinen");
 </Text>
                   <Annotations>
                     <Annotation>
@@ -32975,7 +32975,7 @@ CREATE MEASURE 'Muuttujat'[Personer antal]=IF(SUM([lkm_int]) = 0, BLANK(),IF(SUM
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[No. of persons]=IF(SUM([lkm_int]) = 0, BLANK(),IF(SUM([lkm_int]) = 1, 3, MROUND(SUM([lkm_int]),3)));
+CREATE MEASURE 'Muuttujat'[No. of persons]=CALCULATE(IF(SUM([lkm_int]) = 0, BLANK(),IF(SUM([lkm_int]) = 1, 3, MROUND(SUM([lkm_int]),3))),Muuttujat[Aineisto]="Lopullinen");
 </Text>
                   <Annotations>
                     <Annotation>
@@ -33057,6 +33057,25 @@ CREATE MEASURE 'Muuttujat'[Percentage of students who discontinued studies]=CALC
                     <Annotation>
                       <Name>FullName</Name>
                       <Value>Percentage of students who discontinued studies</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Henkilöt lkm (sis. ennakko)]=IF(SUM([lkm_int]) = 0, BLANK(),IF(SUM([lkm_int]) = 1, 3, MROUND(SUM([lkm_int]),3)));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Henkilöt lkm (sis. ennakko)</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -33254,6 +33273,27 @@ CREATE MEASURE 'Muuttujat'[Percentage of students who discontinued studies]=CALC
                   <CalculationReference>[Percentage of students who discontinued studies]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Henkilöt lkm (sis. ennakko)]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
                 <CalculationProperty>
                   <CalculationReference>Measures.[__No measures defined]</CalculationReference>
