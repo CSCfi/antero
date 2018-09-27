@@ -1,5 +1,5 @@
-USE [ANTERO];
-ALTER PROCEDURE [dw].[p_lataa_d_koulutusluokitus] AS
+ALTER PROCEDURE [dw].[p_lataa_d_koulutusluokitus]
+AS
 
 if not exists (select * from dw.d_koulutusluokitus where id=-1) begin
   set identity_insert dw.d_koulutusluokitus on;
