@@ -101,7 +101,7 @@ response = requests.get(url,  auth=(api_user, api_key)).json()
 # select jarjestysluvat
 for i in response:
     row = makerow_jarjestysluvat()
-    row["id"] = key_check("id",i)
+    row["id"] = i["maaraykset"][0]["lupaId"]
     row["edellinen_lupa_id"] =key_check("aatoskierros_id", i) 
     row["lupatila_id"] = key_check("lupatila_id", i) 
     row["asiatyyppi_id"] = key_check("asiatyyppi_id", i) 
