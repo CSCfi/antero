@@ -14,7 +14,7 @@ GO
 
 
 
-CREATE View [dbo].[_v_sa_K3_10_Tutk_suor_osuus_aloittaneista_korkeakoulut_surrogaattiavaimet_nykytila_taulusta] as
+ALTER View [dbo].[_v_sa_K3_10_Tutk_suor_osuus_aloittaneista_korkeakoulut_surrogaattiavaimet_nykytila_taulusta] as
 
 /****** Script for SelectTopNRows command from SSMS  ******/
 --Select * from [okm].[okm_ktpo_tiedontuotanto_in].f --> 6588 rows
