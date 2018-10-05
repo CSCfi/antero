@@ -1,5 +1,7 @@
 USE [VipunenTK_DW]
 
+
+
 GO
 
 DROP TABLE VipunenTK_DW.dbo.[_sa_K3_9_Tutk_suor_osuus_aloittaneista_toinen_aste_nykytila]
@@ -19,5 +21,7 @@ DROP TABLE VipunenTK_DW.dbo._sa_K3_10_Tutk_suor_osuus_aloittaneista_korkeakoulut
 Select top 0 * into dbo._sa_K3_10_Tutk_suor_osuus_aloittaneista_korkeakoulut_surrogaattiavaimet from _v_sa_K3_10_Tutk_suor_osuus_aloittaneista_korkeakoulut_surrogaattiavaimet_nykytila_taulusta
 
 GO
+
+
 
 USE [ANTERO]
