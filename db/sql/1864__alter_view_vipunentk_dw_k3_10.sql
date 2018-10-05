@@ -1747,10 +1747,6 @@ SELECT [tilv]
   FROM VipunenTK_DW.dbo.[_sa_K3_10_Tutk_suor_osuus_aloittaneista_korkeakoulut_nykytila] f
 
 
-
-
-
-
 GO
 
 
