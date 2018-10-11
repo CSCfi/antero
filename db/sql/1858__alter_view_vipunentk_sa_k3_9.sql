@@ -14,7 +14,7 @@ GO
 
 
 
-CREATE VIEW [dbo].[v_sa_K3_9_Tutk_suor_osuus_aloittaneista_toinen_aste] AS
+Alter VIEW [dbo].[v_sa_K3_9_Tutk_suor_osuus_aloittaneista_toinen_aste] AS
 SELECT [tilv]
       ,[lahde]
       ,[sp]
