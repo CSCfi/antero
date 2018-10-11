@@ -1,4 +1,4 @@
-USE [VipunenTK_SA]
+﻿USE [VipunenTK_SA]
 GO
 
 /****** Object:  View [dbo].[v_sa_K3_9_Tutk_suor_osuus_aloittaneista_toinen_aste_nykytila]    Script Date: 5.10.2018 12:58:07 ******/
@@ -15,7 +15,7 @@ GO
 
 
 
-CREATE VIEW [dbo].[v_sa_K3_9_Tutk_suor_osuus_aloittaneista_toinen_aste_nykytila] AS
+Alter VIEW [dbo].[v_sa_K3_9_Tutk_suor_osuus_aloittaneista_toinen_aste_nykytila] AS
 -- Palauta lähtöaineisto järjestäjien ja koulutusten osalta nykytilaan päivitettynä
 -- VipunenTK-kannan dimensiotaulujen pitää olla päivitettynä
 -- Päivitetty aineistoon _14 /Jarmo 9.10.2014 
