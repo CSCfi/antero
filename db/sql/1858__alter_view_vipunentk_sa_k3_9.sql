@@ -1,7 +1,7 @@
 USE [VipunenTK_SA]
 GO
 
-/****** Object:  View [dbo].[v_sa_K3_9_Tutk_suor_osuus_aloittaneista_toinen_aste]    Script Date: 2.10.2018 12:17:42 ******/
+/****** Object:  View [dbo].[v_sa_K3_9_Tutk_suor_osuus_aloittaneista_toinen_aste]    Script Date: 5.10.2018 12:57:13 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -13,7 +13,8 @@ GO
 
 
 
-ALTER VIEW [dbo].[v_sa_K3_9_Tutk_suor_osuus_aloittaneista_toinen_aste] AS
+
+CREATE VIEW [dbo].[v_sa_K3_9_Tutk_suor_osuus_aloittaneista_toinen_aste] AS
 SELECT [tilv]
       ,[lahde]
       ,[sp]
@@ -501,5 +502,5 @@ SELECT [tilv]
 
 
 GO
-USE [ANTERO]
+
 
