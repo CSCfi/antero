@@ -268,6 +268,66 @@
             "name": "Koodit_ohjauksenala",
             "dataType": "int64",
             "sourceColumn": "Koodit_ohjauksenala"
+          },
+          {
+            "type": "calculated",
+            "name": "Kulu",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": "Muuttujat[tili_taso5_fi]",
+            "displayFolder": "Varsinaisen toiminnan kustannusten kategoria"
+          },
+          {
+            "type": "calculated",
+            "name": "Toimintalaji",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": [
+              "",
+              "SWITCH(TRUE(),",
+              "\tMuuttujat[tili_taso5_fi]=\"Esiopetus\",\"Harjoittelukoulut\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Perusopetus\",\"Harjoittelukoulut\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Lukiokoulutus\",\"Harjoittelukoulut\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Harjoittelu harjoittelukoulussa\",\"Harjoittelukoulut\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Harjoittelu harjoittelukoulun ulkopuolella\",\"Harjoittelukoulut\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Opettajankoulutuksen kehittäminen\",\"Harjoittelukoulut\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Perustutkintokoulutus\",\"Koulutus\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Perustutkintojen osat\",\"Koulutus\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Muu koulutus\",\"Koulutus\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Tieteellinen tutkimus\",\"Tutkimus\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Tieteellinen ja taiteellinen jatkotutkintokoulutus\",\"Tutkimus\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Erillislakien mukaiset julkisoikeudelliset suoritteet\",\"Muu yhteiskunnallinen toiminta\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Taiteellinen toiminta\",\"Taiteellinen toiminta\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Yleistoiminnot\",\"Muu yhteiskunnallinen toiminta\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Yliopistolain mukaiset kansalliskirjastotehtävät yhteensä\",\"Kansalliskirjasto\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Kansallisen kulttuuriperinnön tallettaminen ja ylläpito\",\"Kansalliskirjasto\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Muut tehtävät\",\"Kansalliskirjasto\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Kansalliset palvelut kirjastoille sekä korkeakoulusektorille\",\"Kansalliskirjasto\"",
+              "\t)"
+            ],
+            "displayFolder": "Varsinaisen toiminnan kustannusten kategoria"
+          },
+          {
+            "type": "calculated",
+            "name": "Toiminta",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": [
+              "",
+              "SWITCH(TRUE(),",
+              "\tMuuttujat[tili_taso5_fi]=\"Esiopetus\",\"Opetustehtävät\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Perusopetus\",\"Opetustehtävät\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Lukiokoulutus\",\"Opetustehtävät\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Harjoittelu harjoittelukoulussa\",\"Opettajankoulutus ja kehitystehtävät\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Harjoittelu harjoittelukoulun ulkopuolella\",\"Opettajankoulutus ja kehitystehtävät\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Opettajankoulutuksen kehittäminen\",\"Opettajankoulutus ja kehitystehtävät\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Yliopistolain mukaiset kansalliskirjastotehtävät yhteensä\",\"Yliopistolain mukaiset kansalliskirjastotehtävät\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Kansallisen kulttuuriperinnön tallettaminen ja ylläpito\",\"Yliopistolain mukaiset kansalliskirjastotehtävät\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Muut tehtävät\",\"Muut tehtävät\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Kansalliset palvelut kirjastoille sekä korkeakoulusektorille\",\"Yliopistolain mukaiset kansalliskirjastotehtävät\",Muuttujat[Toimintalaji]",
+              "\t)"
+            ],
+            "displayFolder": "Varsinaisen toiminnan kustannusten kategoria"
           }
         ],
         "partitions": [
@@ -3375,6 +3435,11 @@
             "expression": "([Tilikauden ylijäämä/alijäämä]-[Tuotto-/kulujäämä (varainhankinta)]-[Tuotto-/kulujäämä (sijoitus- ja rahoitustoiminta)])/([Varsinaisen toiminnan tuotot]+[Yliopistolain mukainen valtionrahoitus (OKM)]+[Muut yleisavustukset])",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Tuloslaskelma - yliopisto\\Johdetut mittarit"
+          },
+          {
+            "name": "Varsinaisen toiminnan kustannukset",
+            "expression": " CALCULATE(SUM([arvo]),Muuttujat[tili_taso0_fi]=\"Varsinaisen toiminnan kustannukset\")",
+            "formatString": "#,0"
           }
         ],
         "annotations": [
@@ -5764,6 +5829,45 @@
               },
               {
                 "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Varsinaisen toimimnnan kustannukset pivot",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Koulutusala"
+              },
+              {
+                "name": "Ohjauksen ala"
+              },
+              {
+                "name": "Suodatus tilastovuosi"
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Yliopisto"
+              },
+              {
+                "name": "Kulu"
+              },
+              {
+                "name": "Toiminta"
+              },
+              {
+                "name": "Toimintalaji"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Varsinaisen toiminnan kustannukset"
               }
             ]
           }
