@@ -8,8 +8,8 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[v_tab_tietoja_maakunnista]'))
-EXEC dbo.sp_executesql @statement = N' CREATE VIEW [dbo].[v_tab_tietoja_maakunnista] AS select 1 AS a'
+IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'dbo.v_tab_tietoja_maakunnista'))
+EXEC dbo.sp_executesql @statement = N' CREATE VIEW dbo.v_tab_tietoja_maakunnista AS select 1 AS a'
 GO
 
 
@@ -365,7 +365,7 @@ from VipunenTK.dbo.f_OTV_2_8_Korkeakouluopiskelijat as f
 left join VipunenTK.dbo.d_koulutusluokitus as d1 on d1.id=f.koulutusluokitus_id
 left join VipunenTK.dbo.d_alueluokitus as d2 on d2.id=f.koulutuksen_kunta_id
 left join VipunenTK.dbo.d_oppilaitoksen_taustatiedot as d3 on d3.id=f.oppilaitos_id
-where d1.Koulutusaste_taso2 in ('62','63','71','72','82') AND
+where d1.Koulutusaste_taso2_koodi in ('62','63','71','72','82') AND
 	(d3.oppilaitoskoodi NOT IN ('02557','10031','02358') AND coalesce(d3.oppilaitoksen_korvaavakoodi,d3.oppilaitoskoodi) not in ('01029','01569','10102'))
 
 
@@ -483,7 +483,7 @@ from VipunenTK.dbo.f_OTV_2_9_Korkeakoulututkinnot f
 left join VipunenTK.dbo.d_koulutusluokitus as d1 on d1.id=f.koulutusluokitus_id
 left join VipunenTK.dbo.d_alueluokitus as d2 on d2.id=f.koulutuksen_kunta_id
 left join VipunenTK.dbo.d_oppilaitoksen_taustatiedot as d3 on d3.id=f.oppilaitos_id
-where d1.Koulutusaste_taso2 in ('62','63','71','72','82') AND
+where d1.Koulutusaste_taso2_koodi in ('62','63','71','72','82') AND
 	(d3.oppilaitoskoodi NOT IN ('02557','10031','02358') AND coalesce(d3.oppilaitoksen_korvaavakoodi,d3.oppilaitoskoodi) not in ('01029','01569','10102'))
 
 
@@ -1014,7 +1014,7 @@ FROM dbo.f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta f
 	  JOIN d_koulutusmuoto d21 on d21.id = koulutusmuoto_id
 	  JOIN d_ammatillisen_koulutuksen_koulutuslaji_tutkintorekisterissa d22 on d22.id = ammatillisen_koulutuksen_koulutuslaji_tutkintorekisterissa_id
 	  JOIN d_paaasiallinen_toiminta_okm d25 on d25.id = paaasiallinen_toiminta_okm_id
-Where d1.koulutusaste2002 in ('31','32','62','63','71','72','82')
+Where d1.koulutusaste2002_koodi in ('31','32','62','63','71','72','82')
 
 UNION ALL
 
