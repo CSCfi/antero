@@ -363,8 +363,8 @@ from VipunenTK.dbo.f_OTV_2_8_Korkeakouluopiskelijat as f
 left join VipunenTK.dbo.d_koulutusluokitus as d1 on d1.id=f.koulutusluokitus_id
 left join VipunenTK.dbo.d_alueluokitus as d2 on d2.id=f.koulutuksen_kunta_id
 left join VipunenTK.dbo.d_oppilaitoksen_taustatiedot as d3 on d3.id=f.oppilaitos_id
-where d1.Koulutusaste_taso2 in ('62','63','71','72','82') AND
-	(d3.oppilaitoskoodi NOT IN ('02557','10031','02358') AND coalesce(d3.oppilaitoksen_korvaavakoodi,d3.oppilaitoskoodi) not in ('01029','01569','10102'))
+where d1.Koulutusaste_taso2 in (''62'',''63'',''71'',''72'',''82'') AND
+	(d3.oppilaitoskoodi NOT IN (''02557'',''10031'',''02358'') AND coalesce(d3.oppilaitoksen_korvaavakoodi,d3.oppilaitoskoodi) not in (''01029'',''01569'',''10102''))
 
 
 UNION ALL
@@ -481,8 +481,8 @@ from VipunenTK.dbo.f_OTV_2_9_Korkeakoulututkinnot f
 left join VipunenTK.dbo.d_koulutusluokitus as d1 on d1.id=f.koulutusluokitus_id
 left join VipunenTK.dbo.d_alueluokitus as d2 on d2.id=f.koulutuksen_kunta_id
 left join VipunenTK.dbo.d_oppilaitoksen_taustatiedot as d3 on d3.id=f.oppilaitos_id
-where d1.Koulutusaste_taso2 in ('62','63','71','72','82') AND
-	(d3.oppilaitoskoodi NOT IN ('02557','10031','02358') AND coalesce(d3.oppilaitoksen_korvaavakoodi,d3.oppilaitoskoodi) not in ('01029','01569','10102'))
+where d1.Koulutusaste_taso2 in (''62'',''63'',''71'',''72'',''82'') AND
+	(d3.oppilaitoskoodi NOT IN (''02557'',''10031'',''02358'') AND coalesce(d3.oppilaitoksen_korvaavakoodi,d3.oppilaitoskoodi) not in (''01029'',''01569'',''10102''))
 
 
 UNION ALL
@@ -527,9 +527,9 @@ select
 ,[Opiskelijatt]=NULL
 ,[Aloittaneet]=NULL
 ,[Tutkinto]=NULL
-,[Opetustunnit]=case when d3.Koulutusala!='Muut mittarit' then f.[Opetustuntien lukumäärä] else NULL end
-,[Koulutukset]=case when d3.Opintoala='Oppilaitosten tutkintoon johtamaton koulutus koulutustyypeittäin' then f.[Koulutusten lukumäärä] else NULL end
-,[Osallistuneet]=case when d3.Opintoala='Oppilaitosten tutkintoon johtamaton koulutus koulutustyypeittäin' then f.[Osallistuneiden lukumäärä] else NULL end
+,[Opetustunnit]=case when d3.Koulutusala!=''Muut mittarit'' then f.[Opetustuntien lukumäärä] else NULL end
+,[Koulutukset]=case when d3.Opintoala=''Oppilaitosten tutkintoon johtamaton koulutus koulutustyypeittäin'' then f.[Koulutusten lukumäärä] else NULL end
+,[Osallistuneet]=case when d3.Opintoala=''Oppilaitosten tutkintoon johtamaton koulutus koulutustyypeittäin'' then f.[Osallistuneiden lukumäärä] else NULL end
 ,[Esiopetuksen oppilaat] = NULL
 ,[1. luokan oppilaat] = NULL
 ,[1.-6. luokkien oppilaat] = NULL
@@ -601,7 +601,7 @@ left join VipunenTK.dbo.d_sukupuoli d1 on d1.id=f.sukupuoli_id
 left join VipunenTK.dbo.d_alueluokitus d2 on d2.id=f.oppilaitoksen_sijaintikunta_id
 left join VipunenTK.dbo.d_opetustuntien_sisalto_ja_tavoiteluokitus d3 on d3.id=f.opetustunti_id
 left join VipunenTK.dbo.d_oppilaitoksen_taustatiedot d4 on d4.id=f.oppilaitos_id
-where d4.oppilaitostyyppi in ('Liikunnan koulutuskeskukset','Kansanopistot','Kansalaisopistot','Opintokeskukset','Kesäyliopistot')
+where d4.oppilaitostyyppi in (''Liikunnan koulutuskeskukset'',''Kansanopistot'',''Kansalaisopistot'',''Opintokeskukset'',''Kesäyliopistot'')
 
 UNION ALL
 
@@ -716,7 +716,7 @@ FROM VipunenTK.dbo.f_OTV_2_1_R2_22_Peruskoulutiedosto_Oppilaitostason_oppil_ja_o
 left join VipunenTK.dbo.d_sukupuoli d1 on d1.id=f.sukupuoli_id
 left join VipunenTK.dbo.d_alueluokitus d2 on d2.id=f.oppilaitoksen_sijaintikunta_id
 left join VipunenTK.dbo.d_oppilaitoksen_taustatiedot d4 on d4.id=f.oppilaitos_id
-where f.oppilaitoksen_sijaintikunta<>200 and d1.sukupuoli<>'Tuntematon'
+where f.oppilaitoksen_sijaintikunta<>200 and d1.sukupuoli<>''Tuntematon''
 Group by 
 	 f.tilastointivuosi
 	,d2.maakunta
@@ -882,7 +882,7 @@ FROM dbo.f_VKP_4_2_Vaeston_koulutusrakenne_ja_paaasiallinen_toiminta f
 	  JOIN d_ika d20 on d20.id = tutkinnon_ika_1v_id
 	  JOIN d_koulutusmuoto d21 on d21.id = koulutusmuoto_id
 	  JOIN d_ammatillisen_koulutuksen_koulutuslaji_tutkintorekisterissa d22 on d22.id = ammatillisen_koulutuksen_koulutuslaji_tutkintorekisterissa_id
-	  WHERE aineisto = 'R'
+	  WHERE aineisto = ''R''
 
 UNION ALL
 
@@ -1012,7 +1012,7 @@ FROM dbo.f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta f
 	  JOIN d_koulutusmuoto d21 on d21.id = koulutusmuoto_id
 	  JOIN d_ammatillisen_koulutuksen_koulutuslaji_tutkintorekisterissa d22 on d22.id = ammatillisen_koulutuksen_koulutuslaji_tutkintorekisterissa_id
 	  JOIN d_paaasiallinen_toiminta_okm d25 on d25.id = paaasiallinen_toiminta_okm_id
-Where d1.koulutusaste2002 in ('31','32','62','63','71','72','82')
+Where d1.koulutusaste2002 in (''31'',''32'',''62'',''63'',''71'',''72'',''82'')
 
 UNION ALL
 
