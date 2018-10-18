@@ -9,9 +9,11 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[v_tab_tietoja_maakunnista]'))
-EXEC dbo.sp_executesql @statement = N'[dbo].[v_tab_tietoja_maakunnista] AS select 1 AS a'
+EXEC dbo.sp_executesql @statement = N' CREATE VIEW [dbo].[v_tab_tietoja_maakunnista] AS select 1 AS a'
+GO
 
-ALTER VIEW [dbo].[v_tab_tietoja_maakunnista] as
+
+ALTER VIEW [dbo].[v_tab_tietoja_maakunnista] AS
 
 ------------------ 2. aste Opiskelijat -----------------
 select
