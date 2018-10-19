@@ -1,5 +1,11 @@
 USE [Antero]
 GO 
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO 
+
 IF NOT EXISTS (select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='dw' and TABLE_NAME='d_amos_rajapinta_organisaatioliitokset') 
 BEGIN
 CREATE TABLE [dw].[d_amos_rajapinta_organisaatioliitokset](
