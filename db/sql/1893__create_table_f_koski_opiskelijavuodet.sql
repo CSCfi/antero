@@ -1,14 +1,9 @@
 USE [Antero]
-GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dw].[f_koski_opiskelijavuodet]'))
-EXEC dbo.sp_executesql @statement = N'CREATE VIEW [dw].f_koski_opiskelijavuodet AS
-SELECT 1 AS a'
-GO
-ALTER TABLE [dw].[f_koski_opiskelijavuodet](
+GO 
+IF NOT EXISTS (select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='dw' and TABLE_NAME='f_koski_opiskelijavuodet') 
+BEGIN
+GO 
+CREATE TABLE [dw].[f_koski_opiskelijavuodet](
  [vuosi] [int] NULL,
  [d_kalenteri_id] [int] NULL,
  [d_sukupuoli_id] [int] NULL,
@@ -30,3 +25,4 @@ ALTER TABLE [dw].[f_koski_opiskelijavuodet](
 ) ON [PRIMARY]
 
 GO
+
