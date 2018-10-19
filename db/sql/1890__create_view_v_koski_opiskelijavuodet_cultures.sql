@@ -4,13 +4,12 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-/*
+
 IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dw].[v_koski_opiskelijavuodet_cultures]'))
 EXEC dbo.sp_executesql @statement = N'CREATE VIEW [dw].v_koski_opiskelijavuodet_cultures AS
 SELECT 1 AS a'
 GO
-ALTER */
-CREATE VIEW [dw].[v_koski_opiskelijavuodet_cultures]
+ALTER VIEW [dw].[v_koski_opiskelijavuodet_cultures]
 AS
 SELECT        d_organisaatioluokitus_jarj.organisaatio_koodi AS ytunnus, ko.opiskelijavuodet, d_kytkin_oppisopimuskoulutus.kytkin_fi AS osa_aikaisuus_fi, d_kytkin_oppisopimuskoulutus.kytkin_en AS osa_aikaisuus_en, 
                          d_kytkin_oppisopimuskoulutus.kytkin_sv AS osa_aikaisuus_sv, ko.vuosi, REPLACE(cal.kuukausi_fi, 'kuu', '') AS kk_fi, cal.kuukausi_fi, cal.kuukausi_sv, cal.kuukausi_en, 'Missing data' AS kustannusryhma_en, 
