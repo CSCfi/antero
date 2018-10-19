@@ -2,7 +2,7 @@ USE [Antero]
 GO 
 IF NOT EXISTS (select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='dw' and TABLE_NAME='f_koski_opiskelijavuodet') 
 BEGIN
-GO 
+
 CREATE TABLE [dw].[f_koski_opiskelijavuodet](
  [vuosi] [int] NULL,
  [d_kalenteri_id] [int] NULL,

@@ -1,12 +1,14 @@
 USE [Antero]
 GO 
+
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO 
+
 IF NOT EXISTS (select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='dw' and TABLE_NAME='f_amos_rajapinta_rahoitus_kriteerit') 
 BEGIN
-GO SET ANSI_NULLS ON
-GO
 
-SET QUOTED_IDENTIFIER ON
-GO
 
 CREATE TABLE [dw].[f_amos_rajapinta_rahoitus_kriteerit](
  [ytunnus] [nvarchar](12) NULL,
