@@ -11,12 +11,10 @@ select top 20 * from (
 SELECT distinct top 2 
 [id] as noteid
 ,      [latauspvm] as pvm
-   , 'db-admin' as tekija
+   , [username] as tekija
       ,[tiedostonimi] as kommentti
   FROM [ANTERO].[sa].[sa_amos_siirtotiedosto_okm2]
   order by imp_date desc) as v
 order by pvm desc
 
 '
-END
-GO
