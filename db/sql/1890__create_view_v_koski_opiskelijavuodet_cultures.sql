@@ -1,14 +1,10 @@
 USE [Antero]
 GO
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 
 IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dw].[v_koski_opiskelijavuodet_cultures]'))
-EXEC dbo.sp_executesql @statement = N'CREATE VIEW [dw].v_koski_opiskelijavuodet_cultures AS
-SELECT 1 AS a'
+EXEC dbo.sp_executesql @statement = N'CREATE VIEW [dw].v_koski_opiskelijavuodet_cultures AS SELECT 1 AS a'
 GO
+/*
 ALTER VIEW [dw].[v_koski_opiskelijavuodet_cultures]
 AS
 SELECT        d_organisaatioluokitus_jarj.organisaatio_koodi AS ytunnus, ko.opiskelijavuodet, d_kytkin_oppisopimuskoulutus.kytkin_fi AS osa_aikaisuus_fi, d_kytkin_oppisopimuskoulutus.kytkin_en AS osa_aikaisuus_en, 
@@ -49,4 +45,5 @@ FROM            dw.f_koski_opiskelijavuodet AS ko INNER JOIN
                          dw.d_kytkin AS d_kytkin_osa_aikaisuus ON ko.d_osa_aikaisuus_id = d_kytkin_osa_aikaisuus.id INNER JOIN
                          dw.d_majoitus ON ko.d_majoitus_id = dw.d_majoitus.id
 
-GO
+*/
+

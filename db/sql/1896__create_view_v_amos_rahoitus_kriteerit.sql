@@ -7,6 +7,7 @@ GO
 IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dw].[v_amos_rahoitus_kriteerit]'))
 EXEC dbo.sp_executesql @statement = N'CREATE VIEW [dw].v_amos_rahoitus_kriteerit AS SELECT 1 AS a'
 GO
+/*
 ALTER VIEW [dw].[v_amos_rahoitus_kriteerit]
 AS
 SELECT        CASE WHEN l.uusi_ytunnus IS NULL THEN r.ytunnus ELSE l.uusi_ytunnus END AS ytunnus, l.poistuva_ytunnus, r.ta_ensikertainen_suoritepaatos, r.ta_lisasuoritepaatos, r.ta_paatokset_yhteensa, 
@@ -23,5 +24,4 @@ SELECT        CASE WHEN l.uusi_ytunnus IS NULL THEN r.ytunnus ELSE l.uusi_ytunnu
 FROM            dw.f_amos_rajapinta_rahoitus_kriteerit_new AS r LEFT OUTER JOIN
                          dw.v_amos_organisaatioliitokset AS l ON r.ytunnus = l.poistuva_ytunnus
 
-
-GO
+*/

@@ -24,6 +24,4 @@ CREATE TABLE [dw].[f_koski_opiskelijavuodet](
  [opiskelijavuodet] [decimal](20, 10) NULL
 )  
 END
-
-GO
-
+ 
