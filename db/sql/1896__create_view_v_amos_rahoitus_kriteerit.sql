@@ -19,5 +19,4 @@ FROM            dw.f_amos_rajapinta_rahoitus_kriteerit_new AS r LEFT OUTER JOIN
                          dw.v_amos_organisaatioliitokset AS l ON r.ytunnus = l.poistuva_ytunnus
 
 
-
 '
