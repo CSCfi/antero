@@ -5,9 +5,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dw].[v_amos_rahoitus_kriteerit]'))
-EXEC dbo.sp_executesql @statement = N'CREATE VIEW [dw].v_amos_rahoitus_kriteerit AS
-SELECT 1 AS a
-'
+EXEC dbo.sp_executesql @statement = N'CREATE VIEW [dw].v_amos_rahoitus_kriteerit AS SELECT 1 AS a'
 GO
 ALTER VIEW [dw].[v_amos_rahoitus_kriteerit]
 AS
