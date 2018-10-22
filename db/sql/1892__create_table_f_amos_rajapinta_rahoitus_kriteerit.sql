@@ -1,11 +1,6 @@
 USE [Antero]
 GO 
 
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO 
-
 IF NOT EXISTS (select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='dw' and TABLE_NAME='f_amos_rajapinta_rahoitus_kriteerit') 
 BEGIN
 
@@ -58,5 +53,6 @@ CREATE TABLE [dw].[f_amos_rajapinta_rahoitus_kriteerit](
  [ensikertainen_sp_suoritusrahoitus_2018] [bigint] NULL,
  [ensikertainen_sp_tyovoimakoulutus_2018] [bigint] NULL
 ) ON [PRIMARY]
+END
 
 GO

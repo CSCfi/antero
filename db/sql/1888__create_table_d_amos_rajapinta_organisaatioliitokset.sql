@@ -16,5 +16,6 @@ CREATE TABLE [dw].[d_amos_rajapinta_organisaatioliitokset](
  [tiedostonimi] [varchar](255) NULL,
  [latauspvm] [date] NULL
 ) ON [PRIMARY]
+END
 
 GO

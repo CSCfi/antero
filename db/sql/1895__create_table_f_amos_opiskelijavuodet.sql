@@ -10,5 +10,6 @@ CREATE TABLE [dw].[f_amos_opiskelijavuodet](
  [painottamaton_opiskelijavuosimaara] [decimal](10, 4) NULL,
  [painotettu_opiskelijavuosimäärä] [decimal](10, 4) NULL
 ) ON [PRIMARY]
+END
 
 GO

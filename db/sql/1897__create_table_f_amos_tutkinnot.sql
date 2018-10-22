@@ -10,5 +10,6 @@ CREATE TABLE [dw].[f_amos_tutkinnot](
  [painotettu_tutkintomaara] [decimal](10, 4) NULL,
  [painottamaton_tutkintomaara] [decimal](10, 4) NULL
 ) ON [PRIMARY]
+END
 
 GO
