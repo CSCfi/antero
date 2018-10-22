@@ -14,4 +14,4 @@ CREATE TABLE [dw].[d_amos_rajapinta_jakotaulu](
  [jako_ja_oikaisuvara] [money] NOT NULL
 ) 
 END
-GO
+ 

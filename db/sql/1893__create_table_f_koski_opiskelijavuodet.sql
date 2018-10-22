@@ -22,7 +22,7 @@ CREATE TABLE [dw].[f_koski_opiskelijavuodet](
  [d_kustannusryhma_id] [int] NULL,
  [d_suorituksen_tyyppi_id] [int] NULL,
  [opiskelijavuodet] [decimal](20, 10) NULL
-) ON [PRIMARY]
+)  
 END
 
 GO

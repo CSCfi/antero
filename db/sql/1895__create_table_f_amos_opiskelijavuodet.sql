@@ -9,7 +9,6 @@ CREATE TABLE [dw].[f_amos_opiskelijavuodet](
  [profiilikerroin] [decimal](10, 4) NULL,
  [painottamaton_opiskelijavuosimaara] [decimal](10, 4) NULL,
  [painotettu_opiskelijavuosimäärä] [decimal](10, 4) NULL
-) ON [PRIMARY]
+)  
 END
-
-GO
+ 

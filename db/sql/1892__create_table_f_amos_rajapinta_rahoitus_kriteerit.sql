@@ -52,7 +52,7 @@ CREATE TABLE [dw].[f_amos_rajapinta_rahoitus_kriteerit](
  [vos_ta_ja_ltae_mukainen_sis_alv_2017] [bigint] NULL,
  [ensikertainen_sp_suoritusrahoitus_2018] [bigint] NULL,
  [ensikertainen_sp_tyovoimakoulutus_2018] [bigint] NULL
-) ON [PRIMARY]
+)  
 END
 
-GO
+ 
