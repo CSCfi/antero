@@ -55,4 +55,4 @@ CREATE TABLE [dw].[f_amos_rajapinta_rahoitus_kriteerit_new](
  [profiilikerroin_korjattu] [float] NULL
 )
 END
-GO
+

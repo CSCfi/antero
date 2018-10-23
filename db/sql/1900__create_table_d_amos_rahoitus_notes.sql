@@ -9,4 +9,3 @@ CREATE TABLE [dw].[d_amos_rahoitus_notes](
  [kommentti] [varchar](255) NULL
  )
 END
-GO
