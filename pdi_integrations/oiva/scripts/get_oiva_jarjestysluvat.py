@@ -101,13 +101,14 @@ response = requests.get(url,  auth=(api_user, api_key)).json()
 # select jarjestysluvat
 for i in response:
     row = makerow_jarjestysluvat()
-    row["id"] = i["maaraykset"][0]["lupaId"]
-    row["edellinen_lupa_id"] =key_check("aatoskierros_id", i) 
+    row["id"] = key_check("uuid",i)
+    row["edellinen_lupa_id"] =key_check("paatoskierros_id", i) 
     row["lupatila_id"] = key_check("lupatila_id", i) 
     row["asiatyyppi_id"] = key_check("asiatyyppi_id", i) 
     row["diaarinumero"] = key_check("diaarinumero", i)
     row["jarjestajaYtunnus"] = key_check("jarjestajaYtunnus", i)
     row["jarjestajaOid"] = key_check("jarjestajaOid", i) 
+    row["nimi"] = key_check("nimi", i) 
     row["alkupvm"] = key_check("alkupvm", i) 
     row["loppupvm"] = key_check("loppupvm", i)
     row["meta.kirje"] = key_check("kirje", i["meta"])
@@ -129,18 +130,24 @@ for i in response:
 #   split maaraykset into own list from respone
     #maarays=i["maaraykset"]
     maaraykset.append(i["maaraykset"])
-
+    
 # select maaraykset
 for k in maaraykset:
     for m in k:
         row = makerow_maaraykset()
-        row["id"] = key_check("id", m)
-        row["lupaId"] = key_check("lupaId", m)
-        row["kohde.tunniste"] = key_check("tunniste", m["kohde"])
+        row["id"] = key_check("uuid", m)
+        row["lupaId"] = key_check("uuid", i)
+        if "kohde" in m:
+            row["kohde.tunniste"] = key_check("tunniste", m["kohde"])
+        else:
+            row["kohde.tunniste"] = None
         row["koodisto"] = key_check("koodisto", m)
         row["koodiarvo"] = key_check("koodiarvo", m)
         row["arvo"] = key_check("arvo", m)
-        row["maaraystyyppi.tunniste"] =  key_check("tunniste", m["maaraystyyppi"])
+        if "maaraystyyppi" in m:
+            row["maaraystyyppi.tunniste"] =  key_check("tunniste", m["maaraystyyppi"])
+        else:
+            row["maaraystyyppi.tunniste"] = None
         #row["meta"] = m["meta"]	 if "meta" in m else  None
         row["luoja"] = key_check("luoja", m)
         row["luontipvm"] = key_check("luontipvm", m)
@@ -150,7 +157,7 @@ for k in maaraykset:
         row["loadtime"] = str(loadtime)
         
         oiva_maaraykset.append(row)
-        
+                
 jarjestysluvat = json_normalize(lupa_data)
 oivamaaraykset = json_normalize(oiva_maaraykset)
 
