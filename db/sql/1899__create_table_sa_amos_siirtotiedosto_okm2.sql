@@ -1,6 +1,6 @@
 USE [Antero]
 GO 
-IF NOT EXISTS (select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='dw' and TABLE_NAME='sa_amos_siirtotiedosto_okm2') 
+IF NOT EXISTS (select * from INFORMATION_SCHEMA.TABLES where TABLE_SCHEMA='sa' and TABLE_NAME='sa_amos_siirtotiedosto_okm2') 
 BEGIN
 CREATE TABLE [sa].[sa_amos_siirtotiedosto_okm2](
  [id] [bigint] IDENTITY(1,1) NOT NULL,
