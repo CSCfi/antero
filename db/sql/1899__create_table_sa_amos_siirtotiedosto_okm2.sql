@@ -21,4 +21,3 @@ CREATE TABLE [sa].[sa_amos_siirtotiedosto_okm2](
  [username] [varchar](100) NULL,
  [loadtime] [datetime] NULL)
 END
-GO
