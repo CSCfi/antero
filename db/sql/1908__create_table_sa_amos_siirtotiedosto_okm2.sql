@@ -2,8 +2,7 @@ USE [ANTERO]
 IF EXISTS
 	(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='sa' AND TABLE_NAME='sa_amos_siirtotiedosto_okm2')
 BEGIN
-	ALTER TABLE [sa].[sa_amos_siirtotiedosto_okm2] DROP  CONSTRAINT [DF__sa_amos_siirtotiedosto_okm2__loadtime];
-	ALTER TABLE [sa].[sa_amos_siirtotiedosto_okm2] DROP  CONSTRAINT [DF__sa_amos_siirtotiedosto_okm2__username];
+		ALTER TABLE [sa].[sa_amos_siirtotiedosto_okm2] DROP  CONSTRAINT [DF__sa_amos_siirtotiedosto_okm2__username];
 	DROP TABLE [sa].[sa_amos_siirtotiedosto_okm2];
 END
 GO
