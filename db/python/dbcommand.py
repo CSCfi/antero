@@ -22,6 +22,8 @@ def load(command,expect,verbose=False):
 
   sql = command
   ret = None
+  print(sql)
+
   try:
     # quick hack for getting return value. do fix me!
     if expect:
@@ -36,7 +38,8 @@ def load(command,expect,verbose=False):
         ret = resql
     else:
       dboperator.execute(sql)
-  except:
+  except Exception, f:
+    print(f)
     e = sys.exc_info()[0] #for debugging error 1.11.2018 VHä
     show("Something went wrong. Over and out. %s" % e)
     dboperator.close()
