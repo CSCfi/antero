@@ -190,7 +190,7 @@ def insertMany(source, schema, table, rows, debug=False): #insert array
   conn.commit()
 
 # for procedure calls and ready made statements
-def execute(sql,debug=True):
+def execute(sql,debug=False):
   global conn, cur, count
   if debug: print("dboperator.execute: sql="+sql)
   cur.execute(sql)
@@ -198,7 +198,7 @@ def execute(sql,debug=True):
   conn.commit()
 
 # get results of a query as an array of dicts
-def get(sql,debug=True):
+def get(sql,debug=False):
   global conn, cur, count
   if debug: print("dboperator.get: sql="+sql)
   cur.execute(sql)
