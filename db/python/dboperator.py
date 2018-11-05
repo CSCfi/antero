@@ -174,8 +174,8 @@ def insert(source,schema,table,row,debug=False):  # insert single row
   count = cur.rowcount
   conn.commit()
 
-# insert - many rows at a time @hpetrell  
-def insertMany(source, schema, table, rows, debug=False): #insert array 
+# insert - many rows at a time @hpetrell
+def insertMany(source, schema, table, rows, debug=False): #insert array
   global conn, cur, count, columnlist
   if debug: print("dboperator.insert: columnlist="+(",".join(columnlist)))
   columnstr = ",".join(columnlist)
@@ -190,7 +190,7 @@ def insertMany(source, schema, table, rows, debug=False): #insert array
   conn.commit()
 
 # for procedure calls and ready made statements
-def execute(sql,debug=False):
+def execute(sql,debug=True):
   global conn, cur, count
   if debug: print("dboperator.execute: sql="+sql)
   cur.execute(sql)
@@ -198,7 +198,7 @@ def execute(sql,debug=False):
   conn.commit()
 
 # get results of a query as an array of dicts
-def get(sql,debug=False):
+def get(sql,debug=True):
   global conn, cur, count
   if debug: print("dboperator.get: sql="+sql)
   cur.execute(sql)
