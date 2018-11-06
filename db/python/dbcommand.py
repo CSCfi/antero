@@ -22,7 +22,6 @@ def load(command,expect,verbose=False):
 
   sql = command
   ret = None
-  print(sql)
 
   try:
     # quick hack for getting return value. do fix me!
