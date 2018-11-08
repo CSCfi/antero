@@ -1,12 +1,15 @@
 USE [ANTERO]
 GO
-
-/****** Object:  View [dw].[v_st_rekrytointi_valitut]    Script Date: 6.11.2018 15:02:25 ******/
+/****** Object:  View [dw].[v_st_rekrytointi_valitut]    Script Date: 8.11.2018 11:48:30 ******/
+DROP VIEW IF EXISTS [dw].[v_st_rekrytointi_valitut]
+GO
+/****** Object:  View [dw].[v_st_rekrytointi_valitut]    Script Date: 8.11.2018 11:48:30 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dw].[v_st_rekrytointi_valitut]'))
+EXEC dbo.sp_executesql @statement = N'
 
 
 
@@ -18,7 +21,8 @@ GO
 
 
 
-ALTER VIEW [dw].[v_st_rekrytointi_valitut] AS
+
+CREATE VIEW [dw].[v_st_rekrytointi_valitut] AS
 
  SELECT
 	 [Tilastovuosi] = f.vuosi
@@ -33,19 +37,19 @@ ALTER VIEW [dw].[v_st_rekrytointi_valitut] AS
 	,[Tehtäväryhmä] = d3.selite_fi
 	,[Henkilöstöryhmä] = d22.selite_fi
 	,[Harjoittelukoulujen henkilöstöryhmä] = d24.selite_fi
-	,[Tehtäväjaottelu] = case when sektori='amk' then d4.selite_fi else d26.selite_fi end
-	,[Nimitystapa] = case when sektori='yo' then d5.selite_fi else d27.selite_fi end
+	,[Tehtäväjaottelu] = case when sektori=''amk'' then d4.selite_fi else d26.selite_fi end
+	,[Nimitystapa] = case when sektori=''yo'' then d5.selite_fi else d27.selite_fi end
 	,[Työnimike] = d2.selite_fi
 	,[Tutkijanuravaihe] = d25.selite_fi
 	,[Työsopimuksen pituus] = 
 		CASE
-			WHEN DATEDIFF(MONTH,f.sopimus_alkupvm,f.sopimus_loppupvm) < 3 THEN 'alle 3 kk'
-			WHEN DATEDIFF(MONTH,f.sopimus_alkupvm,f.sopimus_loppupvm) < 7 THEN '3–6 kk'
-			WHEN DATEDIFF(MONTH,f.sopimus_alkupvm,f.sopimus_loppupvm) < 13 THEN '6–12 kk'
-			WHEN DATEDIFF(MONTH,f.sopimus_alkupvm,f.sopimus_loppupvm) < 25 THEN '1–2 v.'
-			WHEN DATEDIFF(MONTH,f.sopimus_alkupvm,f.sopimus_loppupvm) < 37 THEN '2–3 v.'
-			WHEN DATEDIFF(MONTH,f.sopimus_alkupvm,f.sopimus_loppupvm) >= 37 THEN 'yli 3 v.'
-			ELSE 'Tieto puuttuu'
+			WHEN DATEDIFF(MONTH,f.sopimus_alkupvm,f.sopimus_loppupvm) < 3 THEN ''alle 3 kk''
+			WHEN DATEDIFF(MONTH,f.sopimus_alkupvm,f.sopimus_loppupvm) < 7 THEN ''3–6 kk''
+			WHEN DATEDIFF(MONTH,f.sopimus_alkupvm,f.sopimus_loppupvm) < 13 THEN ''6–12 kk''
+			WHEN DATEDIFF(MONTH,f.sopimus_alkupvm,f.sopimus_loppupvm) < 25 THEN ''1–2 v.''
+			WHEN DATEDIFF(MONTH,f.sopimus_alkupvm,f.sopimus_loppupvm) < 37 THEN ''2–3 v.''
+			WHEN DATEDIFF(MONTH,f.sopimus_alkupvm,f.sopimus_loppupvm) >= 37 THEN ''yli 3 v.''
+			ELSE ''Tieto puuttuu''
 		END
 	,[Kelpoisuus tutkinto] = d6.selite_fi
 	,[Kelpoisuus työkokemus] = d7.selite_fi
@@ -54,12 +58,12 @@ ALTER VIEW [dw].[v_st_rekrytointi_valitut] AS
 	,[Tohtorintutkinnon suoritusmaa] = d13.maatjavaltiot2_fi
 	,[Tohtorintutkinnon suoritusmaanosa] = d13.maanosa_fi
 	,[Tohtorintutkinnon yliopisto] = d30.organisaatio_fi
-	,[Tohtorintutkinnon suoritusvuosi] = COALESCE(NULLIF(NULLIF(CAST(tohtorintutkinnon_suoritusvuosi AS VARCHAR),'-1'),'0'),'Tieto puuttuu')
+	,[Tohtorintutkinnon suoritusvuosi] = COALESCE(NULLIF(NULLIF(CAST(tohtorintutkinnon_suoritusvuosi AS VARCHAR),''-1''),''0''),''Tieto puuttuu'')
 	,[ARVO kysymysryhmä] = d20.kysymysryhma_fi
 	,[ARVO kysymys] = d20.kysymys_fi
 	,[ARVO vastaus] = d21.vastaus_fi
 
-	,[Sektori] = case when sektori='yo' then 'Yliopisto' when sektori='amk' then 'Ammattikorkeakoulu' end
+	,[Sektori] = case when sektori=''yo'' then ''Yliopisto'' when sektori=''amk'' then ''Ammattikorkeakoulu'' end
 	,[Koulutusnimike] = d11.koulutusluokitus_fi
 	,[Koulutusala, taso 1] = d11.koulutusalataso1_fi
 	,[Koulutusala, taso 2] = d11.koulutusalataso2_fi
@@ -69,7 +73,7 @@ ALTER VIEW [dw].[v_st_rekrytointi_valitut] AS
 	,[OKM ohjauksen ala] = d11.okmohjauksenala_fi
 	,[Tutkinnon taso] = d12.selite_fi
 
-	,[Toimipiste] = case when sektori='amk' then d14.toimipisteen_nimi else d28.selite_fi end
+	,[Toimipiste] = case when sektori=''amk'' then d14.toimipisteen_nimi else d28.selite_fi end
 	,[Toimipaikka] = d14.toimipaikan_nimi
 	,[Alayksikkö] = d15.alayksikko_nimi
 	
@@ -88,8 +92,8 @@ ALTER VIEW [dw].[v_st_rekrytointi_valitut] AS
 	,[TehtäväryhmäSV] = d3.selite_sv
 	,[HenkilöstöryhmäSV] = d22.selite_sv
 	,[Harjoittelukoulujen henkilöstöryhmäSV] = d24.selite_sv
-	,[TehtäväjaotteluSV] = case when sektori='amk' then d4.selite_sv else d26.selite_sv end
-	,[NimitystapaSV] = case when sektori='yo' then d5.selite_sv else d27.selite_sv end
+	,[TehtäväjaotteluSV] = case when sektori=''amk'' then d4.selite_sv else d26.selite_sv end
+	,[NimitystapaSV] = case when sektori=''yo'' then d5.selite_sv else d27.selite_sv end
 	,[TyönimikeSV] = d2.selite_sv
 	,[Kelpoisuus tutkintoSV] = d6.selite_sv
 	,[Kelpoisuus työkokemusSV] = d7.selite_sv
@@ -112,7 +116,7 @@ ALTER VIEW [dw].[v_st_rekrytointi_valitut] AS
 	,[OKM ohjauksen alaSV] = d11.okmohjauksenala_sv
 	,[Tutkinnon tasoSV] = d12.selite_sv
 
-	,[ToimipisteSV] = case when sektori='amk' then d14.toimipisteen_nimi else d28.selite_sv end
+	,[ToimipisteSV] = case when sektori=''amk'' then d14.toimipisteen_nimi else d28.selite_sv end
 	,[ToimipaikkaSV] = d14.toimipaikan_nimi
 	,[AlayksikköSV] = d15.alayksikko_nimi
 	
@@ -218,43 +222,43 @@ ALTER VIEW [dw].[v_st_rekrytointi_valitut] AS
 	,[henkilonumero]
 	
 	--muu työkokemus
-	,case when d20.kysymys_fi = 'Nykyisessä yliopistossa / ammattikorkeakoulussa:'																	and d21.vastaus_fi <> 'alle 0,5 vuotta tai ei lainkaan' and d21.vastaus_koodi <> '-1' then 1 else 0 end as kokemus_sama_yo_amk
-	,case when d20.kysymys_fi = 'Muussa yliopistossa Suomessa:'																						and d21.vastaus_fi <> 'alle 0,5 vuotta tai ei lainkaan' and d21.vastaus_koodi <> '-1' then 1 else 0 end as kokemus_muu_yo
-	,case when d20.kysymys_fi = 'Muussa ammattikorkeakoulussa Suomessa:'																			and d21.vastaus_fi <> 'alle 0,5 vuotta tai ei lainkaan' and d21.vastaus_koodi <> '-1' then 1 else 0 end as kokemus_muu_amk
-	,case when d20.kysymys_fi = 'Tutkimuslaitoksessa Suomessa:'																						and d21.vastaus_fi <> 'alle 0,5 vuotta tai ei lainkaan' and d21.vastaus_koodi <> '-1' then 1 else 0 end as kokemus_tutklaitos
-	,case when d20.kysymys_fi = 'Ulkomaisessa korkeakoulussa / tutkimuslaitoksessa:'																and d21.vastaus_fi <> 'alle 0,5 vuotta tai ei lainkaan' and d21.vastaus_koodi <> '-1' then 1 else 0 end as kokemus_ulk_kk_tutklaitos
-	,case when d20.kysymys_fi = 'Vähintään yhdessä muussa oppilaitoksessa (ei korkeakoulu) Suomessa tai ulkomailla:'								and d21.vastaus_fi <> 'alle 0,5 vuotta tai ei lainkaan' and d21.vastaus_koodi <> '-1' then 1 else 0 end as kokemus_muu_oppil
-	,case when d20.kysymys_fi = 'Yrityksessä (yrityksen toimipaikka sijainnut Suomessa):'															and d21.vastaus_fi <> 'alle 0,5 vuotta tai ei lainkaan' and d21.vastaus_koodi <> '-1' then 1 else 0 end as kokemus_yritys
-	,case when d20.kysymys_fi = 'Yrityksessä (yrityksen toimipaikka sijainnut ulkomailla):'															and d21.vastaus_fi <> 'alle 0,5 vuotta tai ei lainkaan' and d21.vastaus_koodi <> '-1' then 1 else 0 end as kokemus_yritys_ulk
-	,case when d20.kysymys_fi = 'Julkinen hallinto (valtio, kunnat (ml. yliopistolliset keskussairaalat), Kela, yms.)  Suomessa tai ulkomailla:'	and d21.vastaus_fi <> 'alle 0,5 vuotta tai ei lainkaan' and d21.vastaus_koodi <> '-1' then 1 else 0 end as kokemus_julk_hallinto
-	,case when d20.kysymys_fi = 'Muussa organisaatiossa (järjestöt jne.) (organisaation toimipaikka sijainnut Suomessa):'							and d21.vastaus_fi <> 'alle 0,5 vuotta tai ei lainkaan' and d21.vastaus_koodi <> '-1' then 1 else 0 end as kokemus_muu_org
-	,case when d20.kysymys_fi = 'Muussa organisaatiossa (järjestöt jne.) (organisaation toimipaikka sijainnut ulkomailla):'							and d21.vastaus_fi <> 'alle 0,5 vuotta tai ei lainkaan' and d21.vastaus_koodi <> '-1' then 1 else 0 end as kokemus_muu_org_ulk
+	,case when d20.kysymys_fi = ''Nykyisessä yliopistossa / ammattikorkeakoulussa:''																	and d21.vastaus_fi <> ''alle 0,5 vuotta tai ei lainkaan'' and d21.vastaus_koodi <> ''-1'' then 1 else 0 end as kokemus_sama_yo_amk
+	,case when d20.kysymys_fi = ''Muussa yliopistossa Suomessa:''																						and d21.vastaus_fi <> ''alle 0,5 vuotta tai ei lainkaan'' and d21.vastaus_koodi <> ''-1'' then 1 else 0 end as kokemus_muu_yo
+	,case when d20.kysymys_fi = ''Muussa ammattikorkeakoulussa Suomessa:''																			and d21.vastaus_fi <> ''alle 0,5 vuotta tai ei lainkaan'' and d21.vastaus_koodi <> ''-1'' then 1 else 0 end as kokemus_muu_amk
+	,case when d20.kysymys_fi = ''Tutkimuslaitoksessa Suomessa:''																						and d21.vastaus_fi <> ''alle 0,5 vuotta tai ei lainkaan'' and d21.vastaus_koodi <> ''-1'' then 1 else 0 end as kokemus_tutklaitos
+	,case when d20.kysymys_fi = ''Ulkomaisessa korkeakoulussa / tutkimuslaitoksessa:''																and d21.vastaus_fi <> ''alle 0,5 vuotta tai ei lainkaan'' and d21.vastaus_koodi <> ''-1'' then 1 else 0 end as kokemus_ulk_kk_tutklaitos
+	,case when d20.kysymys_fi = ''Vähintään yhdessä muussa oppilaitoksessa (ei korkeakoulu) Suomessa tai ulkomailla:''								and d21.vastaus_fi <> ''alle 0,5 vuotta tai ei lainkaan'' and d21.vastaus_koodi <> ''-1'' then 1 else 0 end as kokemus_muu_oppil
+	,case when d20.kysymys_fi = ''Yrityksessä (yrityksen toimipaikka sijainnut Suomessa):''															and d21.vastaus_fi <> ''alle 0,5 vuotta tai ei lainkaan'' and d21.vastaus_koodi <> ''-1'' then 1 else 0 end as kokemus_yritys
+	,case when d20.kysymys_fi = ''Yrityksessä (yrityksen toimipaikka sijainnut ulkomailla):''															and d21.vastaus_fi <> ''alle 0,5 vuotta tai ei lainkaan'' and d21.vastaus_koodi <> ''-1'' then 1 else 0 end as kokemus_yritys_ulk
+	,case when d20.kysymys_fi = ''Julkinen hallinto (valtio, kunnat (ml. yliopistolliset keskussairaalat), Kela, yms.)  Suomessa tai ulkomailla:''	and d21.vastaus_fi <> ''alle 0,5 vuotta tai ei lainkaan'' and d21.vastaus_koodi <> ''-1'' then 1 else 0 end as kokemus_julk_hallinto
+	,case when d20.kysymys_fi = ''Muussa organisaatiossa (järjestöt jne.) (organisaation toimipaikka sijainnut Suomessa):''							and d21.vastaus_fi <> ''alle 0,5 vuotta tai ei lainkaan'' and d21.vastaus_koodi <> ''-1'' then 1 else 0 end as kokemus_muu_org
+	,case when d20.kysymys_fi = ''Muussa organisaatiossa (järjestöt jne.) (organisaation toimipaikka sijainnut ulkomailla):''							and d21.vastaus_fi <> ''alle 0,5 vuotta tai ei lainkaan'' and d21.vastaus_koodi <> ''-1'' then 1 else 0 end as kokemus_muu_org_ulk
 
-	,[työkokemus_vastanneet] = case when d20.kysymysryhma_fi='Tiedot tehtävään valitun henkilön aiemmasta työskentelystä' and d21.vastaus_koodi <> '-1' then 1 else 0 end
-	,[ed_tyopaikka_vastanneet] = case when d20.kysymysryhma_fi='Tiedot tehtävään valitun henkilön aiemmasta työskentelystä' and d21.vastaus_koodi <> '-1' then 1 else 0 end
+	,[työkokemus_vastanneet] = case when d20.kysymysryhma_fi=''Tiedot tehtävään valitun henkilön aiemmasta työskentelystä'' and d21.vastaus_koodi <> ''-1'' then 1 else 0 end
+	,[ed_tyopaikka_vastanneet] = case when d20.kysymysryhma_fi=''Tiedot tehtävään valitun henkilön aiemmasta työskentelystä'' and d21.vastaus_koodi <> ''-1'' then 1 else 0 end
 
 	--edellinen työpaikka
-	,case when d20.kysymys_fi = 'Mikä seuraavista oli viimeisin työpaikkasi?' and d21.vastaus_fi = 'Nykyinen yliopisto / ammattikorkeakoulu' then 1 else 0 end as ed_sama_yo_amk
-	,case when d20.kysymys_fi = 'Mikä seuraavista oli viimeisin työpaikkasi?' and d21.vastaus_fi = 'Muu yliopisto Suomessa' then 1 else 0 end as ed_muu_yo
-	,case when d20.kysymys_fi = 'Mikä seuraavista oli viimeisin työpaikkasi?' and d21.vastaus_fi = 'Muu ammattikorkeakoulu Suomessa' then 1 else 0 end as ed_muu_amk
-	,case when d20.kysymys_fi = 'Mikä seuraavista oli viimeisin työpaikkasi?' and d21.vastaus_fi = 'Tutkimuslaitos Suomessa' then 1 else 0 end as ed_tutklaitos
-	,case when d20.kysymys_fi = 'Mikä seuraavista oli viimeisin työpaikkasi?' and d21.vastaus_fi = 'Ulkomainen korkeakoulu / tutkimuslaitos' then 1 else 0 end as ed_ulk_kk_tutklaitos
-	,case when d20.kysymys_fi = 'Mikä seuraavista oli viimeisin työpaikkasi?' and d21.vastaus_fi = 'Muu oppilaitos (ei korkeakoulu) Suomessa tai ulkomailla' then 1 else 0 end as ed_muu_oppil
-	,case when d20.kysymys_fi = 'Mikä seuraavista oli viimeisin työpaikkasi?' and d21.vastaus_fi = 'Yritys (yrityksen toimipakka sijainnut Suomessa)' then 1 else 0 end as ed_yritys
-	,case when d20.kysymys_fi = 'Mikä seuraavista oli viimeisin työpaikkasi?' and d21.vastaus_fi = 'Yritys (yrityksen toimipakka sijainnut ulkomailla)' then 1 else 0 end as ed_yritys_ulk
-	,case when d20.kysymys_fi = 'Mikä seuraavista oli viimeisin työpaikkasi?' and d21.vastaus_fi = 'Julkinen hallinto (valtio, kunnat (ml. yliopistolliset keskussairaalat), Kela, yms.) Suomessa tai ulkomailla' then 1 else 0 end as ed_julk_hallinto
-	,case when d20.kysymys_fi = 'Mikä seuraavista oli viimeisin työpaikkasi?' and d21.vastaus_fi = 'Muu organisaatio (järjestöt jne.) (organisaation toimipaikka sijainnut Suomessa)' then 1 else 0 end as ed_muu_org
-	,case when d20.kysymys_fi = 'Mikä seuraavista oli viimeisin työpaikkasi?' and d21.vastaus_fi = 'Muu organisaatio (järjestöt jne.) (organisaation toimipaikka sijainnut ulkomailla)' then 1 else 0 end as ed_muu_org_ulk
+	,case when d20.kysymys_fi = ''Mikä seuraavista oli viimeisin työpaikkasi?'' and d21.vastaus_fi = ''Nykyinen yliopisto / ammattikorkeakoulu'' then 1 else 0 end as ed_sama_yo_amk
+	,case when d20.kysymys_fi = ''Mikä seuraavista oli viimeisin työpaikkasi?'' and d21.vastaus_fi = ''Muu yliopisto Suomessa'' then 1 else 0 end as ed_muu_yo
+	,case when d20.kysymys_fi = ''Mikä seuraavista oli viimeisin työpaikkasi?'' and d21.vastaus_fi = ''Muu ammattikorkeakoulu Suomessa'' then 1 else 0 end as ed_muu_amk
+	,case when d20.kysymys_fi = ''Mikä seuraavista oli viimeisin työpaikkasi?'' and d21.vastaus_fi = ''Tutkimuslaitos Suomessa'' then 1 else 0 end as ed_tutklaitos
+	,case when d20.kysymys_fi = ''Mikä seuraavista oli viimeisin työpaikkasi?'' and d21.vastaus_fi = ''Ulkomainen korkeakoulu / tutkimuslaitos'' then 1 else 0 end as ed_ulk_kk_tutklaitos
+	,case when d20.kysymys_fi = ''Mikä seuraavista oli viimeisin työpaikkasi?'' and d21.vastaus_fi = ''Muu oppilaitos (ei korkeakoulu) Suomessa tai ulkomailla'' then 1 else 0 end as ed_muu_oppil
+	,case when d20.kysymys_fi = ''Mikä seuraavista oli viimeisin työpaikkasi?'' and d21.vastaus_fi = ''Yritys (yrityksen toimipakka sijainnut Suomessa)'' then 1 else 0 end as ed_yritys
+	,case when d20.kysymys_fi = ''Mikä seuraavista oli viimeisin työpaikkasi?'' and d21.vastaus_fi = ''Yritys (yrityksen toimipakka sijainnut ulkomailla)'' then 1 else 0 end as ed_yritys_ulk
+	,case when d20.kysymys_fi = ''Mikä seuraavista oli viimeisin työpaikkasi?'' and d21.vastaus_fi = ''Julkinen hallinto (valtio, kunnat (ml. yliopistolliset keskussairaalat), Kela, yms.) Suomessa tai ulkomailla'' then 1 else 0 end as ed_julk_hallinto
+	,case when d20.kysymys_fi = ''Mikä seuraavista oli viimeisin työpaikkasi?'' and d21.vastaus_fi = ''Muu organisaatio (järjestöt jne.) (organisaation toimipaikka sijainnut Suomessa)'' then 1 else 0 end as ed_muu_org
+	,case when d20.kysymys_fi = ''Mikä seuraavista oli viimeisin työpaikkasi?'' and d21.vastaus_fi = ''Muu organisaatio (järjestöt jne.) (organisaation toimipaikka sijainnut ulkomailla)'' then 1 else 0 end as ed_muu_org_ulk
 	
 	--tohtorintutkinnon organisaatio
 	,case when d1.organisaatio_koodi=d30.organisaatio_koodi then 1 else 0 end as tohtori_sama_yo
 	,case when d1.organisaatio_koodi<>d30.organisaatio_koodi then 1 else 0 end as tohtori_eri_yo
-	,case when d13.maatjavaltiot2_fi<>'Suomi' then 1 else 0 end as tohtori_ulk_yo
+	,case when d13.maatjavaltiot2_fi<>''Suomi'' then 1 else 0 end as tohtori_ulk_yo
 
 	--aika ulkomaisessa korkeakoulussa
-	,case when d20.kysymys_fi = 'Ulkomaisessa korkeakoulussa / tutkimuslaitoksessa:' and d21.vastaus_fi = '0,5-3 vuotta' then 1 else 0 end as aika1_ulk_kk_tutklaitos
-	,case when d20.kysymys_fi = 'Ulkomaisessa korkeakoulussa / tutkimuslaitoksessa:' and d21.vastaus_fi = '3-7 vuotta' then 1 else 0 end as aika2_ulk_kk_tutklaitos
-	,case when d20.kysymys_fi = 'Ulkomaisessa korkeakoulussa / tutkimuslaitoksessa:' and d21.vastaus_fi = 'yli 7 vuotta' then 1 else 0 end as aika3_ulk_kk_tutklaitos
+	,case when d20.kysymys_fi = ''Ulkomaisessa korkeakoulussa / tutkimuslaitoksessa:'' and d21.vastaus_fi = ''0,5-3 vuotta'' then 1 else 0 end as aika1_ulk_kk_tutklaitos
+	,case when d20.kysymys_fi = ''Ulkomaisessa korkeakoulussa / tutkimuslaitoksessa:'' and d21.vastaus_fi = ''3-7 vuotta'' then 1 else 0 end as aika2_ulk_kk_tutklaitos
+	,case when d20.kysymys_fi = ''Ulkomaisessa korkeakoulussa / tutkimuslaitoksessa:'' and d21.vastaus_fi = ''yli 7 vuotta'' then 1 else 0 end as aika3_ulk_kk_tutklaitos
 	
 
 	
@@ -262,22 +266,22 @@ ALTER VIEW [dw].[v_st_rekrytointi_valitut] AS
  
 	select 	
 		vuosi
-		,'amk' as sektori
+		,''amk'' as sektori
 		,d1.amk_tunnus as organisaatiotunnus
 		,d_ek_nimike_id
 		,d_amk_tehtavaryhma_id
 		,d_amk_tehtavanjaottelu_id
 		,d_nimitystapa_id
-		,'-1' as d_yo_nimitystapa_id
+		,''-1'' as d_yo_nimitystapa_id
 		,sopimus_alkupvm
 		,sopimus_loppupvm
 		,d_amk_kelpoisuus_tutkinto_id
 		,d_amk_kelpoisuus_tyokokemus_id
 		,d_amk_kelpoisuus_opettajankoulutus_d
-		,'-1' as d_yo_tutkijanuravaihe_id
-		,'-1' as d_yo_henkilostoryhma_id
-		,'-1' as d_yo_harjoittelukoulujen_henkilostoryhma_id
-		,'-1' as d_yo_tehtavajaottelu_id
+		,''-1'' as d_yo_tutkijanuravaihe_id
+		,''-1'' as d_yo_henkilostoryhma_id
+		,''-1'' as d_yo_harjoittelukoulujen_henkilostoryhma_id
+		,''-1'' as d_yo_tehtavajaottelu_id
 		,d_tieteenala_id
 		,d_amk_paatoimiset_opettajat_id
 		,d_koulutusluokitus_id
@@ -287,7 +291,7 @@ ALTER VIEW [dw].[v_st_rekrytointi_valitut] AS
 		,d_amk_toimipisteen_toimipaikka_id
 		,tohtorintutkinnon_suoritusvuosi
 		,d_organisaation_alayksikko_id
-		,'-1' as d_yo_toimipisteen_toimipaikka_id
+		,''-1'' as d_yo_toimipisteen_toimipaikka_id
 
 		,d_sukupuoli_id
 		,d_kansalaisuus_id
@@ -311,29 +315,29 @@ ALTER VIEW [dw].[v_st_rekrytointi_valitut] AS
 
 	select 	
 		vuosi
-		,'yo' as sektori
+		,''yo'' as sektori
 		,d1.yo_tunnus as organisaatiotunnus
 		,d_ek_nimike_id
-		,'-1'
-		,'-1'
-		,'-1'
+		,''-1''
+		,''-1''
+		,''-1''
 		,d_yo_nimitystapa_id
 		,sopimus_alkupvm
 		,sopimus_loppupvm
-		,'-1'
-		,'-1'
-		,'-1'
+		,''-1''
+		,''-1''
+		,''-1''
 		,d_yo_tutkijanuravaihe_id
 		,d_yo_henkilostoryhma_id
 		,d_yo_harjoittelukoulujen_henkilostoryhma_id
 		,d_yo_tehtavajaottelu_id
 		,d_tieteenala_id
-		,'-1'
-		,'-1'
-		,'-1'
+		,''-1''
+		,''-1''
+		,''-1''
 		,d_tohtorintutkinnon_suoritusmaa_id
 		,d2.yo_tunnus as tohtorintutkinnon_organisaatiotunnus
-		,'-1'
+		,''-1''
 		,tohtorintutkinnon_suoritusvuosi
 		,d_organisaation_alayksikko_id
 		,d_yo_toimipisteen_toimipaikka_id
@@ -389,3 +393,11 @@ ALTER VIEW [dw].[v_st_rekrytointi_valitut] AS
  LEFT JOIN dw.d_yo_nimitystapa d27 ON d27.id=f.d_yo_nimitystapa_id
  LEFT JOIN dw.d_yo_toimipisteen_toimipaikka d28 ON d28.id=f.d_yo_toimipisteen_toimipaikka_id
 
+ WHERE Hakunumero IN (
+ SELECT DISTINCT Hakunumero FROM ANTERO.dw.f_amk_rekrytointihaut WHERE hakijat_lkm > 0
+ UNION ALL
+ SELECT DISTINCT Hakunumero FROM ANTERO.dw.f_yo_rekrytointihaut WHERE hakijat_lkm > 0
+ )
+
+
+' 
