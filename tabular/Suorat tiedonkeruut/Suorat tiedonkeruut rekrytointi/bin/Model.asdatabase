@@ -592,7 +592,7 @@
           },
           {
             "name": "Valitut",
-            "expression": "IF(CALCULATE(SUM('Haku-valitut'[Valittuja]))=0,BLANK(),CALCULATE(SUM('Haku-valitut'[Valittuja])))",
+            "expression": "IF(CALCULATE(SUM('Haku-tutkijanuravaihe-tieteenala'[Valittuja]))=0,BLANK(),CALCULATE(SUM('Haku-tutkijanuravaihe-tieteenala'[Valittuja])))",
             "formatString": "#,0"
           },
           {
@@ -7394,6 +7394,15 @@
             "isNameInferred": true,
             "isDataTypeInferred": true,
             "sourceColumn": "Muuttujat[Tieteenala]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Valittuja",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "sourceColumn": "[Valittuja]"
           }
         ],
         "partitions": [
@@ -7401,7 +7410,7 @@
             "name": "CalculatedTable 3",
             "source": {
               "type": "calculated",
-              "expression": "SUMMARIZE(Muuttujat,[Hakuavain],[Tutkijanuravaihe],[Tieteenala])"
+              "expression": "SUMMARIZE(Muuttujat,[Hakuavain],[Tutkijanuravaihe],[Tieteenala],\"Valittuja\",DISTINCTCOUNT(Muuttujat[henkilonumero]))"
             }
           }
         ]
@@ -7417,7 +7426,7 @@
         "crossFilteringBehavior": "bothDirections"
       },
       {
-        "name": "a853c5c7-3b2c-4cd9-89b0-432010f02dc2",
+        "name": "28444efc-1512-4e04-a3c9-c2202e127ec1",
         "fromTable": "Haku-tutkijanuravaihe-tieteenala",
         "fromColumn": "Hakuavain",
         "toTable": "Haku-valitut",
@@ -7425,7 +7434,7 @@
         "crossFilteringBehavior": "bothDirections"
       },
       {
-        "name": "c3e7a187-f36a-4b12-89d0-1e850894ebe3",
+        "name": "7b898d53-ef36-47c4-ab32-a8ecb6786e49",
         "fromTable": "_Muuttujat",
         "fromColumn": "Hakuavain",
         "toTable": "Haku-valitut",
