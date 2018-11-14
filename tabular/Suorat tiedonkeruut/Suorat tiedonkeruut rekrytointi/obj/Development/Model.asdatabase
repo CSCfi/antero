@@ -136,13 +136,14 @@
           {
             "name": "Hakuavain",
             "dataType": "string",
-            "isHidden": true,
-            "sourceColumn": "Hakuavain"
+            "sourceColumn": "Hakuavain",
+            "displayFolder": "Hakumuuttujat"
           },
           {
             "name": "hakunumero",
             "dataType": "string",
-            "sourceColumn": "hakunumero"
+            "sourceColumn": "hakunumero",
+            "displayFolder": "Hakumuuttujat"
           },
           {
             "name": "Sektori",
@@ -592,7 +593,7 @@
           },
           {
             "name": "Valitut",
-            "expression": "IF(CALCULATE(SUM('Haku-tutkijanuravaihe-tieteenala'[Valittuja]))=0,BLANK(),CALCULATE(SUM('Haku-tutkijanuravaihe-tieteenala'[Valittuja])))",
+            "expression": "IF(CALCULATE(SUM('Muuttujat - Valitut'[Valittuja]))=0,BLANK(),CALCULATE(SUM('Muuttujat - Valitut'[Valittuja])))",
             "formatString": "#,0"
           },
           {
@@ -611,12 +612,12 @@
             "formatString": "#,0"
           },
           {
-            "name": "Keskihajonta (hakijoita per valittu)",
+            "name": "Keskihajonta hakijoita per valittu",
             "expression": "STDEVX.P('_Muuttujat',IF(ISERROR([Hakijat]/[Valitut]),0,[Hakijat]/[Valitut]))",
             "formatString": "0.0"
           },
           {
-            "name": "Keskihajonta (ulk. hakijoita per valittu)",
+            "name": "Keskihajonta ulk. hakijoita per valittu",
             "expression": "CALCULATE(STDEVX.P('_Muuttujat',IF(ISERROR([Hakijat]/[Valitut]),0,[Hakijat]/[Valitut])),'_Muuttujat'[Kansalaisuus Suomi]=\"Ei\")",
             "formatString": "0.0"
           },
@@ -626,20 +627,22 @@
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
-            "name": "Hakijat mediaani",
-            "expression": "MEDIANX(_Muuttujat,SUM([hakijat_lkm]))"
+            "name": "Mediaani hakijoita per valittu",
+            "expression": "IF([Mediaani hakijoita per valittu2]<>INT([Mediaani hakijoita per valittu2]),ROUND([Mediaani hakijoita per valittu2],1),[Mediaani hakijoita per valittu2])"
           },
           {
-            "name": "Valitut mediaani",
-            "expression": "MEDIANX('Haku-valitut',SUM([Valittuja]))"
+            "name": "Mediaani ulk. hakijoita per valittu",
+            "expression": "IF([Hakijat]=0,BLANK(),IF([Mediaani ulk. hakijoita per valittu2]<>INT([Mediaani ulk. hakijoita per valittu2]),ROUND([Mediaani ulk. hakijoita per valittu2],1),[Mediaani ulk. hakijoita per valittu2]))"
           },
           {
-            "name": "Hakijat max",
-            "expression": "MAX([hakijat_lkm])"
+            "name": "Mediaani hakijoita per valittu2",
+            "expression": "MEDIANX('Haku-valitut',[Hakijoita2]/[Valittuja2])",
+            "isHidden": true
           },
           {
-            "name": "Hakijat min",
-            "expression": "MIN([hakijat_lkm])"
+            "name": "Mediaani ulk. hakijoita per valittu2",
+            "expression": "IF(ISBLANK(MEDIANX('Haku-valitut',IF(ISBLANK([Ulk hakijoita2]),0,'Haku-valitut'[Ulk hakijoita2])/[Valittuja2])),0,MEDIANX('Haku-valitut',IF(ISBLANK([Ulk hakijoita2]),0,'Haku-valitut'[Ulk hakijoita2])/[Valittuja2]))",
+            "isHidden": true
           }
         ],
         "annotations": [
@@ -1719,7 +1722,8 @@
           {
             "name": "Työsopimuksen pituus",
             "dataType": "string",
-            "sourceColumn": "Työsopimuksen pituus"
+            "sourceColumn": "Työsopimuksen pituus",
+            "displayFolder": "Henkilömuuttujat"
           }
         ],
         "partitions": [
@@ -7350,11 +7354,27 @@
           },
           {
             "type": "calculatedTableColumn",
-            "name": "Valittuja",
+            "name": "Valittuja2",
             "dataType": "int64",
             "isNameInferred": true,
             "isDataTypeInferred": true,
-            "sourceColumn": "[Valittuja]"
+            "sourceColumn": "[Valittuja2]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Hakijoita2",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Hakijoita2]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Ulk hakijoita2",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Ulk hakijoita2]"
           }
         ],
         "partitions": [
@@ -7362,13 +7382,13 @@
             "name": "CalculatedTable 2",
             "source": {
               "type": "calculated",
-              "expression": "SUMMARIZE(Muuttujat,[Hakuavain],\"Valittuja\",DISTINCTCOUNT(Muuttujat[henkilonumero]))"
+              "expression": "SUMMARIZE(Muuttujat,[Hakuavain],\"Valittuja2\",DISTINCTCOUNT(Muuttujat[henkilonumero]),\"Hakijoita2\",SUMX(FILTER(RELATEDTABLE(_Muuttujat),[Hakuavain]=EARLIER([Hakuavain])),[hakijat_lkm]),\"Ulk hakijoita2\",SUMX(FILTER(RELATEDTABLE(_Muuttujat),[Hakuavain]=EARLIER([Hakuavain]) && [Kansalaisuus Suomi]=\"Ei\"),[hakijat_lkm]))"
             }
           }
         ]
       },
       {
-        "name": "Haku-tutkijanuravaihe-tieteenala",
+        "name": "Muuttujat - Valitut",
         "columns": [
           {
             "type": "calculatedTableColumn",
@@ -7385,7 +7405,8 @@
             "dataType": "string",
             "isNameInferred": true,
             "isDataTypeInferred": true,
-            "sourceColumn": "Muuttujat[Tutkijanuravaihe]"
+            "sourceColumn": "Muuttujat[Tutkijanuravaihe]",
+            "displayFolder": "Henkilömuuttujat"
           },
           {
             "type": "calculatedTableColumn",
@@ -7393,7 +7414,8 @@
             "dataType": "string",
             "isNameInferred": true,
             "isDataTypeInferred": true,
-            "sourceColumn": "Muuttujat[Tieteenala]"
+            "sourceColumn": "Muuttujat[Tieteenala]",
+            "displayFolder": "Tieteenalamuuttujat"
           },
           {
             "type": "calculatedTableColumn",
@@ -7427,7 +7449,7 @@
       },
       {
         "name": "28444efc-1512-4e04-a3c9-c2202e127ec1",
-        "fromTable": "Haku-tutkijanuravaihe-tieteenala",
+        "fromTable": "Muuttujat - Valitut",
         "fromColumn": "Hakuavain",
         "toTable": "Haku-valitut",
         "toColumn": "Hakuavain",
@@ -7479,16 +7501,10 @@
             ],
             "measures": [
               {
-                "name": "Hakijoita per valittu"
+                "name": "Keskihajonta hakijoita per valittu"
               },
               {
-                "name": "Keskihajonta (hakijoita per valittu)"
-              },
-              {
-                "name": "Keskihajonta (ulk. hakijoita per valittu)"
-              },
-              {
-                "name": "Ulkomaalaiset hakijat per valittu"
+                "name": "Keskihajonta ulk. hakijoita per valittu"
               },
               {
                 "name": "Valitut"
@@ -7498,6 +7514,12 @@
               },
               {
                 "name": "Ulkomaalaiset hakijat"
+              },
+              {
+                "name": "Mediaani hakijoita per valittu"
+              },
+              {
+                "name": "Mediaani ulk. hakijoita per valittu"
               }
             ]
           },
@@ -7513,7 +7535,7 @@
             ]
           },
           {
-            "name": "Haku-tutkijanuravaihe-tieteenala",
+            "name": "Muuttujat - Valitut",
             "columns": [
               {
                 "name": "Tieteenala"
@@ -7728,6 +7750,17 @@
                 "name": "Sarakeleveys"
               }
             ]
+          },
+          {
+            "name": "Muuttujat - Valitut",
+            "columns": [
+              {
+                "name": "Tieteenala"
+              },
+              {
+                "name": "Tutkijanuravaihe"
+              }
+            ]
           }
         ]
       },
@@ -7911,6 +7944,17 @@
               },
               {
                 "name": "Sarakeleveys"
+              }
+            ]
+          },
+          {
+            "name": "Muuttujat - Valitut",
+            "columns": [
+              {
+                "name": "Tieteenala"
+              },
+              {
+                "name": "Tutkijanuravaihe"
               }
             ]
           }
@@ -8119,6 +8163,17 @@
                 "name": "Sarakeleveys"
               }
             ]
+          },
+          {
+            "name": "Muuttujat - Valitut",
+            "columns": [
+              {
+                "name": "Tieteenala"
+              },
+              {
+                "name": "Tutkijanuravaihe"
+              }
+            ]
           }
         ]
       },
@@ -8296,6 +8351,17 @@
               },
               {
                 "name": "Sarakeleveys"
+              }
+            ]
+          },
+          {
+            "name": "Muuttujat - Valitut",
+            "columns": [
+              {
+                "name": "Tieteenala"
+              },
+              {
+                "name": "Tutkijanuravaihe"
               }
             ]
           }
