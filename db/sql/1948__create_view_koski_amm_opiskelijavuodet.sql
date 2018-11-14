@@ -1,12 +1,20 @@
 USE [ANTERO]
 GO
-
-/****** Object:  View [dw].[v_koski_opiskelijavuodet]    Script Date: 14.11.2018 12:27:56 ******/
+/****** Object:  View [dw].[v_koski_amm_opiskelijavuodet]    Script Date: 14.11.2018 12:40:18 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dw].[v_koski_amm_opiskelijavuodet]'))
+EXEC dbo.sp_executesql @statement = N'
+
+
+
+
+
+
+
+
 
 
 CREATE VIEW [dw].[v_koski_amm_opiskelijavuodet] AS
@@ -31,48 +39,48 @@ SELECT
 	,d_suorituksen_tyyppi.selite_en AS [Type of accomplishment]
 
 	,(CASE 
-		WHEN d_koulutusluokitus.koulutusluokitus_fi like '%VALMA%' OR d_koulutusluokitus.koulutusluokitus_fi like '%TELMA%' THEN 'Valmentava koulutus' 
-		WHEN d_koulutusluokitus.koulutusastetaso2_koodi in (33,41) OR d_koulutusluokitus.koulutusluokitus_koodi IN ('354204','487102','477100') THEN 'Ammatti- ja erikoisammattitutkinnot' 
-		WHEN d_koulutusluokitus.koulutusluokitus_koodi = '999900' THEN 'Koulutusaste tuntematon'
+		WHEN d_koulutusluokitus.koulutusluokitus_fi like ''%VALMA%'' OR d_koulutusluokitus.koulutusluokitus_fi like ''%TELMA%'' THEN ''Valmentava koulutus'' 
+		WHEN d_koulutusluokitus.koulutusastetaso2_koodi in (33,41) OR d_koulutusluokitus.koulutusluokitus_koodi IN (''354204'',''487102'',''477100'') THEN ''Ammatti- ja erikoisammattitutkinnot'' 
+		WHEN d_koulutusluokitus.koulutusluokitus_koodi = ''999900'' THEN ''Koulutusaste tuntematon''
 		ELSE d_koulutusluokitus.koulutusastetaso2_fi 
 	END) AS [Tutkintotyypin ryhmä]
     ,(CASE 
-		WHEN d_koulutusluokitus.koulutusluokitus_fi like '%VALMA%' OR d_koulutusluokitus.koulutusluokitus_fi like '%TELMA%' THEN 'Utbildning som inte leder till examen' 
-		WHEN d_koulutusluokitus.koulutusastetaso2_koodi in (33,41) THEN 'Yrkes- och specialyrkesexamina' 
+		WHEN d_koulutusluokitus.koulutusluokitus_fi like ''%VALMA%'' OR d_koulutusluokitus.koulutusluokitus_fi like ''%TELMA%'' THEN ''Utbildning som inte leder till examen'' 
+		WHEN d_koulutusluokitus.koulutusastetaso2_koodi in (33,41) THEN ''Yrkes- och specialyrkesexamina'' 
 		ELSE d_koulutusluokitus.koulutusastetaso2_sv 
 	END) AS [Kategori av typ av examen]
 	,(CASE 
-		WHEN d_koulutusluokitus.koulutusluokitus_fi like '%VALMA%' OR d_koulutusluokitus.koulutusluokitus_fi like '%TELMA%' THEN 'Education not leading to a degree' 
-		WHEN d_koulutusluokitus.koulutusastetaso2_koodi in (33,41) THEN 'Further and specialist vocational qualifications' 
+		WHEN d_koulutusluokitus.koulutusluokitus_fi like ''%VALMA%'' OR d_koulutusluokitus.koulutusluokitus_fi like ''%TELMA%'' THEN ''Education not leading to a degree'' 
+		WHEN d_koulutusluokitus.koulutusastetaso2_koodi in (33,41) THEN ''Further and specialist vocational qualifications'' 
 		ELSE d_koulutusluokitus.koulutusastetaso2_en 
 	END) AS [Category of qualification type]
 	,(CASE 
-		WHEN d_koulutusluokitus.koulutusluokitus_fi like '%VALMA%' OR d_koulutusluokitus.koulutusluokitus_fi like '%TELMA%' THEN '99' 
-		WHEN d_koulutusluokitus.koulutusastetaso2_koodi in (33,41) OR koulutusluokitus_koodi IN ('354204','487102','477100') THEN '33' 
-		WHEN d_koulutusluokitus.koulutusluokitus_koodi = '999900' THEN '91'
+		WHEN d_koulutusluokitus.koulutusluokitus_fi like ''%VALMA%'' OR d_koulutusluokitus.koulutusluokitus_fi like ''%TELMA%'' THEN ''99'' 
+		WHEN d_koulutusluokitus.koulutusastetaso2_koodi in (33,41) OR koulutusluokitus_koodi IN (''354204'',''487102'',''477100'') THEN ''33'' 
+		WHEN d_koulutusluokitus.koulutusluokitus_koodi = ''999900'' THEN ''91''
 		ELSE d_koulutusluokitus.jarjestys_koulutusastetaso2_koodi 
 	END) AS jarj_tutkintotyypin_ryhma
 
 	,(CASE 
-		WHEN d_koulutusluokitus.koulutusluokitus_fi like '%VALMA%' OR d_koulutusluokitus.koulutusluokitus_fi like '%TELMA%' THEN 'Valmentava koulutus' 
-		WHEN d_koulutusluokitus.koulutusluokitus_koodi = '354204' THEN 'Ammattitutkinto' 
-		WHEN d_koulutusluokitus.koulutusluokitus_koodi IN ('487102','477100') THEN 'Erikoisammattitutkinto' 
-		WHEN d_koulutusluokitus.koulutusluokitus_koodi = '999900' THEN 'Koulutusaste tuntematon'
+		WHEN d_koulutusluokitus.koulutusluokitus_fi like ''%VALMA%'' OR d_koulutusluokitus.koulutusluokitus_fi like ''%TELMA%'' THEN ''Valmentava koulutus'' 
+		WHEN d_koulutusluokitus.koulutusluokitus_koodi = ''354204'' THEN ''Ammattitutkinto'' 
+		WHEN d_koulutusluokitus.koulutusluokitus_koodi IN (''487102'',''477100'') THEN ''Erikoisammattitutkinto'' 
+		WHEN d_koulutusluokitus.koulutusluokitus_koodi = ''999900'' THEN ''Koulutusaste tuntematon''
 		ELSE d_koulutusluokitus.koulutusastetaso2_fi 
 	END) AS Tutkintotyyppi 
     ,(CASE 
-		WHEN d_koulutusluokitus.koulutusluokitus_fi like '%VALMA%' OR d_koulutusluokitus.koulutusluokitus_fi like '%TELMA%' THEN 'Utbildning som inte leder till examen' 
+		WHEN d_koulutusluokitus.koulutusluokitus_fi like ''%VALMA%'' OR d_koulutusluokitus.koulutusluokitus_fi like ''%TELMA%'' THEN ''Utbildning som inte leder till examen'' 
 		ELSE d_koulutusluokitus.koulutusastetaso2_sv 
 	END) AS [Typ av examen]
 	,(CASE 
-		WHEN d_koulutusluokitus.koulutusluokitus_fi like '%VALMA%' OR d_koulutusluokitus.koulutusluokitus_fi like '%TELMA%' THEN 'Education not leading to a degree' 
+		WHEN d_koulutusluokitus.koulutusluokitus_fi like ''%VALMA%'' OR d_koulutusluokitus.koulutusluokitus_fi like ''%TELMA%'' THEN ''Education not leading to a degree'' 
 		ELSE d_koulutusluokitus.koulutusastetaso2_en 
 	END) AS [Qualification type]
 	,(CASE 
-		WHEN d_koulutusluokitus.koulutusluokitus_fi like '%VALMA%' OR d_koulutusluokitus.koulutusluokitus_fi like '%TELMA%' THEN '99' 
-		WHEN d_koulutusluokitus.koulutusluokitus_koodi = '354204' THEN '33' 
-		WHEN d_koulutusluokitus.koulutusluokitus_koodi = '487102' THEN '41' 
-		WHEN d_koulutusluokitus.koulutusluokitus_koodi = '999900' THEN '91'
+		WHEN d_koulutusluokitus.koulutusluokitus_fi like ''%VALMA%'' OR d_koulutusluokitus.koulutusluokitus_fi like ''%TELMA%'' THEN ''99'' 
+		WHEN d_koulutusluokitus.koulutusluokitus_koodi = ''354204'' THEN ''33'' 
+		WHEN d_koulutusluokitus.koulutusluokitus_koodi = ''487102'' THEN ''41'' 
+		WHEN d_koulutusluokitus.koulutusluokitus_koodi = ''999900'' THEN ''91''
 		ELSE d_koulutusluokitus.jarjestys_koulutusastetaso2_koodi 
 	END) AS jarj_tutkintotyyppi, 
 
@@ -129,3 +137,4 @@ dw.d_ammatillisen_tutkinnon_kustannusryhma AS d_kustannusryhma ON d_kustannusryh
 dw.d_opintojenrahoitus AS d_opintojenrahoitus ON d_opintojenrahoitus_id = d_opintojenrahoitus.id
 
 WHERE d_kalenteri.vuosi < YEAR(getdate()) OR (d_kalenteri.vuosi = YEAR(getdate()) AND d_kalenteri.kuukausi < MONTH(getdate()))
+' 

@@ -1,13 +1,12 @@
 USE [ANTERO]
 GO
-
-/****** Object:  Table [dw].[f_koski_opiskelijavuodet]    Script Date: 14.11.2018 12:25:41 ******/
+/****** Object:  Table [dw].[f_koski_amm_opiskelijavuodet]    Script Date: 14.11.2018 12:38:55 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[f_koski_amm_opiskelijavuodet]') AND type in (N'U'))
+BEGIN
 CREATE TABLE [dw].[f_koski_amm_opiskelijavuodet](
 	[vuosi] [int] NULL,
 	[d_kalenteri_id] [int] NULL,
@@ -29,4 +28,5 @@ CREATE TABLE [dw].[f_koski_amm_opiskelijavuodet](
 	[d_opintojenrahoitus_id] [int] NULL,
 	[opiskelijavuodet] [decimal](20, 10) NULL
 ) ON [PRIMARY]
+END
 

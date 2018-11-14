@@ -1,13 +1,18 @@
 USE [ANTERO]
 GO
-/****** Object:  StoredProcedure [dw].[p_lataa_f_koski_opiskelijavuodet]    Script Date: 14.11.2018 12:26:28 ******/
+/****** Object:  StoredProcedure [dw].[p_lataa_f_koski_amm_opiskelijavuodet]    Script Date: 14.11.2018 12:39:37 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[p_lataa_f_koski_amm_opiskelijavuodet]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dw].[p_lataa_f_koski_amm_opiskelijavuodet] AS' 
+END
+GO
 
 
-CREATE PROCEDURE [dw].[p_lataa_f_koski_amm_opiskelijavuodet] AS
+ALTER PROCEDURE [dw].[p_lataa_f_koski_amm_opiskelijavuodet] AS
 
 
 DECLARE @date DATE
@@ -304,3 +309,4 @@ BEGIN
 	SET @date = DATEADD(MONTH,1,@date)
 
 END
+
