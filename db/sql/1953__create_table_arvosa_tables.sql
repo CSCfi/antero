@@ -35,10 +35,21 @@ CREATE TABLE [sa].[sa_arvo_kyselykerrat](
 END
 GO
 
+
+
+IF NOT EXISTS
+ (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[DF__sa_arvo_kyselykerrat__username]') AND type = 'D')
+BEGIN
 ALTER TABLE [sa].[sa_arvo_kyselykerrat] ADD  CONSTRAINT [DF__sa_arvo_kyselykerrat__username]  DEFAULT (suser_name()) FOR [username]
+END
+
 GO
 
+IF NOT EXISTS
+ (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[DF__sa_arvo_kyselykerrat__loadtime]') AND type = 'D')
+BEGIN
 ALTER TABLE [sa].[sa_arvo_kyselykerrat] ADD  CONSTRAINT [DF__sa_arvo_kyselykerrat__loadtime]  DEFAULT (getdate()) FOR [loadtime]
+END
 GO
 
 -------------
@@ -74,17 +85,25 @@ CREATE TABLE [sa].[sa_arvo_kysymykset](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 END
 GO
-
+IF NOT EXISTS
+ (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[DF__sa_arvo_kysymykset__username]') AND type = 'D')
+BEGIN
 ALTER TABLE [sa].[sa_arvo_kysymykset] ADD  CONSTRAINT [DF__sa_arvo_kysymykset__username]  DEFAULT (suser_name()) FOR [username]
+END
+
 GO
 
+IF NOT EXISTS
+ (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[DF__sa_arvo_kysymykset__loadtime]') AND type = 'D')
+BEGIN
 ALTER TABLE [sa].[sa_arvo_kysymykset] ADD  CONSTRAINT [DF__sa_arvo_kysymykset__loadtime]  DEFAULT (getdate()) FOR [loadtime]
+END
 GO
 
 -------------------
 USE [Arvo_SA]
 IF  NOT EXISTS
-	(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='sa' AND TABLE_NAME='sa_arvo_kyselykerrat')
+	(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='sa' AND TABLE_NAME='sa_arvo_vastaukset')
 BEGIN
 CREATE TABLE [sa].[sa_arvo_vastaajat](
 	[id] [bigint] IDENTITY(1,1) NOT NULL,
@@ -115,10 +134,20 @@ CREATE TABLE [sa].[sa_arvo_vastaajat](
 END
 GO
 
+
+IF NOT EXISTS
+ (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[DF__sa_arvo_vastaajat__username]') AND type = 'D')
+BEGIN
 ALTER TABLE [sa].[sa_arvo_vastaajat] ADD  CONSTRAINT [DF__sa_arvo_vastaajat__username]  DEFAULT (suser_name()) FOR [username]
+END
+
 GO
 
+IF NOT EXISTS
+ (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[DF__sa_arvo_vastaajat__loadtime]') AND type = 'D')
+BEGIN
 ALTER TABLE [sa].[sa_arvo_vastaajat] ADD  CONSTRAINT [DF__sa_arvo_vastaajat__loadtime]  DEFAULT (getdate()) FOR [loadtime]
+END
 GO
 
 --------------------
@@ -153,10 +182,19 @@ CREATE TABLE [sa].[sa_arvo_vastaukset](
 END
 GO
 
-ALTER TABLE [sa].[sa_arvo_vastaukset] ADD  CONSTRAINT [DF__sa_arvo_vastaukset_loadtime]  DEFAULT (getdate()) FOR [loadtime]
+IF NOT EXISTS
+ (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[DF__sa_arvo_vastaukset__username]') AND type = 'D')
+BEGIN
+ALTER TABLE [sa].[sa_arvo_vastaukset] ADD  CONSTRAINT [DF__sa_arvo_vastaukset__username]  DEFAULT (suser_name()) FOR [username]
+END
+
 GO
 
-ALTER TABLE [sa].[sa_arvo_vastaukset] ADD  CONSTRAINT [DF__sa_arvo_vastaukset_username]  DEFAULT (suser_sname()) FOR [username]
+IF NOT EXISTS
+ (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[DF__sa_arvo_vastaukset__loadtime]') AND type = 'D')
+BEGIN
+ALTER TABLE [sa].[sa_arvo_vastaukset] ADD  CONSTRAINT [DF__sa_arvo_vastaukset__loadtime]  DEFAULT (getdate()) FOR [loadtime]
+END
 GO
 
 USE [ANTERO]
