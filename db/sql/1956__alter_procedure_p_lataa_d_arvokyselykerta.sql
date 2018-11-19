@@ -387,7 +387,8 @@ kyselykertaid
   ) AS src
 
 ON target.kyselykertaid = src.kyselykertaid AND target.kyselyid = src.kyselyid AND target.kyselykerta=src.kyselykerta
-  UPDATE SET
+WHEN MATCHED THEN
+UPDATE SET
     kysely_fi = src.kysely_fi,
     kysely_sv = src.kysely_sv,
     kysely_en = src.kysely_en,
