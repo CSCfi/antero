@@ -1,38 +1,36 @@
 USE [VipunenTK]
 GO
-
-ALTER TABLE [dbo].[f_tyossakayvat_ammateittain] DROP CONSTRAINT [FK_f_tyossakayvat_ammateittain_d_sukupuoli]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_tyossakayvat_ammateittain]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_tyossakayvat_ammateittain] DROP CONSTRAINT IF EXISTS [FK_f_tyossakayvat_ammateittain_d_sukupuoli]
 GO
-
-ALTER TABLE [dbo].[f_tyossakayvat_ammateittain] DROP CONSTRAINT [FK_f_tyossakayvat_ammateittain_d_mitenna_ammatti]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_tyossakayvat_ammateittain]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_tyossakayvat_ammateittain] DROP CONSTRAINT IF EXISTS [FK_f_tyossakayvat_ammateittain_d_mitenna_ammatti]
 GO
-
-ALTER TABLE [dbo].[f_tyossakayvat_ammateittain] DROP CONSTRAINT [FK_f_tyossakayvat_ammateittain_d_ika]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_tyossakayvat_ammateittain]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_tyossakayvat_ammateittain] DROP CONSTRAINT IF EXISTS [FK_f_tyossakayvat_ammateittain_d_ika]
 GO
-
-ALTER TABLE [dbo].[f_tyossakayvat_ammateittain] DROP CONSTRAINT [FK_f_tyossakayvat_ammateittain_d_ammatillisen_koulutuksen_koulutuslaji]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_tyossakayvat_ammateittain]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_tyossakayvat_ammateittain] DROP CONSTRAINT IF EXISTS [FK_f_tyossakayvat_ammateittain_d_ammatillisen_koulutuksen_koulutuslaji]
 GO
-
-ALTER TABLE [dbo].[f_tyossakayvat_ammateittain] DROP CONSTRAINT [FK_f_tyossakayvat_ammateittain_d_alueluokitus_tyopaikka_historia]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_tyossakayvat_ammateittain]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_tyossakayvat_ammateittain] DROP CONSTRAINT IF EXISTS [FK_f_tyossakayvat_ammateittain_d_alueluokitus_tyopaikka_historia]
 GO
-
-ALTER TABLE [dbo].[f_tyossakayvat_ammateittain] DROP CONSTRAINT [FK_f_tyossakayvat_ammateittain_d_alueluokitus_tyopaikka]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_tyossakayvat_ammateittain]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_tyossakayvat_ammateittain] DROP CONSTRAINT IF EXISTS [FK_f_tyossakayvat_ammateittain_d_alueluokitus_tyopaikka]
 GO
-
-ALTER TABLE [dbo].[f_tyossakayvat_ammateittain] DROP CONSTRAINT [FK_f_tyossakayvat_ammateittain_d_aidinkieli_versio1]
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_tyossakayvat_ammateittain]') AND type in (N'U'))
+ALTER TABLE [dbo].[f_tyossakayvat_ammateittain] DROP CONSTRAINT IF EXISTS [FK_f_tyossakayvat_ammateittain_d_aidinkieli_versio1]
 GO
-
-/****** Object:  Table [dbo].[f_tyossakayvat_ammateittain]    Script Date: 15.11.2018 14:05:35 ******/
-DROP TABLE [dbo].[f_tyossakayvat_ammateittain]
+/****** Object:  Table [dbo].[f_tyossakayvat_ammateittain]    Script Date: 19.11.2018 20:21:06 ******/
+DROP TABLE IF EXISTS [dbo].[f_tyossakayvat_ammateittain]
 GO
-
-/****** Object:  Table [dbo].[f_tyossakayvat_ammateittain]    Script Date: 15.11.2018 14:05:35 ******/
+/****** Object:  Table [dbo].[f_tyossakayvat_ammateittain]    Script Date: 19.11.2018 20:21:06 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_tyossakayvat_ammateittain]') AND type in (N'U'))
+BEGIN
 CREATE TABLE [dbo].[f_tyossakayvat_ammateittain](
 	[tilv] [nvarchar](4) NULL,
 	[tilv_date] [date] NULL,
@@ -68,57 +66,55 @@ CREATE TABLE [dbo].[f_tyossakayvat_ammateittain](
 	[tyomaakunta_historia_id] [int] NULL,
 	[tyomaakunta_id] [int] NULL
 ) ON [PRIMARY]
-
+END
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_f_tyossakayvat_ammateittain_d_aidinkieli_versio1]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_tyossakayvat_ammateittain]'))
 ALTER TABLE [dbo].[f_tyossakayvat_ammateittain]  WITH CHECK ADD  CONSTRAINT [FK_f_tyossakayvat_ammateittain_d_aidinkieli_versio1] FOREIGN KEY([aikielir1_id])
 REFERENCES [dbo].[d_aidinkieli_versio1] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_f_tyossakayvat_ammateittain_d_aidinkieli_versio1]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_tyossakayvat_ammateittain]'))
 ALTER TABLE [dbo].[f_tyossakayvat_ammateittain] CHECK CONSTRAINT [FK_f_tyossakayvat_ammateittain_d_aidinkieli_versio1]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_f_tyossakayvat_ammateittain_d_alueluokitus_tyopaikka]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_tyossakayvat_ammateittain]'))
 ALTER TABLE [dbo].[f_tyossakayvat_ammateittain]  WITH CHECK ADD  CONSTRAINT [FK_f_tyossakayvat_ammateittain_d_alueluokitus_tyopaikka] FOREIGN KEY([tyomaakunta_id])
 REFERENCES [dbo].[d_alueluokitus] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_f_tyossakayvat_ammateittain_d_alueluokitus_tyopaikka]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_tyossakayvat_ammateittain]'))
 ALTER TABLE [dbo].[f_tyossakayvat_ammateittain] CHECK CONSTRAINT [FK_f_tyossakayvat_ammateittain_d_alueluokitus_tyopaikka]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_f_tyossakayvat_ammateittain_d_alueluokitus_tyopaikka_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_tyossakayvat_ammateittain]'))
 ALTER TABLE [dbo].[f_tyossakayvat_ammateittain]  WITH CHECK ADD  CONSTRAINT [FK_f_tyossakayvat_ammateittain_d_alueluokitus_tyopaikka_historia] FOREIGN KEY([tyomaakunta_historia_id])
 REFERENCES [dbo].[d_alueluokitus_historia] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_f_tyossakayvat_ammateittain_d_alueluokitus_tyopaikka_historia]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_tyossakayvat_ammateittain]'))
 ALTER TABLE [dbo].[f_tyossakayvat_ammateittain] CHECK CONSTRAINT [FK_f_tyossakayvat_ammateittain_d_alueluokitus_tyopaikka_historia]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_f_tyossakayvat_ammateittain_d_ammatillisen_koulutuksen_koulutuslaji]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_tyossakayvat_ammateittain]'))
 ALTER TABLE [dbo].[f_tyossakayvat_ammateittain]  WITH CHECK ADD  CONSTRAINT [FK_f_tyossakayvat_ammateittain_d_ammatillisen_koulutuksen_koulutuslaji] FOREIGN KEY([tutkintolaji_id])
 REFERENCES [dbo].[d_ammatillisen_koulutuksen_koulutuslaji] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_f_tyossakayvat_ammateittain_d_ammatillisen_koulutuksen_koulutuslaji]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_tyossakayvat_ammateittain]'))
 ALTER TABLE [dbo].[f_tyossakayvat_ammateittain] CHECK CONSTRAINT [FK_f_tyossakayvat_ammateittain_d_ammatillisen_koulutuksen_koulutuslaji]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_f_tyossakayvat_ammateittain_d_ika]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_tyossakayvat_ammateittain]'))
 ALTER TABLE [dbo].[f_tyossakayvat_ammateittain]  WITH CHECK ADD  CONSTRAINT [FK_f_tyossakayvat_ammateittain_d_ika] FOREIGN KEY([ika_id])
 REFERENCES [dbo].[d_ika] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_f_tyossakayvat_ammateittain_d_ika]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_tyossakayvat_ammateittain]'))
 ALTER TABLE [dbo].[f_tyossakayvat_ammateittain] CHECK CONSTRAINT [FK_f_tyossakayvat_ammateittain_d_ika]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_f_tyossakayvat_ammateittain_d_mitenna_ammatti]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_tyossakayvat_ammateittain]'))
 ALTER TABLE [dbo].[f_tyossakayvat_ammateittain]  WITH CHECK ADD  CONSTRAINT [FK_f_tyossakayvat_ammateittain_d_mitenna_ammatti] FOREIGN KEY([mitenna_ammatti_id])
 REFERENCES [dbo].[d_mitenna_ammatti] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_f_tyossakayvat_ammateittain_d_mitenna_ammatti]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_tyossakayvat_ammateittain]'))
 ALTER TABLE [dbo].[f_tyossakayvat_ammateittain] CHECK CONSTRAINT [FK_f_tyossakayvat_ammateittain_d_mitenna_ammatti]
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_f_tyossakayvat_ammateittain_d_sukupuoli]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_tyossakayvat_ammateittain]'))
 ALTER TABLE [dbo].[f_tyossakayvat_ammateittain]  WITH CHECK ADD  CONSTRAINT [FK_f_tyossakayvat_ammateittain_d_sukupuoli] FOREIGN KEY([sukupuoli_id])
 REFERENCES [dbo].[d_sukupuoli] ([id])
 GO
-
+IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_f_tyossakayvat_ammateittain_d_sukupuoli]') AND parent_object_id = OBJECT_ID(N'[dbo].[f_tyossakayvat_ammateittain]'))
 ALTER TABLE [dbo].[f_tyossakayvat_ammateittain] CHECK CONSTRAINT [FK_f_tyossakayvat_ammateittain_d_sukupuoli]
 GO
-
-
 USE [ANTERO]
