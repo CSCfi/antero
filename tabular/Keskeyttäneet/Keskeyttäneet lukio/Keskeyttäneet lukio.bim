@@ -32890,7 +32890,7 @@
               <Commands>
                 <Command>
                   <Text>CALCULATE; 
-CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1; 
+CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1, VISIBLE = 0; 
 ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measures defined]; </Text>
                 </Command>
                 <Command>
@@ -32899,7 +32899,7 @@ ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measure
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Henkilöt lkm]=IF(SUM([lkm_int]) = 0, BLANK(),IF(SUM([lkm_int]) = 1, 3, MROUND(SUM([lkm_int]),3)));
+CREATE MEASURE 'Muuttujat'[Henkilöt lkm]=CALCULATE(IF(SUM([lkm_int]) = 0, BLANK(),IF(SUM([lkm_int]) = 1, 3, MROUND(SUM([lkm_int]),3))),Muuttujat[Aineisto]="Lopullinen");
 </Text>
                   <Annotations>
                     <Annotation>
