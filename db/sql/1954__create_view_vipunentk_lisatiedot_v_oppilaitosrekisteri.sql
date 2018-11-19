@@ -9,13 +9,13 @@ IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[dbo].[v_op
 EXEC dbo.sp_executesql @statement = N'
 CREATE VIEW [dbo].[v_oppilaitosrekisteri] AS
 
-/*  Manuaaliset koodit tilastokeskuksen aineistokuvauksista. 
-	Alueluokitus haetaan jokaiselle vuodelle ja joinataan käyttämällä 
-	alueokituksen tilastovuotta sekä kuntakoodia, jotta koululle tulee tilastovuoden mukainen kuntakoodi. 
+/*  Manuaaliset koodit tilastokeskuksen aineistokuvauksista.
+	Alueluokitus haetaan jokaiselle vuodelle ja joinataan käyttämällä
+	alueokituksen tilastovuotta sekä kuntakoodia, jotta koululle tulee tilastovuoden mukainen kuntakoodi.
 	-Janne K-O
-*/	
-	
-	SELECT  
+*/
+
+	SELECT
 	   [Tilastovuosi]=f.[tilv]
 	  ,[Oppilaitoskoodi]=f.tunn
 	  ,[Oppilaitos]=f.onimi
@@ -23,14 +23,14 @@ CREATE VIEW [dbo].[v_oppilaitosrekisteri] AS
 	  ,[Oppilaitoksen korvaava nimi]=case when (f.utunn is not null and f.utunn<>'''') then d1.oppilaitos end
 	  ,[Oppilaitoksen olotila_koodi]=f.[olo]
 	  ,[Oppilaitoksen olotila]=
-			case 
+			case
 				when f.[olo]=0 then ''Voimassaoleva''
 				when f.[olo]=1 then ''Lakkautettu tilastovuonna''
-				when f.[olo]=2 then ''Yhdistetty toiseen oppilaitokseen tilastovuonna'' 
+				when f.[olo]=2 then ''Yhdistetty toiseen oppilaitokseen tilastovuonna''
 				when f.[olo]=3 then ''Oppilaitos poistettu koululaitosken oppilaitoksista''
 				when f.[olo]=6 then ''Oppilaitoksessa ei ole toimintaa tilastovuonna'' end
       ,[Sairaalakoulu koodi]=f.[sair]
-	  ,[Sairaalakoulu]=case 
+	  ,[Sairaalakoulu]=case
 				when f.[sair]=1 then ''Kyllä''
 				when f.[sair]=0 then ''Ei'' end
       ,[Oppilaitostyyppi koodi]=f.[oltyp]
@@ -47,7 +47,7 @@ CREATE VIEW [dbo].[v_oppilaitosrekisteri] AS
 	  ,[Oppilaitoksen lakkautusvuosi]=f.lakkv
 	  ,[Aineisto]=f.aineisto
 	  ,[Alueaineisto]=alue.aineisto
-	  
+
   FROM (
 	select *,[aineisto]=''TK_6_1_sopv_11'' from [TK_H9098_CSC].[dbo].[TK_6_1_sopv_11] union all
 	select *,[aineisto]=''TK_6_1_sopv_12'' from [TK_H9098_CSC].[dbo].[TK_6_1_sopv_12] union all
@@ -58,7 +58,7 @@ CREATE VIEW [dbo].[v_oppilaitosrekisteri] AS
 	select *,[aineisto]=''TK_6_1_sopv_17'' from [TK_H9098_CSC].[dbo].[TK_6_1_sopv_17] union all
 	select *,[aineisto]=''TK_6_1_sopv_18'' from [TK_H9098_CSC].[dbo].[TK_6_1_sopv_18]) as f
 	inner join vipunentk.dbo.d_oppilaitoksen_taustatiedot d1 on d1.oppilaitoskoodi=f.tunn
-	inner join (select distinct oppilaitostyyppi,oppilaitostyyppikoodi,oppilaitostyyppi_EN,oppilaitostyyppi_SV from 
+	inner join (select distinct oppilaitostyyppi,oppilaitostyyppikoodi,oppilaitostyyppi_EN,oppilaitostyyppi_SV from
 		vipunentk.dbo.d_oppilaitoksen_taustatiedot) oltyyppi on oltyyppi.oppilaitostyyppikoodi=oltyp
 	inner join (select * from (
 		select *,[aineisto]=''TK_6_7_sopv_11'' from [TK_H9098_CSC].[dbo].[TK_6_7_sopv_11]  union all
@@ -71,3 +71,4 @@ CREATE VIEW [dbo].[v_oppilaitosrekisteri] AS
 		select *,[aineisto]=''TK_6_7_sopv_18'' from [TK_H9098_CSC].[dbo].[TK_6_7_sopv_18]) f ) alue on alue.tilv+alue.kunta=f.tilv+f.okun
 
 	'
+	USE ANTERO
