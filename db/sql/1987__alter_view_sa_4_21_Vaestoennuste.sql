@@ -62,5 +62,5 @@ Where Sukupuoli <> 'Sukupuolet yhteensä' and Ika <> 'Ikäluokat yhteensä'
 
 
 GO
-[USE] ANTERO
+USE [ANTERO]
 
