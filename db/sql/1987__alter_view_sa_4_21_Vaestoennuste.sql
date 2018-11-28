@@ -41,7 +41,7 @@ Luetaan Tilastokeskuksen rajapinnan kautta haettu data osaksi näkymää. Muutet
 
 select
 	[ennv] = Vuosi
-	,[tilvaskun] = NULL
+	,[tilvaskun] = '-1'
 	,[sp] = 
 			case 
 				when Sukupuoli='Miehet' then 1 
