@@ -130,7 +130,7 @@
             "sourceColumn": "Asuinmaakunta",
             "sortByColumn": "Asuinmaakunta jarj",
             "sourceProviderType": "WChar",
-            "displayFolder": "Alue muuttujat"
+            "displayFolder": "Aluemuuttujat"
           },
           {
             "name": "Koulutuksen maakunta",
@@ -138,7 +138,7 @@
             "sourceColumn": "Koulutuksen maakunta",
             "sortByColumn": "Koulutuksen maakunta jarj",
             "sourceProviderType": "WChar",
-            "displayFolder": "Alue muuttujat"
+            "displayFolder": "Aluemuuttujat"
           },
           {
             "name": "Oppilaitoksen maakunta",
@@ -3018,11 +3018,21 @@
             "name": "Opiskelijat lkm (koko maa)",
             "expression": [
               " ",
-              "var lasku = CALCULATE(SUM(Muuttujat[Opiskelijat]),ALL(Muuttujat[Koulutuksen maakunta],Muuttujat[Oppilaitoksen maakunta],Muuttujat[Koulutuksen kunta],Muuttujat[Oppilaitoksen kunta],Muuttujat[Koulutuksen kunta historia],Muuttujat[Oppilaitoksen kunta historia],Muuttujat[Koulutuksen maakunta historia],Muuttujat[Oppilaitoksen maakunta historia]))",
+              "var lasku = CALCULATE(SUM(Muuttujat[Opiskelijat]),",
+              "\t\t\tALL(Muuttujat[Koulutuksen maakunta],",
+              "\t\t\tMuuttujat[Oppilaitoksen maakunta],",
+              "\t\t\tMuuttujat[Koulutuksen kunta],",
+              "\t\t\tMuuttujat[Oppilaitoksen kunta],",
+              "\t\t\tMuuttujat[Koulutuksen kunta historia],",
+              "\t\t\tMuuttujat[Oppilaitoksen kunta historia],",
+              "\t\t\tMuuttujat[Koulutuksen maakunta historia],",
+              "\t\t\tMuuttujat[Oppilaitoksen maakunta historia])",
+              "\t\t\t)",
               "return SWITCH(TRUE(),",
               "\t\tlasku=0,blank(),",
               "\t\tlasku<5,\"1-4\",",
-              "\t\tMROUND(lasku,3))"
+              "\t\tMROUND(lasku,3))",
+              ""
             ],
             "formatString": "#,0"
           },
@@ -3034,7 +3044,17 @@
             "name": "Tutkinnot lkm (koko maa)",
             "expression": [
               " ",
-              "var lasku = CALCULATE(SUM(Muuttujat[Tutkinto]),ALL(Muuttujat[Koulutuksen maakunta],Muuttujat[Oppilaitoksen maakunta],Muuttujat[Koulutuksen kunta],Muuttujat[Oppilaitoksen kunta],Muuttujat[Koulutuksen kunta historia],Muuttujat[Oppilaitoksen kunta historia],Muuttujat[Koulutuksen maakunta historia],Muuttujat[Oppilaitoksen maakunta historia]))",
+              "var lasku = CALCULATE(SUM(Muuttujat[Tutkinto]),\t\t\t",
+              "\t\tALL(Muuttujat[Koulutuksen maakunta],",
+              "\t\tMuuttujat[Oppilaitoksen maakunta],",
+              "\t\tMuuttujat[Koulutuksen kunta],",
+              "\t\tMuuttujat[Oppilaitoksen kunta],",
+              "\t\tMuuttujat[Koulutuksen kunta historia],",
+              "\t\tMuuttujat[Oppilaitoksen kunta historia],",
+              "\t\tMuuttujat[Koulutuksen maakunta historia],",
+              "\t\tMuuttujat[Oppilaitoksen maakunta historia])",
+              "\t\t)",
+              "",
               "return SWITCH(TRUE(),lasku=0,BLANK(),lasku)"
             ],
             "formatString": "#,0"
@@ -3043,8 +3063,16 @@
             "name": "Uudet opiskelijat lkm (koko maa)",
             "expression": [
               " ",
-              "var lasku = CALCULATE(SUM(Muuttujat[Aloittaneet]),ALL(Muuttujat[Koulutuksen maakunta],Muuttujat[Oppilaitoksen maakunta],Muuttujat[Koulutuksen kunta],Muuttujat[Oppilaitoksen kunta],Muuttujat[Koulutuksen kunta historia],Muuttujat[Oppilaitoksen kunta historia],Muuttujat[Koulutuksen maakunta historia],Muuttujat[Oppilaitoksen maakunta historia]))",
-              "return\tSWITCH(TRUE(),",
+              "var lasku = CALCULATE(SUM(Muuttujat[Aloittaneet]),ALL(Muuttujat[Koulutuksen maakunta],",
+              "\t\t\tMuuttujat[Oppilaitoksen maakunta],",
+              "\t\t\tMuuttujat[Koulutuksen kunta],",
+              "\t\t\tMuuttujat[Oppilaitoksen kunta],",
+              "\t\t\tMuuttujat[Koulutuksen kunta historia],",
+              "\t\t\tMuuttujat[Oppilaitoksen kunta historia],",
+              "\t\t\tMuuttujat[Koulutuksen maakunta historia],",
+              "\t\t\tMuuttujat[Oppilaitoksen maakunta historia]))",
+              "",
+              "return SWITCH(TRUE(),",
               "\t\tlasku=0,blank(),",
               "\t\tlasku<5,\"1-4\",",
               "\t\tMROUND(lasku,3))",
