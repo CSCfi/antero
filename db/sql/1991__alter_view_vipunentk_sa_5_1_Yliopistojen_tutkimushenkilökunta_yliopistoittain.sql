@@ -44,8 +44,8 @@ SELECT [tilv] = CAST(kaikkivuodet.tilv as nvarchar(4))
 						 end 
 					as nvarchar(10))
 	  ,[kaste_t2] =  CAST(Case 
-							when kaikkivuodet.tutktaso='91' then '-1' 
-							else kaikkivuodet.tutktaso 
+							when kaikkivuodet.kaste_t2='91' then '-1' 
+							else kaikkivuodet.kaste_t2 
 						 end 
 					as nvarchar(10))
       ,[lkm_tutkimushenkilokunta] = CAST(kaikkivuodet.tutk_lkm as int)
