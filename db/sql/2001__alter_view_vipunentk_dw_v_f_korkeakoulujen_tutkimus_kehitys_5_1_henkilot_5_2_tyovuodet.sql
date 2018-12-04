@@ -71,4 +71,4 @@ SELECT [tilastovuosi]
 
 GO
 
-
+USE [ANTERO]
