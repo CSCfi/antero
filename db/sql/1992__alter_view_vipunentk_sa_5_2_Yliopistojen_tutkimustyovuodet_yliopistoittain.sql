@@ -45,7 +45,11 @@ SELECT [tilv] = CAST(kaikkivuodet.tilv as nvarchar(4))
 							else kaikkivuodet.tutktaso 
 						 end 
 					as nvarchar(10))
-	  ,[kaste_t2] = NULL
+	  ,[kaste_t2] =  CAST(Case 
+							when kaikkivuodet.tutktaso='91' then '-1' 
+							else kaikkivuodet.tutktaso 
+						 end 
+					as nvarchar(10))
       ,[lkm_tutkimustyovuodet] = CAST(kaikkivuodet.ttv_lkm as decimal(8,4))
 	  ,[apuraha] = CAST(kaikkivuodet.apuraha as decimal(8,4))
       ,[tietolahde] = CAST(kaikkivuodet.tietolahde as nvarchar(50))
