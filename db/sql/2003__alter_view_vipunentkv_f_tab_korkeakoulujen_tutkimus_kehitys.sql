@@ -220,7 +220,7 @@ SELECT [tilastovuosi]
   INNER JOIN VipunenTK.[dbo].d_sukupuoli					ON d_sukupuoli.id = f.sukupuoli_id
   INNER JOIN VipunenTK.[dbo].d_tieteenala					ON d_tieteenala.id = f.tieteenala_id
   INNER JOIN (select distinct Koulutusaste_taso2_koodi,Koulutusaste_taso2,Koulutusaste_taso2_SV,Koulutusaste_taso2_EN,jarjestys_Koulutusaste_taso2 from VipunenTK.dbo.d_koulutusluokitus) d_koulutusluokitus ON d_koulutusluokitus.Koulutusaste_taso2_koodi=f.tutkintotaso_avain
-  INNER JOIN (select distinct Koulutusaste_taso2_koodi,Koulutusaste_taso2,Koulutusaste_taso2_SV,Koulutusaste_taso2_EN,jarjestys_Koulutusaste_taso2 from VipunenTK.dbo.d_koulutusluokitus) d_koulutusluokitus2 ON d_koulutusluokitus.Koulutusaste_taso2_koodi=f.koulutusaste_taso2_avain
+  INNER JOIN (select distinct Koulutusaste_taso2_koodi,Koulutusaste_taso2,Koulutusaste_taso2_SV,Koulutusaste_taso2_EN,jarjestys_Koulutusaste_taso2 from VipunenTK.dbo.d_koulutusluokitus) d_koulutusluokitus2 ON d_koulutusluokitus2.Koulutusaste_taso2_koodi=f.koulutusaste_taso2_avain
   INNER JOIN VipunenTK.[dbo].d_virkaryhma					ON d_virkaryhma.id = f.virkaryhma_id
   INNER JOIN VipunenTK.[dbo].d_tutkimuksen_rahoituslahde	ON d_tutkimuksen_rahoituslahde.id = f.rahoituslahde_id
   INNER JOIN VipunenTK.[dbo].d_tutkimusmenojen_kohde		ON d_tutkimusmenojen_kohde.id = f.menokohde_id
