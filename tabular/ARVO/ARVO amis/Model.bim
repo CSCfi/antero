@@ -204,12 +204,12 @@
             "name": "vastausavain",
             "dataType": "string",
             "isDataTypeInferred": true,
-            "expression": "CONCATENATE([kyselyid],CONCATENATE([kysymysid],CONCATENATE([vastausid],[vastaajaid])))"
+            "expression": "CONCATENATE([kyselyid],CONCATENATE([kysymysid],CONCATENATE([vastauskoodi],[vastaajaid])))"
           },
           {
-            "name": "vastausid",
+            "name": "vastauskoodi",
             "dataType": "string",
-            "sourceColumn": "vastausid"
+            "sourceColumn": "vastauskoodi"
           }
         ],
         "partitions": [
@@ -475,10 +475,10 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>vastausid</string>",
+                  "        <string>vastauskoodi</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>104</int>",
+                  "        <int>130</int>",
                   "      </value>",
                   "    </item>",
                   "  </ColumnWidths>",
@@ -725,7 +725,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>vastausid</string>",
+                  "        <string>vastauskoodi</string>",
                   "      </key>",
                   "      <value>",
                   "        <int>30</int>",
@@ -752,7 +752,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>vastausid</string>",
+                  "        <string>vastauskoodi</string>",
                   "      </key>",
                   "      <value>",
                   "        <boolean>true</boolean>",
@@ -777,27 +777,32 @@
           },
           {
             "name": "5-pistettä lkm",
-            "expression": "COUNTROWS(FILTER(Muuttujat,[numerovalinta]=5))"
+            "expression": "COUNTROWS(FILTER(Numerovalinta_kutistettu,[numerovalinta]=5))",
+            "formatString": "#,0"
           },
           {
             "name": "4-pistettä lkm",
-            "expression": "COUNTROWS(FILTER(Muuttujat,[numerovalinta]=4))"
+            "expression": "COUNTROWS(FILTER(Numerovalinta_kutistettu,[numerovalinta]=4))",
+            "formatString": "#,0"
           },
           {
             "name": "3-pistettä lkm",
-            "expression": "COUNTROWS(FILTER(Muuttujat,[numerovalinta]=3))"
+            "expression": "COUNTROWS(FILTER(Numerovalinta_kutistettu,[numerovalinta]=3))",
+            "formatString": "#,0"
           },
           {
             "name": "2-pistettä lkm",
-            "expression": "COUNTROWS(FILTER(Muuttujat,[numerovalinta]=2))"
+            "expression": "COUNTROWS(FILTER(Numerovalinta_kutistettu,[numerovalinta]=2))",
+            "formatString": "#,0"
           },
           {
             "name": "1-pistettä lkm",
-            "expression": "COUNTROWS(FILTER(Muuttujat,[numerovalinta]=1))"
+            "expression": "COUNTROWS(FILTER(Numerovalinta_kutistettu,[numerovalinta]=1))",
+            "formatString": "#,0"
           },
           {
             "name": "kaikki pisteet lkm",
-            "expression": "COUNTROWS(FILTER(Muuttujat,[numerovalinta]>0))",
+            "expression": "COUNTROWS(FILTER(Numerovalinta_kutistettu,[numerovalinta]>0))",
             "formatString": "#,0"
           },
           {
@@ -827,17 +832,17 @@
           },
           {
             "name": "Keskiarvo",
-            "expression": "CALCULATE(AVERAGE([numerovalinta]),FILTER(Muuttujat,[numerovalinta]>0))",
+            "expression": "CALCULATE(AVERAGE(Numerovalinta_kutistettu[numerovalinta]),FILTER(Numerovalinta_kutistettu,[numerovalinta]>0))",
             "formatString": "0.0"
           },
           {
             "name": "Keskihajonta",
-            "expression": "CALCULATE(STDEV.P([numerovalinta]),FILTER(Muuttujat,[numerovalinta]>0))",
+            "expression": "CALCULATE(STDEV.P(Numerovalinta_kutistettu[numerovalinta]),FILTER(VALUES(Numerovalinta_kutistettu[numerovalinta]),[numerovalinta]>0))",
             "formatString": "0.0"
           },
           {
             "name": "Pisteet",
-            "expression": "SUM([numerovalinta])",
+            "expression": "SUM(Numerovalinta_kutistettu[numerovalinta])",
             "formatString": "#,0"
           }
         ],
@@ -1108,10 +1113,10 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>vastausid</string>",
+              "        <string>vastauskoodi</string>",
               "      </key>",
               "      <value>",
-              "        <int>104</int>",
+              "        <int>130</int>",
               "      </value>",
               "    </item>",
               "  </ColumnWidths>",
@@ -1358,7 +1363,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>vastausid</string>",
+              "        <string>vastauskoodi</string>",
               "      </key>",
               "      <value>",
               "        <int>30</int>",
@@ -1385,7 +1390,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>vastausid</string>",
+              "        <string>vastauskoodi</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -1434,11 +1439,12 @@
     ],
     "relationships": [
       {
-        "name": "9775d732-cc90-446d-a25b-8fb9b7576745",
+        "name": "1bb10392-b3d6-430f-8ab4-b1912951dfef",
         "fromTable": "Muuttujat",
         "fromColumn": "vastausavain",
         "toTable": "Numerovalinta_kutistettu",
-        "toColumn": "vastausavain"
+        "toColumn": "vastausavain",
+        "crossFilteringBehavior": "bothDirections"
       }
     ],
     "annotations": [
