@@ -511,7 +511,7 @@ CREATE VIEW [dw].[v_st_rekrytointi_valitut] AS
 
  ) f
 
- LEFT JOIN dw.d_organisaatio d1 ON d1.organisaatio_koodi=f.organisaatiotunnus
+ LEFT JOIN dw.d_organisaatioluokitus d1 ON d1.organisaatio_koodi=f.organisaatiotunnus
  LEFT JOIN dw.d_ek_nimike d2 ON d2.id=f.d_ek_nimike_id
  LEFT JOIN dw.d_amk_tehtavaryhma d3 ON d3.id=f.d_amk_tehtavaryhma_id
  LEFT JOIN dw.d_amk_tehtavanjaottelu d4 ON d4.id=f.d_amk_tehtavanjaottelu_id
@@ -538,7 +538,7 @@ CREATE VIEW [dw].[v_st_rekrytointi_valitut] AS
  LEFT JOIN dw.d_yo_tehtavanjaottelu d26 ON d26.id=f.d_yo_tehtavajaottelu_id
  LEFT JOIN dw.d_yo_nimitystapa d27 ON d27.id=f.d_yo_nimitystapa_id
  LEFT JOIN dw.d_yo_toimipisteen_toimipaikka d28 ON d28.id=f.d_yo_toimipisteen_toimipaikka_id
- LEFT JOIN dw.d_organisaatio d30 ON d30.organisaatio_koodi=f.tohtorintutkinnon_organisaatiotunnus
+ LEFT JOIN dw.d_organisaatioluokitus d30 ON d30.organisaatio_koodi=f.tohtorintutkinnon_organisaatiotunnus
 
 
  --WHERE Hakunumero+d1.organisaatio_koodi IN (
