@@ -37,11 +37,10 @@ CREATE TABLE [sa].[sa_virta_taustatiedot](
 	[asuinkunta_koodi] [varchar](100) NULL,
 	[asteikko] [varchar](100) NULL,
 	[arvosana] [varchar](100) NULL,
-	[aidinkieli] [varchar](100) NULL
+	[aidinkieli] [varchar](100) NULL,
 	[source] [varchar](100) NULL,
 	[username] [varchar](100) NULL,
-	[loadtime] [datetime] NULL,
-
+	[loadtime] [datetime] NULL
 
  CONSTRAINT [PK__sa_virta_taustatiedot] PRIMARY KEY CLUSTERED
 (
