@@ -10,6 +10,7 @@ IF  NOT EXISTS
 
 BEGIN
 CREATE TABLE [sa].[sa_virta_taustatiedot](
+	[id] [bigint] IDENTITY(1,1) NOT NULL,
 	[vastaajaid] int NULL,
   [vastaajatunnusid] int NULL,
 	[taustatiedot] [varchar](max) NULL,
