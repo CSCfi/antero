@@ -2398,8 +2398,10 @@
             "name": "Työlliset (amk-tutkinto) summa",
             "expression": [
               " ",
-              "CALCULATE(SUM([työlliset 1v tutkinnon jälkeen]),Muuttujat[Ammattiasema]<>\"Yrittäjä\",Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\")+",
-              "CALCULATE(CALCULATE(SUM([työlliset 1v tutkinnon jälkeen]),Muuttujat[Ammattiasema]=\"Yrittäjä\",Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\")*2)"
+              "var lasku=CALCULATE(SUM([työlliset 1v tutkinnon jälkeen]),Muuttujat[Ammattiasema]<>\"Yrittäjä\",Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\")+",
+              "CALCULATE(CALCULATE(SUM([työlliset 1v tutkinnon jälkeen]),Muuttujat[Ammattiasema]=\"Yrittäjä\",Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\")*2)",
+              "",
+              "return IF(lasku=0,BLANK(),IF(lasku<5,3,MROUND(lasku,3)))"
             ],
             "formatString": "#,0",
             "displayFolder": "Summa"
