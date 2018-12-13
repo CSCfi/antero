@@ -2387,7 +2387,12 @@
           },
           {
             "name": "Työllisten lukumäärä 1v valmistumisesta summa",
-            "expression": " CALCULATE(SUM(Muuttujat[Työlliset 1v (ver2 10,13)]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\")",
+            "expression": [
+              " ",
+              "var lasku=CALCULATE(SUM(Muuttujat[Työlliset 1v (ver2 10,13)]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\")",
+              "",
+              "return IF(lasku=0,BLANK(),IF(lasku<5,3,MROUND(lasku,3)))"
+            ],
             "formatString": "#,0",
             "displayFolder": "Summa"
           },
@@ -2563,7 +2568,7 @@
             "expression": [
               " ",
               "var org= [Ulkomailla suoritetut ja kv vaihto-opiskelijoiden pisteet]",
-              "var kaikki = CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],\"summa\",[Ulkomailla suoritetut ja kv vaihto-opiskelijoiden op summa]),[summa]))",
+              "var kaikki = CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],\"summa\",[Ulkomailla suoritetut ja kv vaihto-opiskelijoiden op summa]),[summa]),ALL(Muuttujat[Yliopisto]))",
               "return DIVIDE(org,kaikki)"
             ],
             "formatString": "#,0.00 %;-#,0.00 %;#,0.00 %",
