@@ -546,16 +546,19 @@
             "name": "Org_tilv",
             "dataType": "string",
             "isDataTypeInferred": true,
+            "isHidden": true,
             "expression": "Muuttujat[Koodit organisaatio]&\"_\"&Muuttujat[Tilastovuosi]"
           },
           {
             "name": "Ulk. kilpailtu tutkimusrahoitus",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "Ulk. kilpailtu tutkimusrahoitus"
           },
           {
             "name": "Työlliset 1v (ver2 10,13)",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "Työlliset 1v (ver2 10,13)"
           },
           {
@@ -599,14 +602,16 @@
               "0))))))))))))))))))))))))",
               "",
               "return IF(ISBLANK([Julkaisut lukumaara]),BLANK(),lasku)"
-            ]
+            ],
+            "displayFolder": "Julkaisumuuttujat"
           },
           {
             "type": "calculated",
-            "name": "Yliopisto T3",
+            "name": "Yliopisto T2",
             "dataType": "string",
             "isDataTypeInferred": true,
-            "expression": " SWITCH(TRUE(),Muuttujat[Yliopisto]=\"Tampereen yliopisto\",\"Tampereen yliopisto\",Muuttujat[Yliopisto]=\"Tampereen teknillinen yliopisto\",\"Tampereen yliopisto\",Muuttujat[Yliopisto])"
+            "expression": " SWITCH(TRUE(),Muuttujat[Yliopisto]=\"Tampereen yliopisto\",\"Tampereen yliopisto\",Muuttujat[Yliopisto]=\"Tampereen teknillinen yliopisto\",\"Tampereen yliopisto\",Muuttujat[Yliopisto])",
+            "displayFolder": "Organisaatiomuuttujat"
           }
         ],
         "partitions": [
@@ -2648,6 +2653,231 @@
               "  ",
               "var org = [Ulkomainen kilpailtu tutkimusrahoitus]",
               "var kaikki = CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],\"summa\",[Ulkomainen kilpailtu tutkimusrahoitus summa]),[summa]),ALL(Muuttujat[Yliopisto]))",
+              "return DIVIDE(org,kaikki)"
+            ],
+            "formatString": "#,0.00 %;-#,0.00 %;#,0.00 %",
+            "displayFolder": "Keskiarvo\\% osuus"
+          },
+          {
+            "name": "Alempi korkeakoulututkinto T2",
+            "expression": " CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],Muuttujat[Yliopisto T2],\"summa\",[Alempi korkeakoulututkinto summa]),[summa]))",
+            "formatString": "#,0.0",
+            "displayFolder": "Keskiarvo"
+          },
+          {
+            "name": "Ylempi korkeakoulututkinto T2",
+            "expression": " CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],Muuttujat[Yliopisto T2],\"summa\",[Ylempi korkeakoulututkinto summa]),[summa]))",
+            "formatString": "#,0.0",
+            "displayFolder": "Keskiarvo"
+          },
+          {
+            "name": "Suorittanut 55 rahoitusmalli T2",
+            "expression": " CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],Muuttujat[Yliopisto T2],\"summa\",[Suorittanut 55op rahoitusmalli summa]),[summa]))",
+            "formatString": "#,0.0",
+            "displayFolder": "Keskiarvo"
+          },
+          {
+            "name": "Erilliset opinto-oikeudet T2",
+            "expression": " CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],Muuttujat[Yliopisto T2],\"summa\",[Erilliset opinto-oikeudet summa]),[summa]))",
+            "formatString": "#,0.0",
+            "displayFolder": "Keskiarvo"
+          },
+          {
+            "name": "Ulkomailla suoritetut ja kv vaihto-opiskelijoiden pisteet T2",
+            "expression": " CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],Muuttujat[Yliopisto T2],\"summa\",[Ulkomailla suoritetut ja kv vaihto-opiskelijoiden op summa]),[summa]))",
+            "formatString": "#,0.0",
+            "displayFolder": "Keskiarvo"
+          },
+          {
+            "name": "Ulkomaalaisten ylemmät kk-tutkinnot T2",
+            "expression": " CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],Muuttujat[Yliopisto T2],\"summa\",[Ulkomaalaisten ylemmät korkeakoulututkinnot summa]),[summa]))",
+            "formatString": "#,0.0",
+            "displayFolder": "Keskiarvo"
+          },
+          {
+            "name": "Tohtorin tutkinnot T2",
+            "expression": " CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],Muuttujat[Yliopisto T2],\"summa\",[Tohtorin tutkinnot summa]),[summa]))",
+            "formatString": "#,0.0",
+            "displayFolder": "Keskiarvo"
+          },
+          {
+            "name": "Julkaisut rahoitusmalli T2",
+            "expression": " CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],Muuttujat[Yliopisto T2],\"summa\",[Julkaisut rahoitusmalli summa]),[summa]))",
+            "formatString": "#,0.0",
+            "displayFolder": "Keskiarvo"
+          },
+          {
+            "name": "Muu kilpailtu tutkimusrahoitus T2",
+            "expression": " CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],Muuttujat[Yliopisto T2],\"summa\",[Muu kilpailtu tutkimusrahoitus summa]),[summa]))",
+            "formatString": "#,0.0",
+            "displayFolder": "Keskiarvo"
+          },
+          {
+            "name": "Ulkomaalainen htv T2",
+            "expression": " CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],Muuttujat[Yliopisto T2],\"summa\",[Ulkomaalainen htv summa]),[summa]))",
+            "formatString": "#,0.0",
+            "displayFolder": "Keskiarvo"
+          },
+          {
+            "name": "Opintopalautteen pisteet T2",
+            "expression": " CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],Muuttujat[Yliopisto T2],\"summa\",[Kandipalaute pisteet summa]),[summa]))",
+            "formatString": "#,0.0",
+            "displayFolder": "Keskiarvo"
+          },
+          {
+            "name": "Työlliset 1v valmistumisesta T2",
+            "expression": " CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],Muuttujat[Yliopisto T2],\"summa\",[Työllisten lukumäärä 1v valmistumisesta summa]),[summa]))",
+            "formatString": "#,0.0",
+            "displayFolder": "Keskiarvo"
+          },
+          {
+            "name": "Ulkomainen kilpailtu tutkimusrahoitus T2",
+            "expression": "  CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],Muuttujat[Yliopisto T2],\"summa\",[Ulkomainen kilpailtu tutkimusrahoitus summa]),[summa]))",
+            "formatString": "#,0.0",
+            "displayFolder": "Keskiarvo"
+          },
+          {
+            "name": "Alempi korkeakoulututkinto (%) T2",
+            "expression": [
+              " ",
+              "var org = [Alempi korkeakoulututkinto]",
+              "var kaikki = CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],\"summa\",[Alempi korkeakoulututkinto summa]),[summa]),ALL(Muuttujat[Yliopisto T2]))",
+              "",
+              "return DIVIDE(org,kaikki)"
+            ],
+            "formatString": "#,0.00 %;-#,0.00 %;#,0.00 %",
+            "displayFolder": "Keskiarvo\\% osuus"
+          },
+          {
+            "name": "Ylempi korkeakoulututkinto (%) T2",
+            "expression": [
+              " ",
+              "var org = [Ylempi korkeakoulututkinto]",
+              "var kaikki = CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],\"summa\",[Ylempi korkeakoulututkinto summa]),[summa]),ALL(Muuttujat[Yliopisto T2]))",
+              "return DIVIDE(org,kaikki)"
+            ],
+            "formatString": "#,0.00 %;-#,0.00 %;#,0.00 %",
+            "displayFolder": "Keskiarvo\\% osuus"
+          },
+          {
+            "name": "Suorittanut 55 rahoitusmalli (%) T2",
+            "expression": [
+              " ",
+              "var org = [Suorittanut 55 rahoitusmalli]",
+              "var kaikki = CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],\"summa\",[Suorittanut 55op rahoitusmalli summa]),[summa]),ALL(Muuttujat[Yliopisto T2]))",
+              "",
+              "return DIVIDE(org,kaikki)"
+            ],
+            "formatString": "#,0.00 %;-#,0.00 %;#,0.00 %",
+            "displayFolder": "Keskiarvo\\% osuus"
+          },
+          {
+            "name": "Erilliset opinto-oikeudet (%) T2",
+            "expression": [
+              "",
+              "var org = [Erilliset opinto-oikeudet]",
+              "var kaikki = CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],\"summa\",[Erilliset opinto-oikeudet summa]),[summa]),ALL(Muuttujat[Yliopisto T2]))",
+              "",
+              "return DIVIDE(org,kaikki)"
+            ],
+            "formatString": "#,0.00 %;-#,0.00 %;#,0.00 %",
+            "displayFolder": "Keskiarvo\\% osuus"
+          },
+          {
+            "name": "Ulkomailla suoritetut ja kv vaihto-opiskelijoiden pisteet (%) T2",
+            "expression": [
+              " ",
+              "var org= [Ulkomailla suoritetut ja kv vaihto-opiskelijoiden pisteet]",
+              "var kaikki = CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],\"summa\",[Ulkomailla suoritetut ja kv vaihto-opiskelijoiden op summa]),[summa]),ALL(Muuttujat[Yliopisto T2]))",
+              "return DIVIDE(org,kaikki)"
+            ],
+            "formatString": "#,0.00 %;-#,0.00 %;#,0.00 %",
+            "displayFolder": "Keskiarvo\\% osuus"
+          },
+          {
+            "name": "Ulkomaalaisten ylemmät kk-tutkinnot (%) T2",
+            "expression": [
+              " ",
+              "var org = [Ulkomaalaisten ylemmät kk-tutkinnot]",
+              "var kaikki = CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],\"summa\",[Ulkomaalaisten ylemmät korkeakoulututkinnot summa]),[summa]),ALL(Muuttujat[Yliopisto T2]))",
+              "return DIVIDE(org,kaikki)"
+            ],
+            "formatString": "#,0.00 %;-#,0.00 %;#,0.00 %",
+            "displayFolder": "Keskiarvo\\% osuus"
+          },
+          {
+            "name": "Tohtorin tutkinnot (%) T2",
+            "expression": [
+              " ",
+              "var org = [Tohtorin tutkinnot]",
+              "var kaikki = CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],\"summa\",[Tohtorin tutkinnot summa]),[summa]),ALL(Muuttujat[Yliopisto T2]))",
+              "",
+              "return DIVIDE(org,kaikki)"
+            ],
+            "formatString": "#,0.00 %;-#,0.00 %;#,0.00 %",
+            "displayFolder": "Keskiarvo\\% osuus"
+          },
+          {
+            "name": "Julkaisut rahoitusmalli (%) T2",
+            "expression": [
+              " ",
+              "var org = [Julkaisut rahoitusmalli]",
+              "var kaikki =CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],\"summa\",[Julkaisut rahoitusmalli summa]),[summa]),ALL(Muuttujat[Yliopisto T2]))",
+              "return DIVIDE(org,kaikki)"
+            ],
+            "formatString": "#,0.00 %;-#,0.00 %;#,0.00 %",
+            "displayFolder": "Keskiarvo\\% osuus"
+          },
+          {
+            "name": "Muu kilpailtu tutkimusrahoitus (%) T2",
+            "expression": [
+              " ",
+              "var org = [Muu kilpailtu tutkimusrahoitus]",
+              "var kaikki = CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],\"summa\",[Muu kilpailtu tutkimusrahoitus summa]),[summa]),ALL(Muuttujat[Yliopisto T2]))",
+              "return DIVIDE(org,kaikki)"
+            ],
+            "formatString": "#,0.00 %;-#,0.00 %;#,0.00 %",
+            "displayFolder": "Keskiarvo\\% osuus"
+          },
+          {
+            "name": "Ulkomaalainen htv (%) T2",
+            "expression": [
+              " ",
+              "var org = [Ulkomaalainen htv]",
+              "var kaikki = CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],\"summa\",[Ulkomaalainen htv summa]),[summa]),ALL(Muuttujat[Yliopisto T2]))",
+              "return DIVIDE(org,kaikki)"
+            ],
+            "formatString": "#,0.00 %;-#,0.00 %;#,0.00 %",
+            "displayFolder": "Keskiarvo\\% osuus"
+          },
+          {
+            "name": "Opintopalautteen pisteet (%) T2",
+            "expression": [
+              " ",
+              "var org = [Opintopalautteen pisteet]",
+              "var kaikki = CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],\"summa\",[Kandipalaute pisteet summa]),[summa]),ALL(Muuttujat[Yliopisto T2]))",
+              "return DIVIDE(org,kaikki)"
+            ],
+            "formatString": "#,0.00 %;-#,0.00 %;#,0.00 %",
+            "displayFolder": "Keskiarvo\\% osuus"
+          },
+          {
+            "name": "Työlliset 1v valmistumisesta (%) T2",
+            "expression": [
+              " ",
+              "var org = [Työlliset 1v valmistumisesta]",
+              "var kaikki = CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],\"summa\",[Työllisten lukumäärä 1v valmistumisesta summa]),[summa]),ALL(Muuttujat[Yliopisto T2]))",
+              "return DIVIDE(org,kaikki)"
+            ],
+            "formatString": "#,0.00 %;-#,0.00 %;#,0.00 %",
+            "displayFolder": "Keskiarvo\\% osuus"
+          },
+          {
+            "name": "Ulkomainen kilpailtu tutkimusrahoitus (%) T2",
+            "expression": [
+              "  ",
+              "var org = [Ulkomainen kilpailtu tutkimusrahoitus]",
+              "var kaikki = CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],\"summa\",[Ulkomainen kilpailtu tutkimusrahoitus summa]),[summa]),ALL(Muuttujat[Yliopisto T2]))",
               "return DIVIDE(org,kaikki)"
             ],
             "formatString": "#,0.00 %;-#,0.00 %;#,0.00 %",
@@ -4901,6 +5131,7 @@
       },
       {
         "name": "T3 analyysi",
+        "isHidden": true,
         "columns": [
           {
             "name": "Tilastovuosi",
@@ -5446,6 +5677,9 @@
               },
               {
                 "name": "Yliopisto"
+              },
+              {
+                "name": "Yliopisto T2"
               }
             ],
             "measures": [
@@ -5526,105 +5760,6 @@
               },
               {
                 "name": "Ulkomainen kilpailtu tutkimusrahoitus"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "T3 analyysi",
-        "tables": [
-          {
-            "name": "T3 analyysi",
-            "columns": [
-              {
-                "name": "Organisaatio"
-              },
-              {
-                "name": "Organisaatio T3"
-              },
-              {
-                "name": "Tilastovuosi"
-              }
-            ],
-            "measures": [
-              {
-                "name": "Alempi korkeakoulututkinto T3"
-              },
-              {
-                "name": "Erilliset opinto-oikeudet T3"
-              },
-              {
-                "name": "Julkaisut rahoitusmalli T3"
-              },
-              {
-                "name": "Muu kilpailtu tutkimusrahoitus T3"
-              },
-              {
-                "name": "Opintopalautteen pisteet T3"
-              },
-              {
-                "name": "Suorittanut 55 rahoitusmalli T3"
-              },
-              {
-                "name": "Tohtorin tutkinnot T3"
-              },
-              {
-                "name": "Työlliset 1v valmistumisesta T3"
-              },
-              {
-                "name": "Ulkomaalainen htv T3"
-              },
-              {
-                "name": "Ulkomaalaisten ylemmät kk-tutkinnot T3"
-              },
-              {
-                "name": "Ulkomailla suoritetut ja kv vaihto-opiskelijoiden pisteet T3"
-              },
-              {
-                "name": "Ulkomainen tutkimusrahoitus T3"
-              },
-              {
-                "name": "Ylempi korkeakoulututkinto T3"
-              },
-              {
-                "name": "Alempi korkeakoulututkinto T3 (%)"
-              },
-              {
-                "name": "Ylempi korkeakoulututkinto T3 (%)"
-              },
-              {
-                "name": "Erilliset opinto-oikeudet T3 (%)"
-              },
-              {
-                "name": "Julkaisut rahoitusmalli T3 (%)"
-              },
-              {
-                "name": "Muu kilpailtu tutkimusrahoitus T3 (%)"
-              },
-              {
-                "name": "Opintopalautteen pisteet T3 (%)"
-              },
-              {
-                "name": "Suorittanut 55 rahoitusmalli T3 (%)"
-              },
-              {
-                "name": "Tohtorin tutkinnot T3 (%)"
-              },
-              {
-                "name": "Työlliset 1v valmistumisesta T3 (%)"
-              },
-              {
-                "name": "Ulkomaalainen htv T3 (%)"
-              },
-              {
-                "name": "Ulkomaalaisten ylemmät kk-tutkinnot T3 (%)"
-              },
-              {
-                "name": "Ulkomailla suoritetut ja kv vaihto-opiskelijoiden pisteet T3 (%)"
-              },
-              {
-                "name": "Ulkomainen tutkimusrahoitus T3 (%)"
               }
             ]
           }
@@ -5748,6 +5883,102 @@
               },
               {
                 "name": "Ylempi korkeakoulututkinto summa"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "T2 analyysi",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Yliopisto T2"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Alempi korkeakoulututkinto (%) T2"
+              },
+              {
+                "name": "Alempi korkeakoulututkinto T2"
+              },
+              {
+                "name": "Erilliset opinto-oikeudet (%) T2"
+              },
+              {
+                "name": "Erilliset opinto-oikeudet T2"
+              },
+              {
+                "name": "Julkaisut rahoitusmalli (%) T2"
+              },
+              {
+                "name": "Julkaisut rahoitusmalli T2"
+              },
+              {
+                "name": "Muu kilpailtu tutkimusrahoitus (%) T2"
+              },
+              {
+                "name": "Muu kilpailtu tutkimusrahoitus T2"
+              },
+              {
+                "name": "Opintopalautteen pisteet (%) T2"
+              },
+              {
+                "name": "Opintopalautteen pisteet T2"
+              },
+              {
+                "name": "Suorittanut 55 rahoitusmalli (%) T2"
+              },
+              {
+                "name": "Suorittanut 55 rahoitusmalli T2"
+              },
+              {
+                "name": "Tohtorin tutkinnot (%) T2"
+              },
+              {
+                "name": "Tohtorin tutkinnot T2"
+              },
+              {
+                "name": "Työlliset 1v valmistumisesta (%) T2"
+              },
+              {
+                "name": "Työlliset 1v valmistumisesta T2"
+              },
+              {
+                "name": "Ulkomaalainen htv (%) T2"
+              },
+              {
+                "name": "Ulkomaalainen htv T2"
+              },
+              {
+                "name": "Ulkomaalaisten ylemmät kk-tutkinnot (%) T2"
+              },
+              {
+                "name": "Ulkomaalaisten ylemmät kk-tutkinnot T2"
+              },
+              {
+                "name": "Ulkomailla suoritetut ja kv vaihto-opiskelijoiden pisteet (%) T2"
+              },
+              {
+                "name": "Ulkomailla suoritetut ja kv vaihto-opiskelijoiden pisteet T2"
+              },
+              {
+                "name": "Ulkomainen kilpailtu tutkimusrahoitus (%) T2"
+              },
+              {
+                "name": "Ulkomainen kilpailtu tutkimusrahoitus T2"
+              },
+              {
+                "name": "Ylempi korkeakoulututkinto (%) T2"
+              },
+              {
+                "name": "Ylempi korkeakoulututkinto T2"
               }
             ]
           }
