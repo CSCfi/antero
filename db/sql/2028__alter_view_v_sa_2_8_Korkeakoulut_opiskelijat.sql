@@ -1435,5 +1435,3 @@ FROM Antero.sa.[sa_virta_otp_tkOPISKOKMEnnakko]
 GO
 
 USE [ANTERO]
-
-GO
