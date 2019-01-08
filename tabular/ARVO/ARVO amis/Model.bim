@@ -1601,9 +1601,9 @@
             "expression": [
               "",
               "var kato = IF([Vastausosuus]  >=  0.8, 1/[Vastausosuus],1 + (15/16) * [Vastausosuus] - (25/32) * [Vastausosuus] * [Vastausosuus])",
-              "var pisteet = [Pisteet] * kato",
-              "return pisteet",
+              "var pisteet = CALCULATE( [Pisteet] * kato ,Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\")",
               "",
+              "return pisteet",
               ""
             ],
             "formatString": "#,0.00",
@@ -1614,7 +1614,8 @@
             "expression": [
               "",
               "var kato = IF([Vastausosuus]  >=  0.8, 1/[Vastausosuus],1 + (15/16) * [Vastausosuus] - (25/32) * [Vastausosuus] * [Vastausosuus])",
-              "var pisteet = 3 * [Pisteet] * kato",
+              "var pisteet = CALCULATE( 3 * [Pisteet] * kato ,Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\")",
+              "",
               "return pisteet",
               ""
             ],
@@ -1626,7 +1627,8 @@
             "expression": [
               "",
               "var kato = IF([Vastausosuus]  >=  0.8, 1/[Vastausosuus],1 + (15/16) * [Vastausosuus] - (25/32) * [Vastausosuus] * [Vastausosuus])",
-              "var pisteet = [Pisteet] * kato",
+              "var pisteet = CALCULATE( [Pisteet] * kato ,Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\")",
+              "",
               "return pisteet"
             ],
             "formatString": "#,0.00",
@@ -1634,7 +1636,7 @@
           },
           {
             "name": "Painotetut pisteet",
-            "expression": "CALCULATE([Painotetut pisteet_aloitus],Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\")+CALCULATE([Painotetut pisteet_paatto_koko],Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\")+CALCULATE([Painotetut pisteet_paatto_osa],Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\")",
+            "expression": " [Painotetut pisteet_aloitus]+[Painotetut pisteet_paatto_koko]+[Painotetut pisteet_paatto_osa]",
             "formatString": "#,0"
           }
         ],
