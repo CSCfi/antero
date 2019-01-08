@@ -1595,6 +1595,47 @@
             "name": "Vastausosuus",
             "expression": "[Vastanneet]/[Kyselyn kohteet]",
             "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Painotetut pisteet_aloitus",
+            "expression": [
+              "",
+              "var kato = IF([Vastausosuus]  >=  0.8, 1/[Vastausosuus],1 + (15/16) * [Vastausosuus] - (25/32) * [Vastausosuus] * [Vastausosuus])",
+              "var pisteet = [Pisteet] * kato",
+              "return pisteet",
+              "",
+              ""
+            ],
+            "formatString": "#,0.00",
+            "isHidden": true
+          },
+          {
+            "name": "Painotetut pisteet_paatto_koko",
+            "expression": [
+              "",
+              "var kato = IF([Vastausosuus]  >=  0.8, 1/[Vastausosuus],1 + (15/16) * [Vastausosuus] - (25/32) * [Vastausosuus] * [Vastausosuus])",
+              "var pisteet = 3 * [Pisteet] * kato",
+              "return pisteet",
+              ""
+            ],
+            "formatString": "#,0.00",
+            "isHidden": true
+          },
+          {
+            "name": "Painotetut pisteet_paatto_osa",
+            "expression": [
+              "",
+              "var kato = IF([Vastausosuus]  >=  0.8, 1/[Vastausosuus],1 + (15/16) * [Vastausosuus] - (25/32) * [Vastausosuus] * [Vastausosuus])",
+              "var pisteet = [Pisteet] * kato",
+              "return pisteet"
+            ],
+            "formatString": "#,0.00",
+            "isHidden": true
+          },
+          {
+            "name": "Painotetut pisteet",
+            "expression": "CALCULATE([Painotetut pisteet_aloitus],Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\")+CALCULATE([Painotetut pisteet_paatto_koko],Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\")+CALCULATE([Painotetut pisteet_paatto_osa],Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\")",
+            "formatString": "#,0"
           }
         ],
         "annotations": [
