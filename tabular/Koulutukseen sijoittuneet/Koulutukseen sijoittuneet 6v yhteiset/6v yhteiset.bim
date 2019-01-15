@@ -4935,7 +4935,7 @@
         "measures": [
           {
             "name": "Henkilöt lkm",
-            "expression": "IF(USERNAME()<>\"NT AUTHORITY\\IUSR\",SUM([lkm_int2]),IF(SUM([lkm_int2]) = 0, BLANK(), IF(SUM([lkm_int2]) = 1, 3, MROUND(SUM([lkm_int2]), 3))))",
+            "expression": "IF(SUM([lkm_int2]) = 0, BLANK(), IF(SUM([lkm_int2]) = 1, 3, MROUND(SUM([lkm_int2]), 3)))",
             "formatString": "#,0"
           },
           {
@@ -5042,6 +5042,20 @@
             "name": "Ei hakenut eikä opiskellut korkea-asteella, opiskellut erikoisammattitutkintokoulutuksessa",
             "expression": "SUM([eihaku_kk_eiopisk_kk_opisk_eat])",
             "formatString": "#,0"
+          },
+          {
+            "name": "Henkilöt lkm (CSC)",
+            "expression": [
+              "",
+              "VAR lasku=SUM([lkm_int2])",
+              "var tarkistus=SWITCH(TRUE(),",
+              "\tUSERNAME()=\"NT AUTHORITY\\IUSR\",TRUE(),",
+              "\tRIGHT(USERNAME(),12)=\"Excel_S_Read\",TRUE(),",
+              "\tRIGHT(USERNAME(),15)=\"ANTERO_Read_TAB\",TRUE()",
+              "\t)",
+              "",
+              "return IF(tarkistus,BLANK(),lasku)"
+            ]
           }
         ],
         "annotations": [
