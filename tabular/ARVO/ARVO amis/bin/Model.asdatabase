@@ -304,10 +304,10 @@
           {
             "type": "calculated",
             "name": "vastaajatunnus_avain",
-            "dataType": "unknown",
+            "dataType": "string",
             "isDataTypeInferred": true,
             "isHidden": true,
-            "expression": "CONCATENATE([kyselykertaid],CONCATENATE([Koodit Oppilaitos],CONCATENATE([Koodit Tutkinto],CONCATENATE(Muuttujat[Palautevuosi],Muuttujat[Koodit Palautekuukausi]))))"
+            "expression": "CONCATENATE([kyselykertaid],CONCATENATE([Koodit Oppilaitos],CONCATENATE([Koodit Tutkinto],CONCATENATE(Muuttujat[Tilastovuosi],Muuttujat[Koodit Palautekuukausi]))))"
           },
           {
             "name": "Rahoitusmallikysymys",
@@ -754,7 +754,7 @@
                   "        <string>Tilastokuukausi</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>102</int>",
+                  "        <int>148</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -762,7 +762,7 @@
                   "        <string>Tilastovuosi</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>86</int>",
+                  "        <int>123</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -3628,37 +3628,6 @@
             "formatString": "#,0"
           },
           {
-            "name": "kaikki pisteet lkm",
-            "expression": "SUM(Numerovalinta_kutistettu[lkm])",
-            "formatString": "#,0",
-            "isHidden": true
-          },
-          {
-            "name": "Keskiarvo",
-            "expression": "IF(DISTINCTCOUNT([vastaajaid])<=5,BLANK(),AVERAGE(Numerovalinta_kutistettu[numerovalinta]))",
-            "formatString": "0.0"
-          },
-          {
-            "name": "Keskihajonta",
-            "expression": "IF(DISTINCTCOUNT([vastaajaid])<=5,BLANK(),STDEV.P(Numerovalinta_kutistettu[numerovalinta]))",
-            "formatString": "0.0"
-          },
-          {
-            "name": "Pisteet",
-            "expression": "IF(DISTINCTCOUNT([vastaajaid])<=5,BLANK(),SUM(Numerovalinta_kutistettu[numerovalinta]))",
-            "formatString": "#,0"
-          },
-          {
-            "name": "Kyselyn kohteet",
-            "expression": "IF([Vastanneet]=3,BLANK(),SUM('Luodut_vastaajatunnukset'[vastaajatunnukset_lkm]))",
-            "formatString": "#,0"
-          },
-          {
-            "name": "Vastausosuus",
-            "expression": "IF(AND(DISTINCTCOUNT([vastaajaid])<=5,DISTINCTCOUNT([vastaajaid])>0),blank(),[Vastanneet]/[Kyselyn kohteet])",
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
             "name": "5 pistettä lkm",
             "expression": "IF([Vastanneet]=3,BLANK(),CALCULATE(SUM(Numerovalinta_kutistettu[lkm]),Numerovalinta_kutistettu[numerovalinta]=5))",
             "formatString": "#,0"
@@ -3696,6 +3665,12 @@
             "formatString": "#,0"
           },
           {
+            "name": "kaikki pisteet lkm",
+            "expression": "SUM(Numerovalinta_kutistettu[lkm])",
+            "formatString": "#,0",
+            "isHidden": true
+          },
+          {
             "name": "5 pistettä %",
             "expression": "IF([Vastanneet]=3,BLANK(),DIVIDE([5 pistettä lkm],[kaikki pisteet lkm]))",
             "formatString": "0.0 %;-0.0 %;0.0 %"
@@ -3721,41 +3696,57 @@
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
+            "name": "Keskiarvo",
+            "expression": "IF(DISTINCTCOUNT([vastaajaid])<=5,BLANK(),AVERAGE(Numerovalinta_kutistettu[numerovalinta]))",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Keskihajonta",
+            "expression": "IF(DISTINCTCOUNT([vastaajaid])<=5,BLANK(),STDEV.P(Numerovalinta_kutistettu[numerovalinta]))",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Pisteet",
+            "expression": "IF(DISTINCTCOUNT([vastaajaid])<=5,BLANK(),SUM(Numerovalinta_kutistettu[numerovalinta]))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Kyselyn kohteet",
+            "expression": "IF([Vastanneet]=3,3,SUM('Luodut_vastaajatunnukset'[vastaajatunnukset_lkm]))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Vastausosuus",
+            "expression": "IF(AND(DISTINCTCOUNT([vastaajaid])<=5,DISTINCTCOUNT([vastaajaid])>0),blank(),DIVIDE([Vastanneet],[Kyselyn kohteet]))",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
             "name": "Painotetut pisteet_aloitus",
             "expression": [
-              "",
-              "var kato = IF([Vastausosuus]  >=  0.8, 1/[Vastausosuus],1 + (15/16) * [Vastausosuus] - (25/32) * [Vastausosuus] * [Vastausosuus])",
-              "var pisteet = CALCULATE( [Pisteet] * kato ,Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\")",
-              "",
-              "return pisteet",
+              "CALCULATE( [Pisteet] * [katokorjauskerroin] ,Numerovalinta_kutistettu[Kyselyn kohderyhmä]=\"Aloittaneet\")",
               ""
             ],
-            "formatString": "#,0.00",
+            "formatString": "#,0",
             "isHidden": true
           },
           {
             "name": "Painotetut pisteet_paatto_koko",
             "expression": [
-              "",
-              "var kato = IF([Vastausosuus]  >=  0.8, 1/[Vastausosuus],1 + (15/16) * [Vastausosuus] - (25/32) * [Vastausosuus] * [Vastausosuus])",
-              "var pisteet = CALCULATE( 3 * [Pisteet] * kato ,Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\")",
-              "",
-              "return pisteet",
+              "CALCULATE(3 * [Pisteet] * [katokorjauskerroin] ,Numerovalinta_kutistettu[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\")",
               ""
             ],
-            "formatString": "#,0.00",
+            "formatString": "#,0",
             "isHidden": true
           },
           {
             "name": "Painotetut pisteet_paatto_osa",
             "expression": [
+              "CALCULATE([Pisteet] * [katokorjauskerroin],Numerovalinta_kutistettu[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\")",
               "",
-              "var kato = IF([Vastausosuus]  >=  0.8, 1/[Vastausosuus],1 + (15/16) * [Vastausosuus] - (25/32) * [Vastausosuus] * [Vastausosuus])",
-              "var pisteet = CALCULATE( [Pisteet] * kato ,Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\")",
               "",
-              "return pisteet"
+              ""
             ],
-            "formatString": "#,0.00",
+            "formatString": "#,0",
             "isHidden": true
           },
           {
@@ -3932,6 +3923,16 @@
             "name": "Response rate",
             "expression": "[Vastausosuus]",
             "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Painotetut pisteet %",
+            "expression": "[Painotetut pisteet]/CALCULATE([Painotetut pisteet],ALL(Muuttujat[Kyselyn kohderyhmä],Muuttujat[Koulutuksen järjestäjä]))",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "katokorjauskerroin",
+            "expression": " IF([Vastausosuus]  >=  0.8, DIVIDE(1,[Vastausosuus]),1 + (15/16) * [Vastausosuus] - (25/32) * [Vastausosuus] * [Vastausosuus])",
+            "isHidden": true
           }
         ],
         "annotations": [
@@ -3964,7 +3965,7 @@
               "        <string>Tilastokuukausi</string>",
               "      </key>",
               "      <value>",
-              "        <int>102</int>",
+              "        <int>148</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3972,7 +3973,7 @@
               "        <string>Tilastovuosi</string>",
               "      </key>",
               "      <value>",
-              "        <int>86</int>",
+              "        <int>123</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -6857,6 +6858,22 @@
             "isNameInferred": true,
             "isDataTypeInferred": true,
             "sourceColumn": "[lkm]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Kyselyn kohderyhmä",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Kyselyn kohderyhmä]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Kysely",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Kysely]"
           }
         ],
         "partitions": [
@@ -6864,7 +6881,7 @@
             "name": "CalculatedTable 1",
             "source": {
               "type": "calculated",
-              "expression": "SUMMARIZE(Muuttujat,[vastausavain],[numerovalinta],\"lkm\",1)"
+              "expression": "SUMMARIZE(Muuttujat,[vastausavain],[Kyselyn kohderyhmä],[Kysely],[numerovalinta],\"lkm\",1)"
             }
           }
         ]
@@ -7000,12 +7017,6 @@
                 "name": "Koulutuksen järjestäjä"
               },
               {
-                "name": "Koulutuksen järjestäjän AVI"
-              },
-              {
-                "name": "Koulutuksen järjestäjän ELY"
-              },
-              {
                 "name": "Koulutuksen järjestäjän kunta"
               },
               {
@@ -7031,12 +7042,6 @@
               },
               {
                 "name": "Monivalintavaihtoehto"
-              },
-              {
-                "name": "Oppilaitoksen AVI"
-              },
-              {
-                "name": "Oppilaitoksen ELY"
               },
               {
                 "name": "Oppilaitoksen kunta"
@@ -7067,9 +7072,6 @@
               },
               {
                 "name": "Oppisopimuskoulutus"
-              },
-              {
-                "name": "Järjestys aiempi koulutus"
               },
               {
                 "name": "Järjestys korkein aiempi koulutus"
@@ -7116,37 +7118,10 @@
                 "name": "Vastausosuus"
               },
               {
-                "name": "1 piste %"
-              },
-              {
-                "name": "1 piste lkm"
-              },
-              {
-                "name": "2 pistettä %"
-              },
-              {
-                "name": "2 pistettä lkm"
-              },
-              {
-                "name": "3 pistettä %"
-              },
-              {
-                "name": "3 pistettä lkm"
-              },
-              {
-                "name": "4 pistettä %"
-              },
-              {
-                "name": "4 pistettä lkm"
-              },
-              {
-                "name": "5 pistettä %"
-              },
-              {
-                "name": "5 pistettä lkm"
-              },
-              {
                 "name": "Painotetut pisteet"
+              },
+              {
+                "name": "Painotetut pisteet %"
               }
             ]
           },
@@ -7212,12 +7187,6 @@
                 "name": "Läroanstaltens landskap"
               },
               {
-                "name": "Läroanstaltens NMT-område"
-              },
-              {
-                "name": "Läroanstaltens RFV-område"
-              },
-              {
                 "name": "Läroavtalsutbildning"
               },
               {
@@ -7248,12 +7217,6 @@
                 "name": "Utbildningsanordnarens landskap"
               },
               {
-                "name": "Utbildningsanordnarens NMT-område"
-              },
-              {
-                "name": "Utbildningsanordnarens RFV-område"
-              },
-              {
                 "name": "Åldersgrupp"
               },
               {
@@ -7270,36 +7233,6 @@
               }
             ],
             "measures": [
-              {
-                "name": "% 1 poäng"
-              },
-              {
-                "name": "% 2 poäng"
-              },
-              {
-                "name": "% 3 poäng"
-              },
-              {
-                "name": "% 4 poäng"
-              },
-              {
-                "name": "% 5 poäng"
-              },
-              {
-                "name": "Antal 1 poäng"
-              },
-              {
-                "name": "Antal 2 poäng"
-              },
-              {
-                "name": "Antal 3 poäng"
-              },
-              {
-                "name": "Antal 4 poäng"
-              },
-              {
-                "name": "Antal 5 poäng"
-              },
               {
                 "name": "Medeltal"
               },
@@ -7352,22 +7285,10 @@
                 "name": "Apprenticeship training"
               },
               {
-                "name": "AVI area of the education provider"
-              },
-              {
-                "name": "AVI area of the institution"
-              },
-              {
                 "name": "Education provider"
               },
               {
                 "name": "Educational institution"
-              },
-              {
-                "name": "ELY area of the education provider"
-              },
-              {
-                "name": "ELY area of the institution"
               },
               {
                 "name": "Expectations for the future"
@@ -7444,37 +7365,7 @@
             ],
             "measures": [
               {
-                "name": "% of 1 point"
-              },
-              {
-                "name": "% of 2 points"
-              },
-              {
-                "name": "% of 3 points"
-              },
-              {
-                "name": "% of 4 points"
-              },
-              {
-                "name": "% of 5 points"
-              },
-              {
                 "name": "Mean"
-              },
-              {
-                "name": "Number of 1 point"
-              },
-              {
-                "name": "Number of 2 points"
-              },
-              {
-                "name": "Number of 3 points"
-              },
-              {
-                "name": "Number of 4 points"
-              },
-              {
-                "name": "Number of 5 points"
               },
               {
                 "name": "Responded"
@@ -7490,6 +7381,216 @@
               },
               {
                 "name": "Weighted score"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "analyysi",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Aiempi koulutus"
+              },
+              {
+                "name": "Arvio tulevaisuudesta"
+              },
+              {
+                "name": "Hakeutumisväylä"
+              },
+              {
+                "name": "Ikäryhmä"
+              },
+              {
+                "name": "Koodit Oppilaitos"
+              },
+              {
+                "name": "Koodit Tutkinto"
+              },
+              {
+                "name": "Korkein aiempi koulutus"
+              },
+              {
+                "name": "Koulutuksen järjestäjä"
+              },
+              {
+                "name": "Koulutuksen järjestäjän AVI"
+              },
+              {
+                "name": "Koulutuksen järjestäjän ELY"
+              },
+              {
+                "name": "Koulutuksen järjestäjän kunta"
+              },
+              {
+                "name": "Koulutuksen järjestäjän maakunta"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Kyselyn kohderyhmä"
+              },
+              {
+                "name": "Kysymys"
+              },
+              {
+                "name": "Monivalintavaihtoehto"
+              },
+              {
+                "name": "Oppilaitoksen AVI"
+              },
+              {
+                "name": "Oppilaitoksen ELY"
+              },
+              {
+                "name": "Oppilaitoksen kunta"
+              },
+              {
+                "name": "Oppilaitoksen maakunta"
+              },
+              {
+                "name": "Oppilaitos"
+              },
+              {
+                "name": "Oppisopimuskoulutus"
+              },
+              {
+                "name": "Rahoituskausi"
+              },
+              {
+                "name": "Rahoitusmallikysymys"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Tilastokuukausi"
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Tutkinto"
+              },
+              {
+                "name": "Tutkintotyyppi"
+              },
+              {
+                "name": "Äidinkieli"
+              }
+            ],
+            "measures": [
+              {
+                "name": "1 piste %"
+              },
+              {
+                "name": "1 piste lkm"
+              },
+              {
+                "name": "2 pistettä %"
+              },
+              {
+                "name": "2 pistettä lkm"
+              },
+              {
+                "name": "3 pistettä %"
+              },
+              {
+                "name": "3 pistettä lkm"
+              },
+              {
+                "name": "4 pistettä %"
+              },
+              {
+                "name": "4 pistettä lkm"
+              },
+              {
+                "name": "5 pistettä %"
+              },
+              {
+                "name": "5 pistettä lkm"
+              },
+              {
+                "name": "Keskiarvo"
+              },
+              {
+                "name": "Keskihajonta"
+              },
+              {
+                "name": "Kyselyn kohteet"
+              },
+              {
+                "name": "Painotetut pisteet"
+              },
+              {
+                "name": "Pisteet"
+              },
+              {
+                "name": "Vastanneet"
+              },
+              {
+                "name": "Vastausosuus"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "analyysiSV",
+        "tables": [
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "analyysiEN",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Age group"
               }
             ]
           },
