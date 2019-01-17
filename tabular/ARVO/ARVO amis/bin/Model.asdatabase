@@ -3648,6 +3648,37 @@
             "formatString": "#,0"
           },
           {
+            "name": "kaikki pisteet lkm",
+            "expression": "SUM(Numerovalinta_kutistettu[lkm])",
+            "formatString": "#,0",
+            "isHidden": true
+          },
+          {
+            "name": "Keskiarvo",
+            "expression": "IF(DISTINCTCOUNT([vastaajaid])<=5,BLANK(),CALCULATE(AVERAGE(Numerovalinta_kutistettu[numerovalinta]),AND(Muuttujat[kysymysid] <> 5727,Muuttujat[kysymysid] <> 5809)))",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Keskihajonta",
+            "expression": "IF(DISTINCTCOUNT([vastaajaid])<=5,BLANK(),STDEV.P(Numerovalinta_kutistettu[numerovalinta]))",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Pisteet",
+            "expression": "IF(DISTINCTCOUNT([vastaajaid])<=5,BLANK(),SUM(Numerovalinta_kutistettu[numerovalinta]))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Kyselyn kohteet",
+            "expression": "IF([Vastanneet]=3,3,SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm]))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Vastausosuus",
+            "expression": "IF(AND(DISTINCTCOUNT([vastaajaid])<=5,DISTINCTCOUNT([vastaajaid])>0),blank(),DIVIDE([Vastanneet],[Kyselyn kohteet]))",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
             "name": "5 pistettä lkm",
             "expression": "IF([Vastanneet]=3,BLANK(),CALCULATE(SUM(Numerovalinta_kutistettu[lkm]),Numerovalinta_kutistettu[numerovalinta]=5))",
             "formatString": "#,0"
@@ -3685,12 +3716,6 @@
             "formatString": "#,0"
           },
           {
-            "name": "kaikki pisteet lkm",
-            "expression": "SUM(Numerovalinta_kutistettu[lkm])",
-            "formatString": "#,0",
-            "isHidden": true
-          },
-          {
             "name": "5 pistettä %",
             "expression": "IF([Vastanneet]=3,BLANK(),DIVIDE([5 pistettä lkm],[kaikki pisteet lkm]))",
             "formatString": "0.0 %;-0.0 %;0.0 %"
@@ -3713,31 +3738,6 @@
           {
             "name": "1 piste %",
             "expression": "IF([Vastanneet]=3,BLANK(),DIVIDE([1 piste lkm],[kaikki pisteet lkm]))",
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Keskiarvo",
-            "expression": "IF(DISTINCTCOUNT([vastaajaid])<=5,BLANK(),CALCULATE(AVERAGE(Numerovalinta_kutistettu[numerovalinta]),AND(Muuttujat[kysymysid] <> 5727,Muuttujat[kysymysid] <> 5809)))",
-            "formatString": "0.0"
-          },
-          {
-            "name": "Keskihajonta",
-            "expression": "IF(DISTINCTCOUNT([vastaajaid])<=5,BLANK(),STDEV.P(Numerovalinta_kutistettu[numerovalinta]))",
-            "formatString": "0.0"
-          },
-          {
-            "name": "Pisteet",
-            "expression": "IF(DISTINCTCOUNT([vastaajaid])<=5,BLANK(),SUM(Numerovalinta_kutistettu[numerovalinta]))",
-            "formatString": "#,0"
-          },
-          {
-            "name": "Kyselyn kohteet",
-            "expression": "IF([Vastanneet]=3,3,SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm]))",
-            "formatString": "#,0"
-          },
-          {
-            "name": "Vastausosuus",
-            "expression": "IF(AND(DISTINCTCOUNT([vastaajaid])<=5,DISTINCTCOUNT([vastaajaid])>0),blank(),DIVIDE([Vastanneet],[Kyselyn kohteet]))",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
@@ -3953,6 +3953,10 @@
             "name": "katokorjauskerroin",
             "expression": " IF([Vastausosuus]  >=  0.8, DIVIDE(1,[Vastausosuus]),1 + (15/16) * [Vastausosuus] - (25/32) * [Vastausosuus] * [Vastausosuus])",
             "isHidden": true
+          },
+          {
+            "name": "Viktade poäng  %",
+            "expression": "[Painotetut pisteet]/CALCULATE([Painotetut pisteet],ALLEXCEPT(Muuttujat,Muuttujat[Kysely]))"
           }
         ],
         "annotations": [
@@ -7785,6 +7789,9 @@
               },
               {
                 "name": "Viktade poäng"
+              },
+              {
+                "name": "Viktade poäng  %"
               }
             ]
           },
@@ -8136,6 +8143,149 @@
               },
               {
                 "name": "Koodit Tutkinto"
+              },
+              {
+                "name": "Ansökan"
+              },
+              {
+                "name": "Bedömning av situationen"
+              },
+              {
+                "name": "Den högsta tidigare utbildningen"
+              },
+              {
+                "name": "Examen"
+              },
+              {
+                "name": "Finansieringsmodellsfråga"
+              },
+              {
+                "name": "Finansieringsperiod"
+              },
+              {
+                "name": "Flervalsalternativ"
+              },
+              {
+                "name": "Fråga"
+              },
+              {
+                "name": "Kön"
+              },
+              {
+                "name": "Läroanstalt"
+              },
+              {
+                "name": "Läroanstaltens kommun"
+              },
+              {
+                "name": "Läroanstaltens landskap"
+              },
+              {
+                "name": "Läroanstaltens NMT-område"
+              },
+              {
+                "name": "Läroanstaltens RFV-område"
+              },
+              {
+                "name": "Läroavtalsutbildning"
+              },
+              {
+                "name": "Modersmål"
+              },
+              {
+                "name": "Målgrupp för frågeformulär"
+              },
+              {
+                "name": "Statistikmånad"
+              },
+              {
+                "name": "Statistikår"
+              },
+              {
+                "name": "Tidigare utbildning"
+              },
+              {
+                "name": "Utbildningsanordnare"
+              },
+              {
+                "name": "Utbildningsanordnarens kommun"
+              },
+              {
+                "name": "Utbildningsanordnarens landskap"
+              },
+              {
+                "name": "Utbildningsanordnarens NMT-område"
+              },
+              {
+                "name": "Utbildningsanordnarens RFV-område"
+              },
+              {
+                "name": "Utbildningsområde, nivå 1"
+              },
+              {
+                "name": "Utbildningsområde, nivå 2"
+              },
+              {
+                "name": "Utbildningsområde, nivå 3"
+              },
+              {
+                "name": "Åldersgrupp"
+              }
+            ],
+            "measures": [
+              {
+                "name": "% 1 poäng"
+              },
+              {
+                "name": "% 2 poäng"
+              },
+              {
+                "name": "% 3 poäng"
+              },
+              {
+                "name": "% 4 poäng"
+              },
+              {
+                "name": "% 5 poäng"
+              },
+              {
+                "name": "Antal 1 poäng"
+              },
+              {
+                "name": "Antal 2 poäng"
+              },
+              {
+                "name": "Antal 3 poäng"
+              },
+              {
+                "name": "Antal 4 poäng"
+              },
+              {
+                "name": "Antal 5 poäng"
+              },
+              {
+                "name": "Medeltal"
+              },
+              {
+                "name": "Målgruppens storlek"
+              },
+              {
+                "name": "Poäng"
+              },
+              {
+                "name": "Standardavvikelse"
+              },
+              {
+                "name": "Svarande"
+              },
+              {
+                "name": "Svarsfrekvens"
+              },
+              {
+                "name": "Viktade poäng"
+              },
+              {
+                "name": "Viktade poäng  %"
               }
             ]
           }
