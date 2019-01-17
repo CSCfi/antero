@@ -306,6 +306,7 @@
             "name": "Statistikmånad",
             "dataType": "string",
             "sourceColumn": "Statistikmånad",
+            "sortByColumn": "Koodit Tilastokuukausi",
             "displayFolder": "Tidsvariabler"
           },
           {
@@ -715,6 +716,7 @@
             "name": "Tilastokuukausi",
             "dataType": "string",
             "sourceColumn": "Tilastokuukausi",
+            "sortByColumn": "Koodit Tilastokuukausi",
             "displayFolder": "Aikamuuttujat"
           },
           {
@@ -3648,37 +3650,6 @@
             "formatString": "#,0"
           },
           {
-            "name": "kaikki pisteet lkm",
-            "expression": "SUM(Numerovalinta_kutistettu[lkm])",
-            "formatString": "#,0",
-            "isHidden": true
-          },
-          {
-            "name": "Keskiarvo",
-            "expression": "IF(DISTINCTCOUNT([vastaajaid])<=5,BLANK(),CALCULATE(AVERAGE(Numerovalinta_kutistettu[numerovalinta]),AND(Muuttujat[kysymysid] <> 5727,Muuttujat[kysymysid] <> 5809)))",
-            "formatString": "0.0"
-          },
-          {
-            "name": "Keskihajonta",
-            "expression": "IF(DISTINCTCOUNT([vastaajaid])<=5,BLANK(),STDEV.P(Numerovalinta_kutistettu[numerovalinta]))",
-            "formatString": "0.0"
-          },
-          {
-            "name": "Pisteet",
-            "expression": "IF(DISTINCTCOUNT([vastaajaid])<=5,BLANK(),SUM(Numerovalinta_kutistettu[numerovalinta]))",
-            "formatString": "#,0"
-          },
-          {
-            "name": "Kyselyn kohteet",
-            "expression": "IF([Vastanneet]=3,3,SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm]))",
-            "formatString": "#,0"
-          },
-          {
-            "name": "Vastausosuus",
-            "expression": "IF(AND(DISTINCTCOUNT([vastaajaid])<=5,DISTINCTCOUNT([vastaajaid])>0),blank(),DIVIDE([Vastanneet],[Kyselyn kohteet]))",
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
             "name": "5 pistettä lkm",
             "expression": "IF([Vastanneet]=3,BLANK(),CALCULATE(SUM(Numerovalinta_kutistettu[lkm]),Numerovalinta_kutistettu[numerovalinta]=5))",
             "formatString": "#,0"
@@ -3716,6 +3687,12 @@
             "formatString": "#,0"
           },
           {
+            "name": "kaikki pisteet lkm",
+            "expression": "SUM(Numerovalinta_kutistettu[lkm])",
+            "formatString": "#,0",
+            "isHidden": true
+          },
+          {
             "name": "5 pistettä %",
             "expression": "IF([Vastanneet]=3,BLANK(),DIVIDE([5 pistettä lkm],[kaikki pisteet lkm]))",
             "formatString": "0.0 %;-0.0 %;0.0 %"
@@ -3741,12 +3718,36 @@
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
+            "name": "Keskiarvo",
+            "expression": "IF(DISTINCTCOUNT([vastaajaid])<=5,BLANK(),CALCULATE(AVERAGE(Numerovalinta_kutistettu[numerovalinta]),AND(Muuttujat[kysymysid] <> 5727,Muuttujat[kysymysid] <> 5809)))",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Keskihajonta",
+            "expression": "IF(DISTINCTCOUNT([vastaajaid])<=5,BLANK(),STDEV.P(Numerovalinta_kutistettu[numerovalinta]))",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Pisteet",
+            "expression": "SUM(Numerovalinta_kutistettu[numerovalinta])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Kyselyn kohteet",
+            "expression": "IF([Vastanneet]=3,3,SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm]))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Vastausosuus",
+            "expression": "IF(AND(DISTINCTCOUNT([vastaajaid])<=5,DISTINCTCOUNT([vastaajaid])>0),blank(),DIVIDE([Vastanneet],[Kyselyn kohteet]))",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
             "name": "Painotetut pisteet_aloitus",
             "expression": [
               "CALCULATE( [Pisteet] * [katokorjauskerroin] ,Numerovalinta_kutistettu[Kyselyn kohderyhmä]=\"Aloittaneet\")",
               ""
             ],
-            "formatString": "#,0",
             "isHidden": true
           },
           {
@@ -3755,7 +3756,6 @@
               "CALCULATE(3 * [Pisteet] * [katokorjauskerroin] ,Numerovalinta_kutistettu[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\")",
               ""
             ],
-            "formatString": "#,0",
             "isHidden": true
           },
           {
@@ -3766,12 +3766,11 @@
               "",
               ""
             ],
-            "formatString": "#,0",
             "isHidden": true
           },
           {
             "name": "Painotetut pisteet",
-            "expression": " IF(DISTINCTCOUNT([vastaajaid])<=5,BLANK(),[Painotetut pisteet_aloitus]+[Painotetut pisteet_paatto_koko]+[Painotetut pisteet_paatto_osa])",
+            "expression": "CALCULATE([Painotetut pisteet_aloitus]+[Painotetut pisteet_paatto_koko]+[Painotetut pisteet_paatto_osa])",
             "formatString": "#,0"
           },
           {
@@ -3956,7 +3955,12 @@
           },
           {
             "name": "Viktade poäng  %",
-            "expression": "[Painotetut pisteet]/CALCULATE([Painotetut pisteet],ALLEXCEPT(Muuttujat,Muuttujat[Kysely]))"
+            "expression": "[Painotetut pisteet]/CALCULATE([Painotetut pisteet],ALLEXCEPT(Muuttujat,Muuttujat[Kysely]))",
+            "formatString": "0.00 %;-0.00 %;0.00 %"
+          },
+          {
+            "name": "Kyselyn kohteet_testi",
+            "expression": "IF([Vastanneet]=3,3,IF(ISFILTERED([Ikäryhmä]),BLANK(),SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm])))"
           }
         ],
         "annotations": [
@@ -6968,6 +6972,11 @@
             "dataType": "int64",
             "sourceColumn": "vastaajatunnukset_lkm",
             "sourceProviderType": "Integer"
+          },
+          {
+            "name": "kyselykertaid",
+            "dataType": "int64",
+            "sourceColumn": "kyselykertaid"
           }
         ],
         "partitions": [
@@ -6975,7 +6984,7 @@
             "name": "f_arvo_luodut_vastaajatunnukset",
             "dataView": "full",
             "source": {
-              "query": " SELECT [dw].[f_arvo_luodut_vastaajatunnukset].[id],[dw].[f_arvo_luodut_vastaajatunnukset].[vastaajatunnukset_lkm] FROM [dw].[f_arvo_luodut_vastaajatunnukset] ",
+              "query": " SELECT [dw].[f_arvo_luodut_vastaajatunnukset].[id],[dw].[f_arvo_luodut_vastaajatunnukset].[kyselykertaid],[dw].[f_arvo_luodut_vastaajatunnukset].[vastaajatunnukset_lkm] FROM [dw].[f_arvo_luodut_vastaajatunnukset] ",
               "dataSource": "SqlServer dwitvipusql16 ANTERO"
             },
             "annotations": [
@@ -7193,7 +7202,7 @@
                   "        <string>kyselykertaid</string>",
                   "      </key>",
                   "      <value>",
-                  "        <boolean>false</boolean>",
+                  "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
                   "  </ColumnChecked>",
@@ -7210,7 +7219,7 @@
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": " SELECT [dw].[f_arvo_luodut_vastaajatunnukset].[id],[dw].[f_arvo_luodut_vastaajatunnukset].[vastaajatunnukset_lkm] FROM [dw].[f_arvo_luodut_vastaajatunnukset] "
+            "value": " SELECT [dw].[f_arvo_luodut_vastaajatunnukset].[id],[dw].[f_arvo_luodut_vastaajatunnukset].[kyselykertaid],[dw].[f_arvo_luodut_vastaajatunnukset].[vastaajatunnukset_lkm] FROM [dw].[f_arvo_luodut_vastaajatunnukset] "
           },
           {
             "name": "_TM_ExtProp_DbTableName",
@@ -7434,7 +7443,7 @@
               "        <string>kyselykertaid</string>",
               "      </key>",
               "      <value>",
-              "        <boolean>false</boolean>",
+              "        <boolean>true</boolean>",
               "      </value>",
               "    </item>",
               "  </ColumnChecked>",
