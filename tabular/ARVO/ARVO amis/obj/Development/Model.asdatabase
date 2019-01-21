@@ -600,7 +600,8 @@
           {
             "name": "Age group",
             "dataType": "string",
-            "sourceColumn": "Age group"
+            "sourceColumn": "Age group",
+            "sortByColumn": "Järjestys ikäryhmä"
           },
           {
             "name": "The highest prior education",
@@ -3775,12 +3776,12 @@
           },
           {
             "name": "Keskiarvo",
-            "expression": "IF([Vastanneet]<=5,BLANK(),CALCULATE(AVERAGEX(VALUES(Muuttujat[vastausavain]),AVERAGE(Muuttujat[numerovalinta])),Muuttujat[vastaustyyppi]<>\"nps\"))",
+            "expression": "IF([Vastanneet]=3,BLANK(),CALCULATE(AVERAGE('CalculatedTable 1'[numerovalinta]),Muuttujat[vastaustyyppi]<>\"nps\"))",
             "formatString": "0.0"
           },
           {
             "name": "Keskihajonta",
-            "expression": "IF([Vastanneet]=3,BLANK(),STDEV.P(muuttujat[numerovalinta]))",
+            "expression": "IF([Vastanneet]=3,BLANK(),STDEV.P('CalculatedTable 1'[numerovalinta]))",
             "formatString": "0.0"
           },
           {
@@ -3887,12 +3888,12 @@
           {
             "name": "Medeltal",
             "expression": "[Keskiarvo]",
-            "formatString": "0"
+            "formatString": "0.0"
           },
           {
             "name": "Standardavvikelse",
             "expression": "[Keskihajonta]",
-            "formatString": "0"
+            "formatString": "0.0"
           },
           {
             "name": "Poäng",
@@ -3972,12 +3973,12 @@
           {
             "name": "Mean",
             "expression": "[Keskiarvo]",
-            "formatString": "0"
+            "formatString": "0.0"
           },
           {
             "name": "Standard deviation",
             "expression": "[Keskihajonta]",
-            "formatString": "0"
+            "formatString": "0.0"
           },
           {
             "name": "Score",
@@ -7500,6 +7501,37 @@
             ]
           }
         ]
+      },
+      {
+        "name": "CalculatedTable 1",
+        "isHidden": true,
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "vastausavain",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[vastausavain]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "numerovalinta",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[numerovalinta]"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": "ADDCOLUMNS(VALUES(Muuttujat[vastausavain]),\"numerovalinta\",CALCULATE(AVERAGE(Muuttujat[numerovalinta])))"
+            }
+          }
+        ]
       }
     ],
     "relationships": [
@@ -7509,6 +7541,14 @@
         "fromColumn": "luodut_vastaajatunnukset_id",
         "toTable": "Luodut vastaajatunnukset",
         "toColumn": "id",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "8924babe-fec3-4c0f-a3b0-c2de21280e3c",
+        "fromTable": "Muuttujat",
+        "fromColumn": "vastausavain",
+        "toTable": "CalculatedTable 1",
+        "toColumn": "vastausavain",
         "crossFilteringBehavior": "bothDirections"
       }
     ],
@@ -8354,6 +8394,38 @@
               },
               {
                 "name": "Koodit Tutkinto"
+              }
+            ],
+            "measures": [
+              {
+                "name": "% of 1 point"
+              },
+              {
+                "name": "% of 2 points"
+              },
+              {
+                "name": "% of 3 points"
+              },
+              {
+                "name": "% of 4 points"
+              },
+              {
+                "name": "% of 5 points"
+              },
+              {
+                "name": "Number of 1 point"
+              },
+              {
+                "name": "Number of 2 points"
+              },
+              {
+                "name": "Number of 3 points"
+              },
+              {
+                "name": "Number of 4 points"
+              },
+              {
+                "name": "Number of 5 points"
               }
             ]
           },
