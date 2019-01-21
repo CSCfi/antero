@@ -1,4 +1,4 @@
---  Tavoiteajassa tutkinnon suorittaneet taulu paivitys ryhmakertoimet ynm
+--  Tavoiteajassa tutkinnon suorittaneet taulu paivitys ryhmakertoimet koulutuskunta ynm
 USE ANTERO
 GO
 IF EXISTS (
