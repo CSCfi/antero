@@ -47,6 +47,7 @@ CREATE TABLE [sa].[sa_eter_basic_info](
 	[BAS.FORCAMPCOUNTRY] [varchar](6) NULL,
 	[BAS.NOTESLEGALYEAR] [varchar](220) NULL,
 	[BAS.UNIHOSPNAME] [varchar](723) NULL,
+	[username] [varchar](100) NULL,
 	[Source] [varchar](100) NULL,
 	[Loadtime] [datetime] NULL,
  CONSTRAINT [PK__sa_eter_basic_info] PRIMARY KEY CLUSTERED
