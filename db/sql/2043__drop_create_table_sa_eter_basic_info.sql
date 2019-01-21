@@ -9,7 +9,7 @@ IF  NOT EXISTS
 	(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='sa' AND TABLE_NAME='sa_eter_basic_info')
 BEGIN
 CREATE TABLE [sa].[sa_eter_basic_info](
-	[_id] [varchar](24) NULL,
+	[_id] [varchar](24) NOT NULL,
 	[BAS.ETERIDYEAR] [varchar](11) NULL,
 	[BAS.ETERID] [varchar](6) NULL,
 	[BAS.NATID] [varchar](14) NULL,
