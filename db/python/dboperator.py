@@ -174,8 +174,8 @@ def insert(source,schema,table,row,debug=False):  # insert single row
   count = cur.rowcount
   conn.commit()
 
-# insert - many rows at a time @hpetrell  
-def insertMany(source, schema, table, rows, debug=False): #insert array 
+# insert - many rows at a time @hpetrell
+def insertMany(source, schema, table, rows, debug=False): #insert array
   global conn, cur, count, columnlist
   if debug: print("dboperator.insert: columnlist="+(",".join(columnlist)))
   columnstr = ",".join(columnlist)

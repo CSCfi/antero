@@ -136,14 +136,14 @@
           {
             "name": "Hakuavain",
             "dataType": "string",
-            "isHidden": true,
-            "sourceColumn": "Hakuavain"
+            "sourceColumn": "Hakuavain",
+            "displayFolder": "Hakumuuttujat"
           },
           {
             "name": "hakunumero",
             "dataType": "string",
-            "isHidden": true,
-            "sourceColumn": "hakunumero"
+            "sourceColumn": "hakunumero",
+            "displayFolder": "Hakumuuttujat"
           },
           {
             "name": "Sektori",
@@ -159,7 +159,7 @@
           },
           {
             "name": "jarjestys kutsuhaku",
-            "dataType": "string",
+            "dataType": "int64",
             "isHidden": true,
             "sourceColumn": "jarjestys kutsuhaku"
           },
@@ -593,7 +593,7 @@
           },
           {
             "name": "Valitut",
-            "expression": "IF(CALCULATE(SUM('CalculatedTable 2'[Valittuja]))=0,BLANK(),CALCULATE(SUM('CalculatedTable 2'[Valittuja])))",
+            "expression": "IF(CALCULATE(SUM('Muuttujat - Valitut'[Valittuja]))=0,BLANK(),CALCULATE(SUM('Muuttujat - Valitut'[Valittuja])))",
             "formatString": "#,0"
           },
           {
@@ -612,18 +612,61 @@
             "formatString": "#,0"
           },
           {
-            "name": "Keskihajonta (hakijoita per valittu)",
+            "name": "Keskihajonta hakijoita per valittu",
             "expression": "STDEVX.P('_Muuttujat',IF(ISERROR([Hakijat]/[Valitut]),0,[Hakijat]/[Valitut]))",
             "formatString": "0.0"
           },
           {
-            "name": "Keskihajonta (ulk. hakijoita per valittu)",
+            "name": "Keskihajonta ulk. hakijoita per valittu",
             "expression": "CALCULATE(STDEVX.P('_Muuttujat',IF(ISERROR([Hakijat]/[Valitut]),0,[Hakijat]/[Valitut])),'_Muuttujat'[Kansalaisuus Suomi]=\"Ei\")",
             "formatString": "0.0"
           },
           {
-            "name": "Ulkomaalaisten osuus kaikista hakijoista",
+            "name": "Ulkomaalaisten hakijoiden osuus",
             "expression": "[Ulkomaalaiset hakijat]/[Hakijat]",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Mediaani hakijoita per valittu",
+            "expression": "IF([Mediaani hakijoita per valittu2]<>INT([Mediaani hakijoita per valittu2]),ROUND([Mediaani hakijoita per valittu2],1),[Mediaani hakijoita per valittu2])"
+          },
+          {
+            "name": "Mediaani ulk. hakijoita per valittu",
+            "expression": "IF([Hakijat]=0,BLANK(),IF([Mediaani ulk. hakijoita per valittu2]<>INT([Mediaani ulk. hakijoita per valittu2]),ROUND([Mediaani ulk. hakijoita per valittu2],1),[Mediaani ulk. hakijoita per valittu2]))"
+          },
+          {
+            "name": "Mediaani hakijoita per valittu2",
+            "expression": "MEDIANX('Haku-valitut',[Hakijoita2]/[Valittuja2])",
+            "isHidden": true
+          },
+          {
+            "name": "Mediaani ulk. hakijoita per valittu2",
+            "expression": [
+              "IF(",
+              "ISBLANK(MEDIANX('Haku-valitut',IF(ISBLANK([Ulk hakijoita2]),0,'Haku-valitut'[Ulk hakijoita2])/[Valittuja2]))",
+              ",0",
+              ",MEDIANX('Haku-valitut',IF(ISBLANK([Ulk hakijoita2]),0,'Haku-valitut'[Ulk hakijoita2])/[Valittuja2]))"
+            ],
+            "isHidden": true
+          },
+          {
+            "name": "Hakijat naiset",
+            "expression": "CALCULATE([Hakijat],_Muuttujat[Sukupuoli]=\"nainen\")",
+            "isHidden": true
+          },
+          {
+            "name": "Hakijat miehet",
+            "expression": "CALCULATE([Hakijat],_Muuttujat[Sukupuoli]=\"mies\")",
+            "isHidden": true
+          },
+          {
+            "name": "Naishakijoiden osuus",
+            "expression": "[Hakijat naiset]/[Hakijat]",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Mieshakijoiden osuus",
+            "expression": "[Hakijat miehet]/[Hakijat]",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           }
         ],
@@ -1073,6 +1116,7 @@
             "name": "Äidinkieli",
             "dataType": "string",
             "sourceColumn": "Äidinkieli",
+            "sortByColumn": "jarj Äidinkieli",
             "displayFolder": "Henkilömuuttujat"
           },
           {
@@ -1091,6 +1135,7 @@
             "name": "Tehtäväryhmä",
             "dataType": "string",
             "sourceColumn": "Tehtäväryhmä",
+            "sortByColumn": "jarj Tehtäväryhmä",
             "displayFolder": "Henkilömuuttujat"
           },
           {
@@ -1109,6 +1154,7 @@
             "name": "Tehtäväjaottelu",
             "dataType": "string",
             "sourceColumn": "Tehtäväjaottelu",
+            "sortByColumn": "jarj Tehtäväjaottelu",
             "displayFolder": "Henkilömuuttujat"
           },
           {
@@ -1199,36 +1245,42 @@
             "name": "Koulutusala, taso 1",
             "dataType": "string",
             "sourceColumn": "Koulutusala, taso 1",
+            "sortByColumn": "jarj Koulutusala, taso 1",
             "displayFolder": "Koulutusmuuttujat"
           },
           {
             "name": "Koulutusala, taso 2",
             "dataType": "string",
             "sourceColumn": "Koulutusala, taso 2",
+            "sortByColumn": "jarj Koulutusala, taso 2",
             "displayFolder": "Koulutusmuuttujat"
           },
           {
             "name": "Koulutusala, taso 3",
             "dataType": "string",
             "sourceColumn": "Koulutusala, taso 3",
+            "sortByColumn": "jarj Koulutusala, taso 3",
             "displayFolder": "Koulutusmuuttujat"
           },
           {
             "name": "Koulutusaste, taso 1",
             "dataType": "string",
             "sourceColumn": "Koulutusaste, taso 1",
+            "sortByColumn": "jarj Koulutusaste, taso 1",
             "displayFolder": "Koulutusmuuttujat"
           },
           {
             "name": "Koulutusaste, taso 2",
             "dataType": "string",
             "sourceColumn": "Koulutusaste, taso 2",
+            "sortByColumn": "jarj Koulutusaste, taso 2",
             "displayFolder": "Koulutusmuuttujat"
           },
           {
             "name": "OKM ohjauksen ala",
             "dataType": "string",
             "sourceColumn": "OKM ohjauksen ala",
+            "sortByColumn": "jarj OKM ohjauksen ala",
             "displayFolder": "Koulutusmuuttujat"
           },
           {
@@ -1260,12 +1312,14 @@
             "name": "Päätieteenala",
             "dataType": "string",
             "sourceColumn": "Päätieteenala",
+            "sortByColumn": "jarj Päätieteenala",
             "displayFolder": "Tieteenalamuuttujat"
           },
           {
             "name": "Tieteenala",
             "dataType": "string",
             "sourceColumn": "Tieteenala",
+            "sortByColumn": "jarj Tieteenala",
             "displayFolder": "Tieteenalamuuttujat"
           },
           {
@@ -1696,17 +1750,40 @@
             "sourceColumn": "ed_tyopaikka_vastanneet"
           },
           {
-            "name": "Toimikauden pituus",
-            "dataType": "string",
-            "sourceColumn": "Toimikauden pituus",
-            "sortByColumn": "jarj Toimikauden pituus",
-            "displayFolder": "Henkilömuuttujat"
-          },
-          {
             "name": "jarj Toimikauden pituus",
             "dataType": "int64",
             "isHidden": true,
             "sourceColumn": "jarj Toimikauden pituus"
+          },
+          {
+            "name": "Työsopimuksen pituus",
+            "dataType": "string",
+            "sourceColumn": "Työsopimuksen pituus",
+            "displayFolder": "Henkilömuuttujat"
+          },
+          {
+            "name": "aika1_yritys_suomi",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "aika1_yritys_suomi"
+          },
+          {
+            "name": "aika2_yritys_suomi",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "aika2_yritys_suomi"
+          },
+          {
+            "name": "aika3_yritys_suomi",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "aika3_yritys_suomi"
+          },
+          {
+            "name": "jarj Äidinkieli",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "jarj Äidinkieli"
           }
         ],
         "partitions": [
@@ -2612,10 +2689,10 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Toimikauden pituus</string>",
+                  "        <string>Työsopimuksen pituus</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>179</int>",
+                  "        <int>198</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -2624,6 +2701,38 @@
                   "      </key>",
                   "      <value>",
                   "        <int>208</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>aika1_yritys_suomi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>175</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>aika2_yritys_suomi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>175</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>aika3_yritys_suomi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>175</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>jarj Äidinkieli</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>133</int>",
                   "      </value>",
                   "    </item>",
                   "  </ColumnWidths>",
@@ -3510,10 +3619,10 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Toimikauden pituus</string>",
+                  "        <string>Työsopimuksen pituus</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>110</int>",
+                  "        <int>111</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -3521,7 +3630,39 @@
                   "        <string>jarj Toimikauden pituus</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>111</int>",
+                  "        <int>110</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>aika1_yritys_suomi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>112</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>aika2_yritys_suomi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>113</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>aika3_yritys_suomi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>114</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>jarj Äidinkieli</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>115</int>",
                   "      </value>",
                   "    </item>",
                   "  </ColumnDisplayIndex>",
@@ -4377,7 +4518,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Toimikauden pituus</string>",
+                  "        <string>Työsopimuksen pituus</string>",
                   "      </key>",
                   "      <value>",
                   "        <boolean>true</boolean>",
@@ -4386,6 +4527,38 @@
                   "    <item>",
                   "      <key>",
                   "        <string>jarj Toimikauden pituus</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>aika1_yritys_suomi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>aika2_yritys_suomi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>aika3_yritys_suomi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>jarj Äidinkieli</string>",
                   "      </key>",
                   "      <value>",
                   "        <boolean>true</boolean>",
@@ -4477,22 +4650,22 @@
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
-            "name": "Tohtorintutkinto samassa yliopistossa",
-            "expression": "CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[tohtori_sama_yo]=1)",
-            "formatString": "#,0"
+            "name": "Tohtorintutkinto samassa yliopistossa (%)",
+            "expression": "CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[tohtori_sama_yo]=1)/[Uudet työntekijät]",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
-            "name": "Tohtorintutkinto muussa yliopistossa",
-            "expression": "CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[tohtori_eri_yo]=1)",
-            "formatString": "#,0"
+            "name": "Tohtorintutkinto muussa suomalaisessa yliopistossa (%)",
+            "expression": "CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[tohtori_eri_yo]=1)/[Uudet työntekijät]",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
-            "name": "Tohtorintutkinto ulkomaisessa yliopistossa",
-            "expression": "CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[tohtori_ulk_yo]=1)",
-            "formatString": "#,0"
+            "name": "Tohtorintutkinto ulkomaisessa yliopistossa (%)",
+            "expression": "CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[tohtori_ulk_yo]=1)/[Uudet työntekijät]",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
-            "name": "Uudet henkilöt",
+            "name": "Uudet työntekijät",
             "expression": "DISTINCTCOUNT([henkilonumero])",
             "formatString": "#,0"
           },
@@ -4551,7 +4724,7 @@
           },
           {
             "name": "Hakijat2",
-            "expression": "SUM('CalculatedTable 1'[Hakijoita])",
+            "expression": "SUM('Haku-hakijat-ulk hakijat'[Hakijoita])",
             "isHidden": true
           },
           {
@@ -4561,7 +4734,7 @@
           },
           {
             "name": "Ulkomaalaiset hakijat2",
-            "expression": "SUM('CalculatedTable 1'[Ulk hakijat])",
+            "expression": "SUM('Haku-hakijat-ulk hakijat'[Ulk hakijat])",
             "isHidden": true
           },
           {
@@ -4579,12 +4752,27 @@
           },
           {
             "name": "Vastanneiden osuus",
-            "expression": "[Vastanneet ed työpaikka]/[Uudet henkilöt]",
+            "expression": "[Vastanneet ed työpaikka]/[Uudet työntekijät]",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Edeltävä työpaikka nykyisessä korkeakoulussa",
             "expression": "CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[ed_sama_yo_amk]=1)/[Vastanneet ed työpaikka]",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Työkokemusta yrityksessä (toimipaikka Suomessa) 6 kk–3 v.",
+            "expression": "calculate(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[aika1_yritys_suomi]=1)/[Vastanneet työkokemus]",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Työkokemusta yrityksessä (toimipaikka Suomessa) 3–7 v.",
+            "expression": "calculate(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[aika2_yritys_suomi]=1)/[Vastanneet työkokemus]",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Työkokemusta yrityksessä (toimipaikka Suomessa) yli 7 v.",
+            "expression": "calculate(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[aika3_yritys_suomi]=1)/[Vastanneet työkokemus]",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           }
         ],
@@ -5495,10 +5683,10 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Toimikauden pituus</string>",
+              "        <string>Työsopimuksen pituus</string>",
               "      </key>",
               "      <value>",
-              "        <int>179</int>",
+              "        <int>198</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -5507,6 +5695,38 @@
               "      </key>",
               "      <value>",
               "        <int>208</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>aika1_yritys_suomi</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>175</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>aika2_yritys_suomi</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>175</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>aika3_yritys_suomi</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>175</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>jarj Äidinkieli</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>133</int>",
               "      </value>",
               "    </item>",
               "  </ColumnWidths>",
@@ -6393,10 +6613,10 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Toimikauden pituus</string>",
+              "        <string>Työsopimuksen pituus</string>",
               "      </key>",
               "      <value>",
-              "        <int>110</int>",
+              "        <int>111</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -6404,7 +6624,39 @@
               "        <string>jarj Toimikauden pituus</string>",
               "      </key>",
               "      <value>",
-              "        <int>111</int>",
+              "        <int>110</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>aika1_yritys_suomi</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>112</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>aika2_yritys_suomi</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>113</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>aika3_yritys_suomi</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>114</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>jarj Äidinkieli</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>115</int>",
               "      </value>",
               "    </item>",
               "  </ColumnDisplayIndex>",
@@ -7260,7 +7512,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Toimikauden pituus</string>",
+              "        <string>Työsopimuksen pituus</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -7269,6 +7521,38 @@
               "    <item>",
               "      <key>",
               "        <string>jarj Toimikauden pituus</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>aika1_yritys_suomi</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>aika2_yritys_suomi</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>aika3_yritys_suomi</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>jarj Äidinkieli</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -7285,7 +7569,7 @@
         ]
       },
       {
-        "name": "CalculatedTable 1",
+        "name": "Haku-hakijat-ulk hakijat",
         "isHidden": true,
         "columns": [
           {
@@ -7324,7 +7608,7 @@
         ]
       },
       {
-        "name": "CalculatedTable 2",
+        "name": "Haku-valitut",
         "isHidden": true,
         "columns": [
           {
@@ -7337,11 +7621,27 @@
           },
           {
             "type": "calculatedTableColumn",
-            "name": "Valittuja",
+            "name": "Valittuja2",
             "dataType": "int64",
             "isNameInferred": true,
             "isDataTypeInferred": true,
-            "sourceColumn": "[Valittuja]"
+            "sourceColumn": "[Valittuja2]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Hakijoita2",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Hakijoita2]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Ulk hakijoita2",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Ulk hakijoita2]"
           }
         ],
         "partitions": [
@@ -7349,14 +7649,13 @@
             "name": "CalculatedTable 2",
             "source": {
               "type": "calculated",
-              "expression": "SUMMARIZE(Muuttujat,[Hakuavain],\"Valittuja\",DISTINCTCOUNT(Muuttujat[henkilonumero]))"
+              "expression": "SUMMARIZE(Muuttujat,[Hakuavain],\"Valittuja2\",DISTINCTCOUNT(Muuttujat[henkilonumero]),\"Hakijoita2\",SUMX(FILTER(RELATEDTABLE(_Muuttujat),[Hakuavain]=EARLIER([Hakuavain])),[hakijat_lkm]),\"Ulk hakijoita2\",SUMX(FILTER(RELATEDTABLE(_Muuttujat),[Hakuavain]=EARLIER([Hakuavain]) && [Kansalaisuus Suomi]=\"Ei\"),[hakijat_lkm]))"
             }
           }
         ]
       },
       {
-        "name": "CalculatedTable 3",
-        "isHidden": true,
+        "name": "Muuttujat - Valitut",
         "columns": [
           {
             "type": "calculatedTableColumn",
@@ -7373,7 +7672,8 @@
             "dataType": "string",
             "isNameInferred": true,
             "isDataTypeInferred": true,
-            "sourceColumn": "Muuttujat[Tutkijanuravaihe]"
+            "sourceColumn": "Muuttujat[Tutkijanuravaihe]",
+            "displayFolder": "Henkilömuuttujat"
           },
           {
             "type": "calculatedTableColumn",
@@ -7381,7 +7681,17 @@
             "dataType": "string",
             "isNameInferred": true,
             "isDataTypeInferred": true,
-            "sourceColumn": "Muuttujat[Tieteenala]"
+            "sourceColumn": "Muuttujat[Tieteenala]",
+            "displayFolder": "Tieteenalamuuttujat"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Valittuja",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "sourceColumn": "[Valittuja]"
           }
         ],
         "partitions": [
@@ -7389,7 +7699,7 @@
             "name": "CalculatedTable 3",
             "source": {
               "type": "calculated",
-              "expression": "SUMMARIZE(Muuttujat,[Hakuavain],[Tutkijanuravaihe],[Tieteenala])"
+              "expression": "SUMMARIZE(Muuttujat,[Hakuavain],[Tutkijanuravaihe],[Tieteenala],\"Valittuja\",DISTINCTCOUNT(Muuttujat[henkilonumero]))"
             }
           }
         ]
@@ -7397,33 +7707,33 @@
     ],
     "relationships": [
       {
-        "name": "11c6a09f-7a26-4b2a-9649-a9ae161f7070",
-        "fromTable": "_Muuttujat",
-        "fromColumn": "Hakuavain",
-        "toTable": "CalculatedTable 2",
-        "toColumn": "Hakuavain",
-        "crossFilteringBehavior": "bothDirections"
-      },
-      {
         "name": "9507e628-89d7-4f28-b23e-287f15c25c44",
         "fromTable": "Muuttujat",
         "fromColumn": "Hakuavain",
-        "toTable": "CalculatedTable 1",
+        "toTable": "Haku-hakijat-ulk hakijat",
         "toColumn": "Hakuavain",
         "crossFilteringBehavior": "bothDirections"
       },
       {
-        "name": "a853c5c7-3b2c-4cd9-89b0-432010f02dc2",
-        "fromTable": "CalculatedTable 3",
+        "name": "28444efc-1512-4e04-a3c9-c2202e127ec1",
+        "fromTable": "Muuttujat - Valitut",
         "fromColumn": "Hakuavain",
-        "toTable": "CalculatedTable 2",
+        "toTable": "Haku-valitut",
+        "toColumn": "Hakuavain",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "7b898d53-ef36-47c4-ab32-a8ecb6786e49",
+        "fromTable": "_Muuttujat",
+        "fromColumn": "Hakuavain",
+        "toTable": "Haku-valitut",
         "toColumn": "Hakuavain",
         "crossFilteringBehavior": "bothDirections"
       }
     ],
     "perspectives": [
       {
-        "name": "Hakijat",
+        "name": "Hakijat_ja_valitut",
         "tables": [
           {
             "name": "_Muuttujat",
@@ -7458,16 +7768,10 @@
             ],
             "measures": [
               {
-                "name": "Hakijoita per valittu"
+                "name": "Keskihajonta hakijoita per valittu"
               },
               {
-                "name": "Keskihajonta (hakijoita per valittu)"
-              },
-              {
-                "name": "Keskihajonta (ulk. hakijoita per valittu)"
-              },
-              {
-                "name": "Ulkomaalaiset hakijat per valittu"
+                "name": "Keskihajonta ulk. hakijoita per valittu"
               },
               {
                 "name": "Valitut"
@@ -7477,6 +7781,12 @@
               },
               {
                 "name": "Ulkomaalaiset hakijat"
+              },
+              {
+                "name": "Mediaani hakijoita per valittu"
+              },
+              {
+                "name": "Mediaani ulk. hakijoita per valittu"
               }
             ]
           },
@@ -7492,7 +7802,7 @@
             ]
           },
           {
-            "name": "CalculatedTable 3",
+            "name": "Muuttujat - Valitut",
             "columns": [
               {
                 "name": "Tieteenala"
@@ -7653,9 +7963,6 @@
               },
               {
                 "name": "Kansalaisuus (maanosa)"
-              },
-              {
-                "name": "Toimikauden pituus"
               }
             ],
             "measures": [
@@ -7690,7 +7997,7 @@
                 "name": "Työkokemusta yrityksessä (toimipaikka ulkomailla)"
               },
               {
-                "name": "Uudet henkilöt"
+                "name": "Uudet työntekijät"
               },
               {
                 "name": "Työkokemusta nykyisessä korkeakoulussa"
@@ -7714,7 +8021,7 @@
         ]
       },
       {
-        "name": "Tyokokemus2",
+        "name": "Tyokokemus2a",
         "tables": [
           {
             "name": "Muuttujat",
@@ -7862,9 +8169,6 @@
               },
               {
                 "name": "Kansalaisuus (maanosa)"
-              },
-              {
-                "name": "Toimikauden pituus"
               }
             ],
             "measures": [
@@ -7881,7 +8185,7 @@
                 "name": "Työkokemusta ulkomaisesta yliopistosta yli 7 v."
               },
               {
-                "name": "Uudet henkilöt"
+                "name": "Uudet työntekijät"
               },
               {
                 "name": "Vastanneiden osuus"
@@ -8050,9 +8354,6 @@
               },
               {
                 "name": "Kansalaisuus (maanosa)"
-              },
-              {
-                "name": "Toimikauden pituus"
               }
             ],
             "measures": [
@@ -8087,7 +8388,7 @@
                 "name": "Edeltävä työpaikka yrityksessä (toimipaikka ulkomailla)"
               },
               {
-                "name": "Uudet henkilöt"
+                "name": "Uudet työntekijät"
               },
               {
                 "name": "Vastanneiden osuus"
@@ -8259,23 +8560,20 @@
               },
               {
                 "name": "Kansalaisuus (maanosa)"
-              },
-              {
-                "name": "Toimikauden pituus"
               }
             ],
             "measures": [
               {
-                "name": "Tohtorintutkinto muussa yliopistossa"
+                "name": "Tohtorintutkinto muussa suomalaisessa yliopistossa (%)"
               },
               {
-                "name": "Tohtorintutkinto samassa yliopistossa"
+                "name": "Tohtorintutkinto samassa yliopistossa (%)"
               },
               {
-                "name": "Tohtorintutkinto ulkomaisessa yliopistossa"
+                "name": "Tohtorintutkinto ulkomaisessa yliopistossa (%)"
               },
               {
-                "name": "Uudet henkilöt"
+                "name": "Uudet työntekijät"
               }
             ]
           },
@@ -8293,7 +8591,7 @@
         ]
       },
       {
-        "name": "Hakijat_ulk",
+        "name": "Hakijat",
         "tables": [
           {
             "name": "_Muuttujat",
@@ -8321,11 +8619,208 @@
               },
               {
                 "name": "Yhteisprofessuuri"
+              },
+              {
+                "name": "Sektori"
               }
             ],
             "measures": [
               {
-                "name": "Ulkomaalaisten osuus kaikista hakijoista"
+                "name": "Ulkomaalaisten hakijoiden osuus"
+              },
+              {
+                "name": "Hakijat"
+              },
+              {
+                "name": "Mieshakijoiden osuus"
+              },
+              {
+                "name": "Naishakijoiden osuus"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Tyokokemus2b",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Alayksikkö"
+              },
+              {
+                "name": "Harjoittelukoulujen henkilöstöryhmä"
+              },
+              {
+                "name": "Henkilöstöryhmä"
+              },
+              {
+                "name": "Ikä"
+              },
+              {
+                "name": "Ikäryhmä"
+              },
+              {
+                "name": "Kansalaisuus (maanosa)"
+              },
+              {
+                "name": "Kelpoisuus opettajankoulutus"
+              },
+              {
+                "name": "Kelpoisuus tutkinto"
+              },
+              {
+                "name": "Kelpoisuus työkokemus"
+              },
+              {
+                "name": "Koodit Kansalaisuus"
+              },
+              {
+                "name": "Koodit korkeakoulu"
+              },
+              {
+                "name": "Koodit Koulutusala, taso 1"
+              },
+              {
+                "name": "Koodit Koulutusala, taso 2"
+              },
+              {
+                "name": "Koodit Koulutusala, taso 3"
+              },
+              {
+                "name": "Koodit Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koodit Koulutusaste, taso 2"
+              },
+              {
+                "name": "Koodit Koulutusnimike"
+              },
+              {
+                "name": "Koodit OKM ohjauksen ala"
+              },
+              {
+                "name": "Koodit Pääyksikkö"
+              },
+              {
+                "name": "Koodit Tohtorintutkinnon yliopisto"
+              },
+              {
+                "name": "Koodit Äidinkieli"
+              },
+              {
+                "name": "Korkeakoulu"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "Koulutusnimike"
+              },
+              {
+                "name": "Nimitystapa"
+              },
+              {
+                "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Päätieteenala"
+              },
+              {
+                "name": "Päätoiminen opettaja"
+              },
+              {
+                "name": "Sektori"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Tehtäväjaottelu"
+              },
+              {
+                "name": "Tehtäväryhmä"
+              },
+              {
+                "name": "Tieteenala"
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Tohtorintutkinnon suoritusmaa"
+              },
+              {
+                "name": "Tohtorintutkinnon suoritusmaanosa"
+              },
+              {
+                "name": "Tohtorintutkinnon suoritusvuosi"
+              },
+              {
+                "name": "Tohtorintutkinnon yliopisto"
+              },
+              {
+                "name": "Toimipaikka"
+              },
+              {
+                "name": "Toimipiste"
+              },
+              {
+                "name": "Tutkijanuravaihe"
+              },
+              {
+                "name": "Tutkinnon taso"
+              },
+              {
+                "name": "Työnimike"
+              },
+              {
+                "name": "Äidinkieli"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Työkokemusta yrityksessä (toimipaikka Suomessa) 3–7 v."
+              },
+              {
+                "name": "Työkokemusta yrityksessä (toimipaikka Suomessa) 6 kk–3 v."
+              },
+              {
+                "name": "Työkokemusta yrityksessä (toimipaikka Suomessa) yli 7 v."
+              },
+              {
+                "name": "Työkokemusta yrityksessä (toimipaikka Suomessa)"
+              },
+              {
+                "name": "Uudet työntekijät"
+              },
+              {
+                "name": "Vastanneiden osuus"
               }
             ]
           },

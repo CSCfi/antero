@@ -22,6 +22,7 @@ def load(command,expect,verbose=False):
 
   sql = command
   ret = None
+
   try:
     # quick hack for getting return value. do fix me!
     if expect:
@@ -36,14 +37,16 @@ def load(command,expect,verbose=False):
         ret = resql
     else:
       dboperator.execute(sql)
-  except:
-    show("Something went wrong. Over and out.")
+  except Exception, f:
+    print(f)
+    e = sys.exc_info()[0] #for debugging error 1.11.2018 VHä
+    show("Something went wrong. Over and out. %s" % e)
     dboperator.close()
     exit(2) # lopeta virheeseen
 
   if verbose: show("ready")
   return ret
-  
+
 def usage():
   print """
 usage: dbcommand.py -c|--command <string> [-e|--expect <string>] [-v|--verbose] [-r|--return]

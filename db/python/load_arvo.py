@@ -96,7 +96,7 @@ def load(url, schema, table, condition):
                   "kunta": null,
                   "kysymysryhmaid": 110,
                   "kysymysryhmajarjestys": 0,
-                  "vaihtoehto": null,   
+                  "vaihtoehto": null,
                   "kysymys_fi": "Ik",
                   "vastaajaid": 123,
                   "kyselyid": 111,
@@ -164,7 +164,7 @@ def load(url, schema, table, condition):
         show("wrote %d" % (cnt))
         show("ready")
 
-        if result["pagination"]["next_url"] == "null":
+        if result["pagination"]["next_url"] == "null" or result["pagination"]["next_url"] == None:
             break  # exit while-loop. We are done.
         else:
             url = result["pagination"]["next_url"]

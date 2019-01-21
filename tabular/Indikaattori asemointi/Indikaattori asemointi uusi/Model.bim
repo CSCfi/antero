@@ -2786,15 +2786,10 @@
           {
             "name": "Seitsemän vuoden läpäisy (yo)",
             "expression": [
-              " ",
-              "var suo=SUM([7v_suorittaneet_lkm])",
-              "var alo=SUM(Muuttujat[Yo 7v aloittaneet lkm])",
-              "var user=USERNAME()",
-              "",
               "var mjako=DIVIDE([7v suorittaneet mround],[7v aloittaneet mround])",
-              "var jako=DIVIDE(suo,alo)",
               "",
-              "return IF(user=\"NT AUTHORITY\\IUSR\",mjako,jako)",
+              "return mjako",
+              "",
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
@@ -2803,16 +2798,10 @@
           {
             "name": "Viiden vuoden läpäisy (amk)",
             "expression": [
-              " ",
-              "var suo=SUM(Muuttujat[5v_suorittaneet_lkm])",
-              "var alo=SUM(Muuttujat[5v_Aloittaneet_lkm])",
-              "var user=USERNAME()",
-              "",
               "var mjako=DIVIDE([5v suorittaneet mround],[5v aloittaneet mround])",
-              "var jako=DIVIDE(suo,alo)",
               "",
-              "return IF(user=\"NT AUTHORITY\\IUSR\",mjako,jako)",
-              ""
+              "",
+              "return mjako"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Läpäisy\\Asemointi"
@@ -2949,9 +2938,9 @@
               "",
               "var summa= CALCULATE(SUM(Muuttujat[työlliset 1v tutkinnon jälkeen]))",
               "var lasku=CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(summa,3))))",
-              "var user = USERNAME()",
               "",
-              "return IF(NOT(user=\"NT AUTHORITY\\IUSR\"),lasku,summa)",
+              "",
+              "return lasku",
               ""
             ],
             "formatString": "### ### ###.###",
@@ -2960,12 +2949,11 @@
           {
             "name": "sijoittuminen perusjoukko 1v tutkinnon jälkeen",
             "expression": [
-              " ",
+              "  ",
               "var summa= CALCULATE(SUM(Muuttujat[sijoittuminen_1v_tutkinnon_jalkeen]))",
               "var lasku=CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(summa,3))))",
-              "var user = USERNAME()",
               "",
-              "return IF(NOT(user=\"NT AUTHORITY\\IUSR\"),lasku,summa)",
+              "return lasku",
               "",
               ""
             ],
@@ -3063,13 +3051,10 @@
           {
             "name": "7v suorittaneet mround",
             "expression": [
-              "",
-              "Var summa = SUM(Muuttujat[7v_suorittaneet_lkm])",
+              "var summa = CALCULATE(SUM(Muuttujat[7v_suorittaneet_lkm]))",
               "Var lasku = CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(CALCULATE(SUM(Muuttujat[7v_suorittaneet_lkm])),3))))",
               "",
-              "var user = USERNAME()",
-              "",
-              "return IF(NOT(user=\"NT AUTHORITY\\IUSR\"),lasku,summa)",
+              "return lasku",
               ""
             ],
             "displayFolder": "Läpäisy\\Asemointi"
@@ -3077,14 +3062,10 @@
           {
             "name": "7v aloittaneet mround",
             "expression": [
-              "",
-              "Var summa = SUM(Muuttujat[Yo 7v aloittaneet lkm])",
+              "var summa = CALCULATE(SUM([Yo 7v aloittaneet lkm]))",
               "Var lasku = CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(CALCULATE(SUM([Yo 7v aloittaneet lkm])),3))))",
               "",
-              "var user = USERNAME()",
-              "",
-              "return IF(NOT(user=\"NT AUTHORITY\\IUSR\"),lasku,summa)",
-              ""
+              "return lasku"
             ],
             "displayFolder": "Läpäisy\\Asemointi"
           },
@@ -3283,9 +3264,8 @@
               "",
               "var summa= CALCULATE(SUM(Muuttujat[Työlliset 3v tutkinnon jälkeen]))",
               "var lasku=CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(summa,3))))",
-              "var user = USERNAME()",
               "",
-              "return IF(NOT(user=\"NT AUTHORITY\\IUSR\"),lasku,summa)",
+              "return lasku",
               "",
               ""
             ],
@@ -3298,9 +3278,8 @@
               " ",
               "var summa= CALCULATE(SUM(Muuttujat[sijoittuminen_3v_tutkinnon_jalkeen]))",
               "var lasku=CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(summa,3))))",
-              "var user = USERNAME()",
               "",
-              "return IF(NOT(user=\"NT AUTHORITY\\IUSR\"),lasku,summa)",
+              "Return lasku",
               ""
             ],
             "formatString": "### ### ###.###",
@@ -3347,28 +3326,20 @@
           {
             "name": "5v suorittaneet mround",
             "expression": [
-              "",
-              "Var summa = SUM(Muuttujat[5v_suorittaneet_lkm])",
+              "var summa = CALCULATE(SUM([5v_suorittaneet_lkm]))",
               "Var lasku = CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(CALCULATE(SUM([5v_suorittaneet_lkm])),3))))",
               "",
-              "var user = USERNAME()",
-              "",
-              "return IF(NOT(user=\"NT AUTHORITY\\IUSR\"),lasku,summa)",
-              ""
+              "return lasku"
             ],
             "displayFolder": "Läpäisy\\Asemointi"
           },
           {
             "name": "5v aloittaneet mround",
             "expression": [
+              "var summa = CALCULATE(SUM([5v_Aloittaneet_lkm]))",
+              "Var lasku = CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(summa,3))))",
               "",
-              "Var summa = SUM(Muuttujat[5v_Aloittaneet_lkm])",
-              "Var lasku = CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(CALCULATE(SUM([5v_Aloittaneet_lkm])),3))))",
-              "",
-              "var user = USERNAME()",
-              "",
-              "return IF(NOT(user=\"NT AUTHORITY\\IUSR\"),lasku,summa)",
-              ""
+              "return lasku"
             ],
             "displayFolder": "Läpäisy\\Asemointi"
           },
@@ -4579,6 +4550,194 @@
               ""
             ],
             "displayFolder": "Opiskelijapalaute\\Rakenteellinen kehittäminen"
+          },
+          {
+            "name": "5v aloittaneet mround csc",
+            "expression": [
+              "",
+              "Var summa = SUM(Muuttujat[5v_Aloittaneet_lkm])",
+              "Var lasku = CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(CALCULATE(SUM([5v_Aloittaneet_lkm])),3))))",
+              "",
+              "var tarkistus=SWITCH(TRUE(),",
+              "USERNAME()=\"NT AUTHORITY\\IUSR\",TRUE(),",
+              "RIGHT(USERNAME(),12)=\"Excel_S_Read\",TRUE(),",
+              "RIGHT(USERNAME(),15)=\"ANTERO_Read_TAB\",TRUE()",
+              ")",
+              "",
+              "return IF(tarkistus,blank(),summa)"
+            ],
+            "displayFolder": "Läpäisy\\Asemointi"
+          },
+          {
+            "name": "5v suorittaneet mround csc",
+            "expression": [
+              "",
+              "Var summa = SUM(Muuttujat[5v_suorittaneet_lkm])",
+              "Var lasku = CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(CALCULATE(SUM([5v_suorittaneet_lkm])),3))))",
+              "",
+              "var tarkistus=SWITCH(TRUE(),",
+              "USERNAME()=\"NT AUTHORITY\\IUSR\",TRUE(),",
+              "RIGHT(USERNAME(),12)=\"Excel_S_Read\",TRUE(),",
+              "RIGHT(USERNAME(),15)=\"ANTERO_Read_TAB\",TRUE()",
+              ")",
+              "",
+              "return IF(tarkistus,blank(),summa)"
+            ],
+            "displayFolder": "Läpäisy\\Asemointi"
+          },
+          {
+            "name": "7v aloittaneet mround csc",
+            "expression": [
+              "",
+              "Var summa = SUM(Muuttujat[Yo 7v aloittaneet lkm])",
+              "Var lasku = CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(CALCULATE(SUM([Yo 7v aloittaneet lkm])),3))))",
+              "",
+              "var tarkistus=SWITCH(TRUE(),",
+              "USERNAME()=\"NT AUTHORITY\\IUSR\",TRUE(),",
+              "RIGHT(USERNAME(),12)=\"Excel_S_Read\",TRUE(),",
+              "RIGHT(USERNAME(),15)=\"ANTERO_Read_TAB\",TRUE()",
+              ")",
+              "",
+              "return IF(tarkistus,blank(),summa)",
+              ""
+            ],
+            "displayFolder": "Läpäisy\\Asemointi"
+          },
+          {
+            "name": "7v suorittaneet mround csc",
+            "expression": [
+              "",
+              "Var summa = SUM(Muuttujat[7v_suorittaneet_lkm])",
+              "Var lasku = CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(CALCULATE(SUM(Muuttujat[7v_suorittaneet_lkm])),3))))",
+              "",
+              "var tarkistus=SWITCH(TRUE(),",
+              "USERNAME()=\"NT AUTHORITY\\IUSR\",TRUE(),",
+              "RIGHT(USERNAME(),12)=\"Excel_S_Read\",TRUE(),",
+              "RIGHT(USERNAME(),15)=\"ANTERO_Read_TAB\",TRUE()",
+              ")",
+              "",
+              "return IF(tarkistus,blank(),summa)",
+              ""
+            ],
+            "displayFolder": "Läpäisy\\Asemointi"
+          },
+          {
+            "name": "Seitsemän vuoden läpäisy (yo) csc",
+            "expression": [
+              " ",
+              "var suo=SUM([7v_suorittaneet_lkm])",
+              "var alo=SUM(Muuttujat[Yo 7v aloittaneet lkm])",
+              "var jako=DIVIDE(suo,alo)",
+              "",
+              "var tarkistus=SWITCH(TRUE(),",
+              "USERNAME()=\"NT AUTHORITY\\IUSR\",TRUE(),",
+              "RIGHT(USERNAME(),12)=\"Excel_S_Read\",TRUE(),",
+              "RIGHT(USERNAME(),15)=\"ANTERO_Read_TAB\",TRUE()",
+              ")",
+              "",
+              "return IF(tarkistus,blank(),jako)",
+              "",
+              ""
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %",
+            "displayFolder": "Läpäisy\\Asemointi"
+          },
+          {
+            "name": "Viiden vuoden läpäisy (amk) csc",
+            "expression": [
+              " ",
+              "var suo=SUM(Muuttujat[5v_suorittaneet_lkm])",
+              "var alo=SUM(Muuttujat[5v_Aloittaneet_lkm])",
+              "var jako=DIVIDE(suo,alo)",
+              "",
+              "var tarkistus=SWITCH(TRUE(),",
+              "USERNAME()=\"NT AUTHORITY\\IUSR\",TRUE(),",
+              "RIGHT(USERNAME(),12)=\"Excel_S_Read\",TRUE(),",
+              "RIGHT(USERNAME(),15)=\"ANTERO_Read_TAB\",TRUE()",
+              ")",
+              "return IF(tarkistus,blank(),jako)"
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %",
+            "displayFolder": "Läpäisy\\Asemointi"
+          },
+          {
+            "name": "sijoittuminen perusjoukko 1v tutkinnon jälkeen csc",
+            "expression": [
+              " ",
+              "var summa= CALCULATE(SUM(Muuttujat[sijoittuminen_1v_tutkinnon_jalkeen]))",
+              "var lasku=CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(summa,3))))",
+              "",
+              "var tarkistus=SWITCH(TRUE(),",
+              "USERNAME()=\"NT AUTHORITY\\IUSR\",TRUE(),",
+              "RIGHT(USERNAME(),12)=\"Excel_S_Read\",TRUE(),",
+              "RIGHT(USERNAME(),15)=\"ANTERO_Read_TAB\",TRUE()",
+              ")",
+              "",
+              "return IF(tarkistus,blank(),summa)",
+              "",
+              ""
+            ],
+            "formatString": "### ### ###.###",
+            "displayFolder": "Työllisyys\\Asemointi"
+          },
+          {
+            "name": "sijoittuminen perusjoukko 3v tutkinnon jälkeen csc",
+            "expression": [
+              " ",
+              "var summa= CALCULATE(SUM(Muuttujat[sijoittuminen_3v_tutkinnon_jalkeen]))",
+              "var lasku=CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(summa,3))))",
+              "",
+              "var tarkistus=SWITCH(TRUE(),",
+              "USERNAME()=\"NT AUTHORITY\\IUSR\",TRUE(),",
+              "RIGHT(USERNAME(),12)=\"Excel_S_Read\",TRUE(),",
+              "RIGHT(USERNAME(),15)=\"ANTERO_Read_TAB\",TRUE()",
+              ")",
+              "",
+              "return IF(tarkistus,blank(),summa)",
+              "",
+              ""
+            ],
+            "formatString": "### ### ###.###",
+            "displayFolder": "Työllisyys\\Asemointi"
+          },
+          {
+            "name": "Työlliset (1v tutkinnon jälkeen) csc",
+            "expression": [
+              "",
+              "var summa= CALCULATE(SUM(Muuttujat[työlliset 1v tutkinnon jälkeen]))",
+              "var lasku=CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(summa,3))))",
+              "",
+              "var tarkistus=SWITCH(TRUE(),",
+              "USERNAME()=\"NT AUTHORITY\\IUSR\",TRUE(),",
+              "RIGHT(USERNAME(),12)=\"Excel_S_Read\",TRUE(),",
+              "RIGHT(USERNAME(),15)=\"ANTERO_Read_TAB\",TRUE()",
+              ")",
+              "",
+              "return IF(tarkistus,BLANK(),lasku)",
+              ""
+            ],
+            "formatString": "### ### ###.###",
+            "displayFolder": "Työllisyys\\Asemointi"
+          },
+          {
+            "name": "Työlliset (3v tutkinnon jälkeen) csc",
+            "expression": [
+              "",
+              "var summa= CALCULATE(SUM(Muuttujat[Työlliset 3v tutkinnon jälkeen]))",
+              "var lasku=CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(summa,3))))",
+              "",
+              "var tarkistus=SWITCH(TRUE(),",
+              "USERNAME()=\"NT AUTHORITY\\IUSR\",TRUE(),",
+              "RIGHT(USERNAME(),12)=\"Excel_S_Read\",TRUE(),",
+              "RIGHT(USERNAME(),15)=\"ANTERO_Read_TAB\",TRUE()",
+              ")",
+              "",
+              "return IF(tarkistus,BLANK(),lasku)",
+              "",
+              ""
+            ],
+            "formatString": "### ### ###.###",
+            "displayFolder": "Työllisyys\\Asemointi"
           }
         ],
         "annotations": [
@@ -7464,6 +7623,10 @@
       {
         "name": "ClientCompatibilityLevel",
         "value": "400"
+      },
+      {
+        "name": "TabularEditor_SerializeOptions",
+        "value": "{\"IgnoreInferredObjects\":true,\"IgnoreInferredProperties\":true,\"IgnoreTimestamps\":true,\"SplitMultilineStrings\":true,\"PrefixFilenames\":false,\"LocalTranslations\":false,\"LocalPerspectives\":false,\"Levels\":[]}"
       }
     ]
   },

@@ -3746,7 +3746,7 @@
               </MeasureGroups>
               <Calculations>
                 <Calculation>
-                  <Name>[Measures].[Antal lärare]</Name>
+                  <Name>[Measures].[Antal lärare (i datainsamling)]</Name>
                   <Type>Member</Type>
                 </Calculation>
                 <Calculation>
@@ -3827,7 +3827,7 @@
                   <Type>Member</Type>
                 </Calculation>
                 <Calculation>
-                  <Name>[Measures].[Number of teachers]</Name>
+                  <Name>[Measures].[Number of teachers (in data collection)]</Name>
                   <Type>Member</Type>
                 </Calculation>
                 <Calculation>
@@ -5930,7 +5930,7 @@
               <Commands>
                 <Command>
                   <Text>CALCULATE; 
-CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1; 
+CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1, VISIBLE = 0; 
 ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measures defined]; </Text>
                 </Command>
                 <Command>
@@ -5996,12 +5996,12 @@ CREATE MEASURE 'Muuttujat'[Muodollisesti kelpoisten osuus vastanneista]=[Muodoll
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Antal lärare]=IF(COUNTROWS(Muuttujat) = 0, BLANK(),IF(COUNTROWS(Muuttujat) = 1, 3, MROUND(COUNTROWS(Muuttujat),3)));
+CREATE MEASURE 'Muuttujat'[Antal lärare (i datainsamling)]=IF(COUNTROWS(Muuttujat) = 0, BLANK(),IF(COUNTROWS(Muuttujat) = 1, 3, MROUND(COUNTROWS(Muuttujat),3)));
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
-                      <Value>Antal lärare</Value>
+                      <Value>Antal lärare (i datainsamling)</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -6015,12 +6015,12 @@ CREATE MEASURE 'Muuttujat'[Antal lärare]=IF(COUNTROWS(Muuttujat) = 0, BLANK(),I
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Number of teachers]=IF(COUNTROWS(Muuttujat) = 0, BLANK(),IF(COUNTROWS(Muuttujat) = 1, 3, MROUND(COUNTROWS(Muuttujat),3)));
+CREATE MEASURE 'Muuttujat'[Number of teachers (in data collection)]=IF(COUNTROWS(Muuttujat) = 0, BLANK(),IF(COUNTROWS(Muuttujat) = 1, 3, MROUND(COUNTROWS(Muuttujat),3)));
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
-                      <Value>Number of teachers</Value>
+                      <Value>Number of teachers (in data collection)</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -6186,7 +6186,7 @@ CREATE MEASURE 'Muuttujat'[Andel formellt behöriga]=[Muodollisesti kelpoiset]/[
                       </Value>
                     </Annotation>
                   </Annotations>
-                  <CalculationReference>[Antal lärare]</CalculationReference>
+                  <CalculationReference>[Antal lärare (i datainsamling)]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
@@ -6207,7 +6207,7 @@ CREATE MEASURE 'Muuttujat'[Andel formellt behöriga]=[Muodollisesti kelpoiset]/[
                       </Value>
                     </Annotation>
                   </Annotations>
-                  <CalculationReference>[Number of teachers]</CalculationReference>
+                  <CalculationReference>[Number of teachers (in data collection)]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
@@ -6326,7 +6326,7 @@ CREATE MEASURE 'Muuttujat'[Andel formellt behöriga]=[Muodollisesti kelpoiset]/[
           <ConnectionString>Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=VipunenTK;Integrated Security=SSPI;Persist Security Info=false</ConnectionString>
           <ImpersonationInfo>
             <ImpersonationMode>ImpersonateAccount</ImpersonationMode>
-            <Account>dwi\oeskola</Account>
+            <Account>DWI\T_VIPUTK_KUUTIO</Account>
           </ImpersonationInfo>
           <Timeout>PT0S</Timeout>
         </DataSource>
