@@ -60,11 +60,11 @@ filtered_data = json_normalize(filtered_result)
 
 
 filtered_data.to_csv(path_or_buf='D:/pdi_integrations/data/arvo/uraseuranta_vajaadata.csv', sep='|', na_rep='',
-                header=True, index=False, mode='w', encoding='utf-8', quoting=2,
+                header=True, index=False, mode='w', encoding='utf-8-sig', quoting=2,
                  quotechar='"', line_terminator='\n', escapechar='$')
 
 data.to_csv(path_or_buf='D:/pdi_integrations/data/arvo/uraseuranta.csv', sep='|', na_rep='',
-                 header=True, index=False, mode='w', encoding='utf-8', quoting=2,
+                 header=True, index=False, mode='w', encoding='utf-8-sig', quoting=2,
                  quotechar='"', line_terminator='\n' , escapechar='$')
 
 #now = datetime.datetime.now()
