@@ -1,17 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <job>
-  <name>get_sftp_koski_dump</name>
+  <name>arvo_vastaukset_bulk</name>
     <description/>
     <extended_description/>
     <job_version/>
     <job_status>0</job_status>
   <directory>&#x2f;</directory>
   <created_user>-</created_user>
-  <created_date>2018&#x2f;06&#x2f;15 12&#x3a;37&#x3a;32.411</created_date>
+  <created_date>2018&#x2f;11&#x2f;13 14&#x3a;45&#x3a;13.385</created_date>
   <modified_user>-</modified_user>
-  <modified_date>2018&#x2f;06&#x2f;15 12&#x3a;37&#x3a;32.411</modified_date>
+  <modified_date>2018&#x2f;11&#x2f;13 14&#x3a;45&#x3a;13.385</modified_date>
     <parameters>
+        <parameter>
+            <name>DBPWD</name>
+            <default_value/>
+            <description/>
+        </parameter>
+        <parameter>
+            <name>DBUSER</name>
+            <default_value/>
+            <description/>
+        </parameter>
+        <parameter>
+            <name>SERVER</name>
+            <default_value/>
+            <description/>
+        </parameter>
     </parameters>
+  <connection>
+    <name>Arvo_SA</name>
+    <server>&#x24;&#x7b;SERVER&#x7d;</server>
+    <type>MSSQLNATIVE</type>
+    <access>Native</access>
+    <database>Arvo_SA</database>
+    <port>1433</port>
+    <username>&#x24;&#x7b;DBUSER&#x7d;</username>
+    <password>&#x24;&#x7b;DBPWD&#x7d;</password>
+    <servername/>
+    <data_tablespace/>
+    <index_tablespace/>
+    <attributes>
+      <attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
+      <attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
+      <attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
+      <attribute><code>MSSQLUseIntegratedSecurity</code><attribute>false</attribute></attribute>
+      <attribute><code>MSSQL_DOUBLE_DECIMAL_SEPARATOR</code><attribute>N</attribute></attribute>
+      <attribute><code>PORT_NUMBER</code><attribute>1433</attribute></attribute>
+      <attribute><code>PRESERVE_RESERVED_WORD_CASE</code><attribute>Y</attribute></attribute>
+      <attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
+      <attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>Y</attribute></attribute>
+      <attribute><code>SUPPORTS_TIMESTAMP_DATA_TYPE</code><attribute>Y</attribute></attribute>
+      <attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
+    </attributes>
+  </connection>
     <slaveservers>
     </slaveservers>
 <job-log-table><connection/>
@@ -51,7 +92,34 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>400</xloc>
+      <xloc>416</xloc>
+      <yloc>16</yloc>
+      </entry>
+    <entry>
+      <name>Arvo vastaukset bulk-insert</name>
+      <description/>
+      <type>SQL</type>
+      <sql>TRUNCATE TABLE &#x5b;sa&#x5d;.&#x5b;sa_arvo_vastaukset&#x5d;&#x3b;&#xd;&#xa;&#xd;&#xa;BULK INSERT &#x5b;sa&#x5d;.&#x5b;sa_arvo_vastaukset&#x5d; FROM &#x27;E&#x3a;&#x5c;csv-data&#x5c;arvo&#x5c;vastaukset.csv&#x27;&#xd;&#xa;WITH&#xd;&#xa;&#x28;&#xd;&#xa;CODEPAGE &#x3d; &#x27;65001&#x27;,&#xd;&#xa;ROWTERMINATOR &#x3d; &#x27;&#x5c;n&#x27;,&#xd;&#xa;FIELDTERMINATOR &#x3d; &#x27;&#x7c;&#x27;,&#xd;&#xa;FIRSTROW &#x3d; 2,&#xd;&#xa;MAXERRORS &#x3d; 100,&#xd;&#xa;BATCHSIZE &#x3d; 5000,&#xd;&#xa;ERRORFILE &#x3d; &#x27;E&#x3a;&#x5c;csv-data&#x5c;arvo&#x5c;error&#x5c;&#x24;&#x7b;cur_date&#x7d;_vastaukset.csv&#x27;,&#xd;&#xa;TABLOCK&#xd;&#xa;&#x29;&#x3b;</sql>
+      <useVariableSubstitution>T</useVariableSubstitution>
+      <sqlfromfile>F</sqlfromfile>
+      <sqlfilename/>
+      <sendOneStatement>F</sendOneStatement>
+      <connection>Arvo_SA</connection>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>416</xloc>
+      <yloc>272</yloc>
+      </entry>
+    <entry>
+      <name>cur_date variable</name>
+      <description/>
+      <type>EVAL</type>
+      <script>date &#x3d; new java.util.Date&#x28;&#x29;&#x3b;&#xd;&#xa;date.setDate&#x28;date.getDate&#x28;&#x29;&#x29;&#x3b;&#xd;&#xa;var cur_date &#x3d; new java.text.SimpleDateFormat&#x28;&#x22;yyyy_MM_dd&#x22;&#x29;.format&#x28;date&#x29;&#x3b;&#xd;&#xa;parent_job.setVariable&#x28;&#x22;cur_date&#x22;, cur_date&#x29;&#x3b;&#xd;&#xa;true&#x3b;</script>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>416</xloc>
       <yloc>96</yloc>
       </entry>
     <entry>
@@ -61,44 +129,25 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>400</xloc>
-      <yloc>288</yloc>
+      <xloc>416</xloc>
+      <yloc>464</yloc>
       </entry>
     <entry>
-      <name>Get a file with SFTP &#x28;PROD&#x29;</name>
+      <name>Abort job</name>
       <description/>
-      <type>SFTP</type>
-      <servername>dwisftp.csc.fi</servername>
-      <serverport>22</serverport>
-      <username>dwi&#x5c;Koski_OPH</username>
-      <password>Encrypted 4838353f6a6664666b69667bcbffc0a45c92c1d3fe5ba47881cfaddd</password>
-      <sftpdirectory>&#x2f;KOSKI&#x2f;</sftpdirectory>
-      <targetdirectory>D&#x3a;&#x5c;pdi_integrations&#x5c;data&#x5c;koski</targetdirectory>
-      <wildcard>koski-raportointikanta-prod.pgdump.gpg</wildcard>
-      <remove>N</remove>
-      <isaddresult>Y</isaddresult>
-      <createtargetfolder>N</createtargetfolder>
-      <copyprevious>N</copyprevious>
-      <usekeyfilename>N</usekeyfilename>
-      <keyfilename/>
-      <keyfilepass>Encrypted </keyfilepass>
-      <compression>none</compression>
-      <proxyType/>
-      <proxyHost/>
-      <proxyPort/>
-      <proxyUsername/>
-      <proxyPassword>Encrypted </proxyPassword>
+      <type>ABORT</type>
+      <message/>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>400</xloc>
+      <xloc>576</xloc>
       <yloc>192</yloc>
       </entry>
   </entries>
   <hops>
     <hop>
       <from>START</from>
-      <to>Get a file with SFTP &#x28;PROD&#x29;</to>
+      <to>cur_date variable</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
@@ -106,7 +155,16 @@
       <unconditional>Y</unconditional>
     </hop>
     <hop>
-      <from>Get a file with SFTP &#x28;PROD&#x29;</from>
+      <from>cur_date variable</from>
+      <to>Arvo vastaukset bulk-insert</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Arvo vastaukset bulk-insert</from>
       <to>Success</to>
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
@@ -114,35 +172,32 @@
       <evaluation>Y</evaluation>
       <unconditional>N</unconditional>
     </hop>
+    <hop>
+      <from>cur_date variable</from>
+      <to>Abort job</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Arvo vastaukset bulk-insert</from>
+      <to>Abort job</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
   </hops>
   <notepads>
     <notepad>
-      <note>Get KOSKI_dump from sftp-site, spec in conf --&#x3e;</note>
-      <xloc>32</xloc>
-      <yloc>192</yloc>
-      <width>266</width>
-      <heigth>26</heigth>
-      <fontname/>
-      <fontsize>-1</fontsize>
-      <fontbold>N</fontbold>
-      <fontitalic>N</fontitalic>
-      <fontcolorred>0</fontcolorred>
-      <fontcolorgreen>0</fontcolorgreen>
-      <fontcolorblue>0</fontcolorblue>
-      <backgroundcolorred>255</backgroundcolorred>
-      <backgroundcolorgreen>205</backgroundcolorgreen>
-      <backgroundcolorblue>112</backgroundcolorblue>
-      <bordercolorred>100</bordercolorred>
-      <bordercolorgreen>100</bordercolorgreen>
-      <bordercolorblue>100</bordercolorblue>
-      <drawshadow>Y</drawshadow>
-    </notepad>
-    <notepad>
-      <note>TODO&#x3a;&#x3a;&#x2f;&#x2f;&#xd;&#xa;&#xd;&#xa;- 7z asennus ja skripti gz-purkua varten &#x2f;testattu ja toimii 14.8&#xd;&#xa;- psql PATHiin &#xd;&#xa;- psql salasana ei-interaktiiviseen k&#xe4;ytt&#xf6;&#xf6;n&#xd;&#xa;- orkestrointi &#x28;PDI&#x29;&#xd;&#xa;- ajon vieminen jenkinsiin &#x2f;testattu ja toimii  14.8&#xd;&#xa;&#xd;&#xa;Jotkin teht&#xe4;v&#xe4;t vaativat kuitenkin Jiraa ja projektip&#xe4;&#xe4;llik&#xf6;n Jutan hyv&#xe4;ksynt&#xe4;&#xe4;.&#xd;&#xa;Asioista kannattaa kuitenkin viestitell&#xe4; ensin.</note>
-      <xloc>528</xloc>
-      <yloc>128</yloc>
-      <width>414</width>
-      <heigth>168</heigth>
+      <note>cur_date&#x3a;	Use current day &#x28;2018_01_21&#x29; and use it part of a error filename&#xd;&#xa;Arvo bulkinsert&#x3a; Execute bulk insert query</note>
+      <xloc>640</xloc>
+      <yloc>32</yloc>
+      <width>436</width>
+      <heigth>42</heigth>
       <fontname>Segoe UI</fontname>
       <fontsize>9</fontsize>
       <fontbold>N</fontbold>

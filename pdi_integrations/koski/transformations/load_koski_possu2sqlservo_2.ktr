@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>load_koski_possu2sqlservo</name>
+    <name>load_koski_possu2sqlservo_2</name>
     <description/>
     <extended_description/>
     <trans_version/>
@@ -160,11 +160,14 @@
   <hop> <from>r_osasuoritus</from><to>Get System Info 6</to><enabled>N</enabled> </hop>
   <hop> <from>Get System Info 6</from><to>sa_koski_osasuoritus</to><enabled>N</enabled> </hop>
   <hop> <from>r_paatason_suoritus</from><to>Get System Info 7</to><enabled>Y</enabled> </hop>
-  <hop> <from>Get System Info 7</from><to>sa_koski_paatason_suoritus</to><enabled>Y</enabled> </hop>
   <hop> <from>sa_koski_opiskeluoikeus</from><to>Dummy &#x28;do nothing&#x29;</to><enabled>N</enabled> </hop>
   <hop> <from>sa_koski_opiskeluoikeus_aikajakso</from><to>Dummy &#x28;do nothing&#x29; 2</to><enabled>N</enabled> </hop>
   <hop> <from>sa_koski_osasuoritus</from><to>Dummy &#x28;do nothing&#x29; 3</to><enabled>N</enabled> </hop>
   <hop> <from>sa_koski_paatason_suoritus</from><to>Dummy &#x28;do nothing&#x29; 2 2</to><enabled>Y</enabled> </hop>
+  <hop> <from>JSON Hae tutkinto_koodi</from><to>JSON osaamisala_koodiarvo</to><enabled>Y</enabled> </hop>
+  <hop> <from>Get System Info 7</from><to>JSON Hae tutkinto_koodi</to><enabled>Y</enabled> </hop>
+  <hop> <from>JSON osaamisala_koodiarvo</from><to>sa_koski_paatason_suoritus</to><enabled>Y</enabled> </hop>
+  <hop> <from>Get System Info 7</from><to>sa_koski_paatason_suoritus</to><enabled>N</enabled> </hop>
   </order>
   <step>
     <name>Dummy &#x28;do nothing&#x29;</name>
@@ -1228,11 +1231,147 @@
           <column_name>imp_created</column_name>
           <stream_name>imp_created</stream_name>
         </field>
+        <field>
+          <column_name>tutkinto_koodiarvo</column_name>
+          <stream_name>tutkinto_koodiarvo</stream_name>
+        </field>
+        <field>
+          <column_name>osaamisala_koodiarvo</column_name>
+          <stream_name>osaamisala_koodiarvo</stream_name>
+        </field>
     </fields>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
       <xloc>816</xloc>
       <yloc>176</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>JSON Hae tutkinto_koodi</name>
+    <type>JsonInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <include>N</include>
+    <include_field/>
+    <rownum>N</rownum>
+    <addresultfile>N</addresultfile>
+    <readurl>N</readurl>
+    <removeSourceField>N</removeSourceField>
+    <IsIgnoreEmptyFile>Y</IsIgnoreEmptyFile>
+    <doNotFailIfNoFile>Y</doNotFailIfNoFile>
+    <ignoreMissingPath>Y</ignoreMissingPath>
+    <defaultPathLeafToNull>N</defaultPathLeafToNull>
+    <rownum_field/>
+    <file>
+      <name/>
+      <filemask/>
+      <exclude_filemask/>
+      <file_required>N</file_required>
+      <include_subfolders>N</include_subfolders>
+    </file>
+    <fields>
+      <field>
+        <name>tutkinto_koodiarvo</name>
+        <path>&#x24;.tutkinto.tunniste.koodiarvo</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+    </fields>
+    <limit>0</limit>
+    <IsInFields>Y</IsInFields>
+    <IsAFile>N</IsAFile>
+    <valueField>data</valueField>
+    <shortFileFieldName/>
+    <pathFieldName/>
+    <hiddenFieldName/>
+    <lastModificationTimeFieldName/>
+    <uriNameFieldName/>
+    <rootUriNameFieldName/>
+    <extensionFieldName/>
+    <sizeFieldName/>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>976</xloc>
+      <yloc>96</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>JSON osaamisala_koodiarvo</name>
+    <type>JsonInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <include>N</include>
+    <include_field/>
+    <rownum>N</rownum>
+    <addresultfile>N</addresultfile>
+    <readurl>N</readurl>
+    <removeSourceField>N</removeSourceField>
+    <IsIgnoreEmptyFile>Y</IsIgnoreEmptyFile>
+    <doNotFailIfNoFile>Y</doNotFailIfNoFile>
+    <ignoreMissingPath>Y</ignoreMissingPath>
+    <defaultPathLeafToNull>N</defaultPathLeafToNull>
+    <rownum_field/>
+    <file>
+      <name/>
+      <filemask/>
+      <exclude_filemask/>
+      <file_required>N</file_required>
+      <include_subfolders>N</include_subfolders>
+    </file>
+    <fields>
+      <field>
+        <name>osaamisala_koodiarvo</name>
+        <path>&#x24;..osaamisala.koodiarvo</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+    </fields>
+    <limit>0</limit>
+    <IsInFields>Y</IsInFields>
+    <IsAFile>N</IsAFile>
+    <valueField>data</valueField>
+    <shortFileFieldName/>
+    <pathFieldName/>
+    <hiddenFieldName/>
+    <lastModificationTimeFieldName/>
+    <uriNameFieldName/>
+    <rootUriNameFieldName/>
+    <extensionFieldName/>
+    <sizeFieldName/>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>976</xloc>
+      <yloc>160</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
