@@ -48,9 +48,7 @@ CREATE TABLE [sa].[sa_eter_basic_info](
 	[BAS.NOTESLEGALYEAR] [varchar](220) NULL,
 	[BAS.UNIHOSPNAME] [varchar](723) NULL,
 	[Source] [varchar](100) NULL,
-	[Loadtime] [datetime] NULL
-) ON [PRIMARY]
-
+	[Loadtime] [datetime] NULL,
  CONSTRAINT [PK__sa_eter_basic_info] PRIMARY KEY CLUSTERED
 (
 	[_id] ASC
