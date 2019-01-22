@@ -75,10 +75,37 @@
   </info>
   <notepads>
   </notepads>
+  <connection>
+    <name>dwitvipusql16</name>
+    <server>dwitvipusql16</server>
+    <type>MSSQLNATIVE</type>
+    <access>Native</access>
+    <database>ANTERO</database>
+    <port>1433</port>
+    <username/>
+    <password>Encrypted </password>
+    <servername/>
+    <data_tablespace/>
+    <index_tablespace/>
+    <attributes>
+      <attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
+      <attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
+      <attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
+      <attribute><code>MSSQLUseIntegratedSecurity</code><attribute>true</attribute></attribute>
+      <attribute><code>MSSQL_DOUBLE_DECIMAL_SEPARATOR</code><attribute>N</attribute></attribute>
+      <attribute><code>PORT_NUMBER</code><attribute>1433</attribute></attribute>
+      <attribute><code>PRESERVE_RESERVED_WORD_CASE</code><attribute>Y</attribute></attribute>
+      <attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
+      <attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>Y</attribute></attribute>
+      <attribute><code>SUPPORTS_TIMESTAMP_DATA_TYPE</code><attribute>Y</attribute></attribute>
+      <attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
+    </attributes>
+  </connection>
   <order>
   <hop> <from>Add few constants</from><to>Get System Info</to><enabled>Y</enabled> </hop>
-  <hop> <from>Table output</from><to>Dummy &#x28;do nothing&#x29;</to><enabled>Y</enabled> </hop>
   <hop> <from>CSV file input - ETER demographic events</from><to>Add few constants</to><enabled>Y</enabled> </hop>
+  <hop> <from>Get System Info</from><to>Table output</to><enabled>Y</enabled> </hop>
+  <hop> <from>Table output</from><to>Success&#x2f;Fail</to><enabled>Y</enabled> </hop>
   </order>
   <step>
     <name>Add few constants</name>
@@ -124,7 +151,7 @@
            <method>none</method>
            <schema_name/>
            </partitioning>
-    <filename>C&#x3a;&#x5c;temp&#x5c;eter_demo.csv</filename>
+    <filename>D&#x3a;&#x5c;pdi_integrations&#x5c;data&#x5c;eter&#x5c;eter_demo.csv</filename>
     <filename_field/>
     <rownum_field/>
     <include_filename>N</include_filename>
@@ -214,7 +241,7 @@
     </step>
 
   <step>
-    <name>Dummy &#x28;do nothing&#x29;</name>
+    <name>Success&#x2f;Fail</name>
     <type>Dummy</type>
     <description/>
     <distribute>Y</distribute>
@@ -268,13 +295,13 @@
            <method>none</method>
            <schema_name/>
            </partitioning>
-    <connection/>
-    <schema>dbo</schema>
-    <table>sa_api_vaestoennuste</table>
+    <connection>dwitvipusql16</connection>
+    <schema>sa</schema>
+    <table>sa_eter_demographic</table>
     <commit>1000</commit>
-    <truncate>Y</truncate>
+    <truncate>N</truncate>
     <ignore_errors>N</ignore_errors>
-    <use_batch>N</use_batch>
+    <use_batch>Y</use_batch>
     <specify_fields>Y</specify_fields>
     <partitioning_enabled>N</partitioning_enabled>
     <partitioning_field/>
@@ -287,45 +314,41 @@
     <return_field/>
     <fields>
         <field>
-          <column_name>Vuosi</column_name>
-          <stream_name>Vuosi</stream_name>
+          <column_name>_id</column_name>
+          <stream_name>_id</stream_name>
         </field>
         <field>
-          <column_name>Sukupuoli</column_name>
-          <stream_name>Sukupuoli</stream_name>
+          <column_name>DEMO.EVENTPASTYEAR</column_name>
+          <stream_name>DEMO.EVENTPASTYEAR</stream_name>
         </field>
         <field>
-          <column_name>Ika</column_name>
-          <stream_name>Ika</stream_name>
+          <column_name>DEMO.AFFINSTPASTYEAR</column_name>
+          <stream_name>DEMO.AFFINSTPASTYEAR</stream_name>
         </field>
         <field>
-          <column_name>Tiedot</column_name>
-          <stream_name>Tiedot</stream_name>
+          <column_name>DEMO.EVENTREFYEAR</column_name>
+          <stream_name>DEMO.EVENTREFYEAR</stream_name>
         </field>
         <field>
-          <column_name>lkm</column_name>
-          <stream_name>Value</stream_name>
+          <column_name>DEMO.AFFINSTREFYEAR</column_name>
+          <stream_name>DEMO.AFFINSTREFYEAR</stream_name>
         </field>
         <field>
-          <column_name>Ennustemalli</column_name>
-          <stream_name>Ennustemalli</stream_name>
-        </field>
-        <field>
-          <column_name>latauspvm</column_name>
-          <stream_name>latauspvm</stream_name>
-        </field>
-        <field>
-          <column_name>Loadtime</column_name>
-          <stream_name>Loadtime</stream_name>
+          <column_name>DEMO.DESCRIPTION</column_name>
+          <stream_name>DEMO.DESCRIPTION</stream_name>
         </field>
         <field>
           <column_name>Source</column_name>
           <stream_name>Source</stream_name>
         </field>
+        <field>
+          <column_name>Loadtime</column_name>
+          <stream_name>Loadtime</stream_name>
+        </field>
     </fields>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>640</xloc>
+      <xloc>592</xloc>
       <yloc>64</yloc>
       <draw>Y</draw>
       </GUI>
@@ -334,7 +357,7 @@
   <step_error_handling>
       <error>
         <source_step>Table output</source_step>
-        <target_step>Dummy &#x28;do nothing&#x29;</target_step>
+        <target_step>Success&#x2f;Fail</target_step>
         <is_enabled>Y</is_enabled>
         <nr_valuename/>
         <descriptions_valuename/>
