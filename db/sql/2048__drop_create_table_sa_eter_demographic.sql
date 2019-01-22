@@ -10,7 +10,7 @@ IF  NOT EXISTS
 BEGIN
 
 CREATE TABLE [sa].[sa_eter_demographic](
-	[_id] [varchar](24) NULL,
+	[_id] [varchar](24) NOT NULL,
 	[DEMO.EVENTPASTYEAR] [bigint] NULL,
 	[DEMO.AFFINSTPASTYEAR] [varchar](60) NULL,
 	[DEMO.EVENTREFYEAR] [varchar](1) NULL,

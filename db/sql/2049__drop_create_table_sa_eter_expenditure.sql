@@ -10,7 +10,7 @@ IF  NOT EXISTS
 BEGIN
 
 CREATE TABLE [sa].[sa_eter_expenditure](
-	[_id] [varchar](24) NULL,
+	[_id] [varchar](24) NOT NULL,
 	[EXP.CURRPERSON.EURO.code] [varchar](2) NULL,
 	[EXP.CURRPERSON.EURO.v] [varchar](16) NULL,
 	[EXP.CURRPERSON.PPP.code] [varchar](2) NULL,
