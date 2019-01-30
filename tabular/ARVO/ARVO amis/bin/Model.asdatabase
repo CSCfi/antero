@@ -759,6 +759,12 @@
             "dataType": "string",
             "sourceColumn": "Kiusaamiskysymys",
             "displayFolder": "Kyselymuuttujat"
+          },
+          {
+            "name": "pohjakoulutus_priorisointi_vastaajaid",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "pohjakoulutus_priorisointi_vastaajaid"
           }
         ],
         "partitions": [
@@ -1758,6 +1764,14 @@
                   "        <int>117</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>pohjakoulutus_priorisointi_vastaajaid</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>208</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -2734,6 +2748,14 @@
                   "      </key>",
                   "      <value>",
                   "        <int>121</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>pohjakoulutus_priorisointi_vastaajaid</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>122</int>",
                   "      </value>",
                   "    </item>",
                   "  </ColumnDisplayIndex>",
@@ -3715,6 +3737,14 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>pohjakoulutus_priorisointi_vastaajaid</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -3738,13 +3768,13 @@
           },
           {
             "name": "5 pistettä lkm",
-            "expression": "IF([Vastanneet]=3,BLANK(),CALCULATE([kaikki pisteet lkm],Muuttujat[numerovalinta]=5))",
+            "expression": "IF([Vastanneet]=3,BLANK(),CALCULATE([kaikki pisteet lkm],Muuttujat[numerovalinta]=5, FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]),Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)))",
             "formatString": "#,0"
           },
           {
             "name": "4 pistettä lkm",
             "expression": [
-              "IF([Vastanneet]=3,BLANK(),CALCULATE([kaikki pisteet lkm],Muuttujat[numerovalinta]=4))",
+              "IF([Vastanneet]=3,BLANK(),CALCULATE([kaikki pisteet lkm],Muuttujat[numerovalinta]=4, FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]),Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)))",
               ""
             ],
             "formatString": "#,0"
@@ -3752,7 +3782,8 @@
           {
             "name": "3 pistettä lkm",
             "expression": [
-              "IF([Vastanneet]=3,BLANK(),CALCULATE([kaikki pisteet lkm],Muuttujat[numerovalinta]=3))",
+              "IF([Vastanneet]=3,BLANK(),CALCULATE([kaikki pisteet lkm],Muuttujat[numerovalinta]=3, FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]),Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)))",
+              "",
               ""
             ],
             "formatString": "#,0"
@@ -3760,7 +3791,8 @@
           {
             "name": "2 pistettä lkm",
             "expression": [
-              "IF([Vastanneet]=3,BLANK(),CALCULATE([kaikki pisteet lkm],Muuttujat[numerovalinta]=2))",
+              "IF([Vastanneet]=3,BLANK(),CALCULATE([kaikki pisteet lkm],Muuttujat[numerovalinta]=2, FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]),Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)))",
+              "",
               ""
             ],
             "formatString": "#,0"
@@ -3768,50 +3800,51 @@
           {
             "name": "1 piste lkm",
             "expression": [
-              "IF([Vastanneet]=3,BLANK(),CALCULATE([kaikki pisteet lkm],Muuttujat[numerovalinta]=1))",
+              "IF([Vastanneet]=3,BLANK(),CALCULATE([kaikki pisteet lkm],Muuttujat[numerovalinta]=1, FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]),Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)))",
+              "",
               ""
             ],
             "formatString": "#,0"
           },
           {
             "name": "kaikki pisteet lkm",
-            "expression": "CALCULATE(COUNTROWS(DISTINCT(Muuttujat[vastausavain])))",
+            "expression": "CALCULATE(COUNTROWS(Muuttujat),Muuttujat[vastaustyyppi]<>\"nps\")",
             "formatString": "#,0",
             "isHidden": true
           },
           {
             "name": "5 pistettä %",
-            "expression": "IF([Vastanneet]=3,BLANK(),DIVIDE([5 pistettä lkm],[kaikki pisteet lkm]))",
+            "expression": "IF([Vastanneet]=3,BLANK(),DIVIDE([5 pistettä lkm],[kaikki pisteet pros]))",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "4 pistettä %",
-            "expression": "IF([Vastanneet]=3,BLANK(),DIVIDE([4 pistettä lkm],[kaikki pisteet lkm]))",
+            "expression": "IF([Vastanneet]=3,BLANK(),DIVIDE([4 pistettä lkm],[kaikki pisteet pros]))",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "3 pistettä %",
-            "expression": "IF([Vastanneet]=3,BLANK(),DIVIDE([3 pistettä lkm],[kaikki pisteet lkm]))",
+            "expression": "IF([Vastanneet]=3,BLANK(),DIVIDE([3 pistettä lkm],[kaikki pisteet pros]))",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "2 pistettä %",
-            "expression": "IF([Vastanneet]=3,BLANK(),DIVIDE([2 pistettä lkm],[kaikki pisteet lkm]))",
+            "expression": "IF([Vastanneet]=3,BLANK(),DIVIDE([2 pistettä lkm],[kaikki pisteet pros]))",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "1 piste %",
-            "expression": "IF([Vastanneet]=3,BLANK(),DIVIDE([1 piste lkm],[kaikki pisteet lkm]))",
+            "expression": "IF([Vastanneet]=3,BLANK(),DIVIDE([1 piste lkm],[kaikki pisteet pros]))",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Keskiarvo",
-            "expression": "IF([Vastanneet]=3,BLANK(),CALCULATE(AVERAGE('Numerovalinta_kutistettu'[numerovalinta]),Muuttujat[vastaustyyppi]<>\"nps\"))",
+            "expression": "IF([Vastanneet]=3,BLANK(),CALCULATE(AVERAGE('Muuttujat'[numerovalinta]),Muuttujat[vastaustyyppi]<>\"nps\", FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]),Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)))",
             "formatString": "0.0"
           },
           {
             "name": "Keskihajonta",
-            "expression": "IF([Vastanneet]=3,BLANK(),STDEV.P('Numerovalinta_kutistettu'[numerovalinta]))",
+            "expression": "IF([Vastanneet]=3,BLANK(),CALCULATE(STDEV.P('Muuttujat'[numerovalinta]),Muuttujat[vastaustyyppi]<>\"nps\", FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]),Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)))",
             "formatString": "0.0"
           },
           {
@@ -4044,6 +4077,18 @@
             "name": "Viktade poäng  %",
             "expression": "[Painotetut pisteet]/CALCULATE([Painotetut pisteet],ALLEXCEPT(Muuttujat,Muuttujat[Kysely]))",
             "formatString": "0.00 %;-0.00 %;0.00 %"
+          },
+          {
+            "name": "kaikki pisteet pros",
+            "expression": "CALCULATE(COUNTROWS(Muuttujat),FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]),Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1),Muuttujat[vastaustyyppi]<>\"nps\")",
+            "formatString": "#,0",
+            "isHidden": true
+          },
+          {
+            "name": "Pisteet yhteensä %",
+            "expression": "[1 piste %]+[2 pistettä %]+[3 pistettä %]+[4 pistettä %]+[5 pistettä %]",
+            "formatString": "0.0 %;-0.0 %;0.0 %",
+            "isHidden": true
           }
         ],
         "annotations": [
@@ -5047,6 +5092,14 @@
               "        <int>117</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>pohjakoulutus_priorisointi_vastaajaid</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>208</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -6025,6 +6078,14 @@
               "        <int>121</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>pohjakoulutus_priorisointi_vastaajaid</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>122</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -7004,6 +7065,14 @@
               "        <boolean>true</boolean>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>pohjakoulutus_priorisointi_vastaajaid</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
               "  </ColumnChecked>",
               "  <ColumnFilter />",
               "  <SelectionFilter />",
@@ -7555,37 +7624,6 @@
             ]
           }
         ]
-      },
-      {
-        "name": "Numerovalinta_kutistettu",
-        "isHidden": true,
-        "columns": [
-          {
-            "type": "calculatedTableColumn",
-            "name": "vastausavain",
-            "dataType": "string",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "Muuttujat[vastausavain]"
-          },
-          {
-            "type": "calculatedTableColumn",
-            "name": "numerovalinta",
-            "dataType": "double",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "[numerovalinta]"
-          }
-        ],
-        "partitions": [
-          {
-            "name": "CalculatedTable 1",
-            "source": {
-              "type": "calculated",
-              "expression": "ADDCOLUMNS(VALUES(Muuttujat[vastausavain]),\"numerovalinta\",CALCULATE(AVERAGE(Muuttujat[numerovalinta])))"
-            }
-          }
-        ]
       }
     ],
     "relationships": [
@@ -7595,14 +7633,6 @@
         "fromColumn": "luodut_vastaajatunnukset_id",
         "toTable": "Luodut vastaajatunnukset",
         "toColumn": "id",
-        "crossFilteringBehavior": "bothDirections"
-      },
-      {
-        "name": "8924babe-fec3-4c0f-a3b0-c2de21280e3c",
-        "fromTable": "Muuttujat",
-        "fromColumn": "vastausavain",
-        "toTable": "Numerovalinta_kutistettu",
-        "toColumn": "vastausavain",
         "crossFilteringBehavior": "bothDirections"
       }
     ],
@@ -7779,25 +7809,13 @@
                 "name": "Keskiarvo"
               },
               {
-                "name": "Keskihajonta"
-              },
-              {
                 "name": "Pisteet"
               },
               {
                 "name": "Vastanneet"
               },
               {
-                "name": "Kyselyn kohteet"
-              },
-              {
-                "name": "Vastausosuus"
-              },
-              {
-                "name": "Painotetut pisteet"
-              },
-              {
-                "name": "Painotetut pisteet %"
+                "name": "Keskihajonta"
               }
             ]
           },
@@ -7916,9 +7934,6 @@
                 "name": "Medeltal"
               },
               {
-                "name": "Målgruppens storlek"
-              },
-              {
                 "name": "Poäng"
               },
               {
@@ -7926,15 +7941,6 @@
               },
               {
                 "name": "Svarande"
-              },
-              {
-                "name": "Svarsfrekvens"
-              },
-              {
-                "name": "Viktade poäng"
-              },
-              {
-                "name": "Viktade poäng  %"
               }
             ]
           },
@@ -8229,25 +8235,13 @@
                 "name": "Keskiarvo"
               },
               {
-                "name": "Keskihajonta"
-              },
-              {
-                "name": "Kyselyn kohteet"
-              },
-              {
-                "name": "Painotetut pisteet"
-              },
-              {
                 "name": "Pisteet"
               },
               {
                 "name": "Vastanneet"
               },
               {
-                "name": "Vastausosuus"
-              },
-              {
-                "name": "Painotetut pisteet %"
+                "name": "Keskihajonta"
               }
             ]
           },
@@ -8413,9 +8407,6 @@
                 "name": "Medeltal"
               },
               {
-                "name": "Målgruppens storlek"
-              },
-              {
                 "name": "Poäng"
               },
               {
@@ -8423,15 +8414,6 @@
               },
               {
                 "name": "Svarande"
-              },
-              {
-                "name": "Svarsfrekvens"
-              },
-              {
-                "name": "Viktade poäng"
-              },
-              {
-                "name": "Viktade poäng  %"
               }
             ]
           }
