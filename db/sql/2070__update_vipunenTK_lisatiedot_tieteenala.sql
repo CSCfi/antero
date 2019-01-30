@@ -18,8 +18,8 @@ UPDATE [dbo].[tieteenala]
       ,[tieteenala2010_EN] = '3121 General medicine, internal medicine and other clinical medicine' --old: 3121 Internal medicine
 	  ,[kommentti] = 'OKM Haapamäki, TK luokituksen päivitys'
 
- WHERE [id]=85
-GO
+ WHERE [id]=85;
+END;
 
 
-USE ANTERO
+USE [ANTERO]
