@@ -1,6 +1,18 @@
 USE [VipunenTK_lisatiedot]
 GO
 
+/*
+2019-01-31
+Added new age classification with the key ikar7
+Age groups under 18, yearly to 24 and after that in 5 year groups to 65 and older
+*/
+
+IF NOT EXISTS 
+		(SELECT * FROM VipunenTK_lisatiedot.dbo.ika f
+		WHERE f.[id] NOT IN (212,213,214,215,216,217,218,219,220,221,222,223,224,225,226,227)
+		)
+		
+BEGIN
 INSERT INTO [dbo].[ika]
            ([id]
            ,[luotu]
@@ -307,8 +319,9 @@ INSERT INTO [dbo].[ika]
            ,''
            ,'Manuaalinen'
            ,'CSC Janne')
-GO
+END
 
+GO
 USE [ANTERO]
 
 
