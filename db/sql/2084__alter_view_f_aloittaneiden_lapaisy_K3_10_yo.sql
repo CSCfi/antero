@@ -1,12 +1,14 @@
 USE [VipunenTK]
 GO
 
-/****** Object:  View [dbo].[v_f_aloittaneiden_lapaisy_K3_10_amk]    Script Date: 1.2.2019 15:04:42 ******/
+/****** Object:  View [dbo].[v_f_aloittaneiden_lapaisy_K3_10_yo]    Script Date: 1.2.2019 15:25:55 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
+
 
 
 /*
@@ -16,9 +18,24 @@ GO
 
 
 
-ALTER VIEW [dbo].[v_f_aloittaneiden_lapaisy_K3_10_amk]
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ALTER VIEW [dbo].[v_f_aloittaneiden_lapaisy_K3_10_yo]
 AS
-SELECT f.lkm_int AS lkm_int2, 
+SELECT  f.lkm_int AS lkm_int2, 
 		d1.lukuvuosi AS Aloituslukuvuosi, 
 		d1.vuosiselite AS Aloitusvuosi, 
 		d1.lukukausiselite AS Aloituslukukausi, 
@@ -26,38 +43,37 @@ SELECT f.lkm_int AS lkm_int2,
 		d16.sukupuoli AS Sukupuoli, 
 		d2.aidinkieli_versio1 AS Äidinkieli, 
 		d5.ika AS Ikä, 
-		d5.ika5v AS Ikäryhmä,
-		d5b.ika as [Ikäryhmä 2], 
-		d6.koulutuslaji2 AS [Tavoitetutk. koulutustyyppi], 
-		Case when d7.koulutusaste2002_koodi='62' 
-		then 'Aloitus I syklin tutkinnossa' 
-			when d7.koulutusaste2002_koodi='71' then 'Aloitus II syklin tutkinnossa'  
+		d5.ika5v AS Ikäryhmä, 
+		d5b.ika as [Ikäryhmä 2],
+		d6.koulutuslaji2 AS [Tavoitetutk. koulutuslaji],
+		Case when d7.koulutusaste2002_koodi='63' 
+		Or (d7.koulutusaste2002_koodi='72' 
+			and  d7.koulutus_koodi in ('772101', '772201')) then 'Aloitus I syklin tutkinnossa' 
+			when d7.koulutusaste2002_koodi='72' then 'Aloitus II syklin tutkinnossa'  
 			else 'Tuntematon' end AS [Tavoitetutk. sykli], 
-		d7.koulutusala2002 AS [Tavoitetutk. koulutusala], 
+		d7.koulutusala2002 AS [Tavoitetutk. koul.ala (02 luokitus)], 
 		d7.opintoala1995 AS [Tavoitetutk. koul.ala (95 luokitus)], 
-		d7.opintoala2002 AS [Tavoitetutk. opintoala], 
+		d7.opintoala2002 AS [Tavoitetutk. opintoala (02 luokitus)], 
 		d7.koulutus AS [Tavoitetutk. koulutusnimike], 
 		d8.koulutusaste2002 AS [Suor. tutkinnon koulutusaste], 
-		d8.koulutusala2002 AS [Suor. tutkinnon koulutusala], 
+		d8.koulutusala2002 AS [Suor. tutkinnon koul.ala (02 luokitus)], 
 		d8.opintoala1995 AS [Suor. tutkinnon koul.ala (95 luokitus)], 
-		d8.opintoala2002 AS [Suor. tutkinnon opintoala], 
+		d8.opintoala2002 AS [Suor. tutkinnon opintoala (02 luokitus)], 
 		d8.koulutus AS [Suor. tutkinnon koulutusnimike], 
 		d9.koulutusaste2002 AS [Pohjakoul. koulutusaste], 
-		d9.koulutusala2002 AS [Pohjakoul. koulutusala], 
+		d9.koulutusala2002 AS [Pohjakoul. koul.ala (02 luokitus)], 
 		d9.opintoala1995 AS [Pohjakoul. koul.ala (95 luokitus)], 
-		d9.opintoala2002 AS [Pohjakoul. opintoala], 
+		d9.opintoala2002 AS [Pohjakoul. opintoala (02 luokitus)], 
 		d9.koulutus AS [Pohjakoul. koulutusnimike], 
 		d3.maakunta AS [Tavoitetutk. maakunta], 
 		d4.maakunta AS [Suor. tutkinnon maakunta], 
 		d12.opiskelijan_olo AS Kirjoillaolo, 
-		d13.oppilaitos AS [Tavoitetutk. amk], 
+		d13.oppilaitos AS [Tavoitetutk. yliopisto], 
 		d13.oppilaitostyyppi AS [Tavoitetutk. oppil.tyyppi], 
-		d13.oppilaitoksen_omistajatyyppi AS [Tavoitetutk. oppil. omistajatyyppi],
-		d13.koulutuksen_jarjestaja AS [Tavoitetutk. koul. järjestäjä],
-		d14.oppilaitos AS [Suor. tutkinnon amk], 
+		d13.oppilaitoksen_omistajatyyppi AS [Tavoitetutk. oppil. omistajatyyppi], 
+		d14.oppilaitos AS [Suor. tutkinnon yliopisto], 
 		d14.oppilaitostyyppi AS [Suor. tutkinnon oppil.tyyppi], 
 		d14.oppilaitoksen_omistajatyyppi AS [Suor. tutkinnon oppil. omistajatyyppi], 
-		d15.rahoituslahde AS [Rahoituslähde],
 		f.saavutettu_suorv AS [Tutkinnon suoritusvuosi],
 		f.[1a Aloittaneiden opintojen kulku koulutuslajin mukaan prioriteettina mikä tahansa tutkinto] AS [Opintojen kulku], 
 		f.[1b Aloittaneiden opintojen kulku koulutuslajin mukaan prioriteettina tutkinto ja opiskelu alkuperäisessä tutkintolajissa] AS [Opintojen kulku prioriteetti 2], 
@@ -70,12 +86,14 @@ SELECT f.lkm_int AS lkm_int2,
 		f.[2a Aloittaneiden opintojen kulku koulutusalan (2002) mukaan prioriteettina mikä tahansa tutkinto] AS [Opintojen kulku koulutusaloittain], 
 		f.[2b Aloittaneiden opintojen kulku koulutusalan (2002) mukaan prioriteettina tutkinto ja opiskelu alkuperäisellä] AS [Opintojen kulku koulutusaloittain prioriteetti 2], 
 		f.[2e Aloittaneista alkuperäisen koulutusalan (2002) tutkinnon suorittaneet koulutusalan mukaan] AS [Tutkinto tavoitet. koulutusalalla], 
+		f.[2e Aloittaneista alkuperäisen koulutusalan (2002) tutkinnon suorittaneet koulutusalan mukaan] AS [Tutkinto tavoitet. koul.alalla (02 luokitus)], 
 		f.[2f Aloittaneista muun kuin alkuperäisen tutkintolajin tutkinnon suorittaneet koulutuslajin mukaan] AS [Tutkinto muulla koulutusalalla], 
 		f.[2g Aloittaneista alkuperäisellä koulutusalalla opiskelua jatkavat koulutusalan mukaan] AS [Opiskelee tavoitet. koulutusalalla], 
 		f.[2h Aloittaneista muulla koulutusalalla opiskelua jatkavat koulutusalan mukaan] AS [Opiskelee muulla koulutusalalla], 
 		f.[3a Aloittaneiden opintojen kulku opintoalan (2002) mukaan prioriteettina mikä tahansa tutkinto] AS [Opintojen kulku opintoaloittain], 
 		f.[3b Aloittaneiden opintojen kulku opintoalan (2002) mukaan prioriteettina tutkinto ja opiskelu alkuperäisellä] AS [Opintojen kulku opintoaloittain prioriteetti 2],
 		f.[3e Aloittaneista alkuperäisen opintoalan (2002) tutkinnon suorittaneet opintoalan mukaan] AS [Tutkinto tavoitet. opintoalalla], 
+		f.[3e Aloittaneista alkuperäisen opintoalan (2002) tutkinnon suorittaneet opintoalan mukaan] AS [Tutkinto tavoitet. op.alalla (02 luokitus)], 
 		f.[3f Aloittaneista muun opintoalan (2002) tutkinnon suorittaneet opintoalan mukaan] AS [Tutkinto muulla opintoalalla], 
 		f.[3g Aloittaneista alkuperäisellä opintoalalla (2002) opiskelua jatkavat opintoalan mukaan] AS [Opiskelee tavoitet. opintoalalla], 
 		f.[3h Aloittaneista muulla opintoalalla (2002) opiskelua jatkavat opintoalan mukaan] AS [Opiskelee muulla opintoalalla], 
@@ -122,8 +140,8 @@ SELECT f.lkm_int AS lkm_int2,
 		d2.aidinkieli_versio1_SV AS Modersmål, 
 		d5.ika_SV AS Ålder, 
 		d5.ika5v_SV AS Åldersgrupp,
-		d5b.ika_SV AS [Åldersgrupp 2], 
-		d6.koulutuslaji2_SV AS [Målexamens typ av utbildn.], 
+		d5b.ika_SV AS [Åldersgrupp 2],  
+		d6.koulutuslaji2_SV AS [Målexamens examensslag], 
 		d7.koulutusaste2002_SV AS [Målexamens utbildn.nivå 2002], 
 		Case when d7.koulutusaste2002_koodi='63' 
 		Or (d7.koulutusaste2002_koodi='72' 
@@ -131,24 +149,26 @@ SELECT f.lkm_int AS lkm_int2,
 			when d7.koulutusaste2002_koodi='71' Or d7.koulutusaste2002_koodi='72' then 'Påbörjande i II-skedets examen'  
 			else 'Tuntematon' end AS [Startskede], 
 		d7.koulutusala2002_SV AS [Målexamens utbildn.område 02], 
+		d7.opintoala1995_SV AS [Målexamens utbildn.område 95], 
 		d7.opintoala2002_SV AS [Målexamens studieområde 02], 
 		d7.koulutus_SV AS [Målexamens utbildn.benämning], 
 		d8.koulutusaste2002_SV AS [Examens utbildn.nivå 2002], 
 		d8.koulutusala2002_SV AS [Examens utbildn.område 2002], 
+		d8.opintoala1995_SV AS [Examens utbildn.område 1995], 
 		d8.opintoala2002_SV AS [Examens studieområde 2002], 
 		d8.koulutus_SV AS [Examens utbildn.benämning], 
 		d9.koulutusaste2002_SV AS [Grundutb. utbildn.nivå 2002], 
 		d9.koulutusala2002_SV AS [Grundutb. utbildn.område 2002], 
+		d9.opintoala1995_SV AS [Grundutb. utbildn.område 1995], 
 		d9.opintoala2002_SV AS [Grundutb. studieområde 2002], 
 		d9.koulutus_SV AS [Grundutb. utbildn.benämning], 
 		d3.maakunta_SV AS [Målexamens landskap], 
 		d4.maakunta_SV AS [Examens landskap], 
 		d12.opiskelijan_olo_SV AS Inskrivning, 
-		d13.oppilaitos_SV AS [Målexamens yrkehögskola], 
+		d13.oppilaitos_SV AS [Målexamens universitet], 
 		d13.koulutuksen_jarjestaja_SV AS [Målexamens utbildn.ordnare],
-		d14.oppilaitos_SV AS [Examens yrkehögskola], 
 		f.saavutettu_suorv AS [År då utbildningen avlagts],
-		[Studieförlopp] = 
+				[Studieförlopp] = 
 			case f.[1a Aloittaneiden opintojen kulku koulutuslajin mukaan prioriteettina mikä tahansa tutkinto]
 				when 'Tutkinto alkuperäisessä tutkintolajissa' then 'Examen i det ursprungliga examensslaget'
 				when 'Tutkinto muussa tutkintolajissa' then 'Examen i annat examensslag'
@@ -226,7 +246,7 @@ SELECT f.lkm_int AS lkm_int2,
 				when 'Ei' then 'Inte'
 				when 'Virhetilanne' then 'Information saknas'
 			end	
-		, 
+		,
 		--englanti
 		d1.lukuvuosi AS [First academic year], 
 		d1.vuosiselite_EN AS [First year of studies], 
@@ -235,9 +255,9 @@ SELECT f.lkm_int AS lkm_int2,
 		d16.sukupuoli_EN AS Gender, 
 		d2.aidinkieli_versio1_EN AS [Mother tongue], 
 		d5.ika_EN AS Age, 
-		d5.ika5v_EN AS [Age group],
-		d5b.ika_EN AS [Age group 2], 
-		d6.koulutuslaji2_EN AS [Target degree's type of ed.], 
+		d5.ika5v_EN AS [Age group], 
+		d5b.ika_EN AS [Age group 2],  
+		d6.koulutuslaji2_EN AS [Target degree's form of deg.], 
 		d7.koulutusaste2002_EN AS [Target deg. level of ed. 02], 
 		Case when d7.koulutusaste2002_koodi='63' 
 		Or (d7.koulutusaste2002_koodi='72' 
@@ -245,22 +265,25 @@ SELECT f.lkm_int AS lkm_int2,
 			when d7.koulutusaste2002_koodi='71' Or d7.koulutusaste2002_koodi='72' then 'Beginning of studies in cycle II degree'  
 			else 'Tuntematon' end AS [Beginning cycle of ed.], 
 		d7.koulutusala2002_EN AS [Target deg. field of ed. 02], 
+		d7.opintoala1995_EN AS [Target deg. field of ed. 95], 
 		d7.opintoala2002_EN AS [Target deg. subfield of ed. 02], 
 		d7.koulutus_EN AS [Target deg. name of ed.], 
 		d8.koulutusaste2002_EN AS [Degree's level of ed. 02], 
 		d8.koulutusala2002_EN AS [Degree's field of ed. 02], 
+		d8.opintoala1995_EN AS [Degree's field of ed. 95], 
 		d8.opintoala2002_EN AS [Degree's subfield of ed. 02], 
 		d8.koulutus_EN AS [Degree's name of ed.], 
 		d9.koulutusaste2002_EN AS [Previous deg. level of ed. 02], 
 		d9.koulutusala2002_EN AS [Previous deg. field of ed. 02], 
+		d9.opintoala1995_EN AS [Previous deg. field of ed. 95], 
 		d9.opintoala2002_EN AS [Previous deg. subfield of ed. 02], 
 		d9.koulutus_EN AS [Previous deg. name of ed.], 
 		d3.maakunta_EN AS [Target degree's region], 
 		d4.maakunta_EN AS [Degree's region], 
 		d12.opiskelijan_olo_EN AS [Enrollment status], 
-		d13.oppilaitos_EN AS [Target deg. polytechnic], 
+		d13.oppilaitos_EN AS [Target deg. university], 
 		d13.koulutuksen_jarjestaja_EN AS [Target deg. ed. provider],
-		d14.oppilaitos_EN AS [Degree's polytechnic], 
+		d14.oppilaitos_EN AS [Degree's university], 
 		f.saavutettu_suorv AS [Graduation year],
 		[Study progress] =
 			case f.[1a Aloittaneiden opintojen kulku koulutuslajin mukaan prioriteettina mikä tahansa tutkinto]
@@ -353,19 +376,15 @@ SELECT f.lkm_int AS lkm_int2,
 		d9.koulutus_Koodi AS [Koodit Pohjakoul. koulutusnimike], 
 		d3.maakunta_Koodi AS [Koodit Tavoitetutk. maakunta], 
 		d4.maakunta_Koodi AS [Koodit Suor. tutkinnon maakunta], 
-		coalesce(d13.oppilaitoksen_korvaavakoodi,d13.oppilaitoskoodi) AS [Koodit Tavoitetutk. oppilaitos], 
-		coalesce(d13.oppilaitoksen_korvaavakoodi,d13.oppilaitoskoodi) AS [Koodit Tavoitetutk. yliopisto], 
-		coalesce(d13.oppilaitoksen_korvaavakoodi,d13.oppilaitoskoodi) AS [Koodit Tavoitetutk. amk], 
+		d13.oppilaitoskoodi AS [Koodit Tavoitetutk. yliopisto], 
 		d13.koulutuksen_jarjestajakoodi AS [Koodit Tavoitetutk. koul. järjestäjä],
-		coalesce(d14.oppilaitoksen_korvaavakoodi,d14.oppilaitoskoodi) AS [Koodit Suor. tutkinnon oppilaitos], 
-		coalesce(d14.oppilaitoksen_korvaavakoodi,d14.oppilaitoskoodi) AS [Koodit Suor. tutkinnon yliopisto], 
-		coalesce(d14.oppilaitoksen_korvaavakoodi,d14.oppilaitoskoodi) AS [Koodit Suor. tutkinnon amk], 
+		d14.oppilaitoskoodi AS [Koodit Suor. tutkinnon yliopisto], 
 		d1.jarjestys AS lukukausi_jarjestys, 
 		d17.jarjestys AS tarkastelujakso_jarjestys, 
 		d16.jarjestys AS sukupuoli_jarjestys, 
 		d2.jarjestys AS aidinkieli_jarjestys, 
 		d5.jarjestys_ika, 
-		d5.jarjestys_ika5v,
+		d5.jarjestys_ika5v, 
 		d5b.jarjestys_ika as [Ikaryhma 2 jarj], 
 		d6.jarjestys_koulutuslaji2 AS koulutuslaji_jarjestys, 
 		d7.jarjestys_koulutusaste2002, 
@@ -392,7 +411,6 @@ SELECT f.lkm_int AS lkm_int2,
 		d14.jarjestys_oppilaitos AS saavutettu_jarjestys_oppilaitos, 
 		d14.jarjestys_oppilaitostyyppi AS saavutettu_jarjestys_oppilaitostyyppi, 
 		d14.jarjestys_omistajatyyppi AS saavutettu_jarjestys_omistajatyyppi, 
-		d15.jarjestys AS rahoituslahde_jarjestys, 
 		f.[1a_jarjestys], f.[1b_jarjestys], f.[1c_jarjestys], 
 		f.[1d_jarjestys], f.[1e_jarjestys], f.[1f_jarjestys], f.[1g_jarjestys], f.[1h_jarjestys], 
 		f.[2a_jarjestys], f.[2b_jarjestys], f.[2e_jarjestys], f.[2f_jarjestys], f.[2g_jarjestys], 
@@ -519,7 +537,7 @@ FROM     dbo.f_aloittaneiden_lapaisy f INNER JOIN
 												when d5.ika_int>64 then 'ikar7_65'
 												when d5.ika_int=-1 then d5.ika_avain
 												else null end
-												Inner join
+												INNER JOIN
 			dbo.d_koulutuslaji2 AS d6 ON d6.id = f.koulutuslaji2_id INNER JOIN
 			dbo.d_koulutusluokitus AS d7 ON d7.id = f.koulk_id INNER JOIN
 			dbo.d_koulutusluokitus AS d8 ON d8.id = f.saavutettu_koulk_id INNER JOIN
@@ -527,12 +545,29 @@ FROM     dbo.f_aloittaneiden_lapaisy f INNER JOIN
 			dbo.d_lahde AS d10 ON d10.id = f.lahde_id INNER JOIN
 			dbo.d_opiskelijan_olo AS d12 ON d12.id = f.ololk_id INNER JOIN
 			dbo.d_oppilaitoksen_taustatiedot AS d13 ON d13.id = f.oppilaitoksen_taustatiedot_id INNER JOIN
-			dbo.d_oppilaitoksen_taustatiedot AS d14 ON d14.id = f.saavutettu_oppilaitoksen_taustatiedot_id INNER JOIN
-			dbo.d_rahoituslahde AS d15 ON d15.id = f.rahlahde_id
-WHERE        aineistokoodi = 'K3.10' AND d10.lahde_koodi = 41 AND d17.tarkastelujakso != '0,5 vuotta' AND d1.lukuvuosi != '1999/2000' AND d1.lukuvuosi != '2000/2001' AND d1.lukuvuosi != '2001/2002' 
-				AND d6.koulutuslaji2_koodi != '52' AND [1a Aloittaneiden opintojen kulku koulutuslajin mukaan prioriteettina mikä tahansa tutkinto] != 'Virhetilanne'
+			dbo.d_oppilaitoksen_taustatiedot AS d14 ON d14.id = f.saavutettu_oppilaitoksen_taustatiedot_id
+WHERE        (f.aineistokoodi = 'K3.10') AND (d10.lahde_koodi = 51) AND (d17.tarkastelujakso <> '0,5 vuotta') AND (d1.lukuvuosi <> '1999/2000') AND (d1.lukuvuosi <> '2000/2001') AND (d6.koulutuslaji2_koodi <> '52') AND 
+                         (f.[1a Aloittaneiden opintojen kulku koulutuslajin mukaan prioriteettina mikä tahansa tutkinto] <> 'Virhetilanne')
 
 
-				
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 GO
+
+
 USE [ANTERO]
