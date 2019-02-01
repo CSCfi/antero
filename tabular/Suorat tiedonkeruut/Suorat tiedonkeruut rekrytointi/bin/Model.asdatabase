@@ -598,7 +598,7 @@
           },
           {
             "name": "Ulkomaalaiset hakijat",
-            "expression": "IF(CALCULATE(SUM([hakijat_lkm]),'_Muuttujat'[Kansalaisuus Suomi]=\"Ei\")=0,BLANK(),CALCULATE(SUM([hakijat_lkm]),'_Muuttujat'[Kansalaisuus Suomi]=\"Ei\"))",
+            "expression": "IF(CALCULATE(SUM([hakijat_lkm]),'_Muuttujat'[Kansalaisuus Suomi]=\"Ei\")=0,BLANK(),CALCULATE(SUMX(FILTER(_Muuttujat,'_Muuttujat'[Kansalaisuus Suomi]=\"Ei\"),[hakijat_lkm])))",
             "formatString": "#,0"
           },
           {
@@ -623,7 +623,7 @@
           },
           {
             "name": "Ulkomaalaisten hakijoiden osuus",
-            "expression": "[Ulkomaalaiset hakijat]/[Hakijat]",
+            "expression": "CALCULATE([Ulkomaalaiset hakijat]/[Hakijat])",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
@@ -651,22 +651,22 @@
           },
           {
             "name": "Hakijat naiset",
-            "expression": "CALCULATE([Hakijat],_Muuttujat[Sukupuoli]=\"nainen\")",
+            "expression": "CALCULATE(SUMX(FILTER(_Muuttujat,[Sukupuoli]=\"nainen\"),[hakijat_lkm]))",
             "isHidden": true
           },
           {
             "name": "Hakijat miehet",
-            "expression": "CALCULATE([Hakijat],_Muuttujat[Sukupuoli]=\"mies\")",
+            "expression": "CALCULATE(SUMX(FILTER(_Muuttujat,[Sukupuoli]=\"mies\"),[hakijat_lkm]))",
             "isHidden": true
           },
           {
             "name": "Naishakijoiden osuus",
-            "expression": "[Hakijat naiset]/[Hakijat]",
+            "expression": "CALCULATE([Hakijat naiset]/[Hakijat])",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Mieshakijoiden osuus",
-            "expression": "[Hakijat miehet]/[Hakijat]",
+            "expression": "CALCULATE([Hakijat miehet]/[Hakijat])",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           }
         ],

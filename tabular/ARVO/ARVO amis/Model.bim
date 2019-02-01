@@ -793,6 +793,7 @@
           {
             "name": "Kiusaamiskysymys",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "Kiusaamiskysymys",
             "displayFolder": "Kyselymuuttujat"
           },
@@ -801,6 +802,12 @@
             "dataType": "int64",
             "isHidden": true,
             "sourceColumn": "pohjakoulutus_priorisointi_vastaajaid"
+          },
+          {
+            "name": "vastaustyyppi_keskiarvo",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "vastaustyyppi_keskiarvo"
           }
         ],
         "partitions": [
@@ -1808,6 +1815,14 @@
                   "        <int>208</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>vastaustyyppi_keskiarvo</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>149</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -2792,6 +2807,14 @@
                   "      </key>",
                   "      <value>",
                   "        <int>122</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>vastaustyyppi_keskiarvo</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>123</int>",
                   "      </value>",
                   "    </item>",
                   "  </ColumnDisplayIndex>",
@@ -3781,6 +3804,14 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>vastaustyyppi_keskiarvo</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -3844,7 +3875,7 @@
           },
           {
             "name": "kaikki pisteet lkm",
-            "expression": "CALCULATE(COUNTROWS(Muuttujat),Muuttujat[vastaustyyppi]<>\"nps\")",
+            "expression": "IF(ISFILTERED(Muuttujat[Monivalintavaihtoehto]),BLANK(),CALCULATE(COUNTROWS(Muuttujat),Muuttujat[vastaustyyppi]<>\"nps\"))",
             "formatString": "#,0",
             "isHidden": true
           },
@@ -3875,12 +3906,12 @@
           },
           {
             "name": "Keskiarvo",
-            "expression": "IF([Vastanneet]=3,BLANK(),CALCULATE(AVERAGE('Muuttujat'[numerovalinta]),Muuttujat[vastaustyyppi]<>\"nps\", FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]),Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)))",
+            "expression": "IF(OR([Vastanneet]=3,ISFILTERED(Muuttujat[Monivalintavaihtoehto])),BLANK(),CALCULATE(AVERAGE('Muuttujat'[numerovalinta]),Muuttujat[vastaustyyppi_keskiarvo]=1, FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]),Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)))",
             "formatString": "0.0"
           },
           {
             "name": "Keskihajonta",
-            "expression": "IF([Vastanneet]=3,BLANK(),CALCULATE(STDEV.P('Muuttujat'[numerovalinta]),Muuttujat[vastaustyyppi]<>\"nps\", FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]),Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)))",
+            "expression": "IF(OR([Vastanneet]=3,ISFILTERED(Muuttujat[Monivalintavaihtoehto])),BLANK(),CALCULATE(STDEV.P('Muuttujat'[numerovalinta]),Muuttujat[vastaustyyppi_keskiarvo]=1, FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]),Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)))",
             "formatString": "0.0"
           },
           {
@@ -4125,6 +4156,19 @@
             "expression": "[1 piste %]+[2 pistettä %]+[3 pistettä %]+[4 pistettä %]+[5 pistettä %]",
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "isHidden": true
+          },
+          {
+            "name": "NPS",
+            "expression": [
+              "",
+              "var promoters = CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),FILTER(ALL(Muuttujat[vastaustyyppi]),Muuttujat[vastaustyyppi]=\"nps\"),Muuttujat[numerovalinta]>=9)",
+              "var detractors=",
+              "CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),FILTER(ALL(Muuttujat[vastaustyyppi]),Muuttujat[vastaustyyppi]=\"nps\"),Muuttujat[numerovalinta]<=6)",
+              "var respondents=",
+              "CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),FILTER(ALL(Muuttujat[vastaustyyppi]),Muuttujat[vastaustyyppi]=\"nps\"))",
+              "return (promoters-detractors)/respondents*100"
+            ],
+            "formatString": "0"
           }
         ],
         "annotations": [
@@ -5136,6 +5180,14 @@
               "        <int>208</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>vastaustyyppi_keskiarvo</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>149</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -6122,6 +6174,14 @@
               "        <int>122</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>vastaustyyppi_keskiarvo</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>123</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -7109,6 +7169,14 @@
               "        <boolean>true</boolean>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>vastaustyyppi_keskiarvo</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
               "  </ColumnChecked>",
               "  <ColumnFilter />",
               "  <SelectionFilter />",
@@ -7838,6 +7906,9 @@
               },
               {
                 "name": "Kiusaamiskysymys"
+              },
+              {
+                "name": "vastaustyyppi"
               }
             ],
             "measures": [
@@ -7852,6 +7923,9 @@
               },
               {
                 "name": "Keskihajonta"
+              },
+              {
+                "name": "NPS"
               }
             ]
           },
@@ -8234,6 +8308,9 @@
               },
               {
                 "name": "Kiusaamiskysymys"
+              },
+              {
+                "name": "vastaustyyppi"
               }
             ],
             "measures": [
@@ -8278,6 +8355,9 @@
               },
               {
                 "name": "Keskihajonta"
+              },
+              {
+                "name": "NPS"
               }
             ]
           },
