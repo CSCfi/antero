@@ -1,12 +1,13 @@
-USE [ANTERO]
+USE [VipunenTK]
 GO
 
-
+/****** Object:  View [dbo].[v_f_aloittaneiden_lapaisy_K3_10_amk]    Script Date: 1.2.2019 15:04:42 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 ALTER VIEW [dbo].[v_f_aloittaneiden_lapaisy_K3_10_amk]
