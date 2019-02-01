@@ -623,7 +623,10 @@
           },
           {
             "name": "Ulkomaalaisten hakijoiden osuus",
-            "expression": "CALCULATE([Ulkomaalaiset hakijat]/[Hakijat])",
+            "expression": [
+              "CALCULATE([Ulkomaalaiset hakijat]/",
+              "IF(ISFILTERED(_Muuttujat[Kansalaisuus (maanosa)]),CALCULATE(SUM([hakijat_lkm]),ALL(_Muuttujat[Kansalaisuus (maanosa)])),[Hakijat]))"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
@@ -667,6 +670,43 @@
           {
             "name": "Mieshakijoiden osuus",
             "expression": "CALCULATE([Hakijat miehet]/[Hakijat])",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Hakijat muut",
+            "expression": "CALCULATE(SUMX(FILTER(_Muuttujat,[Sukupuoli]=\"tieto puuttuu\"),[hakijat_lkm]))",
+            "isHidden": true
+          },
+          {
+            "name": "Sukupuolitieto puuttuu",
+            "expression": "CALCULATE([Hakijat muut]/[Hakijat])",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Suomalaisten hakijoiden osuus",
+            "expression": [
+              "CALCULATE([Suomalaiset hakijat]/",
+              "IF(ISFILTERED(_Muuttujat[Kansalaisuus (maanosa)]),CALCULATE(SUM([hakijat_lkm]),ALL(_Muuttujat[Kansalaisuus (maanosa)])),[Hakijat]))",
+              ""
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Suomalaiset hakijat",
+            "expression": "IF(CALCULATE(SUM([hakijat_lkm]),'_Muuttujat'[Kansalaisuus Suomi]=\"Kyllä\")=0,BLANK(),CALCULATE(SUMX(FILTER(_Muuttujat,'_Muuttujat'[Kansalaisuus Suomi]=\"Kyllä\"),[hakijat_lkm])))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Kansalaisuus puuttuu",
+            "expression": "IF(CALCULATE(SUM([hakijat_lkm]),'_Muuttujat'[Kansalaisuus Suomi]=\"Tieto puuttuu\")=0,BLANK(),CALCULATE(SUMX(FILTER(_Muuttujat,'_Muuttujat'[Kansalaisuus Suomi]=\"Tieto puuttuu\"),[hakijat_lkm])))"
+          },
+          {
+            "name": "Kansalaisuustieto puuttuu",
+            "expression": [
+              "CALCULATE([Kansalaisuus puuttuu]/",
+              "IF(ISFILTERED(_Muuttujat[Kansalaisuus (maanosa)]),CALCULATE(SUM([hakijat_lkm]),ALL(_Muuttujat[Kansalaisuus (maanosa)])),[Hakijat]))",
+              ""
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           }
         ],
@@ -8683,6 +8723,12 @@
               },
               {
                 "name": "Naishakijoiden osuus"
+              },
+              {
+                "name": "Kansalaisuustieto puuttuu"
+              },
+              {
+                "name": "Sukupuolitieto puuttuu"
               }
             ]
           },
