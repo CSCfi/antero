@@ -114,6 +114,6 @@ FROM antero.sa.sa_eter_basic_info as sa
 
 GO
 
-END
 
-[USE ANTERO]
+
+USE [ANTERO]
