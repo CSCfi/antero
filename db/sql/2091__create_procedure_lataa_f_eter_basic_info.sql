@@ -14,15 +14,13 @@ ETER basic information lataus SA-tauluista
 JKO
 */
 
-IF NOT EXISTS (
-		SELECT *
-		FROM sys.objects
-		WHERE object_id = OBJECT_ID(N'dw.p_lataa_f_eter_basic_info')
-			AND type IN (N'P',N'PC')
-		)
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[p_lataa_f_eter_basic_info]') AND type in (N'P', N'PC'))
 BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dw].[p_lataa_f_eter_basic_info] AS' 
+END
+GO
 
-CREATE PROCEDURE [dw].[p_lataa_f_eter_basic_info] AS
+ALTER PROCEDURE [dw].[p_lataa_f_eter_basic_info] AS
 
 TRUNCATE TABLE dw.f_eter_basic_info
 
