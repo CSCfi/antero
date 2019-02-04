@@ -14,7 +14,13 @@ ETER basic information lataus SA-tauluista
 JKO
 */
 
-
+IF NOT EXISTS (
+		SELECT *
+		FROM sys.objects
+		WHERE object_id = OBJECT_ID(N'dw.p_lataa_f_eter_basic_info')
+			AND type IN (N'P',N'PC')
+		)
+BEGIN
 
 CREATE PROCEDURE [dw].[p_lataa_f_eter_basic_info] AS
 
@@ -109,5 +115,7 @@ SELECT
 FROM antero.sa.sa_eter_basic_info as sa
 
 GO
+
+END
 
 [USE ANTERO]
