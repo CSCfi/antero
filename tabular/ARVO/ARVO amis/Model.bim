@@ -3930,7 +3930,8 @@
             "expression": [
               "",
               "var vastaajat = DISTINCTCOUNT([vastaajaid])",
-              "return IF(AND(vastaajat<5,vastaajat>0),\"<5\",vastaajat)"
+              "return IF(AND(vastaajat<5,vastaajat>0),\"<5\",vastaajat)",
+              ""
             ],
             "formatString": "#,0"
           },
@@ -4007,17 +4008,17 @@
           },
           {
             "name": "Keskiarvo",
-            "expression": "IF(OR([Vastanneet]=3,ISFILTERED(Muuttujat[Monivalintavaihtoehto])),BLANK(),CALCULATE(AVERAGE('Muuttujat'[numerovalinta]),Muuttujat[vastaustyyppi_keskiarvo]=1, FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]),Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)))",
-            "formatString": "0.0"
+            "expression": "IF(OR([Vastanneet]=\"<5\",ISFILTERED(Muuttujat[Monivalintavaihtoehto])),BLANK(),CALCULATE(AVERAGE('Muuttujat'[numerovalinta]),Muuttujat[vastaustyyppi_keskiarvo]=1, FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]),Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)))",
+            "formatString": "0"
           },
           {
             "name": "Keskihajonta",
-            "expression": "IF(OR([Vastanneet]=3,ISFILTERED(Muuttujat[Monivalintavaihtoehto])),BLANK(),CALCULATE(STDEV.P('Muuttujat'[numerovalinta]),Muuttujat[vastaustyyppi_keskiarvo]=1, FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]),Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)))",
-            "formatString": "0.0"
+            "expression": "IF(OR([Vastanneet]=\"<5\",ISFILTERED(Muuttujat[Monivalintavaihtoehto])),BLANK(),CALCULATE(STDEV.P('Muuttujat'[numerovalinta]),Muuttujat[vastaustyyppi_keskiarvo]=1, FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]),Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)))",
+            "formatString": "0"
           },
           {
             "name": "Pisteet",
-            "expression": "CALCULATE(SUM(muuttujat[numerovalinta]),Muuttujat[Rahoitusmallikysymys]=\"Kyllä\",FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]),Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1))",
+            "expression": "IF([Vastanneet]=\"<5\",BLANK(),CALCULATE(SUM(muuttujat[numerovalinta]),Muuttujat[Rahoitusmallikysymys]=\"Kyllä\",FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]),Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)))",
             "formatString": "#,0"
           },
           {
@@ -4119,12 +4120,12 @@
           {
             "name": "Medeltal",
             "expression": "[Keskiarvo]",
-            "formatString": "0.0"
+            "formatString": "0"
           },
           {
             "name": "Standardavvikelse",
             "expression": "[Keskihajonta]",
-            "formatString": "0.0"
+            "formatString": "0"
           },
           {
             "name": "Poäng",
@@ -4204,12 +4205,12 @@
           {
             "name": "Mean",
             "expression": "[Keskiarvo]",
-            "formatString": "0.0"
+            "formatString": "0"
           },
           {
             "name": "Standard deviation",
             "expression": "[Keskihajonta]",
-            "formatString": "0.0"
+            "formatString": "0"
           },
           {
             "name": "Score",
@@ -4267,9 +4268,34 @@
               "CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),FILTER(ALL(Muuttujat[vastaustyyppi]),Muuttujat[vastaustyyppi]=\"nps\"),Muuttujat[numerovalinta]<=6)",
               "var respondents=",
               "CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),FILTER(ALL(Muuttujat[vastaustyyppi]),Muuttujat[vastaustyyppi]=\"nps\"))",
-              "return (promoters-detractors)/respondents*100"
+              "return IF([Vastanneet]=\"<5\",BLANK(),(promoters-detractors)/respondents*100)"
             ],
             "formatString": "0"
+          },
+          {
+            "name": "Vastanneet2",
+            "expression": [
+              "",
+              "var vastaajat = DISTINCTCOUNT([vastaajaid])",
+              "var vastaajat2 = CALCULATE([Vastanneet])",
+              "RETURN IF(OR([Vastanneet3]<>[Vastanneet4],[Vastanneet5]=1),BLANK(),vastaajat)"
+            ]
+          },
+          {
+            "name": "Vastanneet3",
+            "expression": "COUNTROWS(Muuttujat)"
+          },
+          {
+            "name": "Vastanneet4",
+            "expression": "CALCULATE(COUNTROWS(Muuttujat),ALL(Muuttujat),VALUES(Muuttujat[Kysymys]),VALUES(Muuttujat[Koulutuksen järjestäjä]),VALUES(Muuttujat[Monivalintavaihtoehto]),OR(Muuttujat[kysymysid]=5820,Muuttujat[kysymysid]=5826))"
+          },
+          {
+            "name": "Vastanneet5",
+            "expression": "CALCULATE(IF(AND(ISFILTERED([Kysymys]),[Vastanneet3]<>[Vastanneet4]),1,BLANK()),ALL(Muuttujat[Monivalintavaihtoehto]))"
+          },
+          {
+            "name": "Vastanneet_uusi",
+            "expression": "IF(ISFILTERED([Kysymys]),[Vastanneet],[Vastanneet2])"
           }
         ],
         "annotations": [
