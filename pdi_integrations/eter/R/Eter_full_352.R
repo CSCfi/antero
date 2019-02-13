@@ -3,10 +3,14 @@
 #library(tidyverse)
 #install.packages("plyr")
 #install.packages("purrr")
-library(jsonlite)
+#install.packages("reshape")
+library(reshape)
 library(plyr)
+library(jsonlite)
 library(purrr)
 library(dplyr)
+library(tidyr)
+
 
 
 ##### ETER FULL DOWNLOAD R3.5.2 ja uusin jsonlite #####
@@ -85,6 +89,42 @@ Allfield_descriptions <- rbind.fill(bas_descriptions,demo_descriptions,era_descr
                            rev_descriptions,sta_descriptions,stud_descriptions)
 						   
 write.csv2(Allfield_descriptions,"D:/pdi_integrations/data/eter/eter_allfields.csv",row.names = FALSE)
+
+##### Eter field codes #####
+All_fieldcodes <- fromJSON("https://www.eter-project.com/api/3.0/codes")
+
+codes <- data.frame(matrix(ncol=3,nrow=0))
+nimet <- c("name","code","value")
+colnames(codes) <- nimet
+lista <- list()
+
+vc=names(All_fieldcodes$codes$VC)
+
+for (i in 1:length(vc)){
+  pi <- All_fieldcodes$codes$VC[i]
+  afc <- pi %>% flatten() %>% as.data.frame()
+  colnames(afc) <- gsub("values.","",colnames(afc))
+  afc <- afc %>% melt(., id="name")
+  colnames(afc) <- gsub("variable","code",colnames(afc))
+  nimi <- as.character(afc$name[1])
+  lista[[nimi]]<-afc
+}
+sc <- All_fieldcodes$codes$SC %>% flatten() %>% as.data.frame()
+colnames(sc) <- gsub("values.","",colnames(sc))
+sc <- sc %>% melt(., id="name")
+colnames(sc) <- gsub("variable","code",colnames(sc))
+nimi <- as.character(sc$name[1])
+lista[[nimi]]<-sc
+
+df <- All_fieldcodes$codes$DF %>% flatten() %>% as.data.frame()
+colnames(df) <- gsub("values.","",colnames(df))
+df <- df %>% melt(., id="name")
+colnames(df) <- gsub("variable","code",colnames(df))
+nimi <- as.character(df$name[1])
+lista[[nimi]]<-df
+
+codes <- rbind_list(lista)
+write.csv2(codes,"D:/pdi_integrations/data/eter/eter_allfieldcodes.csv",row.names = FALSE)
 
 
 ##### Kesto #####
