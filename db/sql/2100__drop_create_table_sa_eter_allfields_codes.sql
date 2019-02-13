@@ -10,7 +10,7 @@ IF  NOT EXISTS
 BEGIN
 
 CREATE TABLE [sa].[sa_eter_allfields_codes](
-	[_id] [int] NULL,
+	[_id] [int] NOT NULL,
 	[name] [varchar](40) NULL,
 	[code] [varchar](2) NULL,
 	[value] [varchar](79) NULL,
