@@ -17,7 +17,6 @@ CREATE TABLE [sa].[sa_eter_allfields_codes](
 	[username] [varchar](100) NULL,
 	[Source] [varchar](100) NULL,
 	[Loadtime] [datetime] NULL
-)
  CONSTRAINT [PK__sa_eter_allfields_codes] PRIMARY KEY CLUSTERED
 (
 	[_id] ASC
