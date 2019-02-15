@@ -137,6 +137,11 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
         row["isced2011koulutusastetaso1nimi"] = getnimi(ii,"FI")
         row["isced2011koulutusastetaso1nimi_sv"] = getnimi(ii,"SV")
         row["isced2011koulutusastetaso1nimi_en"] = getnimi(ii,"EN")
+	  if ii["koodisto"]["koodistoUri"] == "isced2011koulutusastetaso2":
+        row["isced2011koulutusastetaso2koodi"] = ii["koodiArvo"]
+        row["isced2011koulutusastetaso2nimi"] = getnimi(ii,"FI")
+        row["isced2011koulutusastetaso2nimi_sv"] = getnimi(ii,"SV")
+        row["isced2011koulutusastetaso2nimi_en"] = getnimi(ii,"EN")	
       if ii["koodisto"]["koodistoUri"] == "kansallinenkoulutusluokitus2016koulutusastetaso1":
         row["koulutusluokitus2016koulutusastetaso1koodi"] = ii["koodiArvo"]
         row["koulutusluokitus2016koulutusastetaso1nimi"] = getnimi(ii,"FI")
