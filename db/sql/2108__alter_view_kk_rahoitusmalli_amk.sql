@@ -1806,6 +1806,7 @@ SELECT
 
 
   FROM VipunenTK_lisatiedot.dbo.rahoitusmalli_korkeakoulut f
+  where f.sektori='Ammattikorkeakoulu'
 
 GO
 
