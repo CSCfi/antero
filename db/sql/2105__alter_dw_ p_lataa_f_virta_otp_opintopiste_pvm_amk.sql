@@ -1,3 +1,4 @@
+-- Korjaus
 USE ANTERO
 GO
 IF NOT EXISTS (
