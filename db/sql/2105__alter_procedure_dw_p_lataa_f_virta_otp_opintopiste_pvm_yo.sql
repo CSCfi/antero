@@ -1,20 +1,8 @@
 USE ANTERO
 GO
-IF NOT EXISTS (
-  select *
-  from INFORMATION_SCHEMA.ROUTINES
-  where ROUTINE_TYPE='PROCEDURE'
-  and ROUTINE_SCHEMA='dw'
-  and ROUTINE_NAME='p_lataa_f_virta_otp_opintopiste_pvm_yo'
-) 
-BEGIN
- 
-exec('CREATE PROCEDURE dw.p_lataa_f_virta_otp_opintopiste_pvm_yo AS') 
 
-END
-GO
-
-ALTER PROCEDURE [dw].[p_lataa_f_virta_otp_opintopiste_pvm_yo] AS 
+ALTER PROCEDURE dw.p_lataa_f_virta_otp_opintopiste_pvm_yo 
+AS 
 
 TRUNCATE TABLE dw.f_virta_otp_opintopiste_pvm_yo
 
@@ -62,4 +50,5 @@ FROM sa.sa_virta_otp_opintopistepvmyo as sa
 LEFT JOIN dw.d_ohjauksenala d1 ON d1.ohjauksenala_koodi=sa.koodi
 LEFT JOIN dw.d_yo d2 ON d2.yo_tunnus = sa.oppilaitostunnus
 
+GO
 
