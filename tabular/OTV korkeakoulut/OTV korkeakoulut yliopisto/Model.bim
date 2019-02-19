@@ -9502,12 +9502,12 @@
         "measures": [
           {
             "name": "Opiskelijat",
-            "expression": "SUM([Opisk2])",
+            "expression": "CALCULATE(SUM([Opisk2]),Muuttujat[Koodit Koulutusaste taso 2]<>\"73\")",
             "formatString": "#,0"
           },
           {
             "name": "Uudet opiskelijat",
-            "expression": "IF(CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"91\"))=0,BLANK(),CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"91\")))",
+            "expression": "IF(CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"91\" && [Koodit Koulutusaste taso 2] <> \"73\"))=0,BLANK(),CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"91\" && [Koodit Koulutusaste taso 2] <> \"73\")))",
             "formatString": "#,0"
           },
           {
@@ -9622,7 +9622,10 @@
           },
           {
             "name": "Tutkinnot",
-            "expression": "CALCULATE(SUM([Tutk2]), FILTER('Muuttujat', [Koodit Koulutustyyppi] <> \"3\"), FILTER('Muuttujat', [Koodit Koulutustyyppi] <> \"5\"))",
+            "expression": [
+              "CALCULATE(SUM([Tutk2]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2]<>\"73\" && [Koodit Koulutusaste taso 2]<>\"91\"))",
+              "--[Koodit Koulutustyyppi] <> \"3\"); FILTER('Muuttujat'; [Koodit Koulutustyyppi] <> \"5\"))"
+            ],
             "formatString": "#,0"
           },
           {
