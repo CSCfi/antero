@@ -262,7 +262,7 @@
             "dataType": "string",
             "isDataTypeInferred": true,
             "isHidden": true,
-            "expression": "CONCATENATE([kyselykertaid],CONCATENATE([Koodit Oppilaitos],CONCATENATE([Koodit Tutkinto],CONCATENATE(Muuttujat[Tilastovuosi],[Koodit Tilastokuukausi]))))"
+            "expression": "CONCATENATE([kyselykertaid],CONCATENATE([Koodit Oppilaitos],CONCATENATE([Koodit Tutkinto],CONCATENATE(Muuttujat[Tilastovuosi2],[Koodit Tilastokuukausi]))))"
           },
           {
             "name": "Rahoitusmallikysymys",
@@ -295,13 +295,13 @@
             "displayFolder": "Aikamuuttujat"
           },
           {
-            "name": "Statistikår",
+            "name": "Statistikår2",
             "dataType": "int64",
             "sourceColumn": "Statistikår",
             "displayFolder": "Tidsvariabler"
           },
           {
-            "name": "Statistikmånad",
+            "name": "Statistikmånad2",
             "dataType": "string",
             "sourceColumn": "Statistikmånad",
             "sortByColumn": "Koodit Tilastokuukausi",
@@ -778,16 +778,9 @@
             "sourceColumn": "Järjestys koulutusala3"
           },
           {
-            "name": "Tilastovuosi",
+            "name": "Tilastovuosi2",
             "dataType": "int64",
             "sourceColumn": "Tilastovuosi",
-            "displayFolder": "Aikamuuttujat"
-          },
-          {
-            "name": "Tilastokuukausi2",
-            "dataType": "string",
-            "sourceColumn": "Tilastokuukausi",
-            "sortByColumn": "Koodit Tilastokuukausi",
             "displayFolder": "Aikamuuttujat"
           },
           {
@@ -859,6 +852,13 @@
             "dataType": "int64",
             "isHidden": true,
             "sourceColumn": "Järjestys monivalintavaihtoehto"
+          },
+          {
+            "name": "Tilastokuukausi2",
+            "dataType": "string",
+            "sourceColumn": "Tilastokuukausi",
+            "sortByColumn": "Koodit Tilastokuukausi",
+            "displayFolder": "Aikamuuttujat"
           },
           {
             "name": "Järjestys tutkintotyyppi",
@@ -3990,12 +3990,14 @@
         ],
         "measures": [
           {
-            "name": "Vastanneet_vanha",
+            "name": "Vastanneet",
             "expression": [
               "",
-              "var vastaajat = DISTINCTCOUNT([vastaajaid])",
-              "return IF(AND(vastaajat<5,vastaajat>0),\"<5\",vastaajat)",
-              ""
+              "var vastanneet_ei_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[kysymysid]<>5820 && Muuttujat[kysymysid]<>5826)",
+              "var vastanneet_kius = CALCULATE([Vastanneet_kius],Muuttujat[kysymysid]=5820 || Muuttujat[kysymysid]=5826)",
+              "var summa = CALCULATE(vastanneet_ei_kius+vastanneet_kius)",
+              "",
+              "return IF(AND(summa<5,summa>0),\"<5\",summa)"
             ],
             "formatString": "#,0"
           },
@@ -4415,6 +4417,16 @@
             "formatString": "0"
           },
           {
+            "name": "Vastanneet_vanha",
+            "expression": [
+              "",
+              "var vastaajat = DISTINCTCOUNT([vastaajaid])",
+              "return IF(AND(vastaajat<5,vastaajat>0),\"<5\",vastaajat)",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
             "name": "Vastanneet_kius",
             "expression": [
               "",
@@ -4462,18 +4474,6 @@
               "+IF(NOT(ISFILTERED([Monivalintavaihtoehto])),-1,0) --tämä mukaan jos haluaa subtotalin näkyviin"
             ],
             "isHidden": true
-          },
-          {
-            "name": "Vastanneet",
-            "expression": [
-              "",
-              "var vastanneet_ei_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[kysymysid]<>5820 && Muuttujat[kysymysid]<>5826)",
-              "var vastanneet_kius = CALCULATE([Vastanneet_kius],Muuttujat[kysymysid]=5820 || Muuttujat[kysymysid]=5826)",
-              "var summa = CALCULATE(vastanneet_ei_kius+vastanneet_kius)",
-              "",
-              "return IF(AND(summa<5,summa>0),\"<5\",summa)"
-            ],
-            "formatString": "#,0"
           },
           {
             "name": "Vastanneet_v2",
@@ -8386,9 +8386,6 @@
                 "name": "Rahoituskausi"
               },
               {
-                "name": "Tilastovuosi"
-              },
-              {
                 "name": "Koul. järjestäjän kunta"
               },
               {
@@ -8412,16 +8409,16 @@
                 "name": "Keskiarvo"
               },
               {
-                "name": "Pisteet"
-              },
-              {
                 "name": "Keskihajonta"
               },
               {
-                "name": "NPS"
+                "name": "Pisteet"
               },
               {
                 "name": "Vastanneet"
+              },
+              {
+                "name": "NPS"
               },
               {
                 "name": "Vastanneet_v2"
@@ -8497,12 +8494,6 @@
               },
               {
                 "name": "Målgrupp för frågeformulär"
-              },
-              {
-                "name": "Statistikmånad"
-              },
-              {
-                "name": "Statistikår"
               },
               {
                 "name": "Tidigare utbildning"
@@ -8779,9 +8770,6 @@
                 "name": "Sukupuoli"
               },
               {
-                "name": "Tilastovuosi"
-              },
-              {
                 "name": "Tutkinto"
               },
               {
@@ -8853,16 +8841,16 @@
                 "name": "Keskiarvo"
               },
               {
-                "name": "Pisteet"
-              },
-              {
                 "name": "Keskihajonta"
               },
               {
-                "name": "NPS"
+                "name": "Pisteet"
               },
               {
                 "name": "Vastanneet"
+              },
+              {
+                "name": "NPS"
               }
             ]
           },
@@ -8957,10 +8945,10 @@
                 "name": "Målgrupp för frågeformulär"
               },
               {
-                "name": "Statistikmånad"
+                "name": "Statistikmånad2"
               },
               {
-                "name": "Statistikår"
+                "name": "Statistikår2"
               },
               {
                 "name": "Tidigare utbildning"
