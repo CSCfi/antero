@@ -2984,11 +2984,11 @@
             "name": "Rahoitusvuosi",
             "expression": [
               "",
-              "var min_vuosi=MINX(FILTERS(Muuttujat[Tilastovuosi - rahoitusmalli]),MIN(Muuttujat[Tilastovuosi - rahoitusmalli]))",
-              "var med_vuosi=MEDIANX(FILTERS(Muuttujat[Tilastovuosi - rahoitusmalli]),MEDIAN(Muuttujat[Tilastovuosi - rahoitusmalli]))",
-              "var max_vuosi=MAXX(FILTERS(Muuttujat[Tilastovuosi - rahoitusmalli]),MAX(Muuttujat[Tilastovuosi - rahoitusmalli]))",
+              "var min_vuosi=CALCULATE(MINX(FILTERS(Muuttujat[Tilastovuosi - rahoitusmalli]),MIN(Muuttujat[Tilastovuosi - rahoitusmalli])),NOT(ISBLANK(Muuttujat[Tilastovuosi - rahoitusmalli])))",
+              "var med_vuosi=CALCULATE(MEDIANX(FILTERS(Muuttujat[Tilastovuosi - rahoitusmalli]),MEDIAN(Muuttujat[Tilastovuosi - rahoitusmalli])),NOT(ISBLANK(Muuttujat[Tilastovuosi - rahoitusmalli])))",
+              "var max_vuosi=CALCULATE(MAXX(FILTERS(Muuttujat[Tilastovuosi - rahoitusmalli]),MAX(Muuttujat[Tilastovuosi - rahoitusmalli])),NOT(ISBLANK(Muuttujat[Tilastovuosi - rahoitusmalli])))",
               "var min_med_max=IF(AND(max_vuosi-1=med_vuosi,med_vuosi-1=min_vuosi),TRUE(),FALSE())",
-              "var count_vuosi=COUNTX(FILTERS(Muuttujat[Tilastovuosi - rahoitusmalli]),DISTINCTCOUNT(Muuttujat[Tilastovuosi - rahoitusmalli]))",
+              "var count_vuosi=CALCULATE(COUNTX(FILTERS(Muuttujat[Tilastovuosi - rahoitusmalli]),DISTINCTCOUNT(Muuttujat[Tilastovuosi - rahoitusmalli])),NOT(ISBLANK(Muuttujat[Tilastovuosi - rahoitusmalli])))",
               "",
               "",
               "return SWITCH(TRUE(),",
@@ -2996,7 +2996,8 @@
               "\tmin_med_max=FALSE(),\"Valitse peräkkäiset rahoitumallin vuodet\",",
               "\tmax_vuosi<2017,\"Ei rahoitustietoja valituille vuosille\",",
               "\tYEAR(NOW())-max_vuosi<=2,YEAR(NOW()),max_vuosi+2)"
-            ]
+            ],
+            "displayFolder": "Aikamuuttujat"
           },
           {
             "name": "Ammattikorkeakoulututkinnot (osuus perusrahoituksesta 1000€)",
@@ -4991,9 +4992,6 @@
                 "name": "Ammattikorkeakoulu"
               },
               {
-                "name": "Tilastovuosi"
-              },
-              {
                 "name": "Tilastovuosi - rahoitusmalli"
               }
             ],
@@ -5093,6 +5091,9 @@
               },
               {
                 "name": "Ylemmät ammattikorkeakoulututkinnot (osuus perusrahoituksesta 1000 €)"
+              },
+              {
+                "name": "Rahoitusvuosi"
               }
             ]
           },
