@@ -2362,11 +2362,12 @@
             "name": "Muut opintopisteet summa",
             "expression": [
               "",
-              "CALCULATE(SUM([avoin_op__lkm]))+",
+              "Var lasku=CALCULATE(SUM([avoin_op__lkm]))+",
               "CALCULATE(SUM([erikoul_suor_op_lkm]))+",
               "CALCULATE(SUM([erilopintooik_op_lkm]))+",
               "CALCULATE(SUM([kk_yhteistyo_op_lkm]))+",
-              "CALCULATE(SUM([mamu_op_lkm]))"
+              "CALCULATE(SUM([mamu_op_lkm]))",
+              "return IF(lasku=0,BLANK(),lasku)"
             ],
             "formatString": "#,0",
             "displayFolder": "Summa"
@@ -2379,19 +2380,31 @@
           },
           {
             "name": "Opiskelijapalautteen pisteet summa",
-            "expression": " CALCULATE(SUM(Muuttujat[Opiskelijapalautepisteet]))",
+            "expression": [
+              " var lasku = CALCULATE(SUM(Muuttujat[Opiskelijapalautepisteet]),NOT(ISBLANK(Muuttujat[Opiskelijapalautepisteet])))",
+              "return IF(lasku=0,BLANK(),lasku)"
+            ],
             "formatString": "#,0",
             "displayFolder": "Summa"
           },
           {
             "name": "Opiskelijavaihdon opintopisteet summa",
-            "expression": " CALCULATE(SUM([kv_vaihtoopiskelijat_op_lkm]))+CALCULATE(SUM([ulkom_hyv_luetut_op_lkm]))+CALCULATE(SUM(Muuttujat[ulkom_harj_op_lkm]))",
+            "expression": [
+              " ",
+              "var lasku = CALCULATE(SUM(Muuttujat[kv_vaihtoopiskelijat_op_lkm]),NOT(ISBLANK(Muuttujat[kv_vaihtoopiskelijat_op_lkm])))+",
+              "\tCALCULATE(SUM([ulkom_hyv_luetut_op_lkm]),NOT(ISBLANK(Muuttujat[ulkom_hyv_luetut_op_lkm])))+",
+              "\tCALCULATE(SUM(Muuttujat[ulkom_harj_op_lkm]),NOT(ISBLANK(Muuttujat[ulkom_harj_op_lkm])))",
+              "return IF(lasku<0.1,BLANK(),lasku)"
+            ],
             "formatString": "#,0",
             "displayFolder": "Summa"
           },
           {
             "name": "Ulkopuolinen tk-rahoitus summa",
-            "expression": " CALCULATE(SUM([Ulkopuolinen tutkimusrahoitus]))",
+            "expression": [
+              " var lasku=CALCULATE(SUM([Ulkopuolinen tutkimusrahoitus]))",
+              "return IF(lasku=0,BLANK(),lasku)"
+            ],
             "formatString": "#,0",
             "displayFolder": "Summa"
           },
@@ -2685,6 +2698,7 @@
               "",
               ""
             ],
+            "formatString": "#,0",
             "displayFolder": "Rahoitus\\€"
           },
           {
@@ -2763,6 +2777,7 @@
               "return CALCULATE(lasku,Rahoitusmalli_korkeakoulut[rahoituksen_vuosi]=vuosi_check)",
               ""
             ],
+            "formatString": "#,0",
             "displayFolder": "Rahoitus\\€"
           },
           {
@@ -2781,6 +2796,7 @@
               "return CALCULATE(lasku,Rahoitusmalli_korkeakoulut[rahoituksen_vuosi]=vuosi_check)",
               ""
             ],
+            "formatString": "#,0",
             "displayFolder": "Rahoitus\\€"
           },
           {
@@ -2799,6 +2815,7 @@
               "return CALCULATE(lasku,Rahoitusmalli_korkeakoulut[rahoituksen_vuosi]=vuosi_check)",
               ""
             ],
+            "formatString": "#,0",
             "displayFolder": "Rahoitus\\€"
           },
           {
@@ -2817,6 +2834,7 @@
               "return CALCULATE(lasku,Rahoitusmalli_korkeakoulut[rahoituksen_vuosi]=vuosi_check)",
               ""
             ],
+            "formatString": "#,0",
             "displayFolder": "Rahoitus\\€"
           },
           {
@@ -2835,6 +2853,7 @@
               "return CALCULATE(lasku,Rahoitusmalli_korkeakoulut[rahoituksen_vuosi]=vuosi_check)",
               ""
             ],
+            "formatString": "#,0",
             "displayFolder": "Rahoitus\\€"
           },
           {
@@ -2853,6 +2872,7 @@
               "return CALCULATE(lasku,Rahoitusmalli_korkeakoulut[rahoituksen_vuosi]=vuosi_check)",
               ""
             ],
+            "formatString": "#,0",
             "displayFolder": "Rahoitus\\€"
           },
           {
@@ -2871,6 +2891,7 @@
               "return CALCULATE(lasku,Rahoitusmalli_korkeakoulut[rahoituksen_vuosi]=vuosi_check)",
               ""
             ],
+            "formatString": "#,0",
             "displayFolder": "Rahoitus\\€"
           },
           {
@@ -2889,6 +2910,7 @@
               "return CALCULATE(lasku,Rahoitusmalli_korkeakoulut[rahoituksen_vuosi]=vuosi_check)",
               ""
             ],
+            "formatString": "#,0",
             "displayFolder": "Rahoitus\\€"
           },
           {
@@ -2907,6 +2929,7 @@
               "return CALCULATE(lasku,Rahoitusmalli_korkeakoulut[rahoituksen_vuosi]=vuosi_check)",
               ""
             ],
+            "formatString": "#,0",
             "displayFolder": "Rahoitus\\€"
           },
           {
@@ -2925,11 +2948,13 @@
               "return CALCULATE(lasku,Rahoitusmalli_korkeakoulut[rahoituksen_vuosi]=vuosi_check)",
               ""
             ],
+            "formatString": "#,0",
             "displayFolder": "Rahoitus\\€"
           },
           {
             "name": "Ulkopuolinen tk-rahoitus (osuus perusrahoituksesta 1000 €)",
             "expression": " CALCULATE([Ulkopuolinen tk-rahoitus (%)]*[Ulkopuolinen tk-rahoitus (1000 euroa)])",
+            "formatString": "#,0.0",
             "displayFolder": "Perusrahoituksen osuus"
           },
           {
@@ -2938,46 +2963,55 @@
               " CALCULATE([Opiskelijavaihdon opintopisteet (%)]*[Opiskelijavaihdon opintopisteet (perusrahoitus 1000 euroa)])",
               ""
             ],
+            "formatString": "#,0.0",
             "displayFolder": "Perusrahoituksen osuus"
           },
           {
             "name": "Opiskelijapalautteen pisteet (osuus perusrahoituksesta 1000 €)",
             "expression": " CALCULATE([Opiskelijapalautteen pisteet (%)]*[Opiskelijapalautteen pisteet (perusrahoitus 1000 euroa)])",
+            "formatString": "#,0.0",
             "displayFolder": "Perusrahoituksen osuus"
           },
           {
             "name": "Ylemmät ammattikorkeakoulututkinnot (osuus perusrahoituksesta 1000 €)",
             "expression": " CALCULATE([Ylemmät ammattikorkeakoulututkinnot (%)]*[Ylemmät ammattikorkeakoulututkinnot (perusrahoitus 1000 euroa)])",
+            "formatString": "#,0.0",
             "displayFolder": "Perusrahoituksen osuus"
           },
           {
             "name": "Henkilöstön kv-liikkuvuus (osuus perusrahoituksesta 1000 €)",
             "expression": " CALCULATE([Henkilöstön kv-liikkuvuus (%)]*[Henkilöstön kv -liikkuvuus  (perusrahoitus 1000 euroa)])",
+            "formatString": "#,0.0",
             "displayFolder": "Perusrahoituksen osuus"
           },
           {
             "name": "Julkaisut (osuus perusrahoituksesta 1000 €)",
             "expression": " CALCULATE([Julkaisut A-F ja I (%)]*[Julkaisut (perusrahoitus 1000 euroa)])",
+            "formatString": "#,0.0",
             "displayFolder": "Perusrahoituksen osuus"
           },
           {
             "name": "Ammatillinen opettajankoulutus (osuus perusrahoituksesta 1000 €)",
             "expression": " CALCULATE([Ammatillinen opettajankoulutus (%)]*[Ammatillinen opettajankoulutus (perusrahoitus 1000 euroa)])",
+            "formatString": "#,0.0",
             "displayFolder": "Perusrahoituksen osuus"
           },
           {
             "name": "Suorittanut 55 (osuus perusrahoituksesta 1000€)",
             "expression": " CALCULATE([Suorittanut 55 (%)]*[Suorittanut 55 opintopistettä (perusrahoitus 1000 euroa)])",
+            "formatString": "#,0.0",
             "displayFolder": "Perusrahoituksen osuus"
           },
           {
             "name": "Työlliset (amk-tutkinto, osuus perusrahoituksesta 1000€)",
             "expression": " CALCULATE([Työlliset (amk-tutkinto, %)]*[Työlliset (amk-tutkinto) (perusrahoitus 1000 euroa)])",
+            "formatString": "#,0.0",
             "displayFolder": "Perusrahoituksen osuus"
           },
           {
             "name": "Muut opintopisteet (osuus perusrahoituksesta 1000€)",
             "expression": " CALCULATE([Muut opintopisteet (%)]*[Muut opintopisteet (perusrahoitus 1000 euroa)])",
+            "formatString": "#,0.0",
             "displayFolder": "Perusrahoituksen osuus"
           },
           {
@@ -3002,6 +3036,7 @@
           {
             "name": "Ammattikorkeakoulututkinnot (osuus perusrahoituksesta 1000€)",
             "expression": " CALCULATE([Ammattikorkeakoulututkinnot (%)]*[Ammattikorkeakoulututkinnot (perusrahoitus 1000 euroa)])",
+            "formatString": "#,0.0",
             "displayFolder": "Perusrahoituksen osuus"
           },
           {
