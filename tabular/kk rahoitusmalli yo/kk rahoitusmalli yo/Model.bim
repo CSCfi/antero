@@ -2871,11 +2871,10 @@
             "expression": [
               "",
               "var min_vuosi=MINX(FILTERS(Muuttujat[Tilastovuosi - rahoitusmalli]),MIN(Muuttujat[Tilastovuosi - rahoitusmalli]))",
-              "var med_vuosi=MEDIANX(FILTERS(Muuttujat[Tilastovuosi - rahoitusmalli]),MEDIAN(Muuttujat[Tilastovuosi - rahoitusmalli]))",
+              "var med_vuosi=MEDIANX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi - rahoitusmalli],\"dc\",MEDIAN(Muuttujat[Tilastovuosi - rahoitusmalli])),MEDIAN([dc]))",
               "var max_vuosi=MAXX(FILTERS(Muuttujat[Tilastovuosi - rahoitusmalli]),MAX(Muuttujat[Tilastovuosi - rahoitusmalli]))",
               "var min_med_max=IF(AND(max_vuosi-1=med_vuosi,med_vuosi-1=min_vuosi),TRUE(),FALSE())",
               "var count_vuosi=COUNTX(FILTERS(Muuttujat[Tilastovuosi - rahoitusmalli]),DISTINCTCOUNT(Muuttujat[Tilastovuosi - rahoitusmalli]))",
-              "",
               "",
               "return SWITCH(TRUE(),",
               "\tcount_vuosi<>3,\"Valitse kolme rahoitusmallin tilastovuotta\",",
@@ -2883,7 +2882,8 @@
               "\tmax_vuosi<2017,\"Ei rahoitustietoja valituille vuosille\",",
               "\tYEAR(NOW())-max_vuosi<=2,YEAR(NOW()),max_vuosi+2)",
               ""
-            ]
+            ],
+            "displayFolder": "Aikamuuttujat"
           },
           {
             "name": "Alempi korkeakoulututkinto (perusrahoitus 1000 euroa)",
