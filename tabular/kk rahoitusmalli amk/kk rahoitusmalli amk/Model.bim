@@ -2362,11 +2362,12 @@
             "name": "Muut opintopisteet summa",
             "expression": [
               "",
-              "CALCULATE(SUM([avoin_op__lkm]))+",
+              "Var lasku=CALCULATE(SUM([avoin_op__lkm]))+",
               "CALCULATE(SUM([erikoul_suor_op_lkm]))+",
               "CALCULATE(SUM([erilopintooik_op_lkm]))+",
               "CALCULATE(SUM([kk_yhteistyo_op_lkm]))+",
-              "CALCULATE(SUM([mamu_op_lkm]))"
+              "CALCULATE(SUM([mamu_op_lkm]))",
+              "return IF(lasku=0,BLANK(),lasku)"
             ],
             "formatString": "#,0",
             "displayFolder": "Summa"
@@ -2379,19 +2380,31 @@
           },
           {
             "name": "Opiskelijapalautteen pisteet summa",
-            "expression": " CALCULATE(SUM(Muuttujat[Opiskelijapalautepisteet]))",
+            "expression": [
+              " var lasku = CALCULATE(SUM(Muuttujat[Opiskelijapalautepisteet]),NOT(ISBLANK(Muuttujat[Opiskelijapalautepisteet])))",
+              "return IF(lasku=0,BLANK(),lasku)"
+            ],
             "formatString": "#,0",
             "displayFolder": "Summa"
           },
           {
             "name": "Opiskelijavaihdon opintopisteet summa",
-            "expression": " CALCULATE(SUM([kv_vaihtoopiskelijat_op_lkm]))+CALCULATE(SUM([ulkom_hyv_luetut_op_lkm]))+CALCULATE(SUM(Muuttujat[ulkom_harj_op_lkm]))",
+            "expression": [
+              " ",
+              "var lasku = CALCULATE(SUM(Muuttujat[kv_vaihtoopiskelijat_op_lkm]),NOT(ISBLANK(Muuttujat[kv_vaihtoopiskelijat_op_lkm])))+",
+              "\tCALCULATE(SUM([ulkom_hyv_luetut_op_lkm]),NOT(ISBLANK(Muuttujat[ulkom_hyv_luetut_op_lkm])))+",
+              "\tCALCULATE(SUM(Muuttujat[ulkom_harj_op_lkm]),NOT(ISBLANK(Muuttujat[ulkom_harj_op_lkm])))",
+              "return IF(lasku<0.1,BLANK(),lasku)"
+            ],
             "formatString": "#,0",
             "displayFolder": "Summa"
           },
           {
             "name": "Ulkopuolinen tk-rahoitus summa",
-            "expression": " CALCULATE(SUM([Ulkopuolinen tutkimusrahoitus]))",
+            "expression": [
+              " var lasku=CALCULATE(SUM([Ulkopuolinen tutkimusrahoitus]))",
+              "return IF(lasku=0,BLANK(),lasku)"
+            ],
             "formatString": "#,0",
             "displayFolder": "Summa"
           },
