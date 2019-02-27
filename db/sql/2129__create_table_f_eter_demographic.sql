@@ -10,7 +10,7 @@ IF  NOT EXISTS
 BEGIN
 CREATE TABLE [dw].[f_eter_demographic](
 
-[_id] [nvarchar](100) NOT NULL
+[id] [nvarchar](100) NOT NULL
 ,[Demographic_event_past-reference_year] [bigint] NULL
 ,[Affected_institutions_past] [nvarchar](100) NULL
 ,[Demographic_events_reference-following_year] [nvarchar](100) NULL
@@ -21,7 +21,7 @@ CREATE TABLE [dw].[f_eter_demographic](
 ,[Loadtime] [datetime] NULL
  CONSTRAINT [PK__f_eter_demographic] PRIMARY KEY CLUSTERED
 (
-	[_id] ASC
+	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 END
