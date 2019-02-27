@@ -4241,12 +4241,12 @@
           },
           {
             "name": "Kyselyn kohteet",
-            "expression": "IF([Vastanneet_vanha]=3,3,SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm]))",
+            "expression": "IF([Vastanneet]=\"<5\",\"<5\",SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm]))",
             "formatString": "#,0"
           },
           {
             "name": "Vastausosuus",
-            "expression": "IF([Vastanneet_vanha]=3,blank(),DIVIDE([Vastanneet_vanha],[Kyselyn kohteet]))",
+            "expression": "IF([Vastanneet]=\"<5\",blank(),DIVIDE([Vastanneet],[Kyselyn kohteet]))",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
@@ -8399,6 +8399,16 @@
         ]
       }
     ],
+    "relationships": [
+      {
+        "name": "6b63ffce-d4d4-4e5b-9606-a40e83684234",
+        "fromTable": "Muuttujat",
+        "fromColumn": "luodut_vastaajatunnukset_id",
+        "toTable": "Luodut vastaajatunnukset",
+        "toColumn": "id",
+        "crossFilteringBehavior": "bothDirections"
+      }
+    ],
     "cultures": [
       {
         "name": "en-US",
@@ -9023,6 +9033,12 @@
               },
               {
                 "name": "Vastanneet"
+              },
+              {
+                "name": "Kyselyn kohteet"
+              },
+              {
+                "name": "Vastausosuus"
               }
             ]
           },
