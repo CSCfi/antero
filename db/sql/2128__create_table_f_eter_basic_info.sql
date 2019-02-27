@@ -57,3 +57,4 @@ CREATE TABLE [dw].[f_eter_basic_info](
 ) ON [PRIMARY]
 END
 GO
+USE [ANTERO]
