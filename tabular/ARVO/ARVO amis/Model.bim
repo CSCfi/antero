@@ -295,6 +295,19 @@
             "displayFolder": "Aikamuuttujat"
           },
           {
+            "name": "Statistikår2",
+            "dataType": "int64",
+            "sourceColumn": "Statistikår",
+            "displayFolder": "Tidsvariabler"
+          },
+          {
+            "name": "Statistikmånad2",
+            "dataType": "string",
+            "sourceColumn": "Statistikmånad",
+            "sortByColumn": "Koodit Tilastokuukausi",
+            "displayFolder": "Tidsvariabler"
+          },
+          {
             "name": "Frågeformulär",
             "dataType": "string",
             "sourceColumn": "Frågeformulär",
@@ -765,10 +778,9 @@
             "sourceColumn": "Järjestys koulutusala3"
           },
           {
-            "name": "Tilastokuukausi2",
-            "dataType": "string",
-            "sourceColumn": "Tilastokuukausi",
-            "sortByColumn": "Koodit Tilastokuukausi",
+            "name": "Tilastovuosi2",
+            "dataType": "int64",
+            "sourceColumn": "Tilastovuosi",
             "displayFolder": "Aikamuuttujat"
           },
           {
@@ -842,6 +854,13 @@
             "sourceColumn": "Järjestys monivalintavaihtoehto"
           },
           {
+            "name": "Tilastokuukausi2",
+            "dataType": "string",
+            "sourceColumn": "Tilastokuukausi",
+            "sortByColumn": "Koodit Tilastokuukausi",
+            "displayFolder": "Aikamuuttujat"
+          },
+          {
             "name": "Järjestys tutkintotyyppi",
             "dataType": "string",
             "isHidden": true,
@@ -867,25 +886,6 @@
             "sourceColumn": "Järjestys kysymysryhma"
           },
           {
-            "name": "Statistikår2",
-            "dataType": "int64",
-            "sourceColumn": "Statistikår",
-            "displayFolder": "Tidsvariabler"
-          },
-          {
-            "name": "Statistikmånad2",
-            "dataType": "string",
-            "sourceColumn": "Statistikmånad",
-            "sortByColumn": "Koodit Tilastokuukausi",
-            "displayFolder": "Tidsvariabler"
-          },
-          {
-            "name": "Tilastovuosi2",
-            "dataType": "int64",
-            "sourceColumn": "Tilastovuosi",
-            "displayFolder": "Aikamuuttujat"
-          },
-          {
             "name": "Tilastokausi",
             "dataType": "string",
             "sourceColumn": "Tilastokausi",
@@ -896,6 +896,13 @@
             "dataType": "string",
             "sourceColumn": "Statistikperiod",
             "displayFolder": "Tidsvariabler"
+          },
+          {
+            "name": "Frågegrupp",
+            "dataType": "string",
+            "sourceColumn": "Frågegrupp",
+            "sortByColumn": "Järjestys kysymysryhma",
+            "displayFolder": "Frågevariabler"
           }
         ],
         "partitions": [
@@ -1967,6 +1974,14 @@
                   "        <int>98</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Frågegrupp</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>86</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -3015,6 +3030,14 @@
                   "      </key>",
                   "      <value>",
                   "        <int>130</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Frågegrupp</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>131</int>",
                   "      </value>",
                   "    </item>",
                   "  </ColumnDisplayIndex>",
@@ -4068,6 +4091,14 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Frågegrupp</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -4081,12 +4112,14 @@
         ],
         "measures": [
           {
-            "name": "Vastanneet_vanha",
+            "name": "Vastanneet",
             "expression": [
               "",
-              "var vastaajat = DISTINCTCOUNT([vastaajaid])",
-              "return IF(AND(vastaajat<5,vastaajat>0),\"<5\",vastaajat)",
-              ""
+              "var vastanneet_ei_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[kysymysid]<>5820 && Muuttujat[kysymysid]<>5826)",
+              "var vastanneet_kius = CALCULATE([Vastanneet_kius],Muuttujat[kysymysid]=5820 || Muuttujat[kysymysid]=5826)",
+              "var summa = CALCULATE(vastanneet_ei_kius+vastanneet_kius)",
+              "",
+              "return IF(AND(summa<5,summa>0),\"<5\",summa)"
             ],
             "formatString": "#,0"
           },
@@ -4506,6 +4539,16 @@
             "formatString": "0"
           },
           {
+            "name": "Vastanneet_vanha",
+            "expression": [
+              "",
+              "var vastaajat = DISTINCTCOUNT([vastaajaid])",
+              "return IF(AND(vastaajat<5,vastaajat>0),\"<5\",vastaajat)",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
             "name": "Vastanneet_kius",
             "expression": [
               "",
@@ -4553,18 +4596,6 @@
               "+IF(NOT(ISFILTERED([Monivalintavaihtoehto])),-1,0) --tämä mukaan jos haluaa subtotalin näkyviin"
             ],
             "isHidden": true
-          },
-          {
-            "name": "Vastanneet",
-            "expression": [
-              "",
-              "var vastanneet_ei_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[kysymysid]<>5820 && Muuttujat[kysymysid]<>5826)",
-              "var vastanneet_kius = CALCULATE([Vastanneet_kius],Muuttujat[kysymysid]=5820 || Muuttujat[kysymysid]=5826)",
-              "var summa = CALCULATE(vastanneet_ei_kius+vastanneet_kius)",
-              "",
-              "return IF(AND(summa<5,summa>0),\"<5\",summa)"
-            ],
-            "formatString": "#,0"
           },
           {
             "name": "Vastanneet_v2",
@@ -5745,6 +5776,14 @@
               "        <int>98</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Frågegrupp</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>86</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -6795,6 +6834,14 @@
               "        <int>130</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Frågegrupp</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>131</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -7846,6 +7893,14 @@
               "        <boolean>true</boolean>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Frågegrupp</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
               "  </ColumnChecked>",
               "  <ColumnFilter />",
               "  <SelectionFilter />",
@@ -8585,16 +8640,16 @@
                 "name": "Keskiarvo"
               },
               {
-                "name": "Pisteet"
-              },
-              {
                 "name": "Keskihajonta"
               },
               {
-                "name": "NPS"
+                "name": "Pisteet"
               },
               {
                 "name": "Vastanneet"
+              },
+              {
+                "name": "NPS"
               },
               {
                 "name": "Vastanneet_v2"
@@ -8706,6 +8761,9 @@
               },
               {
                 "name": "Statistikperiod"
+              },
+              {
+                "name": "Frågegrupp"
               }
             ],
             "measures": [
@@ -9023,22 +9081,19 @@
                 "name": "Keskiarvo"
               },
               {
-                "name": "Pisteet"
-              },
-              {
                 "name": "Keskihajonta"
               },
               {
-                "name": "NPS"
+                "name": "Pisteet"
               },
               {
                 "name": "Vastanneet"
               },
               {
-                "name": "Kyselyn kohteet"
+                "name": "NPS"
               },
               {
-                "name": "Vastausosuus"
+                "name": "Kyselyn kohteet"
               }
             ]
           },
@@ -9164,6 +9219,9 @@
               },
               {
                 "name": "Statistikperiod"
+              },
+              {
+                "name": "Frågegrupp"
               }
             ],
             "measures": [
