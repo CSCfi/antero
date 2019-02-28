@@ -1,13 +1,18 @@
 USE [ANTERO]
 GO
-/****** Object:  StoredProcedure [dw].[p_lataa_f_arvo_luodut_vastaajatunnukset]    Script Date: 28.2.2019 16:23:22 ******/
+/****** Object:  StoredProcedure [dw].[p_lataa_f_arvo_luodut_vastaajatunnukset]    Script Date: 28.2.2019 16:29:57 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[p_lataa_f_arvo_luodut_vastaajatunnukset]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dw].[p_lataa_f_arvo_luodut_vastaajatunnukset] AS' 
+END
+GO
 
 
-CREATE PROCEDURE [dw].[p_lataa_f_arvo_luodut_vastaajatunnukset] AS
+ALTER PROCEDURE [dw].[p_lataa_f_arvo_luodut_vastaajatunnukset] AS
 
 TRUNCATE TABLE dw.f_arvo_luodut_vastaajatunnukset
 
