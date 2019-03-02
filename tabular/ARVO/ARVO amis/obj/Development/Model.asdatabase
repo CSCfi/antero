@@ -295,19 +295,6 @@
             "displayFolder": "Aikamuuttujat"
           },
           {
-            "name": "Statistikår2",
-            "dataType": "int64",
-            "sourceColumn": "Statistikår",
-            "displayFolder": "Tidsvariabler"
-          },
-          {
-            "name": "Statistikmånad2",
-            "dataType": "string",
-            "sourceColumn": "Statistikmånad",
-            "sortByColumn": "Koodit Tilastokuukausi",
-            "displayFolder": "Tidsvariabler"
-          },
-          {
             "name": "Frågeformulär",
             "dataType": "string",
             "sourceColumn": "Frågeformulär",
@@ -778,9 +765,10 @@
             "sourceColumn": "Järjestys koulutusala3"
           },
           {
-            "name": "Tilastovuosi2",
-            "dataType": "int64",
-            "sourceColumn": "Tilastovuosi",
+            "name": "Tilastokuukausi2",
+            "dataType": "string",
+            "sourceColumn": "Tilastokuukausi",
+            "sortByColumn": "Koodit Tilastokuukausi",
             "displayFolder": "Aikamuuttujat"
           },
           {
@@ -854,13 +842,6 @@
             "sourceColumn": "Järjestys monivalintavaihtoehto"
           },
           {
-            "name": "Tilastokuukausi2",
-            "dataType": "string",
-            "sourceColumn": "Tilastokuukausi",
-            "sortByColumn": "Koodit Tilastokuukausi",
-            "displayFolder": "Aikamuuttujat"
-          },
-          {
             "name": "Järjestys tutkintotyyppi",
             "dataType": "string",
             "isHidden": true,
@@ -884,6 +865,25 @@
             "dataType": "int64",
             "isHidden": true,
             "sourceColumn": "Järjestys kysymysryhma"
+          },
+          {
+            "name": "Statistikår2",
+            "dataType": "int64",
+            "sourceColumn": "Statistikår",
+            "displayFolder": "Tidsvariabler"
+          },
+          {
+            "name": "Statistikmånad2",
+            "dataType": "string",
+            "sourceColumn": "Statistikmånad",
+            "sortByColumn": "Koodit Tilastokuukausi",
+            "displayFolder": "Tidsvariabler"
+          },
+          {
+            "name": "Tilastovuosi2",
+            "dataType": "int64",
+            "sourceColumn": "Tilastovuosi",
+            "displayFolder": "Aikamuuttujat"
           },
           {
             "name": "Tilastokausi",
@@ -4112,14 +4112,12 @@
         ],
         "measures": [
           {
-            "name": "Vastanneet",
+            "name": "Vastanneet_vanha",
             "expression": [
               "",
-              "var vastanneet_ei_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[kysymysid]<>5820 && Muuttujat[kysymysid]<>5826)",
-              "var vastanneet_kius = CALCULATE([Vastanneet_kius],Muuttujat[kysymysid]=5820 || Muuttujat[kysymysid]=5826)",
-              "var summa = CALCULATE(vastanneet_ei_kius+vastanneet_kius)",
-              "",
-              "return IF(AND(summa<5,summa>0),\"<5\",summa)"
+              "var vastaajat = DISTINCTCOUNT([vastaajaid])",
+              "return IF(AND(vastaajat<5,vastaajat>0),\"<5\",vastaajat)",
+              ""
             ],
             "formatString": "#,0"
           },
@@ -4539,16 +4537,6 @@
             "formatString": "0"
           },
           {
-            "name": "Vastanneet_vanha",
-            "expression": [
-              "",
-              "var vastaajat = DISTINCTCOUNT([vastaajaid])",
-              "return IF(AND(vastaajat<5,vastaajat>0),\"<5\",vastaajat)",
-              ""
-            ],
-            "formatString": "#,0"
-          },
-          {
             "name": "Vastanneet_kius",
             "expression": [
               "",
@@ -4596,6 +4584,18 @@
               "+IF(NOT(ISFILTERED([Monivalintavaihtoehto])),-1,0) --tämä mukaan jos haluaa subtotalin näkyviin"
             ],
             "isHidden": true
+          },
+          {
+            "name": "Vastanneet",
+            "expression": [
+              "",
+              "var vastanneet_ei_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[kysymysid]<>5820 && Muuttujat[kysymysid]<>5826)",
+              "var vastanneet_kius = CALCULATE([Vastanneet_kius],Muuttujat[kysymysid]=5820 || Muuttujat[kysymysid]=5826)",
+              "var summa = CALCULATE(vastanneet_ei_kius+vastanneet_kius)",
+              "",
+              "return IF(AND(summa<5,summa>0),\"<5\",summa)"
+            ],
+            "formatString": "#,0"
           },
           {
             "name": "Vastanneet_v2",
@@ -8640,16 +8640,16 @@
                 "name": "Keskiarvo"
               },
               {
-                "name": "Keskihajonta"
-              },
-              {
                 "name": "Pisteet"
               },
               {
-                "name": "Vastanneet"
+                "name": "Keskihajonta"
               },
               {
                 "name": "NPS"
+              },
+              {
+                "name": "Vastanneet"
               },
               {
                 "name": "Vastanneet_v2"
@@ -9081,16 +9081,16 @@
                 "name": "Keskiarvo"
               },
               {
-                "name": "Keskihajonta"
-              },
-              {
                 "name": "Pisteet"
               },
               {
-                "name": "Vastanneet"
+                "name": "Keskihajonta"
               },
               {
                 "name": "NPS"
+              },
+              {
+                "name": "Vastanneet"
               },
               {
                 "name": "Kyselyn kohteet"
@@ -9222,6 +9222,9 @@
               },
               {
                 "name": "Frågegrupp"
+              },
+              {
+                "name": "Frågeformulär"
               }
             ],
             "measures": [
