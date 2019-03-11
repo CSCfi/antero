@@ -307,7 +307,7 @@ def load(secure,hostname,url,schema,table,verbose=False):
     elif "tyypit" in i and "Toimipiste" in i["tyypit"]:
       row["tyyppi"] = "Toimipiste"
       row["koodi"] = jv(i,"toimipistekoodi")
-	elif "tyypit" in i and "Oppisopimustoimipiste" in i["tyypit"]:
+    elif "tyypit" in i and "Oppisopimustoimipiste" in i["tyypit"]:
       row["tyyppi"] = "Oppisopimustoimipiste"
       row["koodi"] = jv(i,"toimipistekoodi")
     
