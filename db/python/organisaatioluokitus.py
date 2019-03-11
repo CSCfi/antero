@@ -309,7 +309,7 @@ def load(secure,hostname,url,schema,table,verbose=False):
       row["koodi"] = jv(i,"toimipistekoodi")
 	elif "tyypit" in i and "Oppisopimustoimipiste" in i["tyypit"]:
       row["tyyppi"] = "Oppisopimustoimipiste"
-      row["koodi"] = jv(i,"oppisopimustoimipistekoodi")
+      row["koodi"] = jv(i,"toimipistekoodi")
     
     # was current organization of type of interest
     if row["tyyppi"]:
