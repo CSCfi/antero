@@ -8,8 +8,11 @@ GO
 ALTER PROCEDURE [dw].[p_lataa_d_tili] AS
 
 TRUNCATE TABLE dw.d_tili
+
 SET IDENTITY_INSERT dw.d_tili ON
+
 INSERT dw.d_tili (id, tili_koodi, tili_taso0_fi, tili_taso1_fi, tili_taso2_fi, tili_taso3_fi, tili_taso4_fi, tili_taso5_fi, tili_taso0_sv, tili_taso1_sv, tili_taso2_sv, tili_taso3_sv, tili_taso4_sv, tili_taso5_sv, tili_taso0_en, tili_taso1_en, tili_taso2_en, tili_taso3_en, tili_taso4_en, tili_taso5_en, source) VALUES (-1, N'-1', N'Tuntematon', N'Tuntematon', N'Tuntematon', N'Tuntematon', N'Tuntematon', N'Tuntematon', N'Okänd', N'Okänd', N'Okänd', N'Okänd', N'Okänd', N'Okänd', N'Unknown', N'Unknown', N'Unknown', N'Unknown', N'Unknown', N'Unknown', N'ETL')
+
 SET IDENTITY_INSERT dw.d_tili OFF
 
 INSERT dw.d_tili (tili_koodi, tili_taso0_fi, tili_taso1_fi, tili_taso2_fi, tili_taso3_fi, tili_taso4_fi, tili_taso5_fi, tili_taso0_sv, tili_taso1_sv, tili_taso2_sv, tili_taso3_sv, tili_taso4_sv, tili_taso5_sv, tili_taso0_en, tili_taso1_en, tili_taso2_en, tili_taso3_en, tili_taso4_en, tili_taso5_en, source) VALUES (N'liikevaihto', N'Tuloslaskelma', N'Varsinainen toiminta', N'Liikevaihto', N'Liikevaihto', N'Liikevaihto', N'Liikevaihto', N'Tuloslaskelma', N'Varsinainen toiminta', N'Liikevaihto', N'Liikevaihto', N'Liikevaihto', N'Liikevaihto', N'Tuloslaskelma', N'Varsinainen toiminta', N'Liikevaihto', N'Liikevaihto', N'Liikevaihto', N'Liikevaihto', N'ETL')
