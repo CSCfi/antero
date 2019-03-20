@@ -4855,11 +4855,11 @@
             "name": "katokorjaus_sarakesumma",
             "expression": [
               "",
-              "var kato = CALCULATE(IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide]),Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]))",
-              "var pisteet = CALCULATE(SUM(Muuttujat[numerovalinta]),Muuttujat[Koodit Rahoitusmallikysymys]=1,Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]))",
-              "var painotettu = SUMX(Muuttujat, kato * pisteet)",
-              "var painottamaton = SUMX(Muuttujat, pisteet)",
-              "return CALCULATE([Pisteet],Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\")",
+              "var kato = CALCULATE(IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide]),VALUES(Muuttujat[Kyselyn kohderyhmä]))",
+              "var taulu = FILTER(Muuttujat,Muuttujat[Koodit Rahoitusmallikysymys]=1)",
+              "var painotettu = SUMX(taulu, kato * [numerovalinta])",
+              "var painottamaton = SUMX(taulu, [numerovalinta])",
+              "return painotettu/painottamaton",
               ""
             ]
           },
