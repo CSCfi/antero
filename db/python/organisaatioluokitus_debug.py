@@ -350,9 +350,9 @@ def load(secure,hostname,url,schema,table,verbose=False):
 
           if verbose: show(" %5d -- %s %s (%s)"%(cnt,row["tyyppi"],row["koodi"],row["nimi"]))
           dboperator.insert(hostname+url,schema,table,row)
-      except ValueError, ve:
-          print "Error: " + str(ve)
-          print "vika: " + str(address) + " oid:" + str(o)
+    except ValueError, ve:
+        print "Error: " + str(ve)
+        print "vika: " + str(address) + " oid:" + str(o)
 
   dboperator.close()
 
