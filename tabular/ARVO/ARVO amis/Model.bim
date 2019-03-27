@@ -913,7 +913,8 @@
           {
             "name": "Koodit Koulutuksen järjestäjä",
             "dataType": "string",
-            "sourceColumn": "Koodit Koulutuksen järjestäjä"
+            "sourceColumn": "Koodit Koulutuksen järjestäjä",
+            "displayFolder": "Koodimuuttujat"
           }
         ],
         "partitions": [
@@ -4337,12 +4338,12 @@
           {
             "name": "Pisteet",
             "expression": [
-              "IF(",
-              "[Vastanneet_perus]=\"<5\",",
-              "BLANK(),",
+              "--IF(",
+              "--[Vastanneet_perus]=\"<5\";",
+              "--BLANK();",
               "CALCULATE(SUM(muuttujat[numerovalinta]),Muuttujat[Koodit Rahoitusmallikysymys]=1)",
               "--;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1))",
-              ")"
+              "--)"
             ],
             "formatString": "#,0"
           },
@@ -4366,9 +4367,9 @@
               "var painotetut_pisteet_aloitus = CALCULATE([Pisteet],Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä])) ",
               "var painotetut_pisteet_paatto_koko =3 * CALCULATE([Pisteet],Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä])) ",
               "var painotetut_pisteet_paatto_osa = CALCULATE([Pisteet],Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä])) ",
-              "var summa = painotetut_pisteet_aloitus + painotetut_pisteet_paatto_koko + painotetut_pisteet_paatto_osa ",
-              "var painotettu_summa = painotetut_pisteet_aloitus * kato1 + painotetut_pisteet_paatto_koko * kato2 + painotetut_pisteet_paatto_osa * kato3",
-              "return IF(ISFILTERED([Koulutuksen järjestäjä]),painotettu_summa,summa * [katokorjauskerroin])"
+              "var painotetut_summa = painotetut_pisteet_aloitus + painotetut_pisteet_paatto_koko + painotetut_pisteet_paatto_osa ",
+              "var painotetut_summa_kato = painotetut_pisteet_aloitus * kato1 + painotetut_pisteet_paatto_koko * kato2 + painotetut_pisteet_paatto_osa * kato3",
+              "return IF(ISFILTERED([Koulutuksen järjestäjä]),painotetut_summa_kato,painotetut_summa * [katokorjauskerroin])"
             ],
             "formatString": "#,0"
           },
@@ -4599,16 +4600,6 @@
             "formatString": "0.00 %;-0.00 %;0.00 %"
           },
           {
-            "name": "katokorjauskerroin",
-            "expression": [
-              " ",
-              "var kaava = [katokorjaus_eisummarivi]",
-              "var summakaava = [katokorjaus_sarakesumma]",
-              "return IF(ISFILTERED([Koulutuksen järjestäjä]),kaava,summakaava)"
-            ],
-            "formatString": "0.000000"
-          },
-          {
             "name": "Viktade poäng  %",
             "expression": "[Painotetut pisteet]/CALCULATE([Painotetut pisteet],ALLEXCEPT(Muuttujat,Muuttujat[Kysely]))",
             "formatString": "0.00 %;-0.00 %;0.00 %"
@@ -4812,7 +4803,8 @@
           },
           {
             "name": "katokorjaus_eisummarivi",
-            "expression": " IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide])"
+            "expression": " 1--IF([Vastausosuus_nohide]  >=  0,8; DIVIDE(1;[Vastausosuus_nohide]);1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide])",
+            "formatString": "0"
           },
           {
             "name": "Vastausosuus_nohide",
@@ -4828,7 +4820,53 @@
             "isHidden": true
           },
           {
-            "name": "katokorjauskerroin_test",
+            "name": "katokorjaus_kokonaissumma",
+            "expression": [
+              " ",
+              "var taulu = ADDCOLUMNS(",
+              "\t\tSUMMARIZE(FILTER(Muuttujat,[Koodit Rahoitusmallikysymys]=1),[Koodit Koulutuksen järjestäjä],[Kyselyn kohderyhmä])",
+              "\t\t,\"kato\", IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide])",
+              "\t\t,\"paino_paatto_koko\", CALCULATE(3,Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\") ",
+              "\t\t,\"pisteet\",CALCULATE(SUM([numerovalinta]),Muuttujat[Koodit Rahoitusmallikysymys]=1,VALUES(Muuttujat[Kyselyn kohderyhmä]))",
+              "\t )",
+              "var painotettu = SUMX(taulu, [paino_paatto_koko] * [kato] * [pisteet])",
+              "var painottamaton = SUMX(taulu, [paino_paatto_koko] * [pisteet])",
+              "return painotettu / painottamaton",
+              ""
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "katokorjaus_rivisumma",
+            "expression": [
+              "",
+              "var kato = CALCULATE(IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide]),VALUES(Muuttujat[Kyselyn kohderyhmä]))",
+              "var taulu = FILTER(Muuttujat,Muuttujat[Koodit Rahoitusmallikysymys]=1)",
+              "var painotettu = SUMX(taulu, kato * [numerovalinta])",
+              "var painottamaton = SUMX(taulu, [numerovalinta])",
+              "return 1--painotettu / painottamaton",
+              ""
+            ],
+            "formatString": "0"
+          },
+          {
+            "name": "katokorjaus_sarakesumma",
+            "expression": [
+              "",
+              "var taulu = ADDCOLUMNS(",
+              "\t\tSUMMARIZE(FILTER(Muuttujat,[Koodit Rahoitusmallikysymys]=1),[Koodit Koulutuksen järjestäjä])",
+              "\t\t,\"kato\", IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide])",
+              "\t\t,\"pisteet\",CALCULATE(SUM([numerovalinta]),Muuttujat[Koodit Rahoitusmallikysymys]=1)",
+              "\t )",
+              "var painotettu = SUMX(taulu, [kato] * [pisteet])",
+              "var painottamaton = SUMX(taulu, [pisteet])",
+              "return painotettu / painottamaton",
+              ""
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "katokorjauskerroin",
             "expression": [
               " ",
               "var isNotTotal = ISFILTERED([Koulutuksen järjestäjä]) && ISFILTERED([Kyselyn kohderyhmä])",
@@ -4844,38 +4882,8 @@
               "\t,isGrandTotal, [katokorjaus_kokonaissumma]",
               ")",
               ""
-            ]
-          },
-          {
-            "name": "katokorjaus_kokonaissumma",
-            "expression": " 1",
-            "formatString": "0"
-          },
-          {
-            "name": "katokorjaus_sarakesumma",
-            "expression": [
-              "",
-              "var kato = CALCULATE(IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide]),VALUES(Muuttujat[Kyselyn kohderyhmä]))",
-              "var taulu = FILTER(Muuttujat,Muuttujat[Koodit Rahoitusmallikysymys]=1)",
-              "var painotettu = SUMX(taulu, kato * [numerovalinta])",
-              "var painottamaton = SUMX(taulu, [numerovalinta])",
-              "return painotettu/painottamaton",
-              ""
-            ]
-          },
-          {
-            "name": "katokorjaus_rivisumma",
-            "expression": [
-              "",
-              "var kato1 =  CALCULATE(IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide]),Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\")",
-              "var kato2 =  CALCULATE(IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide]),Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\")",
-              "var kato3 =  CALCULATE(IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide]),Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\")",
-              "var painotetut_pisteet_aloitus = CALCULATE([Pisteet],Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä])) * kato1",
-              "var painotetut_pisteet_paatto_koko =3 * CALCULATE([Pisteet],Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä])) * kato2",
-              "var painotetut_pisteet_paatto_osa = CALCULATE([Pisteet],Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä])) * kato3",
-              "var summa = painotetut_pisteet_aloitus + painotetut_pisteet_paatto_koko + painotetut_pisteet_paatto_osa",
-              "return summa "
-            ]
+            ],
+            "formatString": "0.00"
           }
         ],
         "annotations": [
@@ -8672,70 +8680,6 @@
               "  <FilterParameters />",
               "  <IsSortDescending>false</IsSortDescending>",
               "</TableWidgetGridSerialization>]]></AnnotationContent></Gemini>"
-            ]
-          }
-        ]
-      },
-      {
-        "name": "test",
-        "columns": [
-          {
-            "type": "calculatedTableColumn",
-            "name": "kato",
-            "dataType": "double",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "[kato]"
-          },
-          {
-            "type": "calculatedTableColumn",
-            "name": "Koulutuksen järjestäjä",
-            "dataType": "string",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "Muuttujat[Koulutuksen järjestäjä]"
-          },
-          {
-            "type": "calculatedTableColumn",
-            "name": "paino",
-            "dataType": "int64",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "[paino]"
-          },
-          {
-            "type": "calculatedTableColumn",
-            "name": "pisteet",
-            "dataType": "int64",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "[pisteet]"
-          }
-        ],
-        "partitions": [
-          {
-            "name": "CalculatedTable 1",
-            "source": {
-              "type": "calculated",
-              "expression": [
-                "SUMMARIZE(FILTER(Muuttujat,Muuttujat[Koodit Rahoitusmallikysymys]=1)",
-                "\t,[Koulutuksen järjestäjä]",
-                "\t,\"kato\",IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide])",
-                "\t,\"paino\", IF(COUNTROWS(VALUES(Muuttujat[Kyselyn kohderyhmä]))=1,IF(VALUES(Muuttujat[Kyselyn kohderyhmä])=\"Koko tutkinnon suorittaneet\",3,1),1)",
-                "\t,\"pisteet\", SUM(Muuttujat[numerovalinta])",
-                ")"
-              ]
-            }
-          }
-        ],
-        "measures": [
-          {
-            "name": "katokorjaus",
-            "expression": [
-              "",
-              "DIVIDE(",
-              "\tSUMX('test', [kato] * [paino] * [pisteet])",
-              "\t,SUMX('test', [paino] * [Pisteet]))"
             ]
           }
         ]
