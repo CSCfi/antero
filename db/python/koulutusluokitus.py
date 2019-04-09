@@ -27,7 +27,8 @@ def makerow():
     'isced2011koulutusastekoodi':None, 'isced2011koulutusastenimi':None, 'isced2011koulutusastenimi_sv':None, 'isced2011koulutusastenimi_en':None,
     'isced2011koulutusastetaso1koodi':None, 'isced2011koulutusastetaso1nimi':None, 'isced2011koulutusastetaso1nimi_sv':None, 'isced2011koulutusastetaso1nimi_en':None,
     'koulutusluokitus2016koulutusastetaso1koodi':None, 'koulutusluokitus2016koulutusastetaso1nimi':None, 'koulutusluokitus2016koulutusastetaso1nimi_sv':None, 'koulutusluokitus2016koulutusastetaso1nimi_en':None,
-    'isced2011koulutusastetaso2koodi':None, 'isced2011koulutusastetaso2nimi':None, 'isced2011koulutusastetaso2nimi_sv':None, 'isced2011koulutusastetaso2nimi_en':None,
+	'isced2011koulutusastetaso2koodi':None, 'isced2011koulutusastetaso2nimi':None, 'isced2011koulutusastetaso2nimi_sv':None, 'isced2011koulutusastetaso2nimi_en':None,
+    'koulutusluokitus2016koulutusastetaso2koodi':None, 'koulutusluokitus2016koulutusastetaso2nimi':None, 'koulutusluokitus2016koulutusastetaso2nimi_sv':None, 'koulutusluokitus2016koulutusastetaso2nimi_en':None,
     'isced2011koulutusalataso1koodi':None, 'isced2011koulutusalataso1nimi':None, 'isced2011koulutusalataso1nimi_sv':None, 'isced2011koulutusalataso1nimi_en':None,
     'koulutusluokitus2016koulutusalataso1koodi':None, 'koulutusluokitus2016koulutusalataso1nimi':None, 'koulutusluokitus2016koulutusalataso1nimi_sv':None, 'koulutusluokitus2016koulutusalataso1nimi_en':None,
     'isced2011koulutusalataso2koodi':None, 'isced2011koulutusalataso2nimi':None, 'isced2011koulutusalataso2nimi_sv':None, 'isced2011koulutusalataso2nimi_en':None,
@@ -136,6 +137,11 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
         row["isced2011koulutusastetaso1nimi"] = getnimi(ii,"FI")
         row["isced2011koulutusastetaso1nimi_sv"] = getnimi(ii,"SV")
         row["isced2011koulutusastetaso1nimi_en"] = getnimi(ii,"EN")
+      if ii["koodisto"]["koodistoUri"] == "isced2011koulutusastetaso2":
+        row["isced2011koulutusastetaso2koodi"] = ii["koodiArvo"]
+        row["isced2011koulutusastetaso2nimi"] = getnimi(ii,"FI")
+        row["isced2011koulutusastetaso2nimi_sv"] = getnimi(ii,"SV")
+        row["isced2011koulutusastetaso2nimi_en"] = getnimi(ii,"EN")	
       if ii["koodisto"]["koodistoUri"] == "kansallinenkoulutusluokitus2016koulutusastetaso1":
         row["koulutusluokitus2016koulutusastetaso1koodi"] = ii["koodiArvo"]
         row["koulutusluokitus2016koulutusastetaso1nimi"] = getnimi(ii,"FI")
@@ -144,10 +150,10 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
       # huom! https://www.stat.fi/meta/luokitukset/koulutus/001-2016/kuvaus.html
       # kansallinenkoulutusluokitus2016koulutusastetaso2 -> isced2011koulutusastetaso2
       if ii["koodisto"]["koodistoUri"] == "kansallinenkoulutusluokitus2016koulutusastetaso2":
-        row["isced2011koulutusastetaso2koodi"] = ii["koodiArvo"]
-        row["isced2011koulutusastetaso2nimi"] = getnimi(ii,"FI")
-        row["isced2011koulutusastetaso2nimi_sv"] = getnimi(ii,"SV")
-        row["isced2011koulutusastetaso2nimi_en"] = getnimi(ii,"EN")
+        row["koulutusluokitus2016koulutusastetaso2koodi"] = ii["koodiArvo"]
+        row["koulutusluokitus2016koulutusastetaso2nimi"] = getnimi(ii,"FI")
+        row["koulutusluokitus2016koulutusastetaso2nimi_sv"] = getnimi(ii,"SV")
+        row["koulutusluokitus2016koulutusastetaso2nimi_en"] = getnimi(ii,"EN")
       if ii["koodisto"]["koodistoUri"] == "isced2011koulutusalataso1":
         row["isced2011koulutusalataso1koodi"] = ii["koodiArvo"]
         row["isced2011koulutusalataso1nimi"] = getnimi(ii,"FI")

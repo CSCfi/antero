@@ -268,6 +268,66 @@
             "name": "Koodit_ohjauksenala",
             "dataType": "int64",
             "sourceColumn": "Koodit_ohjauksenala"
+          },
+          {
+            "type": "calculated",
+            "name": "Kulu",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": "Muuttujat[tili_taso5_fi]",
+            "displayFolder": "Varsinaisen toiminnan kustannusten kategoria"
+          },
+          {
+            "type": "calculated",
+            "name": "Toimintalaji",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": [
+              "",
+              "SWITCH(TRUE(),",
+              "\tMuuttujat[tili_taso5_fi]=\"Esiopetus\",\"Harjoittelukoulut\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Perusopetus\",\"Harjoittelukoulut\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Lukiokoulutus\",\"Harjoittelukoulut\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Harjoittelu harjoittelukoulussa\",\"Harjoittelukoulut\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Harjoittelu harjoittelukoulun ulkopuolella\",\"Harjoittelukoulut\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Opettajankoulutuksen kehittäminen\",\"Harjoittelukoulut\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Perustutkintokoulutus\",\"Koulutus\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Perustutkintojen osat\",\"Koulutus\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Muu koulutus\",\"Koulutus\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Tieteellinen tutkimus\",\"Tutkimus\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Tieteellinen ja taiteellinen jatkotutkintokoulutus\",\"Tutkimus\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Erillislakien mukaiset julkisoikeudelliset suoritteet\",\"Muu yhteiskunnallinen toiminta\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Taiteellinen toiminta\",\"Taiteellinen toiminta\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Yleistoiminnot\",\"Muu yhteiskunnallinen toiminta\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Yliopistolain mukaiset kansalliskirjastotehtävät yhteensä\",\"Kansalliskirjasto\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Kansallisen kulttuuriperinnön tallettaminen ja ylläpito\",\"Kansalliskirjasto\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Muut tehtävät\",\"Kansalliskirjasto\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Kansalliset palvelut kirjastoille sekä korkeakoulusektorille\",\"Kansalliskirjasto\"",
+              "\t)"
+            ],
+            "displayFolder": "Varsinaisen toiminnan kustannusten kategoria"
+          },
+          {
+            "type": "calculated",
+            "name": "Toiminta",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": [
+              "",
+              "SWITCH(TRUE(),",
+              "\tMuuttujat[tili_taso5_fi]=\"Esiopetus\",\"Opetustehtävät\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Perusopetus\",\"Opetustehtävät\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Lukiokoulutus\",\"Opetustehtävät\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Harjoittelu harjoittelukoulussa\",\"Opettajankoulutus ja kehitystehtävät\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Harjoittelu harjoittelukoulun ulkopuolella\",\"Opettajankoulutus ja kehitystehtävät\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Opettajankoulutuksen kehittäminen\",\"Opettajankoulutus ja kehitystehtävät\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Yliopistolain mukaiset kansalliskirjastotehtävät yhteensä\",\"Yliopistolain mukaiset kansalliskirjastotehtävät\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Kansallisen kulttuuriperinnön tallettaminen ja ylläpito\",\"Yliopistolain mukaiset kansalliskirjastotehtävät\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Muut tehtävät\",\"Muut tehtävät\",",
+              "\tMuuttujat[tili_taso5_fi]=\"Kansalliset palvelut kirjastoille sekä korkeakoulusektorille\",\"Yliopistolain mukaiset kansalliskirjastotehtävät\",Muuttujat[Toimintalaji]",
+              "\t)"
+            ],
+            "displayFolder": "Varsinaisen toiminnan kustannusten kategoria"
           }
         ],
         "partitions": [
@@ -1317,8 +1377,8 @@
             "displayFolder": "Tuloslaskelma - yliopisto\\Varsinainen toiminta\\Varsinaisen toiminnan tuotot\\Avustustuotot\\Julkinen rahoitus"
           },
           {
-            "name": "Tekes avustustuotot",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso0_fi] = \"Tuloslaskelma\"), FILTER(Muuttujat,[tili_taso5_fi]=\"Tekes avustustuotot\"))",
+            "name": "Business Finland avustustuotot",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso0_fi] = \"Tuloslaskelma\"), FILTER(Muuttujat,[tili_taso5_fi]=\"Business Finland avustustuotot\"))",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma - yliopisto\\Varsinainen toiminta\\Varsinaisen toiminnan tuotot\\Avustustuotot\\Julkinen rahoitus"
           },
@@ -1329,8 +1389,8 @@
             "displayFolder": "Tuloslaskelma - yliopisto\\Varsinainen toiminta\\Varsinaisen toiminnan tuotot\\Avustustuotot\\Julkinen rahoitus"
           },
           {
-            "name": "Valtio pl SA Tekes ja OKMn yliopistolain muk. rahoitus avustustuotot",
-            "expression": "CALCULATE(SUM([arvo]), FILTER(Muuttujat,[tili_taso5_fi]=\"Valtio (pl. SA, Tekes ja OKM:n yliopistolain muk. rahoitus) avustustuotot\"))",
+            "name": "Valtio pl SA Business Finland ja OKMn yliopistolain muk. rahoitus avustustuotot",
+            "expression": "CALCULATE(SUM([arvo]), FILTER(Muuttujat,[tili_taso5_fi]=\"Valtio (pl. SA, Business Finland ja OKM:n yliopistolain muk. rahoitus) avustustuotot\"))",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma - yliopisto\\Varsinainen toiminta\\Varsinaisen toiminnan tuotot\\Avustustuotot\\Julkinen rahoitus"
           },
@@ -1941,8 +2001,8 @@
             "displayFolder": "Tutkimusmenot\\Kotimainen ulkopuolinen rahoitus"
           },
           {
-            "name": "Tekes",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso0_fi] = \"Tutkimusmenot\"), FILTER(Muuttujat,[tili_taso5_fi]=\"Tekes\"))",
+            "name": "Business Finland",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso0_fi] = \"Tutkimusmenot\"), FILTER(Muuttujat,[tili_taso5_fi]=\"Business Finland\"))",
             "formatString": "#,0",
             "displayFolder": "Tutkimusmenot\\Kotimainen ulkopuolinen rahoitus"
           },
@@ -3345,6 +3405,12 @@
             "displayFolder": "Liiketoiminnan tuloslaskelma\\Johdetut mittarit"
           },
           {
+            "name": "Tilikauden tuloksen osuus kokonaistuotosta",
+            "expression": "[Tilikauden ylijäämä/alijäämä]/[Yliopiston kokonaisrahoitus]",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
+            "displayFolder": "Tuloslaskelma - yliopisto\\Johdetut mittarit"
+          },
+          {
             "name": "Tilikauden tuloksen osuus kokonaistuotosta (uusi)",
             "expression": "[Tilikauden tulos]/[Yliopiston kokonaisrahoitus]",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
@@ -3359,12 +3425,6 @@
             "displayFolder": "Tuloslaskelma - yliopisto\\Johdetut mittarit"
           },
           {
-            "name": "Tilikauden tuloksen osuus kokonaistuotosta",
-            "expression": "[Tilikauden ylijäämä/alijäämä]/[Yliopiston kokonaisrahoitus]",
-            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
-            "displayFolder": "Tuloslaskelma - yliopisto\\Johdetut mittarit"
-          },
-          {
             "name": "Kotimaiset korkeakoulut",
             "expression": "SUMX(FILTER(Muuttujat,[tili_taso5_fi]=\"Kotimaiset korkeakoulut\"),[arvo])",
             "formatString": "#,0",
@@ -3375,6 +3435,11 @@
             "expression": "([Tilikauden ylijäämä/alijäämä]-[Tuotto-/kulujäämä (varainhankinta)]-[Tuotto-/kulujäämä (sijoitus- ja rahoitustoiminta)])/([Varsinaisen toiminnan tuotot]+[Yliopistolain mukainen valtionrahoitus (OKM)]+[Muut yleisavustukset])",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Tuloslaskelma - yliopisto\\Johdetut mittarit"
+          },
+          {
+            "name": "Varsinaisen toiminnan kustannukset",
+            "expression": " CALCULATE(SUM([arvo]),Muuttujat[tili_taso0_fi]=\"Varsinaisen toiminnan kustannukset\")",
+            "formatString": "#,0"
           }
         ],
         "annotations": [
@@ -4608,7 +4673,7 @@
                 "name": "Poistot (vt)"
               },
               {
-                "name": "Tekes avustustuotot"
+                "name": "Business Finland avustustuotot"
               },
               {
                 "name": "Yliopiston varsinaiseen toimintaan kuuluvan liiketoiminnan tuotot"
@@ -4617,7 +4682,7 @@
                 "name": "Voittoa tavoittelemattomat yhteisöt avustustuotot"
               },
               {
-                "name": "Valtio pl SA Tekes ja OKMn yliopistolain muk. rahoitus avustustuotot"
+                "name": "Valtio pl SA Business Finland ja OKMn yliopistolain muk. rahoitus avustustuotot"
               },
               {
                 "name": "Arvonalennukset"
@@ -4785,13 +4850,13 @@
                 "name": "Yliopiston kokonaisrahoitus"
               },
               {
+                "name": "Tilikauden tuloksen osuus kokonaistuotosta"
+              },
+              {
                 "name": "Tilikauden tuloksen osuus kokonaistuotosta (uusi)"
               },
               {
                 "name": "Tilikauden tuloksen osuus kokonaistuotoista ilman varainhankinta- ja sijoitustuottoja (uusi)"
-              },
-              {
-                "name": "Tilikauden tuloksen osuus kokonaistuotosta"
               },
               {
                 "name": "Tilikauden tuloksen osuus kokonaistuotoista ilman varainhankinta- ja sijoitustuottoja"
@@ -5436,7 +5501,7 @@
                 "name": "EU-puiteohjelmarahoitus ja muu laadullisesti kilpailtu EU-rahoitus"
               },
               {
-                "name": "Tekes"
+                "name": "Business Finland"
               },
               {
                 "name": "Ulkoasiainministeriö"
@@ -5768,6 +5833,45 @@
             ]
           }
         ]
+      },
+      {
+        "name": "Varsinaisen toimimnnan kustannukset pivot",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Koulutusala"
+              },
+              {
+                "name": "Ohjauksen ala"
+              },
+              {
+                "name": "Suodatus tilastovuosi"
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Yliopisto"
+              },
+              {
+                "name": "Kulu"
+              },
+              {
+                "name": "Toiminta"
+              },
+              {
+                "name": "Toimintalaji"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Varsinaisen toiminnan kustannukset"
+              }
+            ]
+          }
+        ]
       }
     ],
     "roles": [
@@ -5775,14 +5879,6 @@
         "name": "Testi",
         "modelPermission": "read",
         "members": [
-          {
-            "memberName": "DWI\\Z_T_Antero_Read_TAB",
-            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-4155"
-          },
-          {
-            "memberName": "DWI\\Z_P_Antero_Read_TAB",
-            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-4156"
-          },
           {
             "memberName": "DWI\\T_SP_Excel_S_Read",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1732"
@@ -5794,13 +5890,7 @@
           {
             "memberName": "DWI\\T_VIPU_SSAS_DB_R_TK",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1753"
-          }
-        ]
-      },
-      {
-        "name": "Tuotanto",
-        "modelPermission": "read",
-        "members": [
+          },
           {
             "memberName": "DWI\\Z_T_Antero_Read_TAB",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-4155"
@@ -5808,7 +5898,13 @@
           {
             "memberName": "DWI\\Z_P_Antero_Read_TAB",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-4156"
-          },
+          }
+        ]
+      },
+      {
+        "name": "Tuotanto",
+        "modelPermission": "read",
+        "members": [
           {
             "memberName": "DWI\\P_SP_Excel_S_Read",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1733"
@@ -5824,6 +5920,14 @@
           {
             "memberName": "NT AUTHORITY\\IUSR",
             "memberId": "S-1-5-17"
+          },
+          {
+            "memberName": "DWI\\Z_T_Antero_Read_TAB",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-4155"
+          },
+          {
+            "memberName": "DWI\\Z_P_Antero_Read_TAB",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-4156"
           }
         ]
       }

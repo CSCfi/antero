@@ -9502,12 +9502,20 @@
         "measures": [
           {
             "name": "Opiskelijat",
-            "expression": "SUM([Opisk2])",
+            "expression": [
+              "",
+              "var summa=CALCULATE(SUM([Opisk2]),Muuttujat[Koodit Koulutusaste taso 2]<>\"91\" && Muuttujat[Koodit Koulutusaste taso 2]<>\"73\")",
+              "return if(summa=0,BLANK(),summa)"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Uudet opiskelijat",
-            "expression": "IF(CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"91\"))=0,BLANK(),CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"91\")))",
+            "expression": [
+              "",
+              "var summa=CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"91\" && [Koodit Koulutusaste taso 2]<>\"73\"))",
+              "return IF(summa=0,BLANK(),summa)"
+            ],
             "formatString": "#,0"
           },
           {
@@ -9622,7 +9630,12 @@
           },
           {
             "name": "Tutkinnot",
-            "expression": "CALCULATE(SUM([Tutk2]), FILTER('Muuttujat', [Koodit Koulutustyyppi] <> \"3\"), FILTER('Muuttujat', [Koodit Koulutustyyppi] <> \"5\"))",
+            "expression": [
+              "",
+              "var summa=CALCULATE(SUM([Tutk2]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2]<>\"91\" && [Koodit Koulutusaste taso 2]<>\"73\"))",
+              "return if(summa=0,BLANK(),summa)",
+              "--[Koodit Koulutustyyppi] <> \"3\"); FILTER('Muuttujat'; [Koodit Koulutustyyppi] <> \"5\"))"
+            ],
             "formatString": "#,0"
           },
           {
@@ -9742,10 +9755,7 @@
           },
           {
             "name": "Nya studenter",
-            "expression": [
-              "IF(CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"91\"))=0,BLANK(),CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"91\"))",
-              ")"
-            ],
+            "expression": "[Uudet opiskelijat]",
             "formatString": "#,0"
           },
           {
@@ -9915,10 +9925,7 @@
           },
           {
             "name": "New students",
-            "expression": [
-              "IF(CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"91\"))=0,BLANK(),CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"91\"))",
-              ")"
-            ],
+            "expression": "[Uudet opiskelijat]",
             "formatString": "#,0"
           },
           {
@@ -10124,6 +10131,35 @@
           {
             "name": "New students (Statistic Finland's definition)",
             "expression": "CALCULATE(SUM([Opisk2]), FILTER('Muuttujat', [Tutkinto-oikeusvuosi] = [Tilastovuosi]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] = \"63\" || [Koodit Koulutusaste taso 2] = \"72\"))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Uudet opiskelijat (lääkärien erikoistumiskoulutus)",
+            "expression": [
+              "",
+              "var summa=CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] = \"73\" || [Koodit Koulutusaste taso 2]=\"91\"))",
+              "return IF(summa=0,BLANK(),summa)"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Opiskelijat (lääkärien erikoistumiskoulutus)",
+            "expression": [
+              "",
+              "var summa=CALCULATE(SUM([Opisk2]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] = \"73\" || [Koodit Koulutusaste taso 2]=\"91\"))",
+              "return IF(summa=0,BLANK(),summa)",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Valmistuneet (lääkärien erikoistumiskoulutus)",
+            "expression": [
+              "",
+              "var summa=CALCULATE(SUM([Tutk2]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] = \"73\" || [Koodit Koulutusaste taso 2]=\"91\"))",
+              "return IF(summa=0,BLANK(),summa)",
+              ""
+            ],
             "formatString": "#,0"
           }
         ],
@@ -19612,6 +19648,164 @@
               },
               {
                 "name": "New students enrollment year in the institution"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Laakarit",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Asuinkunta"
+              },
+              {
+                "name": "Asuinmaakunta"
+              },
+              {
+                "name": "Ensisijainen opinto-oikeus"
+              },
+              {
+                "name": "Ikä"
+              },
+              {
+                "name": "Ikäryhmä"
+              },
+              {
+                "name": "Kansalaisuus"
+              },
+              {
+                "name": "Kirjoillaolo (syys)"
+              },
+              {
+                "name": "Kirjoillaolo (tammi)"
+              },
+              {
+                "name": "Koodit Asuinkunta"
+              },
+              {
+                "name": "Koodit Asuinmaakunta"
+              },
+              {
+                "name": "Koodit Koulutuksen kunta"
+              },
+              {
+                "name": "Koodit Koulutuksen maakunta"
+              },
+              {
+                "name": "Koodit Koulutusala 1995"
+              },
+              {
+                "name": "Koodit Koulutusala 2002"
+              },
+              {
+                "name": "Koodit Koulutusala taso 1"
+              },
+              {
+                "name": "Koodit Koulutusala taso 2"
+              },
+              {
+                "name": "Koodit Koulutusala taso 3"
+              },
+              {
+                "name": "Koodit Koulutusaste 2002"
+              },
+              {
+                "name": "Koodit Koulutusaste taso 1"
+              },
+              {
+                "name": "Koodit Koulutusaste taso 2"
+              },
+              {
+                "name": "Koodit Koulutusnimike"
+              },
+              {
+                "name": "Koodit Opintoala 2002"
+              },
+              {
+                "name": "Koodit Oppilaitos"
+              },
+              {
+                "name": "Koulutuksen maakunta"
+              },
+              {
+                "name": "Koulutusala (1995)"
+              },
+              {
+                "name": "Koulutusala (2002)"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste (2002)"
+              },
+              {
+                "name": "Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "Koulutuslaji"
+              },
+              {
+                "name": "Koulutusnimike"
+              },
+              {
+                "name": "Koulutusohjelma"
+              },
+              {
+                "name": "Koulutussektori"
+              },
+              {
+                "name": "OKM ohjauksen ala korkeak."
+              },
+              {
+                "name": "Opintoala (2002)"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Yliopisto"
+              },
+              {
+                "name": "Äidinkieli"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Opiskelijat (lääkärien erikoistumiskoulutus)"
+              },
+              {
+                "name": "Valmistuneet (lääkärien erikoistumiskoulutus)"
+              },
+              {
+                "name": "Uudet opiskelijat (lääkärien erikoistumiskoulutus)"
               }
             ]
           },

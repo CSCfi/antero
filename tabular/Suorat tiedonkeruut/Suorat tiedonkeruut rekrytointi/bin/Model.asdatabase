@@ -598,7 +598,7 @@
           },
           {
             "name": "Ulkomaalaiset hakijat",
-            "expression": "IF(CALCULATE(SUM([hakijat_lkm]),'_Muuttujat'[Kansalaisuus Suomi]=\"Ei\")=0,BLANK(),CALCULATE(SUM([hakijat_lkm]),'_Muuttujat'[Kansalaisuus Suomi]=\"Ei\"))",
+            "expression": "IF(CALCULATE(SUM([hakijat_lkm]),'_Muuttujat'[Kansalaisuus Suomi]=\"Ei\")=0,BLANK(),CALCULATE(SUMX(FILTER(_Muuttujat,'_Muuttujat'[Kansalaisuus Suomi]=\"Ei\"),[hakijat_lkm])))",
             "formatString": "#,0"
           },
           {
@@ -623,7 +623,10 @@
           },
           {
             "name": "Ulkomaalaisten hakijoiden osuus",
-            "expression": "[Ulkomaalaiset hakijat]/[Hakijat]",
+            "expression": [
+              "CALCULATE([Ulkomaalaiset hakijat]/",
+              "IF(ISFILTERED(_Muuttujat[Kansalaisuus (maanosa)]),CALCULATE(SUM([hakijat_lkm]),ALL(_Muuttujat[Kansalaisuus (maanosa)])),[Hakijat]))"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
@@ -651,22 +654,59 @@
           },
           {
             "name": "Hakijat naiset",
-            "expression": "CALCULATE([Hakijat],_Muuttujat[Sukupuoli]=\"nainen\")",
+            "expression": "CALCULATE(SUMX(FILTER(_Muuttujat,[Sukupuoli]=\"nainen\"),[hakijat_lkm]))",
             "isHidden": true
           },
           {
             "name": "Hakijat miehet",
-            "expression": "CALCULATE([Hakijat],_Muuttujat[Sukupuoli]=\"mies\")",
+            "expression": "CALCULATE(SUMX(FILTER(_Muuttujat,[Sukupuoli]=\"mies\"),[hakijat_lkm]))",
             "isHidden": true
           },
           {
             "name": "Naishakijoiden osuus",
-            "expression": "[Hakijat naiset]/[Hakijat]",
+            "expression": "CALCULATE([Hakijat naiset]/[Hakijat])",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Mieshakijoiden osuus",
-            "expression": "[Hakijat miehet]/[Hakijat]",
+            "expression": "CALCULATE([Hakijat miehet]/[Hakijat])",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Hakijat muut",
+            "expression": "CALCULATE(SUMX(FILTER(_Muuttujat,[Sukupuoli]=\"tieto puuttuu\"),[hakijat_lkm]))",
+            "isHidden": true
+          },
+          {
+            "name": "Sukupuolitieto puuttuu",
+            "expression": "CALCULATE([Hakijat muut]/[Hakijat])",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Suomalaisten hakijoiden osuus",
+            "expression": [
+              "CALCULATE([Suomalaiset hakijat]/",
+              "IF(ISFILTERED(_Muuttujat[Kansalaisuus (maanosa)]),CALCULATE(SUM([hakijat_lkm]),ALL(_Muuttujat[Kansalaisuus (maanosa)])),[Hakijat]))",
+              ""
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Suomalaiset hakijat",
+            "expression": "IF(CALCULATE(SUM([hakijat_lkm]),'_Muuttujat'[Kansalaisuus Suomi]=\"Kyllä\")=0,BLANK(),CALCULATE(SUMX(FILTER(_Muuttujat,'_Muuttujat'[Kansalaisuus Suomi]=\"Kyllä\"),[hakijat_lkm])))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Kansalaisuus puuttuu",
+            "expression": "IF(CALCULATE(SUM([hakijat_lkm]),'_Muuttujat'[Kansalaisuus Suomi]=\"Tieto puuttuu\")=0,BLANK(),CALCULATE(SUMX(FILTER(_Muuttujat,'_Muuttujat'[Kansalaisuus Suomi]=\"Tieto puuttuu\"),[hakijat_lkm])))"
+          },
+          {
+            "name": "Kansalaisuustieto puuttuu",
+            "expression": [
+              "CALCULATE([Kansalaisuus puuttuu]/",
+              "IF(ISFILTERED(_Muuttujat[Kansalaisuus (maanosa)]),CALCULATE(SUM([hakijat_lkm]),ALL(_Muuttujat[Kansalaisuus (maanosa)])),[Hakijat]))",
+              ""
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           }
         ],
@@ -1188,7 +1228,7 @@
             "displayFolder": "Koulutusmuuttujat"
           },
           {
-            "name": "Päätoiminen opettaja",
+            "name": "Päätoiminen opettaja (AMK)",
             "dataType": "string",
             "sourceColumn": "Päätoiminen opettaja",
             "displayFolder": "Henkilömuuttujat"
@@ -1535,7 +1575,6 @@
           {
             "name": "henkilonumero",
             "dataType": "string",
-            "isHidden": true,
             "sourceColumn": "henkilonumero"
           },
           {
@@ -1784,6 +1823,12 @@
             "dataType": "int64",
             "isHidden": true,
             "sourceColumn": "jarj Äidinkieli"
+          },
+          {
+            "name": "tohtori_tutkinto",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "tohtori_tutkinto"
           }
         ],
         "partitions": [
@@ -2735,6 +2780,14 @@
                   "        <int>133</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>tohtori_tutkinto</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>105</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -3665,6 +3718,14 @@
                   "        <int>115</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>tohtori_tutkinto</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>116</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -4564,6 +4625,14 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>tohtori_tutkinto</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -4651,17 +4720,17 @@
           },
           {
             "name": "Tohtorintutkinto samassa yliopistossa (%)",
-            "expression": "CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[tohtori_sama_yo]=1)/[Uudet työntekijät]",
+            "expression": "CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[tohtori_sama_yo]=1)/[Tohtorintutkinnon suorittaneet]",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Tohtorintutkinto muussa suomalaisessa yliopistossa (%)",
-            "expression": "CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[tohtori_eri_yo]=1)/[Uudet työntekijät]",
+            "expression": "CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[tohtori_eri_yo]=1)/[Tohtorintutkinnon suorittaneet]",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Tohtorintutkinto ulkomaisessa yliopistossa (%)",
-            "expression": "CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[tohtori_ulk_yo]=1)/[Uudet työntekijät]",
+            "expression": "CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[tohtori_ulk_yo]=1)/[Tohtorintutkinnon suorittaneet]",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
@@ -4774,6 +4843,11 @@
             "name": "Työkokemusta yrityksessä (toimipaikka Suomessa) yli 7 v.",
             "expression": "calculate(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[aika3_yritys_suomi]=1)/[Vastanneet työkokemus]",
             "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Tohtorintutkinnon suorittaneet",
+            "expression": "CALCULATE(DISTINCTCOUNT([henkilonumero]),Muuttujat[tohtori_tutkinto]=1)",
+            "formatString": "#,0"
           }
         ],
         "annotations": [
@@ -5729,6 +5803,14 @@
               "        <int>133</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>tohtori_tutkinto</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>105</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -6659,6 +6741,14 @@
               "        <int>115</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>tohtori_tutkinto</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>116</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -7558,6 +7648,14 @@
               "        <boolean>true</boolean>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>tohtori_tutkinto</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
               "  </ColumnChecked>",
               "  <ColumnFilter />",
               "  <SelectionFilter />",
@@ -7824,9 +7922,6 @@
                 "name": "Alayksikkö"
               },
               {
-                "name": "Harjoittelukoulujen henkilöstöryhmä"
-              },
-              {
                 "name": "Henkilöstöryhmä"
               },
               {
@@ -7911,7 +8006,7 @@
                 "name": "Päätieteenala"
               },
               {
-                "name": "Päätoiminen opettaja"
+                "name": "Päätoiminen opettaja (AMK)"
               },
               {
                 "name": "Sukupuoli"
@@ -8030,9 +8125,6 @@
                 "name": "Alayksikkö"
               },
               {
-                "name": "Harjoittelukoulujen henkilöstöryhmä"
-              },
-              {
                 "name": "Henkilöstöryhmä"
               },
               {
@@ -8117,7 +8209,7 @@
                 "name": "Päätieteenala"
               },
               {
-                "name": "Päätoiminen opettaja"
+                "name": "Päätoiminen opettaja (AMK)"
               },
               {
                 "name": "Sukupuoli"
@@ -8215,9 +8307,6 @@
                 "name": "Alayksikkö"
               },
               {
-                "name": "Harjoittelukoulujen henkilöstöryhmä"
-              },
-              {
                 "name": "Henkilöstöryhmä"
               },
               {
@@ -8302,7 +8391,7 @@
                 "name": "Päätieteenala"
               },
               {
-                "name": "Päätoiminen opettaja"
+                "name": "Päätoiminen opettaja (AMK)"
               },
               {
                 "name": "Sukupuoli"
@@ -8421,9 +8510,6 @@
                 "name": "Alayksikkö"
               },
               {
-                "name": "Harjoittelukoulujen henkilöstöryhmä"
-              },
-              {
                 "name": "Henkilöstöryhmä"
               },
               {
@@ -8506,9 +8592,6 @@
               },
               {
                 "name": "Päätieteenala"
-              },
-              {
-                "name": "Päätoiminen opettaja"
               },
               {
                 "name": "Sukupuoli"
@@ -8574,6 +8657,9 @@
               },
               {
                 "name": "Uudet työntekijät"
+              },
+              {
+                "name": "Tohtorintutkinnon suorittaneet"
               }
             ]
           },
@@ -8636,6 +8722,15 @@
               },
               {
                 "name": "Naishakijoiden osuus"
+              },
+              {
+                "name": "Kansalaisuustieto puuttuu"
+              },
+              {
+                "name": "Sukupuolitieto puuttuu"
+              },
+              {
+                "name": "Suomalaisten hakijoiden osuus"
               }
             ]
           },
@@ -8660,9 +8755,6 @@
             "columns": [
               {
                 "name": "Alayksikkö"
-              },
-              {
-                "name": "Harjoittelukoulujen henkilöstöryhmä"
               },
               {
                 "name": "Henkilöstöryhmä"
@@ -8752,7 +8844,7 @@
                 "name": "Päätieteenala"
               },
               {
-                "name": "Päätoiminen opettaja"
+                "name": "Päätoiminen opettaja (AMK)"
               },
               {
                 "name": "Sektori"
