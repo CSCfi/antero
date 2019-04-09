@@ -866,7 +866,13 @@
           },
           {
             "name": "Keskiarvo (KANDI)",
-            "expression": "IF([vast-kandi-tilasto]<6,BLANK(),[ka-kandi-tilasto])",
+            "expression": [
+              "IF(",
+              "OR([vast-kandi-tilasto]<6,AND(ISFILTERED([Kysymysryhmä]),NOT(ISFILTERED([Kysymys]))))",
+              ",BLANK()",
+              ",CALCULATE([ka-kandi-tilasto],FILTER(VALUES(Muuttujat[numerovalinta]),[numerovalinta]<>1))",
+              ")"
+            ],
             "formatString": "0.0"
           },
           {
@@ -1545,12 +1551,24 @@
           },
           {
             "name": "Medeltal (KANDI)",
-            "expression": "IF([vast-kandi-tilasto]<6,BLANK(),[ka-kandi-tilasto])",
+            "expression": [
+              "IF(",
+              "OR([vast-kandi-tilasto]<6,AND(ISFILTERED([Grupp av frågor]),NOT(ISFILTERED([Fråga]))))",
+              ",BLANK()",
+              ",CALCULATE([ka-kandi-tilasto],FILTER(VALUES(Muuttujat[numerovalinta]),[numerovalinta]<>1))",
+              ")"
+            ],
             "formatString": "0.0"
           },
           {
             "name": "Average (KANDI)",
-            "expression": "IF([vast-kandi-tilasto]<6,BLANK(),[ka-kandi-tilasto])",
+            "expression": [
+              "IF(",
+              "OR([vast-kandi-tilasto]<6,AND(ISFILTERED([Question group]),NOT(ISFILTERED([Question]))))",
+              ",BLANK()",
+              ",CALCULATE([ka-kandi-tilasto],FILTER(VALUES(Muuttujat[numerovalinta]),[numerovalinta]<>1))",
+              ")"
+            ],
             "formatString": "0.0"
           },
           {
@@ -1615,6 +1633,21 @@
               "return IF(tarkistus,BLANK(),lasku)",
               ""
             ]
+          },
+          {
+            "name": "Keskiarvo (rahoitusmalli)",
+            "expression": "IF(OR([vast-kandi-tilasto]<6,AND(ISFILTERED([Kysymysryhmä]),NOT(ISFILTERED([Kysymys])))),BLANK(),[ka-kandi-tilasto])",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Average (funding model)",
+            "expression": "IF(OR([vast-kandi-tilasto]<6,AND(ISFILTERED([Question group]),NOT(ISFILTERED([Question])))),BLANK(),[ka-kandi-tilasto])",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Medeltal (finansieringsmodell)",
+            "expression": "IF(OR([vast-kandi-tilasto]<6,AND(ISFILTERED([Grupp av frågor]),NOT(ISFILTERED([Fråga])))),BLANK(),[ka-kandi-tilasto])",
+            "formatString": "0.0"
           }
         ],
         "annotations": [
@@ -2402,9 +2435,6 @@
               },
               {
                 "name": "Vastaajamäärä (KANDI)"
-              },
-              {
-                "name": "Pisteet (KANDI)"
               }
             ]
           },
@@ -3461,9 +3491,6 @@
                 "name": "Number of respondents (KANDI)"
               },
               {
-                "name": "Score (KANDI)"
-              },
-              {
                 "name": "Standard deviation (KANDI)"
               }
             ]
@@ -3562,10 +3589,304 @@
                 "name": "Medeltal (KANDI)"
               },
               {
+                "name": "Standardavvikelse (KANDI)"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "KANDI_RAHOITUS",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Ikä"
+              },
+              {
+                "name": "Kieli"
+              },
+              {
+                "name": "Koodit Koulutus"
+              },
+              {
+                "name": "Koodit Organisaatio"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "Koulutusnimike"
+              },
+              {
+                "name": "Kyselykerta"
+              },
+              {
+                "name": "kyselypohja"
+              },
+              {
+                "name": "Kyselyvuosi"
+              },
+              {
+                "name": "Kysymys"
+              },
+              {
+                "name": "Kysymysryhmä"
+              },
+              {
+                "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Organisaatio"
+              },
+              {
+                "name": "Pohjakoulutus"
+              },
+              {
+                "name": "Rahoitusmallikysymys"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Vastauskuukausi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Keskihajonta (KANDI)"
+              },
+              {
+                "name": "Pisteet (KANDI)"
+              },
+              {
+                "name": "Vastaajamäärä (KANDI)"
+              },
+              {
+                "name": "Keskiarvo (rahoitusmalli)"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "KANDI_RAHOITUS_EN",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Administrative sector"
+              },
+              {
+                "name": "Age"
+              },
+              {
+                "name": "Field of education - HE steering"
+              },
+              {
+                "name": "Field of education, tier 1"
+              },
+              {
+                "name": "Field of education, tier 2"
+              },
+              {
+                "name": "Field of education, tier 3"
+              },
+              {
+                "name": "Funding model question"
+              },
+              {
+                "name": "Gender"
+              },
+              {
+                "name": "Koodit Koulutus"
+              },
+              {
+                "name": "Koodit Organisaatio"
+              },
+              {
+                "name": "Language"
+              },
+              {
+                "name": "Level of education, tier 1"
+              },
+              {
+                "name": "Level of education, tier 2"
+              },
+              {
+                "name": "Name of education"
+              },
+              {
+                "name": "Organization"
+              },
+              {
+                "name": "Prior education"
+              },
+              {
+                "name": "Question"
+              },
+              {
+                "name": "Question group"
+              },
+              {
+                "name": "Response month"
+              },
+              {
+                "name": "Survey"
+              },
+              {
+                "name": "Survey year"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Number of respondents (KANDI)"
+              },
+              {
+                "name": "Score (KANDI)"
+              },
+              {
+                "name": "Standard deviation (KANDI)"
+              },
+              {
+                "name": "Average (funding model)"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "KANDI_RAHOITUS_SV",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Enkätår"
+              },
+              {
+                "name": "Finansieringsmodellsfråga"
+              },
+              {
+                "name": "Fråga"
+              },
+              {
+                "name": "Frågeformulär"
+              },
+              {
+                "name": "Förvaltningsområde"
+              },
+              {
+                "name": "Grundutbildning"
+              },
+              {
+                "name": "Grupp av frågor"
+              },
+              {
+                "name": "Koodit Koulutus"
+              },
+              {
+                "name": "Koodit Organisaatio"
+              },
+              {
+                "name": "Kön"
+              },
+              {
+                "name": "Organisation"
+              },
+              {
+                "name": "Språk"
+              },
+              {
+                "name": "Statistikår"
+              },
+              {
+                "name": "Svarsmånad"
+              },
+              {
+                "name": "UKM-styrningsområde"
+              },
+              {
+                "name": "Utbildningsbenämning"
+              },
+              {
+                "name": "Utbildningsnivå, nivå 1"
+              },
+              {
+                "name": "Utbildningsnivå, nivå 2"
+              },
+              {
+                "name": "Utbildningsområde, nivå 1"
+              },
+              {
+                "name": "Utbildningsområde, nivå 2"
+              },
+              {
+                "name": "Utbildningsområde, nivå 3"
+              },
+              {
+                "name": "Ålder"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Antal personer som svarat (KANDI)"
+              },
+              {
                 "name": "Poäng (KANDI)"
               },
               {
                 "name": "Standardavvikelse (KANDI)"
+              },
+              {
+                "name": "Medeltal (finansieringsmodell)"
               }
             ]
           },
