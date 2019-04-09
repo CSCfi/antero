@@ -62,7 +62,6 @@ filtered_data = json_normalize(filtered_result)
 # data['vastaajaid'].head(10)
 ## data.dtypes
 
-
 ## Export data to csv's
 
 print("Exporting data to csv file")

@@ -19,7 +19,7 @@ try:
     base_url = os.environ['BASE_URL']
 except KeyError:
     print("Base URL is missing")
-    
+
 kysymykset=[]
 url = "https://"+base_url+"/api/export/v1/kysymykset"
 loadtime=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
@@ -44,6 +44,7 @@ def makerow_kysymykset():
         "kysymysryhma_en": None,
         "kysymysryhma_sv": None,
         "jatkokysymys": None,
+        "jarjestys": None,
         "kysymysryhma_fi": None,
         "kategoria": None,
         "kategoria.rahoitusmallikysymys": None,
@@ -71,6 +72,13 @@ for kysymys in response ['data']:
         row["kysymys_en"] = keycheck("kysymys_en",kysymys)
         row["kysymysryhma_en"] = keycheck("kysymysryhma_en",kysymys)
         row["kysymysryhma_sv"] = keycheck("kysymysryhma_sv",kysymys)
+        if "jarjestys" in kysymys:
+            if kysymys["jarjestys"] == None:
+                row["jarjestys"] = -1
+            else:
+                row["jarjestys"] = kysymys["jarjestys"]
+        else:
+            row["jarjestys"] = -1
         row["jatkokysymys"] = keycheck("jatkokysymys",kysymys)
         row["kysymysryhma_fi"] = keycheck("kysymysryhma_fi",kysymys)
         row["kategoria"] = keycheck("kategoria",kysymys)
@@ -91,6 +99,13 @@ for kysymys in response ['data']:
         row["kysymys_en"] = keycheck("kysymys_en",kysymys)
         row["kysymysryhma_en"] = keycheck("kysymysryhma_en",kysymys)
         row["kysymysryhma_sv"] = keycheck("kysymysryhma_sv",kysymys)
+        if "jarjestys" in kysymys: 
+            if kysymys["jarjestys"] == None:
+                row["jarjestys"] = -1
+            else:
+                row["jarjestys"] = kysymys["jarjestys"]
+        else:
+            row["jarjestys"] = -1
         row["jatkokysymys"] = keycheck("jatkokysymys",kysymys)
         row["kysymysryhma_fi"] = keycheck("kysymysryhma_fi",kysymys)
         row["jatkokysymys_kysymysid"] = keycheck("jatkokysymys_kysymysid",kysymys)
