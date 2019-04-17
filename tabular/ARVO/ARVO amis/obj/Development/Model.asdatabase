@@ -4825,15 +4825,16 @@
               " ",
               "var taulu = ADDCOLUMNS(",
               "\t\tSUMMARIZE(FILTER(Muuttujat,[Koodit Rahoitusmallikysymys]=1),[Koodit Koulutuksen järjestäjä],[Kyselyn kohderyhmä])",
-              "\t\t,\"kato\", CALCULATE(IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide]))",
-              "\t\t,\"pisteet\",CALCULATE(SUM([numerovalinta]),Muuttujat[Koodit Rahoitusmallikysymys]=1)",
+              "\t\t,\"kato\", IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide])",
+              "\t\t,\"paino_paatto_koko\", CALCULATE(3,Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\") ",
+              "\t\t,\"pisteet\",CALCULATE(SUM([numerovalinta]),Muuttujat[Koodit Rahoitusmallikysymys]=1,VALUES(Muuttujat[Kyselyn kohderyhmä]))",
               "\t )",
-              "var painotettu = SUMX(taulu, [kato] * [pisteet])",
-              "var painottamaton = SUMX(taulu, [pisteet])",
-              "return 1--painotettu / painottamaton",
+              "var painotettu = SUMX(taulu, [paino_paatto_koko] * [kato] * [pisteet])",
+              "var painottamaton = SUMX(taulu, [paino_paatto_koko] * [pisteet])",
+              "return painotettu / painottamaton",
               ""
             ],
-            "formatString": "0"
+            "formatString": "0.00"
           },
           {
             "name": "katokorjaus_rivisumma",
