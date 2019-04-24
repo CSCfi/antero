@@ -10321,22 +10321,31 @@
         ],
         "measures": [
           {
-            "name": "Opiskelijat_s",
-            "expression": "IF(SUM([Opisk2]) = 0, BLANK(), SUM([Opisk2]))",
-            "formatString": "#,0"
-          },
-          {
             "name": "Uudet opiskelijat",
-            "expression": "IF(SUM([Aloitt2]) = 0, BLANK(), SUM([Aloitt2]))",
+            "expression": [
+              "",
+              "var summa = SUM([Aloitt2])",
+              "return IF(summa = 0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Opiskelijat",
             "expression": [
               "",
-              "var summa = SUM(Muuttujat[Opisk2])",
-              "return IF(summa = 0, BLANK(), if(summa<5,\"1-4\",MROUND(summa,3)))"
+              "var summa = SUM([Opisk2])",
+              "return IF(summa = 0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))"
             ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Uudet opiskelijat_s",
+            "expression": " IF(SUM([Aloitt2]) = 0, BLANK(), SUM([Aloitt2]))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Opiskelijat_s",
+            "expression": " IF(SUM([Opisk2]) = 0, BLANK(), SUM([Opisk2]))",
             "formatString": "#,0"
           }
         ],
@@ -10436,9 +10445,6 @@
             "measures": [
               {
                 "name": "Uudet opiskelijat"
-              },
-              {
-                "name": "Opiskelijat_s"
               }
             ]
           },
