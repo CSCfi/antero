@@ -4358,7 +4358,7 @@
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
-            "name": "Painotetut pisteet",
+            "name": "Painotetut pisteet_old",
             "expression": [
               "",
               "var kato1 =  CALCULATE(IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide]),Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\")",
@@ -4371,7 +4371,8 @@
               "var painotetut_summa_kato = painotetut_pisteet_aloitus * kato1 + painotetut_pisteet_paatto_koko * kato2 + painotetut_pisteet_paatto_osa * kato3",
               "return IF(ISFILTERED([Koulutuksen järjestäjä]),painotetut_summa_kato,painotetut_summa * [katokorjauskerroin])"
             ],
-            "formatString": "#,0"
+            "formatString": "#,0",
+            "isHidden": true
           },
           {
             "name": "Svarande",
@@ -4596,12 +4597,12 @@
           },
           {
             "name": "Painotetut pisteet %",
-            "expression": "[Painotetut pisteet] / CALCULATE([Painotetut pisteet],ALLEXCEPT(Muuttujat, Muuttujat[Kysely]))",
+            "expression": "[Painotetut pisteet] / CALCULATE([Painotetut pisteet],ALL(Muuttujat))",
             "formatString": "0.00 %;-0.00 %;0.00 %"
           },
           {
             "name": "Viktade poäng  %",
-            "expression": "[Painotetut pisteet]/CALCULATE([Painotetut pisteet],ALLEXCEPT(Muuttujat,Muuttujat[Kysely]))",
+            "expression": " [Painotetut pisteet %]",
             "formatString": "0.00 %;-0.00 %;0.00 %"
           },
           {
@@ -4804,7 +4805,8 @@
           {
             "name": "katokorjaus_eisummarivi",
             "expression": " 1--IF([Vastausosuus_nohide]  >=  0,8; DIVIDE(1;[Vastausosuus_nohide]);1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide])",
-            "formatString": "0"
+            "formatString": "0",
+            "isHidden": true
           },
           {
             "name": "Vastausosuus_nohide",
@@ -4821,20 +4823,9 @@
           },
           {
             "name": "katokorjaus_kokonaissumma",
-            "expression": [
-              " ",
-              "var taulu = ADDCOLUMNS(",
-              "\t\tSUMMARIZE(FILTER(Muuttujat,[Koodit Rahoitusmallikysymys]=1),[Koodit Koulutuksen järjestäjä],[Kyselyn kohderyhmä])",
-              "\t\t,\"kato\", IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide])",
-              "\t\t,\"paino_paatto_koko\", CALCULATE(3,Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\") ",
-              "\t\t,\"pisteet\",CALCULATE(SUM([numerovalinta]),Muuttujat[Koodit Rahoitusmallikysymys]=1,VALUES(Muuttujat[Kyselyn kohderyhmä]))",
-              "\t )",
-              "var painotettu = SUMX(taulu, [paino_paatto_koko] * [kato] * [pisteet])",
-              "var painottamaton = SUMX(taulu, [paino_paatto_koko] * [pisteet])",
-              "return painotettu / painottamaton",
-              ""
-            ],
-            "formatString": "0.00"
+            "expression": " 1",
+            "formatString": "#,0",
+            "isHidden": true
           },
           {
             "name": "katokorjaus_rivisumma",
@@ -4847,7 +4838,8 @@
               "return 1--painotettu / painottamaton",
               ""
             ],
-            "formatString": "0"
+            "formatString": "0",
+            "isHidden": true
           },
           {
             "name": "katokorjaus_sarakesumma",
@@ -4863,7 +4855,8 @@
               "return painotettu / painottamaton",
               ""
             ],
-            "formatString": "0.00"
+            "formatString": "0.00",
+            "isHidden": true
           },
           {
             "name": "katokorjauskerroin",
@@ -4883,7 +4876,34 @@
               ")",
               ""
             ],
-            "formatString": "0.00"
+            "formatString": "0.00",
+            "isHidden": true
+          },
+          {
+            "name": "Painotetut pisteet",
+            "expression": [
+              "",
+              "var taulu = ADDCOLUMNS(",
+              "\t\tSUMMARIZE(Muuttujat,[Koodit Koulutuksen järjestäjä])",
+              "\t\t,\"kato1\" ,  CALCULATE(IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide]),Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\",Muuttujat[Koodit Rahoitusmallikysymys]=1) \t\t",
+              "\t\t,\"kato2\" ,  CALCULATE(IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide]),Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\",Muuttujat[Koodit Rahoitusmallikysymys]=1)\t",
+              "\t\t,\"kato3\" ,  CALCULATE(IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide]),Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\",Muuttujat[Koodit Rahoitusmallikysymys]=1)",
+              "\t\t,\"pisteet1\", CALCULATE(SUM([numerovalinta]),Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
+              "\t\t,\"pisteet2\", 3 * CALCULATE(SUM([numerovalinta]),Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
+              "\t\t,\"pisteet3\" ,CALCULATE(SUM([numerovalinta]),Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
+              "\t )",
+              "var painotettu1 = SUMX(taulu, [kato1] * [pisteet1])",
+              "var painotettu2 = SUMX(taulu, [kato2] * [pisteet2])",
+              "var painotettu3 = SUMX(taulu, [kato3] * [pisteet3])",
+              "var painotettu = painotettu1 + painotettu2 + painotettu3",
+              "return painotettu"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Weighted score %",
+            "expression": " [Painotetut pisteet %]",
+            "formatString": "0.00 %;-0.00 %;0.00 %"
           }
         ],
         "annotations": [
@@ -9702,9 +9722,6 @@
                 "name": "NPS"
               },
               {
-                "name": "Painotetut pisteet"
-              },
-              {
                 "name": "Painotetut pisteet %"
               },
               {
@@ -9715,6 +9732,9 @@
               },
               {
                 "name": "Vastausosuus"
+              },
+              {
+                "name": "Painotetut pisteet"
               }
             ]
           },
