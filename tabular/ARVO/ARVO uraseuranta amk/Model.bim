@@ -1294,12 +1294,39 @@
           },
           {
             "name": "Vastanneet",
-            "expression": "DISTINCTCOUNT([vastaajaid])"
+            "expression": "DISTINCTCOUNT([vastaajaid])",
+            "formatString": "0"
           },
           {
             "name": "Keskihajonta",
             "expression": "CALCULATE(STDEV.P([numerovalinta]))",
             "formatString": "0.00"
+          },
+          {
+            "name": "Vastanneet_perus",
+            "expression": [
+              "",
+              "var vastaajat = DISTINCTCOUNT([vastaajaid])",
+              "return IF(AND(vastaajat<5,vastaajat>0),\"<5\",vastaajat)"
+            ],
+            "isHidden": true
+          },
+          {
+            "name": "ehtoFI",
+            "expression": "OR([Vastanneet_perus]=\"<5\",ISFILTERED(Muuttujat[Monivalintavaihtoehto]))",
+            "isHidden": true
+          },
+          {
+            "name": "Keskiarvo2",
+            "expression": [
+              "IF(",
+              "[ehtoFI]=TRUE()",
+              ",BLANK()",
+              ",CALCULATE(AVERAGE('Muuttujat'[numerovalinta])",
+              "--;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
+              ",Muuttujat[vastaustyyppi_keskiarvo]=1)",
+              ")"
+            ]
           }
         ],
         "annotations": [
@@ -2317,6 +2344,15 @@
               },
               {
                 "name": "Vastanneet"
+              },
+              {
+                "name": "Vastanneet_perus"
+              },
+              {
+                "name": "ehtoFI"
+              },
+              {
+                "name": "Keskiarvo2"
               }
             ]
           },
