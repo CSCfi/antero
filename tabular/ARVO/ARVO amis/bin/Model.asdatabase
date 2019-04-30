@@ -4597,12 +4597,12 @@
           },
           {
             "name": "Painotetut pisteet %",
-            "expression": "[Painotetut pisteet] / CALCULATE([Painotetut pisteet],ALL(Muuttujat))",
+            "expression": "[Painotetut pisteet] / CALCULATE([Painotetut pisteet],ALLEXCEPT(Muuttujat,Muuttujat[Kysely]))",
             "formatString": "0.00 %;-0.00 %;0.00 %"
           },
           {
             "name": "Viktade poäng  %",
-            "expression": "[Painotetut pisteet_old]/CALCULATE([Painotetut pisteet_old],ALLEXCEPT(Muuttujat,Muuttujat[Kysely]))",
+            "expression": " [Painotetut pisteet %]",
             "formatString": "0.00 %;-0.00 %;0.00 %"
           },
           {
@@ -4805,7 +4805,8 @@
           {
             "name": "katokorjaus_eisummarivi",
             "expression": " 1--IF([Vastausosuus_nohide]  >=  0,8; DIVIDE(1;[Vastausosuus_nohide]);1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide])",
-            "formatString": "0"
+            "formatString": "0",
+            "isHidden": true
           },
           {
             "name": "Vastausosuus_nohide",
@@ -4823,7 +4824,8 @@
           {
             "name": "katokorjaus_kokonaissumma",
             "expression": " 1",
-            "formatString": "#,0"
+            "formatString": "#,0",
+            "isHidden": true
           },
           {
             "name": "katokorjaus_rivisumma",
@@ -4836,7 +4838,8 @@
               "return 1--painotettu / painottamaton",
               ""
             ],
-            "formatString": "0"
+            "formatString": "0",
+            "isHidden": true
           },
           {
             "name": "katokorjaus_sarakesumma",
@@ -4852,7 +4855,8 @@
               "return painotettu / painottamaton",
               ""
             ],
-            "formatString": "0.00"
+            "formatString": "0.00",
+            "isHidden": true
           },
           {
             "name": "katokorjauskerroin",
@@ -4872,7 +4876,8 @@
               ")",
               ""
             ],
-            "formatString": "0.00"
+            "formatString": "0.00",
+            "isHidden": true
           },
           {
             "name": "Painotetut pisteet",
@@ -4890,11 +4895,15 @@
               "var painotettu1 = SUMX(taulu, [kato1] * [pisteet1])",
               "var painotettu2 = SUMX(taulu, [kato2] * [pisteet2])",
               "var painotettu3 = SUMX(taulu, [kato3] * [pisteet3])",
-              "var painotettu = (painotettu1 + painotettu2 + painotettu3)",
-              "return painotettu",
-              ""
+              "var painotettu = painotettu1 + painotettu2 + painotettu3",
+              "return painotettu"
             ],
             "formatString": "#,0"
+          },
+          {
+            "name": "Weighted score %",
+            "expression": " [Painotetut pisteet %]",
+            "formatString": "0.00 %;-0.00 %;0.00 %"
           }
         ],
         "annotations": [
@@ -9613,9 +9622,6 @@
               },
               {
                 "name": "Koulutusala, taso 3"
-              },
-              {
-                "name": "Kysely"
               },
               {
                 "name": "Kyselyn kohderyhmä"
