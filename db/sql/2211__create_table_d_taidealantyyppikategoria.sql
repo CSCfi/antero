@@ -30,6 +30,6 @@ ALTER TABLE [dw].[d_taidealantyyppikategoria] ADD  CONSTRAINT [DF__d_taidealanty
 GO
 
 ALTER TABLE [dw].[d_taidealantyyppikategoria] ADD  CONSTRAINT [DF__d_taidealantyyppikategoria__username__531856C7]  DEFAULT (suser_sname()) FOR [username]
-GO
+
 
 
