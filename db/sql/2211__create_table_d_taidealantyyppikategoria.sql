@@ -8,6 +8,8 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[d_taidealantyyppikategoria]') AND type in (N'U'))
+
 CREATE TABLE [dw].[d_taidealantyyppikategoria](
 	[id] [int] IDENTITY(0,1) NOT NULL,
 	[taidealantyyppikategoria_koodi] [varchar](3) NOT NULL,
