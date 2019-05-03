@@ -137,32 +137,6 @@
       <attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
     </attributes>
   </connection>
-  <connection>
-    <name>Koski_SA_test</name>
-    <server>dwitvipusql16.csc.fi</server>
-    <type>MSSQLNATIVE</type>
-    <access>Native</access>
-    <database>Koski_SA</database>
-    <port>1433</port>
-    <username>t_sql16_etl</username>
-    <password>Encrypted 295c2e28332e19095fc4bfa6488bcf0d4</password>
-    <servername/>
-    <data_tablespace/>
-    <index_tablespace/>
-    <attributes>
-      <attribute><code>FORCE_IDENTIFIERS_TO_LOWERCASE</code><attribute>N</attribute></attribute>
-      <attribute><code>FORCE_IDENTIFIERS_TO_UPPERCASE</code><attribute>N</attribute></attribute>
-      <attribute><code>IS_CLUSTERED</code><attribute>N</attribute></attribute>
-      <attribute><code>MSSQLUseIntegratedSecurity</code><attribute>false</attribute></attribute>
-      <attribute><code>MSSQL_DOUBLE_DECIMAL_SEPARATOR</code><attribute>N</attribute></attribute>
-      <attribute><code>PORT_NUMBER</code><attribute>1433</attribute></attribute>
-      <attribute><code>PRESERVE_RESERVED_WORD_CASE</code><attribute>Y</attribute></attribute>
-      <attribute><code>QUOTE_ALL_FIELDS</code><attribute>N</attribute></attribute>
-      <attribute><code>SUPPORTS_BOOLEAN_DATA_TYPE</code><attribute>Y</attribute></attribute>
-      <attribute><code>SUPPORTS_TIMESTAMP_DATA_TYPE</code><attribute>Y</attribute></attribute>
-      <attribute><code>USE_POOLING</code><attribute>N</attribute></attribute>
-    </attributes>
-  </connection>
   <order>
   <hop> <from>eperusteet.csv input</from><to>Get System Info</to><enabled>Y</enabled> </hop>
   <hop> <from>Get System Info</from><to>Numbers to Integer</to><enabled>Y</enabled> </hop>
@@ -179,9 +153,6 @@
   <hop> <from>Get System Info 3 3 2</from><to>Load sa_eperusteet_tutkinnonosaviitteet</to><enabled>Y</enabled> </hop>
   <hop> <from>tutkinnonosaviitteet.csv input </from><to>Numbers to Integer 3</to><enabled>Y</enabled> </hop>
   <hop> <from>Numbers to Integer 3</from><to>Get System Info 3 3 2</to><enabled>Y</enabled> </hop>
-  <hop> <from>Numbers to Integer 2</from><to>Filter rows</to><enabled>Y</enabled> </hop>
-  <hop> <from>Filter rows</from><to>Load sa_eperusteet_suoritustavat_naytto</to><enabled>Y</enabled> </hop>
-  <hop> <from>Filter rows</from><to>Load sa_eperusteet_suoritustavat_ops</to><enabled>Y</enabled> </hop>
   <hop> <from>Numbers to Integer 2</from><to>Load sa_eperusteet_suoritustavat</to><enabled>Y</enabled> </hop>
   </order>
   <step>
@@ -316,35 +287,6 @@
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
       <xloc>304</xloc>
       <yloc>352</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>Filter rows</name>
-    <type>FilterRows</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-<send_true_to>Load sa_eperusteet_suoritustavat_naytto</send_true_to>
-<send_false_to>Load sa_eperusteet_suoritustavat_ops</send_false_to>
-    <compare>
-<condition>
- <negated>N</negated>
- <leftvalue>suoritustapakoodi</leftvalue>
- <function>&#x3d;</function>
- <rightvalue/>
- <value><name>constant</name><type>String</type><text>naytto</text><length>-1</length><precision>-1</precision><isnull>N</isnull><mask/></value> </condition>
-    </compare>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>576</xloc>
-      <yloc>384</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -504,7 +446,7 @@
     <return_field/>
     <fields>
         <field>
-          <column_name>id</column_name>
+          <column_name>eperusteid</column_name>
           <stream_name>id</stream_name>
         </field>
         <field>
@@ -844,508 +786,8 @@
     </fields>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>624</xloc>
+      <xloc>608</xloc>
       <yloc>320</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>Load sa_eperusteet_suoritustavat_naytto</name>
-    <type>TableOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <connection>Koski_SA</connection>
-    <schema>sa</schema>
-    <table>sa_eperusteet_suoritustavat_naytto</table>
-    <commit>1000</commit>
-    <truncate>Y</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>N</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>N</return_keys>
-    <return_field/>
-    <fields>
-        <field>
-          <column_name>eperusteid</column_name>
-          <stream_name>&#xfeff;&#x22;ePerusteId&#x22;</stream_name>
-        </field>
-        <field>
-          <column_name>tutkinto_fi</column_name>
-          <stream_name>tutkinto_fi</stream_name>
-        </field>
-        <field>
-          <column_name>taso</column_name>
-          <stream_name>taso</stream_name>
-        </field>
-        <field>
-          <column_name>suoritustapakoodi</column_name>
-          <stream_name>suoritustapakoodi</stream_name>
-        </field>
-        <field>
-          <column_name>laajuusyksikko</column_name>
-          <stream_name>laajuusYksikko</stream_name>
-        </field>
-        <field>
-          <column_name>osaamisalakoodi</column_name>
-          <stream_name>osaamisalakoodi</stream_name>
-        </field>
-        <field>
-          <column_name>osaamisalakoodi_t1</column_name>
-          <stream_name>osaamisalakoodi_t1</stream_name>
-        </field>
-        <field>
-          <column_name>osaamisalakoodi_t2</column_name>
-          <stream_name>osaamisalakoodi_t2</stream_name>
-        </field>
-        <field>
-          <column_name>osaamisalakoodi_t3</column_name>
-          <stream_name>osaamisalakoodi_t3</stream_name>
-        </field>
-        <field>
-          <column_name>osaamisalakoodi_t4</column_name>
-          <stream_name>osaamisalakoodi_t4</stream_name>
-        </field>
-        <field>
-          <column_name>tutkinnonosa_fi_t1</column_name>
-          <stream_name>tutkinnonosa_fi_t1</stream_name>
-        </field>
-        <field>
-          <column_name>tutkinnonosa_fi_t2</column_name>
-          <stream_name>tutkinnonosa_fi_t2</stream_name>
-        </field>
-        <field>
-          <column_name>tutkinnonosa_fi_t3</column_name>
-          <stream_name>tutkinnonosa_fi_t3</stream_name>
-        </field>
-        <field>
-          <column_name>tutkinnonosa_fi_t4</column_name>
-          <stream_name>tutkinnonosa_fi_t4</stream_name>
-        </field>
-        <field>
-          <column_name>tutkinnonosa_sv_t1</column_name>
-          <stream_name>tutkinnonosa_sv_t1</stream_name>
-        </field>
-        <field>
-          <column_name>tutkinnonosa_sv_t2</column_name>
-          <stream_name>tutkinnonosa_sv_t2</stream_name>
-        </field>
-        <field>
-          <column_name>tutkinnonosa_sv_t3</column_name>
-          <stream_name>tutkinnonosa_sv_t3</stream_name>
-        </field>
-        <field>
-          <column_name>tutkinnonosa_sv_t4</column_name>
-          <stream_name>tutkinnonosa_sv_t4</stream_name>
-        </field>
-        <field>
-          <column_name>pakollinen</column_name>
-          <stream_name>pakollinen</stream_name>
-        </field>
-        <field>
-          <column_name>pakollinen_t1</column_name>
-          <stream_name>pakollinen_t1</stream_name>
-        </field>
-        <field>
-          <column_name>pakollinen_t2</column_name>
-          <stream_name>pakollinen_t2</stream_name>
-        </field>
-        <field>
-          <column_name>pakollinen_t3</column_name>
-          <stream_name>pakollinen_t3</stream_name>
-        </field>
-        <field>
-          <column_name>pakollinen_t4</column_name>
-          <stream_name>pakollinen_t4</stream_name>
-        </field>
-        <field>
-          <column_name>minimilaajuus</column_name>
-          <stream_name>minimilaajuus</stream_name>
-        </field>
-        <field>
-          <column_name>maksimilaajuus</column_name>
-          <stream_name>maksimilaajuus</stream_name>
-        </field>
-        <field>
-          <column_name>minimilaajuus_t1</column_name>
-          <stream_name>minimilaajuus_t1</stream_name>
-        </field>
-        <field>
-          <column_name>maksimilaajuus_t1</column_name>
-          <stream_name>maksimilaajuus_t1</stream_name>
-        </field>
-        <field>
-          <column_name>minimilaajuus_t2</column_name>
-          <stream_name>minimilaajuus_t2</stream_name>
-        </field>
-        <field>
-          <column_name>maksimilaajuus_t2</column_name>
-          <stream_name>maksimilaajuus_t2</stream_name>
-        </field>
-        <field>
-          <column_name>minimilaajuus_t3</column_name>
-          <stream_name>minimilaajuus_t3</stream_name>
-        </field>
-        <field>
-          <column_name>maksimilaajuus_t3</column_name>
-          <stream_name>maksimilaajuus_t3</stream_name>
-        </field>
-        <field>
-          <column_name>minimilaajuus_t4</column_name>
-          <stream_name>minimilaajuus_t4</stream_name>
-        </field>
-        <field>
-          <column_name>maksimilaajuus_t4</column_name>
-          <stream_name>maksimilaajuus_t4</stream_name>
-        </field>
-        <field>
-          <column_name>minimikoko_t1</column_name>
-          <stream_name>minimikoko_t1</stream_name>
-        </field>
-        <field>
-          <column_name>maksimikoko_t1</column_name>
-          <stream_name>maksimikoko_t1</stream_name>
-        </field>
-        <field>
-          <column_name>minimikoko_t2</column_name>
-          <stream_name>minimikoko_t2</stream_name>
-        </field>
-        <field>
-          <column_name>maksimikoko_t2</column_name>
-          <stream_name>maksimikoko_t2</stream_name>
-        </field>
-        <field>
-          <column_name>minimikoko_t3</column_name>
-          <stream_name>minimikoko_t3</stream_name>
-        </field>
-        <field>
-          <column_name>maksimikoko_t3</column_name>
-          <stream_name>maksimikoko_t3</stream_name>
-        </field>
-        <field>
-          <column_name>minimikoko_t4</column_name>
-          <stream_name>minimikoko_t4</stream_name>
-        </field>
-        <field>
-          <column_name>maksimikoko_t4</column_name>
-          <stream_name>maksimikoko_t4</stream_name>
-        </field>
-        <field>
-          <column_name>tunniste</column_name>
-          <stream_name>tunniste</stream_name>
-        </field>
-        <field>
-          <column_name>osan_tunniste_t1</column_name>
-          <stream_name>osan_tunniste_t1</stream_name>
-        </field>
-        <field>
-          <column_name>osan_tunniste_t2</column_name>
-          <stream_name>osan_tunniste_t2</stream_name>
-        </field>
-        <field>
-          <column_name>osan_tunniste_t3</column_name>
-          <stream_name>osan_tunniste_t3</stream_name>
-        </field>
-        <field>
-          <column_name>osan_tunniste_t4</column_name>
-          <stream_name>osan_tunniste_t4</stream_name>
-        </field>
-        <field>
-          <column_name>tutkinnonosa_viite_t2</column_name>
-          <stream_name>tutkinnonosa_viite_t2</stream_name>
-        </field>
-        <field>
-          <column_name>tutkinnonosa_viite_t3</column_name>
-          <stream_name>tutkinnonosa_viite_t3</stream_name>
-        </field>
-        <field>
-          <column_name>tutkinnonosa_viite_t4</column_name>
-          <stream_name>tutkinnonosa_viite_t4</stream_name>
-        </field>
-        <field>
-          <column_name>kuvaus</column_name>
-          <stream_name>kuvaus</stream_name>
-        </field>
-        <field>
-          <column_name>username</column_name>
-          <stream_name>username</stream_name>
-        </field>
-        <field>
-          <column_name>source</column_name>
-          <stream_name>source</stream_name>
-        </field>
-        <field>
-          <column_name>loadtime</column_name>
-          <stream_name>timestamp</stream_name>
-        </field>
-    </fields>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>480</xloc>
-      <yloc>464</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>Load sa_eperusteet_suoritustavat_ops</name>
-    <type>TableOutput</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <connection>Koski_SA</connection>
-    <schema>sa</schema>
-    <table>sa_eperusteet_suoritustavat_ops</table>
-    <commit>1000</commit>
-    <truncate>Y</truncate>
-    <ignore_errors>N</ignore_errors>
-    <use_batch>N</use_batch>
-    <specify_fields>Y</specify_fields>
-    <partitioning_enabled>N</partitioning_enabled>
-    <partitioning_field/>
-    <partitioning_daily>N</partitioning_daily>
-    <partitioning_monthly>Y</partitioning_monthly>
-    <tablename_in_field>N</tablename_in_field>
-    <tablename_field/>
-    <tablename_in_table>Y</tablename_in_table>
-    <return_keys>N</return_keys>
-    <return_field/>
-    <fields>
-        <field>
-          <column_name>eperusteid</column_name>
-          <stream_name>&#xfeff;&#x22;ePerusteId&#x22;</stream_name>
-        </field>
-        <field>
-          <column_name>tutkinto_fi</column_name>
-          <stream_name>tutkinto_fi</stream_name>
-        </field>
-        <field>
-          <column_name>taso</column_name>
-          <stream_name>taso</stream_name>
-        </field>
-        <field>
-          <column_name>suoritustapakoodi</column_name>
-          <stream_name>suoritustapakoodi</stream_name>
-        </field>
-        <field>
-          <column_name>laajuusyksikko</column_name>
-          <stream_name>laajuusYksikko</stream_name>
-        </field>
-        <field>
-          <column_name>osaamisalakoodi</column_name>
-          <stream_name>osaamisalakoodi</stream_name>
-        </field>
-        <field>
-          <column_name>osaamisalakoodi_t1</column_name>
-          <stream_name>osaamisalakoodi_t1</stream_name>
-        </field>
-        <field>
-          <column_name>osaamisalakoodi_t2</column_name>
-          <stream_name>osaamisalakoodi_t2</stream_name>
-        </field>
-        <field>
-          <column_name>osaamisalakoodi_t3</column_name>
-          <stream_name>osaamisalakoodi_t3</stream_name>
-        </field>
-        <field>
-          <column_name>osaamisalakoodi_t4</column_name>
-          <stream_name>osaamisalakoodi_t4</stream_name>
-        </field>
-        <field>
-          <column_name>tutkinnonosa_fi_t1</column_name>
-          <stream_name>tutkinnonosa_fi_t1</stream_name>
-        </field>
-        <field>
-          <column_name>tutkinnonosa_fi_t2</column_name>
-          <stream_name>tutkinnonosa_fi_t2</stream_name>
-        </field>
-        <field>
-          <column_name>tutkinnonosa_fi_t3</column_name>
-          <stream_name>tutkinnonosa_fi_t3</stream_name>
-        </field>
-        <field>
-          <column_name>tutkinnonosa_fi_t4</column_name>
-          <stream_name>tutkinnonosa_fi_t4</stream_name>
-        </field>
-        <field>
-          <column_name>tutkinnonosa_sv_t1</column_name>
-          <stream_name>tutkinnonosa_sv_t1</stream_name>
-        </field>
-        <field>
-          <column_name>tutkinnonosa_sv_t2</column_name>
-          <stream_name>tutkinnonosa_sv_t2</stream_name>
-        </field>
-        <field>
-          <column_name>tutkinnonosa_sv_t3</column_name>
-          <stream_name>tutkinnonosa_sv_t3</stream_name>
-        </field>
-        <field>
-          <column_name>tutkinnonosa_sv_t4</column_name>
-          <stream_name>tutkinnonosa_sv_t4</stream_name>
-        </field>
-        <field>
-          <column_name>pakollinen</column_name>
-          <stream_name>pakollinen</stream_name>
-        </field>
-        <field>
-          <column_name>pakollinen_t1</column_name>
-          <stream_name>pakollinen_t1</stream_name>
-        </field>
-        <field>
-          <column_name>pakollinen_t2</column_name>
-          <stream_name>pakollinen_t2</stream_name>
-        </field>
-        <field>
-          <column_name>pakollinen_t3</column_name>
-          <stream_name>pakollinen_t3</stream_name>
-        </field>
-        <field>
-          <column_name>pakollinen_t4</column_name>
-          <stream_name>pakollinen_t4</stream_name>
-        </field>
-        <field>
-          <column_name>minimilaajuus</column_name>
-          <stream_name>minimilaajuus</stream_name>
-        </field>
-        <field>
-          <column_name>maksimilaajuus</column_name>
-          <stream_name>maksimilaajuus</stream_name>
-        </field>
-        <field>
-          <column_name>minimilaajuus_t1</column_name>
-          <stream_name>minimilaajuus_t1</stream_name>
-        </field>
-        <field>
-          <column_name>maksimilaajuus_t1</column_name>
-          <stream_name>maksimilaajuus_t1</stream_name>
-        </field>
-        <field>
-          <column_name>minimilaajuus_t2</column_name>
-          <stream_name>minimilaajuus_t2</stream_name>
-        </field>
-        <field>
-          <column_name>maksimilaajuus_t2</column_name>
-          <stream_name>maksimilaajuus_t2</stream_name>
-        </field>
-        <field>
-          <column_name>minimilaajuus_t3</column_name>
-          <stream_name>minimilaajuus_t3</stream_name>
-        </field>
-        <field>
-          <column_name>maksimilaajuus_t3</column_name>
-          <stream_name>maksimilaajuus_t3</stream_name>
-        </field>
-        <field>
-          <column_name>minimilaajuus_t4</column_name>
-          <stream_name>minimilaajuus_t4</stream_name>
-        </field>
-        <field>
-          <column_name>maksimilaajuus_t4</column_name>
-          <stream_name>maksimilaajuus_t4</stream_name>
-        </field>
-        <field>
-          <column_name>minimikoko_t1</column_name>
-          <stream_name>minimikoko_t1</stream_name>
-        </field>
-        <field>
-          <column_name>maksimikoko_t1</column_name>
-          <stream_name>maksimikoko_t1</stream_name>
-        </field>
-        <field>
-          <column_name>minimikoko_t2</column_name>
-          <stream_name>minimikoko_t2</stream_name>
-        </field>
-        <field>
-          <column_name>maksimikoko_t2</column_name>
-          <stream_name>maksimikoko_t2</stream_name>
-        </field>
-        <field>
-          <column_name>minimikoko_t3</column_name>
-          <stream_name>minimikoko_t3</stream_name>
-        </field>
-        <field>
-          <column_name>maksimikoko_t3</column_name>
-          <stream_name>maksimikoko_t3</stream_name>
-        </field>
-        <field>
-          <column_name>minimikoko_t4</column_name>
-          <stream_name>minimikoko_t4</stream_name>
-        </field>
-        <field>
-          <column_name>maksimikoko_t4</column_name>
-          <stream_name>maksimikoko_t4</stream_name>
-        </field>
-        <field>
-          <column_name>tunniste</column_name>
-          <stream_name>tunniste</stream_name>
-        </field>
-        <field>
-          <column_name>osan_tunniste_t1</column_name>
-          <stream_name>osan_tunniste_t1</stream_name>
-        </field>
-        <field>
-          <column_name>osan_tunniste_t2</column_name>
-          <stream_name>osan_tunniste_t2</stream_name>
-        </field>
-        <field>
-          <column_name>osan_tunniste_t3</column_name>
-          <stream_name>osan_tunniste_t3</stream_name>
-        </field>
-        <field>
-          <column_name>osan_tunniste_t4</column_name>
-          <stream_name>osan_tunniste_t4</stream_name>
-        </field>
-        <field>
-          <column_name>tutkinnonosa_viite_t2</column_name>
-          <stream_name>tutkinnonosa_viite_t2</stream_name>
-        </field>
-        <field>
-          <column_name>tutkinnonosa_viite_t3</column_name>
-          <stream_name>tutkinnonosa_viite_t3</stream_name>
-        </field>
-        <field>
-          <column_name>tutkinnonosa_viite_t4</column_name>
-          <stream_name>tutkinnonosa_viite_t4</stream_name>
-        </field>
-        <field>
-          <column_name>kuvaus</column_name>
-          <stream_name>kuvaus</stream_name>
-        </field>
-        <field>
-          <column_name>username</column_name>
-          <stream_name>username</stream_name>
-        </field>
-        <field>
-          <column_name>source</column_name>
-          <stream_name>source</stream_name>
-        </field>
-        <field>
-          <column_name>loadtime</column_name>
-          <stream_name>timestamp</stream_name>
-        </field>
-    </fields>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>736</xloc>
-      <yloc>464</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -1361,7 +803,7 @@
            <method>none</method>
            <schema_name/>
            </partitioning>
-    <connection>Koski_SA_test</connection>
+    <connection>Koski_SA</connection>
     <schema>sa</schema>
     <table>sa_eperusteet_tutkinnonosat</table>
     <commit>1000</commit>
@@ -1384,7 +826,7 @@
           <stream_name>ePerusteId</stream_name>
         </field>
         <field>
-          <column_name>id</column_name>
+          <column_name>tutkinnonosaid</column_name>
           <stream_name>id</stream_name>
         </field>
         <field>
@@ -1467,7 +909,7 @@
            <method>none</method>
            <schema_name/>
            </partitioning>
-    <connection>Koski_SA_test</connection>
+    <connection>Koski_SA</connection>
     <schema>sa</schema>
     <table>sa_eperusteet_tutkinnonosaviitteet</table>
     <commit>1000</commit>
@@ -1502,7 +944,7 @@
           <stream_name>username</stream_name>
         </field>
         <field>
-          <column_name>id</column_name>
+          <column_name>tutkinnonosaviiteid</column_name>
           <stream_name>id</stream_name>
         </field>
         <field>
@@ -1533,7 +975,7 @@
            <method>none</method>
            <schema_name/>
            </partitioning>
-    <connection>Koski_SA_test</connection>
+    <connection>Koski_SA</connection>
     <schema>sa</schema>
     <table>sa_eperusteet_osaamisalat</table>
     <commit>1000</commit>
@@ -1787,7 +1229,7 @@
     <name>Numbers to Integer 2</name>
     <type>SelectValues</type>
     <description/>
-    <distribute>N</distribute>
+    <distribute>Y</distribute>
     <custom_distribution/>
     <copies>1</copies>
          <partitioning>
@@ -4009,30 +3451,6 @@
   <step_error_handling>
       <error>
         <source_step>Load sa_ePerusteet</source_step>
-        <target_step/>
-        <is_enabled>Y</is_enabled>
-        <nr_valuename/>
-        <descriptions_valuename/>
-        <fields_valuename/>
-        <codes_valuename/>
-        <max_errors/>
-        <max_pct_errors/>
-        <min_pct_rows/>
-      </error>
-      <error>
-        <source_step>Load sa_eperusteet_suoritustavat_naytto</source_step>
-        <target_step/>
-        <is_enabled>Y</is_enabled>
-        <nr_valuename/>
-        <descriptions_valuename/>
-        <fields_valuename/>
-        <codes_valuename/>
-        <max_errors/>
-        <max_pct_errors/>
-        <min_pct_rows/>
-      </error>
-      <error>
-        <source_step>Load sa_eperusteet_suoritustavat_ops</source_step>
         <target_step/>
         <is_enabled>Y</is_enabled>
         <nr_valuename/>
