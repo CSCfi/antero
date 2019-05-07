@@ -382,7 +382,8 @@
           {
             "name": "Koulutusaste, taso 2",
             "dataType": "string",
-            "sourceColumn": "Koulutusaste, taso 2"
+            "sourceColumn": "Koulutusaste, taso 2",
+            "displayFolder": "Koulutusmuuttujat"
           }
         ],
         "partitions": [
@@ -1301,11 +1302,6 @@
             "formatString": "0"
           },
           {
-            "name": "Keskihajonta",
-            "expression": "CALCULATE(STDEV.P([numerovalinta]))",
-            "formatString": "0.0"
-          },
-          {
             "name": "Vastanneet_perus",
             "expression": [
               "",
@@ -1330,6 +1326,18 @@
               ",Muuttujat[vastaustyyppi_keskiarvo]=1)",
               ")",
               ""
+            ],
+            "formatString": "0.0"
+          },
+          {
+            "name": "Keskihajonta",
+            "expression": [
+              "IF(",
+              "[ehtoFI]=TRUE()",
+              ",BLANK()",
+              ",CALCULATE(STDEV.P('Muuttujat'[numerovalinta])",
+              ",Muuttujat[vastaustyyppi_keskiarvo]=1)",
+              ")"
             ],
             "formatString": "0.0"
           }
@@ -2248,6 +2256,7 @@
       },
       {
         "name": "Sarakeleveys",
+        "isHidden": true,
         "columns": [
           {
             "name": "Sarakeleveys",
@@ -2348,12 +2357,12 @@
               },
               {
                 "name": "Monivalintavaihtoehto"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
               }
             ],
             "measures": [
-              {
-                "name": "Keskihajonta"
-              },
               {
                 "name": "Vastanneet"
               },
@@ -2365,6 +2374,9 @@
               },
               {
                 "name": "Keskiarvo"
+              },
+              {
+                "name": "Keskihajonta"
               }
             ]
           },
