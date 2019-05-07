@@ -25,7 +25,7 @@ BEGIN
 	SELECT
 		-1,
 		koodi,nimi,nimi_sv,nimi_en,
-		'etl: p_lataa_d_amk_koulutustyyppi',
+		'etl: p_lataa_d_amk_koulutustyyppi'
 	FROM sa.sa_koodistot
 	WHERE koodisto='vipunenmeta'
 	  AND koodi='-1'
@@ -42,7 +42,7 @@ ELSE
 			selite_sv=s.nimi_sv,
 			selite_en=s.nimi_en,
 			loadtime = GETDATE(),
-			username = SSER_NAME(),
+			username = SUSER_NAME(),
 			source = 'etl: p_lataa_d_amk_koulutustyyppi'
 		FROM dw.d_amk_koulutustyyppi d
 		JOIN sa.sa_koodistot s ON s.koodi=d.koodi
