@@ -8,25 +8,21 @@ try:
     api_user = os.environ['AUTH_API_USER']
     base_url = os.environ['BASE_URL']
     env = os.environ['ENV']
+
+
 except KeyError:
     print("One or more Jenkins variables are missing. Cannot continue ETL-job.")
     exit(1)
-
 vastaukset=[]
 urls = []
 
-if env == "prod":
-	csv_path = "//dwipvipusql16/csv-data/arvo/vastaukset.csv"
-elif env == "test":
-   csv_path = "//dwitvipusql16/csv-data/arvo/vastaukset.csv"
-else:
-    csv_path = "//dwitvipusql16/csv-data/arvo/vastaukset.csv"
+
 
 
 url = "https://"+base_url+"/api/export/v1/vastaukset?limit=50000"
 reqheaders = {'Content-Type': 'application/json'}
 reqheaders['Accept'] = 'application/json'
-
+csv_path = "d:/pdi_integrations/data/arvo/vastaukset.csv"
 ### encode API user and API key tothe request headers 
 tmp = "%s:%s" % (api_user, api_key)
 reqheaders['Authorization'] = "Basic %s" % base64.b64encode(tmp.encode('utf-8')).decode('utf-8')
@@ -96,7 +92,7 @@ while url != None: ## The url is not null
         # DATA to csv for import to MSSQL - can be used also for BULK inserting
         if i == 1:
             data = json_normalize(vastaukset)
-            data.to_csv(path_or_buf=csv_path, sep='|', na_rep='',
+            data.to_csv(path_or_buf=csv_path, sep='╡', na_rep='',
                      header=True, index=False, mode='w', encoding='utf-8', quoting=0,
                      quotechar='"', line_terminator='\n' , escapechar='$', columns = ["id",'vastausid',
                     'monivalintavaihtoehto_fi', 'monivalintavaihtoehto_sv','monivalintavaihtoehto_en','vastaajaid','kysymysid',
@@ -107,9 +103,11 @@ while url != None: ## The url is not null
         else:
             i+= 1
        
-    # Write chunk of rows into output csv   
+
+
+# DATA to csv for import to MSSQL - can be used also for BULK inserting 
     data = json_normalize(vastaukset)
-    data.to_csv(path_or_buf=csv_path, sep='|', na_rep='',
+    data.to_csv(path_or_buf=csv_path, sep='╡', na_rep='',
     header=False, index=False, mode='a', encoding='utf-8', quoting=0,
     quotechar='"', line_terminator='\n' , escapechar='$', columns = ["id",'vastausid',
     'monivalintavaihtoehto_fi', 'monivalintavaihtoehto_sv','monivalintavaihtoehto_en','vastaajaid','kysymysid',
