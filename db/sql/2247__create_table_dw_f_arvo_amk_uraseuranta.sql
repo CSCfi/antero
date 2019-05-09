@@ -1,13 +1,12 @@
 USE [ANTERO]
 GO
-
-/****** Object:  Table [dw].[f_arvo_amk_uraseuranta]    Script Date: 9.5.2019 15:12:29 ******/
+/****** Object:  Table [dw].[f_arvo_amk_uraseuranta]    Script Date: 9.5.2019 15:42:13 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[f_arvo_amk_uraseuranta]') AND type in (N'U'))
+BEGIN
 CREATE TABLE [dw].[f_arvo_amk_uraseuranta](
 	[id] [int] IDENTITY(1,1) NOT NULL,
 	[d_organisaatio_oppilaitos_id] [int] NOT NULL,
@@ -41,10 +40,15 @@ CREATE TABLE [dw].[f_arvo_amk_uraseuranta](
 	[id] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 90) ON [PRIMARY]
 ) ON [PRIMARY]
-
+END
 GO
-
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[DF__f_arvo_amk_uraseuranta_loadtime]') AND type = 'D')
+BEGIN
 ALTER TABLE [dw].[f_arvo_amk_uraseuranta] ADD  CONSTRAINT [DF__f_arvo_amk_uraseuranta_loadtime]  DEFAULT (getdate()) FOR [loadtime]
-GO
+END
 
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[DF__f_arvo_amk_uraseuranta_username]') AND type = 'D')
+BEGIN
 ALTER TABLE [dw].[f_arvo_amk_uraseuranta] ADD  CONSTRAINT [DF__f_arvo_amk_uraseuranta_username]  DEFAULT (suser_sname()) FOR [username]
+END
