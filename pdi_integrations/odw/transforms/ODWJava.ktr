@@ -107,12 +107,14 @@
     </notepad>
   </notepads>
   <order>
-  <hop> <from>ODW json rows&#x28;TEST&#x29;</from><to>Write bulk csv</to><enabled>Y</enabled> </hop>
+  <hop> <from>ODW json rows&#x28;TEST&#x29;</from><to>Write bulk csv</to><enabled>N</enabled> </hop>
   <hop> <from>Write bulk csv</from><to>Done</to><enabled>Y</enabled> </hop>
   <hop> <from>Rest settings</from><to>source and username columns</to><enabled>Y</enabled> </hop>
-  <hop> <from>ODW REST client</from><to>ODW json rows&#x28;TEST&#x29;</to><enabled>Y</enabled> </hop>
+  <hop> <from>ODW REST client</from><to>ODW json rows&#x28;TEST&#x29;</to><enabled>N</enabled> </hop>
   <hop> <from>source and username columns</from><to>loadtime column</to><enabled>Y</enabled> </hop>
   <hop> <from>loadtime column</from><to>ODW REST client</to><enabled>Y</enabled> </hop>
+  <hop> <from>ODW REST client</from><to>ODW json rows&#x28;PROD&#x29;</to><enabled>Y</enabled> </hop>
+  <hop> <from>ODW json rows&#x28;PROD&#x29;</from><to>Write bulk csv</to><enabled>Y</enabled> </hop>
   </order>
   <step>
     <name>Done</name>
@@ -128,7 +130,7 @@
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
       <xloc>112</xloc>
-      <yloc>352</yloc>
+      <yloc>512</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -175,25 +177,6 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
 		apikey = getParameter("AUTH_API_KEY");
 		apiuser = getParameter("AUTH_API_USER");
 	  first = false;
-
-	  /* TODO: Your code here. (Using info fields)
-
-	  FieldHelper infoField = get(Fields.Info, "info_field_name");
-
-	  RowSet infoStream = findInfoRowSet("info_stream_tag");
-
-	  Object[] infoRow = null;
-
-	  int infoRowCount = 0;
-
-	  // Read all rows from info step before calling getRow() method, which returns first row from any
-	  // input rowset. As rowMeta for info and input steps varies getRow() can lead to errors.
-	  while((infoRow = getRowFrom(infoStream)) != null){
-
-	    // do something with info data
-	    infoRowCount++;
-	  }
-	  */
 	}
 
 	Object[] r = getRow();
@@ -202,21 +185,10 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
 	  setOutputDone();
 	  return false;
 	}
-
-		//String host = "testiraportit.odw.opintopolku.fi";
-		//String path = "/vipunendata?hakuOid=1.2.246.562.29.67129953195"; //1.5mb
-		//String path = "/vipunendata"; //?hakuOid=1.2.246.562.29.26435854158"; //640mb
-		//apikey = "miKa4maa_taiE_desMeno";
-		//apiuser = "antero";
-
-		//String apikey = get(Fields.In, "API_AUTH_KEY").getString(r);   
-		//String username = get(Fields.In, "API_AUTH_USER").getString(r);
-		//String host = get(Fields.In, hostf).getString(r);
-		//String path = get(Fields.In, pathf).getString(r);
 		
  		// Local variables
 		String user = apiuser + ":" + apikey; // *username*:*password* for Base64
-		String jsonfile = ""; // json object
+		StringBuilder jsonfile = new StringBuilder(); // json object
 		int counter = 0; // row counter
 
 		try {
@@ -227,7 +199,7 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
 
 		try {
 			// Connection 
-			URL url = new URL("https://"+host+path);
+			URL url = new URL("https://"+host+path); //https;//server.csc.fi/apipath
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			// Rest settings
 			conn.setRequestProperty("Authorization", user);
@@ -246,21 +218,22 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
 			int c = 0; // each character is read in int format
 			while ((c = br.read()) != -1) { // Read result one character at time.
 				ch = (char)c; // convert int to char
-				jsonfile += ((char)c); // concatenate each char to string object
+				jsonfile.append((char)c); // concatenate each char to string object
 			
 				if(ch.toString().equals("}")){ // separate each json object
 					// Create PDI outputrow
 					counter++;
-					if(counter % 100000 == 0) {
+					if(counter % 100000 == 0) { // show every 100000 row in log
 						logBasic("--- " + counter + "---");
 					}
 					Object[] out_row = RowDataUtil.createResizedCopy(r, data.outputRowMeta.size());  // create new output row
-					get(Fields.Out, "rows").setValue(out_row, jsonfile); // insert json to output row "rows"
+					get(Fields.Out, "rows").setValue(out_row, jsonfile.toString()); // insert json to output row "rows"
 					putRow(data.outputRowMeta, out_row); // save output row
-					jsonfile = "";
+					jsonfile.delete(0, jsonfile.length()); //empty file
 				}
 			}
 			logBasic("Done, total rows: " + counter);
+			br.close();
 			conn.disconnect();
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -301,7 +274,552 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
 </usage_parameter></usage_parameters>     <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
       <xloc>112</xloc>
-      <yloc>144</yloc>
+      <yloc>240</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>ODW json rows&#x28;PROD&#x29;</name>
+    <type>JsonInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <include>N</include>
+    <include_field/>
+    <rownum>Y</rownum>
+    <addresultfile>N</addresultfile>
+    <readurl>N</readurl>
+    <removeSourceField>N</removeSourceField>
+    <IsIgnoreEmptyFile>Y</IsIgnoreEmptyFile>
+    <doNotFailIfNoFile>Y</doNotFailIfNoFile>
+    <ignoreMissingPath>Y</ignoreMissingPath>
+    <defaultPathLeafToNull>N</defaultPathLeafToNull>
+    <rownum_field>id</rownum_field>
+    <file>
+      <name/>
+      <filemask/>
+      <exclude_filemask/>
+      <file_required>N</file_required>
+      <include_subfolders>N</include_subfolders>
+    </file>
+    <fields>
+      <field>
+        <name>HenkiloID</name>
+        <path>&#x24;..HenkiloID</path>
+        <type>Integer</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>HenkiloOID</name>
+        <path>&#x24;..HenkiloOID</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>KotikuntaKoodi</name>
+        <path>&#x24;..KotikuntaKoodi</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>SukupuoliKoodi</name>
+        <path>&#x24;..SukupuoliKoodi</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>AidinkieliKoodi</name>
+        <path>&#x24;..AidinkieliKoodi</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Ika</name>
+        <path>&#x24;..Ika</path>
+        <type>Integer</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Ensikertalainen</name>
+        <path>&#x24;..Ensikertalainen</path>
+        <type>Integer</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>KansalaisuusKoodi</name>
+        <path>&#x24;..KansalaisuusKoodi</path>
+        <type>Integer</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>OrganisaatioOID</name>
+        <path>&#x24;..OrganisaatioOID</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>KoulutusToimijaOID</name>
+        <path>&#x24;..KoulutusToimijaOID</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>OppilaitosOID</name>
+        <path>&#x24;..OppilaitosOID</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ToimipisteOID</name>
+        <path>&#x24;..ToimipisteOID</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>OrganisaationKuntaKoodi</name>
+        <path>&#x24;..OrganisaationKuntaKoodi</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Luokkataso</name>
+        <path>&#x24;..Luokkataso</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>PohjakoulutuksenSuoritusvuosi</name>
+        <path>&#x24;..PohjakoulutuksenSuoritusvuosi</path>
+        <type>Integer</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ToisenAsteenKoulutuksenSuoritusvuosi</name>
+        <path>&#x24;..ToisenAsteenKoulutuksenSuoritusvuosi</path>
+        <type>Integer</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>LahtokouluOid</name>
+        <path>&#x24;..LahtokouluOid</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>LahtokoulunKuntaKoodi</name>
+        <path>&#x24;..LahtokoulunKuntaKoodi</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>HakukohdeOID</name>
+        <path>&#x24;..HakukohdeOID</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>HakutoiveNumero</name>
+        <path>&#x24;..HakutoiveNumero</path>
+        <type>Integer</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>hakukohteen_tutkinnon_taso_kk_sykli</name>
+        <path>&#x24;..hakukohteen_tutkinnon_taso_kk_sykli</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>hakukohteen_tutkinnon_taso_kk</name>
+        <path>&#x24;..hakukohteen_tutkinnon_taso_kk</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>PohjakoulutusKoodi</name>
+        <path>&#x24;..PohjakoulutusKoodi</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>PohjakoulutusKKLomakeKoodi</name>
+        <path>&#x24;..PohjakoulutusKKLomakeKoodi</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>ValinnanTila</name>
+        <path>&#x24;..ValinnanTila</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>VastaanotonTila</name>
+        <path>&#x24;..VastaanotonTila</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>IlmoittautumisenTila</name>
+        <path>&#x24;..IlmoittautumisenTila</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>PohjakoulutusvaatimusKoodi</name>
+        <path>&#x24;..PohjakoulutusvaatimusKoodi</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>HakuOid</name>
+        <path>&#x24;..HakuOid</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>HakuaikaId</name>
+        <path>&#x24;..HakuaikaId</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>HakemusOid</name>
+        <path>&#x24;..HakemusOid</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Hakukelpoisuus</name>
+        <path>&#x24;..Hakukelpoisuus</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>KiinnostunutOppisopimuksesta</name>
+        <path>&#x24;..KiinnostunutOppisopimuksesta</path>
+        <type>Integer</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>PohjakoulutusKKUlkomaat</name>
+        <path>&#x24;..PohjakoulutusKKUlkomaat</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Jatkotutkintohaku</name>
+        <path>&#x24;..Jatkotutkintohaku</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>koulutusaste</name>
+        <path>&#x24;..koulutusaste</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>Yo_Amk_YoAmk</name>
+        <path>&#x24;..Yo_Amk_YoAmk</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>AlinLaskettuValintapistemaara</name>
+        <path>&#x24;..AlinLaskettuValintapistemaara</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+    </fields>
+    <limit>0</limit>
+    <IsInFields>Y</IsInFields>
+    <IsAFile>N</IsAFile>
+    <valueField>rows</valueField>
+    <shortFileFieldName/>
+    <pathFieldName/>
+    <hiddenFieldName/>
+    <lastModificationTimeFieldName/>
+    <uriNameFieldName/>
+    <rootUriNameFieldName/>
+    <extensionFieldName/>
+    <sizeFieldName/>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>64</xloc>
+      <yloc>352</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -832,8 +1350,8 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
     <sizeFieldName/>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>112</xloc>
-      <yloc>224</yloc>
+      <xloc>192</xloc>
+      <yloc>352</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -874,18 +1392,6 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
         <precision>-1</precision>
         <set_empty_string>N</set_empty_string>
       </field>
-      <field>
-        <name>AlinLaskettuValintapistemaara</name>
-        <type>String</type>
-        <format>&#x23;.&#x23;&#x23;</format>
-        <currency/>
-        <decimal/>
-        <group/>
-        <nullif/>
-        <length>-1</length>
-        <precision>-1</precision>
-        <set_empty_string>N</set_empty_string>
-      </field>
     </fields>
     <limit>1</limit>
     <never_ending>N</never_ending>
@@ -911,10 +1417,10 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
            <method>none</method>
            <schema_name/>
            </partitioning>
-    <separator>&#x3b;</separator>
+    <separator>&#x7c;&#x7c;</separator>
     <enclosure/>
     <enclosure_forced>N</enclosure_forced>
-    <enclosure_fix_disabled>Y</enclosure_fix_disabled>
+    <enclosure_fix_disabled>N</enclosure_fix_disabled>
     <header>Y</header>
     <footer>N</footer>
     <format>DOS</format>
@@ -1017,8 +1523,8 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
       </field>
       <field>
         <name>KotikuntaKoodi</name>
-        <type>Integer</type>
-        <format>0</format>
+        <type>String</type>
+        <format/>
         <currency>&#x24;</currency>
         <decimal>.</decimal>
         <group>,</group>
@@ -1029,8 +1535,8 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
       </field>
       <field>
         <name>SukupuoliKoodi</name>
-        <type>Integer</type>
-        <format>0</format>
+        <type>String</type>
+        <format/>
         <currency>&#x24;</currency>
         <decimal>.</decimal>
         <group>,</group>
@@ -1077,8 +1583,8 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
       </field>
       <field>
         <name>KansalaisuusKoodi</name>
-        <type>Number</type>
-        <format>0.&#x23;&#x23;&#x23;&#x23;&#x23;</format>
+        <type>Integer</type>
+        <format>0</format>
         <currency>&#x24;</currency>
         <decimal>.</decimal>
         <group>,</group>
@@ -1137,8 +1643,8 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
       </field>
       <field>
         <name>OrganisaationKuntaKoodi</name>
-        <type>Integer</type>
-        <format>0</format>
+        <type>String</type>
+        <format/>
         <currency>&#x24;</currency>
         <decimal>.</decimal>
         <group>,</group>
@@ -1209,8 +1715,8 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
       </field>
       <field>
         <name>hakukohteen_tutkinnon_taso_kk_sykli</name>
-        <type>Integer</type>
-        <format>0</format>
+        <type>String</type>
+        <format/>
         <currency>&#x24;</currency>
         <decimal>.</decimal>
         <group>,</group>
@@ -1221,8 +1727,8 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
       </field>
       <field>
         <name>hakukohteen_tutkinnon_taso_kk</name>
-        <type>Integer</type>
-        <format>0</format>
+        <type>String</type>
+        <format/>
         <currency>&#x24;</currency>
         <decimal>.</decimal>
         <group>,</group>
@@ -1233,8 +1739,8 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
       </field>
       <field>
         <name>PohjakoulutusKoodi</name>
-        <type>Integer</type>
-        <format>0</format>
+        <type>String</type>
+        <format/>
         <currency>&#x24;</currency>
         <decimal>.</decimal>
         <group>,</group>
@@ -1352,7 +1858,7 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
         <precision>-1</precision>
       </field>
       <field>
-        <name>PohjakoulutusKKUlkomaat</name>
+        <name>KiinnostunutOppisopimuksesta</name>
         <type>Integer</type>
         <format>0</format>
         <currency>&#x24;</currency>
@@ -1364,9 +1870,21 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
         <precision>-1</precision>
       </field>
       <field>
+        <name>PohjakoulutusKKUlkomaat</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+      <field>
         <name>Jatkotutkintohaku</name>
-        <type>Integer</type>
-        <format>0</format>
+        <type>String</type>
+        <format/>
         <currency>&#x24;</currency>
         <decimal>.</decimal>
         <group>,</group>
@@ -1377,8 +1895,8 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
       </field>
       <field>
         <name>koulutusaste</name>
-        <type>Integer</type>
-        <format>0</format>
+        <type>String</type>
+        <format/>
         <currency>&#x24;</currency>
         <decimal>.</decimal>
         <group>,</group>
@@ -1389,8 +1907,8 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
       </field>
       <field>
         <name>Yo_Amk_YoAmk</name>
-        <type>Integer</type>
-        <format>0</format>
+        <type>String</type>
+        <format/>
         <currency>&#x24;</currency>
         <decimal>.</decimal>
         <group>,</group>
@@ -1413,8 +1931,8 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
       </field>
       <field>
         <name>LahtokoulunKuntaKoodi</name>
-        <type>Integer</type>
-        <format>0</format>
+        <type>String</type>
+        <format/>
         <currency>&#x24;</currency>
         <decimal>.</decimal>
         <group>,</group>
@@ -1426,19 +1944,7 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
       <field>
         <name>AlinLaskettuValintapistemaara</name>
         <type>Number</type>
-        <format>0.&#x23;&#x23;&#x23;&#x23;&#x23;</format>
-        <currency>&#x24;</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <nullif/>
-        <trim_type>both</trim_type>
-        <length>-1</length>
-        <precision>-1</precision>
-      </field>
-      <field>
-        <name>KiinnostunutOppisopimuksesta</name>
-        <type>Integer</type>
-        <format>0</format>
+        <format>&#x23;.&#x23;&#x23;</format>
         <currency>&#x24;</currency>
         <decimal>.</decimal>
         <group>,</group>
@@ -1451,7 +1957,7 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
       <xloc>112</xloc>
-      <yloc>288</yloc>
+      <yloc>432</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -1475,8 +1981,8 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
       </fields>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>336</xloc>
-      <yloc>144</yloc>
+      <xloc>112</xloc>
+      <yloc>176</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -1507,7 +2013,7 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
       </field>
       <field>
         <name>username</name>
-        <variable>&#x24;&#x7b;user.name&#x7d;</variable>
+        <variable>Jenkins</variable>
         <type>String</type>
         <format/>
         <currency/>
@@ -1520,8 +2026,8 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
     </fields>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>336</xloc>
-      <yloc>48</yloc>
+      <xloc>112</xloc>
+      <yloc>112</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
