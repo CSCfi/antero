@@ -37,6 +37,7 @@ CREATE TABLE [sa].[sa_koski_osasuoritus](
 	[username] [nvarchar](30) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 
+END
 GO
 
 ALTER TABLE [sa].[sa_koski_osasuoritus] ADD  CONSTRAINT [DF__sa_koski_osasuoritus_imp_created]  DEFAULT (getdate()) FOR [imp_created]
