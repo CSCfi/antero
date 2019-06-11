@@ -23,7 +23,7 @@ GO
 
 ALTER TABLE [sa].[sa_koski_koodisto_koodi] ADD  CONSTRAINT [DF__sa_koski_koodisto_koodi_imp_created]  DEFAULT (getdate()) FOR [imp_created]
 GO
-
-ALTER TABLE [sa].[sa_koski_koodisto_koodi] ADD  CONSTRAINT [DF__sa_koski_koodisto_koodi_username]  DEFAULT (suser_sname()) FOR [username]
-GO
+-- missing from the table as does source
+--ALTER TABLE [sa].[sa_koski_koodisto_koodi] ADD  CONSTRAINT [DF__sa_koski_koodisto_koodi_username]  DEFAULT (suser_sname()) FOR [username]
+--GO
 USE [ANTERO]
