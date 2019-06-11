@@ -99,7 +99,7 @@
       <name>Arvo vastaukset bulk-insert</name>
       <description/>
       <type>SQL</type>
-      <sql>TRUNCATE TABLE &#x5b;sa&#x5d;.&#x5b;sa_arvo_vastaukset&#x5d;&#x3b;&#xd;&#xa;&#xd;&#xa;BULK INSERT &#x5b;sa&#x5d;.&#x5b;sa_arvo_vastaukset&#x5d; FROM &#x27;E&#x3a;&#x5c;csv-data&#x5c;arvo&#x5c;vastaukset.csv&#x27;&#xd;&#xa;WITH&#xd;&#xa;&#x28;&#xd;&#xa;CODEPAGE &#x3d; &#x27;65001&#x27;,&#xd;&#xa;ROWTERMINATOR &#x3d; &#x27;&#x5c;n&#x27;,&#xd;&#xa;FIELDTERMINATOR &#x3d; &#x27;&#x7c;&#x27;,&#xd;&#xa;FIRSTROW &#x3d; 2,&#xd;&#xa;MAXERRORS &#x3d; 100,&#xd;&#xa;BATCHSIZE &#x3d; 5000,&#xd;&#xa;ERRORFILE &#x3d; &#x27;E&#x3a;&#x5c;csv-data&#x5c;arvo&#x5c;error&#x5c;&#x24;&#x7b;cur_date&#x7d;_vastaukset.csv&#x27;,&#xd;&#xa;TABLOCK&#xd;&#xa;&#x29;&#x3b;</sql>
+      <sql>TRUNCATE TABLE &#x5b;sa&#x5d;.&#x5b;sa_arvo_vastaukset&#x5d;&#x3b;&#xd;&#xa;&#xd;&#xa;BULK INSERT &#x5b;sa&#x5d;.&#x5b;sa_arvo_vastaukset&#x5d; FROM &#x27;E&#x3a;&#x5c;csv-data&#x5c;arvo&#x5c;vastaukset_bulk.csv&#x27;&#xd;&#xa;WITH&#xd;&#xa;&#x28;&#xd;&#xa;CODEPAGE &#x3d; &#x27;65001&#x27;,&#xd;&#xa;ROWTERMINATOR &#x3d; &#x27;&#x5c;n&#x27;,&#xd;&#xa;FIELDTERMINATOR &#x3d; &#x27;&#x7c;&#x7c;&#x27;,&#xd;&#xa;FIRSTROW &#x3d; 2,&#xd;&#xa;MAXERRORS &#x3d; 100,&#xd;&#xa;BATCHSIZE &#x3d; 5000,&#xd;&#xa;ERRORFILE &#x3d; &#x27;E&#x3a;&#x5c;csv-data&#x5c;arvo&#x5c;error&#x5c;&#x24;&#x7b;cur_date&#x7d;_vastaukset_bulk.csv&#x27;,&#xd;&#xa;TABLOCK&#xd;&#xa;&#x29;&#x3b;</sql>
       <useVariableSubstitution>T</useVariableSubstitution>
       <sqlfromfile>F</sqlfromfile>
       <sqlfilename/>
@@ -109,7 +109,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>416</xloc>
-      <yloc>272</yloc>
+      <yloc>384</yloc>
       </entry>
     <entry>
       <name>cur_date variable</name>
@@ -130,7 +130,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>416</xloc>
-      <yloc>464</yloc>
+      <yloc>496</yloc>
       </entry>
     <entry>
       <name>Abort job</name>
@@ -141,6 +141,80 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>576</xloc>
+      <yloc>272</yloc>
+      </entry>
+    <entry>
+      <name>Move Files</name>
+      <description/>
+      <type>MOVE_FILES</type>
+      <move_empty_folders>N</move_empty_folders>
+      <arg_from_previous>N</arg_from_previous>
+      <include_subfolders>N</include_subfolders>
+      <add_result_filesname>N</add_result_filesname>
+      <destination_is_a_file>Y</destination_is_a_file>
+      <create_destination_folder>N</create_destination_folder>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <SpecifyFormat>N</SpecifyFormat>
+      <date_time_format/>
+      <nr_errors_less_than>10</nr_errors_less_than>
+      <success_condition>success_if_no_errors</success_condition>
+      <AddDateBeforeExtension>N</AddDateBeforeExtension>
+      <DoNotKeepFolderStructure>N</DoNotKeepFolderStructure>
+      <iffileexists>overwrite_file</iffileexists>
+      <destinationFolder/>
+      <ifmovedfileexists>do_nothing</ifmovedfileexists>
+      <moved_date_time_format/>
+      <create_move_to_folder>N</create_move_to_folder>
+      <add_moved_date>N</add_moved_date>
+      <add_moved_time>N</add_moved_time>
+      <SpecifyMoveFormat>N</SpecifyMoveFormat>
+      <AddMovedDateBeforeExtension>N</AddMovedDateBeforeExtension>
+      <simulate>N</simulate>
+      <fields>
+        <field>
+          <source_filefolder>D&#x3a;&#x5c;pdi_integrations&#x5c;data&#x5c;arvo&#x5c;vastaukset_bulk.csv</source_filefolder>
+          <destination_filefolder>&#x5c;&#x5c;&#x24;&#x7b;SERVER&#x7d;&#x5c;csv-data&#x5c;arvo&#x5c;vastaukset_bulk.csv</destination_filefolder>
+          <wildcard/>
+        </field>
+      </fields>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>416</xloc>
+      <yloc>272</yloc>
+      </entry>
+    <entry>
+      <name>edit_ervo_vastaukset</name>
+      <description/>
+      <type>TRANS</type>
+      <specification_method>filename</specification_method>
+      <trans_object_id/>
+      <filename>&#x24;&#x7b;Internal.Job.Filename.Directory&#x7d;&#x2f;..&#x2f;transformations&#x5c;edit_arvo_vastaukset.ktr</filename>
+      <transname/>
+      <arg_from_previous>N</arg_from_previous>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <clear_rows>N</clear_rows>
+      <clear_files>N</clear_files>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Basic</loglevel>
+      <cluster>N</cluster>
+      <slave_server_name/>
+      <set_append_logfile>N</set_append_logfile>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <create_parent_folder>N</create_parent_folder>
+      <logging_remote_work>N</logging_remote_work>
+      <parameters>        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>416</xloc>
       <yloc>192</yloc>
       </entry>
   </entries>
@@ -153,15 +227,6 @@
       <enabled>Y</enabled>
       <evaluation>Y</evaluation>
       <unconditional>Y</unconditional>
-    </hop>
-    <hop>
-      <from>cur_date variable</from>
-      <to>Arvo vastaukset bulk-insert</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
     </hop>
     <hop>
       <from>Arvo vastaukset bulk-insert</from>
@@ -188,6 +253,42 @@
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
       <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Move Files</from>
+      <to>Arvo vastaukset bulk-insert</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Move Files</from>
+      <to>Abort job</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>cur_date variable</from>
+      <to>edit_ervo_vastaukset</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>edit_ervo_vastaukset</from>
+      <to>Move Files</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
       <unconditional>N</unconditional>
     </hop>
   </hops>

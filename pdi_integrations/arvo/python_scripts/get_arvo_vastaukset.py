@@ -5,33 +5,32 @@ import base64
 ##  import API use key, API user and base URL from Jenkins variables
 try:
     api_key = os.environ['AUTH_API_KEY']
-except KeyError:
-    print("API-key is missing")
-    exit(1)
-try:
     api_user = os.environ['AUTH_API_USER']
-except KeyError:
-    print("API-user is missing")
-    exit(1)
-try:
     base_url = os.environ['BASE_URL']
-except KeyError:
-    print("Base URL is missing")
-    exit(1)
+    env = os.environ['ENV']
 
+
+except KeyError:
+    print("One or more Jenkins variables are missing. Cannot continue ETL-job.")
+    exit(1)
 vastaukset=[]
 urls = []
-url = "https://"+base_url+"/api/export/v1/vastaukset"
+
+
+
+
+url = "https://"+base_url+"/api/export/v1/vastaukset?limit=50000"
 reqheaders = {'Content-Type': 'application/json'}
 reqheaders['Accept'] = 'application/json'
-
+csv_path = "d:/pdi_integrations/data/arvo/vastaukset.csv"
 ### encode API user and API key tothe request headers 
 tmp = "%s:%s" % (api_user, api_key)
 reqheaders['Authorization'] = "Basic %s" % base64.b64encode(tmp.encode('utf-8')).decode('utf-8')
 
-#set username and countter value "i"  for id column
+#set username and counter and i value for id column
 username = os.environ['USERNAME']
 i = 1
+
 
 def keycheck(x,y):
    if x in y:
@@ -86,30 +85,52 @@ while url != None: ## The url is not null
         row["vapaateksti"] = keycheck("vapaateksti",vastaus)
         row["vaihtoehto"] = keycheck("vaihtoehto",vastaus)
         row["vastausaika"] = keycheck("vastausaika",vastaus)
+        
         vastaukset.append(row)
-        i+= 1
+        
+        #this is for appending data to csv in the secont for-loop cycle
+        # DATA to csv for import to MSSQL - can be used also for BULK inserting
+        if i == 1:
+            data = json_normalize(vastaukset)
+            data.to_csv(path_or_buf=csv_path, sep='╡', na_rep='',
+                     header=True, index=False, mode='w', encoding='utf-8', quoting=0,
+                     quotechar='"', line_terminator='\n' , escapechar='$', columns = ["id",'vastausid',
+                    'monivalintavaihtoehto_fi', 'monivalintavaihtoehto_sv','monivalintavaihtoehto_en','vastaajaid','kysymysid',
+                    'kyselykertaid','koulutustoimija','numerovalinta','kyselyid','vastaajatunnusid','vapaateksti','loadtime','source',
+                    'username','vaihtoehto', 'vastausaika'])
+            i+= 1
+        #add chunk of vastaus to data and then csv
+        else:
+            i+= 1
+       
+
+
+# DATA to csv for import to MSSQL - can be used also for BULK inserting 
+    data = json_normalize(vastaukset)
+    data.to_csv(path_or_buf=csv_path, sep='╡', na_rep='',
+    header=False, index=False, mode='a', encoding='utf-8', quoting=0,
+    quotechar='"', line_terminator='\n' , escapechar='$', columns = ["id",'vastausid',
+    'monivalintavaihtoehto_fi', 'monivalintavaihtoehto_sv','monivalintavaihtoehto_en','vastaajaid','kysymysid',
+    'kyselykertaid','koulutustoimija','numerovalinta','kyselyid','vastaajatunnusid','vapaateksti','loadtime','source',
+    'username','vaihtoehto', 'vastausaika'])    
+    
+    #for debugging
+    #print (i-1, " rows exported to csv" )
+    
+    #reset vastaukset
+    vastaukset= [] 
     url = response['pagination']['next_url']
     urls.append(url)
-
+print (i-1, " rows exported to csv" ) 
+print ("The End")
+'''
+#append the rest of vastauset into csv
 data = json_normalize(vastaukset)
-
-#SET csv filepath for bul insert phase
-
-try:
-    env = os.environ['ENV']
-    if env == "prod":
-        csv_path = "//dwipvipusql16/csv-data/arvo/vastaukset.csv"
-    else:
-        csv_path = "//dwitvipusql16/csv-data/arvo/vastaukset.csv"
-
-except KeyError:
-    print("Couldn't set correct csv filepath")
-    exit(1)
-
 # DATA to csv for import to MSSQL - can be used also for BULK inserting
 data.to_csv(path_or_buf=csv_path, sep='|', na_rep='',
-                 header=True, index=False, mode='w', encoding='utf-8', quoting=0,
+                 header=False, index=False, mode='a', encoding='utf-8', quoting=0,
                  quotechar='"', line_terminator='\n' , escapechar='$', columns = ["id",'vastausid',
                 'monivalintavaihtoehto_fi', 'monivalintavaihtoehto_sv','monivalintavaihtoehto_en','vastaajaid','kysymysid',
                 'kyselykertaid','koulutustoimija','numerovalinta','kyselyid','vastaajatunnusid','vapaateksti','loadtime','source',
                 'username','vaihtoehto', 'vastausaika'])
+'''

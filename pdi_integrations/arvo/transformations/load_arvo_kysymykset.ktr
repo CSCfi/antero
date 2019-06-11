@@ -117,7 +117,7 @@
     </attributes>
   </connection>
   <order>
-  <hop> <from>CSV file input</from><to>Load sa_arvo_vastaajat</to><enabled>Y</enabled> </hop>
+  <hop> <from>CSV file input</from><to>Load sa_arvo_kysymykset</to><enabled>Y</enabled> </hop>
   </order>
   <step>
     <name>CSV file input</name>
@@ -145,7 +145,18 @@
     <encoding>UTF-8</encoding>
     <fields>
       <field>
-        <name>&#xfeff;&#x22;jatkokysymys&#x22;</name>
+        <name>jarjestys</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+      </field>
+      <field>
+        <name>jatkokysymys</name>
         <type>Boolean</type>
         <format/>
         <currency>&#x24;</currency>
@@ -179,7 +190,7 @@
       </field>
       <field>
         <name>kategoria.rahoitusmallikysymys</name>
-        <type>String</type>
+        <type>Boolean</type>
         <format/>
         <currency>&#x24;</currency>
         <decimal>.</decimal>
@@ -341,7 +352,7 @@
     </step>
 
   <step>
-    <name>Load sa_arvo_vastaajat</name>
+    <name>Load sa_arvo_kysymykset</name>
     <type>TableOutput</type>
     <description/>
     <distribute>Y</distribute>
@@ -356,7 +367,7 @@
     <table>sa_arvo_kysymykset</table>
     <commit>1000</commit>
     <truncate>Y</truncate>
-    <ignore_errors>Y</ignore_errors>
+    <ignore_errors>N</ignore_errors>
     <use_batch>N</use_batch>
     <specify_fields>Y</specify_fields>
     <partitioning_enabled>N</partitioning_enabled>
@@ -435,7 +446,11 @@
         </field>
         <field>
           <column_name>jatkokysymys</column_name>
-          <stream_name>&#xfeff;&#x22;jatkokysymys&#x22;</stream_name>
+          <stream_name>jatkokysymys</stream_name>
+        </field>
+        <field>
+          <column_name>jarjestys</column_name>
+          <stream_name>jarjestys</stream_name>
         </field>
     </fields>
      <cluster_schema/>
@@ -460,7 +475,7 @@
         <min_pct_rows/>
       </error>
       <error>
-        <source_step>Load sa_arvo_vastaajat</source_step>
+        <source_step>Load sa_arvo_kysymykset</source_step>
         <target_step/>
         <is_enabled>Y</is_enabled>
         <nr_valuename/>

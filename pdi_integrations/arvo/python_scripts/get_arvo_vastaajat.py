@@ -18,12 +18,9 @@ try:
     base_url = os.environ['BASE_URL']
 except KeyError:
     print("Base URL is missing")
-    
+
 vastaajat=[]
 urls = []
-api_key = "6K;2=Uqi-W"
-api_user = "vipunen"
-base_url = "arvo.csc.fi"
 url = "https://"+base_url+"/api/export/v1/vastaajat"
 loadtime=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S.%f")
 reqheaders = {'Content-Type': 'application/json'}
@@ -63,10 +60,13 @@ def makerow_vastaajat():
         "taustatiedot.kieli": None,
         "taustatiedot.kirjoilla_olo_kuukausia": None,
         "taustatiedot.koulutusalakoodi": None,
+        "taustatiedot.koulutuskieli": None,
         "taustatiedot.koulutusmuoto": None,
+        "taustatiedot.koulutustyyppi": None,
         "taustatiedot.kunta": None,
         "taustatiedot.laajuus": None,
         "taustatiedot.lasnaolo_lukukausia": None,
+        "taustatiedot.opiskelupaikkakunta_koodi": None,
         "taustatiedot.paaaine": None,
         "taustatiedot.sukupuoli": None,
         "taustatiedot.toimipaikka": None,
@@ -98,31 +98,33 @@ while url != None: ## The url is not null
             row["oppilaitos"] = keycheck("oppilaitos",vastaaja)
             row["suorituskieli"] = keycheck("suorituskieli",vastaaja)
             row["taustatiedot"] =  vastaaja["taustatiedot"]
-            row["taustatiedot.aidinkieli"] = keycheck("taustatiedot.aidinkieli",vastaaja["taustatiedot"])
-            row["taustatiedot.arvosana"] = keycheck("taustatiedot.arvosana",vastaaja["taustatiedot"])
-            row["taustatiedot.asteikko"] = keycheck("taustatiedot.asteikko",vastaaja["taustatiedot"])
-            row["taustatiedot.asuinkunta_koodi"] = keycheck("taustatiedot.asuinkunta_koodi",vastaaja["taustatiedot"])
-            row["taustatiedot.hankintakoulutuksen_toteuttaja"] = keycheck("taustatiedot.hankintakoulutuksen_toteuttaja",vastaaja["taustatiedot"])
-            row["taustatiedot.haun_numero"] = keycheck("taustatiedot.haun_numero",vastaaja["taustatiedot"])
-            row["taustatiedot.henkilonumero"] = keycheck("taustatiedot.henkilonumero",vastaaja["taustatiedot"])
-            row["taustatiedot.ika_valmistuessa"] = keycheck("taustatiedot.ika_valmistuessa",vastaaja["taustatiedot"])
-            row["taustatiedot.kansalaisuus"] = keycheck("taustatiedot.kansalaisuus",vastaaja["taustatiedot"])
-            row["taustatiedot.kieli"] = keycheck("taustatiedot.kieli",vastaaja["taustatiedot"])
-            row["taustatiedot.kirjoilla_olo_kuukausia"] = keycheck("taustatiedot.kirjoilla_olo_kuukausia",vastaaja["taustatiedot"])
-            row["taustatiedot.koulutusalakoodi"] = keycheck("taustatiedot.koulutusalakoodi",vastaaja["taustatiedot"])
-            row["taustatiedot.koulutusmuoto"] = keycheck("taustatiedot.koulutusmuoto",vastaaja["taustatiedot"])
-            row["taustatiedot.kunta"] = keycheck("taustatiedot.kunta",vastaaja["taustatiedot"])
-            row["taustatiedot.laajuus"] = keycheck("taustatiedot.laajuus",vastaaja["taustatiedot"])
-            row["taustatiedot.lasnaolo_lukukausia"] = keycheck("taustatiedot.lasnaolo_lukukausia",vastaaja["taustatiedot"])
-            row["taustatiedot.paaaine"] = keycheck("taustatiedot.paaaine",vastaaja["taustatiedot"])
-            row["taustatiedot.sukupuoli"] = keycheck("taustatiedot.sukupuoli",vastaaja["taustatiedot"])
-            row["taustatiedot.toimipaikka"] = keycheck("taustatiedot.toimipaikka",vastaaja["taustatiedot"])
-            row["taustatiedot.tutkinnon_taso"] = keycheck("taustatiedot.tutkinnon_taso",vastaaja["taustatiedot"])
-            row["taustatiedot.tutkinto"] = keycheck("taustatiedot.tutkinto",vastaaja["taustatiedot"])
-            row["taustatiedot.tutkintomuoto"] = keycheck("taustatiedot.tutkintomuoto",vastaaja["taustatiedot"])
-            row["taustatiedot.valintavuosi"] = keycheck("taustatiedot.valintavuosi",vastaaja["taustatiedot"])
-            row["taustatiedot.valmistumisajankohta"] = keycheck("taustatiedot.valmistumisajankohta",vastaaja["taustatiedot"])
-            row["taustatiedot.valmistumisvuosi"] = keycheck("taustatiedot.valmistumisvuosi",vastaaja["taustatiedot"])
+            row["taustatiedot.aidinkieli"] = keycheck("aidinkieli",vastaaja["taustatiedot"])
+            row["taustatiedot.arvosana"] = keycheck("arvosana",vastaaja["taustatiedot"])
+            row["taustatiedot.asteikko"] = keycheck("asteikko",vastaaja["taustatiedot"])
+            row["taustatiedot.asuinkunta_koodi"] = keycheck("asuinkunta_koodi",vastaaja["taustatiedot"])
+            row["taustatiedot.hankintakoulutuksen_toteuttaja"] = keycheck("hankintakoulutuksen_toteuttaja",vastaaja["taustatiedot"])
+            row["taustatiedot.haun_numero"] = keycheck("haun_numero",vastaaja["taustatiedot"])
+            row["taustatiedot.henkilonumero"] = keycheck("henkilonumero",vastaaja["taustatiedot"])
+            row["taustatiedot.ika_valmistuessa"] = keycheck("ika_valmistuessa",vastaaja["taustatiedot"])
+            row["taustatiedot.kansalaisuus"] = keycheck("kansalaisuus",vastaaja["taustatiedot"])
+            row["taustatiedot.kieli"] = keycheck("kieli",vastaaja["taustatiedot"])
+            row["taustatiedot.kirjoilla_olo_kuukausia"] = keycheck("kirjoilla_olo_kuukausia",vastaaja["taustatiedot"])
+            row["taustatiedot.koulutusalakoodi"] = keycheck("koulutusalakoodi",vastaaja["taustatiedot"])
+            row["taustatiedot.koulutuskieli"] = keycheck("koulutuskieli",vastaaja["taustatiedot"])
+            row["taustatiedot.koulutusmuoto"] = keycheck("koulutusmuoto",vastaaja["taustatiedot"])
+            row["taustatiedot.koulutustyyppi"] = keycheck("koulutustyyppi",vastaaja["taustatiedot"])
+            row["taustatiedot.kunta"] = keycheck("kunta",vastaaja["taustatiedot"])
+            row["taustatiedot.laajuus"] = keycheck("laajuus",vastaaja["taustatiedot"])
+            row["taustatiedot.lasnaolo_lukukausia"] = keycheck("lasnaolo_lukukausia",vastaaja["taustatiedot"])
+            row["taustatiedot.paaaine"] = keycheck("paaaine",vastaaja["taustatiedot"])
+            row["taustatiedot.sukupuoli"] = keycheck("sukupuoli",vastaaja["taustatiedot"])
+            row["taustatiedot.toimipaikka"] = keycheck("toimipaikka",vastaaja["taustatiedot"])
+            row["taustatiedot.tutkinnon_taso"] = keycheck("tutkinnon_taso",vastaaja["taustatiedot"])
+            row["taustatiedot.tutkinto"] = keycheck("tutkinto",vastaaja["taustatiedot"])
+            row["taustatiedot.tutkintomuoto"] = keycheck("tutkintomuoto",vastaaja["taustatiedot"])
+            row["taustatiedot.valintavuosi"] = keycheck("valintavuosi",vastaaja["taustatiedot"])
+            row["taustatiedot.valmistumisajankohta"] = keycheck("valmistumisajankohta",vastaaja["taustatiedot"])
+            row["taustatiedot.valmistumisvuosi"] = keycheck("valmistumisvuosi",vastaaja["taustatiedot"])
             row["source"] = url
             row["loadtime"] = str(loadtime)
             vastaajat.append(row) 
@@ -140,7 +142,6 @@ while url != None: ## The url is not null
     urls.append(url)
 
 data = json_normalize(vastaajat)
-
 # DATA to csv for import to MSSQL - can be used also for BULK inserting
 data.to_csv(path_or_buf='D:/pdi_integrations/data/arvo/vastaajat.csv', sep=';', na_rep='',
                  header=True, index=False, mode='w', encoding='utf-8-sig', quoting=2,

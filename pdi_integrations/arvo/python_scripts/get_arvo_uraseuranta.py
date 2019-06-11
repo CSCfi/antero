@@ -3,15 +3,17 @@ import requests
 #import os
 from pandas.io.json import json_normalize
 #import datetime
-
+import base64
 import os
 
 try:
     api_key = os.environ['AUTH_API_KEY']
 except KeyError:
-    print("API-key missing")
-
-
+    print("API-key is missing")
+try:
+    api_user = os.environ['AUTH_API_USER']
+except KeyError:
+    print("API-user is missing")
 
 result = []
 good_result=[]
@@ -20,13 +22,18 @@ urls = []
 
 url = 'https://arvo.csc.fi/api/vipunen/uraseuranta'
 reqheaders = {'Content-Type': 'application/json'}
-reqheaders['Authorization'] = api_key
+reqheaders['Accept'] = 'application/json'
+
+### encode API user and API key tothe request headers 
+tmp = "%s:%s" % (api_user, api_key)
+reqheaders['Authorization'] = "Basic %s" % base64.b64encode(tmp.encode('utf-8')).decode('utf-8')
+
 #response = requests.get(url, headers=reqheaders).json()
 
 ## Not checking the status just downloading
 ## GET STATUS
 ## 
-while url != 'null': ## The url is not null
+while url != None: ## The url is not null
     response = requests.get(url, headers=reqheaders).json()
 
     for uraseuranta in response['data']:
@@ -55,9 +62,9 @@ filtered_data = json_normalize(filtered_result)
 # data['vastaajaid'].head(10)
 ## data.dtypes
 
-
 ## Export data to csv's
 
+print("Exporting data to csv file")
 
 filtered_data.to_csv(path_or_buf='D:/pdi_integrations/data/arvo/uraseuranta_vajaadata.csv', sep='|', na_rep='',
                 header=True, index=False, mode='w', encoding='utf-8-sig', quoting=2,

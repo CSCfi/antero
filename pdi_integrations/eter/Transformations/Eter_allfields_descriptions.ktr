@@ -102,17 +102,17 @@
     </attributes>
   </connection>
   <order>
-  <hop> <from>Table output</from><to>Dummy &#x28;do nothing&#x29;</to><enabled>Y</enabled> </hop>
-  <hop> <from>Get System Info</from><to>Table output</to><enabled>Y</enabled> </hop>
   <hop> <from>CSV file input - ETER all field descriptions</from><to>Add sequence</to><enabled>Y</enabled> </hop>
   <hop> <from>Add sequence</from><to>Add few constants</to><enabled>Y</enabled> </hop>
   <hop> <from>Add few constants</from><to>Get System Info</to><enabled>Y</enabled> </hop>
+  <hop> <from>Get System Info</from><to>Table output 2</to><enabled>Y</enabled> </hop>
+  <hop> <from>Table output 2</from><to>Dummy &#x28;do nothing&#x29;</to><enabled>Y</enabled> </hop>
   </order>
   <step>
     <name>Add few constants</name>
     <type>Constant</type>
     <description/>
-    <distribute>N</distribute>
+    <distribute>Y</distribute>
     <custom_distribution/>
     <copies>1</copies>
          <partitioning>
@@ -127,7 +127,19 @@
         <currency/>
         <decimal/>
         <group/>
-        <nullif>http&#x3a;&#x2f;&#x2f;www.eter-project.com&#x2f;api&#x2f;3.0&#x2f;HEIs&#x2f;full</nullif>
+        <nullif>https&#x3a;&#x2f;&#x2f;www.eter-project.com&#x2f;api&#x2f;3.0&#x2f;field-groups&#x2f;find&#x2f;all-fields</nullif>
+        <length>-1</length>
+        <precision>-1</precision>
+        <set_empty_string>N</set_empty_string>
+      </field>
+      <field>
+        <name>Username</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif>DWI&#x5c;jkarin</nullif>
         <length>-1</length>
         <precision>-1</precision>
         <set_empty_string>N</set_empty_string>
@@ -135,8 +147,37 @@
     </fields>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>256</xloc>
-      <yloc>144</yloc>
+      <xloc>320</xloc>
+      <yloc>160</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
+    <name>Add sequence</name>
+    <type>Sequence</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+      <valuename>_id</valuename>
+      <use_database>N</use_database>
+      <connection>dwitvipusql16</connection>
+      <schema/>
+      <seqname>SEQ_</seqname>
+      <use_counter>Y</use_counter>
+      <counter_name/>
+      <start_at>1</start_at>
+      <increment_by>1</increment_by>
+      <max_value>999999999</max_value>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>480</xloc>
+      <yloc>288</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -173,7 +214,7 @@
         <currency>&#x24;</currency>
         <decimal>.</decimal>
         <group>,</group>
-        <length>31</length>
+        <length>148</length>
         <precision>-1</precision>
         <trim_type>none</trim_type>
       </field>
@@ -228,7 +269,7 @@
         <currency>&#x24;</currency>
         <decimal>.</decimal>
         <group>,</group>
-        <length>29</length>
+        <length>31</length>
         <precision>-1</precision>
         <trim_type>none</trim_type>
       </field>
@@ -250,7 +291,7 @@
         <currency>&#x24;</currency>
         <decimal>.</decimal>
         <group>,</group>
-        <length>28</length>
+        <length>31</length>
         <precision>-1</precision>
         <trim_type>none</trim_type>
       </field>
@@ -262,6 +303,17 @@
         <decimal>.</decimal>
         <group>,</group>
         <length>8</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+      </field>
+      <field>
+        <name>fields.exportToCollectionData</name>
+        <type>String</type>
+        <format/>
+        <currency>&#x24;</currency>
+        <decimal>.</decimal>
+        <group>,</group>
+        <length>4</length>
         <precision>-1</precision>
         <trim_type>none</trim_type>
       </field>
@@ -393,7 +445,7 @@
         <currency>&#x24;</currency>
         <decimal>.</decimal>
         <group>,</group>
-        <length>114</length>
+        <length>1464</length>
         <precision>-1</precision>
         <trim_type>none</trim_type>
       </field>
@@ -480,10 +532,6 @@
     <return_field/>
     <fields>
         <field>
-          <column_name>_id</column_name>
-          <stream_name>_id</stream_name>
-        </field>
-        <field>
           <column_name>groupName</column_name>
           <stream_name>groupName</stream_name>
         </field>
@@ -568,8 +616,16 @@
           <stream_name>fields.formula</stream_name>
         </field>
         <field>
+          <column_name>_id</column_name>
+          <stream_name>_id</stream_name>
+        </field>
+        <field>
           <column_name>Source</column_name>
           <stream_name>Source</stream_name>
+        </field>
+        <field>
+          <column_name>Username</column_name>
+          <stream_name>Username</stream_name>
         </field>
         <field>
           <column_name>Loadtime</column_name>
@@ -578,15 +634,15 @@
     </fields>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>672</xloc>
-      <yloc>80</yloc>
+      <xloc>816</xloc>
+      <yloc>464</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
 
   <step>
-    <name>Add sequence</name>
-    <type>Sequence</type>
+    <name>Table output 2</name>
+    <type>TableOutput</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -595,20 +651,133 @@
            <method>none</method>
            <schema_name/>
            </partitioning>
-      <valuename>_id</valuename>
-      <use_database>N</use_database>
-      <connection>dwitvipusql16</connection>
-      <schema/>
-      <seqname>SEQ_</seqname>
-      <use_counter>Y</use_counter>
-      <counter_name/>
-      <start_at>1</start_at>
-      <increment_by>1</increment_by>
-      <max_value>999999999</max_value>
+    <connection>dwitvipusql16</connection>
+    <schema>sa</schema>
+    <table>sa_eter_allfields_descriptions</table>
+    <commit>1000</commit>
+    <truncate>Y</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+        <field>
+          <column_name>groupName</column_name>
+          <stream_name>groupName</stream_name>
+        </field>
+        <field>
+          <column_name>description</column_name>
+          <stream_name>description</stream_name>
+        </field>
+        <field>
+          <column_name>fields.fullTextSearch</column_name>
+          <stream_name>fields.fullTextSearch</stream_name>
+        </field>
+        <field>
+          <column_name>fields.accessRights</column_name>
+          <stream_name>fields.accessRights</stream_name>
+        </field>
+        <field>
+          <column_name>fields.package</column_name>
+          <stream_name>fields.package</stream_name>
+        </field>
+        <field>
+          <column_name>fields.fieldId</column_name>
+          <stream_name>fields.fieldId</stream_name>
+        </field>
+        <field>
+          <column_name>fields.fieldName</column_name>
+          <stream_name>fields.fieldName</stream_name>
+        </field>
+        <field>
+          <column_name>fields.xlsId</column_name>
+          <stream_name>fields.xlsId</stream_name>
+        </field>
+        <field>
+          <column_name>fields.fieldType</column_name>
+          <stream_name>fields.fieldType</stream_name>
+        </field>
+        <field>
+          <column_name>fields.exportToCollectionData</column_name>
+          <stream_name>fields.exportToCollectionData</stream_name>
+        </field>
+        <field>
+          <column_name>fields.fieldNr</column_name>
+          <stream_name>fields.fieldNr</stream_name>
+        </field>
+        <field>
+          <column_name>fields.createdAt</column_name>
+          <stream_name>fields.createdAt</stream_name>
+        </field>
+        <field>
+          <column_name>fields.updatedAt</column_name>
+          <stream_name>fields.updatedAt</stream_name>
+        </field>
+        <field>
+          <column_name>fields.id</column_name>
+          <stream_name>fields.id</stream_name>
+        </field>
+        <field>
+          <column_name>fields.description</column_name>
+          <stream_name>fields.description</stream_name>
+        </field>
+        <field>
+          <column_name>fields.codesForFlags</column_name>
+          <stream_name>fields.codesForFlags</stream_name>
+        </field>
+        <field>
+          <column_name>fields.codesForValues</column_name>
+          <stream_name>fields.codesForValues</stream_name>
+        </field>
+        <field>
+          <column_name>fields.codesForSPSSExport</column_name>
+          <stream_name>fields.codesForSPSSExport</stream_name>
+        </field>
+        <field>
+          <column_name>fields.codesForSTATAExport</column_name>
+          <stream_name>fields.codesForSTATAExport</stream_name>
+        </field>
+        <field>
+          <column_name>fields.fieldSubType</column_name>
+          <stream_name>fields.fieldSubType</stream_name>
+        </field>
+        <field>
+          <column_name>fields.isCalculated</column_name>
+          <stream_name>fields.isCalculated</stream_name>
+        </field>
+        <field>
+          <column_name>fields.formula</column_name>
+          <stream_name>fields.formula</stream_name>
+        </field>
+        <field>
+          <column_name>_id</column_name>
+          <stream_name>_id</stream_name>
+        </field>
+        <field>
+          <column_name>Source</column_name>
+          <stream_name>Source</stream_name>
+        </field>
+        <field>
+          <column_name>Username</column_name>
+          <stream_name>Username</stream_name>
+        </field>
+        <field>
+          <column_name>Loadtime</column_name>
+          <stream_name>Loadtime</stream_name>
+        </field>
+    </fields>
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>416</xloc>
-      <yloc>144</yloc>
+      <xloc>704</xloc>
+      <yloc>64</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -616,6 +785,18 @@
   <step_error_handling>
       <error>
         <source_step>Table output</source_step>
+        <target_step>Dummy &#x28;do nothing&#x29;</target_step>
+        <is_enabled>Y</is_enabled>
+        <nr_valuename/>
+        <descriptions_valuename/>
+        <fields_valuename/>
+        <codes_valuename/>
+        <max_errors/>
+        <max_pct_errors/>
+        <min_pct_rows/>
+      </error>
+      <error>
+        <source_step>Table output 2</source_step>
         <target_step>Dummy &#x28;do nothing&#x29;</target_step>
         <is_enabled>Y</is_enabled>
         <nr_valuename/>

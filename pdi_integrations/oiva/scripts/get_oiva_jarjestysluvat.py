@@ -75,7 +75,7 @@ def makerow_maaraykset():
     "source": None,
     "loadtime": None
   }
-# URL Status check
+# URL Status check  api_user='oivaexport'
 def url_ok(url):
     r = requests.head(url,  auth=(api_user, api_key))
     return r.status_code == 200
@@ -97,11 +97,11 @@ else:
 
 # Loading the data into response  list (jarjestysluvat) 
 response = requests.get(url,  auth=(api_user, api_key)).json()
-  
-# select jarjestysluvat
+
 for i in response:
     row = makerow_jarjestysluvat()
     row["id"] = key_check("uuid",i)
+    row["lupa_uuid"] = key_check("uuid",i)
     row["edellinen_lupa_id"] =key_check("paatoskierros_id", i) 
     row["lupatila_id"] = key_check("lupatila_id", i) 
     row["asiatyyppi_id"] = key_check("asiatyyppi_id", i) 
@@ -127,16 +127,25 @@ for i in response:
     row["loadtime"] = str(loadtime)
 
     lupa_data.append(row)
-#   split maaraykset into own list from respone
-    #maarays=i["maaraykset"]
-    maaraykset.append(i["maaraykset"])
+#   split maaraykset into own list from response lupa uuid key included for every maarays 
+    temp=i["maaraykset"]
+    temp3=[]
+    for z in temp:
+        temp2=dict()
+        temp2=z
+        temp2.update({"lupa_uuid":key_check("uuid",i)})
+        temp3.append(temp2)
+    maaraykset.append(temp3)   
+    #temp=temp+({"lupa_uuid":key_check("uuid",i)})
     
 # select maaraykset
+
+
 for k in maaraykset:
     for m in k:
         row = makerow_maaraykset()
-        row["id"] = key_check("uuid", m)
-        row["lupaId"] = key_check("uuid", i)
+        row["id"] = key_check("uuid", m)    
+        row["lupaId"] = m["lupa_uuid"]
         if "kohde" in m:
             row["kohde.tunniste"] = key_check("tunniste", m["kohde"])
         else:
@@ -157,18 +166,17 @@ for k in maaraykset:
         row["loadtime"] = str(loadtime)
         
         oiva_maaraykset.append(row)
-                
+        
 jarjestysluvat = json_normalize(lupa_data)
 oivamaaraykset = json_normalize(oiva_maaraykset)
 
 ## Export data to csv's
 
 
-jarjestysluvat.to_csv(path_or_buf='d:/pdi_integrations/data/oiva/oiva_jarjestysluvat.csv', sep='|', na_rep='', 
-#data.to_csv(path_or_buf='C:/Documents/ARVO/uraseuranta.csv', sep='|', na_rep='', 
+jarjestysluvat.to_csv(path_or_buf='d:\pdi_integrations\data\oiva\oiva_jarjestysluvat.csv', sep='|', na_rep='', 
                header=True, index=False, mode='w', encoding='utf-8', 
                quotechar='"', line_terminator='\n', escapechar='$')
-oivamaaraykset.to_csv(path_or_buf='d:/pdi_integrations/data/oiva/oiva_maaraykset.csv', sep='|', na_rep='', 
+oivamaaraykset.to_csv(path_or_buf='d:\pdi_integrations\data\oiva\oiva_maaraykset.csv', sep='|', na_rep='', 
 #data.to_csv(path_or_buf='C:/Documents/ARVO/uraseuranta.csv', sep='|', na_rep='', 
                header=True, index=False, mode='w', encoding='utf-8', 
                quotechar='"', line_terminator='\n', escapechar='$')
