@@ -5,11 +5,11 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[sa_koski_koodisto_koodi]') AND type in (N'U'))
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[sa_koski_organisaatio]') AND type in (N'U'))
 BEGIN
-DROP TABLE [sa].[sa_koski_koodisto_koodi]
+DROP TABLE [sa].[sa_koski_organisaatio]
 END
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[sa_koski_koodisto_koodi]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[sa_koski_organisaatio]') AND type in (N'U'))
 BEGIN
 
 CREATE TABLE [sa].[sa_koski_organisaatio](
@@ -26,9 +26,9 @@ CREATE TABLE [sa].[sa_koski_organisaatio](
 END
 GO
 
-ALTER TABLE [sa].[sa_koski_koodisto_koodi] ADD  CONSTRAINT [DF__sa_koski_koodisto_koodi_imp_created]  DEFAULT (getdate()) FOR [imp_created]
+ALTER TABLE [sa].[sa_koski_organisaatio] ADD  CONSTRAINT [DF__sa_koski_organisaatio_imp_created]  DEFAULT (getdate()) FOR [imp_created]
 GO
 
-ALTER TABLE [sa].[sa_koski_koodisto_koodi] ADD  CONSTRAINT [DF__sa_koski_koodisto_koodi_username]  DEFAULT (suser_sname()) FOR [username]
+ALTER TABLE [sa].[sa_koski_organisaatio] ADD  CONSTRAINT [DF__sa_koski_organisaatio_username]  DEFAULT (suser_sname()) FOR [username]
 GO
 USE [ANTERO]
