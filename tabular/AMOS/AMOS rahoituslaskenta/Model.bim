@@ -6290,7 +6290,7 @@
             "dataType": "string",
             "sourceColumn": "Koulutuksen järjestäjä",
             "sourceProviderType": "WChar",
-            "displayFolder": "Koulutusmuuttujat"
+            "displayFolder": "Organisaatiomuuttujat"
           },
           {
             "name": "Koodit Koulutuksen järjestäjä",
@@ -6434,6 +6434,11 @@
             "dataType": "double",
             "isHidden": true,
             "sourceColumn": "painotettu_tutkinnon_osien_osaamispisteet_yht"
+          },
+          {
+            "name": "Koodit Tutkintotyyppi",
+            "dataType": "string",
+            "sourceColumn": "Koodit Tutkintotyyppi"
           }
         ],
         "partitions": [
@@ -6649,6 +6654,14 @@
                   "        <int>375</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koodit Tutkintotyyppi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>191</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -6843,6 +6856,14 @@
                   "        <int>23</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koodit Tutkintotyyppi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>24</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -6990,6 +7011,14 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koodit Tutkintotyyppi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -7119,6 +7148,50 @@
             ],
             "formatString": "#,0.00",
             "displayFolder": "Painotetut"
+          },
+          {
+            "name": "Perustutkintojen määrä",
+            "expression": [
+              "",
+              "var summa = CALCULATE(SUM([painottamaton_tutkinnot]),_Muuttujat[Suorituksen tyyppi]=\"Koko tutkinto\",_Muuttujat[Koodit Tutkintotyyppi]=\"02\")",
+              "return IF(summa=0,BLANK(),summa)",
+              ""
+            ],
+            "formatString": "#,0",
+            "displayFolder": "Painottamattomat"
+          },
+          {
+            "name": "Ammatti- ja erikoisammattitutkintojen määrä",
+            "expression": [
+              "",
+              "var summa = CALCULATE(SUM([painottamaton_tutkinnot]),_Muuttujat[Suorituksen tyyppi]=\"Koko tutkinto\",_Muuttujat[Koodit Tutkintotyyppi]=\"19\" || _Muuttujat[Koodit Tutkintotyyppi]=\"20\")",
+              "return IF(summa=0,BLANK(),summa)",
+              ""
+            ],
+            "formatString": "#,0",
+            "displayFolder": "Painottamattomat"
+          },
+          {
+            "name": "Perustutkintojen tutkinnon osien määrä",
+            "expression": [
+              "",
+              "var summa = CALCULATE(SUM(_Muuttujat[painottamaton_osatutkinnot]),_Muuttujat[Koodit Tutkintotyyppi]=\"02\")",
+              "return IF(summa=0,BLANK(),summa)",
+              ""
+            ],
+            "formatString": "#,0",
+            "displayFolder": "Painottamattomat"
+          },
+          {
+            "name": "Ammatti- ja erikoisammattitutkintojen tutkinnon osien määrä",
+            "expression": [
+              "",
+              "var summa = CALCULATE(SUM(_Muuttujat[painottamaton_osatutkinnot]),_Muuttujat[Koodit Tutkintotyyppi]=\"19\" || _Muuttujat[Koodit Tutkintotyyppi]=\"20\")",
+              "return IF(summa=0,BLANK(),summa)",
+              ""
+            ],
+            "formatString": "#,0",
+            "displayFolder": "Painottamattomat"
           }
         ],
         "annotations": [
@@ -7338,6 +7411,14 @@
               "        <int>375</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koodit Tutkintotyyppi</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>191</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -7532,6 +7613,14 @@
               "        <int>23</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koodit Tutkintotyyppi</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>24</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -7674,6 +7763,14 @@
               "    <item>",
               "      <key>",
               "        <string>painotettu_tutkinnon_osien_osaamispisteet_yht</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koodit Tutkintotyyppi</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -8131,6 +8228,18 @@
               },
               {
                 "name": "Tutkintojen painotetut pisteet yhteensä"
+              },
+              {
+                "name": "Ammatti- ja erikoisammattitutkintojen määrä"
+              },
+              {
+                "name": "Ammatti- ja erikoisammattitutkintojen tutkinnon osien määrä"
+              },
+              {
+                "name": "Perustutkintojen määrä"
+              },
+              {
+                "name": "Perustutkintojen tutkinnon osien määrä"
               }
             ]
           },
