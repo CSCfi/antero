@@ -21212,6 +21212,15 @@
                       <AttributeID>Field of ed 2002 stud</AttributeID>
                     </Attribute>
                     <Attribute>
+                      <AttributeID>Administrative sector</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Field of ed 1995 mother</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Koodit Koulutusala 2 äiti</AttributeID>
+                    </Attribute>
+                    <Attribute>
                       <AttributeID>Field of ed 1995 father</AttributeID>
                     </Attribute>
                     <Attribute>
@@ -21369,15 +21378,6 @@
                     </Attribute>
                     <Attribute>
                       <AttributeID>Field of ed HE steering father</AttributeID>
-                    </Attribute>
-                    <Attribute>
-                      <AttributeID>Administrative sector</AttributeID>
-                    </Attribute>
-                    <Attribute>
-                      <AttributeID>Field of ed 1995 mother</AttributeID>
-                    </Attribute>
-                    <Attribute>
-                      <AttributeID>Koodit Koulutusala 2 äiti</AttributeID>
                     </Attribute>
                   </Attributes>
                 </Dimension>
@@ -31653,7 +31653,7 @@
               <Commands>
                 <Command>
                   <Text>CALCULATE; 
-CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1; 
+CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1, VISIBLE = 0; 
 ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measures defined]; </Text>
                 </Command>
                 <Command>
@@ -31662,7 +31662,8 @@ ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measure
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Uudet opiskelijat]=IF(SUM([Uudet opiskelijat2])=0,BLANK(),SUM([Uudet opiskelijat2]));
+CREATE MEASURE 'Muuttujat'[Uudet opiskelijat]=var summa = SUM([Uudet opiskelijat2])
+return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -31681,7 +31682,8 @@ CREATE MEASURE 'Muuttujat'[Uudet opiskelijat]=IF(SUM([Uudet opiskelijat2])=0,BLA
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Opiskelijat]=IF(SUM([Opiskelijat2])=0,BLANK(),SUM([Opiskelijat2]));
+CREATE MEASURE 'Muuttujat'[Opiskelijat]=var summa = SUM([Opiskelijat2])
+return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -31700,7 +31702,8 @@ CREATE MEASURE 'Muuttujat'[Opiskelijat]=IF(SUM([Opiskelijat2])=0,BLANK(),SUM([Op
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Tutkinnot]=IF(SUM([Tutkinnot2])=0,BLANK(),SUM([Tutkinnot2]));
+CREATE MEASURE 'Muuttujat'[Tutkinnot]=var summa = SUM([Tutkinnot2])
+return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -31719,7 +31722,8 @@ CREATE MEASURE 'Muuttujat'[Tutkinnot]=IF(SUM([Tutkinnot2])=0,BLANK(),SUM([Tutkin
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Nya studerande]=IF(SUM([Uudet opiskelijat2])=0,BLANK(),SUM([Uudet opiskelijat2]));
+CREATE MEASURE 'Muuttujat'[Nya studerande]=var summa = SUM([Uudet opiskelijat2])
+return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -31738,7 +31742,8 @@ CREATE MEASURE 'Muuttujat'[Nya studerande]=IF(SUM([Uudet opiskelijat2])=0,BLANK(
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[New students]=IF(SUM([Uudet opiskelijat2])=0,BLANK(),SUM([Uudet opiskelijat2]));
+CREATE MEASURE 'Muuttujat'[New students]=var summa = SUM([Uudet opiskelijat2])
+return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -31757,7 +31762,8 @@ CREATE MEASURE 'Muuttujat'[New students]=IF(SUM([Uudet opiskelijat2])=0,BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Studerande]=IF(SUM([Opiskelijat2])=0,BLANK(),SUM([Opiskelijat2]));
+CREATE MEASURE 'Muuttujat'[Studerande]=var summa = SUM([Opiskelijat2])
+return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -31776,7 +31782,8 @@ CREATE MEASURE 'Muuttujat'[Studerande]=IF(SUM([Opiskelijat2])=0,BLANK(),SUM([Opi
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Students]=IF(SUM([Opiskelijat2])=0,BLANK(),SUM([Opiskelijat2]));
+CREATE MEASURE 'Muuttujat'[Students]=var summa = SUM([Opiskelijat2])
+return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -31795,7 +31802,8 @@ CREATE MEASURE 'Muuttujat'[Students]=IF(SUM([Opiskelijat2])=0,BLANK(),SUM([Opisk
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Personer som avlagt en examen]=IF(SUM([Tutkinnot2])=0,BLANK(),SUM([Tutkinnot2]));
+CREATE MEASURE 'Muuttujat'[Personer som avlagt en examen]=var summa = SUM([Tutkinnot2])
+return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -31814,12 +31822,184 @@ CREATE MEASURE 'Muuttujat'[Personer som avlagt en examen]=IF(SUM([Tutkinnot2])=0
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Graduates]=IF(SUM([Tutkinnot2])=0,BLANK(),SUM([Tutkinnot2]));
+CREATE MEASURE 'Muuttujat'[Graduates]=var summa = SUM([Tutkinnot2])
+return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
                       <Value>Graduates</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Uudet opiskelijat_s]=IF(SUM([Uudet opiskelijat2])=0,BLANK(),SUM([Uudet opiskelijat2]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Uudet opiskelijat_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Nya studerande_s]=IF(SUM([Uudet opiskelijat2])=0,BLANK(),SUM([Uudet opiskelijat2]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Nya studerande_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[New students_s]=IF(SUM([Uudet opiskelijat2])=0,BLANK(),SUM([Uudet opiskelijat2]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>New students_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Opiskelijat_s]=IF(SUM([Opiskelijat2])=0,BLANK(),SUM([Opiskelijat2]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Opiskelijat_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Studerande_s]=IF(SUM([Opiskelijat2])=0,BLANK(),SUM([Opiskelijat2]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Studerande_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Students_s]=IF(SUM([Opiskelijat2])=0,BLANK(),SUM([Opiskelijat2]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Students_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Tutkinnot_s]=IF(SUM([Tutkinnot2])=0,BLANK(),SUM([Tutkinnot2]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Tutkinnot_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Personer som avlagt en examen_s]=IF(SUM([Tutkinnot2])=0,BLANK(),SUM([Tutkinnot2]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Personer som avlagt en examen_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Graduates_s]=IF(SUM([Tutkinnot2])=0,BLANK(),SUM([Tutkinnot2]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Graduates_s</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -32015,6 +32195,195 @@ CREATE MEASURE 'Muuttujat'[Graduates]=IF(SUM([Tutkinnot2])=0,BLANK(),SUM([Tutkin
                     </Annotation>
                   </Annotations>
                   <CalculationReference>[Graduates]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Uudet opiskelijat_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Nya studerande_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[New students_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Opiskelijat_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Studerande_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Students_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Tutkinnot_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Personer som avlagt en examen_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Graduates_s]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
