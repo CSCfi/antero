@@ -1361,7 +1361,7 @@
           {
             "name": "Vastanneet",
             "expression": "DISTINCTCOUNT([vastaajaid])",
-            "formatString": "0"
+            "formatString": "#,0"
           },
           {
             "name": "Vastanneet_perus",
@@ -1402,6 +1402,11 @@
               ")"
             ],
             "formatString": "0.0"
+          },
+          {
+            "name": "Pisteet",
+            "expression": "CALCULATE(SUM(Muuttujat[numerovalinta]),Muuttujat[Koodit Rahoitusmallikysymys]=\"1\")",
+            "formatString": "#,0"
           }
         ],
         "annotations": [
@@ -2405,6 +2410,117 @@
             "value": "dw"
           }
         ]
+      },
+      {
+        "name": "Luodut tunnukset",
+        "columns": [
+          {
+            "name": "kyselykertaid",
+            "dataType": "int64",
+            "sourceColumn": "kyselykertaid",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "oppilaitoskoodi",
+            "dataType": "string",
+            "sourceColumn": "oppilaitoskoodi",
+            "sourceProviderType": "VarChar"
+          },
+          {
+            "name": "tutkintokoodi",
+            "dataType": "string",
+            "sourceColumn": "tutkintokoodi",
+            "sourceProviderType": "VarChar"
+          },
+          {
+            "name": "summa",
+            "dataType": "int64",
+            "sourceColumn": "summa",
+            "sourceProviderType": "Integer"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Query",
+            "dataView": "full",
+            "source": {
+              "query": [
+                "select ",
+                "\t f.kyselykertaid",
+                "\t,[oppilaitoskoodi]",
+                "    ,[tutkintokoodi]",
+                "\t,summa = sum(vastaajatunnukset_lkm)",
+                "from ANTERO.dw.f_arvo_luodut_vastaajatunnukset f",
+                "join ANTERO.dw.d_arvokyselykerta d on d.kyselykertaid = f.kyselykertaid",
+                "where d.kyselypohja = 'uraseuranta'",
+                "group by ",
+                "\tf.kyselykertaid",
+                "\t,oppilaitoskoodi",
+                "\t,tutkintokoodi"
+              ],
+              "dataSource": "SqlServer dwitvipusql16 ANTERO"
+            },
+            "annotations": [
+              {
+                "name": "QueryEditorSerialization",
+                "value": [
+                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>select ",
+                  "\t f.kyselykertaid",
+                  "\t,[oppilaitoskoodi]",
+                  "    ,[tutkintokoodi]",
+                  "\t,summa = sum(vastaajatunnukset_lkm)",
+                  "from ANTERO.dw.f_arvo_luodut_vastaajatunnukset f",
+                  "join ANTERO.dw.d_arvokyselykerta d on d.kyselykertaid = f.kyselykertaid",
+                  "where d.kyselypohja = 'uraseuranta'",
+                  "group by ",
+                  "\tf.kyselykertaid",
+                  "\t,oppilaitoskoodi",
+                  "\t,tutkintokoodi</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+                ]
+              }
+            ]
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": [
+              "select ",
+              "\t f.kyselykertaid",
+              "\t,[oppilaitoskoodi]",
+              "    ,[tutkintokoodi]",
+              "\t,summa = sum(vastaajatunnukset_lkm)",
+              "from ANTERO.dw.f_arvo_luodut_vastaajatunnukset f",
+              "join ANTERO.dw.d_arvokyselykerta d on d.kyselykertaid = f.kyselykertaid",
+              "where d.kyselypohja = 'uraseuranta'",
+              "group by ",
+              "\tf.kyselykertaid",
+              "\t,oppilaitoskoodi",
+              "\t,tutkintokoodi"
+            ]
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "Query"
+          },
+          {
+            "name": "QueryEditorSerialization",
+            "value": [
+              "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>select ",
+              "\t f.kyselykertaid",
+              "\t,[oppilaitoskoodi]",
+              "    ,[tutkintokoodi]",
+              "\t,summa = sum(vastaajatunnukset_lkm)",
+              "from ANTERO.dw.f_arvo_luodut_vastaajatunnukset f",
+              "join ANTERO.dw.d_arvokyselykerta d on d.kyselykertaid = f.kyselykertaid",
+              "where d.kyselypohja = 'uraseuranta'",
+              "group by ",
+              "\tf.kyselykertaid",
+              "\t,oppilaitoskoodi",
+              "\t,tutkintokoodi</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+            ]
+          }
+        ]
       }
     ],
     "perspectives": [
@@ -2487,6 +2603,9 @@
               },
               {
                 "name": "Keskihajonta"
+              },
+              {
+                "name": "Pisteet"
               }
             ]
           },
