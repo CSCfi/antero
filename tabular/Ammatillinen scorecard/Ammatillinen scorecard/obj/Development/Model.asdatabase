@@ -919,117 +919,333 @@
         "measures": [
           {
             "name": "1 v. tutkinnon jälkeen",
-            "expression": "IF(SUM([lkm_1vr2])=0,BLANK(),IF(SUM([lkm_1vr2])=1,3,MROUND(SUM([lkm_1vr2]),3)))",
+            "expression": [
+              "",
+              "var lkm = SUM([lkm_1vr2])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
+              ""
+            ],
             "formatString": "#,0",
             "displayFolder": "Työllistyminen"
           },
           {
             "name": "Henkilöt",
-            "expression": "IF(SUM([lkm_int2]) = 0, BLANK(),IF(SUM([lkm_int2]) = 1, 3, MROUND(SUM([lkm_int2]),3)))",
+            "expression": [
+              "",
+              "var lkm = SUM([lkm_int2])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
+              ""
+            ],
             "formatString": "#,0",
             "displayFolder": "Läpäisy"
           },
           {
             "name": "Työlliset",
-            "expression": "CALCULATE([1 v. tutkinnon jälkeen], FILTER(Muuttujat, OR([paaskoodi]= \"1\", [paaskoodi] = \"2\")))",
+            "expression": [
+              "",
+              "var lkm = CALCULATE([1 v. tutkinnon jälkeen], FILTER(Muuttujat, OR([paaskoodi]= \"1\", [paaskoodi] = \"2\")))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0",
             "displayFolder": "Työllistyminen"
           },
           {
             "name": "Suoritetut tutkinnot alkuperäisessä tutkintolajissa",
-            "expression": "CALCULATE([Henkilöt], FILTER(Muuttujat, [Opintojen kulku] = \"Tutkinto alkuperäisessä tutkintolajissa\"))",
+            "expression": [
+              "",
+              "var lkm = CALCULATE([Henkilöt], FILTER(Muuttujat, [Opintojen kulku] = \"Tutkinto alkuperäisessä tutkintolajissa\"))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
+              ""
+            ],
             "formatString": "#,0",
             "displayFolder": "Läpäisy"
           },
           {
             "name": "Alkuperäisessä tutkintolajissa tutkinnon suorittaneiden osuus kaikista aloittaneista",
-            "expression": "[Suoritetut tutkinnot alkuperäisessä tutkintolajissa]/[Henkilöt]",
+            "expression": [
+              "",
+              "var lkm = [Suoritetut tutkinnot alkuperäisessä tutkintolajissa]",
+              "return IF(lkm = BLANK(), BLANK(),",
+              "\tvar kaikki = [Henkilöt]",
+              "                return IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "                                IF(lkm = \"1-4\",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), \"#0.0 % – \"), FORMAT(ROUND(4 / kaikki, 3), \"#0.0 %\")),",
+              "                                     lkm / kaikki)))"
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Läpäisy"
           },
           {
             "name": "Suoritetut tutkinnot missä tahansa tutkintolajissa",
-            "expression": "CALCULATE([Henkilöt], FILTER(Muuttujat, OR(OR([Opintojen kulku] = \"Tutkinto alkuperäisessä tutkintolajissa\", [Opintojen kulku] =\"Tutkinto muussa tutkintolajissa\"), [Opintojen kulku] = \"Tutkinto muussa tutkintolajissa, kandidaatin tutkinto\")))",
+            "expression": [
+              "",
+              "var lkm = CALCULATE([Henkilöt], FILTER(Muuttujat, OR(OR([Opintojen kulku] = \"Tutkinto alkuperäisessä tutkintolajissa\", [Opintojen kulku] =\"Tutkinto muussa tutkintolajissa\"), [Opintojen kulku] = \"Tutkinto muussa tutkintolajissa, kandidaatin tutkinto\")))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
+              ""
+            ],
             "formatString": "#,0",
             "displayFolder": "Läpäisy"
           },
           {
             "name": "Missä tahansa tutkintolajissa tutkinnon suorittaneiden osuus kaikista aloittaneista",
-            "expression": "[Suoritetut tutkinnot missä tahansa tutkintolajissa]/[Henkilöt]",
+            "expression": [
+              "",
+              "var lkm = [Suoritetut tutkinnot missä tahansa tutkintolajissa]",
+              "return IF(lkm = BLANK(), BLANK(),",
+              "\tvar kaikki = [Henkilöt]",
+              "                return IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "                                IF(lkm = \"1-4\",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), \"#0.0 % – \"), FORMAT(ROUND(4 / kaikki, 3), \"#0.0 %\")),",
+              "                                     lkm / kaikki)))",
+              ""
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Läpäisy"
           },
           {
             "name": "Suoritetut tutkinnot missä tahansa ammatillisen koulutuksen tutkintolajissa",
-            "expression": "CALCULATE([Henkilöt], FILTER(Muuttujat, OR([Suoritettu tutkinto] = \"Ammatillinen perustutkinto\", [Suoritettu tutkinto] =\"Ammatillinen lisäkoulutus ammattitutkinto tai erikoisammattitutkinto\")))",
+            "expression": [
+              "",
+              "var lkm = CALCULATE([Henkilöt], FILTER(Muuttujat, OR([Suoritettu tutkinto] = \"Ammatillinen perustutkinto\", [Suoritettu tutkinto] =\"Ammatillinen lisäkoulutus ammattitutkinto tai erikoisammattitutkinto\")))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
+              ""
+            ],
             "formatString": "#,0",
             "displayFolder": "Läpäisy"
           },
           {
             "name": "Missä tahansa amm. koulutuksen tutkintolajissa tutkinnon suorittaneiden osuus kaikista aloittaneista",
-            "expression": "[Suoritetut tutkinnot missä tahansa ammatillisen koulutuksen tutkintolajissa]/[Henkilöt]",
+            "expression": [
+              "",
+              "var lkm = [Suoritetut tutkinnot missä tahansa ammatillisen koulutuksen tutkintolajissa]",
+              "return IF(lkm = BLANK(), BLANK(),",
+              "\tvar kaikki = [Henkilöt]",
+              "                return IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "                                IF(lkm = \"1-4\",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), \"#0.0 % – \"), FORMAT(ROUND(4 / kaikki, 3), \"#0.0 %\")),",
+              "                                     lkm / kaikki)))"
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Läpäisy"
           },
           {
             "name": "Uudet opiskelijat",
-            "expression": "SUM([aloit2])",
+            "expression": [
+              "",
+              "var lkm = SUM([aloit2])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
+              ""
+            ],
             "formatString": "#,0",
             "displayFolder": "Opiskelijat ja tutkinnot"
           },
           {
             "name": "Opiskelijat",
-            "expression": "SUM([opisk2])",
+            "expression": [
+              "",
+              "var lkm = SUM([opisk2])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
+              ""
+            ],
             "formatString": "#,0",
             "displayFolder": "Opiskelijat ja tutkinnot"
           },
           {
             "name": "Tutkinnot",
-            "expression": "SUM([tutk2])",
+            "expression": [
+              "",
+              "var lkm = SUM([tutk2])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
+              ""
+            ],
             "formatString": "#,0",
             "displayFolder": "Opiskelijat ja tutkinnot"
           },
           {
             "name": "Työllisten osuus tutkinnon suorittaneista",
-            "expression": "[Työlliset]/[1 v. tutkinnon jälkeen]",
+            "expression": [
+              "",
+              "var lkm = [Työlliset]",
+              "return IF(lkm = BLANK(), BLANK(),",
+              "\tvar kaikki = [1 v. tutkinnon jälkeen]",
+              "                return IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "                                IF(lkm = \"1-4\",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), \"#0.0 % – \"), FORMAT(ROUND(4 / kaikki, 3), \"#0.0 %\")),",
+              "                                     lkm / kaikki)))"
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Työllistyminen"
           },
           {
             "name": "Keskiarvo - työllisten osuus",
-            "expression": "CALCULATE([Työlliset], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))/CALCULATE([1 v. tutkinnon jälkeen], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))",
+            "expression": [
+              "",
+              "var lkm = CALCULATE([Työlliset], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))",
+              "return IF(lkm = BLANK(), BLANK(),",
+              "\tvar kaikki = CALCULATE([1 v. tutkinnon jälkeen], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))",
+              "                return IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "                                IF(lkm = \"1-4\",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), \"#0.0 % – \"), FORMAT(ROUND(4 / kaikki, 3), \"#0.0 %\")),",
+              "                                     lkm / kaikki)))",
+              ""
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Keskiarvot"
           },
           {
             "name": "Keskiarvo - läpäisy",
-            "expression": "CALCULATE([Suoritetut tutkinnot alkuperäisessä tutkintolajissa], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))/CALCULATE([Henkilöt], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))",
+            "expression": [
+              "",
+              "var lkm = CALCULATE([Suoritetut tutkinnot alkuperäisessä tutkintolajissa], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))",
+              "return IF(lkm = BLANK(), BLANK(),",
+              "\tvar kaikki = CALCULATE([Henkilöt], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))",
+              "                return IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "                                IF(lkm = \"1-4\",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), \"#0.0 % – \"), FORMAT(ROUND(4 / kaikki, 3), \"#0.0 %\")),",
+              "                                     lkm / kaikki)))"
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Keskiarvot"
           },
           {
             "name": "Aloituspaikat",
-            "expression": "sum([aloitp2])",
+            "expression": [
+              "",
+              "var lkm = sum([aloitp2])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
+              ""
+            ],
             "formatString": "#,0",
             "displayFolder": "Haku"
           },
           {
             "name": "Ensisijaiset hakijat",
-            "expression": "SUM([ensisij2])",
+            "expression": [
+              "",
+              "var lkm = SUM([ensisij2])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
+              ""
+            ],
             "formatString": "#,0",
             "displayFolder": "Haku"
           },
           {
             "name": "Ensisijaiset hakijat / Aloituspaikat",
-            "expression": "[Ensisijaiset hakijat]/[Aloituspaikat]",
+            "expression": [
+              "",
+              "var hakijat = [Ensisijaiset hakijat]",
+              "var paikat= [Aloituspaikat]",
+              "return IF(OR(hakijat= BLANK(), paikat = BLANK()),  BLANK(),",
+              "\tIF(hakijat = \"1-4\", IF(paikat= \"1-4\", CONCATENATE(FORMAT(MROUND(1 / 4, 0.1), \"0.0 – \"), FORMAT(MROUND(4 / 1, 0.1), \"0.0\")),",
+              "\t\t\t   CONCATENATE(FORMAT(MROUND(1 / paikat, 0.1), \"0.0 – \"), FORMAT(MROUND(4 / paikat, 0.1), \"0.0\"))),",
+              "                     hakijat / paikat))",
+              ""
+            ],
             "formatString": "0.0",
             "displayFolder": "Haku"
           },
           {
             "name": "Keskiarvo - ensisijaiset hakijat / aloituspaikat",
-            "expression": "CALCULATE([Ensisijaiset hakijat], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))/CALCULATE([Aloituspaikat], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))",
+            "expression": [
+              "",
+              "var hakijat = CALCULATE([Ensisijaiset hakijat], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))",
+              "var paikat= CALCULATE([Aloituspaikat], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))",
+              "return IF(OR(hakijat= BLANK(), paikat = BLANK()),  BLANK(),",
+              "\tIF(hakijat = \"1-4\", IF(paikat= \"1-4\", CONCATENATE(FORMAT(MROUND(1 / 4, 0.1), \"0.0 – \"), FORMAT(MROUND(4 / 1, 0.1), \"0.0\")),",
+              "\t\t\t   CONCATENATE(FORMAT(MROUND(1 / paikat, 0.1), \"0.0 – \"), FORMAT(MROUND(4 / paikat, 0.1), \"0.0\"))),",
+              "                     hakijat / paikat))"
+            ],
             "formatString": "0.0",
             "displayFolder": "Keskiarvot"
+          },
+          {
+            "name": "1 v. tutkinnon jälkeen_s",
+            "expression": "SUM([lkm_1vr2])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Työlliset_s",
+            "expression": "CALCULATE([1 v. tutkinnon jälkeen_s], FILTER(Muuttujat, OR([paaskoodi]= \"1\", [paaskoodi] = \"2\")))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Työllisten osuus tutkinnon suorittaneista_s",
+            "expression": "[Työlliset_s]/[1 v. tutkinnon jälkeen_s]",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Keskiarvo - työllisten osuus_s",
+            "expression": "CALCULATE([Työlliset_s], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))/CALCULATE([1 v. tutkinnon jälkeen_s], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Aloituspaikat_s",
+            "expression": "sum([aloitp2])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ensisijaiset hakijat_s",
+            "expression": "SUM([ensisij2])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ensisijaiset hakijat / Aloituspaikat_s",
+            "expression": "[Ensisijaiset hakijat_s]/[Aloituspaikat_s]",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Keskiarvo - ensisijaiset hakijat / aloituspaikat_s",
+            "expression": "CALCULATE([Ensisijaiset hakijat_s], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))/CALCULATE([Aloituspaikat_s], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Henkilöt_s",
+            "expression": "SUM([lkm_int2])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Suoritetut tutkinnot alkuperäisessä tutkintolajissa_s",
+            "expression": "CALCULATE([Henkilöt_s], FILTER(Muuttujat, [Opintojen kulku] = \"Tutkinto alkuperäisessä tutkintolajissa\"))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Alkuperäisessä tutkintolajissa tutkinnon suorittaneiden osuus kaikista aloittaneista_s",
+            "expression": "[Suoritetut tutkinnot alkuperäisessä tutkintolajissa_s]/[Henkilöt_s]",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Suoritetut tutkinnot missä tahansa tutkintolajissa_s",
+            "expression": "CALCULATE([Henkilöt_s], FILTER(Muuttujat, OR(OR([Opintojen kulku] = \"Tutkinto alkuperäisessä tutkintolajissa\", [Opintojen kulku] =\"Tutkinto muussa tutkintolajissa\"), [Opintojen kulku] = \"Tutkinto muussa tutkintolajissa, kandidaatin tutkinto\")))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Missä tahansa tutkintolajissa tutkinnon suorittaneiden osuus kaikista aloittaneista_s",
+            "expression": "[Suoritetut tutkinnot missä tahansa tutkintolajissa_s]/[Henkilöt_s]",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Suoritetut tutkinnot missä tahansa ammatillisen koulutuksen tutkintolajissa_s",
+            "expression": "CALCULATE([Henkilöt_s], FILTER(Muuttujat, OR([Suoritettu tutkinto] = \"Ammatillinen perustutkinto\", [Suoritettu tutkinto] =\"Ammatillinen lisäkoulutus ammattitutkinto tai erikoisammattitutkinto\")))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Missä tahansa amm. koulutuksen tutkintolajissa tutkinnon suorittaneiden osuus kaikista aloit_s",
+            "expression": "[Suoritetut tutkinnot missä tahansa ammatillisen koulutuksen tutkintolajissa_s]/[Henkilöt_s]",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Keskiarvo - läpäisy_s",
+            "expression": "CALCULATE([Suoritetut tutkinnot alkuperäisessä tutkintolajissa_s], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))/CALCULATE([Henkilöt_s], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Uudet opiskelijat_s",
+            "expression": "SUM([aloit2])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Opiskelijat_s",
+            "expression": "SUM([opisk2])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnot_s",
+            "expression": "SUM([tutk2])",
+            "formatString": "#,0"
           }
         ],
         "annotations": [
