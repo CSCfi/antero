@@ -3497,7 +3497,7 @@
             "formatString": "#,0.00"
           },
           {
-            "name": "Painottamattomat opiskelijavuodet",
+            "name": "Painottamattomat opiskelijavuodet yhteensä",
             "expression": "SUM([opiskelijavuodet_painottamaton])",
             "formatString": "#,0.00",
             "displayFolder": "Opiskelijavuodet"
@@ -3570,7 +3570,7 @@
           },
           {
             "name": "Profiilikerroin",
-            "expression": "[Painotetut opiskelijavuodet yhteensä] / [Painottamattomat opiskelijavuodet]",
+            "expression": "[Painotetut opiskelijavuodet yhteensä] / [Painottamattomat opiskelijavuodet yhteensä]",
             "formatString": "0.0000",
             "displayFolder": "Opiskelijavuodet"
           },
@@ -3642,9 +3642,20 @@
           },
           {
             "name": "Painottamattomat opiskelijavuodet %",
-            "expression": "[Painottamattomat opiskelijavuodet]/CALCULATE([Painottamattomat opiskelijavuodet],ALL(Muuttujat[Koulutuksen järjestäjä]))",
+            "expression": "[Painottamattomat opiskelijavuodet yhteensä]/CALCULATE([Painottamattomat opiskelijavuodet yhteensä],ALL(Muuttujat[Koulutuksen järjestäjä]))",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Prosenttiosuudet"
+          },
+          {
+            "name": "Muun koulutuksen painottamattomat opiskelijavuodet",
+            "expression": "CALCULATE(SUM([opiskelijavuodet_painottamaton]),Muuttujat[Tutkintotyyppi]=\"Muu ammatillinen koulutus\")",
+            "displayFolder": "Opiskelijavuodet"
+          },
+          {
+            "name": "Painottamattomat opiskelijavuodet (pl. muu koulutus)",
+            "expression": "[Painottamattomat opiskelijavuodet yhteensä]-[Muun koulutuksen painottamattomat opiskelijavuodet]",
+            "formatString": "#,0.00",
+            "displayFolder": "Opiskelijavuodet"
           }
         ],
         "annotations": [
@@ -8078,7 +8089,7 @@
                 "name": "Painotetut opiskelijavuodet yhteensä"
               },
               {
-                "name": "Painottamattomat opiskelijavuodet"
+                "name": "Painottamattomat opiskelijavuodet yhteensä"
               },
               {
                 "name": "Profiilikerroin"
@@ -8124,6 +8135,12 @@
               },
               {
                 "name": "Vankilakoulutuksen mukaan painotetut opiskelijavuodet %"
+              },
+              {
+                "name": "Muun koulutuksen painottamattomat opiskelijavuodet"
+              },
+              {
+                "name": "Painottamattomat opiskelijavuodet (pl. muu koulutus)"
               }
             ]
           },
