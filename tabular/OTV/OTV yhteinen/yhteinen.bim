@@ -7330,7 +7330,7 @@
               <Commands>
                 <Command>
                   <Text>CALCULATE; 
-CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1; 
+CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1, VISIBLE = 0; 
 ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measures defined]; </Text>
                 </Command>
                 <Command>
@@ -7339,7 +7339,8 @@ ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measure
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Aloittaneet]=calculate(sum([aloittaneet_lkm]),filter(Muuttujat,[Koulutusaste taso 2]&lt;&gt;"Koulutusaste tuntematon"));
+CREATE MEASURE 'Muuttujat'[Aloittaneet]=var lkm = calculate(sum([aloittaneet_lkm]),filter(Muuttujat,[Koulutusaste taso 2]&lt;&gt;"Koulutusaste tuntematon"))
+return IF(lkm = 0, blank(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -7358,7 +7359,8 @@ CREATE MEASURE 'Muuttujat'[Aloittaneet]=calculate(sum([aloittaneet_lkm]),filter(
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Opiskelijat]=sum([opiskelijat_lkm]);
+CREATE MEASURE 'Muuttujat'[Opiskelijat]=var lkm = sum([opiskelijat_lkm])
+return IF(lkm = 0, blank(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -7377,7 +7379,8 @@ CREATE MEASURE 'Muuttujat'[Opiskelijat]=sum([opiskelijat_lkm]);
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Tutkinnot]=sum([tutkinnot_lkm]);
+CREATE MEASURE 'Muuttujat'[Tutkinnot]=var lkm = sum([tutkinnot_lkm])
+return IF(lkm = 0, blank(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -7396,7 +7399,7 @@ CREATE MEASURE 'Muuttujat'[Tutkinnot]=sum([tutkinnot_lkm]);
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Nybörjare]=calculate(sum([aloittaneet_lkm]),filter(Muuttujat,[Koulutusaste taso 2]&lt;&gt;"Koulutusaste tuntematon"));
+CREATE MEASURE 'Muuttujat'[Nybörjare]=[Aloittaneet];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -7415,7 +7418,7 @@ CREATE MEASURE 'Muuttujat'[Nybörjare]=calculate(sum([aloittaneet_lkm]),filter(M
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[New students]=calculate(sum([aloittaneet_lkm]),filter(Muuttujat,[Koulutusaste taso 2]&lt;&gt;"Koulutusaste tuntematon"));
+CREATE MEASURE 'Muuttujat'[New students]=[Aloittaneet];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -7434,7 +7437,7 @@ CREATE MEASURE 'Muuttujat'[New students]=calculate(sum([aloittaneet_lkm]),filter
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Studerande]=sum([opiskelijat_lkm]);
+CREATE MEASURE 'Muuttujat'[Studerande]=[Opiskelijat];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -7453,7 +7456,7 @@ CREATE MEASURE 'Muuttujat'[Studerande]=sum([opiskelijat_lkm]);
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Students]=sum([opiskelijat_lkm]);
+CREATE MEASURE 'Muuttujat'[Students]=[Opiskelijat];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -7472,7 +7475,7 @@ CREATE MEASURE 'Muuttujat'[Students]=sum([opiskelijat_lkm]);
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Examina]=sum([tutkinnot_lkm]);
+CREATE MEASURE 'Muuttujat'[Examina]=[Tutkinnot];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -7491,12 +7494,69 @@ CREATE MEASURE 'Muuttujat'[Examina]=sum([tutkinnot_lkm]);
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Qualifications]=sum([tutkinnot_lkm]);
+CREATE MEASURE 'Muuttujat'[Qualifications]=[Tutkinnot];
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
                       <Value>Qualifications</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Aloittaneet_s]=calculate(sum([aloittaneet_lkm]),filter(Muuttujat,[Koulutusaste taso 2]&lt;&gt;"Koulutusaste tuntematon"));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Aloittaneet_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Opiskelijat_s]=sum([opiskelijat_lkm]);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Opiskelijat_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Tutkinnot_s]=sum([tutkinnot_lkm]);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Tutkinnot_s</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -7692,6 +7752,69 @@ CREATE MEASURE 'Muuttujat'[Qualifications]=sum([tutkinnot_lkm]);
                     </Annotation>
                   </Annotations>
                   <CalculationReference>[Qualifications]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Aloittaneet_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Opiskelijat_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Tutkinnot_s]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
