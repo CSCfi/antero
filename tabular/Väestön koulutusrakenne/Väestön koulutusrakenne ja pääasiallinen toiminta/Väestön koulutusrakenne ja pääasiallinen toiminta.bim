@@ -18134,7 +18134,7 @@
               <Commands>
                 <Command>
                   <Text>CALCULATE; 
-CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1; 
+CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1, VISIBLE = 0; 
 ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measures defined]; </Text>
                 </Command>
                 <Command>
@@ -18143,7 +18143,9 @@ ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measure
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[15 vuotta täyttäneen väestön lukumäärä]=SUM([15 vuotta täyttäneen väestön lukumäärä2]);
+CREATE MEASURE 'Muuttujat'[15 vuotta täyttäneen väestön lukumäärä]=
+var summa = SUM([15 vuotta täyttäneen väestön lukumäärä2])
+return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -18162,7 +18164,7 @@ CREATE MEASURE 'Muuttujat'[15 vuotta täyttäneen väestön lukumäärä]=SUM([1
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[15 år fyllda av befolkningen]=SUM([15 vuotta täyttäneen väestön lukumäärä2]);
+CREATE MEASURE 'Muuttujat'[15 år fyllda av befolkningen]=[15 vuotta täyttäneen väestön lukumäärä];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -18181,7 +18183,7 @@ CREATE MEASURE 'Muuttujat'[15 år fyllda av befolkningen]=SUM([15 vuotta täytt�
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Persons aged 15 and older]=SUM([15 vuotta täyttäneen väestön lukumäärä2]);
+CREATE MEASURE 'Muuttujat'[Persons aged 15 and older]=[15 vuotta täyttäneen väestön lukumäärä];
 </Text>
                   <Annotations>
                     <Annotation>
