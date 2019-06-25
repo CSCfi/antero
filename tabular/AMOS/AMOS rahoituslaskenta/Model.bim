@@ -3648,12 +3648,17 @@
           },
           {
             "name": "Muun koulutuksen painottamattomat opiskelijavuodet",
-            "expression": "CALCULATE(SUM([opiskelijavuodet_painottamaton]),Muuttujat[Tutkintotyyppi]=\"Muu ammatillinen koulutus\")",
+            "expression": "CALCULATE(SUM([opiskelijavuodet_painottamaton]),FILTER(Muuttujat,[Tutkintotyyppi]=\"Muu ammatillinen koulutus\"))",
+            "formatString": "#,0.00",
             "displayFolder": "Opiskelijavuodet"
           },
           {
             "name": "Painottamattomat opiskelijavuodet (pl. muu koulutus)",
-            "expression": "[Painottamattomat opiskelijavuodet yhteensä]-[Muun koulutuksen painottamattomat opiskelijavuodet]",
+            "expression": [
+              "",
+              "var erotus = [Painottamattomat opiskelijavuodet yhteensä]-[Muun koulutuksen painottamattomat opiskelijavuodet]",
+              "return IF(erotus<0,0,erotus)"
+            ],
             "formatString": "#,0.00",
             "displayFolder": "Opiskelijavuodet"
           }
