@@ -1094,21 +1094,20 @@ CREATE MEASURE 'Muuttujat'[Lukiokoulutus, nuorten opetussuunnitelma / 16-18-vuot
 var vuosia = 3
 var lkm = ROUND(vuosia * sum([Väestö 16-18]), 0)
 return IF(OR(uudet = 0, lkm = 0), BLANK(),
-	IF(uudet &lt; 5, IF(lkm &lt; 5, CONCATENATE(FORMAT(MROUND(1 / (4 / vuosia), 0.01), "0.00 – "), FORMAT(MROUND(4 / (1 / vuosia), 0.01), "0.00")),
-		            CONCATENATE(FORMAT(MROUND(1 / [Keskiarvo 16-18], 0.01), "0.00 – "), FORMAT(ROUND(4 / [Keskiarvo 16-18], 0.01), "0.00"))),
-                    [Lukion aloittaneet (nuoret)] / [Keskiarvo 16-18]));
+	IF(uudet &lt; 5, IF(lkm &lt; 5, CONCATENATE(FORMAT(1 / (4 / vuosia), "0.00 – "), FORMAT(4 / (1 / vuosia), "0.00")),
+		            CONCATENATE(FORMAT(1 / [Keskiarvo 16-18], "0.00 – "), FORMAT(4 / [Keskiarvo 16-18], "0.00"))),
+                    IF(lkm &lt; 5, CONCATENATE(FORMAT(uudet / (4 / vuosia), "0.00 – "), FORMAT(uudet / (1 / vuosia), "0.00")),
+                        [Lukion aloittaneet (nuoret)] / [Keskiarvo 16-18])));
 </Text><Annotations><Annotation><Name>FullName</Name><Value>Lukiokoulutus, nuorten opetussuunnitelma / 16-18-vuotiaiden keskim. ikäluokka</Value></Annotation><Annotation><Name>Table</Name><Value>Muuttujat</Value></Annotation></Annotations></Command><Command><Text>----------------------------------------------------------
 -- PowerPivot measures command (do not modify manually) --
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Keskiarvo 16-18]=                     
-var vuosia = 3
+CREATE MEASURE 'Muuttujat'[Keskiarvo 16-18]=var vuosia = 3
 var lkm = ROUND(vuosia * sum([Väestö 16-18]), 0)
 return IF(lkm = 0, BLANK(),
 	IF(lkm &lt; 5,  CONCATENATE(FORMAT(MROUND(1 / vuosia, 0.01), "0.00 – "), FORMAT(MROUND(4 / vuosia, 0.01), "0.00")),
-                     MROUND(lkm, 3) / vuosia))
-;
+                     MROUND(lkm, 3) / vuosia));
 </Text><Annotations><Annotation><Name>FullName</Name><Value>Keskiarvo 16-18</Value></Annotation><Annotation><Name>Table</Name><Value>Muuttujat</Value></Annotation></Annotations></Command><Command><Text>----------------------------------------------------------
 -- PowerPivot measures command (do not modify manually) --
 ----------------------------------------------------------
@@ -1121,8 +1120,7 @@ return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Keskiarvo 19-21]=
-var vuosia = 3
+CREATE MEASURE 'Muuttujat'[Keskiarvo 19-21]=var vuosia = 3
 var lkm = ROUND(vuosia * sum([Väestö 19-21]), 0)
 return IF(lkm = 0, BLANK(),
 	IF(lkm &lt; 5,  CONCATENATE(FORMAT(MROUND(1 / vuosia, 0.01), "0.00 – "), FORMAT(MROUND(4 / vuosia, 0.01), "0.00")),
@@ -1132,8 +1130,7 @@ return IF(lkm = 0, BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Keskiarvo 25-64]=
-var vuosia = 40 
+CREATE MEASURE 'Muuttujat'[Keskiarvo 25-64]=var vuosia = 40 
 var lkm = ROUND(vuosia * sum([Väestö 25-64]), 0)
 return IF(lkm = 0, BLANK(),
 	IF(lkm &lt; 5,  CONCATENATE(FORMAT(MROUND(1 / vuosia, 0.01), "0.00 – "), FORMAT(MROUND(4 / vuosia, 0.01), "0.00")),
@@ -1147,9 +1144,10 @@ CREATE MEASURE 'Muuttujat'[Ops-perusteinen oppilaitosmuotoinen amm. pk / 16-18-v
 var vuosia = 3
 var lkm = ROUND(vuosia * sum([Väestö 16-18]), 0)
 return IF(OR(uudet = 0, lkm = 0), BLANK(),
-	IF(uudet &lt; 5, IF(lkm &lt; 5, CONCATENATE(FORMAT(MROUND(1 / (4 / vuosia), 0.01), "0.00 – "), FORMAT(MROUND(4 / (1 / vuosia), 0.01), "0.00")),
-		            CONCATENATE(FORMAT(MROUND(1 / [Keskiarvo 16-18], 0.01), "0.00 – "), FORMAT(ROUND(4 / [Keskiarvo 16-18], 0.01), "0.00"))),
-                    [Ammtillisen peruskoulutuksen aloittaneet (nuoret)] / [Keskiarvo 16-18]));
+	IF(uudet &lt; 5, IF(lkm &lt; 5, CONCATENATE(FORMAT(1 / (4 / vuosia), "0.00 – "), FORMAT(4 / (1 / vuosia), "0.00")),
+		            CONCATENATE(FORMAT(1 / [Keskiarvo 16-18], "0.00 – "), FORMAT(4 / [Keskiarvo 16-18], "0.00"))),
+                    IF(lkm &lt; 5, CONCATENATE(FORMAT(uudet / (4 / vuosia), "0.00 – "), FORMAT(uudet / (1 / vuosia), "0.00")),
+                        [Ammtillisen peruskoulutuksen aloittaneet (nuoret)] / [Keskiarvo 16-18])));
 </Text><Annotations><Annotation><Name>FullName</Name><Value>Ops-perusteinen oppilaitosmuotoinen amm. pk / 16-18-vuotiaiden keskim. ikäluokka</Value></Annotation><Annotation><Name>Table</Name><Value>Muuttujat</Value></Annotation></Annotations></Command><Command><Text>----------------------------------------------------------
 -- PowerPivot measures command (do not modify manually) --
 ----------------------------------------------------------
@@ -1166,9 +1164,10 @@ CREATE MEASURE 'Muuttujat'[Näyttötutkintoon valmistava amm. pk, oppilaitosm. /
 var vuosia = 40
 var lkm = ROUND(vuosia * sum([Väestö 25-64]), 0)
 return IF(OR(uudet = 0, lkm = 0), BLANK(),
-	IF(uudet &lt; 5, IF(lkm &lt; 5, CONCATENATE(FORMAT(MROUND(1 / (4 / vuosia), 0.01), "0.00 – "), FORMAT(MROUND(4 / (1 / vuosia), 0.01), "0.00")),
-		            CONCATENATE(FORMAT(MROUND(1 / [Keskiarvo 25-64], 0.01), "0.00 – "), FORMAT(ROUND(4 / [Keskiarvo 25-64], 0.01), "0.00"))),
-                    [Näyttötutkintoon valmistavan peruskoulutuksen uudet opiskelijat (oppilaitosmuotoinen)] / [Keskiarvo 25-64]));
+	IF(uudet &lt; 5, IF(lkm &lt; 5, CONCATENATE(FORMAT(1 / (4 / vuosia), "0.00 – "), FORMAT(4 / (1 / vuosia), "0.00")),
+		            CONCATENATE(FORMAT(1 / [Keskiarvo 25-64], "0.00 – "), FORMAT(4 / [Keskiarvo 25-64], "0.00"))),
+                    IF(lkm &lt; 5, CONCATENATE(FORMAT(uudet / (4 / vuosia), "0.00 – "), FORMAT(uudet / (1 / vuosia), "0.00")),
+                        [Näyttötutkintoon valmistavan peruskoulutuksen uudet opiskelijat (oppilaitosmuotoinen)] / [Keskiarvo 25-64])));
 </Text><Annotations><Annotation><Name>FullName</Name><Value>Näyttötutkintoon valmistava amm. pk, oppilaitosm. / 25-64-vuotiaiden keskim. ikäluokka</Value></Annotation><Annotation><Name>Table</Name><Value>Muuttujat</Value></Annotation></Annotations></Command><Command><Text>----------------------------------------------------------
 -- PowerPivot measures command (do not modify manually) --
 ----------------------------------------------------------
@@ -1185,9 +1184,10 @@ CREATE MEASURE 'Muuttujat'[Näyttötutkintoon valmistava amm. pk, oppis. / 25-64
 var vuosia = 40
 var lkm = ROUND(vuosia * sum([Väestö 25-64]), 0)
 return IF(OR(uudet = 0, lkm = 0), BLANK(),
-	IF(uudet &lt; 5, IF(lkm &lt; 5, CONCATENATE(FORMAT(MROUND(1 / (4 / vuosia), 0.01), "0.00 – "), FORMAT(MROUND(4 / (1 / vuosia), 0.01), "0.00")),
-		            CONCATENATE(FORMAT(MROUND(1 / [Keskiarvo 25-64], 0.01), "0.00 – "), FORMAT(ROUND(4 / [Keskiarvo 25-64], 0.01), "0.00"))),
-                    [Näyttötutkintoon valmistavan peruskoulutuksen uudet opiskelijat (oppisopimus)] / [Keskiarvo 25-64]));
+	IF(uudet &lt; 5, IF(lkm &lt; 5, CONCATENATE(FORMAT(1 / (4 / vuosia), "0.00 – "), FORMAT(4 / (1 / vuosia), "0.00")),
+		            CONCATENATE(FORMAT(1 / [Keskiarvo 25-64], "0.00 – "), FORMAT(4 / [Keskiarvo 25-64], "0.00"))),
+                    IF(lkm &lt; 5, CONCATENATE(FORMAT(uudet / (4 / vuosia), "0.00 – "), FORMAT(uudet / (1 / vuosia), "0.00")),
+                        [Näyttötutkintoon valmistavan peruskoulutuksen uudet opiskelijat (oppisopimus)] / [Keskiarvo 25-64])));
 </Text><Annotations><Annotation><Name>FullName</Name><Value>Näyttötutkintoon valmistava amm. pk, oppis. / 25-64-vuotiaiden keskim. ikäluokka</Value></Annotation><Annotation><Name>Table</Name><Value>Muuttujat</Value></Annotation></Annotations></Command><Command><Text>----------------------------------------------------------
 -- PowerPivot measures command (do not modify manually) --
 ----------------------------------------------------------
@@ -1211,9 +1211,10 @@ CREATE MEASURE 'Muuttujat'[Amm. ja erikoisamm. tutkintoihin valmistava, oppilait
 var vuosia = 40
 var lkm = ROUND(vuosia * sum([Väestö 25-64]), 0)
 return IF(OR(uudet = 0, lkm = 0), BLANK(),
-	IF(uudet &lt; 5, IF(lkm &lt; 5, CONCATENATE(FORMAT(MROUND(1 / (4 / vuosia), 0.01), "0.00 – "), FORMAT(MROUND(4 / (1 / vuosia), 0.01), "0.00")),
-		            CONCATENATE(FORMAT(MROUND(1 / [Keskiarvo 25-64], 0.01), "0.00 – "), FORMAT(ROUND(4 / [Keskiarvo 25-64], 0.01), "0.00"))),
-                    [Ammatti- ja erikoisammattitutkinnon uudet opiskelijat (oppilaitosmuotoinen)] / [Keskiarvo 25-64]));
+	IF(uudet &lt; 5, IF(lkm &lt; 5, CONCATENATE(FORMAT(1 / (4 / vuosia), "0.00 – "), FORMAT(4 / (1 / vuosia), "0.00")),
+		            CONCATENATE(FORMAT(1 / [Keskiarvo 25-64], "0.00 – "), FORMAT(4 / [Keskiarvo 25-64], "0.00"))),
+                    IF(lkm &lt; 5, CONCATENATE(FORMAT(uudet / (4 / vuosia), "0.00 – "), FORMAT(uudet / (1 / vuosia), "0.00")),
+                        [Ammatti- ja erikoisammattitutkinnon uudet opiskelijat (oppilaitosmuotoinen)] / [Keskiarvo 25-64])));
 </Text><Annotations><Annotation><Name>FullName</Name><Value>Amm. ja erikoisamm. tutkintoihin valmistava, oppilaitosm. / 25-64-vuotiaiden keskim. ikäluokka</Value></Annotation><Annotation><Name>Table</Name><Value>Muuttujat</Value></Annotation></Annotations></Command><Command><Text>----------------------------------------------------------
 -- PowerPivot measures command (do not modify manually) --
 ----------------------------------------------------------
@@ -1223,9 +1224,10 @@ CREATE MEASURE 'Muuttujat'[Amm. ja erikoisamm. tutkintoihin valmistava, oppis. /
 var vuosia = 40
 var lkm = ROUND(vuosia * sum([Väestö 25-64]), 0)
 return IF(OR(uudet = 0, lkm = 0), BLANK(),
-	IF(uudet &lt; 5, IF(lkm &lt; 5, CONCATENATE(FORMAT(MROUND(1 / (4 / vuosia), 0.01), "0.00 – "), FORMAT(MROUND(4 / (1 / vuosia), 0.01), "0.00")),
-		            CONCATENATE(FORMAT(MROUND(1 / [Keskiarvo 25-64], 0.01), "0.00 – "), FORMAT(ROUND(4 / [Keskiarvo 25-64], 0.01), "0.00"))),
-                    [Ammatti- ja erikoisammattitutkinnon uudet opiskelijat (oppisopimus)] / [Keskiarvo 25-64]));
+	IF(uudet &lt; 5, IF(lkm &lt; 5, CONCATENATE(FORMAT(1 / (4 / vuosia), "0.00 – "), FORMAT(4 / (1 / vuosia), "0.00")),
+		            CONCATENATE(FORMAT(1 / [Keskiarvo 25-64], "0.00 – "), FORMAT(4 / [Keskiarvo 25-64], "0.00"))),
+                    IF(lkm &lt; 5, CONCATENATE(FORMAT(uudet / (4 / vuosia), "0.00 – "), FORMAT(uudet / (1 / vuosia), "0.00")),
+                        [Ammatti- ja erikoisammattitutkinnon uudet opiskelijat (oppisopimus)] / [Keskiarvo 25-64])));
 </Text><Annotations><Annotation><Name>FullName</Name><Value>Amm. ja erikoisamm. tutkintoihin valmistava, oppis. / 25-64-vuotiaiden keskim. ikäluokka</Value></Annotation><Annotation><Name>Table</Name><Value>Muuttujat</Value></Annotation></Annotations></Command><Command><Text>----------------------------------------------------------
 -- PowerPivot measures command (do not modify manually) --
 ----------------------------------------------------------
@@ -1249,9 +1251,10 @@ CREATE MEASURE 'Muuttujat'[Amk-tutkinto / 19-21-vuotiaiden keskim. ikäluokka]=v
 var vuosia = 3
 var lkm = ROUND(vuosia * sum([Väestö 19-21]), 0)
 return IF(OR(uudet = 0, lkm = 0), BLANK(),
-	IF(uudet &lt; 5, IF(lkm &lt; 5, CONCATENATE(FORMAT(MROUND(1 / (4 / vuosia), 0.01), "0.00 – "), FORMAT(MROUND(4 / (1 / vuosia), 0.01), "0.00")),
-		            CONCATENATE(FORMAT(MROUND(1 / [Keskiarvo 19-21], 0.01), "0.00 – "), FORMAT(ROUND(4 / [Keskiarvo 19-21], 0.01), "0.00"))),
-                    MROUND(uudet, 3) / [Keskiarvo 19-21]));
+	IF(uudet &lt; 5, IF(lkm &lt; 5, CONCATENATE(FORMAT(1 / (4 / vuosia), "0.00 – "), FORMAT(4 / (1 / vuosia), "0.00")),
+		            CONCATENATE(FORMAT(1 / [Keskiarvo 19-21], "0.00 – "), FORMAT(4 / [Keskiarvo 19-21], "0.00"))),
+                    IF(lkm &lt; 5, CONCATENATE(FORMAT(uudet / (4 / vuosia), "0.00 – "), FORMAT(uudet / (1 / vuosia), "0.00")),
+                         MROUND(uudet, 3) / [Keskiarvo 19-21])));
 </Text><Annotations><Annotation><Name>FullName</Name><Value>Amk-tutkinto / 19-21-vuotiaiden keskim. ikäluokka</Value></Annotation><Annotation><Name>Table</Name><Value>Muuttujat</Value></Annotation></Annotations></Command><Command><Text>----------------------------------------------------------
 -- PowerPivot measures command (do not modify manually) --
 ----------------------------------------------------------
@@ -1261,9 +1264,10 @@ CREATE MEASURE 'Muuttujat'[Amk-tutkinto, aikuisten koulutus (pl. vieraskielinen 
 var vuosia = 40
 var lkm = ROUND(vuosia * sum([Väestö 25-64]), 0)
 return IF(OR(uudet = 0, lkm = 0), BLANK(),
-	IF(uudet &lt; 5, IF(lkm &lt; 5, CONCATENATE(FORMAT(MROUND(1 / (4 / vuosia), 0.01), "0.00 – "), FORMAT(MROUND(4 / (1 / vuosia), 0.01), "0.00")),
-		            CONCATENATE(FORMAT(MROUND(1 / [Keskiarvo 25-64], 0.01), "0.00 – "), FORMAT(ROUND(4 / [Keskiarvo 25-64], 0.01), "0.00"))),
-                    [Ammattikorkeakoulutuksen uudet opiskelijat (aikuiset)] / [Keskiarvo 25-64]));
+	IF(uudet &lt; 5, IF(lkm &lt; 5, CONCATENATE(FORMAT(1 / (4 / vuosia), "0.00 – "), FORMAT(4 / (1 / vuosia), "0.00")),
+		            CONCATENATE(FORMAT(1 / [Keskiarvo 25-64], "0.00 – "), FORMAT(4 / [Keskiarvo 25-64], "0.00"))),
+                    IF(lkm &lt; 5, CONCATENATE(FORMAT(uudet / (4 / vuosia), "0.00 – "), FORMAT(uudet / (1 / vuosia), "0.00")),
+                        [Ammattikorkeakoulutuksen uudet opiskelijat (aikuiset)] / [Keskiarvo 25-64])));
 </Text><Annotations><Annotation><Name>FullName</Name><Value>Amk-tutkinto, aikuisten koulutus (pl. vieraskielinen koulutus) / 25-64-vuotiaiden keskim. ikäluokka</Value></Annotation><Annotation><Name>Table</Name><Value>Muuttujat</Value></Annotation></Annotations></Command><Command><Text>----------------------------------------------------------
 -- PowerPivot measures command (do not modify manually) --
 ----------------------------------------------------------
@@ -1280,9 +1284,10 @@ CREATE MEASURE 'Muuttujat'[Ylempi amk-tutkinto / 25-64-vuotiaiden keskim. ikälu
 var vuosia = 40
 var lkm = ROUND(vuosia * sum([Väestö 25-64]), 0)
 return IF(OR(uudet = 0, lkm = 0), BLANK(),
-	IF(uudet &lt; 5, IF(lkm &lt; 5, CONCATENATE(FORMAT(MROUND(1 / (4 / vuosia), 0.01), "0.00 – "), FORMAT(MROUND(4 / (1 / vuosia), 0.01), "0.00")),
-		            CONCATENATE(FORMAT(MROUND(1 / [Keskiarvo 25-64], 0.01), "0.00 – "), FORMAT(ROUND(4 / [Keskiarvo 25-64], 0.01), "0.00"))),
-                    [Ylemmän ammattikorkeakoulutuksen uudet opiskelijat] / [Keskiarvo 25-64]));
+	IF(uudet &lt; 5, IF(lkm &lt; 5, CONCATENATE(FORMAT(1 / (4 / vuosia), "0.00 – "), FORMAT(4 / (1 / vuosia), "0.00")),
+		            CONCATENATE(FORMAT(1 / [Keskiarvo 25-64], "0.00 – "), FORMAT(4 / [Keskiarvo 25-64], "0.00"))),
+                    IF(lkm &lt; 5, CONCATENATE(FORMAT(uudet / (4 / vuosia), "0.00 – "), FORMAT(uudet / (1 / vuosia), "0.00")),
+                        [Ylemmän ammattikorkeakoulutuksen uudet opiskelijat] / [Keskiarvo 25-64])));
 </Text><Annotations><Annotation><Name>FullName</Name><Value>Ylempi amk-tutkinto / 25-64-vuotiaiden keskim. ikäluokka</Value></Annotation><Annotation><Name>Table</Name><Value>Muuttujat</Value></Annotation></Annotations></Command><Command><Text>----------------------------------------------------------
 -- PowerPivot measures command (do not modify manually) --
 ----------------------------------------------------------
@@ -1299,9 +1304,10 @@ CREATE MEASURE 'Muuttujat'[Alempi tai ylempi kk-tutkinto / 19-21-vuotiaiden kesk
 var vuosia = 3
 var lkm = ROUND(vuosia * sum([Väestö 19-21]), 0)
 return IF(OR(uudet = 0, lkm = 0), BLANK(),
-	IF(uudet &lt; 5, IF(lkm &lt; 5, CONCATENATE(FORMAT(MROUND(1 / (4 / vuosia), 0.01), "0.00 – "), FORMAT(MROUND(4 / (1 / vuosia), 0.01), "0.00")),
-		            CONCATENATE(FORMAT(MROUND(1 / [Keskiarvo 19-21], 0.01), "0.00 – "), FORMAT(ROUND(4 / [Keskiarvo 19-21], 0.01), "0.00"))),
-                    [Alemman ja ylemmän korkeakoulututkinnon uudet opiskelijat] / [Keskiarvo 19-21]));
+	IF(uudet &lt; 5, IF(lkm &lt; 5, CONCATENATE(FORMAT(1 / (4 / vuosia), "0.00 – "), FORMAT(4 / (1 / vuosia), "0.00")),
+		            CONCATENATE(FORMAT(1 / [Keskiarvo 19-21], "0.00 – "), FORMAT(4 / [Keskiarvo 19-21], "0.00"))),
+                    IF(lkm &lt; 5, CONCATENATE(FORMAT(uudet / (4 / vuosia), "0.00 – "), FORMAT(uudet / (1 / vuosia), "0.00")),
+                        [Alemman ja ylemmän korkeakoulututkinnon uudet opiskelijat] / [Keskiarvo 19-21])));
 </Text><Annotations><Annotation><Name>FullName</Name><Value>Alempi tai ylempi kk-tutkinto / 19-21-vuotiaiden keskim. ikäluokka</Value></Annotation><Annotation><Name>Table</Name><Value>Muuttujat</Value></Annotation></Annotations></Command><Command><Text>----------------------------------------------------------
 -- PowerPivot measures command (do not modify manually) --
 ----------------------------------------------------------
@@ -1323,10 +1329,10 @@ return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 
 CREATE MEASURE 'Muuttujat'[Esiopetus / 6-vuotiaiden ikäluokka]=var uudet = CALCULATE(sum([Aloittaneet]),Muuttujat[Sektori]="Esiopetus")
 var lkm = sum([Väestö 6])
-return IF(OR(uudet = 0, lkm = 0), BLANK(),
-	IF(uudet &lt; 5, IF(lkm &lt; 5, CONCATENATE(FORMAT(MROUND(1 / 4, 0.01), "0.00 – "), FORMAT(MROUND(4 / 1, 0.01), "0.00")),
-		            CONCATENATE(FORMAT(MROUND(1 / [Määrä 6], 0.01), "0.00 – "), FORMAT(MROUND(4 / [Määrä 6], 0.01), "0.00"))),
-                    [Esiopetuksen oppilaat] / [Määrä 6]));
+return IF(uudet = 0, BLANK(),
+	IF(lkm &lt; 5, CONCATENATE(FORMAT(0.25, "0.00 – "), FORMAT(1, "0.00")),
+	    IF(uudet &lt; 5, CONCATENATE(FORMAT(1 / [Määrä 6], "0.00 – "), FORMAT(4 / [Määrä 6], "0.00")),
+                        [Esiopetuksen oppilaat] / [Määrä 6])));
 </Text><Annotations><Annotation><Name>FullName</Name><Value>Esiopetus / 6-vuotiaiden ikäluokka</Value></Annotation><Annotation><Name>Table</Name><Value>Muuttujat</Value></Annotation></Annotations></Command><Command><Text>----------------------------------------------------------
 -- PowerPivot measures command (do not modify manually) --
 ----------------------------------------------------------
@@ -1348,10 +1354,10 @@ return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 
 CREATE MEASURE 'Muuttujat'[Perusopetuksen 1. luokka / 7-vuotiaiden ikäluokka]=var uudet = calculate(sum([Aloittaneet]),Muuttujat[Sektori]="Perusopetus")
 var lkm = sum([Väestö 7])
-return IF(OR(uudet = 0, lkm = 0), BLANK(),
-	IF(uudet &lt; 5, IF(lkm &lt; 5, CONCATENATE(FORMAT(MROUND(1 / 4, 0.01), "0.00 – "), FORMAT(MROUND(4 / 1, 0.01), "0.00")),
-		            CONCATENATE(FORMAT(MROUND(1 / [Määrä 7], 0.01), "0.00 – "), FORMAT(MROUND(4 / [Määrä 7], 0.01), "0.00"))),
-                    [Perusopetuksen 1. luokan oppilaat] / [Määrä 7]));
+return IF(uudet = 0, BLANK(),
+	IF(lkm &lt; 5, CONCATENATE(FORMAT(0.25, "0.00 – "), FORMAT(1, "0.00")),
+	    IF(uudet &lt; 5, CONCATENATE(FORMAT(1 / [Määrä 7], "0.00 – "), FORMAT(4 / [Määrä 7], "0.00")),
+                        [Perusopetuksen 1. luokan oppilaat] / [Määrä 7])));
 </Text><Annotations><Annotation><Name>FullName</Name><Value>Perusopetuksen 1. luokka / 7-vuotiaiden ikäluokka</Value></Annotation><Annotation><Name>Table</Name><Value>Muuttujat</Value></Annotation></Annotations></Command><Command><Text>----------------------------------------------------------
 -- PowerPivot measures command (do not modify manually) --
 ----------------------------------------------------------
