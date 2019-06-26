@@ -7339,8 +7339,7 @@ ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measure
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Aloittaneet]=var lkm = calculate(sum([aloittaneet_lkm]),filter(Muuttujat,[Koulutusaste taso 2]&lt;&gt;"Koulutusaste tuntematon"))
-return IF(lkm = 0, blank(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
+CREATE MEASURE 'Muuttujat'[Aloittaneet]=IF(calculate(sum([aloittaneet_lkm]),filter(Muuttujat,[Koulutusaste taso 2]&lt;&gt;"Koulutusaste tuntematon"))= 0, blank(), IF(calculate(sum([aloittaneet_lkm]),filter(Muuttujat,[Koulutusaste taso 2]&lt;&gt;"Koulutusaste tuntematon")) &lt; 5, "1-4", MROUND(calculate(sum([aloittaneet_lkm]),filter(Muuttujat,[Koulutusaste taso 2]&lt;&gt;"Koulutusaste tuntematon")), 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -7359,8 +7358,7 @@ return IF(lkm = 0, blank(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Opiskelijat]=var lkm = sum([opiskelijat_lkm])
-return IF(lkm = 0, blank(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
+CREATE MEASURE 'Muuttujat'[Opiskelijat]=IF(sum([opiskelijat_lkm])= 0, blank(), IF(sum([opiskelijat_lkm])&lt; 5, "1-4", MROUND(sum([opiskelijat_lkm]), 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -7379,8 +7377,7 @@ return IF(lkm = 0, blank(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Tutkinnot]=var lkm = sum([tutkinnot_lkm])
-return IF(lkm = 0, blank(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
+CREATE MEASURE 'Muuttujat'[Tutkinnot]=IF(sum([tutkinnot_lkm])= 0, blank(), IF(sum([tutkinnot_lkm])&lt; 5, "1-4", MROUND(sum([tutkinnot_lkm]), 3)));
 </Text>
                   <Annotations>
                     <Annotation>
