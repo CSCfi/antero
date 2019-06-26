@@ -4250,7 +4250,7 @@
             "name": "Opiskelijat yhteensä",
             "expression": [
               "",
-              "var lkm = CALCULATE(SUM([lkm]), FILTER(Muuttujat, [erityisopetus] = 0),FILTER(Muuttujat, [Perusjoukko] = \"Opiskelijat\"))",
+              "var lkm = CALCULATE(SUM([lkm]), ALL(Muuttujat[erityisopetus]), Muuttujat[Perusjoukko] = \"Opiskelijat\")",
               "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
             ],
             "formatString": "#,0"
@@ -4313,8 +4313,9 @@
               "return IF(lkm = BLANK(), BLANK(),",
               "\tvar kaikki = CALCULATE([Tutkinnon suorittaneet yhteensä], ALL(Muuttujat[Opetusryhmä]))",
               "\treturn IF(kaikki = \"1-4\", \"25 % – 100 %\",",
-              "\t\tIF(lkm = \"1-4\", CONCATENATE(FORMAT(1 / kaikki, \"#0.0 % – \"), FORMAT(4 / kaikki, \"#0.0 %\")),",
+              "\t\tIF(lkm = \"1-4\", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\")),",
               "\t\t     lkm / kaikki)))",
+              "",
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
@@ -4327,8 +4328,9 @@
               "return IF(lkm = BLANK(), BLANK(),",
               "\tvar kaikki = CALCULATE([Opiskelijat yhteensä], ALL(Muuttujat[Opetusryhmä]))",
               "\treturn IF(kaikki = \"1-4\", \"25 % – 100 %\",",
-              "\t\tIF(lkm = \"1-4\", CONCATENATE(FORMAT(1 / kaikki, \"#0.0 % – \"), FORMAT(4 / kaikki, \"#0.0 %\")),",
+              "\t\tIF(lkm = \"1-4\", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\")),",
               "\t\t     lkm / kaikki)))",
+              "",
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
@@ -4341,8 +4343,9 @@
               "return IF(lkm = BLANK(), BLANK(),",
               "\tvar kaikki = CALCULATE([Uudet opiskelijat yhteensä], ALL(Muuttujat[Opetusryhmä]))",
               "\treturn IF(kaikki = \"1-4\", \"25 % – 100 %\",",
-              "\t\tIF(lkm = \"1-4\", CONCATENATE(FORMAT(1 / kaikki, \"#0.0 % – \"), FORMAT(4 / kaikki, \"#0.0 %\")),",
+              "\t\tIF(lkm = \"1-4\", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\")),",
               "\t\t     lkm / kaikki)))",
+              "",
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
@@ -4351,7 +4354,7 @@
             "name": "Uudet opiskelijat yhteensä",
             "expression": [
               "",
-              "var lkm = CALCULATE(SUM([lkm]), FILTER(Muuttujat, [erityisopetus] = 0), FILTER(Muuttujat, [Tilastovuosi] = [Aloituslukuvuosi]),FILTER(Muuttujat, [Perusjoukko] = \"Opiskelijat\"))",
+              "var lkm = CALCULATE(SUM([lkm]), ALL(Muuttujat[erityisopetus]), FILTER(Muuttujat, [Tilastovuosi] = [Aloituslukuvuosi]),FILTER(Muuttujat, [Perusjoukko] = \"Opiskelijat\"))",
               "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
               ""
             ],
@@ -4361,7 +4364,7 @@
             "name": "Tutkinnon suorittaneet yhteensä",
             "expression": [
               "",
-              "var lkm = CALCULATE(SUM([lkm]), FILTER(Muuttujat, [erityisopetus] = 0),FILTER(Muuttujat, [Perusjoukko] = \"Tutkinnon suorittaneet (ei sisällä osatutkintoja)\"))",
+              "var lkm = CALCULATE(SUM([lkm]), ALL(Muuttujat[erityisopetus]),FILTER(Muuttujat, [Perusjoukko] = \"Tutkinnon suorittaneet (ei sisällä osatutkintoja)\"))",
               "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
             ],
             "formatString": "#,0"
@@ -4464,8 +4467,9 @@
               "return IF(lkm = BLANK(), BLANK(),",
               "\tvar kaikki = [Opiskelijat perustutkinto]",
               "\treturn IF(kaikki = \"1-4\", \"25 % – 100 %\",",
-              "\t\tIF(lkm = \"1-4\", CONCATENATE(FORMAT(1 / kaikki, \"#0.0 % – \"), FORMAT(4 / kaikki, \"#0.0 %\")),",
-              "\t\t     lkm / kaikki)))"
+              "\t\tIF(lkm = \"1-4\", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\")),",
+              "\t\t     lkm / kaikki)))",
+              ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
@@ -4483,7 +4487,7 @@
             "name": "Opiskelijat perustutkinto",
             "expression": [
               "",
-              "var lkm = CALCULATE(SUM([lkm]), FILTER(Muuttujat, [erityisopetus] = 0),FILTER(Muuttujat, [Perusjoukko] = \"Opiskelijat\"),Muuttujat[Tutkintotyyppi]=\"ammatillinen perustutkinto\")",
+              "var lkm = CALCULATE(SUM([lkm]), ALL(Muuttujat[erityisopetus]),FILTER(Muuttujat, [Perusjoukko] = \"Opiskelijat\"),Muuttujat[Tutkintotyyppi]=\"ammatillinen perustutkinto\")",
               "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
               ""
             ],
