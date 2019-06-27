@@ -4748,17 +4748,17 @@
           },
           {
             "name": "Tohtorintutkinto samassa yliopistossa (%)",
-            "expression": "CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[tohtori_sama_yo]=1)/[Tohtorintutkinnon suorittaneet]",
+            "expression": "CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[tohtori_sama_yo]=1) / [Uudet työntekijät]",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Tohtorintutkinto muussa suomalaisessa yliopistossa (%)",
-            "expression": "CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[tohtori_eri_yo]=1)/[Tohtorintutkinnon suorittaneet]",
+            "expression": "CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[tohtori_eri_yo]=1) / [Uudet työntekijät]",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Tohtorintutkinto ulkomaisessa yliopistossa (%)",
-            "expression": "CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[tohtori_ulk_yo]=1)/[Tohtorintutkinnon suorittaneet]",
+            "expression": "CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[tohtori_ulk_yo]=1) / [Uudet työntekijät]",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
@@ -4878,18 +4878,12 @@
             "formatString": "#,0"
           },
           {
-            "name": "Tieto puuttuu",
-            "expression": "[Uudet työntekijät]-[Tohtorintutkinnon suorittaneet]",
-            "formatString": "#,0"
-          },
-          {
-            "name": "Tohtorintutkinto - tieto puuttuu",
+            "name": "Tohtorintutkinto - Tieto puuttuu (%)",
             "expression": [
               "",
-              "var perusjoukko = [Tohtorintutkinnon suorittaneet]",
-              "var tieto_loytyy = CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[tohtori_sama_yo]=1) +CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[tohtori_eri_yo]=1)",
-              "+CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[tohtori_ulk_yo]=1)",
-              "return (perusjoukko-tieto_loytyy)/perusjoukko",
+              "var perusjoukko = [Uudet työntekijät]",
+              "var tieto_loytyy = CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[tohtori_sama_yo]=1) + CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[tohtori_eri_yo]=1) + CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[tohtori_ulk_yo]=1)",
+              "return (perusjoukko - tieto_loytyy) / perusjoukko",
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
@@ -8323,13 +8317,7 @@
                 "name": "Uudet työntekijät"
               },
               {
-                "name": "Tohtorintutkinnon suorittaneet"
-              },
-              {
-                "name": "Tieto puuttuu"
-              },
-              {
-                "name": "Tohtorintutkinto - tieto puuttuu"
+                "name": "Tohtorintutkinto - Tieto puuttuu (%)"
               }
             ]
           },
