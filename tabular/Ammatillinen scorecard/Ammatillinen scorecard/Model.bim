@@ -939,22 +939,13 @@
           },
           {
             "name": "Työlliset",
-            "expression": [
-              "",
-              "var lkm = CALCULATE([1 v. tutkinnon jälkeen], FILTER(Muuttujat, OR([paaskoodi]= \"1\", [paaskoodi] = \"2\")))",
-              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
-            ],
+            "expression": "CALCULATE([1 v. tutkinnon jälkeen], FILTER(Muuttujat, OR([paaskoodi]= \"1\", [paaskoodi] = \"2\")))",
             "formatString": "#,0",
             "displayFolder": "Työllistyminen"
           },
           {
             "name": "Suoritetut tutkinnot alkuperäisessä tutkintolajissa",
-            "expression": [
-              "",
-              "var lkm = CALCULATE([Henkilöt], FILTER(Muuttujat, [Opintojen kulku] = \"Tutkinto alkuperäisessä tutkintolajissa\"))",
-              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
-              ""
-            ],
+            "expression": "CALCULATE([Henkilöt], FILTER(Muuttujat, [Opintojen kulku] = \"Tutkinto alkuperäisessä tutkintolajissa\"))",
             "formatString": "#,0",
             "displayFolder": "Läpäisy"
           },
@@ -974,12 +965,7 @@
           },
           {
             "name": "Suoritetut tutkinnot missä tahansa tutkintolajissa",
-            "expression": [
-              "",
-              "var lkm = CALCULATE([Henkilöt], FILTER(Muuttujat, OR(OR([Opintojen kulku] = \"Tutkinto alkuperäisessä tutkintolajissa\", [Opintojen kulku] =\"Tutkinto muussa tutkintolajissa\"), [Opintojen kulku] = \"Tutkinto muussa tutkintolajissa, kandidaatin tutkinto\")))",
-              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
-              ""
-            ],
+            "expression": "CALCULATE([Henkilöt], FILTER(Muuttujat, OR(OR([Opintojen kulku] = \"Tutkinto alkuperäisessä tutkintolajissa\", [Opintojen kulku] =\"Tutkinto muussa tutkintolajissa\"), [Opintojen kulku] = \"Tutkinto muussa tutkintolajissa, kandidaatin tutkinto\")))",
             "formatString": "#,0",
             "displayFolder": "Läpäisy"
           },
@@ -999,12 +985,7 @@
           },
           {
             "name": "Suoritetut tutkinnot missä tahansa ammatillisen koulutuksen tutkintolajissa",
-            "expression": [
-              "",
-              "var lkm = CALCULATE([Henkilöt], FILTER(Muuttujat, OR([Suoritettu tutkinto] = \"Ammatillinen perustutkinto\", [Suoritettu tutkinto] =\"Ammatillinen lisäkoulutus ammattitutkinto tai erikoisammattitutkinto\")))",
-              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
-              ""
-            ],
+            "expression": "CALCULATE([Henkilöt], FILTER(Muuttujat, OR([Suoritettu tutkinto] = \"Ammatillinen perustutkinto\", [Suoritettu tutkinto] =\"Ammatillinen lisäkoulutus ammattitutkinto tai erikoisammattitutkinto\")))",
             "formatString": "#,0",
             "displayFolder": "Läpäisy"
           },
@@ -1140,8 +1121,8 @@
               "return IF(OR(hakijat= BLANK(), paikat = BLANK()),  BLANK(),",
               "\tIF(hakijat = \"1-4\", IF(paikat= \"1-4\", CONCATENATE(FORMAT(1 / 4, \"0.0 – \"), FORMAT(4 / 1, \"0.0\")),",
               "\t\t\t   CONCATENATE(FORMAT(1 / paikat, \"0.0 – \"), FORMAT(4 / paikat, \"0.0\"))),",
-              "                     IF(paikat = \"1-4\", CONCATENATE(FORMAT(hakijat / 4, \"0.0 – \"), FORMAT(hakijat / 1, \"0.0\")),",
-              "                          hakijat / paikat)))"
+              "\t     IF(paikat = \"1-4\", CONCATENATE(FORMAT(hakijat / 4, \"0.0 – \"), FORMAT(hakijat / 1, \"0.0\")),",
+              "\t          hakijat / paikat)))"
             ],
             "formatString": "0.0",
             "displayFolder": "Keskiarvot"
