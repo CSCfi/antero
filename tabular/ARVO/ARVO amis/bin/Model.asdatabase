@@ -4187,7 +4187,7 @@
           },
           {
             "name": "Kyselyn kohteet",
-            "expression": "IF([Vastanneet]=\"<5\",[Vastanneet],SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm]))",
+            "expression": "IF([ehto_Kyselyn_kohteet]=TRUE(),BLANK(),IF([Vastanneet]=\"<5\",[Vastanneet],SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm])))",
             "formatString": "#,0"
           },
           {
@@ -4674,6 +4674,24 @@
               ""
             ],
             "formatString": "#,0"
+          },
+          {
+            "name": "ehto_Kyselyn_kohteet",
+            "expression": [
+              "SWITCH(TRUE(),",
+              "ISFILTERED([Aiempi koulutus]),TRUE(),",
+              "ISFILTERED([Ikäryhmä]),TRUE(),",
+              "ISFILTERED([Arvio tulevaisuudesta]),TRUE(),",
+              "ISFILTERED([Sukupuoli]),TRUE(),",
+              "ISFILTERED([Hakeutumisväylä]),TRUE(),",
+              "ISFILTERED([Äidinkieli]),TRUE(),",
+              "ISFILTERED([Korkein aiempi koulutus]),TRUE(),",
+              "ISFILTERED([Oppisopimuskoulutus]),TRUE()",
+              ")",
+              "",
+              ""
+            ],
+            "isHidden": true
           }
         ],
         "annotations": [
@@ -7860,6 +7878,11 @@
         "isHidden": true,
         "columns": [
           {
+            "name": "kyselykertaid",
+            "dataType": "int64",
+            "sourceColumn": "kyselykertaid"
+          },
+          {
             "name": "id",
             "dataType": "int64",
             "sourceColumn": "id",
@@ -7870,11 +7893,6 @@
             "dataType": "int64",
             "sourceColumn": "vastaajatunnukset_lkm",
             "sourceProviderType": "Integer"
-          },
-          {
-            "name": "kyselykertaid",
-            "dataType": "int64",
-            "sourceColumn": "kyselykertaid"
           }
         ],
         "partitions": [
@@ -8503,9 +8521,6 @@
                 "name": "Rahoitusmallikysymys"
               },
               {
-                "name": "Aiempi koulutus"
-              },
-              {
                 "name": "Koodit Oppilaitos"
               },
               {
@@ -8829,9 +8844,6 @@
           {
             "name": "Muuttujat",
             "columns": [
-              {
-                "name": "Aiempi koulutus"
-              },
               {
                 "name": "Arvio tulevaisuudesta"
               },
@@ -9237,9 +9249,6 @@
           {
             "name": "Muuttujat",
             "columns": [
-              {
-                "name": "Aiempi koulutus"
-              },
               {
                 "name": "Arvio tulevaisuudesta"
               },
