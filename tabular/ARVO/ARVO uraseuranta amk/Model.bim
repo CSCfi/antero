@@ -394,16 +394,17 @@
             "sourceColumn": "Järjestys työkokemus"
           },
           {
-            "type": "calculated",
-            "name": "luodut_tunnukset_avain",
-            "dataType": "double",
-            "isDataTypeInferred": true,
-            "expression": "[kyselykertaid]+[Koodit Oppilaitos]+[Koodit Tutkinto]"
-          },
-          {
             "name": "rahoituskysmys_paino",
             "dataType": "double",
             "sourceColumn": "rahoituskysmys_paino"
+          },
+          {
+            "type": "calculated",
+            "name": "Luodut_tunnukset_avain",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "expression": "CONCATENATE([kyselykertaid],CONCATENATE([Koodit Oppilaitos],[Koodit Tutkinto]))"
           }
         ],
         "partitions": [
@@ -1424,7 +1425,8 @@
           },
           {
             "name": "Kyselyn kohteet",
-            "expression": "SUM('Luodut tunnukset'[summa])"
+            "expression": "SUM('Luodut tunnukset'[summa])",
+            "formatString": "#,0"
           },
           {
             "name": "Vastausosuus",
@@ -2468,6 +2470,14 @@
             "dataType": "int64",
             "sourceColumn": "summa",
             "sourceProviderType": "Integer"
+          },
+          {
+            "type": "calculated",
+            "name": "Muuttujat_avain",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "expression": "CONCATENATE([kyselykertaid],CONCATENATE([oppilaitoskoodi],[tutkintokoodi]))"
           }
         ],
         "partitions": [
@@ -2483,7 +2493,7 @@
                 "\t,summa = sum(vastaajatunnukset_lkm)",
                 "from ANTERO.dw.f_arvo_luodut_vastaajatunnukset f",
                 "join ANTERO.dw.d_arvokyselykerta d on d.kyselykertaid = f.kyselykertaid",
-                "where d.kyselypohja = 'uraseuranta'",
+                "where d.kyselypohja = 'amk-uraseuranta'",
                 "group by ",
                 "\tf.kyselykertaid",
                 "\t,oppilaitoskoodi",
@@ -2502,7 +2512,7 @@
                   "\t,summa = sum(vastaajatunnukset_lkm)",
                   "from ANTERO.dw.f_arvo_luodut_vastaajatunnukset f",
                   "join ANTERO.dw.d_arvokyselykerta d on d.kyselykertaid = f.kyselykertaid",
-                  "where d.kyselypohja = 'uraseuranta'",
+                  "where d.kyselypohja = 'amk-uraseuranta'",
                   "group by ",
                   "\tf.kyselykertaid",
                   "\t,oppilaitoskoodi",
@@ -2523,7 +2533,7 @@
               "\t,summa = sum(vastaajatunnukset_lkm)",
               "from ANTERO.dw.f_arvo_luodut_vastaajatunnukset f",
               "join ANTERO.dw.d_arvokyselykerta d on d.kyselykertaid = f.kyselykertaid",
-              "where d.kyselypohja = 'uraseuranta'",
+              "where d.kyselypohja = 'amk-uraseuranta'",
               "group by ",
               "\tf.kyselykertaid",
               "\t,oppilaitoskoodi",
@@ -2544,7 +2554,7 @@
               "\t,summa = sum(vastaajatunnukset_lkm)",
               "from ANTERO.dw.f_arvo_luodut_vastaajatunnukset f",
               "join ANTERO.dw.d_arvokyselykerta d on d.kyselykertaid = f.kyselykertaid",
-              "where d.kyselypohja = 'uraseuranta'",
+              "where d.kyselypohja = 'amk-uraseuranta'",
               "group by ",
               "\tf.kyselykertaid",
               "\t,oppilaitoskoodi",
@@ -2552,6 +2562,16 @@
             ]
           }
         ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "97a6bcf7-9c85-4b0e-921f-79af80ac5eba",
+        "fromTable": "Muuttujat",
+        "fromColumn": "Luodut_tunnukset_avain",
+        "toTable": "Luodut tunnukset",
+        "toColumn": "Muuttujat_avain",
+        "crossFilteringBehavior": "bothDirections"
       }
     ],
     "perspectives": [
@@ -2637,6 +2657,9 @@
               },
               {
                 "name": "Pisteet"
+              },
+              {
+                "name": "Vastausosuus"
               }
             ]
           },
