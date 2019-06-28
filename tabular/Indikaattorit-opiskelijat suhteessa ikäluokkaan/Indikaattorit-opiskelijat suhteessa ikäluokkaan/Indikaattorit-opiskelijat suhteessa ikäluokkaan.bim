@@ -3613,7 +3613,7 @@ return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 CREATE MEASURE 'Muuttujat'[Keskiarvo 19-21]=var vuosia = 3
 var lkm = ROUND(vuosia * sum([Väestö 19-21]), 0)
 return IF(lkm = 0, BLANK(),
-	IF(lkm &lt; 5,  CONCATENATE(FORMAT(MROUND(1 / vuosia, 0.01), "0.00 – "), FORMAT(MROUND(4 / vuosia, 0.01), "0.00")),
+	IF(lkm &lt; 5,  CONCATENATE(FORMAT(1 / (4 / vuosia), "0.00 – "), FORMAT(4 / (1 / vuosia), "0.00")),
                      MROUND(lkm, 3) / vuosia));
 </Text>
                   <Annotations>
@@ -3636,7 +3636,7 @@ return IF(lkm = 0, BLANK(),
 CREATE MEASURE 'Muuttujat'[Keskiarvo 25-64]=var vuosia = 40 
 var lkm = ROUND(vuosia * sum([Väestö 25-64]), 0)
 return IF(lkm = 0, BLANK(),
-	IF(lkm &lt; 5,  CONCATENATE(FORMAT(MROUND(1 / vuosia, 0.01), "0.00 – "), FORMAT(MROUND(4 / vuosia, 0.01), "0.00")),
+	IF(lkm &lt; 5,  CONCATENATE(FORMAT(1 / (4 / vuosia), "0.00 – "), FORMAT(4 / (1 / vuosia), "0.00")),
                      MROUND(lkm, 3) / vuosia));
 </Text>
                   <Annotations>
@@ -4092,9 +4092,10 @@ return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 
 CREATE MEASURE 'Muuttujat'[Esiopetus / 6-vuotiaiden ikäluokka]=var uudet = CALCULATE(sum([Aloittaneet]),Muuttujat[Sektori]="Esiopetus")
 var lkm = sum([Väestö 6])
-return IF(uudet = 0, BLANK(),
-	IF(lkm &lt; 5, CONCATENATE(FORMAT(0.25, "0.00 – "), FORMAT(1, "0.00")),
-	    IF(uudet &lt; 5, CONCATENATE(FORMAT(1 / [Määrä 6], "0.00 – "), FORMAT(4 / [Määrä 6], "0.00")),
+return IF(OR(uudet = 0, lkm = 0), BLANK(),
+	IF(uudet &lt; 5, IF(lkm &lt; 5, CONCATENATE(FORMAT(1 / 4, "0.00 – "), FORMAT(4 / 1, "0.00")),
+		            CONCATENATE(FORMAT(1 / [Määrä 6], "0.00 – "), FORMAT(4 / [Määrä 6], "0.00"))),
+                    IF(lkm &lt; 5, CONCATENATE(FORMAT(uudet / 4, "0.00 – "), FORMAT(uudet / 1, "0.00")),
                         [Esiopetuksen oppilaat] / [Määrä 6])));
 </Text>
                   <Annotations>
@@ -4156,9 +4157,10 @@ return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 
 CREATE MEASURE 'Muuttujat'[Perusopetuksen 1. luokka / 7-vuotiaiden ikäluokka]=var uudet = calculate(sum([Aloittaneet]),Muuttujat[Sektori]="Perusopetus")
 var lkm = sum([Väestö 7])
-return IF(uudet = 0, BLANK(),
-	IF(lkm &lt; 5, CONCATENATE(FORMAT(0.25, "0.00 – "), FORMAT(1, "0.00")),
-	    IF(uudet &lt; 5, CONCATENATE(FORMAT(1 / [Määrä 7], "0.00 – "), FORMAT(4 / [Määrä 7], "0.00")),
+return IF(OR(uudet = 0, lkm = 0), BLANK(),
+	IF(uudet &lt; 5, IF(lkm &lt; 5, CONCATENATE(FORMAT(1 / 4, "0.00 – "), FORMAT(4 / 1, "0.00")),
+		            CONCATENATE(FORMAT(1 / [Määrä 7], "0.00 – "), FORMAT(4 / [Määrä 7], "0.00"))),
+                    IF(lkm &lt; 5, CONCATENATE(FORMAT(uudet / 4, "0.00 – "), FORMAT(uudet / 1, "0.00")),
                         [Perusopetuksen 1. luokan oppilaat] / [Määrä 7])));
 </Text>
                   <Annotations>
