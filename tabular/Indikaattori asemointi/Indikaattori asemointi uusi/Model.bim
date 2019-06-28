@@ -2755,35 +2755,19 @@
         "measures": [
           {
             "name": "Vähintään 55op suorittaneet",
-            "expression": [
-              " ",
-              "var summa = SUM([55op suorittaneet])",
-              "return IF(summa = 0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))"
-            ],
+            "expression": "SUM([55op suorittaneet])",
             "formatString": "### ### ###",
             "displayFolder": "Opintopisteet\\Asemointi"
           },
           {
             "name": "Vähintään 55 op suorittaneiden osuus",
-            "expression": [
-              " ",
-              "var lkm = [Vähintään 55op suorittaneet]",
-              "var lasna = [lasna (55)]",
-              "return IF(lkm = BLANK(), BLANK(),",
-              "\tIF(lasna = \"1-4\", \"25 % – 100 %\",",
-              "                    IF(lkm = \"1-4\",  CONCATENATE(FORMAT(1 / lasna, \"#0.0 % – \"), FORMAT(4 / lasna, \"#0.0 %\")),",
-              "                         lkm / lasna)))"
-            ],
+            "expression": " DIVIDE([Vähintään 55op suorittaneet],SUM([Läsnäolevat opiskelijat (55op)]))",
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Opintopisteet\\Asemointi"
           },
           {
             "name": "Tutkinnot lkm",
-            "expression": [
-              " ",
-              "var summa = SUM([tutkinnot])",
-              "return IF(summa = 0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))"
-            ],
+            "expression": " SUM([tutkinnot])",
             "formatString": "### ### ###",
             "displayFolder": "Tutkinnot\\Asemointi"
           },
@@ -2860,11 +2844,7 @@
           },
           {
             "name": "1-14op suorittaneet lkm",
-            "expression": [
-              " ",
-              "var summa = SUM([1-14op suorittaneet])",
-              "return IF(summa = 0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))"
-            ],
+            "expression": " SUM([1-14op suorittaneet])",
             "formatString": "### ### ###",
             "displayFolder": "Opintopisteet\\Asemointi"
           },
@@ -2930,11 +2910,7 @@
           },
           {
             "name": "lasna (55)",
-            "expression": [
-              " ",
-              "var summa = SUM(Muuttujat[Läsnäolevat opiskelijat (55op)])",
-              "return IF(summa = 0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))"
-            ],
+            "expression": " SUM(Muuttujat[Läsnäolevat opiskelijat (55op)])",
             "formatString": "### ### ###.###",
             "displayFolder": "Opintopisteet\\Asemointi"
           },
@@ -2952,11 +2928,7 @@
           },
           {
             "name": "Lasna (1-14)",
-            "expression": [
-              "",
-              "var summa = SUM(Muuttujat[Läsnäolleet opiskelijat (1-14op)])",
-              "return IF(summa = 0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))"
-            ],
+            "expression": " SUM(Muuttujat[Läsnäolleet opiskelijat (1-14op)])",
             "formatString": "### ### ###.###",
             "displayFolder": "Opintopisteet\\Asemointi"
           },
@@ -3079,18 +3051,22 @@
           {
             "name": "7v suorittaneet mround",
             "expression": [
-              "",
               "var summa = CALCULATE(SUM(Muuttujat[7v_suorittaneet_lkm]))",
-              "return IF(summa = 0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))"
+              "Var lasku = CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(CALCULATE(SUM(Muuttujat[7v_suorittaneet_lkm])),3))))",
+              "",
+              "return lasku",
+              ""
             ],
             "displayFolder": "Läpäisy\\Asemointi"
           },
           {
             "name": "7v aloittaneet mround",
             "expression": [
-              "",
               "var summa = CALCULATE(SUM([Yo 7v aloittaneet lkm]))",
-              "return IF(summa = 0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))"
+              "Var lasku = CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(CALCULATE(SUM([Yo 7v aloittaneet lkm])),3))))",
+              "",
+              "return lasku",
+              ""
             ],
             "displayFolder": "Läpäisy\\Asemointi"
           },
@@ -3351,18 +3327,22 @@
           {
             "name": "5v suorittaneet mround",
             "expression": [
-              "",
               "var summa = CALCULATE(SUM([5v_suorittaneet_lkm]))",
-              "return IF(summa = 0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))"
+              "Var lasku = CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(CALCULATE(SUM([5v_suorittaneet_lkm])),3))))",
+              "",
+              "return lasku",
+              ""
             ],
             "displayFolder": "Läpäisy\\Asemointi"
           },
           {
             "name": "5v aloittaneet mround",
             "expression": [
-              "",
               "var summa = CALCULATE(SUM([5v_Aloittaneet_lkm]))",
-              "return IF(summa = 0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))"
+              "Var lasku = CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(summa,3))))",
+              "",
+              "return lasku",
+              ""
             ],
             "displayFolder": "Läpäisy\\Asemointi"
           },
