@@ -4187,7 +4187,16 @@
           },
           {
             "name": "Kyselyn kohteet",
-            "expression": "IF([ehto_Kyselyn_kohteet]=TRUE(),BLANK(),IF([Vastanneet]=\"<5\",[Vastanneet],SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm])))",
+            "expression": [
+              "IF([ehto_Kyselyn_kohteet]=TRUE(),BLANK(),IF([Vastanneet]=\"<5\",[Vastanneet],",
+              "SUMX(",
+              "\tADDCOLUMNS(",
+              "\t\tSUMMARIZE(Muuttujat,Muuttujat[Koodit Koulutuksen järjestäjä]),",
+              "\t\t\"lkm\",CALCULATE(SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm]))",
+              "\t),",
+              "[lkm]))",
+              ")"
+            ],
             "formatString": "#,0"
           },
           {

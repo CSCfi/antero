@@ -217,25 +217,29 @@
             "name": "Koodit Tutkinto",
             "dataType": "string",
             "sourceColumn": "Koodit Tutkinto",
-            "sourceProviderType": "Char"
+            "sourceProviderType": "Char",
+            "displayFolder": "Koodimuuttujat"
           },
           {
             "name": "Koodit Oppilaitos",
             "dataType": "string",
             "sourceColumn": "Koodit Oppilaitos",
-            "sourceProviderType": "Char"
+            "sourceProviderType": "Char",
+            "displayFolder": "Koodimuuttujat"
           },
           {
             "name": "Koodit Koulutuksen järjestäjä",
             "dataType": "string",
             "sourceColumn": "Koodit Koulutuksen järjestäjä",
-            "sourceProviderType": "Char"
+            "sourceProviderType": "Char",
+            "displayFolder": "Koodimuuttujat"
           },
           {
             "name": "Koodit Tilastokuukausi",
             "dataType": "int64",
             "sourceColumn": "Koodit Tilastokuukausi",
-            "sourceProviderType": "Integer"
+            "sourceProviderType": "Integer",
+            "displayFolder": "Koodimuuttujat"
           },
           {
             "name": "Koodit Rahoitusmallikysymys",
@@ -344,7 +348,8 @@
           {
             "name": "Koulutusaste, taso 1",
             "dataType": "string",
-            "sourceColumn": "Koulutusaste, taso 1"
+            "sourceColumn": "Koulutusaste, taso 1",
+            "displayFolder": "Koulutusmuuttujat"
           },
           {
             "name": "Koulutusaste, taso 2",
@@ -376,6 +381,11 @@
             "isDataTypeInferred": true,
             "isHidden": true,
             "expression": "CONCATENATE([kyselykertaid],CONCATENATE([Koodit Oppilaitos],[Koodit Tutkinto]))"
+          },
+          {
+            "name": "luodut_vastaajatunnukset_id",
+            "dataType": "int64",
+            "sourceColumn": "luodut_vastaajatunnukset_id"
           }
         ],
         "partitions": [
@@ -807,6 +817,14 @@
                   "        <int>196</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>luodut_vastaajatunnukset_id</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>170</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -1217,6 +1235,14 @@
                   "        <int>50</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>luodut_vastaajatunnukset_id</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>51</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -1263,6 +1289,14 @@
                   "    <item>",
                   "      <key>",
                   "        <string>rahoituskysmys_paino</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>luodut_vastaajatunnukset_id</string>",
                   "      </key>",
                   "      <value>",
                   "        <boolean>true</boolean>",
@@ -1332,7 +1366,15 @@
           },
           {
             "name": "Kyselyn kohteet",
-            "expression": "IF([ehto_Kyselyn_kohteet]=TRUE(),BLANK(),SUM('Luodut tunnukset'[summa]))",
+            "expression": [
+              "IF([ehto_Kyselyn_kohteet]=TRUE(),BLANK(),",
+              "SUMX(",
+              "\tADDCOLUMNS(",
+              "\t\tSUMMARIZE(Muuttujat,Muuttujat[Koodit Koulutuksen järjestäjä]),",
+              "\t\t\"lkm\",CALCULATE(SUM(Luodut_vastaajatunnukset[lkm]))",
+              "\t),",
+              "[lkm]))"
+            ],
             "formatString": "#,0"
           },
           {
@@ -1790,6 +1832,14 @@
               "        <int>196</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>luodut_vastaajatunnukset_id</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>170</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -2200,6 +2250,14 @@
               "        <int>50</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>luodut_vastaajatunnukset_id</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>51</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -2246,6 +2304,14 @@
               "    <item>",
               "      <key>",
               "        <string>rahoituskysmys_paino</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>luodut_vastaajatunnukset_id</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -2304,59 +2370,33 @@
         ]
       },
       {
-        "name": "Luodut tunnukset",
+        "name": "Luodut_vastaajatunnukset",
         "isHidden": true,
         "columns": [
           {
-            "name": "kyselykertaid",
+            "name": "id",
             "dataType": "int64",
-            "sourceColumn": "kyselykertaid",
+            "sourceColumn": "id",
             "sourceProviderType": "Integer"
           },
           {
-            "name": "oppilaitoskoodi",
-            "dataType": "string",
-            "sourceColumn": "oppilaitoskoodi",
-            "sourceProviderType": "VarChar"
-          },
-          {
-            "name": "tutkintokoodi",
-            "dataType": "string",
-            "sourceColumn": "tutkintokoodi",
-            "sourceProviderType": "VarChar"
-          },
-          {
-            "name": "summa",
+            "name": "lkm",
             "dataType": "int64",
-            "sourceColumn": "summa",
-            "sourceProviderType": "Integer"
-          },
-          {
-            "type": "calculated",
-            "name": "Muuttujat_avain",
-            "dataType": "string",
-            "isDataTypeInferred": true,
-            "expression": "CONCATENATE([kyselykertaid],CONCATENATE([oppilaitoskoodi],[tutkintokoodi]))"
+            "sourceColumn": "lkm"
           }
         ],
         "partitions": [
           {
-            "name": "Query",
+            "name": "f_arvo_luodut_vastaajatunnukset",
             "dataView": "full",
             "source": {
               "query": [
-                "select ",
-                "\t f.kyselykertaid",
-                "\t,[oppilaitoskoodi]",
-                "    ,[tutkintokoodi]",
-                "\t,summa = sum(vastaajatunnukset_lkm)",
-                "from ANTERO.dw.f_arvo_luodut_vastaajatunnukset f",
-                "join ANTERO.dw.d_arvokyselykerta d on d.kyselykertaid = f.kyselykertaid",
-                "where d.kyselypohja = 'amk-uraseuranta'",
-                "group by ",
-                "\tf.kyselykertaid",
-                "\t,oppilaitoskoodi",
-                "\t,tutkintokoodi"
+                "SELECT ",
+                "\tvt.[id] ",
+                "\t,sum([vastaajatunnukset_lkm]) as lkm",
+                "FROM [ANTERO].[dw].[f_arvo_luodut_vastaajatunnukset] vt",
+                "where vt.kyselykertaid in (select kyselykertaid from ANTERO.dw.f_arvo_amk_uraseuranta f join ANTERO.dw.d_arvokyselykerta d on d.id=f.d_arvokyselykerta_id)",
+                "group by vt.[id]"
               ],
               "dataSource": "SqlServer dwitvipusql16 ANTERO"
             },
@@ -2364,60 +2404,52 @@
               {
                 "name": "QueryEditorSerialization",
                 "value": [
-                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>select ",
-                  "\t f.kyselykertaid",
-                  "\t,[oppilaitoskoodi]",
-                  "    ,[tutkintokoodi]",
-                  "\t,summa = sum(vastaajatunnukset_lkm)",
-                  "from ANTERO.dw.f_arvo_luodut_vastaajatunnukset f",
-                  "join ANTERO.dw.d_arvokyselykerta d on d.kyselykertaid = f.kyselykertaid",
-                  "where d.kyselypohja = 'amk-uraseuranta'",
-                  "group by ",
-                  "\tf.kyselykertaid",
-                  "\t,oppilaitoskoodi",
-                  "\t,tutkintokoodi</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT ",
+                  "\tvt.[id] ",
+                  "\t,sum([vastaajatunnukset_lkm]) as lkm",
+                  "FROM [ANTERO].[dw].[f_arvo_luodut_vastaajatunnukset] vt",
+                  "where vt.kyselykertaid in (select kyselykertaid from ANTERO.dw.f_arvo_amk_uraseuranta f join ANTERO.dw.d_arvokyselykerta d on d.id=f.d_arvokyselykerta_id)",
+                  "group by vt.[id]</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
                 ]
               }
             ]
+          }
+        ],
+        "measures": [
+          {
+            "name": "summa",
+            "expression": "SUM(Luodut_vastaajatunnukset[lkm])"
           }
         ],
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
             "value": [
-              "select ",
-              "\t f.kyselykertaid",
-              "\t,[oppilaitoskoodi]",
-              "    ,[tutkintokoodi]",
-              "\t,summa = sum(vastaajatunnukset_lkm)",
-              "from ANTERO.dw.f_arvo_luodut_vastaajatunnukset f",
-              "join ANTERO.dw.d_arvokyselykerta d on d.kyselykertaid = f.kyselykertaid",
-              "where d.kyselypohja = 'amk-uraseuranta'",
-              "group by ",
-              "\tf.kyselykertaid",
-              "\t,oppilaitoskoodi",
-              "\t,tutkintokoodi"
+              "SELECT ",
+              "\tvt.[id] ",
+              "\t,sum([vastaajatunnukset_lkm]) as lkm",
+              "FROM [ANTERO].[dw].[f_arvo_luodut_vastaajatunnukset] vt",
+              "where vt.kyselykertaid in (select kyselykertaid from ANTERO.dw.f_arvo_amk_uraseuranta f join ANTERO.dw.d_arvokyselykerta d on d.id=f.d_arvokyselykerta_id)",
+              "group by vt.[id]"
             ]
           },
           {
             "name": "_TM_ExtProp_DbTableName",
-            "value": "Query"
+            "value": "f_arvo_luodut_vastaajatunnukset"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dw"
           },
           {
             "name": "QueryEditorSerialization",
             "value": [
-              "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>select ",
-              "\t f.kyselykertaid",
-              "\t,[oppilaitoskoodi]",
-              "    ,[tutkintokoodi]",
-              "\t,summa = sum(vastaajatunnukset_lkm)",
-              "from ANTERO.dw.f_arvo_luodut_vastaajatunnukset f",
-              "join ANTERO.dw.d_arvokyselykerta d on d.kyselykertaid = f.kyselykertaid",
-              "where d.kyselypohja = 'amk-uraseuranta'",
-              "group by ",
-              "\tf.kyselykertaid",
-              "\t,oppilaitoskoodi",
-              "\t,tutkintokoodi</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+              "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT ",
+              "\tvt.[id] ",
+              "\t,sum([vastaajatunnukset_lkm]) as lkm",
+              "FROM [ANTERO].[dw].[f_arvo_luodut_vastaajatunnukset] vt",
+              "where vt.kyselykertaid in (select kyselykertaid from ANTERO.dw.f_arvo_amk_uraseuranta f join ANTERO.dw.d_arvokyselykerta d on d.id=f.d_arvokyselykerta_id)",
+              "group by vt.[id]</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
             ]
           }
         ]
@@ -2425,11 +2457,11 @@
     ],
     "relationships": [
       {
-        "name": "97a6bcf7-9c85-4b0e-921f-79af80ac5eba",
+        "name": "315b9e37-2bd1-4a23-aebd-cb796054855d",
         "fromTable": "Muuttujat",
-        "fromColumn": "Luodut_tunnukset_avain",
-        "toTable": "Luodut tunnukset",
-        "toColumn": "Muuttujat_avain",
+        "fromColumn": "luodut_vastaajatunnukset_id",
+        "toTable": "Luodut_vastaajatunnukset",
+        "toColumn": "id",
         "crossFilteringBehavior": "bothDirections"
       }
     ],
