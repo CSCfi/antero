@@ -4325,7 +4325,7 @@
           },
           {
             "name": "Målgruppens storlek",
-            "expression": "[Kyselyn kohteet]",
+            "expression": "IF([ehto_Kyselyn_kohteetSV]=TRUE(),BLANK(),IF([Vastanneet]=\"<5\",[Vastanneet],SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm])))",
             "formatString": "#,0"
           },
           {
@@ -4408,7 +4408,7 @@
           },
           {
             "name": "Size of the target group",
-            "expression": "[Kyselyn kohteet]",
+            "expression": "IF([ehto_Kyselyn_kohteetEN]=TRUE(),BLANK(),IF([Vastanneet]=\"<5\",[Vastanneet],SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm])))",
             "formatString": "#,0"
           },
           {
@@ -4679,7 +4679,6 @@
             "name": "ehto_Kyselyn_kohteet",
             "expression": [
               "SWITCH(TRUE(),",
-              "ISFILTERED([Aiempi koulutus]),TRUE(),",
               "ISFILTERED([Ikäryhmä]),TRUE(),",
               "ISFILTERED([Arvio tulevaisuudesta]),TRUE(),",
               "ISFILTERED([Sukupuoli]),TRUE(),",
@@ -4692,6 +4691,43 @@
               ""
             ],
             "isHidden": true
+          },
+          {
+            "name": "ehto_Kyselyn_kohteetSV",
+            "expression": [
+              "SWITCH(TRUE(),",
+              "ISFILTERED([Åldersgrupp]),TRUE(),",
+              "ISFILTERED([Bedömning av situationen]),TRUE(),",
+              "ISFILTERED([Kön]),TRUE(),",
+              "ISFILTERED([Ansökan]),TRUE(),",
+              "ISFILTERED([Modersmål]),TRUE(),",
+              "ISFILTERED([Den högsta tidigare utbildningen]),TRUE(),",
+              "ISFILTERED([Läroavtalsutbildning]),TRUE()",
+              ")",
+              ""
+            ],
+            "isHidden": true
+          },
+          {
+            "name": "ehto_Kyselyn_kohteetEN",
+            "expression": [
+              "SWITCH(TRUE(),",
+              "ISFILTERED([Age group]),TRUE(),",
+              "ISFILTERED([Expectations for the future]),TRUE(),",
+              "ISFILTERED([Gender]),TRUE(),",
+              "ISFILTERED([Application route]),TRUE(),",
+              "ISFILTERED([Mother tongue]),TRUE(),",
+              "ISFILTERED([The highest prior education]),TRUE(),",
+              "ISFILTERED([Apprenticeship training]),TRUE()",
+              ")",
+              ""
+            ],
+            "isHidden": true
+          },
+          {
+            "name": "Kyselyn kohteet_s",
+            "expression": "IF([ehto_Kyselyn_kohteet]=TRUE(),BLANK(),SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm]))",
+            "formatString": "#,0"
           }
         ],
         "annotations": [
