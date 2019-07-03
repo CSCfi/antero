@@ -5,7 +5,7 @@ import os
 from time import gmtime, strftime
 
 # Set URL
-url="https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet" #?tuleva=true&siirtyma=true&voimassaolo=true&poistunut=true&koulutustyyppi=koulutustyyppi_1&koulutustyyppi=koulutustyyppi_4&koulutustyyppi=koulutustyyppi_11&koulutustyyppi=koulutustyyppi_12&koulutustyyppi=koulutustyyppi_13&koulutustyyppi=koulutustyyppi_18&koulutustyyppi=koulutustyyppi_19&koulutustyyppi=koulutustyyppi_26"
+url="https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/" #?sivu=14" #?tuleva=true&siirtyma=true&voimassaolo=true&poistunut=true&koulutustyyppi=koulutustyyppi_1&koulutustyyppi=koulutustyyppi_4&koulutustyyppi=koulutustyyppi_11&koulutustyyppi=koulutustyyppi_12&koulutustyyppi=koulutustyyppi_13&koulutustyyppi=koulutustyyppi_18&koulutustyyppi=koulutustyyppi_19&koulutustyyppi=koulutustyyppi_26"
 
 #set username
 username = os.environ['USERNAME']
@@ -107,7 +107,7 @@ page =  response['sivu']
 pages = response['sivuja']
 loadtime = getTime()
 # While loop calls through all pages        
-while page <  pages: ## While there are pages left    
+while page < pages: ## While there are pages left    
     # iterate through the data object
     for i in response['data']:
         id_key= keycheck("id", i)
@@ -162,8 +162,7 @@ loadtime = getTime()
 for ePeruste in id_list:     
     #used in nested loops
     url2 = "https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/%s/kaikki" % ePeruste
-    response2 = requests.get(url2).json()  
-   
+    response2 = requests.get(url2).json()   
     
     if "suoritustavat" in response2:
         for st in response2["suoritustavat"]:
@@ -189,6 +188,9 @@ for ePeruste in id_list:
                     row_st_t1 = makerow_t1()
                     for osa_t1 in st["rakenne"]["osat"]:
                         t1=1
+                        #t2=0  # IF "empty" hierarchy rows which does have OSAT subobjects 
+                        #t3=0  # are not needed in data, THEN remove activte these set variable rows
+                        #t4=0  # Also repeat in every sub-level and comment some rows that are marked
                         row_st_t1 = makerow_t1()
                         row_st_t1["tutkinnonosa_fi_t1"] = deep_get(osa_t1, "nimi", "fi")
                         row_st_t1["tutkinnonosa_sv_t1"] = deep_get(osa_t1, "nimi", "sv")
@@ -206,6 +208,8 @@ for ePeruste in id_list:
                             row_st_t2 = makerow_t2()
                             for osa_t2 in osa_t1["osat"]:
                                 t2=1
+                                #t3=0  
+                                #t4=0
                                 row_st_t2 = makerow_t2()
                                 row_st_t2["tutkinnonosa_fi_t2"] = deep_get(osa_t2, "nimi", "fi")
                                 row_st_t2["tutkinnonosa_sv_t2"] = deep_get(osa_t2, "nimi", "sv")
@@ -218,13 +222,12 @@ for ePeruste in id_list:
                                 row_st_t2["tutkinnonosa_viite_t2"] = deep_get(osa_t2, "_tutkinnonOsaViite")
                                 osan_tunniste_t2 = deep_get(osa_t2, "tunniste")
                                 row_st_t2["osan_tunniste_t2"] = osan_tunniste_t2
-                                
-                              
-                                
+                                             
                                 if "osat" in osa_t2:
                                     
                                     for osa_t3 in osa_t2["osat"]:
                                         t3=1
+                                        #t4=0
                                         row_st_t3 = makerow_t3()
                                         row_st_t3["tutkinnonosa_fi_t3"] = deep_get(osa_t3, "nimi", "fi")
                                         row_st_t3["tutkinnonosa_sv_t3"] = deep_get(osa_t3, "nimi", "sv")
@@ -259,6 +262,7 @@ for ePeruste in id_list:
                                                 row_st_all4.update(row_st_t3)
                                                 row_st_all4.update(row_st_t4)
                                                 suoritustavat.append(row_st_all4)
+                                                t4=0  #Mark this row as a comment if removing certain hierarchy rows from data
                                             
                                         if t3==1 and t4==0:
                                             row_st_all3= makerow_st_all()
@@ -267,34 +271,38 @@ for ePeruste in id_list:
                                             row_st_all3.update(row_st_t2)
                                             row_st_all3.update(row_st_t3)
                                             suoritustavat.append(row_st_all3)
+                                            t3=0 #Mark this row as a comment if removing certain hierarchy rows from data
+                                            
                                 if t2==1 and t3==0:            
                                     row_st_all2= makerow_st_all()
                                     row_st_all2.update(row_st)
                                     row_st_all2.update(row_st_t1)
                                     row_st_all2.update(row_st_t2)
-                                    suoritustavat.append(row_st_all2)                                     
+                                    suoritustavat.append(row_st_all2)
+                                    t2=0       #Mark this row as a comment if removing certain hierarchy rows from data  
+                                    
                         if t1==1 and t2==0:            
                             row_st_all1= makerow_st_all()
                             row_st_all1.update(row_st)
                             row_st_all1.update(row_st_t1)
                             suoritustavat.append(row_st_all1)           
-  
+                            t1=0 #Mark this row as a comment if removing certain hierarchy rows from data
   
             except KeyError:
                 suoritustavat.append(row_st)
     
         
         #tutkinnonOsaViitteet = []
-        row_v = makerow_tutkinnonosaviitteet()
-        if "tutkinnonOsaViitteet" in st:
-            for viite in st["tutkinnonOsaViitteet"]:
-                row_v = makerow_tutkinnonosaviitteet()
-                row_v["id"] = deep_get(viite, "id")
-                row_v["laajuus"] = deep_get(viite,"laajuus")
-                row_v["tutkinnonosaid"] = deep_get(viite, "_tutkinnonOsa")
-                tutkinnonosaviitteet.append(row_v)
-        else:
-             tutkinnonosaviitteet.append(row_v)
+            row_v = makerow_tutkinnonosaviitteet()
+            if "tutkinnonOsaViitteet" in st:
+                for viite in st["tutkinnonOsaViitteet"]:
+                    row_v = makerow_tutkinnonosaviitteet()
+                    row_v["id"] = deep_get(viite, "id")
+                    row_v["laajuus"] = deep_get(viite,"laajuus")
+                    row_v["tutkinnonosaid"] = deep_get(viite, "_tutkinnonOsa")
+                    tutkinnonosaviitteet.append(row_v)
+            else:
+                 tutkinnonosaviitteet.append(row_v)
     else:
         row_st= makerow_suoritustavat()
         row_v = makerow_tutkinnonosaviitteet()
