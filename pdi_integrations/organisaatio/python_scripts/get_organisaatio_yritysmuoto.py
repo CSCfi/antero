@@ -8,11 +8,7 @@ organisaatio_v3_data=[]
 
 ##  import API use key, API user and base URL from Jenkins variables
 
-try:
-    base_url = os.environ['BASE_URL']
-except KeyError:
-    base_url="virkailija.opintopolku.fi"
-    print("Base URL is missing")
+base_url="virkailija.opintopolku.fi"
 #set username
 username = os.environ['USERNAME']
 url = "https://"+base_url+"/organisaatio-service/rest/organisaatio"
