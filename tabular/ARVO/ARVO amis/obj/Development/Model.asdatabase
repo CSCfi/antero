@@ -873,6 +873,17 @@
             "name": "Kiusaamiskysymys",
             "dataType": "int64",
             "sourceColumn": "Kiusaamiskysymys"
+          },
+          {
+            "name": "Statistical period",
+            "dataType": "string",
+            "sourceColumn": "Statistical period"
+          },
+          {
+            "name": "Question group",
+            "dataType": "string",
+            "sourceColumn": "Question group",
+            "sortByColumn": "Järjestys kysymysryhma"
           }
         ],
         "partitions": [
@@ -1928,6 +1939,22 @@
                   "        <int>109</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Statistical period</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>155</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Question group</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>149</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -2960,6 +2987,22 @@
                   "      </key>",
                   "      <value>",
                   "        <int>128</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Statistical period</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>129</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Question group</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>130</int>",
                   "      </value>",
                   "    </item>",
                   "  </ColumnDisplayIndex>",
@@ -3997,6 +4040,22 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Statistical period</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Question group</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -4187,7 +4246,16 @@
           },
           {
             "name": "Kyselyn kohteet",
-            "expression": "IF([ehto_Kyselyn_kohteet]=TRUE(),BLANK(),IF([Vastanneet]=\"<5\",[Vastanneet],SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm])))",
+            "expression": [
+              "IF([ehto_Kyselyn_kohteet]=TRUE(),BLANK(),IF([Vastanneet]=\"<5\",[Vastanneet],",
+              "SUMX(",
+              "\tADDCOLUMNS(",
+              "\t\tSUMMARIZE(Muuttujat,Muuttujat[Koodit Koulutuksen järjestäjä]),",
+              "\t\t\"lkm\",CALCULATE(SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm]))",
+              "\t),",
+              "[lkm]))",
+              ")"
+            ],
             "formatString": "#,0"
           },
           {
@@ -5787,6 +5855,22 @@
               "        <int>109</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Statistical period</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>155</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Question group</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>149</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -6821,6 +6905,22 @@
               "        <int>128</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Statistical period</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>129</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Question group</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>130</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -7856,6 +7956,22 @@
               "        <boolean>true</boolean>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Statistical period</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Question group</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
               "  </ColumnChecked>",
               "  <ColumnFilter />",
               "  <SelectionFilter />",
@@ -8835,6 +8951,12 @@
               },
               {
                 "name": "Koodit Koulutuksen järjestäjä"
+              },
+              {
+                "name": "Statistical period"
+              },
+              {
+                "name": "Question group"
               }
             ],
             "measures": [
@@ -8858,6 +8980,9 @@
               },
               {
                 "name": "NPS"
+              },
+              {
+                "name": "Standard deviation"
               }
             ]
           },
@@ -9228,6 +9353,90 @@
               },
               {
                 "name": "Koodit Koulutuksen järjestäjä"
+              },
+              {
+                "name": "Application route"
+              },
+              {
+                "name": "Apprenticeship training"
+              },
+              {
+                "name": "Education provider"
+              },
+              {
+                "name": "Educational institution"
+              },
+              {
+                "name": "Expectations for the future"
+              },
+              {
+                "name": "Field of education, tier 1"
+              },
+              {
+                "name": "Field of education, tier 2"
+              },
+              {
+                "name": "Field of education, tier 3"
+              },
+              {
+                "name": "Funding model question"
+              },
+              {
+                "name": "Funding period"
+              },
+              {
+                "name": "Gender"
+              },
+              {
+                "name": "Mother tongue"
+              },
+              {
+                "name": "Multiple choice option"
+              },
+              {
+                "name": "Municipality of the education provider"
+              },
+              {
+                "name": "Municipality of the institution"
+              },
+              {
+                "name": "Prior education"
+              },
+              {
+                "name": "Qualification"
+              },
+              {
+                "name": "Qualification type"
+              },
+              {
+                "name": "Question"
+              },
+              {
+                "name": "Region of the education provider"
+              },
+              {
+                "name": "Region of the institution"
+              },
+              {
+                "name": "Statistical month"
+              },
+              {
+                "name": "Statistical period"
+              },
+              {
+                "name": "Statistical year"
+              },
+              {
+                "name": "Survey"
+              },
+              {
+                "name": "Target group for survey"
+              },
+              {
+                "name": "The highest prior education"
+              },
+              {
+                "name": "Question group"
               }
             ],
             "measures": [
@@ -9263,6 +9472,24 @@
               },
               {
                 "name": "NPS"
+              },
+              {
+                "name": "Responded"
+              },
+              {
+                "name": "Response rate"
+              },
+              {
+                "name": "Score"
+              },
+              {
+                "name": "Size of the target group"
+              },
+              {
+                "name": "Standard deviation"
+              },
+              {
+                "name": "Mean"
               }
             ]
           },
