@@ -19529,7 +19529,14 @@ CREATE MEASURE 'Muuttujat'[Opiskelumaakunnasta siirtyneet]=CALCULATE([1 v. tutki
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Opiskelumaakunnasta siirtyneiden osuus kaikista tutkinnon suorittaneista]=[Opiskelumaakunnasta siirtyneet]/[Tutkinnon suorittaneet (pl. tutk. suor.maakunta tai asuinmaakunta tuntematon)];
+CREATE MEASURE 'Muuttujat'[Opiskelumaakunnasta siirtyneiden osuus kaikista tutkinnon suorittaneista]=var lkm = [Opiskelumaakunnasta siirtyneet]
+return IF(lkm = BLANK(), BLANK(),
+	var kaikki = [Tutkinnon suorittaneet (pl. tutk. suor.maakunta tai asuinmaakunta tuntematon)]
+                return IF(kaikki = "1-4", "25 % – 100 %",
+                                IF(lkm = "1-4",  IF(kaikki &gt; 8000, "0.0 %",
+                                	              CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)))
+;
 </Text>
                   <Annotations>
                     <Annotation>
@@ -19586,7 +19593,14 @@ CREATE MEASURE 'Muuttujat'[Työlliset]=CALCULATE([1 v. tutkinnon jälkeen], FILT
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Työllisten osuus tutkinnon suorittaneista]=[Työlliset]/[1 v. tutkinnon jälkeen];
+CREATE MEASURE 'Muuttujat'[Työllisten osuus tutkinnon suorittaneista]=var lkm = [Työlliset]
+return IF(lkm = BLANK(), BLANK(),
+	var kaikki = [1 v. tutkinnon jälkeen]
+                return IF(kaikki = "1-4", "25 % – 100 %",
+                                IF(lkm = "1-4",  IF(kaikki &gt; 8000, "0.0 %",
+                                	              CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)))
+;
 </Text>
                   <Annotations>
                     <Annotation>
@@ -19624,7 +19638,14 @@ CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneet]=CALCULATE([1 v. tutkin
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneiden osuus tutkinnon suorittaneista]=[Jatko-opintoihin sijoittuneet]/[1 v. tutkinnon jälkeen];
+CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneiden osuus tutkinnon suorittaneista]=var lkm = [Jatko-opintoihin sijoittuneet]
+return IF(lkm = BLANK(), BLANK(),
+	var kaikki = [1 v. tutkinnon jälkeen]
+                return IF(kaikki = "1-4", "25 % – 100 %",
+                                IF(lkm = "1-4",  IF(kaikki &gt; 8000, "0.0 %",
+                                	              CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)))
+;
 </Text>
                   <Annotations>
                     <Annotation>
@@ -19662,7 +19683,14 @@ CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneet (ml. työlliset opiskel
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneiden (ml. työlliset opiskelijat) osuus tutkinnon suorittaneista]=[Jatko-opintoihin sijoittuneet (ml. työlliset opiskelijat)]/[1 v. tutkinnon jälkeen];
+CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneiden (ml. työlliset opiskelijat) osuus tutkinnon suorittaneista]=var lkm = [Jatko-opintoihin sijoittuneet (ml. työlliset opiskelijat)]
+return IF(lkm = BLANK(), BLANK(),
+	var kaikki = [1 v. tutkinnon jälkeen]
+                return IF(kaikki = "1-4", "25 % – 100 %",
+                                IF(lkm = "1-4",  IF(kaikki &gt; 8000, "0.0 %",
+                                	              CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)))
+;
 </Text>
                   <Annotations>
                     <Annotation>
@@ -19700,7 +19728,14 @@ CREATE MEASURE 'Muuttujat'[Maasta muuttaneet]=CALCULATE([1 v. tutkinnon jälkeen
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Maasta muuttaneiden osuus tutkinnon suorittaneista]=[Maasta muuttaneet]/[1 v. tutkinnon jälkeen];
+CREATE MEASURE 'Muuttujat'[Maasta muuttaneiden osuus tutkinnon suorittaneista]=var lkm = [Maasta muuttaneet]
+return IF(lkm = BLANK(), BLANK(),
+	var kaikki = [1 v. tutkinnon jälkeen]
+                return IF(kaikki = "1-4", "25 % – 100 %",
+                                IF(lkm = "1-4",  IF(kaikki &gt; 8000, "0.0 %",
+                                	              CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)))
+;
 </Text>
                   <Annotations>
                     <Annotation>
@@ -19814,7 +19849,7 @@ CREATE MEASURE 'Muuttujat'[Opiskelumaakunnasta siirtyneetSV]=CALCULATE([1 v. tut
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Opiskelumaakunnasta siirtyneiden osuus kaikista tutkinnon suorittaneistaSV]=[Opiskelumaakunnasta siirtyneet]/[Tutkinnon suorittaneet (pl. tutk. suor.maakunta tai asuinmaakunta tuntematon)];
+CREATE MEASURE 'Muuttujat'[Opiskelumaakunnasta siirtyneiden osuus kaikista tutkinnon suorittaneistaSV]=[Opiskelumaakunnasta siirtyneiden osuus kaikista tutkinnon suorittaneista];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -19871,7 +19906,7 @@ CREATE MEASURE 'Muuttujat'[TyöllisetSV]=CALCULATE([1 v. tutkinnon jälkeen], FI
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Työllisten osuus tutkinnon suorittaneistaSV]=[Työlliset]/[1 v. tutkinnon jälkeen];
+CREATE MEASURE 'Muuttujat'[Työllisten osuus tutkinnon suorittaneistaSV]=[Työllisten osuus tutkinnon suorittaneista];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -19909,7 +19944,7 @@ CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneetSV]=CALCULATE([1 v. tutk
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneiden osuus tutkinnon suorittaneistaSV]=[Jatko-opintoihin sijoittuneet]/[1 v. tutkinnon jälkeen];
+CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneiden osuus tutkinnon suorittaneistaSV]=[Jatko-opintoihin sijoittuneiden osuus tutkinnon suorittaneista];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -19947,7 +19982,7 @@ CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneet (ml. työlliset opiskel
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneiden (ml. työlliset opiskelijat) osuus tutkinnon suorittaneistaSV]=[Jatko-opintoihin sijoittuneet (ml. työlliset opiskelijat)]/[1 v. tutkinnon jälkeen];
+CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneiden (ml. työlliset opiskelijat) osuus tutkinnon suorittaneistaSV]=[Jatko-opintoihin sijoittuneiden (ml. työlliset opiskelijat) osuus tutkinnon suorittaneista];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -19985,7 +20020,7 @@ CREATE MEASURE 'Muuttujat'[Maasta muuttaneetSV]=CALCULATE([1 v. tutkinnon jälke
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Maasta muuttaneiden osuus tutkinnon suorittaneistaSV]=[Maasta muuttaneet]/[1 v. tutkinnon jälkeen];
+CREATE MEASURE 'Muuttujat'[Maasta muuttaneiden osuus tutkinnon suorittaneistaSV]=[Maasta muuttaneiden osuus tutkinnon suorittaneista];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -20099,7 +20134,7 @@ CREATE MEASURE 'Muuttujat'[Completers who placed outside of the region of educat
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Percentage of completers who placed outside of the region of education]=[Opiskelumaakunnasta siirtyneet]/[Tutkinnon suorittaneet (pl. tutk. suor.maakunta tai asuinmaakunta tuntematon)];
+CREATE MEASURE 'Muuttujat'[Percentage of completers who placed outside of the region of education]=[Opiskelumaakunnasta siirtyneiden osuus kaikista tutkinnon suorittaneista];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -20156,7 +20191,7 @@ CREATE MEASURE 'Muuttujat'[Employed]=CALCULATE([1 v. tutkinnon jälkeen], FILTER
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Percentage of completers in employment]=[Työlliset]/[1 v. tutkinnon jälkeen];
+CREATE MEASURE 'Muuttujat'[Percentage of completers in employment]=[Työllisten osuus tutkinnon suorittaneista];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -20194,7 +20229,7 @@ CREATE MEASURE 'Muuttujat'[Completers admitted to further education]=CALCULATE([
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Percentage of completers who were admitted to further education]=[Jatko-opintoihin sijoittuneet]/[1 v. tutkinnon jälkeen];
+CREATE MEASURE 'Muuttujat'[Percentage of completers who were admitted to further education]=[Jatko-opintoihin sijoittuneiden osuus tutkinnon suorittaneista];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -20232,7 +20267,7 @@ CREATE MEASURE 'Muuttujat'[Completers who were admitted to further education (in
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Percentage of completers who were admitted to further education (incl. employed students)]=[Jatko-opintoihin sijoittuneet (ml. työlliset opiskelijat)]/[1 v. tutkinnon jälkeen];
+CREATE MEASURE 'Muuttujat'[Percentage of completers who were admitted to further education (incl. employed students)]=[Jatko-opintoihin sijoittuneiden (ml. työlliset opiskelijat) osuus tutkinnon suorittaneista];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -20270,7 +20305,7 @@ CREATE MEASURE 'Muuttujat'[Completers who emigrated after attaining their degree
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Percentage of completers who emigrated after attaining their degree/qualification]=[Maasta muuttaneet]/[1 v. tutkinnon jälkeen];
+CREATE MEASURE 'Muuttujat'[Percentage of completers who emigrated after attaining their degree/qualification]=[Maasta muuttaneiden osuus tutkinnon suorittaneista];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -20295,6 +20330,291 @@ CREATE MEASURE 'Muuttujat'[Completers]=[1 v. tutkinnon jälkeen];
                     <Annotation>
                       <Name>FullName</Name>
                       <Value>Completers</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[1 v. tutkinnon jälkeen_s]=IF(SUM([lkm_1vr2]) = 0, BLANK(),SUM([lkm_1vr2]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>1 v. tutkinnon jälkeen_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[3 v. tutkinnon jälkeen_s]=IF(SUM([lkm_3vr2]) = 0, BLANK(),SUM([lkm_3vr2]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>3 v. tutkinnon jälkeen_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[5 v. tutkinnon jälkeen_s]=IF(SUM([lkm_5vr2]) = 0, BLANK(),SUM([lkm_5vr2]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>5 v. tutkinnon jälkeen_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Opiskelumaakunnasta siirtyneet_s]=CALCULATE([1 v. tutkinnon jälkeen_s], FILTER(Muuttujat, [suormaakkoodi] &lt;&gt; [asmaakkoodi] &amp;&amp; [suormaakkoodi] &lt;&gt; "-1" &amp;&amp; [asmaakkoodi] &lt;&gt; "-1"));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Opiskelumaakunnasta siirtyneet_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Opiskelumaakunnasta siirtyneiden osuus kaikista tutkinnon suorittaneista_s]=[Opiskelumaakunnasta siirtyneet_s]/[Tutkinnon suorittaneet (pl. tutk. suor.maakunta tai asuinmaakunta tuntematon)_s];
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Opiskelumaakunnasta siirtyneiden osuus kaikista tutkinnon suorittaneista_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Tutkinnon suorittaneet (pl. tutk. suor.maakunta tai asuinmaakunta tuntematon)_s]=CALCULATE([1 v. tutkinnon jälkeen_s], FILTER(Muuttujat, [suormaakkoodi] &lt;&gt; "-1" &amp;&amp; [asmaakkoodi] &lt;&gt; "-1"));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Tutkinnon suorittaneet (pl. tutk. suor.maakunta tai asuinmaakunta tuntematon)_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Työlliset_s]=CALCULATE([1 v. tutkinnon jälkeen_s], FILTER(Muuttujat, OR([paaskoodi] = "1", [paaskoodi] = "2")));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Työlliset_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Työllisten osuus tutkinnon suorittaneista_s]=[Työlliset_s]/[1 v. tutkinnon jälkeen_s];
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Työllisten osuus tutkinnon suorittaneista_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneet_s]=CALCULATE([1 v. tutkinnon jälkeen_s], FILTER(Muuttujat, [paaskoodi] = "3"));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Jatko-opintoihin sijoittuneet_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneiden osuus tutkinnon suorittaneista_s]=[Jatko-opintoihin sijoittuneet_s]/[1 v. tutkinnon jälkeen_s];
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Jatko-opintoihin sijoittuneiden osuus tutkinnon suorittaneista_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneet (ml. työlliset opiskelijat)_s]=CALCULATE([1 v. tutkinnon jälkeen_s], FILTER(Muuttujat, OR([paaskoodi] = "2", [paaskoodi] = "3")));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Jatko-opintoihin sijoittuneet (ml. työlliset opiskelijat)_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneiden (ml. työlliset opiskelijat) osuus tutkinnon suorittaneista_s]=[Jatko-opintoihin sijoittuneet (ml. työlliset opiskelijat)_s]/[1 v. tutkinnon jälkeen_s];
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Jatko-opintoihin sijoittuneiden (ml. työlliset opiskelijat) osuus tutkinnon suorittaneista_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Maasta muuttaneet_s]=CALCULATE([1 v. tutkinnon jälkeen_s], FILTER(Muuttujat, [paaskoodi] = "8"));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Maasta muuttaneet_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Maasta muuttaneiden osuus tutkinnon suorittaneista_s]=[Maasta muuttaneet_s]/[1 v. tutkinnon jälkeen_s];
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Maasta muuttaneiden osuus tutkinnon suorittaneista_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Tutkinnon suorittaneet_s]=[1 v. tutkinnon jälkeen_s];
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Tutkinnon suorittaneet_s</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -21246,6 +21566,321 @@ CREATE MEASURE 'Muuttujat'[Completers]=[1 v. tutkinnon jälkeen];
                     </Annotation>
                   </Annotations>
                   <CalculationReference>[Completers]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[1 v. tutkinnon jälkeen_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[3 v. tutkinnon jälkeen_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[5 v. tutkinnon jälkeen_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Opiskelumaakunnasta siirtyneet_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="Percentage" Accuracy="1" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Opiskelumaakunnasta siirtyneiden osuus kaikista tutkinnon suorittaneista_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0.0 %;-#,0.0 %;#,0.0 %'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Tutkinnon suorittaneet (pl. tutk. suor.maakunta tai asuinmaakunta tuntematon)_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Työlliset_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="Percentage" Accuracy="1" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Työllisten osuus tutkinnon suorittaneista_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0.0 %;-#,0.0 %;#,0.0 %'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Jatko-opintoihin sijoittuneet_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="Percentage" Accuracy="1" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Jatko-opintoihin sijoittuneiden osuus tutkinnon suorittaneista_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0.0 %;-#,0.0 %;#,0.0 %'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Jatko-opintoihin sijoittuneet (ml. työlliset opiskelijat)_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="Percentage" Accuracy="1" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Jatko-opintoihin sijoittuneiden (ml. työlliset opiskelijat) osuus tutkinnon suorittaneista_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0.0 %;-#,0.0 %;#,0.0 %'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Maasta muuttaneet_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="Percentage" Accuracy="1" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Maasta muuttaneiden osuus tutkinnon suorittaneista_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0.0 %;-#,0.0 %;#,0.0 %'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Tutkinnon suorittaneet_s]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
