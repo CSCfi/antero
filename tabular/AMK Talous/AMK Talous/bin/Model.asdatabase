@@ -279,6 +279,41 @@
             "isHidden": true,
             "expression": "Muuttujat[Tilastovuosi]",
             "displayFolder": "Aikamuuttujat"
+          },
+          {
+            "type": "calculated",
+            "name": "Päätoiminto",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": [
+              "",
+              "SWITCH(TRUE(),",
+              "Muuttujat[tili_taso5_fi]=\"Ammatillinen opettajankoulutus\",\"Koulutus\",",
+              "Muuttujat[tili_taso5_fi]=\"Muu koulutus\",\"Koulutus\",",
+              "Muuttujat[tili_taso5_fi]=\"Perustutkintojen osat\",\"Koulutus\",",
+              "Muuttujat[tili_taso5_fi]=\"Tutkintokoulutus\",\"Koulutus\",",
+              "Muuttujat[tili_taso5_fi]=\"Muu yhteiskunnallinen toiminta\",\"Muu yhteiskunnallinen toiminta\",",
+              "Muuttujat[tili_taso5_fi]=\"T&k-toiminta\",\"Tutkimus- ja kehitystoiminta\",",
+              "Muuttujat[tili_taso5_fi]=\"Ylempi amk-koulutus\",\"Tutkimus- ja kehitystoiminta\")"
+            ]
+          },
+          {
+            "type": "calculated",
+            "name": "Toiminto",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": [
+              "",
+              "SWITCH(TRUE(),",
+              "Muuttujat[tili_taso5_fi]=\"Ammatillinen opettajankoulutus\",\"Ammatillinen opettajankoulutus\",",
+              "Muuttujat[tili_taso5_fi]=\"Muu koulutus\",\"Muu koulutus\",",
+              "Muuttujat[tili_taso5_fi]=\"Perustutkintojen osat\",\"Perustutkintojen osat\",",
+              "Muuttujat[tili_taso5_fi]=\"Tutkintokoulutus\",\"Tutkintokoulutus\",",
+              "Muuttujat[tili_taso5_fi]=\"Muu yhteiskunnallinen toiminta\",\"Muu yhteiskunnallinen toiminta\",",
+              "Muuttujat[tili_taso5_fi]=\"T&k-toiminta\",\"T&k-toiminta\",",
+              "Muuttujat[tili_taso5_fi]=\"Ylempi amk-koulutus\",\"Ylempi amk-koulutus\"",
+              "\t)"
+            ]
           }
         ],
         "partitions": [
@@ -8495,6 +8530,10 @@
             "expression": "[Business Finland]",
             "formatString": "#,0",
             "displayFolder": "Research expenses\\Domestic external funding"
+          },
+          {
+            "name": "Perustehtävän kokonaiskustannukset",
+            "expression": " CALCULATE(SUM([arvo]),Muuttujat[tili_taso0_fi]=\"Perustehtävän kokonaiskustannukset\")"
           }
         ],
         "annotations": [
@@ -10598,57 +10637,6 @@
         ]
       },
       {
-        "name": "Perustehtävän kok kustannukset",
-        "tables": [
-          {
-            "name": "Muuttujat",
-            "columns": [
-              {
-                "name": "Tilastovuosi"
-              },
-              {
-                "name": "Ohjauksen ala"
-              },
-              {
-                "name": "Ammattikorkeakoulu"
-              }
-            ],
-            "measures": [
-              {
-                "name": "Ammatillinen opettajankoulutus"
-              },
-              {
-                "name": "Perustehtävän kokonaiskustannukset yhteensä"
-              },
-              {
-                "name": "Koulutustoiminta yhteensä"
-              },
-              {
-                "name": "Muu koulutus"
-              },
-              {
-                "name": "Muu yhteiskunnallinen toiminta"
-              },
-              {
-                "name": "Perustutkintojen osat"
-              },
-              {
-                "name": "Tutkimus- ja kehitystoiminta yhteensä"
-              },
-              {
-                "name": "Tutkintokoulutus"
-              },
-              {
-                "name": "T&K-toiminta"
-              },
-              {
-                "name": "Ylempi amk-koulutus"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "name": "Liiketoiminnan tuloslaskelma",
         "tables": [
           {
@@ -11228,6 +11216,87 @@
               },
               {
                 "name": "Aineelliset hyödykkeet"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Perustehtävän kokonaiskustannukset",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Ohjauksen ala"
+              },
+              {
+                "name": "Ammattikorkeakoulu"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Ammatillinen opettajankoulutus"
+              },
+              {
+                "name": "Perustehtävän kokonaiskustannukset yhteensä"
+              },
+              {
+                "name": "Koulutustoiminta yhteensä"
+              },
+              {
+                "name": "Muu koulutus"
+              },
+              {
+                "name": "Muu yhteiskunnallinen toiminta"
+              },
+              {
+                "name": "Perustutkintojen osat"
+              },
+              {
+                "name": "Tutkimus- ja kehitystoiminta yhteensä"
+              },
+              {
+                "name": "Tutkintokoulutus"
+              },
+              {
+                "name": "T&K-toiminta"
+              },
+              {
+                "name": "Ylempi amk-koulutus"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Perustehtävän kokonaiskustannukset pivot",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Ohjauksen ala"
+              },
+              {
+                "name": "Toiminto"
+              },
+              {
+                "name": "Päätoiminto"
+              },
+              {
+                "name": "Ammattikorkeakoulu"
+              },
+              {
+                "name": "Tilastovuosi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Perustehtävän kokonaiskustannukset"
               }
             ]
           }
