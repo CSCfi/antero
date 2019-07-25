@@ -1,3 +1,4 @@
+USE ANTERO
 CREATE TABLE [sa].[sa_odw_yoarvosanat](
 	[id] [bigint] IDENTITY(1,1) NOT NULL,
 	[loadtime] [datetime2](4) NOT NULL CONSTRAINT [DF__sa_odw_yoarvosanat__loadtime]  DEFAULT (getdate()),
