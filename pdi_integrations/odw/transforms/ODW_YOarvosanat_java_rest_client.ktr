@@ -438,11 +438,6 @@
   </notepads>
   <order>
     <hop>
-      <from>Generate additional SQL rows</from>
-      <to>ODW Vipunen YO REST client</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>ODW Vipunen YO REST client</from>
       <to>Generate JSON row from result</to>
       <enabled>Y</enabled>
@@ -450,6 +445,16 @@
     <hop>
       <from>Generate JSON row from result</from>
       <to>Generate CSV file</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Generate additional SQL rows</from>
+      <to>Generate source field</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Generate source field</from>
+      <to>ODW Vipunen YO REST client</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -746,7 +751,7 @@
     <fields>
       <field>
         <name>HenkiloOID</name>
-        <path>$..HenkiloOID</path>
+        <path>$..HenkiloOid</path>
         <type>String</type>
         <format/>
         <currency/>
@@ -1173,6 +1178,45 @@ public boolean processRow(StepMetaInterface smi, StepDataInterface sdi) throws K
     <GUI>
       <xloc>768</xloc>
       <yloc>176</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Generate source field</name>
+    <type>GetVariable</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>source</name>
+        <variable>${HOST}${URL}</variable>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>768</xloc>
+      <yloc>112</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
