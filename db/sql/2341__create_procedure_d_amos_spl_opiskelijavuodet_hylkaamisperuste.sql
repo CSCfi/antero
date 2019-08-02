@@ -29,7 +29,7 @@ INSERT dw.d_amos_spl_opiskelijavuodet_hylkaamisperuste (
 )
 
 VALUES 
-(-1,-1,'Tieto puuttuu','Information saknas','Missing data',9,'manuaalinen'),
+(-1,-1,'Tieto puuttuu','Information saknas','Missing data',99,'manuaalinen'),
 (1,1,'4 viikkoa ylittävä yhtäjaksoinen loma','SV*','EN*',1,'manuaalinen'),
 (2,2,'Samanaikainen opiskeluoikeus, ammatillinen','SV*','EN*',2,'manuaalinen'),
 (3,3,'Samanaikainen opiskeluoikeus, lukio','SV*','EN*',3,'manuaalinen'),
