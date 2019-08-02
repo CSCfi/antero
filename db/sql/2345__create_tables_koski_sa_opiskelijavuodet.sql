@@ -338,3 +338,5 @@ CREATE TABLE [sa].[temp_opiskelijavuodet_samana_paivana_alkaneet_hylattavat](
 	[opiskeluoikeus_oid_hylataan] [varchar](max) NULL
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 END
+GO
+USE ANTERO

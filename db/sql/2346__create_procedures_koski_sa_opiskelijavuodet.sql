@@ -1317,7 +1317,8 @@ WHERE RIGHT(diaarinumero,4) = (SELECT MAX(RIGHT(diaarinumero,4)) FROM Koski_SA.S
 
 order by tutkinnonosa_koodi
 
-
+GO
+USE ANTERO
 
 
 
