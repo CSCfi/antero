@@ -467,9 +467,10 @@
             "sourceColumn": "opiskelijavuodet_painotettu_at_eat"
           },
           {
-            "name": "Opiskelijavuoden hylkäämisperuste",
+            "name": "Hylkäämisperuste",
             "dataType": "string",
             "sourceColumn": "Opiskelijavuoden hylkäämisperuste",
+            "sortByColumn": "jarj_hylkaamisperuste",
             "displayFolder": "Koulutusmuuttujat"
           },
           {
@@ -477,6 +478,12 @@
             "dataType": "double",
             "isHidden": true,
             "sourceColumn": "opiskelijavuodet_hylatyt"
+          },
+          {
+            "name": "jarj_hylkaamisperuste",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "jarj_hylkaamisperuste"
           }
         ],
         "partitions": [
@@ -1052,6 +1059,14 @@
                   "        <int>77</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>jarj_hylkaamisperuste</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>135</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -1606,6 +1621,14 @@
                   "        <int>66</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>jarj_hylkaamisperuste</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>69</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -1953,6 +1976,14 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>jarj_hylkaamisperuste</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -1966,8 +1997,8 @@
         ],
         "measures": [
           {
-            "name": "Opiskelijavuodet",
-            "expression": "SUM([opiskelijavuodet_painottamaton])",
+            "name": "Hyväksytyt opiskelijavuodet (pl. muu koulutus)",
+            "expression": "[Painottamattomat opiskelijavuodet (pl. muu koulutus)]",
             "formatString": "#,0.00"
           },
           {
@@ -2131,15 +2162,35 @@
             "expression": [
               "",
               "var erotus = [Painottamattomat opiskelijavuodet yhteensä]-[Muun koulutuksen painottamattomat opiskelijavuodet]",
-              "return IF(erotus<0,0,erotus)"
+              "return IF(erotus<=0,BLANK(),erotus)"
             ],
             "formatString": "#,0.00",
             "displayFolder": "Opiskelijavuodet"
           },
           {
             "name": "Hylätyt opiskelijavuodet",
-            "expression": "SUM(Muuttujat[opiskelijavuodet_hylatyt])",
+            "expression": [
+              "",
+              "var summa=SUM(Muuttujat[opiskelijavuodet_hylatyt])",
+              "return IF(summa=0,BLANK(),summa)"
+            ],
             "formatString": "#,0.00"
+          },
+          {
+            "name": "Opiskelijavuodet yhteensä",
+            "expression": "[Hyväksytyt opiskelijavuodet (pl. muu koulutus)]+[Hylätyt opiskelijavuodet]",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Hylätyt opiskelijavuodet %",
+            "expression": [
+              "",
+              "var osamaara = [Hylätyt opiskelijavuodet] / [Opiskelijavuodet yhteensä]",
+              "var osamaara_all = [Hylätyt opiskelijavuodet] / CALCULATE([Opiskelijavuodet yhteensä],ALL(Muuttujat[Hylkäämisperuste]))",
+              "return IF(ISFILTERED([Hylkäämisperuste]), osamaara_all, osamaara)",
+              "--return IF(AND(valinta=BLANK();[Opiskelijavuodet yhteensä]>0);0;valinta)"
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
           }
         ],
         "annotations": [
@@ -2719,6 +2770,14 @@
               "        <int>77</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>jarj_hylkaamisperuste</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>135</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -3273,6 +3332,14 @@
               "        <int>66</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>jarj_hylkaamisperuste</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>69</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -3620,6 +3687,14 @@
               "        <boolean>true</boolean>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>jarj_hylkaamisperuste</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
               "  </ColumnChecked>",
               "  <ColumnFilter />",
               "  <SelectionFilter />",
@@ -3877,6 +3952,158 @@
               },
               {
                 "name": "Painottamattomat opiskelijavuodet (pl. muu koulutus)"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Hylatyt",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Erityisopetus"
+              },
+              {
+                "name": "Henkilöstokoulutus"
+              },
+              {
+                "name": "Ikä"
+              },
+              {
+                "name": "Ikäryhmä"
+              },
+              {
+                "name": "Koodit Koulutuksen järjestäjä"
+              },
+              {
+                "name": "Koodit Oppilaitos"
+              },
+              {
+                "name": "Koodit Osaamisala"
+              },
+              {
+                "name": "Koodit Tutkinto"
+              },
+              {
+                "name": "Koul. järjestäjän AVI"
+              },
+              {
+                "name": "Koul. järjestäjän ELY"
+              },
+              {
+                "name": "Koul. järjestäjän kunta"
+              },
+              {
+                "name": "Koul. järjestäjän maakunta"
+              },
+              {
+                "name": "Koulutuksen järjestäjä"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Kustannusryhmä"
+              },
+              {
+                "name": "Majoitus"
+              },
+              {
+                "name": "Oppilaitoksen AVI"
+              },
+              {
+                "name": "Oppilaitoksen ELY"
+              },
+              {
+                "name": "Oppilaitoksen kunta"
+              },
+              {
+                "name": "Oppilaitoksen maakunta"
+              },
+              {
+                "name": "Oppilaitos"
+              },
+              {
+                "name": "Oppisopimuskoulutus"
+              },
+              {
+                "name": "Osa-aikaisuus"
+              },
+              {
+                "name": "Osaamisala"
+              },
+              {
+                "name": "Rahoitusmuoto"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Suorituksen tyyppi"
+              },
+              {
+                "name": "Tilastokuukausi"
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Toimipiste"
+              },
+              {
+                "name": "Tutkinto"
+              },
+              {
+                "name": "Tutkintotyypin ryhmä"
+              },
+              {
+                "name": "Tutkintotyyppi"
+              },
+              {
+                "name": "Työvoimakoulutus"
+              },
+              {
+                "name": "Vankilaopetus"
+              },
+              {
+                "name": "Äidinkieli"
+              },
+              {
+                "name": "Hylkäämisperuste"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Hylätyt opiskelijavuodet"
+              },
+              {
+                "name": "Hyväksytyt opiskelijavuodet (pl. muu koulutus)"
+              },
+              {
+                "name": "Opiskelijavuodet yhteensä"
+              },
+              {
+                "name": "Hylätyt opiskelijavuodet %"
               }
             ]
           },
