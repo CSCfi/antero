@@ -82,8 +82,8 @@
     <access>Native</access>
     <database>ANTERO</database>
     <port>1433</port>
-    <username>T_SQL16_PDI</username>
-    <password>Encrypted 4728373a8ad3eda45786cd86a7158257fcd1f783</password>
+    <username/>
+    <password>Encrypted </password>
     <servername/>
     <data_tablespace/>
     <index_tablespace/>
@@ -177,7 +177,7 @@
         <trim_type>none</trim_type>
       </field>
       <field>
-        <name>DEMO.EVENTREFYEAR.v</name>
+        <name>DEMO.EVENTPASTYEAR</name>
         <type>Integer</type>
         <format>&#x23;</format>
         <currency>&#x24;</currency>
@@ -188,18 +188,7 @@
         <trim_type>none</trim_type>
       </field>
       <field>
-        <name>DEMO.AFFINSTREFYEAR.v</name>
-        <type>String</type>
-        <format/>
-        <currency>&#x24;</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>30</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>DEMO.AFFINSTPASTYEAR.v</name>
+        <name>DEMO.AFFINSTPASTYEAR</name>
         <type>String</type>
         <format/>
         <currency>&#x24;</currency>
@@ -210,18 +199,29 @@
         <trim_type>none</trim_type>
       </field>
       <field>
-        <name>DEMO.EVENTPASTYEAR.v</name>
-        <type>Integer</type>
-        <format>&#x23;</format>
+        <name>DEMO.EVENTREFYEAR</name>
+        <type>String</type>
+        <format/>
         <currency>&#x24;</currency>
         <decimal>.</decimal>
         <group>,</group>
-        <length>15</length>
-        <precision>0</precision>
+        <length>1</length>
+        <precision>-1</precision>
         <trim_type>none</trim_type>
       </field>
       <field>
-        <name>DEMO.DESCRIPTION.v</name>
+        <name>DEMO.AFFINSTREFYEAR</name>
+        <type>String</type>
+        <format/>
+        <currency>&#x24;</currency>
+        <decimal>.</decimal>
+        <group>,</group>
+        <length>22</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+      </field>
+      <field>
+        <name>DEMO.DESCRIPTION</name>
         <type>String</type>
         <format/>
         <currency>&#x24;</currency>
@@ -236,35 +236,6 @@
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
       <xloc>112</xloc>
       <yloc>144</yloc>
-      <draw>Y</draw>
-      </GUI>
-    </step>
-
-  <step>
-    <name>Get System Info</name>
-    <type>SystemInfo</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-         <partitioning>
-           <method>none</method>
-           <schema_name/>
-           </partitioning>
-    <fields>
-      <field>
-        <name>Loadtime</name>
-        <type>system date &#x28;variable&#x29;</type>
-        </field>
-      <field>
-        <name>Username</name>
-        <type>User modified</type>
-        </field>
-      </fields>
-     <cluster_schema/>
- <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
-      <xloc>448</xloc>
-      <yloc>48</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -289,6 +260,31 @@
     </step>
 
   <step>
+    <name>Get System Info</name>
+    <type>SystemInfo</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <fields>
+      <field>
+        <name>Loadtime</name>
+        <type>system date &#x28;variable&#x29;</type>
+        </field>
+      </fields>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>448</xloc>
+      <yloc>48</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
     <name>Table output</name>
     <type>TableOutput</type>
     <description/>
@@ -302,10 +298,10 @@
     <connection>dwitvipusql16</connection>
     <schema>sa</schema>
     <table>sa_eter_demographic</table>
-    <commit>10000</commit>
-    <truncate>Y</truncate>
+    <commit>1000</commit>
+    <truncate>N</truncate>
     <ignore_errors>N</ignore_errors>
-    <use_batch>N</use_batch>
+    <use_batch>Y</use_batch>
     <specify_fields>Y</specify_fields>
     <partitioning_enabled>N</partitioning_enabled>
     <partitioning_field/>
@@ -322,24 +318,24 @@
           <stream_name>_id</stream_name>
         </field>
         <field>
-          <column_name>DEMO.EVENTREFYEAR.v</column_name>
-          <stream_name>DEMO.EVENTREFYEAR.v</stream_name>
+          <column_name>DEMO.EVENTPASTYEAR</column_name>
+          <stream_name>DEMO.EVENTPASTYEAR</stream_name>
         </field>
         <field>
-          <column_name>DEMO.AFFINSTREFYEAR.v</column_name>
-          <stream_name>DEMO.AFFINSTREFYEAR.v</stream_name>
+          <column_name>DEMO.AFFINSTPASTYEAR</column_name>
+          <stream_name>DEMO.AFFINSTPASTYEAR</stream_name>
         </field>
         <field>
-          <column_name>DEMO.AFFINSTPASTYEAR.v</column_name>
-          <stream_name>DEMO.AFFINSTPASTYEAR.v</stream_name>
+          <column_name>DEMO.EVENTREFYEAR</column_name>
+          <stream_name>DEMO.EVENTREFYEAR</stream_name>
         </field>
         <field>
-          <column_name>DEMO.EVENTPASTYEAR.v</column_name>
-          <stream_name>DEMO.EVENTPASTYEAR.v</stream_name>
+          <column_name>DEMO.AFFINSTREFYEAR</column_name>
+          <stream_name>DEMO.AFFINSTREFYEAR</stream_name>
         </field>
         <field>
-          <column_name>DEMO.DESCRIPTION.v</column_name>
-          <stream_name>DEMO.DESCRIPTION.v</stream_name>
+          <column_name>DEMO.DESCRIPTION</column_name>
+          <stream_name>DEMO.DESCRIPTION</stream_name>
         </field>
         <field>
           <column_name>Source</column_name>
@@ -348,10 +344,6 @@
         <field>
           <column_name>Loadtime</column_name>
           <stream_name>Loadtime</stream_name>
-        </field>
-        <field>
-          <column_name>username</column_name>
-          <stream_name>Username</stream_name>
         </field>
     </fields>
      <cluster_schema/>
