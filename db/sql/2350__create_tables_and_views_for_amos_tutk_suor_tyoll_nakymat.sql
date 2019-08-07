@@ -7,7 +7,7 @@ Näkymien ja taulujen luontilauseet ANTERO-kantaan
 Juha Helminen 30.5.2019, 5.8.2019
 --drop-lauseet lisätty 
 --Githubissa tämä skripti nimellä
---	2350__create_tables_and_views_for_amos_tutk_suor_tyoll_nakymat.sql
+2350___AMOS_tutk_suor_tyoll_nakymat_ja_taulut
 */
 
 ---------------------# next # ---------------------
@@ -739,6 +739,9 @@ GO
 DROP VIEW IF EXISTS 
 [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
 GO 
+USE [ANTERO]
+GO
+
 CREATE VIEW [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy_tabular] AS 
 /*
 drop table [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
@@ -758,10 +761,15 @@ SELECT
   jarj_opisk, 
   jarjnimi_opisk, 
   jarj_opisk + ' ' + jarjnimi_opisk as ytunnus_jarjnimi_opisk, 
+
+--jhe 26.6.2019 Valtterin ja Ainon PBI-näkymiin pari kenttää lisää
+  omistajatyyppi_koodi,
+  omistajatyyppi,
+
   --jhe 22.5.2019 kommentoitu pois aluetietoa, jota ei ainakaan toistaiseksi raportilla tarvita 
-  
   /*jarj_tutk,
          jarjnimi_tutk,*/
+ 
   jarjmaak, 
   jarjmaaknimi, 
   
@@ -850,7 +858,8 @@ FROM
       t.aineisto, 
       t.jarj_opisk, 
       t.jarjnimi_opisk, 
-      
+	  okm8.omistajatyyppi_koodi,
+      okm8.omistajatyyppi,
       /*t.jarj_tutk,
                 t.jarjnimi_tutk,*/
       t.jarjmaak, 
@@ -935,8 +944,13 @@ FROM
     FROM 
       sa.d_sa_amos_spl_TK_K1_13_sopv_yy_piirteet AS t 
       INNER JOIN sa.v_sa_amos_spl_TK_K1_13_sopv_yy_jarjestajakerroin AS j ON t.jarj_opisk = j.jarj_opisk
+  LEFT JOIN [sa].[sa_amos_siirtotiedosto_okm8] as okm8
+  on t.jarj_opisk=okm8.koul_jarj
+
   ) AS t_1
+ 
 GO
+
 ---------------------# next # ---------------------
 drop table IF EXISTS [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
 go
