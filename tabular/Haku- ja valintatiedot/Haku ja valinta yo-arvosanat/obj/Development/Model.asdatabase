@@ -221,7 +221,6 @@
           {
             "name": "Henkilö OID",
             "dataType": "string",
-            "isHidden": true,
             "sourceColumn": "Henkilö OID",
             "sourceProviderType": "Char"
           },
@@ -245,7 +244,7 @@
           },
           {
             "type": "calculated",
-            "name": "avain_aineiden_maara",
+            "name": "avain_valitaulu",
             "dataType": "string",
             "isDataTypeInferred": true,
             "isHidden": true,
@@ -451,6 +450,23 @@
             "isDataTypeInferred": true,
             "isHidden": true,
             "expression": "CONCATENATE([Koulutuksen alkamisvuosi],[Koodit Kirjoitettu matematiikka])"
+          },
+          {
+            "name": "Arvosana, kirjain",
+            "dataType": "string",
+            "sourceColumn": "Arvosana, kirjain",
+            "displayFolder": "Ylioppilastutkintomuuttujat"
+          },
+          {
+            "name": "Arvosana, numero",
+            "dataType": "int64",
+            "sourceColumn": "Arvosana, numero",
+            "displayFolder": "Ylioppilastutkintomuuttujat"
+          },
+          {
+            "name": "valittu",
+            "dataType": "int64",
+            "sourceColumn": "valittu"
           }
         ],
         "partitions": [
@@ -938,6 +954,30 @@
                   "        <int>175</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Arvosana, kirjain</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>111</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Arvosana, numero</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>119</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>valittu</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>60</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -1404,6 +1444,30 @@
                   "        <int>57</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Arvosana, kirjain</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>58</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Arvosana, numero</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>59</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>valittu</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>60</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -1687,6 +1751,30 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Arvosana, kirjain</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Arvosana, numero</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>valittu</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -1701,7 +1789,7 @@
         "measures": [
           {
             "name": "Valitut",
-            "expression": "DISTINCTCOUNT([Henkilö OID])",
+            "expression": "CALCULATE(DISTINCTCOUNT([Henkilö OID]),Muuttujat[valittu]=1)",
             "formatString": "#,0"
           },
           {
@@ -1741,11 +1829,12 @@
             "name": "Osuus ylioppilastutkinnon suorittaneista",
             "expression": [
               "",
-              "var num1 = SUM('Aineiden maara'[lkm])",
-              "var den1 = AVERAGE('Aineiden maara'[lkm_vuosi_yht])",
+              "var num1 =1-- SUM('Ylioppilastutkinnon suorittaneet'[lkm])",
+              "var den1 = 1--AVERAGE('Ylioppilastutkinnon suorittaneet'[lkm_vuosi_yht])",
               "var num2 = SUM('Valintojen maara matikka'[lkm])",
               "var den2 = AVERAGE('Valintojen maara matikka'[lkm_vuosi_yht])",
-              "return IF(ISFILTERED([Kirjoitettu matematiikka]), num2 / den2, num1 / den1)"
+              "--return IF(ISFILTERED([Kirjoitettu matematiikka]); num2 / den2; num1 / den1)",
+              "return [Ylioppilastutkinnon suorittaneet] / CALCULATE([Ylioppilastutkinnon suorittaneet],ALLEXCEPT(Muuttujat,Muuttujat[Koulutuksen alkamisvuosi]))"
             ],
             "formatString": "0 %;-0 %;0 %"
           },
@@ -1767,10 +1856,9 @@
             "name": "Ylioppilastutkinnon suorittaneet",
             "expression": [
               "",
-              "var summa1 = SUM('Aineiden maara'[lkm])",
+              "var summa1 =DISTINCTCOUNT('Ylioppilastutkinnon suorittaneet'[opiskelijaID])",
               "var summa2 = SUM('Valintojen maara matikka'[lkm])",
-              "var summa_yht = CALCULATE(SUM('Aineiden maara'[lkm]))",
-              "return IF(ISFILTERED([Kirjoitettu matematiikka]),summa2,summa1)"
+              "return IF(ISFILTERED([Kirjoitettu matematiikka]),summa1,summa1)"
             ],
             "formatString": "#,0"
           }
@@ -2264,6 +2352,30 @@
               "        <int>175</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Arvosana, kirjain</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>111</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Arvosana, numero</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>119</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>valittu</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>60</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -2730,6 +2842,30 @@
               "        <int>57</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Arvosana, kirjain</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>58</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Arvosana, numero</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>59</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>valittu</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>60</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -3013,6 +3149,30 @@
               "        <boolean>true</boolean>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Arvosana, kirjain</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Arvosana, numero</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>valittu</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
               "  </ColumnChecked>",
               "  <ColumnFilter />",
               "  <SelectionFilter />",
@@ -3024,25 +3184,13 @@
         ]
       },
       {
-        "name": "Aineiden maara",
+        "name": "Ylioppilastutkinnon suorittaneet",
         "isHidden": true,
         "columns": [
           {
             "name": "valmistumisvuosi",
             "dataType": "int64",
             "sourceColumn": "valmistumisvuosi",
-            "sourceProviderType": "Integer"
-          },
-          {
-            "name": "lkm",
-            "dataType": "int64",
-            "sourceColumn": "lkm",
-            "sourceProviderType": "Integer"
-          },
-          {
-            "name": "lkm_vuosi_yht",
-            "dataType": "int64",
-            "sourceColumn": "lkm_vuosi_yht",
             "sourceProviderType": "Integer"
           },
           {
@@ -3057,10 +3205,15 @@
           },
           {
             "type": "calculated",
-            "name": "avain_muuttujat",
+            "name": "avain_valitaulu",
             "dataType": "string",
             "isDataTypeInferred": true,
             "expression": "[valmistumisvuosi]&[aine]&[laajuus]"
+          },
+          {
+            "name": "opiskelijaID",
+            "dataType": "int64",
+            "sourceColumn": "opiskelijaID"
           }
         ],
         "partitions": [
@@ -3068,7 +3221,7 @@
             "name": "f_haku_ja_valinta_yoaineiden_maara",
             "dataView": "full",
             "source": {
-              "query": " SELECT [dw].[v_haku_ja_valinta_yoaineiden_maara].* FROM [dw].[v_haku_ja_valinta_yoaineiden_maara] ",
+              "query": " SELECT [dw].[v_haku_ja_valinta_yoarvosanat_kaikki].* FROM [dw].[v_haku_ja_valinta_yoarvosanat_kaikki] ",
               "dataSource": "SqlServer dwitvipusql16 antero"
             },
             "annotations": [
@@ -3102,18 +3255,10 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>lkm</string>",
+                  "        <string>opiskelijaID</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>45</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>lkm_vuosi_yht</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>98</int>",
+                  "        <int>84</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -3144,15 +3289,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>lkm</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>2</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>lkm_vuosi_yht</string>",
+                  "        <string>opiskelijaID</string>",
                   "      </key>",
                   "      <value>",
                   "        <int>3</int>",
@@ -3163,7 +3300,7 @@
                   "        <string>laajuus</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>4</int>",
+                  "        <int>2</int>",
                   "      </value>",
                   "    </item>",
                   "  </ColumnDisplayIndex>",
@@ -3185,6 +3322,14 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>opiskelijaID</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -3199,11 +3344,11 @@
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": " SELECT [dw].[v_haku_ja_valinta_yoaineiden_maara].* FROM [dw].[v_haku_ja_valinta_yoaineiden_maara] "
+            "value": " SELECT [dw].[v_haku_ja_valinta_yoarvosanat_kaikki].* FROM [dw].[v_haku_ja_valinta_yoarvosanat_kaikki] "
           },
           {
             "name": "_TM_ExtProp_DbTableName",
-            "value": "v_haku_ja_valinta_yoaineiden_maara"
+            "value": "v_haku_ja_valinta_yoarvosanat_kaikki"
           },
           {
             "name": "_TM_ExtProp_DbSchemaName",
@@ -3239,18 +3384,10 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>lkm</string>",
+              "        <string>opiskelijaID</string>",
               "      </key>",
               "      <value>",
-              "        <int>45</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>lkm_vuosi_yht</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>98</int>",
+              "        <int>84</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3281,15 +3418,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>lkm</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>2</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
-              "        <string>lkm_vuosi_yht</string>",
+              "        <string>opiskelijaID</string>",
               "      </key>",
               "      <value>",
               "        <int>3</int>",
@@ -3300,7 +3429,7 @@
               "        <string>laajuus</string>",
               "      </key>",
               "      <value>",
-              "        <int>4</int>",
+              "        <int>2</int>",
               "      </value>",
               "    </item>",
               "  </ColumnDisplayIndex>",
@@ -3317,6 +3446,14 @@
               "    <item>",
               "      <key>",
               "        <string>laajuus</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>opiskelijaID</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -3674,23 +3811,95 @@
             ]
           }
         ]
+      },
+      {
+        "name": "valitaulu",
+        "isHidden": true,
+        "columns": [
+          {
+            "name": "aine",
+            "dataType": "string",
+            "sourceColumn": "aine",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "laajuus",
+            "dataType": "string",
+            "sourceColumn": "laajuus",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "valmistumisvuosi",
+            "dataType": "string",
+            "sourceColumn": "valmistumisvuosi"
+          },
+          {
+            "type": "calculated",
+            "name": "avain",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": "[valmistumisvuosi]&[aine]&[laajuus]"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "v_haku_ja_valinta_yoarvosanat_kaikki",
+            "dataView": "full",
+            "source": {
+              "query": "SELECT distinct valmistumisvuosi,[dw].[v_haku_ja_valinta_yoarvosanat_kaikki].[aine],[dw].[v_haku_ja_valinta_yoarvosanat_kaikki].[laajuus] FROM [dw].[v_haku_ja_valinta_yoarvosanat_kaikki]",
+              "dataSource": "SqlServer dwitvipusql16 antero"
+            },
+            "annotations": [
+              {
+                "name": "QueryEditorSerialization",
+                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT distinct valmistumisvuosi,[dw].[v_haku_ja_valinta_yoarvosanat_kaikki].[aine],[dw].[v_haku_ja_valinta_yoarvosanat_kaikki].[laajuus] FROM [dw].[v_haku_ja_valinta_yoarvosanat_kaikki]</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+              }
+            ]
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": "SELECT distinct valmistumisvuosi,[dw].[v_haku_ja_valinta_yoarvosanat_kaikki].[aine],[dw].[v_haku_ja_valinta_yoarvosanat_kaikki].[laajuus] FROM [dw].[v_haku_ja_valinta_yoarvosanat_kaikki]"
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "v_haku_ja_valinta_yoarvosanat_kaikki"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dw"
+          },
+          {
+            "name": "QueryEditorSerialization",
+            "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT distinct valmistumisvuosi,[dw].[v_haku_ja_valinta_yoarvosanat_kaikki].[aine],[dw].[v_haku_ja_valinta_yoarvosanat_kaikki].[laajuus] FROM [dw].[v_haku_ja_valinta_yoarvosanat_kaikki]</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+          }
+        ]
       }
     ],
     "relationships": [
-      {
-        "name": "a15d79e2-3926-4b3f-9ab1-b294deca8dd0",
-        "fromTable": "Muuttujat",
-        "fromColumn": "avain_aineiden_maara",
-        "toTable": "Aineiden maara",
-        "toColumn": "avain_muuttujat",
-        "crossFilteringBehavior": "bothDirections"
-      },
       {
         "name": "827cce12-103d-4f12-8253-ebb3568d7865",
         "fromTable": "Muuttujat",
         "fromColumn": "avain_valintojen_maara_matikka",
         "toTable": "Valintojen maara matikka",
         "toColumn": "avain_muuttujat",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "e5a071bf-d8b1-40c1-9cd3-e62520b60ddc",
+        "fromTable": "Muuttujat",
+        "fromColumn": "avain_valitaulu",
+        "toTable": "valitaulu",
+        "toColumn": "avain",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "a74639a3-1488-4551-8eb6-84188a5c87f6",
+        "fromTable": "Ylioppilastutkinnon suorittaneet",
+        "fromColumn": "avain_valitaulu",
+        "toTable": "valitaulu",
+        "toColumn": "avain",
         "crossFilteringBehavior": "bothDirections"
       }
     ],
