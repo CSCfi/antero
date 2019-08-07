@@ -12,7 +12,6 @@ Juha Helminen 30.5.2019, 5.8.2019
 2350___AMOS_tutk_suor_tyoll_nakymat_ja_taulut
 */
 
----------------------# next # ---------------------
 
 
 /****** Object:  View [dw].[v_amos_organisaatioliitokset]    Script Date: 30.5.2019 9:36:31 ******/
@@ -79,7 +78,7 @@ group by
 
 
 GO
----------------------# next # ---------------------
+
 
 drop table  IF EXISTS[dw].[d_amos_rajapinta_organisaatioliitokset]
 go
@@ -87,7 +86,7 @@ select *
 into [dw].[d_amos_rajapinta_organisaatioliitokset]
 from [dw].[v_amos_organisaatioliitokset]
 go
----------------------# next # ---------------------
+
 USE [ANTERO]
 GO 
 SET 
@@ -125,7 +124,7 @@ FROM
       AND (ol.organisaatio_koodi LIKE '%-%')
   ) AS ol ON okm8.koul_jarj = ol.organisaatio_koodi 
   GO
----------------------# next # ---------------------
+
 USE [ANTERO]
 GO
 
@@ -267,7 +266,7 @@ FROM
   
   GO
 
----------------------# next # ---------------------
+
 USE [ANTERO] 
 GO 
 /****** Object:  View [dw].[v_amos_spl_TK_4_2abc_sopv_18]    Script Date: 30.5.2019 10:20:20 ******/
@@ -326,7 +325,7 @@ FROM
   [TK_H9098_CSC].[dbo].[TK_4_2c_sopv_18] 
   GO
 		
----------------------# next # ---------------------
+
   DROP TABLE
   dw.d_amos_spl_TK_4_2abc_sopv_18
   go
@@ -336,7 +335,7 @@ FROM
   from dw.v_amos_spl_TK_4_2abc_sopv_18
   GO
 
----------------------# next # ---------------------
+
 /* AMOS-attribuutit tuovat koodeille selitteet, mutta taulua ylläpidettävä käsin. Tässä haettu samaa
 kytkin-tyyppistä ideaa kuin Vipus-raporteilla. Onko tarpeen? Ehkä ei. Taulu siis luotu manuaalisesti
 erikseen sekä testiin että tuotantoon. Insert-lauseet eivät ole mukana tässä skriptissä.
@@ -373,7 +372,7 @@ FROM            sa.d_amos_tk_attribuutit
 
 GO
 */
----------------------# next # ---------------------
+
 
 DROP VIEW IF EXISTS 
 [dw].[v_amos_spl_tk_4_2abc_paa_asiallinen_toiminta_maak]
@@ -450,7 +449,7 @@ FROM
       ) AS t3
   ) AS t4
 GO
----------------------# next # ---------------------
+
 
 DROP VIEW IF EXISTS 
 [dw].[v_amos_spl_tk_4_2abc_paa_asiallinen_toiminta_maak_indeksoitu]
@@ -484,7 +483,7 @@ FROM
   ) AS t2 
   INNER JOIN dw.v_amos_spl_tk_4_2abc_paa_asiallinen_toiminta_maak AS t3 ON t2.fixed_key = t3.fixed_key
 GO
----------------------# next # ---------------------
+
 
 DROP VIEW IF EXISTS 
 [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy_piirteet]
@@ -704,13 +703,13 @@ LEFT OUTER JOIN sa.v_d_amos_tk_attribuutit AS kytkin_tutklaja ON t.tutklaja_kytk
 LEFT OUTER JOIN sa.v_d_amos_tk_attribuutit AS kytkin_tyov ON t.tyov_kytkin = kytkin_tyov.kytkin
 LEFT OUTER JOIN sa.v_d_amos_tk_attribuutit AS kytkin_tsekt ON t.tsekt_kytkin = kytkin_tsekt.kytkin
 GO
----------------------# next # ---------------------
+
 drop table IF EXISTS [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_piirteet]
 go
 select *
 into [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_piirteet]
 from [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy_piirteet]
----------------------# next # ---------------------
+
 DROP VIEW IF EXISTS 
 [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy_jarjestajakerroin]
 GO 
@@ -736,7 +735,7 @@ FROM
       [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_piirteet]
   ) t
 GO
----------------------# next # ---------------------
+
 DROP VIEW IF EXISTS 
 [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
 GO 
@@ -952,7 +951,7 @@ FROM
  
 GO
 
----------------------# next # ---------------------
+
 drop table IF EXISTS [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
 go
 select * 
