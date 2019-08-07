@@ -1,3 +1,5 @@
+USE [ANTERO]
+GO
 /*
 
 AMOS rahoitusperusteraportointi - Työllistyneet ja jatko-opiskelijat
@@ -11,8 +13,7 @@ Juha Helminen 30.5.2019, 5.8.2019
 */
 
 ---------------------# next # ---------------------
-USE [ANTERO]
-GO
+
 
 /****** Object:  View [dw].[v_amos_organisaatioliitokset]    Script Date: 30.5.2019 9:36:31 ******/
 SET ANSI_NULLS ON
@@ -957,4 +958,3 @@ go
 select * 
 into [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
 from [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
-
