@@ -956,3 +956,5 @@ go
 select * 
 into [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
 from [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
+
+USE [ANTERO]
