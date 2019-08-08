@@ -26,22 +26,6 @@ GO
 
 CREATE VIEW [dw].[v_amos_organisaatioliitokset]
 
-/*
-drop table [dw].[d_amos_rajapinta_organisaatioliitokset]
-go
-select *
-into [dw].[d_amos_rajapinta_organisaatioliitokset]
-from [dw].[v_amos_organisaatioliitokset]
-
-select count(*) 
-from [dw].[d_amos_rajapinta_organisaatioliitokset]
-
-select top 10 *
-from [dw].[d_amos_rajapinta_organisaatioliitokset]
-
-
-*/
-
 
 AS (
 select 
