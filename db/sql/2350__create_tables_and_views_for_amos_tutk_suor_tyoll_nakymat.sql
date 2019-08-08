@@ -651,13 +651,13 @@ else 0 END
 
 
 
-
+-- /Karin speksi 2019-04-05
 
 
 --jhe 27.5.2019, aluekertoimen oletusarvoksi 1 (oli 0)
 ,isnull(tk_4_2.aluekerroin,1) as aluekerroin
 
-
+--/kertoimet
 
 , luontipvm, source, username, loadtime
 						 
