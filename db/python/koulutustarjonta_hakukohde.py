@@ -55,7 +55,7 @@ def makerow():
     #--soraKuvausKielet (Set[string], optional),
     "valintaPerusteKuvausTunniste": None, # int null, --(integer, optional),
     #--valintaPerusteKuvausKielet (Set[string], optional),
-    #--hakukelpoisuusvaatimusUris (array[string], optional),
+    "hakukelpoisuusvaatimusUris": None, # (array[string], optional),
     "alinValintaPistemaara": None, # int null, --(integer, optional),
     "sahkoinenToimitusOsoite": None, # nvarchar(max) null, --(string, optional),
     "soraKuvausKoodiUri": None, # nvarchar(max) null, --(string, optional),
