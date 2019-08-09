@@ -21,14 +21,11 @@ GO
 ALTER VIEW [dw].[v_amos_spl_koski_tutkinnon_osien_suoritukset] AS
 
 /*
-
 drop table [dw].[f_amos_spl_koski_tutkinnon_osien_suoritukset]
 go
 select *
 into [dw].[f_amos_spl_koski_tutkinnon_osien_suoritukset]
 from [dw].[v_amos_spl_koski_tutkinnon_osien_suoritukset]
-
-
 */
 
 -- ## Määritys OPH 7.3.2019, Korhonen, Hänninen Mikkonen -> Helminen ##
