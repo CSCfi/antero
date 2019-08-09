@@ -1,7 +1,7 @@
 USE [ANTERO]
 GO
 
-/****** Object:  View [dw].[v_amos_spl_koski_tutkinnon_osien_suoritukset]    Script Date: 9.8.2019 16:32:15 ******/
+
 SET ANSI_NULLS ON
 GO
 
@@ -81,7 +81,7 @@ SELECT DISTINCT
 		CASE
       --ensisijaisesti laajuus eperusteista
       -- jhe 23.5, ei löydy kaikkia laajuuksia epersta? 
-	  /*laajuus_puuttuu_eperusteista=0 then ep_tutkinnonosa_laajuus*/
+	  /* laajuus_puuttuu_eperusteista=0 then ep_tutkinnonosa_laajuus */
 			when laajuus_puuttuu_eperusteista=0 then isnull(ep_tutkinnonosa_laajuus,koulutusmoduuli_laajuus_arvo)
 	  --jos laajuus koskesta, hyväksytään vain sallituissa rajoissa
 			when laajuus_puuttuu_eperusteista=1 and [koulutusmoduuli_laajuus_arvo] < 5 then 0
