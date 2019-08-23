@@ -1,20 +1,19 @@
-USE [ANTERO]
-GO
 /*
 
 AMOS rahoitusperusteraportointi - Työllistyneet ja jatko-opiskelijat
 Näkymien ja taulujen luontilauseet ANTERO-kantaan
 
 
-Juha Helminen 30.5.2019, 5.8.2019
+Juha Helminen 30.5.2019, 5.8.2019, 12.8.
 --drop-lauseet lisätty 
 --Githubissa tämä skripti nimellä
 2350___AMOS_tutk_suor_tyoll_nakymat_ja_taulut
 */
 
+---------------------# next # ---------------------
+USE [ANTERO]
+GO
 
-
-/****** Object:  View [dw].[v_amos_organisaatioliitokset]    Script Date: 30.5.2019 9:36:31 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -28,6 +27,7 @@ CREATE VIEW [dw].[v_amos_organisaatioliitokset]
 
 /*
 drop table [dw].[d_amos_rajapinta_organisaatioliitokset]
+go
 select *
 into [dw].[d_amos_rajapinta_organisaatioliitokset]
 from [dw].[v_amos_organisaatioliitokset]
@@ -77,7 +77,7 @@ group by
 
 
 GO
-
+---------------------# next # ---------------------
 
 drop table  IF EXISTS[dw].[d_amos_rajapinta_organisaatioliitokset]
 go
@@ -85,7 +85,7 @@ select *
 into [dw].[d_amos_rajapinta_organisaatioliitokset]
 from [dw].[v_amos_organisaatioliitokset]
 go
-
+---------------------# next # ---------------------
 USE [ANTERO]
 GO 
 SET 
@@ -123,16 +123,10 @@ FROM
       AND (ol.organisaatio_koodi LIKE '%-%')
   ) AS ol ON okm8.koul_jarj = ol.organisaatio_koodi 
   GO
-
+---------------------# next # ---------------------
 USE [ANTERO]
 GO
 
-/****** Object:  View [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy]    Script Date: 30.5.2019 9:34:18 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
 
 DROP VIEW IF EXISTS 
 [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy]
@@ -265,16 +259,7 @@ FROM
   
   GO
 
-
-USE [ANTERO] 
-GO 
-/****** Object:  View [dw].[v_amos_spl_TK_4_2abc_sopv_18]    Script Date: 30.5.2019 10:20:20 ******/
-SET 
-  ANSI_NULLS ON 
-  GO 
-SET 
-  QUOTED_IDENTIFIER ON 
-  GO 
+---------------------# next # ---------------------
 
 DROP VIEW IF EXISTS 
 [dw].[v_amos_spl_TK_4_2abc_sopv_18]
@@ -284,7 +269,7 @@ GO
   /*
   DROP TABLE
   dw.d_amos_spl_TK_4_2abc_sopv_18
-
+  go
   
   select *
   into dw.d_amos_spl_TK_4_2abc_sopv_18
@@ -324,7 +309,7 @@ FROM
   [TK_H9098_CSC].[dbo].[TK_4_2c_sopv_18] 
   GO
 		
-
+---------------------# next # ---------------------
   DROP TABLE
   dw.d_amos_spl_TK_4_2abc_sopv_18
   go
@@ -334,23 +319,23 @@ FROM
   from dw.v_amos_spl_TK_4_2abc_sopv_18
   GO
 
-
+---------------------# next # ---------------------
 /* AMOS-attribuutit tuovat koodeille selitteet, mutta taulua ylläpidettävä käsin. Tässä haettu samaa
 kytkin-tyyppistä ideaa kuin Vipus-raporteilla. Onko tarpeen? Ehkä ei. Taulu siis luotu manuaalisesti
 erikseen sekä testiin että tuotantoon. Insert-lauseet eivät ole mukana tässä skriptissä.
 -- jhe 5.8.2019
 
 USE [ANTERO]
-
+GO
 
 DROP TABLE [sa].[d_amos_tk_attribuutit]
-
+GO
 
 SET ANSI_NULLS ON
-
+GO
 
 SET QUOTED_IDENTIFIER ON
-
+GO
 
 CREATE TABLE [sa].[d_amos_tk_attribuutit](
 	[muuttuja] [nvarchar](255) NULL,
@@ -358,20 +343,21 @@ CREATE TABLE [sa].[d_amos_tk_attribuutit](
 	[selite] [nvarchar](max) NULL
 ) 
 
-
+GO
 
 DROP VIEW IF EXISTS 
 [sa].[v_d_amos_tk_attribuutit]
-
+GO 
 
 CREATE VIEW [sa].[v_d_amos_tk_attribuutit]
 AS
 SELECT        muuttuja, tieto, muuttuja + '_' + CAST(tieto AS char(5)) AS kytkin, selite
 FROM            sa.d_amos_tk_attribuutit
 
-
+GO
 */
 
+---------------------# next # ---------------------
 
 DROP VIEW IF EXISTS 
 [dw].[v_amos_spl_tk_4_2abc_paa_asiallinen_toiminta_maak]
@@ -448,7 +434,7 @@ FROM
       ) AS t3
   ) AS t4
 GO
-
+---------------------# next # ---------------------
 
 DROP VIEW IF EXISTS 
 [dw].[v_amos_spl_tk_4_2abc_paa_asiallinen_toiminta_maak_indeksoitu]
@@ -482,7 +468,7 @@ FROM
   ) AS t2 
   INNER JOIN dw.v_amos_spl_tk_4_2abc_paa_asiallinen_toiminta_maak AS t3 ON t2.fixed_key = t3.fixed_key
 GO
-
+---------------------# next # ---------------------
 
 DROP VIEW IF EXISTS 
 [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy_piirteet]
@@ -490,8 +476,10 @@ GO
 
 CREATE VIEW [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy_piirteet]
 /*
-drop table [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_piirteet]
+--Päivitetty 8.8.2019 jhe
 
+drop table [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_piirteet]
+go
 
 select *
 into [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_piirteet]
@@ -562,8 +550,8 @@ lkm
 --https://jira.eduuni.fi/browse/CSCSUOLA-1
 --Työllistyminen ja jatko-opiskelu raporttimalli 2019 04 05.xlsx
 -- .. välilehti: Painotettujen laskentasäännöt
-
 --Työlliset ja opiskelijat
+
 ,CASE
 WHEN tutk_suor_1=1 THEN lkm
 WHEN tutk_suor_2=1 THEN lkm
@@ -650,8 +638,17 @@ else 0 END
  as jatko_opiskelijat_tyollisena_ennen_koulutusta
 
 
+--Työttömät ja muussa toiminnassa
+-- Karin speksi 2019-07-02, lisatty 2019-08-08 jhe
+-- Työll+jatko-opisk.lisäraportti2
 
--- /Karin speksi 2019-04-05
+,CASE WHEN ptoim1r2e_kytkin='ptoim_12' THEN lkm ELSE 0 END 
+as tyoton
+
+,CASE WHEN ptoim1r2e_kytkin='ptoim_99' THEN lkm ELSE 0 END 
+as muu_tai_tuntematon
+
+-- /Karin speksi 2019-04-05 , 2019-07-02
 
 
 --jhe 27.5.2019, aluekertoimen oletusarvoksi 1 (oli 0)
@@ -701,54 +698,26 @@ LEFT OUTER JOIN sa.v_d_amos_tk_attribuutit AS kytkin_toteuma_tutk ON t.toteuma_t
 LEFT OUTER JOIN sa.v_d_amos_tk_attribuutit AS kytkin_tutklaja ON t.tutklaja_kytkin = kytkin_tutklaja.kytkin
 LEFT OUTER JOIN sa.v_d_amos_tk_attribuutit AS kytkin_tyov ON t.tyov_kytkin = kytkin_tyov.kytkin
 LEFT OUTER JOIN sa.v_d_amos_tk_attribuutit AS kytkin_tsekt ON t.tsekt_kytkin = kytkin_tsekt.kytkin
+
 GO
 
-drop table IF EXISTS [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_piirteet]
-go
-select *
-into [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_piirteet]
-from [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy_piirteet]
 
-DROP VIEW IF EXISTS 
-[sa].[v_sa_amos_spl_TK_K1_13_sopv_yy_jarjestajakerroin]
-GO 
-
-CREATE VIEW [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy_jarjestajakerroin] 
-AS 
-SELECT 
-  [jarj_opisk], 
-  suor_koko_tutk_yhteensa, 
-  tyolliset_opiskelijat_ja_tyottomat_yhteensa, 
-  suor_koko_tutk_yhteensa * 1.0 / tyolliset_opiskelijat_ja_tyottomat_yhteensa * 1.0 AS jarjestajakerroin 
-FROM 
-  (
-    SELECT 
-      DISTINCT 
-	  -- Järjestäjäkertoimen tekijät 
-      jarj_opisk, 
-      Sum([suor_koko_tutk]) OVER (partition BY [jarj_opisk]) AS suor_koko_tutk_yhteensa, 
-      Sum(
-        [tyolliset_opiskelijat_ja_tyottomat]
-      ) OVER (partition BY [jarj_opisk]) AS tyolliset_opiskelijat_ja_tyottomat_yhteensa
-    FROM 
-      [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_piirteet]
-  ) t
-GO
-
+---------------------# next # ---------------------
 DROP VIEW IF EXISTS 
 [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
 GO 
-USE [ANTERO]
-GO
 
 CREATE VIEW [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy_tabular] AS 
-/*
-drop table [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
 
+/*
+--Päivitetty 8.8.2019, jhe
+
+drop table [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
+go
 select * 
 into [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
 from [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
-
+go
 
 select count(*) from [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
 select top 10 * from [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
@@ -849,6 +818,10 @@ SELECT
   tyollistyneet_tyollisena_ennen_koulutusta, 
   jatko_opiskelijat_ei_tyollisena_ennen_koulutusta, 
   jatko_opiskelijat_tyollisena_ennen_koulutusta, 
+  --lisätty 8.8.2019 jhe
+  tyoton,
+  muu_tai_tuntematon,
+
   luontipvm 
 FROM 
   (
@@ -937,6 +910,10 @@ FROM
       t.tyollistyneet_tyollisena_ennen_koulutusta, 
       t.jatko_opiskelijat_ei_tyollisena_ennen_koulutusta, 
       t.jatko_opiskelijat_tyollisena_ennen_koulutusta, 
+	  --lisätty kaksi kenttaa 8.8.2019, jhe
+	  t.tyoton,
+	  t.muu_tai_tuntematon,
+
       t.statuskerroin, 
       t.aluekerroin, 
       t.luontipvm 
@@ -948,11 +925,13 @@ FROM
 
   ) AS t_1
  
+
 GO
 
-
+---------------------# next # ---------------------
 drop table IF EXISTS [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
 go
 select * 
 into [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
 from [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
+GO
