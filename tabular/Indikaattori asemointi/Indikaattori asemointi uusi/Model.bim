@@ -2844,13 +2844,24 @@
           },
           {
             "name": "1-14op suorittaneet lkm",
-            "expression": " SUM([1-14op suorittaneet])",
+            "expression": [
+              " IF(SUM([1-14op suorittaneet]) = 0, BLANK(), IF(SUM([1-14op suorittaneet]) < 5, \"1-4\", MROUND(SUM([1-14op suorittaneet]), 3)))",
+              ""
+            ],
             "formatString": "### ### ###",
             "displayFolder": "Opintopisteet\\Asemointi"
           },
           {
             "name": "1-14op suorittaneiden osuus",
-            "expression": " DIVIDE([1-14op suorittaneet lkm],SUM([Läsnäolleet opiskelijat (1-14op)]))",
+            "expression": [
+              " ",
+              "var osa = [1-14op suorittaneet lkm]",
+              "var kaikki = [Lasna (1-14)]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa= \"1-4\", IF(kaikki > 8000, \"0.0 %\", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Opintopisteet\\Asemointi"
           },
@@ -2925,12 +2936,6 @@
             "expression": " SUM([Ammattikorkeakoulun opetushenkilökunta])+SUM([Ammattikorkeakoulun TKI-henkilökunta])",
             "formatString": "### ### ###.###",
             "displayFolder": "Henkilöstö\\Asemointi"
-          },
-          {
-            "name": "Lasna (1-14)",
-            "expression": " SUM(Muuttujat[Läsnäolleet opiskelijat (1-14op)])",
-            "formatString": "### ### ###.###",
-            "displayFolder": "Opintopisteet\\Asemointi"
           },
           {
             "name": "Työlliset (1v tutkinnon jälkeen)",
@@ -4514,19 +4519,19 @@
           },
           {
             "name": "Opiskelijat lkm",
-            "expression": " CALCULATE(SUM(Muuttujat[Opiskelijat]))",
+            "expression": " IF(SUM(Muuttujat[Opiskelijat])= 0, BLANK(), IF(SUM(Muuttujat[Opiskelijat]) < 5, \"1-4\", MROUND(SUM(Muuttujat[Opiskelijat]), 3)))",
             "formatString": "### ### ###",
             "displayFolder": "Opiskelijat"
           },
           {
             "name": "Opiskelijat fte",
-            "expression": " CALCULATE(SUM(Muuttujat[Opiskelijat_fte]))",
+            "expression": " IF(SUM(Muuttujat[Opiskelijat_fte])= 0, BLANK(), IF(SUM(Muuttujat[Opiskelijat_fte]) < 5, \"1-4\", MROUND(SUM(Muuttujat[Opiskelijat_fte]), 3)))",
             "formatString": "### ### ###",
             "displayFolder": "Opiskelijat"
           },
           {
             "name": "Opiskelijat läsnä",
-            "expression": " CALCULATE(SUM(Muuttujat[Opiskelijat_lasna]))",
+            "expression": " IF(SUM(Muuttujat[Opiskelijat_lasna])= 0, BLANK(), IF(SUM(Muuttujat[Opiskelijat_lasna]) < 5, \"1-4\", MROUND(SUM(Muuttujat[Opiskelijat_lasna]), 3)))",
             "formatString": "### ### ###",
             "displayFolder": "Opiskelijat"
           },
@@ -4762,6 +4767,42 @@
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Työllisyys\\Rakenteellinen kehittäminen"
+          },
+          {
+            "name": "Lasna (1-14)",
+            "expression": " IF(SUM([Läsnäolleet opiskelijat (1-14op)]) = 0, BLANK(), IF(SUM([Läsnäolleet opiskelijat (1-14op)]) < 5, \"1-4\", MROUND(SUM([Läsnäolleet opiskelijat (1-14op)]), 3)))",
+            "formatString": "### ### ###.###",
+            "displayFolder": "Opintopisteet\\Asemointi"
+          },
+          {
+            "name": "1-14op suorittaneiden osuus_s",
+            "expression": " DIVIDE([1-14op suorittaneet lkm_s], [Lasna (1-14)_s])",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Lasna (1-14)_s",
+            "expression": " SUM(Muuttujat[Läsnäolleet opiskelijat (1-14op)])",
+            "formatString": "### ### ###.###"
+          },
+          {
+            "name": "1-14op suorittaneet lkm_s",
+            "expression": " SUM([1-14op suorittaneet])",
+            "formatString": "### ### ###"
+          },
+          {
+            "name": "Opiskelijat lkm_s",
+            "expression": " CALCULATE(SUM(Muuttujat[Opiskelijat]))",
+            "formatString": "### ### ###"
+          },
+          {
+            "name": "Opiskelijat fte_s",
+            "expression": " CALCULATE(SUM(Muuttujat[Opiskelijat_fte]))",
+            "formatString": "### ### ###"
+          },
+          {
+            "name": "Opiskelijat läsnä_s",
+            "expression": " CALCULATE(SUM(Muuttujat[Opiskelijat_lasna]))",
+            "formatString": "### ### ###"
           }
         ],
         "annotations": [
