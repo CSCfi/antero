@@ -787,6 +787,32 @@
             "isDataTypeInferred": true,
             "isHidden": true,
             "expression": "Muuttujat[Organisaatio koodi]&\"_\"&Muuttujat[Koodit OKM ohjauksen ala]"
+          },
+          {
+            "name": "toimipiste_id",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "toimipiste_id"
+          },
+          {
+            "name": "hakukohde_id",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "hakukohde_id"
+          },
+          {
+            "name": "alpa",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "alpa"
+          },
+          {
+            "type": "calculated",
+            "name": "alpa_key",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "expression": "Muuttujat[Tilastovuosi]&\"_\"&Muuttujat[Tutkinnon aloitussykli]&\"_\"&Muuttujat[Organisaatio koodi]&\"_\"&Muuttujat[toimipiste_id]&\"_\"&Muuttujat[hakukohde_id]"
           }
         ],
         "partitions": [
@@ -1442,6 +1468,30 @@
                   "        <int>110</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>toimipiste_id</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>110</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>hakukohde_id</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>121</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>alpa</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>59</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -2076,6 +2126,30 @@
                   "        <int>78</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>toimipiste_id</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>79</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>hakukohde_id</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>80</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>alpa</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>81</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -2706,6 +2780,30 @@
                   "    <item>",
                   "      <key>",
                   "        <string>Opiskelijat_lasna</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>toimipiste_id</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>hakukohde_id</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>alpa</string>",
                   "      </key>",
                   "      <value>",
                   "        <boolean>true</boolean>",
@@ -4803,6 +4901,235 @@
             "name": "Opiskelijat läsnä_s",
             "expression": " CALCULATE(SUM(Muuttujat[Opiskelijat_lasna]))",
             "formatString": "### ### ###"
+          },
+          {
+            "name": "Vetovoima 2018",
+            "expression": [
+              "",
+              "var hak=CALCULATE(DISTINCTCOUNT([Ensisijainen hakija]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2018),",
+              "\tNOT(ISBLANK(Muuttujat[Ensisijainen hakija])))",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2018),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])))",
+              "return DIVIDE(hak,vast)",
+              ""
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
+          },
+          {
+            "name": "Täyttöaste 2016",
+            "expression": [
+              "",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])))",
+              "var alp=CALCULATE(SUM(Aloituspaikat[alpa]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016))",
+              "return DIVIDE(vast,alp)"
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
+          },
+          {
+            "name": "Täyttöaste 2017",
+            "expression": [
+              "",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])))",
+              "var alp=CALCULATE(SUM(Aloituspaikat[alpa]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]), Muuttujat[Tilastovuosi]=2017))",
+              "return DIVIDE(vast,alp)",
+              "",
+              ""
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
+          },
+          {
+            "name": "Täyttöaste 2018",
+            "expression": [
+              "",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2018),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])))",
+              "var alp=CALCULATE(SUM(Aloituspaikat[alpa]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2018))",
+              "return DIVIDE(vast,alp)",
+              ""
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
+          },
+          {
+            "name": "Täyttöaste 2016 (I sykli)",
+            "expression": [
+              "",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
+              "var alp=CALCULATE(SUM(Aloituspaikat[alpa]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
+              "return DIVIDE(vast,alp)"
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
+          },
+          {
+            "name": "Täyttöaste 2017 (I sykli)",
+            "expression": [
+              "",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
+              "var alp=CALCULATE(SUM(Aloituspaikat[alpa]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
+              "return DIVIDE(vast,alp)"
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
+          },
+          {
+            "name": "Täyttöaste 2018 (I sykli)",
+            "expression": [
+              "",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2018),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
+              "var alp=CALCULATE(SUM(Aloituspaikat[alpa]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2018),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
+              "return DIVIDE(vast,alp)"
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
+          },
+          {
+            "name": "Täyttöaste 2016 (I sykli, amk)",
+            "expression": [
+              "",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"),",
+              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
+              "var alp=CALCULATE(SUM(Aloituspaikat[alpa]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"),",
+              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
+              "return DIVIDE(vast,alp)"
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
+          },
+          {
+            "name": "Täyttöaste 2017 (I sykli, amk)",
+            "expression": [
+              "",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"),",
+              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
+              "var alp=CALCULATE(SUM(Aloituspaikat[alpa]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"),",
+              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
+              "return DIVIDE(vast,alp)"
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
+          },
+          {
+            "name": "Täyttöaste 2018 (I sykli, amk)",
+            "expression": [
+              "",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2018),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"),",
+              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
+              "var alp=CALCULATE(SUM(Aloituspaikat[alpa]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2018),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"),",
+              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
+              "return DIVIDE(vast,alp)"
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
+          },
+          {
+            "name": "Täyttöaste 2016 (II sykli, yamk)",
+            "expression": [
+              "",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"II sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"))",
+              "var alp=CALCULATE(SUM(Aloituspaikat[alpa]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"II sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"))",
+              "return DIVIDE(vast,alp)"
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
+          },
+          {
+            "name": "Täyttöaste 2017 (II sykli, yamk)",
+            "expression": [
+              "",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"II sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"))",
+              "var alp=CALCULATE(SUM(Aloituspaikat[alpa]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"II sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"))",
+              "return DIVIDE(vast,alp)"
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
+          },
+          {
+            "name": "Täyttöaste 2018 (II sykli, yamk)",
+            "expression": [
+              "",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2018),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"II sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"))",
+              "var alp=CALCULATE(SUM(Aloituspaikat[alpa]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2018),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"II sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"))",
+              "return DIVIDE(vast,alp)"
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
           }
         ],
         "annotations": [
@@ -5462,6 +5789,30 @@
               "        <int>110</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>toimipiste_id</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>110</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>hakukohde_id</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>121</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>alpa</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>59</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -6096,6 +6447,30 @@
               "        <int>78</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>toimipiste_id</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>79</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>hakukohde_id</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>80</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>alpa</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>81</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -6726,6 +7101,30 @@
               "    <item>",
               "      <key>",
               "        <string>Opiskelijat_lasna</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>toimipiste_id</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>hakukohde_id</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>alpa</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -7369,6 +7768,37 @@
             }
           }
         ]
+      },
+      {
+        "name": "Aloituspaikat",
+        "isHidden": true,
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "alpa",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[alpa]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "alpa_key",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[alpa_key]"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": "CALCULATETABLE(SUMMARIZE(Muuttujat, Muuttujat[alpa_key], Muuttujat[alpa]))"
+            }
+          }
+        ]
       }
     ],
     "relationships": [
@@ -7378,14 +7808,6 @@
         "fromColumn": "Tieteenala_avain",
         "toTable": "Tieteenala jufo",
         "toColumn": "Tieteenala_avain",
-        "crossFilteringBehavior": "bothDirections"
-      },
-      {
-        "name": "0eb16a04-0194-4df4-8d45-261feea392c3",
-        "fromTable": "Muuttujat",
-        "fromColumn": "org_TA-avain",
-        "toTable": "Org_tohtorit",
-        "toColumn": "Org_TA-avain",
         "crossFilteringBehavior": "bothDirections"
       },
       {
@@ -7450,6 +7872,22 @@
         "fromColumn": "Org_OA",
         "toTable": "calc_amk_julk",
         "toColumn": "Org_OA",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "0eb16a04-0194-4df4-8d45-261feea392c3",
+        "fromTable": "Muuttujat",
+        "fromColumn": "org_TA-avain",
+        "toTable": "Org_tohtorit",
+        "toColumn": "Org_TA-avain",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "7a10dad8-fdc2-46ca-8de1-5a69d5674864",
+        "fromTable": "Muuttujat",
+        "fromColumn": "alpa_key",
+        "toTable": "Aloituspaikat",
+        "toColumn": "alpa_key",
         "crossFilteringBehavior": "bothDirections"
       }
     ],
