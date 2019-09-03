@@ -1,12 +1,13 @@
 USE [VipunenTK_SA]
 GO
 
-/****** Object:  View [dbo].[v_sa_2_5_Lukiokoulutuksen_ainevalinnat]    Script Date: 3.9.2019 12:44:31 ******/
+/****** Object:  View [dbo].[v_sa_2_5_Lukiokoulutuksen_ainevalinnat]    Script Date: 3.9.2019 15:35:56 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 
