@@ -3,7 +3,7 @@
   <name>odw_to-test</name>
     <description/>
     <extended_description/>
-    <job_version/>
+    <job_version>1.01</job_version>
     <job_status>0</job_status>
   <directory>&#x2f;</directory>
   <created_user>-</created_user>
@@ -18,6 +18,11 @@
         </parameter>
         <parameter>
             <name>DBUSER</name>
+            <default_value/>
+            <description/>
+        </parameter>
+        <parameter>
+            <name>FILEPATH</name>
             <default_value/>
             <description/>
         </parameter>
@@ -98,14 +103,14 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>480</xloc>
-      <yloc>64</yloc>
+      <xloc>144</xloc>
+      <yloc>48</yloc>
       </entry>
     <entry>
       <name>Check if csv is present</name>
       <description/>
       <type>FILE_EXISTS</type>
-      <filename>M&#x3a;&#x5c;IN&#x5c;ODW&#x5c;&#x24;&#x7b;TABLE&#x7d;.csv</filename>
+      <filename>M&#x3a;&#x5c;IN&#x5c;&#x24;&#x7b;FILEPATH&#x7d;&#x5c;&#x24;&#x7b;TABLE&#x7d;.csv</filename>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
@@ -127,7 +132,7 @@
       <name>SQL</name>
       <description/>
       <type>SQL</type>
-      <sql>USE ANTERO&#xd;&#xa;TRUNCATE TABLE &#x24;&#x7b;SCHEMA&#x7d;.&#x24;&#x7b;TABLE&#x7d;&#xd;&#xa;&#xd;&#xa;BULK INSERT &#x24;&#x7b;SCHEMA&#x7d;.&#x24;&#x7b;TABLE&#x7d; FROM &#x27;E&#x3a;&#x5c;CSV-DATA&#x5c;in&#x5c;ODW&#x5c;&#x24;&#x7b;TABLE&#x7d;.csv&#x27; &#xd;&#xa;WITH &#x28;&#xd;&#xa;CODEPAGE &#x3d; &#x27;65001&#x27;,&#xd;&#xa;ROWTERMINATOR &#x3d; &#x27;&#x5c;n&#x27;,&#xd;&#xa;FIELDTERMINATOR &#x3d; &#x27;&#x7c;&#x7c;&#x27;,&#xd;&#xa;FIRSTROW &#x3d; 2,&#xd;&#xa;BATCHSIZE &#x3d; 5000,&#xd;&#xa;MAXERRORS &#x3d; 25,&#xd;&#xa;ERRORFILE &#x3d; &#x27;E&#x3a;&#x5c;CSV-DATA&#x5c;in&#x5c;ODW&#x5c;temp.csv&#x27;&#xd;&#xa;&#x29;&#x3b;</sql>
+      <sql>USE ANTERO&#xd;&#xa;TRUNCATE TABLE &#x24;&#x7b;SCHEMA&#x7d;.&#x24;&#x7b;TABLE&#x7d;&#xd;&#xa;&#xd;&#xa;BULK INSERT &#x24;&#x7b;SCHEMA&#x7d;.&#x24;&#x7b;TABLE&#x7d; FROM &#x27;E&#x3a;&#x5c;CSV-DATA&#x5c;in&#x5c;&#x24;&#x7b;FILEPATH&#x7d;&#x5c;&#x24;&#x7b;TABLE&#x7d;.csv&#x27; &#xd;&#xa;WITH &#x28;&#xd;&#xa;CODEPAGE &#x3d; &#x27;65001&#x27;,&#xd;&#xa;ROWTERMINATOR &#x3d; &#x27;&#x5c;n&#x27;,&#xd;&#xa;FIELDTERMINATOR &#x3d; &#x27;&#x7c;&#x7c;&#x27;,&#xd;&#xa;FIRSTROW &#x3d; 2,&#xd;&#xa;BATCHSIZE &#x3d; 5000,&#xd;&#xa;MAXERRORS &#x3d; 25,&#xd;&#xa;ERRORFILE &#x3d; &#x27;E&#x3a;&#x5c;CSV-DATA&#x5c;&#x24;&#x7b;ERROR_PATH&#x7d;&#x5c;&#x24;&#x7b;FILEPATH&#x7d;_ERROR_&#x24;&#x7b;cur_date&#x7d;.csv&#x27;&#xd;&#xa;&#x29;&#x3b;</sql>
       <useVariableSubstitution>T</useVariableSubstitution>
       <sqlfromfile>F</sqlfromfile>
       <sqlfilename/>
@@ -137,7 +142,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>480</xloc>
-      <yloc>336</yloc>
+      <yloc>400</yloc>
       </entry>
     <entry>
       <name>Delete files</name>
@@ -147,7 +152,7 @@
       <include_subfolders>N</include_subfolders>
       <fields>
         <field>
-          <name>M&#x3a;&#x5c;in&#x5c;ODW&#x5c;</name>
+          <name>M&#x3a;&#x5c;in&#x5c;&#x24;&#x7b;FILEPATH&#x7d;&#x5c;</name>
           <filemask>.&#x2a;&#x5c;.csv</filemask>
         </field>
       </fields>
@@ -155,7 +160,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>480</xloc>
-      <yloc>416</yloc>
+      <yloc>464</yloc>
       </entry>
     <entry>
       <name>Success</name>
@@ -165,7 +170,7 @@
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>480</xloc>
-      <yloc>512</yloc>
+      <yloc>576</yloc>
       </entry>
     <entry>
       <name>Abort job</name>
@@ -175,8 +180,8 @@
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
-      <xloc>656</xloc>
-      <yloc>416</yloc>
+      <xloc>320</xloc>
+      <yloc>464</yloc>
       </entry>
     <entry>
       <name>MOVE CSV-file to test</name>
@@ -193,13 +198,81 @@
       <add_date>N</add_date>
       <add_time>N</add_time>
       <insertScript>Y</insertScript>
-      <script>MOVE  N&#x3a;&#x5c;&#x25;TABLE&#x25;.csv M&#x3a;&#x5c;in&#x5c;odw&#x5c;</script>
+      <script>MOVE  N&#x3a;&#x5c;&#x25;TABLE&#x25;.csv M&#x3a;&#x5c;in&#x5c;&#x25;FILEPATH&#x25;&#x5c;</script>
       <loglevel>Basic</loglevel>
       <parallel>N</parallel>
       <draw>Y</draw>
       <nr>0</nr>
       <xloc>480</xloc>
       <yloc>160</yloc>
+      </entry>
+    <entry>
+      <name>load odw.conf</name>
+      <description/>
+      <type>SET_VARIABLES</type>
+      <replacevars>Y</replacevars>
+      <filename>D&#x3a;&#x5c;antero&#x5c;pdi_integrations&#x5c;odw&#x5c;conf&#x5c;odw.conf</filename>
+      <file_variable_type>CURRENT_JOB</file_variable_type>
+      <fields>
+      </fields>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>144</xloc>
+      <yloc>160</yloc>
+      </entry>
+    <entry>
+      <name>Check filepath</name>
+      <description/>
+      <type>EVAL</type>
+      <script>var job &#x3d; parent_job.getVariable&#x28;&#x22;viesti&#x22;, &#x22;&#x22;&#x29;&#x3b;&#xd;&#xa;if&#x28;parent_job.getVariable&#x28;job&#x29; &#x21;&#x3d; null&#x29; &#x7b;&#xd;&#xa;	parent_job.setVariable&#x28;&#x22;ERROR_PATH&#x22;,parent_job.getVariable&#x28;job&#x29;&#x29;&#x3b;&#xd;&#xa;	true&#x3b;&#xd;&#xa;&#x7d;&#xd;&#xa;else &#x7b;&#xd;&#xa;	false&#x3b;&#xd;&#xa;&#x7d;</script>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>320</xloc>
+      <yloc>160</yloc>
+      </entry>
+    <entry>
+      <name>cur_date variable</name>
+      <description/>
+      <type>EVAL</type>
+      <script>date &#x3d; new java.util.Date&#x28;&#x29;&#x3b;&#xa;date.setDate&#x28;date.getDate&#x28;&#x29;&#x29;&#x3b;&#xa;var cur_date &#x3d; new java.text.SimpleDateFormat&#x28;&#x22;yyyy_MM_dd_HH_mm&#x22;&#x29;.format&#x28;date&#x29;&#x3b;&#xa;parent_job.setVariable&#x28;&#x22;cur_date&#x22;, cur_date&#x29;&#x3b;&#xa;true&#x3b;</script>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>480</xloc>
+      <yloc>320</yloc>
+      </entry>
+    <entry>
+      <name>Clear old errors</name>
+      <description/>
+      <type>JOB</type>
+      <specification_method>filename</specification_method>
+      <job_object_id/>
+      <filename>D&#x3a;&#x5c;antero&#x5c;pdi_integrations&#x5c;koski_bulk&#x5c;jobs&#x5c;Koski_csv_clean.kjb</filename>
+      <jobname/>
+      <arg_from_previous>N</arg_from_previous>
+      <params_from_previous>N</params_from_previous>
+      <exec_per_row>N</exec_per_row>
+      <set_logfile>N</set_logfile>
+      <logfile/>
+      <logext/>
+      <add_date>N</add_date>
+      <add_time>N</add_time>
+      <loglevel>Nothing</loglevel>
+      <slave_server_name/>
+      <wait_until_finished>Y</wait_until_finished>
+      <follow_abort_remote>N</follow_abort_remote>
+      <expand_remote_job>N</expand_remote_job>
+      <create_parent_folder>N</create_parent_folder>
+      <pass_export>N</pass_export>
+      <parameters>        <pass_all_parameters>Y</pass_all_parameters>
+      </parameters>      <set_append_logfile>N</set_append_logfile>
+      <parallel>N</parallel>
+      <draw>Y</draw>
+      <nr>0</nr>
+      <xloc>592</xloc>
+      <yloc>576</yloc>
       </entry>
   </entries>
   <hops>
@@ -218,17 +291,8 @@
       <from_nr>0</from_nr>
       <to_nr>0</to_nr>
       <enabled>Y</enabled>
-      <evaluation>N</evaluation>
-      <unconditional>Y</unconditional>
-    </hop>
-    <hop>
-      <from>START</from>
-      <to>MOVE CSV-file to test</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
       <evaluation>Y</evaluation>
-      <unconditional>Y</unconditional>
+      <unconditional>N</unconditional>
     </hop>
     <hop>
       <from>MOVE CSV-file to test</from>
@@ -238,15 +302,6 @@
       <enabled>Y</enabled>
       <evaluation>Y</evaluation>
       <unconditional>Y</unconditional>
-    </hop>
-    <hop>
-      <from>Check if csv is present</from>
-      <to>SQL</to>
-      <from_nr>0</from_nr>
-      <to_nr>0</to_nr>
-      <enabled>Y</enabled>
-      <evaluation>Y</evaluation>
-      <unconditional>N</unconditional>
     </hop>
     <hop>
       <from>Delete files</from>
@@ -266,8 +321,155 @@
       <evaluation>N</evaluation>
       <unconditional>N</unconditional>
     </hop>
+    <hop>
+      <from>Check if csv is present</from>
+      <to>cur_date variable</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>cur_date variable</from>
+      <to>SQL</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>START</from>
+      <to>load odw.conf</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>load odw.conf</from>
+      <to>Check filepath</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
+    <hop>
+      <from>Check filepath</from>
+      <to>MOVE CSV-file to test</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>Y</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Check filepath</from>
+      <to>Abort job</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>N</unconditional>
+    </hop>
+    <hop>
+      <from>Success</from>
+      <to>Clear old errors</to>
+      <from_nr>0</from_nr>
+      <to_nr>0</to_nr>
+      <enabled>Y</enabled>
+      <evaluation>N</evaluation>
+      <unconditional>Y</unconditional>
+    </hop>
   </hops>
   <notepads>
+    <notepad>
+      <note>&#x22;load odw.conf&#x22;&#x3a;&#xd;&#xa;Load error_path from config file&#xd;&#xa;&#xd;&#xa;&#x22;Check filepath&#x22;&#x3a;&#xd;&#xa;Custom java-script, If filepath param is not matched &#xd;&#xa;with config file then abort</note>
+      <xloc>16</xloc>
+      <yloc>224</yloc>
+      <width>289</width>
+      <heigth>105</heigth>
+      <fontname>Segoe UI</fontname>
+      <fontsize>9</fontsize>
+      <fontbold>N</fontbold>
+      <fontitalic>N</fontitalic>
+      <fontcolorred>0</fontcolorred>
+      <fontcolorgreen>0</fontcolorgreen>
+      <fontcolorblue>0</fontcolorblue>
+      <backgroundcolorred>255</backgroundcolorred>
+      <backgroundcolorgreen>205</backgroundcolorgreen>
+      <backgroundcolorblue>112</backgroundcolorblue>
+      <bordercolorred>100</bordercolorred>
+      <bordercolorgreen>100</bordercolorgreen>
+      <bordercolorblue>100</bordercolorblue>
+      <drawshadow>Y</drawshadow>
+    </notepad>
+    <notepad>
+      <note>&#x22;MOVE CSV-file to test&#x22;&#x3a;&#xd;&#xa;batch-command move csv from N&#x3a; to M&#x3a;&#xd;&#xa;&#xd;&#xa;&#x22;Check if csv is present&#x22;&#x3a;&#xd;&#xa;if no csv is found then abort</note>
+      <xloc>576</xloc>
+      <yloc>128</yloc>
+      <width>228</width>
+      <heigth>89</heigth>
+      <fontname>Segoe UI</fontname>
+      <fontsize>9</fontsize>
+      <fontbold>N</fontbold>
+      <fontitalic>N</fontitalic>
+      <fontcolorred>0</fontcolorred>
+      <fontcolorgreen>0</fontcolorgreen>
+      <fontcolorblue>0</fontcolorblue>
+      <backgroundcolorred>255</backgroundcolorred>
+      <backgroundcolorgreen>205</backgroundcolorgreen>
+      <backgroundcolorblue>112</backgroundcolorblue>
+      <bordercolorred>100</bordercolorred>
+      <bordercolorgreen>100</bordercolorgreen>
+      <bordercolorblue>100</bordercolorblue>
+      <drawshadow>Y</drawshadow>
+    </notepad>
+    <notepad>
+      <note>&#x22;cur_date variable&#x22;&#x3a;&#xd;&#xa;Create timestamp for error file&#xd;&#xa;&#xd;&#xa;&#x22;SQL&#x22;&#x3a;&#xd;&#xa;Bulk insert query. Requires TABLE, SCHEMA parameters </note>
+      <xloc>560</xloc>
+      <yloc>320</yloc>
+      <width>305</width>
+      <heigth>89</heigth>
+      <fontname/>
+      <fontsize>-1</fontsize>
+      <fontbold>N</fontbold>
+      <fontitalic>N</fontitalic>
+      <fontcolorred>0</fontcolorred>
+      <fontcolorgreen>0</fontcolorgreen>
+      <fontcolorblue>0</fontcolorblue>
+      <backgroundcolorred>255</backgroundcolorred>
+      <backgroundcolorgreen>205</backgroundcolorgreen>
+      <backgroundcolorblue>112</backgroundcolorblue>
+      <bordercolorred>100</bordercolorred>
+      <bordercolorgreen>100</bordercolorgreen>
+      <bordercolorblue>100</bordercolorblue>
+      <drawshadow>Y</drawshadow>
+    </notepad>
+    <notepad>
+      <note>&#x22;Delete files&#x22;&#x3a; &#xd;&#xa;Deletes cvs files after insert&#xd;&#xa;&#xd;&#xa;&#x22;Clear old errors&#x22;&#x3a;&#xd;&#xa;Clears all errors if the current day is tuesday</note>
+      <xloc>560</xloc>
+      <yloc>448</yloc>
+      <width>238</width>
+      <heigth>89</heigth>
+      <fontname/>
+      <fontsize>-1</fontsize>
+      <fontbold>N</fontbold>
+      <fontitalic>N</fontitalic>
+      <fontcolorred>0</fontcolorred>
+      <fontcolorgreen>0</fontcolorgreen>
+      <fontcolorblue>0</fontcolorblue>
+      <backgroundcolorred>255</backgroundcolorred>
+      <backgroundcolorgreen>205</backgroundcolorgreen>
+      <backgroundcolorblue>112</backgroundcolorblue>
+      <bordercolorred>100</bordercolorred>
+      <bordercolorgreen>100</bordercolorgreen>
+      <bordercolorblue>100</bordercolorblue>
+      <drawshadow>Y</drawshadow>
+    </notepad>
   </notepads>
 
 </job>
