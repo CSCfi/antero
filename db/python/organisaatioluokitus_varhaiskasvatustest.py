@@ -225,8 +225,7 @@ def load(secure,hostname,url,schema,table,verbose=False):
   tyyppis = [
     "Koulutustoimija",
     "Oppilaitos",
-    "Toimipiste",
-    "Varhaiskasvatuksen toimipaikka"
+    "Toimipiste"
   ]
   cnt = 0
   for tyyppi in tyyppis:
@@ -280,79 +279,82 @@ def load(secure,hostname,url,schema,table,verbose=False):
     if verbose: show("%d -- %s"%(cnt,row))
 
     # make another requets to actual organization data
-    r = requests.get(address+o)
-    i = r.json()
+    try:
+        r = requests.get(address+o)
+        i = r.json()
 
-    # make "row" (clear values)
-    row = makerow()
+        # make "row" (clear values)
+        row = makerow()
 
-    row["oid"] = o
-    row["parentoid"] = jv(i,"parentOid")
-    # liitokset
-    row["liitosoid"] = liitosmap[o] if o in liitosmap else None
+        row["oid"] = o
+        row["parentoid"] = jv(i,"parentOid")
+        # liitokset
+        row["liitosoid"] = liitosmap[o] if o in liitosmap else None
 
-    # TODO does the order here matter? if multiple tyyppi's, what to do?
-    if "tyypit" in i and "Koulutustoimija" in i["tyypit"]:
-      row["tyyppi"] = "Koulutustoimija"
-      row["koodi"] = jv(i,"ytunnus")
-      if not row["koodi"]:
-        row["koodi"] = jv(i,"virastotunnus") # alternatively try virastotunnus if ytunnus is missing
-      if not row["koodi"]:
-        row["tyyppi"] = None # cancel this organization from loading
-    elif "tyypit" in i and "Oppilaitos" in i["tyypit"]:
-      row["tyyppi"] = "Oppilaitos"
-      row["koodi"] = jv(i,"oppilaitosKoodi")
-      if "oppilaitosTyyppiUri" in i and i["oppilaitosTyyppiUri"]:
-        row["oppilaitostyyppi"] = i["oppilaitosTyyppiUri"].replace("oppilaitostyyppi_","").replace("#1","")
-        # => just code, text values separately
-    elif "tyypit" in i and "Toimipiste" in i["tyypit"]:
-      row["tyyppi"] = "Toimipiste"
-      row["koodi"] = jv(i,"toimipistekoodi")
-    elif "tyypit" in i and "Oppisopimustoimipiste" in i["tyypit"]:
-      row["tyyppi"] = "Oppisopimustoimipiste"
-      row["koodi"] = jv(i,"toimipistekoodi")
-    elif "tyypit" in i and "Varhaiskasvatuksen toimipaikka" in i["tyypit"]:
-      row["tyyppi"] = "Varhaiskasvatuksen toimipaikka"
-      row["koodi"] = jv(i,"toimipistekoodi")
+        # TODO does the order here matter? if multiple tyyppi's, what to do?
+        if "tyypit" in i and "Koulutustoimija" in i["tyypit"]:
+          row["tyyppi"] = "Koulutustoimija"
+          row["koodi"] = jv(i,"ytunnus")
+          if not row["koodi"]:
+            row["koodi"] = jv(i,"virastotunnus") # alternatively try virastotunnus if ytunnus is missing
+          if not row["koodi"]:
+            row["tyyppi"] = None # cancel this organization from loading
+        elif "tyypit" in i and "Oppilaitos" in i["tyypit"]:
+          row["tyyppi"] = "Oppilaitos"
+          row["koodi"] = jv(i,"oppilaitosKoodi")
+          if "oppilaitosTyyppiUri" in i and i["oppilaitosTyyppiUri"]:
+            row["oppilaitostyyppi"] = i["oppilaitosTyyppiUri"].replace("oppilaitostyyppi_","").replace("#1","")
+            # => just code, text values separately
+        elif "tyypit" in i and "Toimipiste" in i["tyypit"]:
+          row["tyyppi"] = "Toimipiste"
+          row["koodi"] = jv(i,"toimipistekoodi")
+        elif "tyypit" in i and "Oppisopimustoimipiste" in i["tyypit"]:
+          row["tyyppi"] = "Oppisopimustoimipiste"
+          row["koodi"] = jv(i,"toimipistekoodi")
+        elif "tyypit" in i and "Varhaiskasvatuksen toimipaikka" in i["tyypit"]:
+          row["tyyppi"] = "Varhaiskasvatuksen toimipaikka"
+          row["koodi"] = jv(i,"toimipistekoodi")
+        # was current organization of type of interest
+        if row["tyyppi"]:
 
-    # was current organization of type of interest
-    if row["tyyppi"]:
+          if "nimi" in i and i["nimi"]:
+            row["nimi"] = jv(jv(i,"nimi"),"fi")
+            row["nimi_sv"] = jv(jv(i,"nimi"),"sv")
+            row["nimi_en"] = jv(jv(i,"nimi"),"en")
+          row["alkupvm"] = jv(i,"alkuPvm")
+          row["loppupvm"] = jv(i,"lakkautusPvm")
 
-      if "nimi" in i and i["nimi"]:
-        row["nimi"] = jv(jv(i,"nimi"),"fi")
-        row["nimi_sv"] = jv(jv(i,"nimi"),"sv")
-        row["nimi_en"] = jv(jv(i,"nimi"),"en")
-      row["alkupvm"] = jv(i,"alkuPvm")
-      row["loppupvm"] = jv(i,"lakkautusPvm")
+          if "kotipaikkaUri" in i and i["kotipaikkaUri"]:
+            row["kotikunta"] = jv(i,"kotipaikkaUri").replace("kunta_","")
+            # => just code, text values separately
 
-      if "kotipaikkaUri" in i and i["kotipaikkaUri"]:
-        row["kotikunta"] = jv(i,"kotipaikkaUri").replace("kunta_","")
-        # => just code, text values separately
+          if "kieletUris" in i and i["kieletUris"]:
+            # todo what if many?
+            row["oppilaitoksenopetuskieli"] = i["kieletUris"][0].replace("oppilaitoksenopetuskieli_","").replace("#1","")
+            # => just code, text values separately
 
-      if "kieletUris" in i and i["kieletUris"]:
-        # todo what if many?
-        row["oppilaitoksenopetuskieli"] = i["kieletUris"][0].replace("oppilaitoksenopetuskieli_","").replace("#1","")
-        # => just code, text values separately
+          # address, first kayntiosoite and if not exists then postiosoite
+          josoite = None
+          if "kayntiosoite" in i:
+            josoite = jv(i,"kayntiosoite")
+            row["osoitetyyppi"] = "kayntiosoite"
+          elif "postiosoite" in i:
+            josoite = jv(i,"postiosoite")
+            row["osoitetyyppi"] = "postiosoite"
+          if josoite:
+            row["osoite"] = jv(josoite,"osoite")
+            row["postinumero"] = josoite["postinumeroUri"].replace("posti_","") if "postinumeroUri" in josoite and josoite["postinumeroUri"] else None
+            row["postitoimipaikka"] = jv(josoite,"postitoimipaikka")
 
-      # address, first kayntiosoite and if not exists then postiosoite
-      josoite = None
-      if "kayntiosoite" in i:
-        josoite = jv(i,"kayntiosoite")
-        row["osoitetyyppi"] = "kayntiosoite"
-      elif "postiosoite" in i:
-        josoite = jv(i,"postiosoite")
-        row["osoitetyyppi"] = "postiosoite"
-      if josoite:
-        row["osoite"] = jv(josoite,"osoite")
-        row["postinumero"] = josoite["postinumeroUri"].replace("posti_","") if "postinumeroUri" in josoite and josoite["postinumeroUri"] else None
-        row["postitoimipaikka"] = jv(josoite,"postitoimipaikka")
+            if (row["osoite"] is not None and row["osoite"] is not "" and row["postinumero"] is not None and row["postinumero"] is not ""
+                and int(row["postinumero"]) is not 0 and row["postitoimipaikka"] is not None and row["postitoimipaikka"] is not ""):
+              get_and_set_coordinates(row)
 
-        if (row["osoite"] is not None and row["osoite"] is not "" and row["postinumero"] is not None and row["postinumero"] is not ""
-            and int(row["postinumero"]) is not 0 and row["postitoimipaikka"] is not None and row["postitoimipaikka"] is not ""):
-          get_and_set_coordinates(row)
-
-      if verbose: show(" %5d -- %s %s (%s)"%(cnt,row["tyyppi"],row["koodi"],row["nimi"]))
-      dboperator.insert(hostname+url,schema,table,row)
+          if verbose: show(" %5d -- %s %s (%s)"%(cnt,row["tyyppi"],row["koodi"],row["nimi"]))
+          dboperator.insert(hostname+url,schema,table,row)
+    except ValueError, ve:
+        print "Error: " + str(ve)
+        print "vika: " + str(address) + " oid:" + str(o)
 
   dboperator.close()
 
