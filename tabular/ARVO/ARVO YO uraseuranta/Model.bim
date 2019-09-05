@@ -3109,7 +3109,15 @@
           },
           {
             "name": "Keskiarvo / Vastausjakauma (uraseuranta-tohtorit)",
-            "expression": "IF([vast-ura-toht-tilasto]<6,BLANK(),IF([ka-ura-toht-tilasto]=0,IF(NOT(ISFILTERED([Monivalintavaihtoehto])),BLANK(),FORMAT([ka-ura-toht2],\"0%\")),[ka-ura-toht-tilasto]))",
+            "expression": [
+              "IF([vast-ura-toht-tilasto]<6,BLANK(),",
+              "IF([ka-ura-toht-tilasto]=0,IF(NOT(ISFILTERED([Monivalintavaihtoehto])),BLANK(),",
+              "FORMAT([ka-ura-toht2], \"0%\")),",
+              " ",
+              "IF(NOT(ISFILTERED([Monivalintavaihtoehto])), [ka-ura-toht-tilasto],",
+              "  ",
+              "FORMAT([ka-ura-toht2],\"0%\"))))"
+            ],
             "formatString": "0.0"
           },
           {
