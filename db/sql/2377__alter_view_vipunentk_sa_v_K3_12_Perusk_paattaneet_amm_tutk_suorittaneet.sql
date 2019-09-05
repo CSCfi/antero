@@ -904,3 +904,5 @@ and suorlk = '1'
 
  ) Aineistot
 
+GO
+USE [ANTERO]
