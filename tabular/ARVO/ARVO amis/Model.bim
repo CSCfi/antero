@@ -15,6 +15,17 @@
             "value": "SqlServer"
           }
         ]
+      },
+      {
+        "name": "SqlServer DWITVIPUSQL16 ANTERO 2",
+        "connectionString": "Provider=SQLNCLI11;Data Source=DWITVIPUSQL16;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
+        "impersonationMode": "impersonateServiceAccount",
+        "annotations": [
+          {
+            "name": "ConnectionEditUISource",
+            "value": "SqlServer"
+          }
+        ]
       }
     ],
     "tables": [
@@ -884,6 +895,16 @@
             "dataType": "string",
             "sourceColumn": "Question group",
             "sortByColumn": "Järjestys kysymysryhma"
+          },
+          {
+            "name": "Vahvistetut vastanneet",
+            "dataType": "int64",
+            "sourceColumn": "Vahvistetut vastanneet"
+          },
+          {
+            "name": "Vahvistetut kyselyn kohteena olleet",
+            "dataType": "int64",
+            "sourceColumn": "Vahvistetut kyselyn kohteena olleet"
           }
         ],
         "partitions": [
@@ -1955,6 +1976,22 @@
                   "        <int>149</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Vahvistetut vastanneet</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>142</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Vahvistetut kyselyn kohteena olleet</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>201</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -3003,6 +3040,22 @@
                   "      </key>",
                   "      <value>",
                   "        <int>130</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Vahvistetut vastanneet</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>131</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Vahvistetut kyselyn kohteena olleet</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>132</int>",
                   "      </value>",
                   "    </item>",
                   "  </ColumnDisplayIndex>",
@@ -4056,6 +4109,22 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Vahvistetut vastanneet</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Vahvistetut kyselyn kohteena olleet</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -4796,6 +4865,25 @@
             "name": "Kyselyn kohteet_s",
             "expression": "IF([ehto_Kyselyn_kohteet]=TRUE(),BLANK(),SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm]))",
             "formatString": "#,0"
+          },
+          {
+            "name": "Vahvistetut vastanneet yhteensä",
+            "expression": " CALCULATE(FIRSTNONBLANK(Muuttujat[Vahvistetut vastanneet],[Vahvistetut vastanneet]))"
+          },
+          {
+            "name": "Vahvistetut kyselyn kohteena olleet yhteensä",
+            "expression": " CALCULATE(FIRSTNONBLANK(Muuttujat[Vahvistetut kyselyn kohteena olleet],Muuttujat[Vahvistetut kyselyn kohteena olleet]))"
+          },
+          {
+            "name": "The Greatest Measure Everrr",
+            "expression": [
+              "",
+              "SUMX(",
+              "SUMMARIZE(",
+              "'Muuttujat', [Koulutuksen järjestäjä],Muuttujat[Rahoituskausi],",
+              "\"välimittari\", AVERAGE('Muuttujat'[Vahvistetut vastanneet])",
+              "), [välimittari])"
+            ]
           }
         ],
         "annotations": [
@@ -5871,6 +5959,22 @@
               "        <int>149</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Vahvistetut vastanneet</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>142</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Vahvistetut kyselyn kohteena olleet</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>201</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -6921,6 +7025,22 @@
               "        <int>130</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Vahvistetut vastanneet</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>131</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Vahvistetut kyselyn kohteena olleet</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>132</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -7972,6 +8092,22 @@
               "        <boolean>true</boolean>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Vahvistetut vastanneet</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Vahvistetut kyselyn kohteena olleet</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
               "  </ColumnChecked>",
               "  <ColumnFilter />",
               "  <SelectionFilter />",
@@ -8712,6 +8848,12 @@
               },
               {
                 "name": "Vastanneet"
+              },
+              {
+                "name": "Vahvistetut vastanneet yhteensä"
+              },
+              {
+                "name": "Vahvistetut kyselyn kohteena olleet yhteensä"
               }
             ]
           },
@@ -9153,6 +9295,12 @@
               },
               {
                 "name": "Kyselyn kohteet"
+              },
+              {
+                "name": "Vahvistetut vastanneet yhteensä"
+              },
+              {
+                "name": "Vahvistetut kyselyn kohteena olleet yhteensä"
               }
             ]
           },
@@ -9666,6 +9814,12 @@
               },
               {
                 "name": "Painotetut pisteet"
+              },
+              {
+                "name": "Vahvistetut vastanneet yhteensä"
+              },
+              {
+                "name": "Vahvistetut kyselyn kohteena olleet yhteensä"
               }
             ]
           },
