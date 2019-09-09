@@ -787,6 +787,32 @@
             "isDataTypeInferred": true,
             "isHidden": true,
             "expression": "Muuttujat[Organisaatio koodi]&\"_\"&Muuttujat[Koodit OKM ohjauksen ala]"
+          },
+          {
+            "name": "toimipiste_id",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "toimipiste_id"
+          },
+          {
+            "name": "hakukohde_id",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "hakukohde_id"
+          },
+          {
+            "name": "alpa",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "alpa"
+          },
+          {
+            "type": "calculated",
+            "name": "alpa_key",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "expression": "Muuttujat[Tilastovuosi]&\"_\"&Muuttujat[Tutkinnon aloitussykli]&\"_\"&Muuttujat[Organisaatio koodi]&\"_\"&Muuttujat[toimipiste_id]&\"_\"&Muuttujat[hakukohde_id]"
           }
         ],
         "partitions": [
@@ -1442,6 +1468,30 @@
                   "        <int>110</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>toimipiste_id</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>110</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>hakukohde_id</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>121</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>alpa</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>59</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -2074,6 +2124,30 @@
                   "      </key>",
                   "      <value>",
                   "        <int>78</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>toimipiste_id</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>79</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>hakukohde_id</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>80</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>alpa</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>81</int>",
                   "      </value>",
                   "    </item>",
                   "  </ColumnDisplayIndex>",
@@ -2711,6 +2785,30 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>toimipiste_id</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>hakukohde_id</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>alpa</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter>",
                   "    <item>",
@@ -2844,13 +2942,24 @@
           },
           {
             "name": "1-14op suorittaneet lkm",
-            "expression": " SUM([1-14op suorittaneet])",
+            "expression": [
+              " IF(SUM([1-14op suorittaneet]) = 0, BLANK(), IF(SUM([1-14op suorittaneet]) < 5, \"1-4\", MROUND(SUM([1-14op suorittaneet]), 3)))",
+              ""
+            ],
             "formatString": "### ### ###",
             "displayFolder": "Opintopisteet\\Asemointi"
           },
           {
             "name": "1-14op suorittaneiden osuus",
-            "expression": " DIVIDE([1-14op suorittaneet lkm],SUM([Läsnäolleet opiskelijat (1-14op)]))",
+            "expression": [
+              " ",
+              "var osa = [1-14op suorittaneet lkm]",
+              "var kaikki = [Lasna (1-14)]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa= \"1-4\", IF(kaikki > 8000, \"0.0 %\", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Opintopisteet\\Asemointi"
           },
@@ -2925,12 +3034,6 @@
             "expression": " SUM([Ammattikorkeakoulun opetushenkilökunta])+SUM([Ammattikorkeakoulun TKI-henkilökunta])",
             "formatString": "### ### ###.###",
             "displayFolder": "Henkilöstö\\Asemointi"
-          },
-          {
-            "name": "Lasna (1-14)",
-            "expression": " SUM(Muuttujat[Läsnäolleet opiskelijat (1-14op)])",
-            "formatString": "### ### ###.###",
-            "displayFolder": "Opintopisteet\\Asemointi"
           },
           {
             "name": "Työlliset (1v tutkinnon jälkeen)",
@@ -3182,10 +3285,14 @@
             "name": "Työllistyminen 1v (Ylempi kk-tutkinto) KA 2015-2017",
             "expression": [
               "",
-              "\tvar tv=CALCULATE(sum(Muuttujat[sijoittuminen_1v_tutkinnon_jalkeen]),filter(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
-              "\tvar t=CALCULATE(sum(Muuttujat[työlliset 1v tutkinnon jälkeen]),filter(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
+              "var tv = CALCULATE(sum(Muuttujat[sijoittuminen_1v_tutkinnon_jalkeen]),",
+              "\t\tfilter(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),",
+              "\t\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
+              "var t = CALCULATE(sum(Muuttujat[työlliset 1v tutkinnon jälkeen]),",
+              "\t\tfilter(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),",
+              "\t\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
               "\t",
-              "\treturn CALCULATE(DIVIDE(t,tv))"
+              "return CALCULATE(DIVIDE(t,tv))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Työllisyys\\Rakenteellinen kehittäminen"
@@ -4510,19 +4617,19 @@
           },
           {
             "name": "Opiskelijat lkm",
-            "expression": " CALCULATE(SUM(Muuttujat[Opiskelijat]))",
+            "expression": " IF(SUM(Muuttujat[Opiskelijat])= 0, BLANK(), IF(SUM(Muuttujat[Opiskelijat]) < 5, \"1-4\", MROUND(SUM(Muuttujat[Opiskelijat]), 3)))",
             "formatString": "### ### ###",
             "displayFolder": "Opiskelijat"
           },
           {
             "name": "Opiskelijat fte",
-            "expression": " CALCULATE(SUM(Muuttujat[Opiskelijat_fte]))",
+            "expression": " IF(SUM(Muuttujat[Opiskelijat_fte])= 0, BLANK(), IF(SUM(Muuttujat[Opiskelijat_fte]) < 5, \"1-4\", MROUND(SUM(Muuttujat[Opiskelijat_fte]), 3)))",
             "formatString": "### ### ###",
             "displayFolder": "Opiskelijat"
           },
           {
             "name": "Opiskelijat läsnä",
-            "expression": " CALCULATE(SUM(Muuttujat[Opiskelijat_lasna]))",
+            "expression": " IF(SUM(Muuttujat[Opiskelijat_lasna])= 0, BLANK(), IF(SUM(Muuttujat[Opiskelijat_lasna]) < 5, \"1-4\", MROUND(SUM(Muuttujat[Opiskelijat_lasna]), 3)))",
             "formatString": "### ### ###",
             "displayFolder": "Opiskelijat"
           },
@@ -4743,1537 +4850,286 @@
             "displayFolder": "Työllisyys\\Asemointi"
           },
           {
-            "name": "Copy of Vähintään 55op suorittaneet",
-            "expression": " SUM([55op suorittaneet])"
-          },
-          {
-            "name": "Copy of Vähintään 55 op suorittaneiden osuus",
-            "expression": " DIVIDE([Vähintään 55op suorittaneet],SUM([Läsnäolevat opiskelijat (55op)]))",
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of Työllisten osuus (1v tutkinnon jälkeen)",
-            "expression": " DIVIDE(SUM([työlliset 1v tutkinnon jälkeen]),SUM([sijoittuminen_1v_tutkinnon_jalkeen]))",
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of Tutkinnot lkm",
-            "expression": " SUM([tutkinnot])"
-          },
-          {
-            "name": "Copy of Ulkomaalaisten suorittamat tutkinnot",
-            "expression": "CALCULATE([Tutkinnot lkm],Muuttujat[Kansalaisuus]<>\"Suomi\")"
-          },
-          {
-            "name": "Copy of Ylemmät kk-tutkinnot 2014-2016 KA",
-            "expression": [
-              " ",
-              "var tut=CALCULATE(SUM(Muuttujat[tutkinnot]),FILTER(VALUES(Muuttujat[koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
-              "var vuosia= CALCULATE(DISTINCTCOUNT(Muuttujat[Tilastovuosi]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
-              "",
-              "return DIVIDE(tut,vuosia)",
-              ""
-            ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of Osuus ylemmistä kk-tutkinnoista 2014-2016",
+            "name": "Työllistyminen 1v (AMK-tutkinto) KA 2015-2017",
             "expression": [
               "",
-              "var kk=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kk\",",
-              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\",Muuttujat[Tilastovuosi]=2014||Muuttujat[Tilastovuosi]=2015\t\t\t||Muuttujat[Tilastovuosi]=2016)),[kk]),ALL(Muuttujat[Tilastovuosi]))",
-              "var kaik=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kaikki\",",
-              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\",Muuttujat[Tilastovuosi]=2014||Muuttujat[Tilastovuosi]=2015\t\t\t||Muuttujat[Tilastovuosi]=2016)),[kaikki]),ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Tilastovuosi]))",
-              "",
-              "return DIVIDE(kk,kaik)",
-              ""
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of lasna (55)",
-            "expression": " SUM(Muuttujat[Läsnäolevat opiskelijat (55op)])"
-          },
-          {
-            "name": "Copy of Ylemmät tutkinnot / opetus- ja tutkimushenkilökunta",
-            "expression": " DIVIDE(CALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\" || Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\" || Muuttujat[Koulutusaste, taso 2]=\"Master's or equivalent level, Orientation unspecified\" ),CALCULATE(SUM([Yliopiston opetus- ja tutkimushenkilötyövuodet])+(SUM([Ammattikorkeakoulun opetushenkilökunta])+SUM([Ammattikorkeakoulun TKI-henkilökunta]))))",
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of Tohtorin tutkinnot / IV porras henkilötyövuodet",
-            "expression": " DIVIDE(CALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Tohtorintutkinto\"),SUM(Muuttujat[IV tutkijanuraportaan henkilötyövuodet]))",
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of Alemmat korkeakoulututkinnot /opetus- ja tutkimushenkilökunta",
-            "expression": " DIVIDE(CALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Alempi korkeakoulututkinto\" || Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"),CALCULATE(SUM([Yliopiston opetus- ja tutkimushenkilötyövuodet])+(SUM([Ammattikorkeakoulun opetushenkilökunta])+SUM([Ammattikorkeakoulun TKI-henkilökunta]))))",
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of Ulkomaalaisten suorittamien tutkintojen osuus",
-            "expression": " DIVIDE(CALCULATE([Tutkinnot lkm],Muuttujat[Kansalaisuus]<>\"Suomi\"),[Tutkinnot lkm])",
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of Seitsemän vuoden läpäisy (yo)",
-            "expression": [
-              "var mjako=DIVIDE([7v suorittaneet mround],[7v aloittaneet mround])",
-              "",
-              "return mjako",
-              "",
-              ""
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of Viiden vuoden läpäisy (amk)",
-            "expression": [
-              "var mjako=DIVIDE([5v suorittaneet mround],[5v aloittaneet mround])",
-              "",
-              "",
-              "return mjako"
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of 1-14op suorittaneiden osuus",
-            "expression": " DIVIDE([1-14op suorittaneet lkm],SUM([Läsnäolleet opiskelijat (1-14op)]))",
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of Saapuneiuden ja lähteneiden vaihto-opiskelijoiden pisteet",
-            "expression": " IF(SUM([kv_vaihtoopiskelijat_op_lkm])+SUM(Muuttujat[ulkom_hyv_luetut_op_lkm])=0,BLANK(),SUM([kv_vaihtoopiskelijat_op_lkm])+SUM(Muuttujat[ulkom_hyv_luetut_op_lkm]))"
-          },
-          {
-            "name": "Copy of Muut kuin tutkinto-opetuksen opintopisteet",
-            "expression": [
-              " ",
-              "\tIF(",
-              "\tSUM([avoinamk_op_amk_lkm])+",
-              "\tSUM(Muuttujat[erilopintooik_op_lkm])+",
-              "\tSUM([mamu_op_lkm])+",
-              "\tSUM([erikoul_suor_op_lkm])=0,BLANK(),",
-              "\tSUM([avoinamk_op_amk_lkm])+",
-              "\tSUM(Muuttujat[erilopintooik_op_lkm])+",
-              "\tSUM([mamu_op_lkm])+",
-              "\tSUM([erikoul_suor_op_lkm]",
-              "))"
-            ]
-          },
-          {
-            "name": "Copy of Lasna (1-14)",
-            "expression": " SUM(Muuttujat[Läsnäolleet opiskelijat (1-14op)])"
-          },
-          {
-            "name": "Copy of 1-14op suorittaneet lkm",
-            "expression": " SUM([1-14op suorittaneet])"
-          },
-          {
-            "name": "Copy of 7v suorittaneet mround",
-            "expression": [
-              "var summa = CALCULATE(SUM(Muuttujat[7v_suorittaneet_lkm]))",
-              "Var lasku = CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(CALCULATE(SUM(Muuttujat[7v_suorittaneet_lkm])),3))))",
-              "",
-              "return lasku",
-              ""
-            ]
-          },
-          {
-            "name": "Copy of 7v aloittaneet mround",
-            "expression": [
-              "var summa = CALCULATE(SUM([Yo 7v aloittaneet lkm]))",
-              "Var lasku = CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(CALCULATE(SUM([Yo 7v aloittaneet lkm])),3))))",
-              "",
-              "return lasku"
-            ]
-          },
-          {
-            "name": "Copy of 5v suorittaneet mround",
-            "expression": [
-              "var summa = CALCULATE(SUM([5v_suorittaneet_lkm]))",
-              "Var lasku = CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(CALCULATE(SUM([5v_suorittaneet_lkm])),3))))",
-              "",
-              "return lasku"
-            ]
-          },
-          {
-            "name": "Copy of 5v aloittaneet mround",
-            "expression": [
-              "var summa = CALCULATE(SUM([5v_Aloittaneet_lkm]))",
-              "Var lasku = CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(summa,3))))",
-              "",
-              "return lasku"
-            ]
-          },
-          {
-            "name": "Copy of Kilpailtu tutkimusrahoitus / IV porras henkilötyövuodet",
-            "expression": " DIVIDE(SUM([Kilpailtu tutkimusrahoitus]),SUM(Muuttujat[IV tutkijanuraportaan henkilötyövuodet]))",
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of Kilpailtu tki-rahoitus",
-            "expression": " SUM([Kilpailtu tutkimusrahoitus])"
-          },
-          {
-            "name": "Copy of Kilpailtu tki-rahoitus (SA,Tekes, EU-puite)",
-            "expression": " CALCULATE(SUM([Kilpailtu tutkimusrahoitus (SA,Tekes, EU-puiteohjelma)]))"
-          },
-          {
-            "name": "Copy of 5v aloittaneet mround csc",
-            "expression": [
-              "",
-              "Var summa = SUM(Muuttujat[5v_Aloittaneet_lkm])",
-              "Var lasku = CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(CALCULATE(SUM([5v_Aloittaneet_lkm])),3))))",
-              "",
-              "var tarkistus=SWITCH(TRUE(),",
-              "USERNAME()=\"NT AUTHORITY\\IUSR\",TRUE(),",
-              "RIGHT(USERNAME(),12)=\"Excel_S_Read\",TRUE(),",
-              "RIGHT(USERNAME(),15)=\"ANTERO_Read_TAB\",TRUE()",
-              ")",
-              "",
-              "return IF(tarkistus,blank(),summa)"
-            ]
-          },
-          {
-            "name": "Copy of Osuus kilpaillusta tutkimusrahoituksesta 2017 (Tieteenala, SA,TEKES, EU-puite)",
-            "expression": [
-              "",
-              "var kk= SUM(Org_kilprah[kilp_rah 2017 calc])",
-              "var kaik=SUM(TA_kilprah[kilp_rah 2017 calc])",
-              "var tut=CALCULATE(MIN(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\")",
-              "var tut2=CALCULATE(DISTINCTCOUNT(Muuttujat[Koulutusnimike]),Muuttujat[Koulutusaste, taso 2]=\"Alempi korkeakoulututkinto\",NOT(ISBLANK(Muuttujat[Koulutusnimike])))",
-              "var tut3=CALCULATE(DISTINCTCOUNT(Muuttujat[Koulutusnimike]),Muuttujat[Koulutusaste, taso 2]=\"Tohtorintutkinto\",NOT(ISBLANK(Muuttujat[Koulutusnimike])))",
-              "",
-              "var jako=DIVIDE(kk,kaik)",
-              "",
-              "var tsek=IF(AND(ISBLANK(tut),HASONEVALUE(Muuttujat[Organisaatio])),\"blank,1\",",
-              "\tIF(AND(ISBLANK(tut),NOT(HASONEVALUE(Muuttujat[Organisaatio]))),\"blank,many\",",
-              "\tIF(AND(NOT(ISBLANK(tut)),HASONEVALUE(Muuttujat[Organisaatio])),\"tut,1\",",
-              "\tIF(AND(NOT(ISBLANK(tut)),NOT(HASONEVALUE(Muuttujat[Organisaatio]))),\"tut,many\"))))",
+              "var tv = CALCULATE(sum(Muuttujat[sijoittuminen_1v_tutkinnon_jalkeen]),",
+              "\t\tfilter(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),",
+              "\t\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
+              "var t = CALCULATE(sum(Muuttujat[työlliset 1v tutkinnon jälkeen]),",
+              "\t\tfilter(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),",
+              "\t\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
               "\t",
-              "var tsek2=AND(tut2<1,tut3<1)",
-              "",
-              "return   SWITCH(tsek,\"blank,1\",IF(tsek2,jako,jako*tut),",
-              "\t\t    \"blank,many\",IF(tsek2,jako,jako*tut),",
-              "\t\t    \"tut,1\",jako*tut,",
-              "\t\t    \"tut,many\",IF(tsek2,jako,jako*tut))",
+              "return CALCULATE(DIVIDE(t,tv))",
               ""
             ],
+            "formatString": "0.0 %;-0.0 %;0.0 %",
+            "displayFolder": "Työllisyys\\Rakenteellinen kehittäminen"
+          },
+          {
+            "name": "Lasna (1-14)",
+            "expression": " IF(SUM([Läsnäolleet opiskelijat (1-14op)]) = 0, BLANK(), IF(SUM([Läsnäolleet opiskelijat (1-14op)]) < 5, \"1-4\", MROUND(SUM([Läsnäolleet opiskelijat (1-14op)]), 3)))",
+            "formatString": "### ### ###.###",
+            "displayFolder": "Opintopisteet\\Asemointi"
+          },
+          {
+            "name": "1-14op suorittaneiden osuus_s",
+            "expression": " DIVIDE([1-14op suorittaneet lkm_s], [Lasna (1-14)_s])",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
-            "name": "Copy of 5v suorittaneet mround csc",
-            "expression": [
-              "",
-              "Var summa = SUM(Muuttujat[5v_suorittaneet_lkm])",
-              "Var lasku = CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(CALCULATE(SUM([5v_suorittaneet_lkm])),3))))",
-              "",
-              "var tarkistus=SWITCH(TRUE(),",
-              "USERNAME()=\"NT AUTHORITY\\IUSR\",TRUE(),",
-              "RIGHT(USERNAME(),12)=\"Excel_S_Read\",TRUE(),",
-              "RIGHT(USERNAME(),15)=\"ANTERO_Read_TAB\",TRUE()",
-              ")",
-              "",
-              "return IF(tarkistus,blank(),summa)"
-            ]
+            "name": "Lasna (1-14)_s",
+            "expression": " SUM(Muuttujat[Läsnäolleet opiskelijat (1-14op)])",
+            "formatString": "### ### ###.###"
           },
           {
-            "name": "Copy of Yo julkaisut (jufo 1-3, A1-A4, C1 ja C2) lkm",
-            "expression": " SUM([YO Julkaisut (A1-A4, C1 ja C2) jufotaso 1-3])"
+            "name": "1-14op suorittaneet lkm_s",
+            "expression": " SUM([1-14op suorittaneet])",
+            "formatString": "### ### ###"
           },
           {
-            "name": "Copy of Yo julkaisut (jufo-tasot 2-3) / opetus- ja tutkimushenkilökunta",
-            "expression": " DIVIDE([Yo julkaisut (jufo-tasot 2-3, A1-A4, C1 ja C2) lkm],SUM([Yliopiston opetus- ja tutkimushenkilötyövuodet]))",
-            "formatString": "0.0"
+            "name": "Opiskelijat lkm_s",
+            "expression": " CALCULATE(SUM(Muuttujat[Opiskelijat]))",
+            "formatString": "### ### ###"
           },
           {
-            "name": "Copy of Yo julkaisut (jufo-tasot 2-3, A1-A4, C1 ja C2) lkm",
-            "expression": " SUM([YO Julkaisut (A1-A4, C1 ja C2) jufotaso 2 ja 3])"
+            "name": "Opiskelijat fte_s",
+            "expression": " CALCULATE(SUM(Muuttujat[Opiskelijat_fte]))",
+            "formatString": "### ### ###"
           },
           {
-            "name": "Copy of Amk julkaisut (A-F, I) lkm",
-            "expression": " SUM(Muuttujat[AMK Julkaisut (A-E)])+SUM([AMK julkaisut (F ja I)])"
+            "name": "Opiskelijat läsnä_s",
+            "expression": " CALCULATE(SUM(Muuttujat[Opiskelijat_lasna]))",
+            "formatString": "### ### ###"
           },
           {
-            "name": "Copy of AMK julkaisut (A-F, I) / opetus- ja tutkimushenkilökunta",
-            "expression": " DIVIDE([Amk julkaisut (A-F, I) lkm],SUM([Ammattikorkeakoulun opetushenkilökunta])+SUM([Ammattikorkeakoulun TKI-henkilökunta]))"
-          },
-          {
-            "name": "Copy of Vetovoima 2016",
+            "name": "Vetovoima 2018",
             "expression": [
               "",
               "var hak=CALCULATE(DISTINCTCOUNT([Ensisijainen hakija]),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2018),",
               "\tNOT(ISBLANK(Muuttujat[Ensisijainen hakija])))",
               "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2018),",
               "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])))",
               "return DIVIDE(hak,vast)",
               ""
             ],
-            "formatString": "0.0"
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
           },
           {
-            "name": "Copy of Yo kansainvälisten yhteisjulkaisujen osuus (jufo 1-3 julkaisut)",
-            "expression": " DIVIDE(SUM(Muuttujat[YO kansainvälinen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3]),[Yo julkaisut (jufo 1-3, A1-A4, C1 ja C2) lkm])",
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of Yo kansainväliset yhteisjulkaisut",
-            "expression": "SUM(Muuttujat[YO kansainvälinen yhteisjulkaisu (A1-A4, C1 ja C2) jufotaso 1-3])"
-          },
-          {
-            "name": "Copy of Vetovoima 2017",
+            "name": "Täyttöaste 2016",
             "expression": [
               "",
-              "var hak=CALCULATE(DISTINCTCOUNT([Ensisijainen hakija]),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
-              "\tNOT(ISBLANK(Muuttujat[Ensisijainen hakija])))",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])))",
+              "var alp=CALCULATE(SUM(Aloituspaikat[alpa]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016))",
+              "return DIVIDE(vast,alp)"
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
+          },
+          {
+            "name": "Täyttöaste 2017",
+            "expression": [
+              "",
               "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
               "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
               "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])))",
-              "return DIVIDE(hak,vast)"
-            ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of 7v aloittaneet mround csc",
-            "expression": [
-              "",
-              "Var summa = SUM(Muuttujat[Yo 7v aloittaneet lkm])",
-              "Var lasku = CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(CALCULATE(SUM([Yo 7v aloittaneet lkm])),3))))",
-              "",
-              "var tarkistus=SWITCH(TRUE(),",
-              "USERNAME()=\"NT AUTHORITY\\IUSR\",TRUE(),",
-              "RIGHT(USERNAME(),12)=\"Excel_S_Read\",TRUE(),",
-              "RIGHT(USERNAME(),15)=\"ANTERO_Read_TAB\",TRUE()",
-              ")",
-              "",
-              "return IF(tarkistus,blank(),summa)",
-              ""
-            ]
-          },
-          {
-            "name": "Copy of Kandipalautteen pisteet (rahoitusmallikysymykset)",
-            "expression": " SUM([Kandikyselyn pistemäärä])"
-          },
-          {
-            "name": "Copy of AVOP-palautteen pisteet (rahoitusmallikysymykset)",
-            "expression": " SUM([AVOP-AMK pistemäärä])"
-          },
-          {
-            "name": "Copy of Yo opetus- ja tutkimushenkilötyövuodet",
-            "expression": " SUM([Yliopiston opetus- ja tutkimushenkilötyövuodet])"
-          },
-          {
-            "name": "Copy of Amk opetus- ja tki henkilötyövuodet",
-            "expression": " SUM([Ammattikorkeakoulun opetushenkilökunta])+SUM([Ammattikorkeakoulun TKI-henkilökunta])"
-          },
-          {
-            "name": "Copy of Amk opetus htv",
-            "expression": " SUM([Ammattikorkeakoulun opetushenkilökunta])"
-          },
-          {
-            "name": "Copy of Tutkijanuraporras II-IV henkilötyövuodet",
-            "expression": [
-              "",
-              "CALCULATE(SUM(Muuttujat[Yliopiston opetus- ja tutkimushenkilötyövuodet]),",
-              "\tOR(Muuttujat[Tutkijanuravaihe]=\"II porras (Tutkijatohtori jne.)\",",
-              "\t\tOR(Muuttujat[Tutkijanuravaihe]=\"III porras (Yliopistonlehtori jne.)\",",
-              "\t\tMuuttujat[Tutkijanuravaihe]=\"IV porras (Professori/Akatemiaprofessori/Tutkimusprofessori/Tutkimusjohtaja jne.)\"",
-              "\t\t)",
-              "\t)",
-              ")"
-            ]
-          },
-          {
-            "name": "Copy of 7v suorittaneet mround csc",
-            "expression": [
-              "",
-              "Var summa = SUM(Muuttujat[7v_suorittaneet_lkm])",
-              "Var lasku = CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(CALCULATE(SUM(Muuttujat[7v_suorittaneet_lkm])),3))))",
-              "",
-              "var tarkistus=SWITCH(TRUE(),",
-              "USERNAME()=\"NT AUTHORITY\\IUSR\",TRUE(),",
-              "RIGHT(USERNAME(),12)=\"Excel_S_Read\",TRUE(),",
-              "RIGHT(USERNAME(),15)=\"ANTERO_Read_TAB\",TRUE()",
-              ")",
-              "",
-              "return IF(tarkistus,blank(),summa)",
-              ""
-            ]
-          },
-          {
-            "name": "Copy of Tutkijanuraporras IV henkilötyövuodet",
-            "expression": "SUM([IV tutkijanuraportaan henkilötyövuodet])"
-          },
-          {
-            "name": "Copy of Amk tki htv",
-            "expression": " SUM([Ammattikorkeakoulun TKI-henkilökunta])"
-          },
-          {
-            "name": "Copy of Seitsemän vuoden läpäisy (yo) csc",
-            "expression": [
-              " ",
-              "var suo=SUM([7v_suorittaneet_lkm])",
-              "var alo=SUM(Muuttujat[Yo 7v aloittaneet lkm])",
-              "var jako=DIVIDE(suo,alo)",
-              "",
-              "var tarkistus=SWITCH(TRUE(),",
-              "USERNAME()=\"NT AUTHORITY\\IUSR\",TRUE(),",
-              "RIGHT(USERNAME(),12)=\"Excel_S_Read\",TRUE(),",
-              "RIGHT(USERNAME(),15)=\"ANTERO_Read_TAB\",TRUE()",
-              ")",
-              "",
-              "return IF(tarkistus,blank(),jako)",
+              "var alp=CALCULATE(SUM(Aloituspaikat[alpa]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]), Muuttujat[Tilastovuosi]=2017))",
+              "return DIVIDE(vast,alp)",
               "",
               ""
             ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
           },
           {
-            "name": "Copy of Viiden vuoden läpäisy (amk) csc",
-            "expression": [
-              " ",
-              "var suo=SUM(Muuttujat[5v_suorittaneet_lkm])",
-              "var alo=SUM(Muuttujat[5v_Aloittaneet_lkm])",
-              "var jako=DIVIDE(suo,alo)",
-              "",
-              "var tarkistus=SWITCH(TRUE(),",
-              "USERNAME()=\"NT AUTHORITY\\IUSR\",TRUE(),",
-              "RIGHT(USERNAME(),12)=\"Excel_S_Read\",TRUE(),",
-              "RIGHT(USERNAME(),15)=\"ANTERO_Read_TAB\",TRUE()",
-              ")",
-              "return IF(tarkistus,blank(),jako)"
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of sijoittuminen perusjoukko 1v tutkinnon jälkeen csc",
-            "expression": [
-              " ",
-              "var summa= CALCULATE(SUM(Muuttujat[sijoittuminen_1v_tutkinnon_jalkeen]))",
-              "var lasku=CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(summa,3))))",
-              "",
-              "var tarkistus=SWITCH(TRUE(),",
-              "USERNAME()=\"NT AUTHORITY\\IUSR\",TRUE(),",
-              "RIGHT(USERNAME(),12)=\"Excel_S_Read\",TRUE(),",
-              "RIGHT(USERNAME(),15)=\"ANTERO_Read_TAB\",TRUE()",
-              ")",
-              "",
-              "return IF(tarkistus,blank(),summa)",
-              "",
-              ""
-            ]
-          },
-          {
-            "name": "Copy of Työlliset (1v tutkinnon jälkeen)",
+            "name": "Täyttöaste 2018",
             "expression": [
               "",
-              "var summa= CALCULATE(SUM(Muuttujat[työlliset 1v tutkinnon jälkeen]))",
-              "var lasku=CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(summa,3))))",
-              "",
-              "",
-              "return lasku",
-              ""
-            ]
-          },
-          {
-            "name": "Copy of sijoittuminen perusjoukko 1v tutkinnon jälkeen",
-            "expression": [
-              "  ",
-              "var summa= CALCULATE(SUM(Muuttujat[sijoittuminen_1v_tutkinnon_jalkeen]))",
-              "var lasku=CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(summa,3))))",
-              "",
-              "return lasku",
-              "",
-              ""
-            ]
-          },
-          {
-            "name": "Copy of sijoittuminen perusjoukko 3v tutkinnon jälkeen",
-            "expression": [
-              " ",
-              "var summa= CALCULATE(SUM(Muuttujat[sijoittuminen_3v_tutkinnon_jalkeen]))",
-              "var lasku=CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(summa,3))))",
-              "",
-              "Return lasku",
-              ""
-            ]
-          },
-          {
-            "name": "Copy of Työllisten osuus 3v (RAKE-määritelmä)",
-            "expression": [
-              "",
-              "",
-              "var tyol=CALCULATE(SUM(Muuttujat[Työlliset 3v (ver2 10,13)]),Muuttujat[Työlliset 3v (ver2 10,13)]<>0,NOT(ISBLANK(Muuttujat[Työlliset 3v (ver2 10,13)])))",
-              "var tyot=CALCULATE(SUM(Muuttujat[Työttömät 3v (ver2, 12)]),Muuttujat[Työttömät 3v (ver2, 12)]<>0,NOT(ISBLANK(Muuttujat[Työttömät 3v (ver2, 12)])))",
-              "",
-              "var jako = DIVIDE(tyol,tyol+tyot)",
-              "return jako",
-              ""
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of Työlliset (3v tutkinnon jälkeen)",
-            "expression": [
-              "",
-              "var summa= CALCULATE(SUM(Muuttujat[Työlliset 3v tutkinnon jälkeen]))",
-              "var lasku=CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(summa,3))))",
-              "",
-              "return lasku",
-              "",
-              ""
-            ]
-          },
-          {
-            "name": "Copy of Työllisten osuus 3v valmistumisesta 2014-2016",
-            "expression": [
-              "",
-              "var osuus1= CALCULATE([Työllisten osuus (3v tutkinnon jälkeen)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2014))",
-              "var osuus2= CALCULATE([Työllisten osuus (3v tutkinnon jälkeen)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2015))",
-              "var osuus3= CALCULATE([Työllisten osuus (3v tutkinnon jälkeen)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016))",
-              "",
-              "var jako=DIVIDE((osuus1+osuus2+osuus3),3)",
-              "",
-              "return jako",
-              ""
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of Työllisten osuus (3v tutkinnon jälkeen)",
-            "expression": "DIVIDE([Työlliset (3v tutkinnon jälkeen)],[sijoittuminen perusjoukko 3v tutkinnon jälkeen])",
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of Työllisten osuus 3v valmistumisesta 2013-2015",
-            "expression": [
-              "",
-              "var osuus1= CALCULATE([Työllisten osuus (3v tutkinnon jälkeen)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2013))",
-              "var osuus2= CALCULATE([Työllisten osuus (3v tutkinnon jälkeen)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2014))",
-              "var osuus3= CALCULATE([Työllisten osuus (3v tutkinnon jälkeen)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2015))",
-              "",
-              "var jako=DIVIDE((osuus1+osuus2+osuus3),3)",
-              "",
-              "return jako",
-              ""
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of Työllistyminen 1v (Ylempi kk-tutkinto) KA 2015-2017",
-            "expression": [
-              "",
-              "\tvar tv=CALCULATE(sum(Muuttujat[sijoittuminen_1v_tutkinnon_jalkeen]),filter(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
-              "\tvar t=CALCULATE(sum(Muuttujat[työlliset 1v tutkinnon jälkeen]),filter(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
-              "\t",
-              "\treturn CALCULATE(DIVIDE(t,tv))"
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of sijoittuminen perusjoukko 3v tutkinnon jälkeen csc",
-            "expression": [
-              " ",
-              "var summa= CALCULATE(SUM(Muuttujat[sijoittuminen_3v_tutkinnon_jalkeen]))",
-              "var lasku=CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(summa,3))))",
-              "",
-              "var tarkistus=SWITCH(TRUE(),",
-              "USERNAME()=\"NT AUTHORITY\\IUSR\",TRUE(),",
-              "RIGHT(USERNAME(),12)=\"Excel_S_Read\",TRUE(),",
-              "RIGHT(USERNAME(),15)=\"ANTERO_Read_TAB\",TRUE()",
-              ")",
-              "",
-              "return IF(tarkistus,blank(),summa)",
-              "",
-              ""
-            ]
-          },
-          {
-            "name": "Copy of Työllisten osuus 1v valmistumisesta 2013-2015",
-            "expression": [
-              "",
-              "var osuus= CALCULATE([Työllisten osuus (1v tutkinnon jälkeen)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2012&&Muuttujat[Tilastovuosi]<2016))",
-              "return osuus",
-              ""
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of Työllisten osuus 1v valmistumisesta 2014-2016",
-            "expression": [
-              "",
-              "var osuus= CALCULATE([Työllisten osuus (1v tutkinnon jälkeen)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
-              "return osuus"
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of Työlliset (1v tutkinnon jälkeen) csc",
-            "expression": [
-              "",
-              "var summa= CALCULATE(SUM(Muuttujat[työlliset 1v tutkinnon jälkeen]))",
-              "var lasku=CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(summa,3))))",
-              "",
-              "var tarkistus=SWITCH(TRUE(),",
-              "USERNAME()=\"NT AUTHORITY\\IUSR\",TRUE(),",
-              "RIGHT(USERNAME(),12)=\"Excel_S_Read\",TRUE(),",
-              "RIGHT(USERNAME(),15)=\"ANTERO_Read_TAB\",TRUE()",
-              ")",
-              "",
-              "return IF(tarkistus,BLANK(),lasku)",
-              ""
-            ]
-          },
-          {
-            "name": "Copy of Työlliset (3v tutkinnon jälkeen) csc",
-            "expression": [
-              "",
-              "var summa= CALCULATE(SUM(Muuttujat[Työlliset 3v tutkinnon jälkeen]))",
-              "var lasku=CALCULATE(IF(summa=0,BLANK(),IF(summa=1,3,MROUND(summa,3))))",
-              "",
-              "var tarkistus=SWITCH(TRUE(),",
-              "USERNAME()=\"NT AUTHORITY\\IUSR\",TRUE(),",
-              "RIGHT(USERNAME(),12)=\"Excel_S_Read\",TRUE(),",
-              "RIGHT(USERNAME(),15)=\"ANTERO_Read_TAB\",TRUE()",
-              ")",
-              "",
-              "return IF(tarkistus,BLANK(),lasku)",
-              "",
-              ""
-            ]
-          },
-          {
-            "name": "Copy of AMK julkaisut (A-E) 2016-2017",
-            "expression": "CALCULATE(SUM([AMK Julkaisut (A-E)]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2015&&Muuttujat[Tilastovuosi]<2018))"
-          },
-          {
-            "name": "Copy of AMK julkaisut (A-E) 2014-2016",
-            "expression": "CALCULATE(SUM([AMK Julkaisut (A-E)]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))"
-          },
-          {
-            "name": "Copy of AMK julkaisut (A-E) 2015-2017",
-            "expression": "CALCULATE(SUM([AMK Julkaisut (A-E)]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))"
-          },
-          {
-            "name": "Copy of Opiskelijat lkm",
-            "expression": " CALCULATE(SUM(Muuttujat[Opiskelijat]))"
-          },
-          {
-            "name": "Copy of Opiskelijat fte",
-            "expression": " CALCULATE(SUM(Muuttujat[Opiskelijat_fte]))"
-          },
-          {
-            "name": "Copy of Opiskelijat läsnä",
-            "expression": " CALCULATE(SUM(Muuttujat[Opiskelijat_lasna]))"
-          },
-          {
-            "name": "Copy of AVOP-AMK työelämävalmiudet pisteet 2017",
-            "expression": [
-              " ",
-              "CALCULATE(SUM(Muuttujat[AVOP-AMK Opiskelijapalaute_työelämä]),FILTER(Muuttujat,Muuttujat[Tilastovuosi]=2017))",
-              ""
-            ]
-          },
-          {
-            "name": "Copy of Vetovoima 2016 (II sykli, yamk)",
-            "expression": [
-              "",
-              "var hak=CALCULATE(DISTINCTCOUNT([Ensisijainen hakija]),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
-              "\tNOT(ISBLANK(Muuttujat[Ensisijainen hakija])),",
-              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"II sykli\"),",
-              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"))",
-              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
-              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
-              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"II sykli\"),",
-              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"))",
-              "return DIVIDE(hak,vast)"
-            ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of AMK tutkinnot 2014-2016 KA",
-            "expression": [
-              " ",
-              "var tut=",
-              "CALCULATE(SUM(Muuttujat[tutkinnot]),",
-              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
-              "var vuosia= CALCULATE(DISTINCTCOUNT(Muuttujat[Tilastovuosi]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
-              "",
-              "return DIVIDE(tut,3)",
-              ""
-            ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of AMK tutkinnot 2015-2017 KA",
-            "expression": [
-              " ",
-              "var tut=",
-              "CALCULATE(SUM(Muuttujat[tutkinnot]),",
-              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
-              "var vuosia= CALCULATE(DISTINCTCOUNT(Muuttujat[Tilastovuosi]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
-              "",
-              "return DIVIDE(tut,3)"
-            ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of Ulkomaalaisten AMK-tutkintojen osuus 2014-2016",
-            "expression": [
-              "",
-              "var kaikki=CALCULATE([Tutkinnot lkm],",
-              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
-              "var ulk=CALCULATE([Tutkinnot lkm],",
-              "\tFILTER(VALUES(Muuttujat[Kansalaisuus]),Muuttujat[Kansalaisuus]<>\"Suomi\"),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017),",
-              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
-              "",
-              "",
-              "return DIVIDE(ulk,kaikki)",
-              ""
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of Ulkomaalaisten AMK-tutkintojen osuus 2015-2017",
-            "expression": [
-              "",
-              "var kaikki=CALCULATE([Tutkinnot lkm],",
-              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
-              "var ulk=CALCULATE([Tutkinnot lkm],",
-              "\tFILTER(VALUES(Muuttujat[Kansalaisuus]),Muuttujat[Kansalaisuus]<>\"Suomi\"),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),",
-              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
-              "",
-              "",
-              "return DIVIDE(ulk,kaikki)"
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of AVOP-YAMK työelämävalmiude KA 2016",
-            "expression": [
-              " ",
-              "var numero=CALCULATE(AVERAGE([AVOP-YAMK Opiskelijapalaute_työelämä]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016))",
-              "var kaik=CALCULATE(AVERAGE([AVOP-YAMK Opiskelijapalaute_työelämä]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),ALL(Muuttujat[Organisaatio]))",
-              "var jako=DIVIDE(numero,kaik)",
-              "return jako",
-              ""
-            ],
-            "formatString": "0.00"
-          },
-          {
-            "name": "Copy of AVOP-AMK työelämävalmiudet KA 2017",
-            "expression": [
-              " ",
-              "var numero=CALCULATE(AVERAGE([AVOP-AMK Opiskelijapalaute_työelämä]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017))",
-              "var kaik=CALCULATE(AVERAGE([AVOP-AMK Opiskelijapalaute_työelämä]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),ALL(Muuttujat[Organisaatio]))",
-              "var jako=DIVIDE(numero,kaik)",
-              "return jako"
-            ],
-            "formatString": "0.00"
-          },
-          {
-            "name": "Copy of AVOP-AMK työelämävalmiudet KA 2016",
-            "expression": [
-              " ",
-              "var numero=CALCULATE(AVERAGE([AVOP-AMK Opiskelijapalaute_työelämä]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016))",
-              "var kaik=CALCULATE(AVERAGE([AVOP-AMK Opiskelijapalaute_työelämä]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),ALL(Muuttujat[Organisaatio]))",
-              "var jako=DIVIDE(numero,kaik)",
-              "return jako",
-              ""
-            ],
-            "formatString": "0.00"
-          },
-          {
-            "name": "Copy of AVOP-YAMK työelämävalmiudet KA 2017",
-            "expression": [
-              " ",
-              "var numero=CALCULATE(AVERAGE([AVOP-YAMK Opiskelijapalaute_työelämä]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017))",
-              "var kaik=CALCULATE(AVERAGE([AVOP-YAMK Opiskelijapalaute_työelämä]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),ALL(Muuttujat[Organisaatio]))",
-              "var jako=DIVIDE(numero,kaik)",
-              "return jako",
-              ""
-            ],
-            "formatString": "0.00"
-          },
-          {
-            "name": "Copy of Osuus alan AMK-tutkinnoista 2015-2017",
-            "expression": [
-              " ",
-              "var kk=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kk\",",
-              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2015||Muuttujat[Tilastovuosi]=2016\t\t\t||Muuttujat[Tilastovuosi]=2017)),[kk]),ALL(Muuttujat[Tilastovuosi]))",
-              "var kaik=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kaikki\",",
-              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2015||Muuttujat[Tilastovuosi]=2016\t\t\t||Muuttujat[Tilastovuosi]=2017)),[kaikki]),ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Tilastovuosi]))",
-              "",
-              "return DIVIDE(kk,kaik)",
-              ""
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of AMK julkaisut 2016-2017 KA",
-            "expression": [
-              "",
-              "var julk=CALCULATE(SUM(calc_amk_julk[calc_amk_julk_2016-2017]))",
-              "var tut=CALCULATE(MIN([tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2017||Muuttujat[Tilastovuosi]=2016||Muuttujat[Tilastovuosi]=2015)",
-              "var lask=CALCULATE(julk*tut,FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2015&&Muuttujat[Tilastovuosi]<2018))",
-              "",
-              "var jako=DIVIDE(lask,2)",
-              "return jako"
-            ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of Vetovoima 2017 (II sykli, yamk)",
-            "expression": [
-              "",
-              "var hak=CALCULATE(DISTINCTCOUNT([Ensisijainen hakija]),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
-              "\tNOT(ISBLANK(Muuttujat[Ensisijainen hakija])),",
-              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"II sykli\"),",
-              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"))",
-              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
-              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
-              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"II sykli\"),",
-              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"))",
-              "return DIVIDE(hak,vast)"
-            ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of Vetovoima 2018 (II sykli, yamk)",
-            "expression": [
-              "",
-              "var hak=CALCULATE(DISTINCTCOUNT([Ensisijainen hakija]),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2018),",
-              "\tNOT(ISBLANK(Muuttujat[Ensisijainen hakija])),",
-              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"II sykli\"),",
-              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"))",
               "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
               "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2018),",
-              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
-              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"II sykli\"),",
-              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"))",
-              "return DIVIDE(hak,vast)"
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])))",
+              "var alp=CALCULATE(SUM(Aloituspaikat[alpa]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2018))",
+              "return DIVIDE(vast,alp)",
+              ""
             ],
-            "formatString": "0.0"
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
           },
           {
-            "name": "Copy of Vetovoima 2016 (I sykli, amk)",
+            "name": "Täyttöaste 2016 (I sykli)",
             "expression": [
               "",
-              "var hak=CALCULATE(DISTINCTCOUNT([Ensisijainen hakija]),",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
               "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
-              "\tNOT(ISBLANK(Muuttujat[Ensisijainen hakija])),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
               "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
-              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"),",
-              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
+              "var alp=CALCULATE(SUM(Aloituspaikat[alpa]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
+              "return DIVIDE(vast,alp)"
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
+          },
+          {
+            "name": "Täyttöaste 2017 (I sykli)",
+            "expression": [
+              "",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
+              "var alp=CALCULATE(SUM(Aloituspaikat[alpa]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
+              "return DIVIDE(vast,alp)"
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
+          },
+          {
+            "name": "Täyttöaste 2018 (I sykli)",
+            "expression": [
+              "",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2018),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
+              "var alp=CALCULATE(SUM(Aloituspaikat[alpa]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2018),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
+              "return DIVIDE(vast,alp)"
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
+          },
+          {
+            "name": "Täyttöaste 2016 (I sykli, amk)",
+            "expression": [
+              "",
               "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
               "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
               "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
               "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
               "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"),",
               "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
-              "return DIVIDE(hak,vast)"
-            ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of Vetovoima 2017 (I sykli, amk)",
-            "expression": [
-              "",
-              "var hak=CALCULATE(DISTINCTCOUNT([Ensisijainen hakija]),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
-              "\tNOT(ISBLANK(Muuttujat[Ensisijainen hakija])),",
-              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
-              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"),",
-              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
-              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
-              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
-              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
-              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"),",
-              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
-              "return DIVIDE(hak,vast)"
-            ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of Vetovoima 2018 (I sykli, amk)",
-            "expression": [
-              "",
-              "var hak=CALCULATE(DISTINCTCOUNT([Ensisijainen hakija]),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2018),",
-              "\tNOT(ISBLANK(Muuttujat[Ensisijainen hakija])),",
-              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
-              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"),",
-              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
-              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2018),",
-              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
-              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
-              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"),",
-              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
-              "return DIVIDE(hak,vast)"
-            ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of Amk tki-henkilötyövuodet 2017",
-            "expression": [
-              " ",
-              "var htv=CALCULATE(SUM(calc_amk_htv[calc_amk_TKI_htv 2017]))",
-              "var tut=CALCULATE(MIN([tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2017||Muuttujat[Tilastovuosi]=2016||Muuttujat[Tilastovuosi]=2015)",
-              "",
-              "return htv*tut",
-              ""
-            ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of Amk tki-henkilötyövuodet 2016",
-            "expression": [
-              " ",
-              "var htv=CALCULATE(SUM(calc_amk_htv[calc_amk_TKI_htv 2016]))",
-              "var tut=CALCULATE(MIN([tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2016||Muuttujat[Tilastovuosi]=2015||Muuttujat[Tilastovuosi]=2014)",
-              "",
-              "return htv*tut",
-              ""
-            ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of Amk opetuksen henkilötyövuodet 2017",
-            "expression": [
-              "",
-              "var htv=CALCULATE(SUM(calc_amk_htv[calc_amk_opetus_htv_2017]))",
-              "var tut=CALCULATE(MIN([tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2017||Muuttujat[Tilastovuosi]=2016||Muuttujat[Tilastovuosi]=2015)",
-              "",
-              "return htv*tut"
-            ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of Amk opetuksen henkilötyövuodet 2016",
-            "expression": [
-              " ",
-              "var htv=CALCULATE(SUM(calc_amk_htv[calc_amk_opetus_htv_2016]))",
-              "var tut=CALCULATE(MIN([tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2016||Muuttujat[Tilastovuosi]=2015||Muuttujat[Tilastovuosi]=2014)",
-              "",
-              "return htv*tut",
-              ""
-            ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of Osuus alan AMK-tutkinnoista 2014-2016",
-            "expression": [
-              " ",
-              "var kk=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kk\",",
-              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2014||Muuttujat[Tilastovuosi]=2015\t\t\t||Muuttujat[Tilastovuosi]=2016)),[kk]),ALL(Muuttujat[Tilastovuosi]))",
-              "var kaik=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kaikki\",",
-              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2014||Muuttujat[Tilastovuosi]=2015\t\t\t||Muuttujat[Tilastovuosi]=2016)),[kaikki]),ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Tilastovuosi]))",
-              "",
-              "return DIVIDE(kk,kaik)",
-              ""
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of Työllisten osuus 1v valmistumisesta 2014-2016 (RAKE, amk-tutkinto)",
-            "expression": [
-              "",
-              "var tyolliset=CALCULATE(SUM(Muuttujat[työlliset 1v tutkinnon jälkeen]),FILTER(VALUEs(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
-              "var kaik=CALCULATE(SUM(Muuttujat[sijoittuminen_1v_tutkinnon_jalkeen]),FILTER(VALUEs(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
-              "var jako=CALCULATE(DIVIDE(tyolliset,kaik))",
-              "",
-              "return jako",
-              ""
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of Työllisten osuus 1v valmistumisesta 2013-2015 (RAKE, amk-tutkinto)",
-            "expression": [
-              "",
-              "",
-              "var tyolliset=CALCULATE(SUM(Muuttujat[työlliset 1v tutkinnon jälkeen]),FILTER(VALUEs(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2012&&Muuttujat[Tilastovuosi]<2016),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
-              "var kaik=CALCULATE(SUM(Muuttujat[sijoittuminen_1v_tutkinnon_jalkeen]),FILTER(VALUEs(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2012&&Muuttujat[Tilastovuosi]<2016),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
-              "var jako=CALCULATE(DIVIDE(tyolliset,kaik))",
-              "",
-              "return jako",
-              ""
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of YAMK-tutkintojen osuus 2014-2016",
-            "expression": [
-              "",
-              "var kk=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kk\",",
-              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2014||Muuttujat[Tilastovuosi]=2015\t\t\t||Muuttujat[Tilastovuosi]=2016)),[kk]),ALL(Muuttujat[Tilastovuosi]))",
-              "var kaik=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kaikki\",",
-              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2014||Muuttujat[Tilastovuosi]=2015\t\t\t||Muuttujat[Tilastovuosi]=2016)),[kaikki]),ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Tilastovuosi]))",
-              "",
-              "return DIVIDE(kk,kaik)",
-              ""
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of YAMK-tutkintojen osuus 2015-2017",
-            "expression": [
-              "",
-              "var kk=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kk\",",
-              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2015||Muuttujat[Tilastovuosi]=2016\t\t\t||Muuttujat[Tilastovuosi]=2017)),[kk]),ALL(Muuttujat[Tilastovuosi]))",
-              "var kaik=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kaikki\",",
-              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\",Muuttujat[Tilastovuosi]=2015||Muuttujat[Tilastovuosi]=2016\t\t\t||Muuttujat[Tilastovuosi]=2017)),[kaikki]),ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Tilastovuosi]))",
-              "",
-              "return DIVIDE(kk,kaik)",
-              ""
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of Ulkomaalaisten YAMK-tutkintojen osuus 2014-2016",
-            "expression": [
-              "",
-              "var kaikki=CALCULATE([Tutkinnot lkm],",
-              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\"),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
-              "var ulk=CALCULATE([Tutkinnot lkm],",
-              "\tFILTER(VALUES(Muuttujat[Kansalaisuus]),Muuttujat[Kansalaisuus]<>\"Suomi\"),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017),",
-              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\"))",
-              "",
-              "",
-              "return DIVIDE(ulk,kaikki)",
-              ""
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of Ulkomaalaisten YAMK-tutkintojen osuus 2015-2017",
-            "expression": [
-              "",
-              "var kaikki=CALCULATE([Tutkinnot lkm],",
-              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\"),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
-              "var ulk=CALCULATE([Tutkinnot lkm],",
-              "\tFILTER(VALUES(Muuttujat[Kansalaisuus]),Muuttujat[Kansalaisuus]<>\"Suomi\"),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),",
-              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\"))",
-              "",
-              "",
-              "return DIVIDE(ulk,kaikki)"
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of Työllisten osuus 1v valmistumisesta 2014-2016 (RAKE, yamk-tutkinto)",
-            "expression": [
-              "",
-              "",
-              "var tyolliset=CALCULATE(SUM(Muuttujat[työlliset 1v tutkinnon jälkeen]),FILTER(VALUEs(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\"))",
-              "var kaik=CALCULATE(SUM(Muuttujat[sijoittuminen_1v_tutkinnon_jalkeen]),FILTER(VALUEs(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\"))",
-              "var jako=CALCULATE(DIVIDE(tyolliset,kaik))",
-              "",
-              "return jako"
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of Työllisten osuus 1v valmistumisesta 2013-2015 (RAKE, yamk-tutkinto)",
-            "expression": [
-              "",
-              "",
-              "var osuus1= CALCULATE([Työllisten osuus (1v tutkinnon jälkeen)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2013),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\"))",
-              "var osuus2= CALCULATE([Työllisten osuus (1v tutkinnon jälkeen)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2014),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\"))",
-              "var osuus3= CALCULATE([Työllisten osuus (1v tutkinnon jälkeen)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2015),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\"))",
-              "",
-              "var vuosia=CALCULATE((SWITCH(ISBLANK(osuus1),TRUE(),0,1)+SWITCH(ISBLANK(osuus2),TRUE(),0,1)+SWITCH(ISBLANK(osuus3),TRUE(),0,1)))",
-              "var jako=CALCULATE(DIVIDE((osuus1+osuus2+osuus3),vuosia))",
-              "",
-              "return jako",
-              ""
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of YAMK tutkinnot 2014-2016 KA",
-            "expression": [
-              " ",
-              "var tut=",
-              "CALCULATE(SUM(Muuttujat[tutkinnot]),",
-              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\"),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
-              "var vuosia= CALCULATE(DISTINCTCOUNT(Muuttujat[Tilastovuosi]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
-              "",
-              "return DIVIDE(tut,3)",
-              ""
-            ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of YAMK tutkinnot 2015-2017 KA",
-            "expression": [
-              " ",
-              "var tut=",
-              "CALCULATE(SUM(Muuttujat[tutkinnot]),",
-              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\"),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
-              "var vuosia= CALCULATE(DISTINCTCOUNT(Muuttujat[Tilastovuosi]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
-              "",
-              "return DIVIDE(tut,3)"
-            ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of Osallistumiset huippuyksiköissä 2014-2019 ja 2018-2025",
-            "expression": [
-              "",
-              "var summa=SUM(ORG_lisa[osallistumiset calc])",
-              "var tut=CALCULATE(MIN(Muuttujat[tutkinnot]),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
-              "var tut2=CALCULATE(DISTINCTCOUNT(Muuttujat[Koulutusnimike]),Muuttujat[Koulutusaste, taso 2]=\"Alempi korkeakoulututkinto\",NOT(ISBLANK(Muuttujat[Koulutusnimike])))",
-              "var tut3=CALCULATE(DISTINCTCOUNT(Muuttujat[Koulutusnimike]),Muuttujat[Koulutusaste, taso 2]=\"Tohtorintutkinto\",NOT(ISBLANK(Muuttujat[Koulutusnimike])))",
-              "",
-              "",
-              "var tsek=IF(AND(ISBLANK(tut),HASONEVALUE(Muuttujat[Organisaatio])),\"blank,1\",",
-              "\tIF(AND(ISBLANK(tut),NOT(HASONEVALUE(Muuttujat[Organisaatio]))),\"blank,many\",",
-              "\tIF(AND(NOT(ISBLANK(tut)),HASONEVALUE(Muuttujat[Organisaatio])),\"tut,1\",",
-              "\tIF(AND(NOT(ISBLANK(tut)),NOT(HASONEVALUE(Muuttujat[Organisaatio]))),\"tut,many\"))))",
-              "\t",
-              "var tsek2=AND(tut2<1,tut3<1)",
-              "",
-              "return   SWITCH(tsek,\"blank,1\",IF(tsek2,summa,summa*tut),",
-              "\t\t    \"blank,many\",IF(tsek2,summa,summa*tut),",
-              "\t\t    \"tut,1\",summa*tut,",
-              "\t\t    \"tut,many\",IF(tsek2,summa,summa*tut))"
-            ]
-          },
-          {
-            "name": "Copy of ERC StG, CoG ja AdG -myönnöt 2015-2017 hauissa",
-            "expression": [
-              "",
-              "VAR summa=SUM(ORG_lisa[erc calc])",
-              "",
-              "var tut=CALCULATE(MIN(Muuttujat[tutkinnot]),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
-              "var tut2=CALCULATE(DISTINCTCOUNT(Muuttujat[Koulutusnimike]),Muuttujat[Koulutusaste, taso 2]=\"Alempi korkeakoulututkinto\",NOT(ISBLANK(Muuttujat[Koulutusnimike])))",
-              "var tut3=CALCULATE(DISTINCTCOUNT(Muuttujat[Koulutusnimike]),Muuttujat[Koulutusaste, taso 2]=\"Tohtorintutkinto\",NOT(ISBLANK(Muuttujat[Koulutusnimike])))",
-              "",
-              "",
-              "var tsek=IF(AND(ISBLANK(tut),HASONEVALUE(Muuttujat[Organisaatio])),\"blank,1\",",
-              "\tIF(AND(ISBLANK(tut),NOT(HASONEVALUE(Muuttujat[Organisaatio]))),\"blank,many\",",
-              "\tIF(AND(NOT(ISBLANK(tut)),HASONEVALUE(Muuttujat[Organisaatio])),\"tut,1\",",
-              "\tIF(AND(NOT(ISBLANK(tut)),NOT(HASONEVALUE(Muuttujat[Organisaatio]))),\"tut,many\"))))",
-              "\t",
-              "var tsek2=AND(tut2<1,tut3<1)",
-              "",
-              "return   SWITCH(tsek,\"blank,1\",IF(tsek2,summa,summa*tut),",
-              "\t\t    \"blank,many\",IF(tsek2,summa,summa*tut),",
-              "\t\t    \"tut,1\",summa*tut,",
-              "\t\t    \"tut,many\",IF(tsek2,summa,summa*tut))",
-              ""
-            ]
-          },
-          {
-            "name": "Copy of Osuus kilpaillusta tutkimusrahoituksesta 2016 (Tieteenala, SA,TEKES, EU-puite)",
-            "expression": [
-              "",
-              "var kk= SUM(Org_kilprah[kilp_rah 2016 calc])",
-              "var kaik=SUM(TA_kilprah[kilp_rah 2016 calc])",
-              "var tut=CALCULATE(MIN(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\")",
-              "var tut2=CALCULATE(DISTINCTCOUNT(Muuttujat[Koulutusnimike]),Muuttujat[Koulutusaste, taso 2]=\"Alempi korkeakoulututkinto\",NOT(ISBLANK(Muuttujat[Koulutusnimike])))",
-              "var tut3=CALCULATE(DISTINCTCOUNT(Muuttujat[Koulutusnimike]),Muuttujat[Koulutusaste, taso 2]=\"Tohtorintutkinto\",NOT(ISBLANK(Muuttujat[Koulutusnimike])))",
-              "",
-              "var jako=DIVIDE(kk,kaik)",
-              "",
-              "var tsek=IF(AND(ISBLANK(tut),HASONEVALUE(Muuttujat[Organisaatio])),\"blank,1\",",
-              "\tIF(AND(ISBLANK(tut),NOT(HASONEVALUE(Muuttujat[Organisaatio]))),\"blank,many\",",
-              "\tIF(AND(NOT(ISBLANK(tut)),HASONEVALUE(Muuttujat[Organisaatio])),\"tut,1\",",
-              "\tIF(AND(NOT(ISBLANK(tut)),NOT(HASONEVALUE(Muuttujat[Organisaatio]))),\"tut,many\"))))",
-              "\t",
-              "var tsek2=AND(tut2<1,tut3<1)",
-              "",
-              "return   SWITCH(tsek,\"blank,1\",IF(tsek2,jako,jako*tut),",
-              "\t\t    \"blank,many\",IF(tsek2,jako,jako*tut),",
-              "\t\t    \"tut,1\",jako*tut,",
-              "\t\t    \"tut,many\",IF(tsek2,jako,jako*tut))",
-              ""
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of IV portaan HTV osuus 2017 (tieteenala)",
-            "expression": [
-              "",
-              "var kaikki=CALCULATE(SUM(TA_IV[IV 2017 calc]))",
-              "var kk=CALCULATE(SUM(Org_IV[IV 2017 calc]))",
-              "var tut=CALCULATE(MIN(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\")",
-              "var tut2=CALCULATE(DISTINCTCOUNT(Muuttujat[Koulutusnimike]),Muuttujat[Koulutusaste, taso 2]=\"Alempi korkeakoulututkinto\",NOT(ISBLANK(Muuttujat[Koulutusnimike])))",
-              "var tut3=CALCULATE(DISTINCTCOUNT(Muuttujat[Koulutusnimike]),Muuttujat[Koulutusaste, taso 2]=\"Tohtorintutkinto\",NOT(ISBLANK(Muuttujat[Koulutusnimike])))",
-              "",
-              "var jako=DIVIDE(kk,kaikki)",
-              "",
-              "var tsek=IF(AND(ISBLANK(tut),HASONEVALUE(Muuttujat[Organisaatio])),\"blank,1\",",
-              "\tIF(AND(ISBLANK(tut),NOT(HASONEVALUE(Muuttujat[Organisaatio]))),\"blank,many\",",
-              "\tIF(AND(NOT(ISBLANK(tut)),HASONEVALUE(Muuttujat[Organisaatio])),\"tut,1\",",
-              "\tIF(AND(NOT(ISBLANK(tut)),NOT(HASONEVALUE(Muuttujat[Organisaatio]))),\"tut,many\"))))",
-              "",
-              "var tsek2=AND(tut2<1,tut3<1)",
-              "",
-              "return   SWITCH(tsek,\"blank,1\",IF(tsek2,jako,jako*tut),",
-              "\t\t    \"blank,many\",IF(tsek2,jako,jako*tut),",
-              "\t\t    \"tut,1\",jako*tut,",
-              "\t\t    \"tut,many\",IF(tsek2,jako,jako*tut))",
-              ""
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of IV portaan HTV 2017",
-            "expression": [
-              "",
-              "var kk=CALCULATE(SUM(Org_IV[IV 2017 calc]))",
-              "var tut=CALCULATE(MIN(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\")",
-              "var tut2=CALCULATE(DISTINCTCOUNT(Muuttujat[Koulutusnimike]),Muuttujat[Koulutusaste, taso 2]=\"Alempi korkeakoulututkinto\",NOT(ISBLANK(Muuttujat[Koulutusnimike])))",
-              "var tut3=CALCULATE(DISTINCTCOUNT(Muuttujat[Koulutusnimike]),Muuttujat[Koulutusaste, taso 2]=\"Tohtorintutkinto\",NOT(ISBLANK(Muuttujat[Koulutusnimike])))",
-              "",
-              "var tsek=IF(AND(ISBLANK(tut),HASONEVALUE(Muuttujat[Organisaatio])),\"blank,1\",",
-              "\tIF(AND(ISBLANK(tut),NOT(HASONEVALUE(Muuttujat[Organisaatio]))),\"blank,many\",",
-              "\tIF(AND(NOT(ISBLANK(tut)),HASONEVALUE(Muuttujat[Organisaatio])),\"tut,1\",",
-              "\tIF(AND(NOT(ISBLANK(tut)),NOT(HASONEVALUE(Muuttujat[Organisaatio]))),\"tut,many\"))))",
-              "",
-              "var tsek2=AND(tut2<1,tut3<1)",
-              "",
-              "return   SWITCH(tsek,\"blank,1\",IF(tsek2,kk,kk*tut),",
-              "\t\t    \"blank,many\",IF(tsek2,kk,kk*tut),",
-              "\t\t    \"tut,1\",kk*tut,",
-              "\t\t    \"tut,many\",IF(tsek2,kk,kk*tut))",
-              ""
-            ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of Tohtorin tutkinnot (tieteenala) 2015-2017 KA",
-            "expression": [
-              " ",
-              "var tut=SUM(Org_tohtorit[Tohtorit calc])",
-              "var tut2=CALCULATE(MIN(Muuttujat[tutkinnot]),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Tohtorintutkinto\"))",
-              "var tut3=CALCULATE(MIN(Muuttujat[tutkinnot]),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
-              "",
-              "var jako=DIVIDE(tut,3)",
-              "",
-              "return IF(NOT(HASONEVALUE(Muuttujat[Koulutusnimike])),",
-              "\tjako,CALCULATE(jako*tut3))",
-              "\t"
-            ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of Ylemmät kk-tutkinnot 2015-2017 KA",
-            "expression": [
-              " ",
-              "var tut=CALCULATE(SUM(Muuttujat[tutkinnot]),FILTER(VALUES(Muuttujat[koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
-              "var vuosia= CALCULATE(DISTINCTCOUNT(Muuttujat[Tilastovuosi]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
-              "",
-              "return DIVIDE(tut,vuosia)",
-              ""
-            ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of Vetovoima 2017 (I sykli)",
-            "expression": [
-              "",
-              "var hak=CALCULATE(DISTINCTCOUNT([Ensisijainen hakija]),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
-              "\tNOT(ISBLANK(Muuttujat[Ensisijainen hakija])),",
-              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
-              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
-              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
-              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
-              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
-              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
-              "return DIVIDE(hak,vast)"
-            ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of Akatemiaprofessori-myönnöt 2013-2016",
-            "expression": [
-              "",
-              "VAR summa=SUM(ORG_lisa[SA prof calc])",
-              "",
-              "var tut=CALCULATE(MIN(Muuttujat[tutkinnot]),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
-              "var tut2=CALCULATE(DISTINCTCOUNT(Muuttujat[Koulutusnimike]),Muuttujat[Koulutusaste, taso 2]=\"Alempi korkeakoulututkinto\",NOT(ISBLANK(Muuttujat[Koulutusnimike])))",
-              "var tut3=CALCULATE(DISTINCTCOUNT(Muuttujat[Koulutusnimike]),Muuttujat[Koulutusaste, taso 2]=\"Tohtorintutkinto\",NOT(ISBLANK(Muuttujat[Koulutusnimike])))",
-              "",
-              "",
-              "var tsek=IF(AND(ISBLANK(tut),HASONEVALUE(Muuttujat[Organisaatio])),\"blank,1\",",
-              "\tIF(AND(ISBLANK(tut),NOT(HASONEVALUE(Muuttujat[Organisaatio]))),\"blank,many\",",
-              "\tIF(AND(NOT(ISBLANK(tut)),HASONEVALUE(Muuttujat[Organisaatio])),\"tut,1\",",
-              "\tIF(AND(NOT(ISBLANK(tut)),NOT(HASONEVALUE(Muuttujat[Organisaatio]))),\"tut,many\"))))",
-              "\t",
-              "var tsek2=AND(tut2<1,tut3<1)",
-              "",
-              "return   SWITCH(tsek,\"blank,1\",IF(tsek2,summa,summa*tut),",
-              "\t\t    \"blank,many\",IF(tsek2,summa,summa*tut),",
-              "\t\t    \"tut,1\",summa*tut,",
-              "\t\t    \"tut,many\",IF(tsek2,summa,summa*tut))",
-              ""
-            ]
-          },
-          {
-            "name": "Copy of Osuus ylemmistä kk-tutkinnoista 2015-2017",
-            "expression": [
-              "",
-              "var kk=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kk\",",
-              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\",Muuttujat[Tilastovuosi]=2015||Muuttujat[Tilastovuosi]=2016\t\t\t||Muuttujat[Tilastovuosi]=2017)),[kk]),ALL(Muuttujat[Tilastovuosi]))",
-              "var kaik=CALCULATE(MAXX(SUMMARIZE(Muuttujat,Muuttujat[Koulutusnimike],\"kaikki\",",
-              "\t\tCALCULATE([Tutkinnot lkm],Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\",Muuttujat[Tilastovuosi]=2015||Muuttujat[Tilastovuosi]=2016\t\t\t||Muuttujat[Tilastovuosi]=2017)),[kaikki]),ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[Tilastovuosi]))",
-              "",
-              "return DIVIDE(kk,kaik)"
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of Jufo suht (1-3, A1-A4, C1) 2014-2016 (Tieteenala)",
-            "expression": [
-              "",
-              "var tut=CALCULATE(MIN(Muuttujat[tutkinnot]),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
-              "var tut2=CALCULATE(DISTINCTCOUNT(Muuttujat[Koulutusnimike]),Muuttujat[Koulutusaste, taso 2]=\"Alempi korkeakoulututkinto\",NOT(ISBLANK(Muuttujat[Koulutusnimike])))",
-              "var tut3=CALCULATE(DISTINCTCOUNT(Muuttujat[Koulutusnimike]),Muuttujat[Koulutusaste, taso 2]=\"Tohtorintutkinto\",NOT(ISBLANK(Muuttujat[Koulutusnimike])))",
-              "",
-              "var eka=AVERAGE('Org_TA jufo'[eka_juf14-16])",
-              "var toka=AVERAGE('Tieteenala jufo'[toka_juf14-16])",
-              "var jako=CALCULATE(DIVIDE(eka,toka))",
-              "",
-              "var eka2=CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]),CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
-              "var toka2=CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]), CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),ALL(Muuttujat[Organisaatio]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017),FILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
-              "",
-              "var jako2=CALCULATE(DIVIDE(eka2,toka2))",
-              "",
-              "var tsek=IF(AND(ISBLANK(tut),HASONEVALUE(Muuttujat[Organisaatio])),\"blank,1\",",
-              "\tIF(AND(ISBLANK(tut),NOT(HASONEVALUE(Muuttujat[Organisaatio]))),\"blank,many\",",
-              "\tIF(AND(NOT(ISBLANK(tut)),HASONEVALUE(Muuttujat[Organisaatio])),\"tut,1\",",
-              "\tIF(AND(NOT(ISBLANK(tut)),NOT(HASONEVALUE(Muuttujat[Organisaatio]))),\"tut,many\"))))",
-              "",
-              "var tsek2=AND(tut2<1,tut3<1)",
-              "",
-              "return   SWITCH(tsek,\"blank,1\",IF(tsek2,jako2,jako2*tut),",
-              "\t\t    \"blank,many\",IF(tsek2,jako2,jako2*tut),",
-              "\t\t    \"tut,1\",jako*tut,",
-              "\t\t    \"tut,many\",IF(tsek2,jako2,jako2*tut))",
-              ""
-            ],
-            "formatString": "0.00"
-          },
-          {
-            "name": "Copy of Jufo suht (1-3, A1-A4, C1) 2014-2016",
-            "expression": [
-              "",
-              "var eka=CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]),CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017))",
-              "",
-              "",
-              "var toka=CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]), CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),ALL(Muuttujat[Organisaatio]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2013&&Muuttujat[Tilastovuosi]<2017),FILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
-              "",
-              "var jako=CALCULATE(DIVIDE(eka,toka))",
-              "",
-              "",
-              "return jako"
-            ],
-            "formatString": "0.00"
-          },
-          {
-            "name": "Copy of Työllistyminen 3v, (RAKE, ykk) KA 2014-2016",
-            "expression": [
-              "",
-              "var osuus1= CALCULATE([Työllisten osuus 3v (RAKE-määritelmä)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2014),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
-              "var osuus2= CALCULATE([Työllisten osuus 3v (RAKE-määritelmä)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2015),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
-              "var osuus3= CALCULATE([Työllisten osuus 3v (RAKE-määritelmä)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
-              "",
-              "var vuosia=CALCULATE((SWITCH(ISBLANK(osuus1),TRUE(),0,1)+SWITCH(ISBLANK(osuus2),TRUE(),0,1)+SWITCH(ISBLANK(osuus3),TRUE(),0,1)))",
-              "var jako=CALCULATE(DIVIDE((osuus1+osuus2+osuus3),vuosia))",
-              "",
-              "return jako",
-              ""
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of Jufo suht (1-3, A1-A4, C1) 2015-2017",
-            "expression": [
-              "",
-              "var eka=CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]),CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
-              "",
-              "",
-              "var toka=CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]), CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),ALL(Muuttujat[Organisaatio]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),FILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
-              "",
-              "var jako=CALCULATE(DIVIDE(eka,toka))",
-              "",
-              "",
-              "return jako",
-              ""
-            ],
-            "formatString": "0.00"
-          },
-          {
-            "name": "Copy of Yo julkaisut (jufo 1-3, A1-A4, C1) lkm",
-            "expression": " SUM([YO Julkaisut (A1-A4, C1) jufotaso 1-3])",
-            "formatString": "0"
-          },
-          {
-            "name": "Copy of Jufo keskiarvo",
-            "expression": [
-              "CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]),CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])))",
-              ""
-            ],
-            "formatString": "0.00"
-          },
-          {
-            "name": "Copy of Jufo suht (1-3, A1-A4, C1) 2015-2017 (Tieteenala)",
-            "expression": [
-              "",
-              "var tut=CALCULATE(MIN(Muuttujat[tutkinnot]),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
-              "var tut2=CALCULATE(DISTINCTCOUNT(Muuttujat[Koulutusnimike]),Muuttujat[Koulutusaste, taso 2]=\"Alempi korkeakoulututkinto\",NOT(ISBLANK(Muuttujat[Koulutusnimike])))",
-              "var tut3=CALCULATE(DISTINCTCOUNT(Muuttujat[Koulutusnimike]),Muuttujat[Koulutusaste, taso 2]=\"Tohtorintutkinto\",NOT(ISBLANK(Muuttujat[Koulutusnimike])))",
-              "",
-              "var eka=AVERAGE('Org_TA jufo'[eka_juf15-17])",
-              "var toka=AVERAGE('Tieteenala jufo'[toka_juf15-17])",
-              "var jako=DIVIDE(eka,toka)",
-              "",
-              "var eka2=CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]),CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])),NOT(ISBLANK(Muuttujat[Tieteenala])))),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018))",
-              "var toka2=CALCULATE(AVERAGEX(DISTINCT(Muuttujat[JulkaisuID]), CALCULATE(AVERAGE(Muuttujat[Jufotaso]),NOT(ISBLANK(Muuttujat[YO Julkaisut (A1-A4, C1) jufotaso 1-3])),NOT(ISBLANK(Muuttujat[Tieteenala])))),ALL(Muuttujat[Organisaatio]),FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]>2014&&Muuttujat[Tilastovuosi]<2018),FILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
-              "var jako2=CALCULATE(DIVIDE(eka2,toka2),NOT(ISBLANK(Muuttujat[Tieteenala])))",
-              "",
-              "var tsek=IF(AND(ISBLANK(tut),HASONEVALUE(Muuttujat[Organisaatio])),\"blank,1\",",
-              "\tIF(AND(ISBLANK(tut),NOT(HASONEVALUE(Muuttujat[Organisaatio]))),\"blank,many\",",
-              "\tIF(AND(NOT(ISBLANK(tut)),HASONEVALUE(Muuttujat[Organisaatio])),\"tut,1\",",
-              "\tIF(AND(NOT(ISBLANK(tut)),NOT(HASONEVALUE(Muuttujat[Organisaatio]))),\"tut,many\"))))",
-              "var tsek2=AND(tut2<1,tut3<1)",
-              "",
-              "return   SWITCH(tsek,\"blank,1\",IF(tsek2,jako2,jako2*tut),",
-              "\t\t    \"blank,many\",IF(tsek2,jako2,jako2*tut),",
-              "\t\t    \"tut,1\",jako*tut,",
-              "\t\t    \"tut,many\",IF(tsek2,jako2,jako2*tut))",
-              ""
-            ],
-            "formatString": "0.00"
-          },
-          {
-            "name": "Copy of Työllistyminen 3v, (RAKE, ykk) KA 2015-2017",
-            "expression": [
-              "",
-              "var osuus1= CALCULATE([Työllisten osuus 3v (RAKE-määritelmä)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2015),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
-              "var osuus2= CALCULATE([Työllisten osuus 3v (RAKE-määritelmä)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
-              "var osuus3= CALCULATE([Työllisten osuus 3v (RAKE-määritelmä)],FILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),FILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\"))",
-              "",
-              "var vuosia=CALCULATE((SWITCH(ISBLANK(osuus1),TRUE(),0,1)+SWITCH(ISBLANK(osuus2),TRUE(),0,1)+SWITCH(ISBLANK(osuus3),TRUE(),0,1)))",
-              "var jako=CALCULATE(DIVIDE((osuus1+osuus2+osuus3),vuosia))",
-              "",
-              "return jako"
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Copy of Vetovoima 2016 (I sykli)",
-            "expression": [
-              "",
-              "var hak=CALCULATE(DISTINCTCOUNT([Ensisijainen hakija]),",
+              "var alp=CALCULATE(SUM(Aloituspaikat[alpa]),",
               "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
-              "\tNOT(ISBLANK(Muuttujat[Ensisijainen hakija])),",
               "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
-              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"),",
+              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
+              "return DIVIDE(vast,alp)"
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
+          },
+          {
+            "name": "Täyttöaste 2017 (I sykli, amk)",
+            "expression": [
+              "",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"),",
+              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
+              "var alp=CALCULATE(SUM(Aloituspaikat[alpa]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"),",
+              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
+              "return DIVIDE(vast,alp)"
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
+          },
+          {
+            "name": "Täyttöaste 2018 (I sykli, amk)",
+            "expression": [
+              "",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2018),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"),",
+              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
+              "var alp=CALCULATE(SUM(Aloituspaikat[alpa]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2018),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"),",
+              "\tFILTER(VALUES(Muuttujat[Koulutusaste, taso 2]),Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\"))",
+              "return DIVIDE(vast,alp)"
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
+          },
+          {
+            "name": "Täyttöaste 2016 (II sykli, yamk)",
+            "expression": [
+              "",
               "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
               "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
               "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
-              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
-              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
-              "return DIVIDE(hak,vast)"
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"II sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"))",
+              "var alp=CALCULATE(SUM(Aloituspaikat[alpa]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2016),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"II sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"))",
+              "return DIVIDE(vast,alp)"
             ],
-            "formatString": "0.0"
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
           },
           {
-            "name": "Copy of Vetovoima 2018 (I sykli)",
+            "name": "Täyttöaste 2017 (II sykli, yamk)",
             "expression": [
               "",
-              "var hak=CALCULATE(DISTINCTCOUNT([Ensisijainen hakija]),",
-              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2018),",
-              "\tNOT(ISBLANK(Muuttujat[Ensisijainen hakija])),",
-              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
-              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
+              "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
+              "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"II sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"))",
+              "var alp=CALCULATE(SUM(Aloituspaikat[alpa]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2017),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"II sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"))",
+              "return DIVIDE(vast,alp)"
+            ],
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
+          },
+          {
+            "name": "Täyttöaste 2018 (II sykli, yamk)",
+            "expression": [
+              "",
               "var vast=CALCULATE(DISTINCTCOUNT(Muuttujat[Paikan vastaanottaneet]),",
               "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2018),",
               "\tNOT(ISBLANK(Muuttujat[Paikan vastaanottaneet])),",
-              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"I sykli\"),",
-              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Yliopisto\"))",
-              "return DIVIDE(hak,vast)"
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"II sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"))",
+              "var alp=CALCULATE(SUM(Aloituspaikat[alpa]),",
+              "\tFILTER(VALUES(Muuttujat[Tilastovuosi]),Muuttujat[Tilastovuosi]=2018),",
+              "\tFILTER(VALUES(Muuttujat[Tutkinnon aloitussykli]),Muuttujat[Tutkinnon aloitussykli]=\"II sykli\"),",
+              "\tFILTER(VALUES(Muuttujat[Sektori]),Muuttujat[Sektori]=\"Ammattikorkeakoulu\"))",
+              "return DIVIDE(vast,alp)"
             ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of IV portaan HTV 2016",
-            "expression": [
-              "",
-              "var kk=CALCULATE(SUM(Org_IV[IV 2016 calc]))",
-              "var tut=CALCULATE(MIN(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\")",
-              "var tut2=CALCULATE(DISTINCTCOUNT(Muuttujat[Koulutusnimike]),Muuttujat[Koulutusaste, taso 2]=\"Alempi korkeakoulututkinto\",NOT(ISBLANK(Muuttujat[Koulutusnimike])))",
-              "var tut3=CALCULATE(DISTINCTCOUNT(Muuttujat[Koulutusnimike]),Muuttujat[Koulutusaste, taso 2]=\"Tohtorintutkinto\",NOT(ISBLANK(Muuttujat[Koulutusnimike])))",
-              "",
-              "var tsek=IF(AND(ISBLANK(tut),HASONEVALUE(Muuttujat[Organisaatio])),\"blank,1\",",
-              "\tIF(AND(ISBLANK(tut),NOT(HASONEVALUE(Muuttujat[Organisaatio]))),\"blank,many\",",
-              "\tIF(AND(NOT(ISBLANK(tut)),HASONEVALUE(Muuttujat[Organisaatio])),\"tut,1\",",
-              "\tIF(AND(NOT(ISBLANK(tut)),NOT(HASONEVALUE(Muuttujat[Organisaatio]))),\"tut,many\"))))",
-              "",
-              "var tsek2=AND(tut2<1,tut3<1)",
-              "",
-              "return   SWITCH(tsek,\"blank,1\",IF(tsek2,kk,kk*tut),",
-              "\t\t    \"blank,many\",IF(tsek2,kk,kk*tut),",
-              "\t\t    \"tut,1\",kk*tut,",
-              "\t\t    \"tut,many\",IF(tsek2,kk,kk*tut))",
-              ""
-            ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Copy of IV portaan HTV osuus 2016 (tieteenala)",
-            "expression": [
-              "",
-              "var kaikki=CALCULATE(SUM(TA_IV[IV 2016 calc]))",
-              "var kk=CALCULATE(SUM(Org_IV[IV 2016 calc]))",
-              "var tut=CALCULATE(MIN(Muuttujat[tutkinnot]),Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\")",
-              "var tut2=CALCULATE(DISTINCTCOUNT(Muuttujat[Koulutusnimike]),Muuttujat[Koulutusaste, taso 2]=\"Alempi korkeakoulututkinto\",NOT(ISBLANK(Muuttujat[Koulutusnimike])))",
-              "var tut3=CALCULATE(DISTINCTCOUNT(Muuttujat[Koulutusnimike]),Muuttujat[Koulutusaste, taso 2]=\"Tohtorintutkinto\",NOT(ISBLANK(Muuttujat[Koulutusnimike])))",
-              "",
-              "var jako=DIVIDE(kk,kaikki)",
-              "",
-              "var tsek=IF(AND(ISBLANK(tut),HASONEVALUE(Muuttujat[Organisaatio])),\"blank,1\",",
-              "\tIF(AND(ISBLANK(tut),NOT(HASONEVALUE(Muuttujat[Organisaatio]))),\"blank,many\",",
-              "\tIF(AND(NOT(ISBLANK(tut)),HASONEVALUE(Muuttujat[Organisaatio])),\"tut,1\",",
-              "\tIF(AND(NOT(ISBLANK(tut)),NOT(HASONEVALUE(Muuttujat[Organisaatio]))),\"tut,many\"))))",
-              "",
-              "var tsek2=AND(tut2<1,tut3<1)",
-              "",
-              "return   SWITCH(tsek,\"blank,1\",IF(tsek2,jako,jako*tut),",
-              "\t\t    \"blank,many\",IF(tsek2,jako,jako*tut),",
-              "\t\t    \"tut,1\",jako*tut,",
-              "\t\t    \"tut,many\",IF(tsek2,jako,jako*tut))",
-              ""
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
+            "formatString": "0.0",
+            "displayFolder": "Haku ja valinta"
           }
         ],
         "annotations": [
@@ -6933,6 +5789,30 @@
               "        <int>110</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>toimipiste_id</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>110</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>hakukohde_id</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>121</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>alpa</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>59</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -7567,6 +6447,30 @@
               "        <int>78</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>toimipiste_id</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>79</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>hakukohde_id</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>80</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>alpa</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>81</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -8197,6 +7101,30 @@
               "    <item>",
               "      <key>",
               "        <string>Opiskelijat_lasna</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>toimipiste_id</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>hakukohde_id</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>alpa</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -8840,6 +7768,37 @@
             }
           }
         ]
+      },
+      {
+        "name": "Aloituspaikat",
+        "isHidden": true,
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "alpa",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[alpa]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "alpa_key",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[alpa_key]"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": "CALCULATETABLE(SUMMARIZE(Muuttujat, Muuttujat[alpa_key], Muuttujat[alpa]))"
+            }
+          }
+        ]
       }
     ],
     "relationships": [
@@ -8849,14 +7808,6 @@
         "fromColumn": "Tieteenala_avain",
         "toTable": "Tieteenala jufo",
         "toColumn": "Tieteenala_avain",
-        "crossFilteringBehavior": "bothDirections"
-      },
-      {
-        "name": "0eb16a04-0194-4df4-8d45-261feea392c3",
-        "fromTable": "Muuttujat",
-        "fromColumn": "org_TA-avain",
-        "toTable": "Org_tohtorit",
-        "toColumn": "Org_TA-avain",
         "crossFilteringBehavior": "bothDirections"
       },
       {
@@ -8921,6 +7872,22 @@
         "fromColumn": "Org_OA",
         "toTable": "calc_amk_julk",
         "toColumn": "Org_OA",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "0eb16a04-0194-4df4-8d45-261feea392c3",
+        "fromTable": "Muuttujat",
+        "fromColumn": "org_TA-avain",
+        "toTable": "Org_tohtorit",
+        "toColumn": "Org_TA-avain",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "7a10dad8-fdc2-46ca-8de1-5a69d5674864",
+        "fromTable": "Muuttujat",
+        "fromColumn": "alpa_key",
+        "toTable": "Aloituspaikat",
+        "toColumn": "alpa_key",
         "crossFilteringBehavior": "bothDirections"
       }
     ],
