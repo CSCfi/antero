@@ -4890,17 +4890,12 @@
             "expression": [
               "",
               "var taulu = ADDCOLUMNS(",
-              "        SUMMARIZE(Muuttujat,[Koodit Koulutuksen järjestäjä])",
-              "        ,\"kato1\" ,  CALCULATE(IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide]),Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\",Muuttujat[Koodit Rahoitusmallikysymys]=1)         ",
-              "        ,\"kato2\" ,  CALCULATE(IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide]),Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\",Muuttujat[Koodit Rahoitusmallikysymys]=1)    ",
-              "        ,\"kato3\" ,  CALCULATE(IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide]),Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\",Muuttujat[Koodit Rahoitusmallikysymys]=1)",
-              "        ",
-              "        ,\"pisteet1\", CALCULATE(SUM([numerovalinta]),Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
-              "        ,\"pisteet2\", 3 * CALCULATE(SUM([numerovalinta]),Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
-              "        ,\"pisteet3\" ,CALCULATE(SUM([numerovalinta]),Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
-              "     )",
+              "SUMMARIZE(Muuttujat, [Koodit Koulutuksen järjestäjä]),",
+              "\"osuus\", CALCULATE([Vastausosuus_nohide], VALUES(Muuttujat[Kyselyn kohderyhmä]), Muuttujat[Koodit Rahoitusmallikysymys] = 1)",
+              ")",
               "",
-              "var painotettu1 = SUMX(taulu, [kato1] + [kato2]+[kato3] )return painotettu1"
+              "var kato = SUMX(taulu, IF([osuus] >= 0.8, DIVIDE(1, [osuus]), 1 + (15/16) * [osuus] - (25/32) * [osuus] * [osuus]))",
+              "return kato"
             ],
             "formatString": "0.00"
           },
