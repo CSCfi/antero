@@ -9,6 +9,8 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
+
+
 ALTER VIEW [dw].[v_arvo_uraseuranta] AS
 
 

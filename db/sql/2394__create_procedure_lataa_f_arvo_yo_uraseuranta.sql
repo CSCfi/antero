@@ -10,7 +10,9 @@ BEGIN
 EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dw].[p_lataa_f_arvo_yo_uraseuranta] AS' 
 END
 GO
-
+    
+	
+	
 
 ALTER PROCEDURE [dw].[p_lataa_f_arvo_yo_uraseuranta] AS
 
