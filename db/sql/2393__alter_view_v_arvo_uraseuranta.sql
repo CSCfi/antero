@@ -137,7 +137,7 @@ as 'Rahoitusmallikysymys'
 ,jarjestys_koulutusalataso3_koodi as jarjestys_koulutusala3
 ,case when monivalintavaihtoehto_fi is null then 99 else numerovalinta end as jarjestys_monivalinta
 
-FROM [ANTERO].dw.f_arvo_uraseuranta AS f
+FROM [ANTERO].dw.f_arvo_yo_uraseuranta AS f
 LEFT JOIN dw.d_organisaatioluokitus ON f.d_organisaatio_id=d_organisaatioluokitus.id
 LEFT JOIN dw.d_koulutusluokitus ON f.d_koulutusluokitus_id=d_koulutusluokitus.id
 LEFT JOIN dw.d_kieli ON f.d_kieli_id=d_kieli.id
