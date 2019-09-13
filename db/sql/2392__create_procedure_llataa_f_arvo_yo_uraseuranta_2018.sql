@@ -1,19 +1,22 @@
 USE [ANTERO]
 GO
-
-/****** Object:  StoredProcedure [dw].[p_lataa_f_arvo_yo_uraseuranta_2018]    Script Date: 12.9.2019 16:59:39 ******/
+/****** Object:  StoredProcedure [dw].[p_lataa_f_arvo_yo_uraseuranta_2018]    Script Date: 9.5.2019 16:04:48 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[p_lataa_f_arvo_yo_uraseuranta_2018]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dw].[p_lataa_f_arvo_yo_uraseuranta_2018] AS' 
+END
 GO
 
 
-
-
-CREATE PROCEDURE [dw].[p_lataa_f_arvo_yo_uraseuranta_2018] AS
+ALTER PROCEDURE [dw].[p_lataa_f_arvo_yo_uraseuranta_2018] AS
 
 TRUNCATE TABLE dw.f_arvo_yo_uraseuranta_2018
+
+
 
 INSERT INTO dw.f_arvo_yo_uraseuranta_2018 (
 	[Ikä (valmistuessa)]
@@ -252,7 +255,5 @@ kysymykset.kysymys_fi not in
 
 
 
-
-GO
 
 
