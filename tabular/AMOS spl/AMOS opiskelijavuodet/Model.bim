@@ -468,13 +468,6 @@
             "sourceColumn": "opiskelijavuodet_painotettu_at_eat"
           },
           {
-            "name": "Hylkäämisperuste",
-            "dataType": "string",
-            "sourceColumn": "Opiskelijavuoden hylkäämisperuste",
-            "sortByColumn": "jarj_hylkaamisperuste",
-            "displayFolder": "Koulutusmuuttujat"
-          },
-          {
             "name": "opiskelijavuodet_hylatyt",
             "dataType": "double",
             "isHidden": true,
@@ -491,6 +484,13 @@
             "dataType": "int64",
             "isHidden": true,
             "sourceColumn": "jarj_ika"
+          },
+          {
+            "name": "Hyväksytyt/hylätyt opiskelijavuodet",
+            "dataType": "string",
+            "sourceColumn": "Hyväksytyt/hylätyt opiskelijavuodet",
+            "sortByColumn": "jarj_hylkaamisperuste",
+            "displayFolder": "Koulutusmuuttujat"
           }
         ],
         "partitions": [
@@ -924,7 +924,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Opiskelijavuoden hylkäämisperuste</string>",
+                  "        <string>Hyväksytyt/hylätyt opiskelijavuodet</string>",
                   "      </key>",
                   "      <value>",
                   "        <int>287</int>",
@@ -1353,7 +1353,7 @@
                   "        <string>opiskelijavuodet_hylatyt</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>68</int>",
+                  "        <int>67</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1494,10 +1494,10 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Opiskelijavuoden hylkäämisperuste</string>",
+                  "        <string>Hyväksytyt/hylätyt opiskelijavuodet</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>67</int>",
+                  "        <int>70</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1641,7 +1641,7 @@
                   "        <string>jarj_hylkaamisperuste</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>69</int>",
+                  "        <int>68</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -1649,7 +1649,7 @@
                   "        <string>jarj_ika</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>70</int>",
+                  "        <int>69</int>",
                   "      </value>",
                   "    </item>",
                   "  </ColumnDisplayIndex>",
@@ -1713,7 +1713,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Opiskelijavuoden hylkäämisperuste</string>",
+                  "        <string>Hyväksytyt/hylätyt opiskelijavuodet</string>",
                   "      </key>",
                   "      <value>",
                   "        <boolean>true</boolean>",
@@ -2034,7 +2034,7 @@
           },
           {
             "name": "Painottamattomat opiskelijavuodet yhteensä",
-            "expression": "SUM([opiskelijavuodet_painottamaton])",
+            "expression": "SUM([opiskelijavuodet_painottamaton])+[Hylätyt opiskelijavuodet]",
             "formatString": "#,0.00",
             "displayFolder": "Opiskelijavuodet"
           },
@@ -2217,8 +2217,8 @@
             "expression": [
               "",
               "var osamaara = [Hylätyt opiskelijavuodet] / [Opiskelijavuodet yhteensä]",
-              "var osamaara_all = [Hylätyt opiskelijavuodet] / CALCULATE([Opiskelijavuodet yhteensä],ALL(Muuttujat[Hylkäämisperuste]))",
-              "return IF(ISFILTERED([Hylkäämisperuste]), osamaara_all, osamaara)",
+              "var osamaara_all = [Hylätyt opiskelijavuodet] / CALCULATE([Opiskelijavuodet yhteensä],ALL(Muuttujat[Hyväksytyt/hylätyt opiskelijavuodet]))",
+              "return IF(ISFILTERED([Hyväksytyt/hylätyt opiskelijavuodet]), osamaara_all, osamaara)",
               "--return IF(AND(valinta=BLANK();[Opiskelijavuodet yhteensä]>0);0;valinta)"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
@@ -2659,7 +2659,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Opiskelijavuoden hylkäämisperuste</string>",
+              "        <string>Hyväksytyt/hylätyt opiskelijavuodet</string>",
               "      </key>",
               "      <value>",
               "        <int>287</int>",
@@ -3088,7 +3088,7 @@
               "        <string>opiskelijavuodet_hylatyt</string>",
               "      </key>",
               "      <value>",
-              "        <int>68</int>",
+              "        <int>67</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3229,10 +3229,10 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Opiskelijavuoden hylkäämisperuste</string>",
+              "        <string>Hyväksytyt/hylätyt opiskelijavuodet</string>",
               "      </key>",
               "      <value>",
-              "        <int>67</int>",
+              "        <int>70</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3376,7 +3376,7 @@
               "        <string>jarj_hylkaamisperuste</string>",
               "      </key>",
               "      <value>",
-              "        <int>69</int>",
+              "        <int>68</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -3384,7 +3384,7 @@
               "        <string>jarj_ika</string>",
               "      </key>",
               "      <value>",
-              "        <int>70</int>",
+              "        <int>69</int>",
               "      </value>",
               "    </item>",
               "  </ColumnDisplayIndex>",
@@ -3448,7 +3448,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Opiskelijavuoden hylkäämisperuste</string>",
+              "        <string>Hyväksytyt/hylätyt opiskelijavuodet</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -3924,6 +3924,9 @@
               },
               {
                 "name": "Osaamisala"
+              },
+              {
+                "name": "Hyväksytyt/hylätyt opiskelijavuodet"
               }
             ],
             "measures": [
@@ -4144,7 +4147,7 @@
                 "name": "Äidinkieli"
               },
               {
-                "name": "Hylkäämisperuste"
+                "name": "Hyväksytyt/hylätyt opiskelijavuodet"
               }
             ],
             "measures": [
