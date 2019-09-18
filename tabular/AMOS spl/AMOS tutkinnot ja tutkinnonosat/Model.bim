@@ -902,7 +902,7 @@
               "var summa = CALCULATE(SUM([painottamaton_osaamispisteet]),FILTER(Muuttujat,[Suorituksen tyyppi]=\"Koko tutkinto\"))",
               "return IF(summa=0,BLANK(),summa)"
             ],
-            "formatString": "#,0",
+            "formatString": "#,0.0",
             "displayFolder": "Painottamattomat"
           },
           {
@@ -922,7 +922,7 @@
               "var summa = CALCULATE(SUM([painottamaton_osaamispisteet]),FILTER(Muuttujat,[Suorituksen tyyppi]=\"Tutkinnon osa/osia\"))",
               "return IF(summa=0,BLANK(),summa)"
             ],
-            "formatString": "#,0",
+            "formatString": "#,0.0",
             "displayFolder": "Painottamattomat"
           },
           {
@@ -988,7 +988,8 @@
             "expression": [
               "",
               "[Tutkintojen painotetut pisteet yhteensä]",
-              "+[Tutkinnon osien painotetut osaamispisteet yhteensä]"
+              "+[Rahoitukseen hyväksytyt painotetut osaamispisteet]",
+              "--+[Tutkinnon osien painotetut osaamispisteet yhteensä]"
             ],
             "formatString": "#,0.00",
             "displayFolder": "Painotetut"
@@ -1094,13 +1095,9 @@
             "name": "Tutkintojen ja tutkinnon osien painotetut pisteet, järj. %-osuus",
             "expression": [
               "",
-              "(CALCULATE(",
-              "[Tutkintojen painotetut pisteet yhteensä]",
-              "+[Tutkinnon osien painotetut osaamispisteet yhteensä])) /",
-              "(CALCULATE(",
-              "[Tutkintojen painotetut pisteet yhteensä]",
-              "+[Tutkinnon osien painotetut osaamispisteet yhteensä],ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusmuoto]))",
-              ")"
+              "[Tutkintojen ja tutkinnon osien painotetut pisteet yhteensä] /",
+              "CALCULATE([Tutkintojen ja tutkinnon osien painotetut pisteet yhteensä],ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusmuoto]))",
+              ""
             ],
             "formatString": "0.00 %;-0.00 %;0.00 %",
             "displayFolder": "Prosenttiosuudet"
@@ -1212,7 +1209,7 @@
               "return IF(summa=0,BLANK(),summa)",
               ""
             ],
-            "formatString": "#,0.00",
+            "formatString": "#,0.0",
             "displayFolder": "Painottamattomat"
           },
           {
