@@ -22,8 +22,6 @@ EXEC dbo.sp_executesql @statement = N'
 
 
 
-
-
 CREATE VIEW [dw].[v_haku_ja_valinta_kk] AS
 
 
