@@ -642,6 +642,20 @@
             "sourceColumn": "Field of education, HE steering",
             "sortByColumn": "jarjestys_ohjauksenala",
             "displayFolder": "Education variables"
+          },
+          {
+            "type": "calculated",
+            "name": "VI suodatin",
+            "dataType": "int64",
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "expression": [
+              "SWITCH([Kysymysryhmä],\"VI TYÖ JA OSAAMINEN (1/3). Arvioi, miten seuraavat tekijät ovat vaikuttaneet työllistymiseesi valmitumisen jälkeen?\",",
+              "",
+              "1,\"VI TYÖ JA OSAAMINEN (2/3). Kuinka tärkeitä seuraavat tiedot ja taidot ovat työssäsi\",",
+              "",
+              "1, \"VI TYÖ JA OSAAMINEN (3/3). Miten yliopisto-opiskelu kehitti kyseisiä valmiuksia?\",1,0)"
+            ]
           }
         ],
         "partitions": [
@@ -3139,7 +3153,7 @@
             "formatString": "0.0"
           },
           {
-            "name": "Keskiarvo / Vastausjakauma (uraseuranta-maisterit)",
+            "name": "Vanha2_Keskiarvo / Vastausjakauma (uraseuranta-maisterit)",
             "expression": [
               "",
               "",
@@ -3157,7 +3171,28 @@
               "                )",
               "             )",
               "          )",
-              "       )"
+              "       )",
+              ""
+            ]
+          },
+          {
+            "name": "Keskiarvo / Vastausjakauma (uraseuranta-maisterit)",
+            "expression": [
+              "",
+              "",
+              "var kauramaistil_ei_vi = CALCULATE([ka-ura-mais-tilasto], FILTER('Muuttujat',Muuttujat[VI suodatin]=0))              ",
+              "",
+              "RETURN IF([vast-ura-mais-tilasto] < 6, ",
+              "          BLANK(),",
+              "          IF(ISFILTERED('Muuttujat'[Monivalintavaihtoehto]),",
+              "             FORMAT([ka-ura-mais2], \"0%\"),",
+              "             IF([ka-ura-mais-tilasto] = 0,",
+              "                BLANK(),",
+              "                kauramaistil_ei_vi",
+              "             )",
+              "          )",
+              "       )",
+              ""
             ],
             "formatString": "0.0"
           },
@@ -5434,6 +5469,9 @@
               },
               {
                 "name": "Sukupuoli"
+              },
+              {
+                "name": "VI suodatin"
               }
             ],
             "measures": [
