@@ -2813,14 +2813,34 @@
             "formatString": "#,0"
           },
           {
-            "name": "Vanha_Keskiarvo / Vastausjakauma (uraseuranta-maisterit)",
+            "name": "Keskiarvo / Vastausjakauma (uraseuranta-maisterit)",
             "expression": [
               "",
-              "IF([vast-ura-mais-tilasto] < 6, BLANK(),",
-              "   IF([ka-ura-mais-tilasto] = 0, IF(NOT(ISFILTERED([Monivalintavaihtoehto])), BLANK(),",
-              "                                    FORMAT([ka-ura-mais2], \"0%\")),",
-              "      IF(NOT(ISFILTERED([Monivalintavaihtoehto])), [ka-ura-mais-tilasto],",
-              "         FORMAT([ka-ura-mais2], \"0%\"))))"
+              "",
+              "var kauramaistil_ei_vi = CALCULATE([ka-ura-mais-tilasto], FILTER('Muuttujat', LEFT([Kysymysryhmä], 2) <> \"VI\"))              ",
+              "",
+              "RETURN IF([vast-ura-mais-tilasto] < 6, ",
+              "          BLANK(),",
+              "          IF(ISFILTERED('Muuttujat'[Monivalintavaihtoehto]),",
+              "             FORMAT([ka-ura-mais2], \"0%\"),",
+              "             IF([ka-ura-mais-tilasto] = 0,",
+              "                BLANK(),",
+              "                IF(MAX('Muuttujat'[Kyselyvuosi]) = 2017,",
+              "                   [ka-ura-mais-tilasto],",
+              "                   kauramaistil_ei_vi",
+              "                )",
+              "             )",
+              "          )",
+              "       )"
+            ],
+            "formatString": "0.0"
+          },
+          {
+            "name": "Keskihajonta (uraseuranta-maisterit)",
+            "expression": [
+              "",
+              "",
+              "IF(OR(OR([vast-ura-mais-tilasto] < 6, ISFILTERED([Monivalintavaihtoehto])), [Keskiarvo / Vastausjakauma (uraseuranta-maisterit)] = BLANK()), BLANK(),[kh-ura-mais-tilasto])"
             ],
             "formatString": "0.0"
           },
@@ -3125,6 +3145,18 @@
             "isHidden": true
           },
           {
+            "name": "Vanha_Keskiarvo / Vastausjakauma (uraseuranta-maisterit)",
+            "expression": [
+              "",
+              "IF([vast-ura-mais-tilasto] < 6, BLANK(),",
+              "   IF([ka-ura-mais-tilasto] = 0, IF(NOT(ISFILTERED([Monivalintavaihtoehto])), BLANK(),",
+              "                                    FORMAT([ka-ura-mais2], \"0%\")),",
+              "      IF(NOT(ISFILTERED([Monivalintavaihtoehto])), [ka-ura-mais-tilasto],",
+              "         FORMAT([ka-ura-mais2], \"0%\"))))"
+            ],
+            "formatString": "0.0"
+          },
+          {
             "name": "Juhis valmis4",
             "expression": [
               "",
@@ -3136,34 +3168,6 @@
               ")",
               ""
             ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Keskiarvo / Vastausjakauma (uraseuranta-maisterit)",
-            "expression": [
-              "",
-              "",
-              "var kauramaistil_ei_vi = CALCULATE([ka-ura-mais-tilasto], FILTER('Muuttujat', LEFT([Kysymysryhmä], 2) <> \"VI\"))              ",
-              "",
-              "RETURN IF([vast-ura-mais-tilasto] < 6, ",
-              "          BLANK(),",
-              "          IF(ISFILTERED('Muuttujat'[Monivalintavaihtoehto]),",
-              "             FORMAT([ka-ura-mais2], \"0%\"),",
-              "             IF([ka-ura-mais-tilasto] = 0,",
-              "                BLANK(),",
-              "                IF(MAX('Muuttujat'[Kyselyvuosi]) = 2017,",
-              "                   [ka-ura-mais-tilasto],",
-              "                   kauramaistil_ei_vi",
-              "                )",
-              "             )",
-              "          )",
-              "       )"
-            ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Keskihajonta (uraseuranta-maisterit)",
-            "expression": "IF(OR(OR([vast-ura-mais-tilasto] < 6, ISFILTERED([Monivalintavaihtoehto])), [Keskiarvo / Vastausjakauma (uraseuranta-maisterit)] = BLANK()), BLANK(),[kh-ura-mais-tilasto])",
             "formatString": "0.0"
           }
         ],
@@ -5438,16 +5442,16 @@
             ],
             "measures": [
               {
-                "name": "Pisteet (uraseuranta-maisterit)"
-              },
-              {
-                "name": "Vastaajamäärä (uraseuranta-maisterit)"
-              },
-              {
                 "name": "Keskiarvo / Vastausjakauma (uraseuranta-maisterit)"
               },
               {
                 "name": "Keskihajonta (uraseuranta-maisterit)"
+              },
+              {
+                "name": "Pisteet (uraseuranta-maisterit)"
+              },
+              {
+                "name": "Vastaajamäärä (uraseuranta-maisterit)"
               }
             ]
           },
