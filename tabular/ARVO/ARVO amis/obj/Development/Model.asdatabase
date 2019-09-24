@@ -878,32 +878,38 @@
           {
             "name": "vastaajaid",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "vastaajaid"
           },
           {
             "name": "Kiusaamiskysymys",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "Kiusaamiskysymys"
           },
           {
             "name": "Statistical period",
             "dataType": "string",
-            "sourceColumn": "Statistical period"
+            "sourceColumn": "Statistical period",
+            "displayFolder": "Time variables"
           },
           {
             "name": "Question group",
             "dataType": "string",
             "sourceColumn": "Question group",
-            "sortByColumn": "Järjestys kysymysryhma"
+            "sortByColumn": "Järjestys kysymysryhma",
+            "displayFolder": "Survey variables"
           },
           {
             "name": "Vahvistetut vastanneet",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "Vahvistetut vastanneet"
           },
           {
             "name": "Vahvistetut kyselyn kohteena olleet",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "Vahvistetut kyselyn kohteena olleet"
           }
         ],
@@ -4778,17 +4784,14 @@
             "expression": [
               "",
               "var taulu = ADDCOLUMNS(",
-              "\t\tSUMMARIZE(Muuttujat,[Koodit Koulutuksen järjestäjä])",
-              "\t\t,\"kato1\" ,  CALCULATE(IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide]),Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\",Muuttujat[Koodit Rahoitusmallikysymys]=1) \t\t",
-              "\t\t,\"kato2\" ,  CALCULATE(IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide]),Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\",Muuttujat[Koodit Rahoitusmallikysymys]=1)\t",
-              "\t\t,\"kato3\" ,  CALCULATE(IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide]),Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\",Muuttujat[Koodit Rahoitusmallikysymys]=1)",
+              "\t\tSUMMARIZE(Muuttujat,[Koodit Koulutuksen järjestäjä]) \t",
               "\t\t,\"pisteet1\", CALCULATE(SUM([numerovalinta]),Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
               "\t\t,\"pisteet2\", 3 * CALCULATE(SUM([numerovalinta]),Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
               "\t\t,\"pisteet3\" ,CALCULATE(SUM([numerovalinta]),Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
               "\t )",
-              "var painotettu1 = SUMX(taulu, [kato1] * [pisteet1])",
-              "var painotettu2 = SUMX(taulu, [kato2] * [pisteet2])",
-              "var painotettu3 = SUMX(taulu, [kato3] * [pisteet3])",
+              "var painotettu1 = SUMX(taulu, [Katokorjauskerroin] * [pisteet1])",
+              "var painotettu2 = SUMX(taulu, [Katokorjauskerroin] * [pisteet2])",
+              "var painotettu3 = SUMX(taulu, [Katokorjauskerroin] * [pisteet3])",
               "var painotettu = painotettu1 + painotettu2 + painotettu3",
               "return painotettu"
             ],
@@ -4868,11 +4871,13 @@
           },
           {
             "name": "Vahvistetut vastanneet yhteensä",
-            "expression": " CALCULATE(FIRSTNONBLANK(Muuttujat[Vahvistetut vastanneet],[Vahvistetut vastanneet]))"
+            "expression": " CALCULATE(FIRSTNONBLANK(Muuttujat[Vahvistetut vastanneet],[Vahvistetut vastanneet]))",
+            "isHidden": true
           },
           {
             "name": "Vahvistetut kyselyn kohteena olleet yhteensä",
-            "expression": " CALCULATE(FIRSTNONBLANK(Muuttujat[Vahvistetut kyselyn kohteena olleet],Muuttujat[Vahvistetut kyselyn kohteena olleet]))"
+            "expression": " CALCULATE(FIRSTNONBLANK(Muuttujat[Vahvistetut kyselyn kohteena olleet],Muuttujat[Vahvistetut kyselyn kohteena olleet]))",
+            "isHidden": true
           },
           {
             "name": "The Greatest Measure Everrr",
@@ -4883,26 +4888,31 @@
               "'Muuttujat', [Koulutuksen järjestäjä],Muuttujat[Rahoituskausi],",
               "\"välimittari\", AVERAGE('Muuttujat'[Vahvistetut vastanneet])",
               "), [välimittari])"
-            ]
+            ],
+            "isHidden": true
           },
           {
             "name": "Katokorjauskerroin",
             "expression": [
               "",
-              "var taulu = ADDCOLUMNS(",
-              "SUMMARIZE(Muuttujat, [Koodit Koulutuksen järjestäjä]),",
-              "\"osuus\", CALCULATE([Vastausosuus_nohide], VALUES(Muuttujat[Kyselyn kohderyhmä]), Muuttujat[Koodit Rahoitusmallikysymys] = 1)",
-              ")",
+              "--var taulu = ADDCOLUMNS(",
+              "--SUMMARIZE(Muuttujat; [Koodit Koulutuksen järjestäjä]);",
+              "--\"osuus\"; CALCULATE([Vastausosuus_nohide]; VALUES(Muuttujat[Kyselyn kohderyhmä]); Muuttujat[Koodit Rahoitusmallikysymys] = 1)",
+              "--)",
               "",
-              "var kato = SUMX(taulu, IF([osuus] >= 0.8, DIVIDE(1, [osuus]), 1 + (15/16) * [osuus] - (25/32) * [osuus] * [osuus]))",
-              "return kato"
+              "--var kato = SUMX(taulu; IF([osuus] >= 0,8; DIVIDE(1; [osuus]); 1 + (15/16) * [osuus] - (25/32) * [osuus] * [osuus]))",
+              "--return kato",
+              "CALCULATE(IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide]),Muuttujat[Koodit Rahoitusmallikysymys]=1)",
+              ""
             ],
-            "formatString": "0.00"
+            "formatString": "0.00",
+            "isHidden": true
           },
           {
             "name": "Vahvistettujen vastausosuus",
             "expression": "DIVIDE([Vahvistetut vastanneet yhteensä],[Vahvistetut kyselyn kohteena olleet yhteensä])",
-            "formatString": "0.00 %;-0.00 %;0.00 %"
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "isHidden": true
           }
         ],
         "annotations": [
