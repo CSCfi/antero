@@ -256,5 +256,3 @@ kysymykset.kysymys_fi not in
 'Kesto kuukausina',
 'Kesto yhteensä kuukausina',
 'Jos vastasit osa-aikaisesti, niin paljonko väitöskirjatutkimukseen / tohtorin opinnäytteeseen työajasta käytetty % -osuus oli:')
-
-GO
