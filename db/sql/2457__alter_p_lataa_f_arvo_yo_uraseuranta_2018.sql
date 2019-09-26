@@ -114,8 +114,7 @@ SELECT
 	   case when d_ika.ika_fi = -1
 			 then 'Tieto puuttuu'
 			 else d_ika.ika_fi
-			 end 
-		as 'Ikä (valmistuessa)'															as [Ikä (valmistuessa)]
+			 end 															as [Ikä (valmistuessa)]
       ,coalesce(d_ika.ikaryhma1_fi,'Tieto puuttuu')							as [Ikäryhmä (valmistuessa)]
       ,coalesce(d_sukupuoli.sukupuoli_fi,'Tieto puuttuu')					as [Sukupuoli]
       ,coalesce(d_kieli.kieli_fi,'Tieto puuttuu')							as [Äidinkieli]
