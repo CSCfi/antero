@@ -2827,15 +2827,31 @@
             "formatString": "#,0"
           },
           {
-            "name": "Vanha_Keskiarvo / Vastausjakauma (uraseuranta-maisterit)",
+            "name": "Keskiarvo / Vastausjakauma (uraseuranta-maisterit)",
             "expression": [
               "",
-              "IF([vast-ura-mais-tilasto] < 6, BLANK(),",
-              "   IF([ka-ura-mais-tilasto] = 0, IF(NOT(ISFILTERED([Monivalintavaihtoehto])), BLANK(),",
-              "                                    FORMAT([ka-ura-mais2], \"0%\")),",
-              "      IF(NOT(ISFILTERED([Monivalintavaihtoehto])), [ka-ura-mais-tilasto],",
-              "         FORMAT([ka-ura-mais2], \"0%\"))))"
+              "var ka = [ka-ura-mais-tilasto]",
+              "RETURN IF([vast-ura-mais-tilasto] < 6, ",
+              "          \t BLANK(),",
+              "          \t IF(ISFILTERED('Muuttujat'[Kysymys]),             \t            ",
+              "             \t     IF(ISFILTERED('Muuttujat'[Monivalintavaihtoehto]),",
+              "             \t         FORMAT([ka-ura-mais2], \"0%\"),",
+              "             \t         IF(ka = 0,  BLANK(), ka)",
+              "             \t     ),",
+              "             \t     BLANK()",
+              "       \t )",
+              "             )",
+              "             ",
+              "/*",
+              "OR(SELECTEDVALUE([Kysymysryhmä], '') = \"III  TYÖURAN KOKONAISUUS\"; SELECTEDVALUE([Kysymysryhmä], '') = \"V TYÖLLISTYMISEN LAATU\")",
+              "CALCULATE(ka; FILTER('Muuttujat'; [Kysymysryhmä] <> \"III  TYÖURAN KOKONAISUUS\"); FILTER('Muuttujat'; [Kysymysryhmä] <> \"V TYÖLLISTYMISEN LAATU\"))",
+              "*/"
             ],
+            "formatString": "0.0"
+          },
+          {
+            "name": "Keskihajonta (uraseuranta-maisterit)",
+            "expression": "IF(OR(OR([vast-ura-mais-tilasto] < 6, ISFILTERED([Monivalintavaihtoehto])), [Keskiarvo / Vastausjakauma (uraseuranta-maisterit)] = BLANK()), BLANK(),[kh-ura-mais-tilasto])",
             "formatString": "0.0"
           },
           {
@@ -2855,12 +2871,12 @@
           },
           {
             "name": "ka-ura-toht",
-            "expression": "CALCULATE(AVERAGE(Muuttujat[numerovalinta]),FILTER(VALUES(Muuttujat[ura_tohtori]),[ura_tohtori]=1),FILTER(VALUES( Muuttujat[vastaustyyppi]),[vastaustyyppi]=\"arvosana6\"))",
+            "expression": "CALCULATE(AVERAGEX(Muuttujat, IF([numerovalinta]=0, BLANK(), [numerovalinta])),FILTER(VALUES(Muuttujat[ura_tohtori]),[ura_tohtori]=1),FILTER(VALUES( Muuttujat[vastaustyyppi]),[vastaustyyppi]=\"arvosana6\"))",
             "isHidden": true
           },
           {
             "name": "kh-ura-toht",
-            "expression": "CALCULATE(STDEV.P(Muuttujat[numerovalinta]))",
+            "expression": " CALCULATE(STDEVX.P(Muuttujat, IF([numerovalinta]=0, BLANK(), [numerovalinta])),FILTER(VALUES(Muuttujat[ura_tohtori]),[ura_tohtori]=1))",
             "isHidden": true
           },
           {
@@ -2939,7 +2955,7 @@
           },
           {
             "name": "ka-ura-mais",
-            "expression": "CALCULATE(AVERAGE(Muuttujat[numerovalinta]),FILTER(VALUES(Muuttujat[ura_maisteri]),[ura_maisteri]=1),FILTER(VALUES(Muuttujat[vastaustyyppi]),[vastaustyyppi]=\"arvosana6\"))",
+            "expression": "CALCULATE(AVERAGEX(Muuttujat, IF([numerovalinta]=0, BLANK(), [numerovalinta])),FILTER(VALUES(Muuttujat[ura_maisteri]),[ura_maisteri]=1),FILTER(VALUES(Muuttujat[vastaustyyppi]),[vastaustyyppi]=\"arvosana6\"))",
             "isHidden": true
           },
           {
@@ -2979,7 +2995,7 @@
           },
           {
             "name": "kh-ura-mais",
-            "expression": "CALCULATE(STDEV.P(Muuttujat[numerovalinta]),FILTER(VALUES(Muuttujat[ura_maisteri]),[ura_maisteri]=1))",
+            "expression": "CALCULATE(STDEVX.P(Muuttujat, IF([numerovalinta]=0, BLANK(), [numerovalinta])),FILTER(VALUES(Muuttujat[ura_maisteri]),[ura_maisteri]=1))",
             "isHidden": true
           },
           {
@@ -3124,9 +3140,38 @@
             "formatString": "#,0"
           },
           {
+            "name": "Keskihajonta (uraseuranta-tohtorit)",
+            "expression": "IF(OR(OR([vast-ura-toht-tilasto] < 6, ISFILTERED([Monivalintavaihtoehto])), [Keskiarvo / Vastausjakauma (uraseuranta-tohtorit)] = BLANK()), BLANK(),[kh-ura-toht-tilasto])",
+            "formatString": "0.0"
+          },
+          {
             "name": "Pisteet (uraseuranta-tohtorit)",
             "expression": "IF([vast-ura-toht-tilasto]<5,BLANK(),[pisteet-ura-toht])",
             "formatString": "#,0"
+          },
+          {
+            "name": "Keskiarvo / Vastausjakauma (uraseuranta-tohtorit)",
+            "expression": [
+              "",
+              "var ka = [ka-ura-toht-tilasto]",
+              "RETURN IF([vast-ura-toht-tilasto] < 6, ",
+              "          \t BLANK(),",
+              "          \t IF(ISFILTERED('Muuttujat'[Kysymys]),             \t            ",
+              "             \t     IF(ISFILTERED('Muuttujat'[Monivalintavaihtoehto]),",
+              "             \t         FORMAT([ka-ura-toht2], \"0%\"),",
+              "             \t         IF(ka = 0,  BLANK(), ka)",
+              "             \t     ),",
+              "             \t     BLANK()",
+              "       \t )",
+              "             )",
+              "",
+              " ",
+              " /*",
+              " OR(SELECTEDVALUE([Kysymysryhmä], '') = \"II  NYKYINEN TYÖSUHDE JA SEN LAATU\"; SELECTEDVALUE([Kysymysryhmä], '') = \"III  TOHTORIKOULUTUS JA SEN MERKITYS (1/4)\")",
+              " CALCULATE(ka; 'Muuttujat'[Kysymysryhmä] <> \"II  NYKYINEN TYÖSUHDE JA SEN LAATU\"; 'Muuttujat'[Kysymysryhmä] <> \"III  TOHTORIKOULUTUS JA SEN MERKITYS (1/4)\")",
+              " */"
+            ],
+            "formatString": "0.0"
           },
           {
             "name": "ka-ura-toht2",
@@ -3134,16 +3179,14 @@
             "isHidden": true
           },
           {
-            "name": "Juhis valmis4",
+            "name": "Vanha_Keskiarvo / Vastausjakauma (uraseuranta-maisterit)",
             "expression": [
               "",
               "IF([vast-ura-mais-tilasto] < 6, BLANK(),",
-              "   IF([ka-ura-mais-tilasto] = 0, IF(NOT(ISFILTERED('Muuttujat'[Monivalintavaihtoehto])), BLANK(),",
-              "                                    FORMAT(CALCULATE([ka-ura-mais2], FILTER('Muuttujat', [Kyselyvuosi] = 2018), FILTER('Muuttujat', LEFT([Kysymysryhmä], 2) <> \"VI\")),\"0%\")),",
-              "      IF(NOT(ISFILTERED('Muuttujat'[Monivalintavaihtoehto])), CALCULATE([ka-ura-mais-tilasto],FILTER('Muuttujat', [Kyselyvuosi] = 2018), FILTER('Muuttujat', LEFT([Kysymysryhmä], 2) <> \"VI\")),",
-              "         FORMAT(CALCULATE([ka-ura-mais2],FILTER('Muuttujat', [Kyselyvuosi] = 2018), FILTER('Muuttujat', LEFT([Kysymysryhmä], 2) <> \"VI\")),\"0%\")))",
-              ")",
-              ""
+              "   IF([ka-ura-mais-tilasto] = 0, IF(NOT(ISFILTERED([Monivalintavaihtoehto])), BLANK(),",
+              "                                    FORMAT([ka-ura-mais2], \"0%\")),",
+              "      IF(NOT(ISFILTERED([Monivalintavaihtoehto])), [ka-ura-mais-tilasto],",
+              "         FORMAT([ka-ura-mais2], \"0%\"))))"
             ],
             "formatString": "0.0"
           },
@@ -3171,11 +3214,6 @@
             ]
           },
           {
-            "name": "Keskihajonta (uraseuranta-maisterit)",
-            "expression": "IF(OR(OR([vast-ura-mais-tilasto] < 6, ISFILTERED([Monivalintavaihtoehto])), [Keskiarvo / Vastausjakauma (uraseuranta-maisterit)] = BLANK()), BLANK(),[kh-ura-mais-tilasto])",
-            "formatString": "0.0"
-          },
-          {
             "name": "Uusi Keskiarvo / Vastausjakauma (uraseuranta-maisterit)",
             "expression": [
               "",
@@ -3196,47 +3234,15 @@
             ]
           },
           {
-            "name": "Keskiarvo / Vastausjakauma (uraseuranta-maisterit)",
+            "name": "testi_maisteri_keskiarvo_jakauma",
             "expression": [
               "",
-              "",
-              "var kauramaistil_ei_vi = CALCULATE([ka-ura-mais-tilasto], FILTER(VALUES(Muuttujat[VI suodatin]),Muuttujat[VI suodatin]=0))              ",
-              "",
-              "RETURN IF([vast-ura-mais-tilasto] < 6, ",
-              "          BLANK(),",
-              "          IF(ISFILTERED('Muuttujat'[Monivalintavaihtoehto]),",
-              "             FORMAT([ka-ura-mais2], \"0%\"),",
-              "             IF([ka-ura-mais-tilasto] = 0,",
-              "                BLANK(),",
-              "                kauramaistil_ei_vi",
-              "             )",
-              "          )",
-              "       )"
-            ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Keskihajonta (uraseuranta-tohtorit)",
-            "expression": "IF(OR(OR([vast-ura-toht-tilasto] < 6, ISFILTERED([Monivalintavaihtoehto])), [Keskiarvo / Vastausjakauma (uraseuranta-tohtorit)] = BLANK()), BLANK(),[kh-ura-toht-tilasto])",
-            "formatString": "0.0"
-          },
-          {
-            "name": "Keskiarvo / Vastausjakauma (uraseuranta-tohtorit)",
-            "expression": [
-              "",
-              "",
-              "var kauramaistil_ei_vi = CALCULATE([ka-ura-toht-tilasto])              ",
-              "",
-              "RETURN IF([vast-ura-toht-tilasto] < 6, ",
-              "          BLANK(),",
-              "          IF(ISFILTERED('Muuttujat'[Monivalintavaihtoehto]),",
-              "             FORMAT([ka-ura-toht2], \"0%\"),",
-              "             IF([ka-ura-toht-tilasto] = 0,",
-              "                BLANK(),",
-              "                kauramaistil_ei_vi",
-              "             )",
-              "          )",
-              "       )",
+              "IF([vast-ura-mais-tilasto] < 6, BLANK(),",
+              "   IF([ka-ura-mais-tilasto] = 0, IF(NOT(ISFILTERED('Muuttujat'[Monivalintavaihtoehto])), BLANK(),",
+              "                                    FORMAT(CALCULATE([ka-ura-mais2], FILTER('Muuttujat', [Kyselyvuosi] = 2018), FILTER('Muuttujat', LEFT([Kysymysryhmä], 2) <> \"VI\")),\"0%\")),",
+              "      IF(NOT(ISFILTERED('Muuttujat'[Monivalintavaihtoehto])), CALCULATE([ka-ura-mais-tilasto],FILTER('Muuttujat', [Kyselyvuosi] = 2018), FILTER('Muuttujat', LEFT([Kysymysryhmä], 2) <> \"VI\")),",
+              "         FORMAT(CALCULATE([ka-ura-mais2],FILTER('Muuttujat', [Kyselyvuosi] = 2018), FILTER('Muuttujat', LEFT([Kysymysryhmä], 2) <> \"VI\")),\"0%\")))",
+              ")",
               ""
             ],
             "formatString": "0.0"
@@ -5519,16 +5525,16 @@
             ],
             "measures": [
               {
-                "name": "Pisteet (uraseuranta-maisterit)"
-              },
-              {
-                "name": "Vastaajamäärä (uraseuranta-maisterit)"
+                "name": "Keskiarvo / Vastausjakauma (uraseuranta-maisterit)"
               },
               {
                 "name": "Keskihajonta (uraseuranta-maisterit)"
               },
               {
-                "name": "Keskiarvo / Vastausjakauma (uraseuranta-maisterit)"
+                "name": "Pisteet (uraseuranta-maisterit)"
+              },
+              {
+                "name": "Vastaajamäärä (uraseuranta-maisterit)"
               }
             ]
           },
@@ -5616,13 +5622,13 @@
             ],
             "measures": [
               {
-                "name": "Vastaajamäärä (uraseuranta-tohtorit)"
+                "name": "Keskiarvo / Vastausjakauma (uraseuranta-tohtorit)"
               },
               {
                 "name": "Keskihajonta (uraseuranta-tohtorit)"
               },
               {
-                "name": "Keskiarvo / Vastausjakauma (uraseuranta-tohtorit)"
+                "name": "Vastaajamäärä (uraseuranta-tohtorit)"
               }
             ]
           }
