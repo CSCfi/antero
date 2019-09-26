@@ -12,11 +12,7 @@ ALTER PROCEDURE [dw].[p_lataa_f_arvo_yo_uraseuranta_2018] AS
 TRUNCATE TABLE dw.f_arvo_yo_uraseuranta_2018
 
 INSERT INTO dw.f_arvo_yo_uraseuranta_2018 (
-		case when [Ikä (valmistuessa)] = -1
-			 then 'Tieto puuttuu'
-			 else [Ikä (valmistuessa)]
-			 end 
-		as 'Ikä (valmistuessa)'
+	[Ikä (valmistuessa)]
       ,[Ikäryhmä (valmistuessa)]
       ,[Sukupuoli]
       ,[Äidinkieli]
@@ -115,7 +111,11 @@ INSERT INTO dw.f_arvo_yo_uraseuranta_2018 (
 )
 
 SELECT  
-	   d_ika.ika_fi															as [Ikä (valmistuessa)]
+	   case when d_ika.ika_fi = -1
+			 then 'Tieto puuttuu'
+			 else d_ika.ika_fi
+			 end 
+		as 'Ikä (valmistuessa)'															as [Ikä (valmistuessa)]
       ,coalesce(d_ika.ikaryhma1_fi,'Tieto puuttuu')							as [Ikäryhmä (valmistuessa)]
       ,coalesce(d_sukupuoli.sukupuoli_fi,'Tieto puuttuu')					as [Sukupuoli]
       ,coalesce(d_kieli.kieli_fi,'Tieto puuttuu')							as [Äidinkieli]
