@@ -12,7 +12,6 @@ ALTER PROCEDURE [dw].[p_lataa_f_arvo_yo_uraseuranta_2018] AS
 TRUNCATE TABLE dw.f_arvo_yo_uraseuranta_2018
 
 INSERT INTO dw.f_arvo_yo_uraseuranta_2018 (
-	   [Ikä (valmistuessa)] =
 		case when [Ikä (valmistuessa)] = -1
 			 then 'Tieto puuttuu'
 			 else [Ikä (valmistuessa)]
