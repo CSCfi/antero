@@ -4977,6 +4977,19 @@
             "name": "Pisteiden laskennasta saadut painotetut pisteet %",
             "expression": "[Pisteiden laskennasta saadut painotetut pisteet] / CALCULATE([Pisteiden laskennasta saadut painotetut pisteet],ALLEXCEPT(Muuttujat,Muuttujat[Kysely]))",
             "formatString": "0.00 %;-0.00 %;0.00 %"
+          },
+          {
+            "name": "Pisteiden laskennassa käytetyt pisteet",
+            "expression": [
+              "--IF(",
+              "--[Vastanneet_perus]=\"<5\";",
+              "--BLANK();",
+              "",
+              "--;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1))",
+              "--)",
+              "CALCULATE(IF([Vastanneet_s]>[Vahvistetut vastanneet yhteensä],SUM([numerovalinta])*(DIVIDE([Vahvistetut vastanneet yhteensä],[Vastanneet_s])),SUM([numerovalinta])),VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1)"
+            ],
+            "formatString": "#,0"
           }
         ],
         "annotations": [
@@ -9934,6 +9947,12 @@
               },
               {
                 "name": "Pisteiden laskennassa käytetty vastaajamäärä"
+              },
+              {
+                "name": "Pisteet yhteensä %"
+              },
+              {
+                "name": "Pisteiden laskennassa käytetyt pisteet"
               }
             ]
           },
