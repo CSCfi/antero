@@ -8,7 +8,7 @@
         "name": "dwitvipusql16",
         "connectionString": "Provider=SQLNCLI11.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=ANTERO;Data Source=dwitvipusql16",
         "impersonationMode": "impersonateAccount",
-        "account": "DWI\\T_VIPUTK_KUUTIO",
+        "account": "DWI\\juhelmin",
         "annotations": [
           {
             "name": "ConnectionEditUISource",
@@ -85,18 +85,6 @@
       {
         "name": "Muuttujat",
         "columns": [
-          {
-            "name": "tyolliset",
-            "dataType": "int64",
-            "isHidden": true,
-            "sourceColumn": "tyolliset"
-          },
-          {
-            "name": "aluekerroin",
-            "dataType": "double",
-            "isHidden": true,
-            "sourceColumn": "aluekerroin"
-          },
           {
             "name": "tilv",
             "dataType": "string",
@@ -378,6 +366,12 @@
             "sourceColumn": "jarjmaaknimi"
           },
           {
+            "name": "aluekerroin",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "aluekerroin"
+          },
+          {
             "name": "allk_kytkin",
             "dataType": "string",
             "isHidden": true,
@@ -516,6 +510,12 @@
             "sourceColumn": "tyolliset_ja_opiskelijat"
           },
           {
+            "name": "tyolliset",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "tyolliset"
+          },
+          {
             "name": "opiskelijat",
             "dataType": "int64",
             "isHidden": true,
@@ -610,7 +610,7 @@
             "sourceColumn": "omistajatyyppi"
           },
           {
-            "name": "tyoton",
+            "name": "tyoton1",
             "dataType": "int64",
             "sourceColumn": "tyoton"
           },
@@ -618,16 +618,12 @@
             "name": "muu_tai_tuntematon",
             "dataType": "int64",
             "sourceColumn": "muu_tai_tuntematon"
-          },
-          {
-            "name": "tilastovuosi",
-            "dataType": "string",
-            "sourceColumn": "tilastovuosi"
           }
         ],
         "partitions": [
           {
-            "name": "Muuttujat",
+            "name": "v_sa_amos_siirtotiedosto_tk1",
+            "dataView": "full",
             "source": {
               "query": [
                 "SELECT ",
@@ -787,71 +783,59 @@
           },
           {
             "name": "s_tyollistyneet_tyollisena_ennen_koulutusta_a",
-            "expression": "IF(SUM([tyollistyneet_tyollisena_ennen_koulutusta]) = 0, BLANK(),IF(SUM([tyollistyneet_tyollisena_ennen_koulutusta]) < 5, \"1-4\", MROUND(SUM([tyollistyneet_tyollisena_ennen_koulutusta]),3)))",
-            "formatString": "0"
+            "expression": "IF(SUM([tyollistyneet_tyollisena_ennen_koulutusta]) = 0, BLANK(),IF(SUM([tyollistyneet_tyollisena_ennen_koulutusta]) < 5, 5, MROUND(SUM([tyollistyneet_tyollisena_ennen_koulutusta]),3)))"
           },
           {
             "name": "s_jatko_opiskelijat_ei_tyollisena_ennen_koulutusta_a",
-            "expression": "IF(SUM([jatko_opiskelijat_ei_tyollisena_ennen_koulutusta]) = 0, BLANK(),IF(SUM([jatko_opiskelijat_ei_tyollisena_ennen_koulutusta]) <5, \"1-4\", MROUND(SUM([jatko_opiskelijat_ei_tyollisena_ennen_koulutusta]),3)))",
-            "formatString": "0"
+            "expression": "IF(SUM([jatko_opiskelijat_ei_tyollisena_ennen_koulutusta]) = 0, BLANK(),IF(SUM([jatko_opiskelijat_ei_tyollisena_ennen_koulutusta]) <5, 5, MROUND(SUM([jatko_opiskelijat_ei_tyollisena_ennen_koulutusta]),3)))"
           },
           {
             "name": "s_jatko_opiskelijat_tyollisena_ennen_koulutusta_a",
-            "expression": "IF(SUM([jatko_opiskelijat_tyollisena_ennen_koulutusta]) = 0, BLANK(),IF(SUM([jatko_opiskelijat_tyollisena_ennen_koulutusta]) < 5, \"1-4\", MROUND(SUM([jatko_opiskelijat_tyollisena_ennen_koulutusta]),3)))",
-            "formatString": "0"
+            "expression": "IF(SUM([jatko_opiskelijat_tyollisena_ennen_koulutusta]) = 0, BLANK(),IF(SUM([jatko_opiskelijat_tyollisena_ennen_koulutusta]) < 5, 5, MROUND(SUM([jatko_opiskelijat_tyollisena_ennen_koulutusta]),3)))"
           },
           {
             "name": "s_opiskelijat_a",
-            "expression": "IF(SUM([opiskelijat]) = 0, BLANK(),IF(SUM([opiskelijat]) < 5, \"1-4\", MROUND(SUM([opiskelijat]),3)))",
-            "formatString": "0"
+            "expression": "IF(SUM([opiskelijat]) = 0, BLANK(),IF(SUM([opiskelijat]) = 1, 3, MROUND(SUM([opiskelijat]),3)))"
           },
           {
             "name": "s_suor_koko_tutk_a",
-            "expression": "IF(SUM([suor_koko_tutk]) = 0, BLANK(),IF(SUM([suor_koko_tutk]) < 5, \"1-4\", MROUND(SUM([suor_koko_tutk]),3)))",
-            "formatString": "0"
+            "expression": "IF(SUM([suor_koko_tutk]) = 0, BLANK(),IF(SUM([suor_koko_tutk]) < 5, 5, MROUND(SUM([suor_koko_tutk]),3)))"
           },
           {
             "name": "s_tyolliset_a",
-            "expression": "IF(SUM([tyolliset]) = 0, BLANK(),IF(SUM([tyolliset]) < 5, \"1-4\", MROUND(SUM([tyolliset]),3)))",
-            "formatString": "0"
+            "expression": "IF(SUM([tyolliset]) = 0, BLANK(),IF(SUM([tyolliset]) = 1, 3, MROUND(SUM([tyolliset]),3)))"
           },
           {
             "name": "s_tyolliset_ja_opiskelijat_a",
-            "expression": "IF(SUM([tyolliset_ja_opiskelijat]) = 0, BLANK(),IF(SUM([tyolliset_ja_opiskelijat]) < 5, \"1-4\", MROUND(SUM([tyolliset_ja_opiskelijat]),3)))",
-            "formatString": "0"
+            "expression": "IF(SUM([tyolliset_ja_opiskelijat]) = 0, BLANK(),IF(SUM([tyolliset_ja_opiskelijat]) = 1, 3, MROUND(SUM([tyolliset_ja_opiskelijat]),3)))"
           },
           {
             "name": "s_tyollistyneet_ei_tyollisena_ennen_koulutusta_a",
-            "expression": "IF(SUM([tyollistyneet_ei_tyollisena_ennen_koulutusta]) = 0, BLANK(),IF(SUM([tyollistyneet_ei_tyollisena_ennen_koulutusta]) < 5, \"1-4\", MROUND(SUM([tyollistyneet_ei_tyollisena_ennen_koulutusta]),3)))",
-            "formatString": "0"
+            "expression": "IF(SUM([tyollistyneet_ei_tyollisena_ennen_koulutusta]) = 0, BLANK(),IF(SUM([tyollistyneet_ei_tyollisena_ennen_koulutusta]) < 5, 5, MROUND(SUM([tyollistyneet_ei_tyollisena_ennen_koulutusta]),3)))"
           },
           {
             "name": "s_tyollisten_painotetut_pisteet_a",
-            "expression": "IF(SUM([tyollisten_painotetut_pisteet]) = 0, BLANK(),IF(SUM([tyollisten_painotetut_pisteet]) < 5, \"1-4\", MROUND(SUM([tyollisten_painotetut_pisteet]),3)))",
-            "formatString": "0"
+            "expression": "IF(SUM([tyollisten_painotetut_pisteet]) = 0, BLANK(),IF(SUM([tyollisten_painotetut_pisteet]) < 5, 5, MROUND(SUM([tyollisten_painotetut_pisteet]),3)))"
           },
           {
             "name": "s_opiskelijoiden_painotetut_pisteet_a",
-            "expression": "IF(SUM([opiskelijoiden_painotetut_pisteet]) = 0, BLANK(),IF(SUM([opiskelijoiden_painotetut_pisteet]) < 5, \"1-4\", MROUND(SUM([opiskelijoiden_painotetut_pisteet]),3)))",
-            "formatString": "0"
+            "expression": "IF(SUM([opiskelijoiden_painotetut_pisteet]) = 0, BLANK(),IF(SUM([opiskelijoiden_painotetut_pisteet]) < 5, 5, MROUND(SUM([opiskelijoiden_painotetut_pisteet]),3)))"
           },
           {
-            "name": "tyoton_a",
-            "expression": "sum(Muuttujat[tyoton])"
+            "name": "tyoton1_a",
+            "expression": "sum(Muuttujat[tyoton1])"
           },
           {
             "name": "muu_tai_tuntematon_a",
             "expression": "sum(Muuttujat[muu_tai_tuntematon])"
           },
           {
-            "name": "s_tyoton_a",
-            "expression": "IF(SUM(Muuttujat[tyoton]) = 0, BLANK(),IF(SUM(Muuttujat[tyoton]) < 5, \"1-4\", MROUND(SUM(Muuttujat[tyoton]),3)))",
-            "formatString": "0"
+            "name": "s_tyoton1_a",
+            "expression": "IF(SUM([tyoton1]) = 0, BLANK(),IF(SUM([tyoton1]) < 5, 5, MROUND(SUM([tyoton1]),3)))"
           },
           {
             "name": "s_muu_tai_tuntematon_a",
-            "expression": "IF(SUM([muu_tai_tuntematon]) = 0, BLANK(),IF(SUM([muu_tai_tuntematon]) < 5, \"1-4\", MROUND(SUM([muu_tai_tuntematon]),3)))",
-            "formatString": "0"
+            "expression": "IF(SUM([muu_tai_tuntematon]) = 0, BLANK(),IF(SUM([muu_tai_tuntematon]) < 5, 5, MROUND(SUM([muu_tai_tuntematon]),3)))"
           }
         ],
         "annotations": [
@@ -874,6 +858,138 @@
             ]
           }
         ]
+      },
+      {
+        "name": "v_tk_4_2_paa_asiallinen_toiminta_maak",
+        "columns": [
+          {
+            "name": "tilvasmaak",
+            "dataType": "string",
+            "sourceColumn": "tilvasmaak",
+            "sourceProviderType": "VarChar"
+          },
+          {
+            "name": "paatoiminen_tyollinen",
+            "dataType": "int64",
+            "sourceColumn": "paatoiminen_tyollinen",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "tyoton",
+            "dataType": "int64",
+            "sourceColumn": "tyoton",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "tyollinen_opiskelija",
+            "dataType": "int64",
+            "sourceColumn": "tyollinen_opiskelija",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "tyolliset",
+            "dataType": "int64",
+            "sourceColumn": "tyolliset",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "yhteensa",
+            "dataType": "int64",
+            "sourceColumn": "yhteensa",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "tyolliset_per_yhteensa",
+            "dataType": "double",
+            "sourceColumn": "tyolliset_per_yhteensa"
+          },
+          {
+            "name": "indeksi_jakaja",
+            "dataType": "double",
+            "sourceColumn": "indeksi_jakaja"
+          },
+          {
+            "name": "aluekerroin",
+            "dataType": "double",
+            "sourceColumn": "aluekerroin"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "v_tk_3_4_paa_asiallinen_toiminta_maak_jhe",
+            "dataView": "full",
+            "source": {
+              "query": [
+                "select * from",
+                " [dw].[v_amos_spl_tk_4_2abc_paa_asiallinen_toiminta_maak_indeksoitu]"
+              ],
+              "dataSource": "dwitvipusql16"
+            },
+            "annotations": [
+              {
+                "name": "QueryEditorSerialization",
+                "value": [
+                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>select * from",
+                  " [dw].[v_amos_spl_tk_4_2abc_paa_asiallinen_toiminta_maak_indeksoitu]</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+                ]
+              }
+            ]
+          }
+        ],
+        "measures": [
+          {
+            "name": "paatoiminen_tyollinen_a",
+            "expression": "sum([paatoiminen_tyollinen])"
+          },
+          {
+            "name": "tyoton_a",
+            "expression": "sum([tyoton])"
+          },
+          {
+            "name": "tyollinen_opiskelija_a",
+            "expression": "sum([tyollinen_opiskelija])"
+          },
+          {
+            "name": "tyolliset_tk42_a",
+            "expression": "sum([tyolliset])"
+          },
+          {
+            "name": "yhteensa_tk42_a",
+            "expression": "sum([yhteensa])"
+          },
+          {
+            "name": "tyolliset_per_yhteensa_a",
+            "expression": "sum([tyolliset_per_yhteensa])"
+          },
+          {
+            "name": "indeksi_jakaja_a",
+            "expression": "max([indeksi_jakaja])"
+          },
+          {
+            "name": "aluekerroin_tk42_a",
+            "expression": "max([aluekerroin])"
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": [
+              "select * from",
+              " [dw].[v_amos_spl_tk_4_2abc_paa_asiallinen_toiminta_maak_indeksoitu]"
+            ]
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "v_tk_3_4_paa_asiallinen_toiminta_maak_jhe"
+          },
+          {
+            "name": "QueryEditorSerialization",
+            "value": [
+              "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>select * from",
+              " [dw].[v_amos_spl_tk_4_2abc_paa_asiallinen_toiminta_maak_indeksoitu]</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+            ]
+          }
+        ]
       }
     ],
     "cultures": [
@@ -889,8 +1005,8 @@
                 "columns": [
                   {
                     "name": "tilv",
-                    "translatedCaption": "Tutkinnon suoritusvuosi",
-                    "translatedDisplayFolder": "Aika"
+                    "translatedCaption": "Tilastovuosi, AVAIN tilastovuoden muihin aineistoihin",
+                    "translatedDisplayFolder": "Tilastovuosi"
                   },
                   {
                     "name": "aineisto",
@@ -1036,11 +1152,6 @@
                     "name": "omistajatyyppi",
                     "translatedCaption": "Omistajatyyppi",
                     "translatedDisplayFolder": "Suoritettua tutkintoa koskevat tiedot"
-                  },
-                  {
-                    "name": "tilastovuosi",
-                    "translatedCaption": "Tilastovuosi",
-                    "translatedDisplayFolder": "Aika"
                   }
                 ],
                 "measures": [
@@ -1265,7 +1376,7 @@
                     "translatedDisplayFolder": "Vaikuttavuuslaskenta"
                   },
                   {
-                    "name": "tyoton_a",
+                    "name": "tyoton1_a",
                     "translatedCaption": "Työttömät",
                     "translatedDisplayFolder": "Vaikuttavuuslaskenta"
                   },
@@ -1275,7 +1386,7 @@
                     "translatedDisplayFolder": "Vaikuttavuuslaskenta"
                   },
                   {
-                    "name": "s_tyoton_a",
+                    "name": "s_tyoton1_a",
                     "translatedCaption": "Työttömät",
                     "translatedDisplayFolder": "Vaikuttavuuslaskenta"
                   },
@@ -1298,9 +1409,6 @@
           {
             "name": "Muuttujat",
             "columns": [
-              {
-                "name": "tilv"
-              },
               {
                 "name": "aineisto"
               },
@@ -1366,6 +1474,9 @@
               },
               {
                 "name": "ptoim1r2h"
+              },
+              {
+                "name": "tilv"
               },
               {
                 "name": "toteuma_tutk"
@@ -1662,6 +1773,103 @@
         ]
       },
       {
+        "name": "v_tk_4_2_paa_asiallinen_toiminta_maak",
+        "tables": [
+          {
+            "name": "v_tk_4_2_paa_asiallinen_toiminta_maak",
+            "columns": [
+              {
+                "name": "paatoiminen_tyollinen"
+              },
+              {
+                "name": "tilvasmaak"
+              },
+              {
+                "name": "tyollinen_opiskelija"
+              },
+              {
+                "name": "tyolliset"
+              },
+              {
+                "name": "tyolliset_per_yhteensa"
+              },
+              {
+                "name": "tyoton"
+              },
+              {
+                "name": "yhteensa"
+              },
+              {
+                "name": "aluekerroin"
+              },
+              {
+                "name": "indeksi_jakaja"
+              }
+            ],
+            "measures": [
+              {
+                "name": "paatoiminen_tyollinen_a"
+              },
+              {
+                "name": "tyollinen_opiskelija_a"
+              },
+              {
+                "name": "tyolliset_per_yhteensa_a"
+              },
+              {
+                "name": "tyolliset_tk42_a"
+              },
+              {
+                "name": "tyoton_a"
+              },
+              {
+                "name": "yhteensa_tk42_a"
+              },
+              {
+                "name": "indeksi_jakaja_a"
+              },
+              {
+                "name": "aluekerroin_tk42_a"
+              }
+            ]
+          },
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "ytunnus_jarjnimi_opisk"
+              }
+            ],
+            "measures": [
+              {
+                "name": "jatko_opiskelijat_ei_tyollisena_ennen_koulutusta_a"
+              },
+              {
+                "name": "jatko_opiskelijat_tyollisena_ennen_koulutusta_a"
+              },
+              {
+                "name": "opiskelijat_a"
+              },
+              {
+                "name": "suor_koko_tutk_a"
+              },
+              {
+                "name": "tyolliset_a"
+              },
+              {
+                "name": "tyolliset_ja_opiskelijat_a"
+              },
+              {
+                "name": "tyollistyneet_ei_tyollisena_ennen_koulutusta_a"
+              },
+              {
+                "name": "tyollistyneet_tyollisena_ennen_koulutusta_a"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "Vain_jarj_ja_vuosi",
         "tables": [
           {
@@ -1686,12 +1894,6 @@
               },
               {
                 "name": "ytunnus_jarjnimi_opisk"
-              },
-              {
-                "name": "tilastovuosi"
-              },
-              {
-                "name": "tilv"
               }
             ],
             "measures": [
@@ -1783,7 +1985,7 @@
                 "name": "s_muu_tai_tuntematon_a"
               },
               {
-                "name": "s_tyoton_a"
+                "name": "s_tyoton1_a"
               }
             ]
           }
