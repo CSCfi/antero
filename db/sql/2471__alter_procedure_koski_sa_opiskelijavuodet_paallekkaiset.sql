@@ -232,3 +232,5 @@ FROM (
 			,valiaikainen_kesk
 ) q2
 where rnk=1
+go
+use antero
