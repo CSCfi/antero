@@ -11,27 +11,27 @@ GO
 
 
 ALTER VIEW [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy_tabular] AS 
-/*
+
 --Päivitetty 8.8.2019, jhe, 20.8.2019
 
-drop table [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
-go
-select * 
-into [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
-from [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
-go
+--drop table [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
+--go
+--select * 
+--into [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
+--from [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
+--go
 
-select count(*) from [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
-select top 10 * from [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
+--select count(*) from [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
+--select top 10 * from [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_tabular]
 
-*/
+
 SELECT 
-/* Karin speksi meilissä 19.8.2019
-"Ja siinä 2.7.2017 lähettämässäni muutokset ja lisäykset exceliissä oli myös pyyntö lisätä Rah.per: tutk. suor. työll. ja jatko-opisk painotetut -raportille
-muuttuja Tutkinnon suoritusvuosi (joka siis saa arvon 2016) sekä muuttuja Tilastovuosi (saa arvon 2017). Viedään nämä molemmat myös suodattimeksi."
+-- Karin speksi meilissä 19.8.2019
+--"Ja siinä 2.7.2017 lähettämässäni muutokset ja lisäykset exceliissä oli myös pyyntö lisätä Rah.per: tutk. suor. työll. ja jatko-opisk painotetut -raportille
+--muuttuja Tutkinnon suoritusvuosi (joka siis saa arvon 2016) sekä muuttuja Tilastovuosi (saa arvon 2017). Viedään nämä molemmat myös suodattimeksi."
 
-Joten alla tilv-kenttä tulee näkymään raportilla Tutkinnon suoritusvuotena ja kovakoodattu arvo '2017' puolestaan tilastovuotena.
-*/
+--Joten alla tilv-kenttä tulee näkymään raportilla Tutkinnon suoritusvuotena ja kovakoodattu arvo '2017' puolestaan tilastovuotena.
+
 
   tilv, 
   '2017' as tilastovuosi,
@@ -45,14 +45,14 @@ Joten alla tilv-kenttä tulee näkymään raportilla Tutkinnon suoritusvuotena j
   omistajatyyppi,
 
   --jhe 22.5.2019 kommentoitu pois aluetietoa, jota ei ainakaan toistaiseksi raportilla tarvita 
-  /*jarj_tutk,
-         jarjnimi_tutk,*/
+  --jarj_tutk,
+    --     jarjnimi_tutk,
  
   jarjmaak, 
   jarjmaaknimi, 
   
-  /*tutkmaak,
-         tutkmaaknimi,*/
+  --tutkmaak,
+     --    tutkmaaknimi,
   alvv, 
   allk, 
   allk_kytkin, 
@@ -142,13 +142,13 @@ FROM
       t.jarjnimi_opisk, 
 	  okm8.omistajatyyppi_koodi,
       okm8.omistajatyyppi,
-      /*t.jarj_tutk,
-                t.jarjnimi_tutk,*/
+      --t.jarj_tutk,
+        --        t.jarjnimi_tutk,
       t.jarjmaak, 
       t.jarjmaaknimi, 
       
-      /*t.tutkmaak,
-                t.tutkmaaknimi,*/
+      --t.tutkmaak,
+         --       t.tutkmaaknimi,
       t.alvv, 
       t.allk, 
       t.allk_kytkin, 
