@@ -14,7 +14,7 @@ select count(*) from
 [dw].[v_amos_spl_tk_4_2abc_paa_asiallinen_toiminta_maak]
 */
 
-CREATE VIEW [dw].[v_amos_spl_tk_4_2abc_paa_asiallinen_toiminta_maak] AS 
+ALTER VIEW [dw].[v_amos_spl_tk_4_2abc_paa_asiallinen_toiminta_maak] AS 
 SELECT 
 tilv,
   tilvasmaak, 
