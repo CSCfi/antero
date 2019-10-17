@@ -12,19 +12,6 @@ GO
 ALTER VIEW [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy_piirteet]
 /*
 Päivitetty 8.8.2019 jhe, 2.9.2019
-
-drop table [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_piirteet]
-go
-
-select *
-into [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_piirteet]
-from [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy_piirteet]
-
-select count (*) from
-[sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_piirteet]
-
-select top 10 * from [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_piirteet]
-
 */
 
 AS
@@ -246,6 +233,6 @@ LEFT OUTER JOIN sa.v_d_amos_tk_attribuutit AS kytkin_tyov ON t.tyov_kytkin = kyt
 LEFT OUTER JOIN sa.v_d_amos_tk_attribuutit AS kytkin_tsekt ON t.tsekt_kytkin = kytkin_tsekt.kytkin
 
 
-GO
+
 
 
