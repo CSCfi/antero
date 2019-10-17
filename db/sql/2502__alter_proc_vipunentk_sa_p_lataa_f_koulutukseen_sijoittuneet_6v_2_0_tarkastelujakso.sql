@@ -1117,5 +1117,5 @@ end;
 if @debug_what_to_run>0 PRINT 'all done.';
 */
 
-USE
-[ANTERO]
+GO
+USE [ANTERO]
