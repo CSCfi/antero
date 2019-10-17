@@ -11,7 +11,7 @@ GO
 
 ALTER VIEW [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy_piirteet]
 /*
---Päivitetty 8.8.2019 jhe, 2.9.2019
+Päivitetty 8.8.2019 jhe, 2.9.2019
 
 drop table [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_piirteet]
 go
@@ -80,13 +80,12 @@ tutk_osia_suor_8*lkm as tutk_osia_suor_8,
 lkm
 
 
-/* Kertoimet */
--- Karin speksi 2019-04-05
---https://jira.eduuni.fi/browse/CSCSUOLA-1
---Työllistyminen ja jatko-opiskelu raporttimalli 2019 04 05.xlsx
--- .. välilehti: Painotettujen laskentasäännöt
---Työlliset ja opiskelijat
-
+/* Kertoimet
+ Karin speksi 2019-04-05
+Työllistyminen ja jatko-opiskelu raporttimalli 2019 04 05.xlsx
+ .. välilehti: Painotettujen laskentasäännöt
+Työlliset ja opiskelijat
+*/
 ,CASE
 WHEN tutk_suor_1=1 THEN lkm
 WHEN tutk_suor_2=1 THEN lkm
@@ -195,13 +194,13 @@ WHEN tutk_osia_suor_8 = 1 THEN lkm ELSE 0 END
 
 as muu_tai_tuntematon
 
--- /Karin speksi 2019-04-05 , 2019-07-02
+-- Karin speksi 2019-04-05 , 2019-07-02
 
 
 --jhe 27.5.2019, aluekertoimen oletusarvoksi 1 (oli 0)
 ,isnull(tk_4_2.aluekerroin,1) as aluekerroin
 
---/kertoimet
+--kertoimet
 
 , luontipvm, source, username, loadtime
 						 
