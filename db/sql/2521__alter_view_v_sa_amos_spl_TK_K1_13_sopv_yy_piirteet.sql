@@ -1,9 +1,9 @@
-USE [ANTERO]
+ï»¿USE [ANTERO]
 GO
 
 /****** Object:  View [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy_piirteet]    Script Date: 17.10.2019 13:55:47 ******/
 SET ANSI_NULLS ON
-GO
+GO 
 
 SET QUOTED_IDENTIFIER ON
 GO
@@ -11,7 +11,7 @@ GO
 
 ALTER VIEW [sa].[v_sa_amos_spl_TK_K1_13_sopv_yy_piirteet]
 /*
---Päivitetty 8.8.2019 jhe, 2.9.2019
+--PÃ¤ivitetty 8.8.2019 jhe, 2.9.2019
 
 drop table [sa].[d_sa_amos_spl_TK_K1_13_sopv_yy_piirteet]
 go
@@ -83,9 +83,9 @@ lkm
 /* Kertoimet */
 -- Karin speksi 2019-04-05
 --https://jira.eduuni.fi/browse/CSCSUOLA-1
---Työllistyminen ja jatko-opiskelu raporttimalli 2019 04 05.xlsx
--- .. välilehti: Painotettujen laskentasäännöt
---Työlliset ja opiskelijat
+--TyÃ¶llistyminen ja jatko-opiskelu raporttimalli 2019 04 05.xlsx
+-- .. vÃ¤lilehti: Painotettujen laskentasÃ¤Ã¤nnÃ¶t
+--TyÃ¶lliset ja opiskelijat
 
 ,CASE
 WHEN tutk_suor_1=1 THEN lkm
@@ -98,7 +98,7 @@ WHEN tutk_osia_suor_5=1 THEN lkm
 WHEN tutk_osia_suor_6=1 THEN lkm else 0 END
  as tyolliset_ja_opiskelijat													
 
- --Työlliset
+ --TyÃ¶lliset
 ,CASE
 WHEN tutk_suor_1=1 THEN lkm
 WHEN tutk_osia_suor_1=1 THEN lkm
@@ -115,7 +115,7 @@ WHEN tutk_osia_suor_6=1 THEN lkm else 0 END
  as opiskelijat
 
  
---Työlliset, opiskelijat ja työttömät
+--TyÃ¶lliset, opiskelijat ja tyÃ¶ttÃ¶mÃ¤t
 ,CASE
 WHEN tutk_suor_1=1 THEN lkm
 WHEN tutk_suor_2=1 THEN lkm
@@ -143,29 +143,29 @@ WHEN tutk_osia_suor_5=1 THEN 1
 WHEN tutk_osia_suor_6=1 THEN 1 ELSE 0 END
 as statuskerroin
 
--- # Välilehti: Suoriteraportti 2
--- Työllistyneet, ei työllisenä ennen koulutusta
+-- # VÃ¤lilehti: Suoriteraportti 2
+-- TyÃ¶llistyneet, ei tyÃ¶llisenÃ¤ ennen koulutusta
 ,CASE
 WHEN tutk_suor_1=1 THEN lkm
 WHEN tutk_osia_suor_1=1 THEN lkm
 else 0 END
  as tyollistyneet_ei_tyollisena_ennen_koulutusta
 
- -- Työllistyneet, työllisenä ennen koulutusta
+ -- TyÃ¶llistyneet, tyÃ¶llisenÃ¤ ennen koulutusta
 ,CASE
 WHEN tutk_suor_5=1 THEN lkm
 WHEN tutk_osia_suor_5=1 THEN lkm
 else 0 END
  as tyollistyneet_tyollisena_ennen_koulutusta
 
- --Jatko-opiskelijat, ei työllisenä ennen koulutusta
+ --Jatko-opiskelijat, ei tyÃ¶llisenÃ¤ ennen koulutusta
 ,CASE
 WHEN tutk_suor_2=1 THEN lkm
 WHEN tutk_osia_suor_2=1 THEN lkm
 else 0 END
  as jatko_opiskelijat_ei_tyollisena_ennen_koulutusta
 
- --Jatko-opiskelijat, työllisenä ennen koulutusta
+ --Jatko-opiskelijat, tyÃ¶llisenÃ¤ ennen koulutusta
 ,CASE
 WHEN tutk_suor_6=1 THEN lkm
 WHEN tutk_osia_suor_6=1 THEN lkm
@@ -173,9 +173,9 @@ else 0 END
  as jatko_opiskelijat_tyollisena_ennen_koulutusta
 
 
---Työttömät ja muussa toiminnassa
+--TyÃ¶ttÃ¶mÃ¤t ja muussa toiminnassa
 -- Karin speksi 2019-07-02, lisatty 2019-08-08 jhe
--- Työll+jatko-opisk.lisäraportti2
+-- TyÃ¶ll+jatko-opisk.lisÃ¤raportti2
 
 ,CASE 
 WHEN tutk_suor_3 = 1 THEN lkm
@@ -186,7 +186,7 @@ WHEN tutk_osia_suor_7 = 1 THEN lkm ELSE 0 END
 
  --,CASE WHEN ptoim1r2e_kytkin='ptoim_99' THEN lkm ELSE 0 END 
 -- jhe 2.9.2019
-/*Kari 13.8.2019: ”Muussa toiminnassa” sisältää kaikki loput tutkinnon suorittaneet, jotka eivät ole työllistyneet tai jatko-opiskelijat sarakkeissa. Ei siis pelkästään 99:t.*/
+/*Kari 13.8.2019: â€Muussa toiminnassaâ€ sisÃ¤ltÃ¤Ã¤ kaikki loput tutkinnon suorittaneet, jotka eivÃ¤t ole tyÃ¶llistyneet tai jatko-opiskelijat sarakkeissa. Ei siis pelkÃ¤stÃ¤Ã¤n 99:t.*/
  ,CASE 
  WHEN tutk_suor_4 = 1 THEN lkm
 WHEN tutk_osia_suor_4 = 1 THEN lkm
