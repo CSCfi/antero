@@ -168,7 +168,7 @@ WHEN tutk_suor_3 = 1 THEN lkm
 WHEN tutk_osia_suor_3 = 1 THEN lkm
 WHEN tutk_suor_7 = 1 THEN lkm
 WHEN tutk_osia_suor_7 = 1 THEN lkm ELSE 0 END 
- as tyoton
+ as tyoton 
 
  --,CASE WHEN ptoim1r2e_kytkin='ptoim_99' THEN lkm ELSE 0 END 
 -- jhe 2.9.2019

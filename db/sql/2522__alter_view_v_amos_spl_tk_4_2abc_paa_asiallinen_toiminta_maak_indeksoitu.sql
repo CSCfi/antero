@@ -1,5 +1,5 @@
 USE [ANTERO]
-GO
+GO 
 
 /****** Object:  View [dw].[v_amos_spl_tk_4_2abc_paa_asiallinen_toiminta_maak_indeksoitu]    Script Date: 17.10.2019 15:04:39 ******/
 SET ANSI_NULLS ON
