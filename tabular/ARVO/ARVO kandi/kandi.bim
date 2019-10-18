@@ -1885,7 +1885,7 @@
               "IF(",
               "OR([Vastaajamäärä LIVE]<6,AND(ISFILTERED([Kysymysryhmä]),NOT(ISFILTERED([Kysymys]))))",
               ",BLANK()",
-              ",CALCULATE(AVERAGE([numerovalinta]),FILTER(VALUES(Muuttujat[numerovalinta]),[numerovalinta]<>1))",
+              ",CALCULATE(AVERAGE([numerovalinta]),FILTER(VALUES(Muuttujat[numerovalinta]),[numerovalinta]<>1),Muuttujat[vastaustyyppi_keskiarvo]=1)",
               ")",
               ""
             ],
@@ -1895,7 +1895,7 @@
             "name": "Keskihajonta LIVE",
             "expression": [
               "",
-              "var hajonta = STDEV.P(Muuttujat[numerovalinta])",
+              "var hajonta = CALCULATE(STDEV.P(Muuttujat[numerovalinta]),Muuttujat[vastaustyyppi_keskiarvo]=1)",
               "return IF([Vastaajamäärä LIVE]<6,BLANK(),hajonta)"
             ],
             "formatString": "0.0"
@@ -1926,7 +1926,7 @@
               "IF(",
               "\tOR([Vastaajamäärä]<6,AND(ISFILTERED([Kysymysryhmä]),NOT(ISFILTERED([Kysymys]))))",
               "\t,BLANK()",
-              "\t,CALCULATE(AVERAGE([numerovalinta]),FILTER(VALUES(Muuttujat[numerovalinta]),[numerovalinta]<>1),Muuttujat[vuosi_tilasto]=1)",
+              "\t,CALCULATE(AVERAGE([numerovalinta]),FILTER(VALUES(Muuttujat[numerovalinta]),[numerovalinta]<>1),Muuttujat[vuosi_tilasto]=1,Muuttujat[vastaustyyppi_keskiarvo]=1)",
               ")",
               ""
             ],
@@ -1936,7 +1936,7 @@
             "name": "Keskihajonta",
             "expression": [
               "",
-              "var hajonta = CALCULATE(STDEV.P(Muuttujat[numerovalinta]),Muuttujat[vuosi_tilasto]=1)",
+              "var hajonta = CALCULATE(STDEV.P(Muuttujat[numerovalinta]),Muuttujat[vuosi_tilasto]=1,Muuttujat[vastaustyyppi_keskiarvo]=1)",
               "return IF([Vastaajamäärä]<6,BLANK(),hajonta)",
               ""
             ],
@@ -1955,10 +1955,11 @@
           {
             "name": "Keskiarvo (rahoitusmalli)",
             "expression": [
+              "",
               "IF(",
-              "OR([Vastaajamäärä]<6,AND(ISFILTERED([Kysymysryhmä]),NOT(ISFILTERED([Kysymys]))))",
-              ",BLANK()",
-              ",CALCULATE(AVERAGE([numerovalinta]),Muuttujat[vuosi_tilasto]=1)",
+              "\tOR([Vastaajamäärä]<6,AND(ISFILTERED([Kysymysryhmä]),NOT(ISFILTERED([Kysymys]))))",
+              "\t,BLANK()",
+              "\t,CALCULATE(AVERAGE([numerovalinta]),Muuttujat[vuosi_tilasto]=1)",
               ")"
             ],
             "formatString": "0.0"

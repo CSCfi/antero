@@ -250,7 +250,7 @@
           },
           {
             "name": "numerovalinta",
-            "dataType": "int64",
+            "dataType": "double",
             "isHidden": true,
             "sourceColumn": "numerovalinta",
             "sourceProviderType": "WChar"
@@ -1955,7 +1955,7 @@
               "IF(",
               "OR([Vastaajamäärä LIVE]<6,AND(ISFILTERED([Kysymysryhmä]),NOT(ISFILTERED([Kysymys]))))",
               ",BLANK()",
-              ",AVERAGE([numerovalinta_muokattu])",
+              ",CALCULATE(AVERAGE([numerovalinta]),Muuttujat[vastaustyyppi_keskiarvo]=1)",
               ")",
               ""
             ],
@@ -1965,7 +1965,7 @@
             "name": "Keskihajonta LIVE",
             "expression": [
               "",
-              "var hajonta = STDEV.P(Muuttujat[numerovalinta_muokattu])",
+              "var hajonta = CALCULATE(STDEV.P(Muuttujat[numerovalinta]),Muuttujat[vastaustyyppi_keskiarvo]=1)",
               "return IF([Vastaajamäärä LIVE]<6,BLANK(),hajonta)",
               ""
             ],
@@ -1975,7 +1975,7 @@
             "name": "Pisteet LIVE",
             "expression": [
               "",
-              "var summa = CALCULATE(SUM(Muuttujat[numerovalinta_muokattu]),Muuttujat[Koodit Rahoitusmallikysymys]=1)",
+              "var summa = CALCULATE(SUM(Muuttujat[numerovalinta]),Muuttujat[Koodit Rahoitusmallikysymys]=1)",
               "return IF([Vastaajamäärä LIVE]<6,BLANK(),summa)",
               ""
             ],
@@ -1997,7 +1997,7 @@
               "IF(",
               "OR([Vastaajamäärä]<6,AND(ISFILTERED([Kysymysryhmä]),NOT(ISFILTERED([Kysymys]))))",
               ",BLANK()",
-              ",CALCULATE(AVERAGE([numerovalinta_muokattu]),Muuttujat[vuosi_tilasto]=1)",
+              ",CALCULATE(AVERAGE([numerovalinta]),Muuttujat[vuosi_tilasto]=1,Muuttujat[vastaustyyppi_keskiarvo]=1)",
               ")",
               ""
             ],
@@ -2007,7 +2007,7 @@
             "name": "Keskihajonta",
             "expression": [
               "",
-              "var hajonta = CALCULATE(STDEV.P(Muuttujat[numerovalinta_muokattu]),Muuttujat[vuosi_tilasto]=1)",
+              "var hajonta = CALCULATE(STDEV.P(Muuttujat[numerovalinta]),Muuttujat[vuosi_tilasto]=1,Muuttujat[vastaustyyppi_keskiarvo]=1)",
               "return IF([Vastaajamäärä]<6,BLANK(),hajonta)",
               ""
             ],
@@ -2017,7 +2017,7 @@
             "name": "Pisteet",
             "expression": [
               "",
-              "var summa = CALCULATE(SUM(Muuttujat[numerovalinta_muokattu]),Muuttujat[Koodit Rahoitusmallikysymys]=1,Muuttujat[vuosi_tilasto]=1)",
+              "var summa = CALCULATE(SUM(Muuttujat[numerovalinta]),Muuttujat[Koodit Rahoitusmallikysymys]=1,Muuttujat[vuosi_tilasto]=1)",
               "return IF([Vastaajamäärä]<6,BLANK(),summa)",
               ""
             ],

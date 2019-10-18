@@ -1955,7 +1955,7 @@
               "IF(",
               "OR([Vastaajamäärä LIVE]<6,AND(ISFILTERED([Kysymysryhmä]),NOT(ISFILTERED([Kysymys]))))",
               ",BLANK()",
-              ",AVERAGE([numerovalinta])",
+              ",CALCULATE(AVERAGE([numerovalinta]),Muuttujat[vastaustyyppi_keskiarvo]=1)",
               ")",
               ""
             ],
@@ -1965,7 +1965,7 @@
             "name": "Keskihajonta LIVE",
             "expression": [
               "",
-              "var hajonta = STDEV.P(Muuttujat[numerovalinta])",
+              "var hajonta = CALCULATE(STDEV.P(Muuttujat[numerovalinta]),Muuttujat[vastaustyyppi_keskiarvo]=1)",
               "return IF([Vastaajamäärä LIVE]<6,BLANK(),hajonta)",
               ""
             ],
@@ -1997,7 +1997,7 @@
               "IF(",
               "OR([Vastaajamäärä]<6,AND(ISFILTERED([Kysymysryhmä]),NOT(ISFILTERED([Kysymys]))))",
               ",BLANK()",
-              ",CALCULATE(AVERAGE([numerovalinta]),Muuttujat[vuosi_tilasto]=1)",
+              ",CALCULATE(AVERAGE([numerovalinta]),Muuttujat[vuosi_tilasto]=1,Muuttujat[vastaustyyppi_keskiarvo]=1)",
               ")",
               ""
             ],
@@ -2007,7 +2007,7 @@
             "name": "Keskihajonta",
             "expression": [
               "",
-              "var hajonta = CALCULATE(STDEV.P(Muuttujat[numerovalinta]),Muuttujat[vuosi_tilasto]=1)",
+              "var hajonta = CALCULATE(STDEV.P(Muuttujat[numerovalinta]),Muuttujat[vuosi_tilasto]=1,Muuttujat[vastaustyyppi_keskiarvo]=1)",
               "return IF([Vastaajamäärä]<6,BLANK(),hajonta)",
               ""
             ],
