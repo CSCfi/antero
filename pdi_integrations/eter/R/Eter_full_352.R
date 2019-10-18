@@ -1,5 +1,4 @@
 
-
 Loopin_alku <- Sys.time() #Tallennetaan aloitusaika
 
 #---------------------------#
@@ -56,6 +55,10 @@ mylogin <- fromJSON(login_raw, flatten = TRUE)
 mytoken <- mylogin$token
 
 
+
+#---------------------------#
+
+#         API requests      #
 
 #---------------------------#
 
@@ -163,7 +166,7 @@ data_numeric <- mydata[, !grepl((".code|.r"), colnames(mydata))]
 
 data_numeric2 <- data_numeric
 
-options(scipen = 999)
+
 
 # before merging, column classes must be the same
 
