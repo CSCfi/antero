@@ -17,7 +17,7 @@ select count(*) from
 ALTER VIEW [dw].[v_amos_spl_tk_4_2abc_paa_asiallinen_toiminta_maak] AS 
 SELECT 
 tilv,
-  CAST(tilvasmaak AS INT) as tilvasmaak 
+  CAST(tilvasmaak AS INT) as tilvasmaak,
   maakunta,
   paatoiminen_tyollinen, 
   tyoton, 
