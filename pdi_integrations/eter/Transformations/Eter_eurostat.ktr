@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <transformation>
   <info>
-    <name>Eter_erasmus</name>
+    <name>Eter_research</name>
     <description/>
     <extended_description/>
     <trans_version/>
@@ -428,9 +428,9 @@
     <clusterschemas>
     </clusterschemas>
     <created_user>-</created_user>
-    <created_date>2019/01/14 15:53:54.164</created_date>
+    <created_date>2019/01/14 15:59:33.414</created_date>
     <modified_user>-</modified_user>
-    <modified_date>2019/01/14 15:53:54.164</modified_date>
+    <modified_date>2019/01/14 15:59:33.414</modified_date>
     <key_for_session_key>H4sIAAAAAAAAAAMAAAAAAAAAAAA=</key_for_session_key>
     <is_key_private>N</is_key_private>
   </info>
@@ -502,7 +502,27 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>CSV file input - ETER erasmus</from>
+      <from>Row denormaliser</from>
+      <to>Group by</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>CSV file input - Eurostat research</from>
+      <to>Sort rows</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Sort rows</from>
+      <to>Row denormaliser</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Group by</from>
+      <to>Unique rows</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Unique rows</from>
       <to>Add few constants</to>
       <enabled>Y</enabled>
     </hop>
@@ -513,7 +533,7 @@
     </hop>
     <hop>
       <from>Table output</from>
-      <to>Success/Fail</to>
+      <to>Dummy (do nothing)</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -551,13 +571,13 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>304</xloc>
-      <yloc>64</yloc>
+      <xloc>512</xloc>
+      <yloc>464</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>CSV file input - ETER erasmus</name>
+    <name>CSV file input - Eurostat research</name>
     <type>CsvInput</type>
     <description/>
     <distribute>Y</distribute>
@@ -567,7 +587,7 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
-    <filename>D:\pdi_integrations\data\eter\eter_era.csv</filename>
+    <filename>D:\pdi_integrations\data\eter\Eurostat.csv</filename>
     <filename_field/>
     <rownum_field/>
     <include_filename>N</include_filename>
@@ -575,25 +595,14 @@
     <enclosure>"</enclosure>
     <header>Y</header>
     <buffer_size>50000</buffer_size>
-    <lazy_conversion>Y</lazy_conversion>
+    <lazy_conversion>N</lazy_conversion>
     <add_filename_result>N</add_filename_result>
     <parallel>N</parallel>
     <newline_possible>N</newline_possible>
     <encoding/>
     <fields>
       <field>
-        <name>_id</name>
-        <type>String</type>
-        <format/>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>24</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>ERA.INCOMING_STUDENTS_ISCED6.v</name>
+        <name>TIME</name>
         <type>Integer</type>
         <format>#</format>
         <currency>$</currency>
@@ -604,326 +613,84 @@
         <trim_type>none</trim_type>
       </field>
       <field>
-        <name>ERA.OUTGOING_STUDENTS_ISCED5.v</name>
-        <type>Integer</type>
-        <format>#</format>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>15</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>ERA.OUTGOING_STUDENTS_TOT.v</name>
-        <type>Integer</type>
-        <format>#</format>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>15</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>ERA.INCOMING_STUDENTS_ISCED7.v</name>
-        <type>Integer</type>
-        <format>#</format>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>15</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>ERA.OUTGOING_STUDENTS_ISCED6.v</name>
-        <type>Integer</type>
-        <format>#</format>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>15</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>ERA.INCOMING_STAFF.v</name>
-        <type>Integer</type>
-        <format>#</format>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>15</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>ERA.INCOMING_STUDENTS_ISCED5.v</name>
-        <type>Integer</type>
-        <format>#</format>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>15</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>ERA.CODE.v</name>
+        <name>GEO</name>
         <type>String</type>
         <format/>
         <currency>$</currency>
         <decimal>.</decimal>
         <group>,</group>
-        <length>38</length>
+        <length>5</length>
         <precision>-1</precision>
         <trim_type>none</trim_type>
       </field>
       <field>
-        <name>ERA.INCOMING_STUDENTS_TOT.v</name>
-        <type>Integer</type>
-        <format>#</format>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>15</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>ERA.INCOMING_STUDENTS_OTHER.v</name>
-        <type>Integer</type>
-        <format>#</format>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>15</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>ERA.INCOMING_STUDENTS_ISCED8.v</name>
-        <type>Integer</type>
-        <format>#</format>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>15</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>ERA.OUTGOING_STUDENTS_OTHER.v</name>
-        <type>Integer</type>
-        <format>#</format>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>15</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>ERA.OUTGOING_STUDENTS_ISCED8.v</name>
-        <type>Integer</type>
-        <format>#</format>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>15</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>ERA.OUTGOING_STUDENTS_ISCED7.v</name>
-        <type>Integer</type>
-        <format>#</format>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>15</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>ERA.NOTES.v</name>
+        <name>GEO_LABEL</name>
         <type>String</type>
         <format/>
         <currency>$</currency>
         <decimal>.</decimal>
         <group>,</group>
-        <length>42</length>
+        <length>77</length>
         <precision>-1</precision>
         <trim_type>none</trim_type>
       </field>
       <field>
-        <name>ERA.FLAG.v</name>
+        <name>SEX</name>
         <type>String</type>
         <format/>
         <currency>$</currency>
         <decimal>.</decimal>
         <group>,</group>
-        <length>1</length>
+        <length>5</length>
         <precision>-1</precision>
         <trim_type>none</trim_type>
       </field>
       <field>
-        <name>ERA.OUTGOING_STAFF.v</name>
-        <type>Integer</type>
-        <format>#</format>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>15</length>
-        <precision>0</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>ERA.INCOMING_STUDENTS_ISCED6.code</name>
+        <name>AGE_LABEL</name>
         <type>String</type>
         <format/>
         <currency>$</currency>
         <decimal>.</decimal>
         <group>,</group>
-        <length>1</length>
+        <length>19</length>
         <precision>-1</precision>
         <trim_type>none</trim_type>
       </field>
       <field>
-        <name>ERA.OUTGOING_STUDENTS_ISCED5.code</name>
+        <name>UNIT</name>
         <type>String</type>
         <format/>
         <currency>$</currency>
         <decimal>.</decimal>
         <group>,</group>
-        <length>1</length>
+        <length>2</length>
         <precision>-1</precision>
         <trim_type>none</trim_type>
       </field>
       <field>
-        <name>ERA.OUTGOING_STUDENTS_TOT.code</name>
+        <name>UNIT_LABEL</name>
         <type>String</type>
         <format/>
         <currency>$</currency>
         <decimal>.</decimal>
         <group>,</group>
-        <length>1</length>
+        <length>6</length>
         <precision>-1</precision>
         <trim_type>none</trim_type>
       </field>
       <field>
-        <name>ERA.INCOMING_STUDENTS_ISCED7.code</name>
-        <type>String</type>
-        <format/>
+        <name>Value</name>
+        <type>Number</type>
+        <format>#,###,###.#</format>
         <currency>$</currency>
         <decimal>.</decimal>
         <group>,</group>
-        <length>1</length>
-        <precision>-1</precision>
+        <length>11</length>
+        <precision>1</precision>
         <trim_type>none</trim_type>
       </field>
       <field>
-        <name>ERA.OUTGOING_STUDENTS_ISCED6.code</name>
-        <type>String</type>
-        <format/>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>ERA.INCOMING_STAFF.code</name>
-        <type>String</type>
-        <format/>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>ERA.INCOMING_STUDENTS_ISCED5.code</name>
-        <type>String</type>
-        <format/>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>ERA.INCOMING_STUDENTS_TOT.code</name>
-        <type>String</type>
-        <format/>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>ERA.INCOMING_STUDENTS_OTHER.code</name>
-        <type>String</type>
-        <format/>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>ERA.INCOMING_STUDENTS_ISCED8.code</name>
-        <type>String</type>
-        <format/>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>ERA.OUTGOING_STUDENTS_OTHER.code</name>
-        <type>String</type>
-        <format/>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>ERA.OUTGOING_STUDENTS_ISCED8.code</name>
-        <type>String</type>
-        <format/>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>ERA.OUTGOING_STUDENTS_ISCED7.code</name>
-        <type>String</type>
-        <format/>
-        <currency>$</currency>
-        <decimal>.</decimal>
-        <group>,</group>
-        <length>1</length>
-        <precision>-1</precision>
-        <trim_type>none</trim_type>
-      </field>
-      <field>
-        <name>ERA.OUTGOING_STAFF.code</name>
+        <name>Flag and Footnotes</name>
         <type>String</type>
         <format/>
         <currency>$</currency>
@@ -943,8 +710,33 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>128</xloc>
-      <yloc>144</yloc>
+      <xloc>144</xloc>
+      <yloc>64</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Dummy (do nothing)</name>
+    <type>Dummy</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1168</xloc>
+      <yloc>336</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -978,14 +770,14 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>480</xloc>
-      <yloc>64</yloc>
+      <xloc>512</xloc>
+      <yloc>320</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step>
-    <name>Success/Fail</name>
-    <type>Dummy</type>
+    <name>Group by</name>
+    <type>GroupBy</type>
     <description/>
     <distribute>Y</distribute>
     <custom_distribution/>
@@ -994,6 +786,51 @@
       <method>none</method>
       <schema_name/>
     </partitioning>
+    <all_rows>Y</all_rows>
+    <ignore_aggregate>N</ignore_aggregate>
+    <field_ignore/>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>grp</prefix>
+    <add_linenr>N</add_linenr>
+    <linenr_fieldname/>
+    <give_back_row>N</give_back_row>
+    <group>
+      <field>
+        <name>TIME</name>
+      </field>
+      <field>
+        <name>GEO</name>
+      </field>
+      <field>
+        <name>GEO_LABEL</name>
+      </field>
+      <field>
+        <name>SEX</name>
+      </field>
+      <field>
+        <name>UNIT</name>
+      </field>
+      <field>
+        <name>UNIT_LABEL</name>
+      </field>
+      <field>
+        <name>Flag and Footnotes</name>
+      </field>
+    </group>
+    <fields>
+      <field>
+        <aggregate>15-64 yr population</aggregate>
+        <subject>15-64 yr population Denorm</subject>
+        <type>FIRST</type>
+        <valuefield/>
+      </field>
+      <field>
+        <aggregate>Total population</aggregate>
+        <subject>Total population Denorm</subject>
+        <type>FIRST</type>
+        <valuefield/>
+      </field>
+    </fields>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -1003,8 +840,143 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>960</xloc>
-      <yloc>144</yloc>
+      <xloc>128</xloc>
+      <yloc>448</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Row denormaliser</name>
+    <type>Denormaliser</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <key_field>AGE_LABEL</key_field>
+    <group>
+      <field>
+        <name>TIME</name>
+      </field>
+      <field>
+        <name>GEO</name>
+      </field>
+      <field>
+        <name>GEO_LABEL</name>
+      </field>
+      <field>
+        <name>SEX</name>
+      </field>
+      <field>
+        <name>AGE_LABEL</name>
+      </field>
+      <field>
+        <name>UNIT</name>
+      </field>
+      <field>
+        <name>UNIT_LABEL</name>
+      </field>
+      <field>
+        <name>Value</name>
+      </field>
+      <field>
+        <name>Flag and Footnotes</name>
+      </field>
+    </group>
+    <fields>
+      <field>
+        <field_name>Value</field_name>
+        <key_value>From 15 to 64 years</key_value>
+        <target_name>15-64 yr population Denorm</target_name>
+        <target_type>Number</target_type>
+        <target_format/>
+        <target_length>-1</target_length>
+        <target_precision>-1</target_precision>
+        <target_decimal_symbol/>
+        <target_grouping_symbol/>
+        <target_currency_symbol/>
+        <target_null_string/>
+        <target_aggregation_type>-</target_aggregation_type>
+      </field>
+      <field>
+        <field_name>Value</field_name>
+        <key_value>Total</key_value>
+        <target_name>Total population Denorm</target_name>
+        <target_type>Number</target_type>
+        <target_format/>
+        <target_length>-1</target_length>
+        <target_precision>-1</target_precision>
+        <target_decimal_symbol/>
+        <target_grouping_symbol/>
+        <target_currency_symbol/>
+        <target_null_string/>
+        <target_aggregation_type>-</target_aggregation_type>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>144</xloc>
+      <yloc>288</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Sort rows</name>
+    <type>SortRows</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <directory>%%java.io.tmpdir%%</directory>
+    <prefix>out</prefix>
+    <sort_size>1000000</sort_size>
+    <free_memory/>
+    <compress>N</compress>
+    <compress_variable/>
+    <unique_rows>N</unique_rows>
+    <fields>
+      <field>
+        <name>GEO</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+      <field>
+        <name>TIME</name>
+        <ascending>Y</ascending>
+        <case_sensitive>N</case_sensitive>
+        <collator_enabled>N</collator_enabled>
+        <collator_strength>0</collator_strength>
+        <presorted>N</presorted>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>144</xloc>
+      <yloc>176</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1021,11 +993,11 @@
     </partitioning>
     <connection>dwitvipusql16</connection>
     <schema>sa</schema>
-    <table>sa_eter_erasmus</table>
+    <table>sa_eter_eurostat</table>
     <commit>1000</commit>
     <truncate>Y</truncate>
     <ignore_errors>N</ignore_errors>
-    <use_batch>Y</use_batch>
+    <use_batch>N</use_batch>
     <specify_fields>Y</specify_fields>
     <partitioning_enabled>N</partitioning_enabled>
     <partitioning_field/>
@@ -1038,132 +1010,40 @@
     <return_field/>
     <fields>
       <field>
-        <column_name>_id</column_name>
-        <stream_name>_id</stream_name>
+        <column_name>TIME</column_name>
+        <stream_name>TIME</stream_name>
       </field>
       <field>
-        <column_name>ERA.INCOMING_STUDENTS_ISCED6.v</column_name>
-        <stream_name>ERA.INCOMING_STUDENTS_ISCED6.v</stream_name>
+        <column_name>GEO</column_name>
+        <stream_name>GEO</stream_name>
       </field>
       <field>
-        <column_name>ERA.OUTGOING_STUDENTS_ISCED5.v</column_name>
-        <stream_name>ERA.OUTGOING_STUDENTS_ISCED5.v</stream_name>
+        <column_name>GEO_LABEL</column_name>
+        <stream_name>GEO_LABEL</stream_name>
       </field>
       <field>
-        <column_name>ERA.OUTGOING_STUDENTS_TOT.v</column_name>
-        <stream_name>ERA.OUTGOING_STUDENTS_TOT.v</stream_name>
+        <column_name>SEX</column_name>
+        <stream_name>SEX</stream_name>
       </field>
       <field>
-        <column_name>ERA.INCOMING_STUDENTS_ISCED7.v</column_name>
-        <stream_name>ERA.INCOMING_STUDENTS_ISCED7.v</stream_name>
+        <column_name>UNIT</column_name>
+        <stream_name>UNIT</stream_name>
       </field>
       <field>
-        <column_name>ERA.OUTGOING_STUDENTS_ISCED6.v</column_name>
-        <stream_name>ERA.OUTGOING_STUDENTS_ISCED6.v</stream_name>
+        <column_name>UNIT_LABEL</column_name>
+        <stream_name>UNIT_LABEL</stream_name>
       </field>
       <field>
-        <column_name>ERA.INCOMING_STAFF.v</column_name>
-        <stream_name>ERA.INCOMING_STAFF.v</stream_name>
+        <column_name>Flag and Footnotes</column_name>
+        <stream_name>Flag and Footnotes</stream_name>
       </field>
       <field>
-        <column_name>ERA.INCOMING_STUDENTS_ISCED5.v</column_name>
-        <stream_name>ERA.INCOMING_STUDENTS_ISCED5.v</stream_name>
+        <column_name>15-64 yr population</column_name>
+        <stream_name>15-64 yr population</stream_name>
       </field>
       <field>
-        <column_name>ERA.CODE.v</column_name>
-        <stream_name>ERA.CODE.v</stream_name>
-      </field>
-      <field>
-        <column_name>ERA.INCOMING_STUDENTS_TOT.v</column_name>
-        <stream_name>ERA.INCOMING_STUDENTS_TOT.v</stream_name>
-      </field>
-      <field>
-        <column_name>ERA.INCOMING_STUDENTS_OTHER.v</column_name>
-        <stream_name>ERA.INCOMING_STUDENTS_OTHER.v</stream_name>
-      </field>
-      <field>
-        <column_name>ERA.INCOMING_STUDENTS_ISCED8.v</column_name>
-        <stream_name>ERA.INCOMING_STUDENTS_ISCED8.v</stream_name>
-      </field>
-      <field>
-        <column_name>ERA.OUTGOING_STUDENTS_OTHER.v</column_name>
-        <stream_name>ERA.OUTGOING_STUDENTS_OTHER.v</stream_name>
-      </field>
-      <field>
-        <column_name>ERA.OUTGOING_STUDENTS_ISCED8.v</column_name>
-        <stream_name>ERA.OUTGOING_STUDENTS_ISCED8.v</stream_name>
-      </field>
-      <field>
-        <column_name>ERA.OUTGOING_STUDENTS_ISCED7.v</column_name>
-        <stream_name>ERA.OUTGOING_STUDENTS_ISCED7.v</stream_name>
-      </field>
-      <field>
-        <column_name>ERA.NOTES.v</column_name>
-        <stream_name>ERA.NOTES.v</stream_name>
-      </field>
-      <field>
-        <column_name>ERA.FLAG.v</column_name>
-        <stream_name>ERA.FLAG.v</stream_name>
-      </field>
-      <field>
-        <column_name>ERA.OUTGOING_STAFF.v</column_name>
-        <stream_name>ERA.OUTGOING_STAFF.v</stream_name>
-      </field>
-      <field>
-        <column_name>ERA.INCOMING_STUDENTS_ISCED6.code</column_name>
-        <stream_name>ERA.INCOMING_STUDENTS_ISCED6.code</stream_name>
-      </field>
-      <field>
-        <column_name>ERA.OUTGOING_STUDENTS_ISCED5.code</column_name>
-        <stream_name>ERA.OUTGOING_STUDENTS_ISCED5.code</stream_name>
-      </field>
-      <field>
-        <column_name>ERA.OUTGOING_STUDENTS_TOT.code</column_name>
-        <stream_name>ERA.OUTGOING_STUDENTS_TOT.code</stream_name>
-      </field>
-      <field>
-        <column_name>ERA.INCOMING_STUDENTS_ISCED7.code</column_name>
-        <stream_name>ERA.INCOMING_STUDENTS_ISCED7.code</stream_name>
-      </field>
-      <field>
-        <column_name>ERA.OUTGOING_STUDENTS_ISCED6.code</column_name>
-        <stream_name>ERA.OUTGOING_STUDENTS_ISCED6.code</stream_name>
-      </field>
-      <field>
-        <column_name>ERA.INCOMING_STAFF.code</column_name>
-        <stream_name>ERA.INCOMING_STAFF.code</stream_name>
-      </field>
-      <field>
-        <column_name>ERA.INCOMING_STUDENTS_ISCED5.code</column_name>
-        <stream_name>ERA.INCOMING_STUDENTS_ISCED5.code</stream_name>
-      </field>
-      <field>
-        <column_name>ERA.INCOMING_STUDENTS_TOT.code</column_name>
-        <stream_name>ERA.INCOMING_STUDENTS_TOT.code</stream_name>
-      </field>
-      <field>
-        <column_name>ERA.INCOMING_STUDENTS_OTHER.code</column_name>
-        <stream_name>ERA.INCOMING_STUDENTS_OTHER.code</stream_name>
-      </field>
-      <field>
-        <column_name>ERA.INCOMING_STUDENTS_ISCED8.code</column_name>
-        <stream_name>ERA.INCOMING_STUDENTS_ISCED8.code</stream_name>
-      </field>
-      <field>
-        <column_name>ERA.OUTGOING_STUDENTS_OTHER.code</column_name>
-        <stream_name>ERA.OUTGOING_STUDENTS_OTHER.code</stream_name>
-      </field>
-      <field>
-        <column_name>ERA.OUTGOING_STUDENTS_ISCED8.code</column_name>
-        <stream_name>ERA.OUTGOING_STUDENTS_ISCED8.code</stream_name>
-      </field>
-      <field>
-        <column_name>ERA.OUTGOING_STUDENTS_ISCED7.code</column_name>
-        <stream_name>ERA.OUTGOING_STUDENTS_ISCED7.code</stream_name>
-      </field>
-      <field>
-        <column_name>ERA.OUTGOING_STAFF.code</column_name>
-        <stream_name>ERA.OUTGOING_STAFF.code</stream_name>
+        <column_name>Total population</column_name>
+        <stream_name>Total population</stream_name>
       </field>
       <field>
         <column_name>Source</column_name>
@@ -1187,20 +1067,87 @@
       </output>
     </remotesteps>
     <GUI>
-      <xloc>672</xloc>
-      <yloc>142</yloc>
+      <xloc>512</xloc>
+      <yloc>224</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Unique rows</name>
+    <type>Unique</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <count_rows>N</count_rows>
+    <count_field/>
+    <reject_duplicate_row>N</reject_duplicate_row>
+    <error_description/>
+    <fields>
+      <field>
+        <name>TIME</name>
+        <case_insensitive>N</case_insensitive>
+      </field>
+      <field>
+        <name>GEO</name>
+        <case_insensitive>N</case_insensitive>
+      </field>
+      <field>
+        <name>GEO_LABEL</name>
+        <case_insensitive>N</case_insensitive>
+      </field>
+      <field>
+        <name>SEX</name>
+        <case_insensitive>N</case_insensitive>
+      </field>
+      <field>
+        <name>UNIT</name>
+        <case_insensitive>N</case_insensitive>
+      </field>
+      <field>
+        <name>UNIT_LABEL</name>
+        <case_insensitive>N</case_insensitive>
+      </field>
+      <field>
+        <name>Flag and Footnotes</name>
+        <case_insensitive>N</case_insensitive>
+      </field>
+      <field>
+        <name>15-64 yr population</name>
+        <case_insensitive>N</case_insensitive>
+      </field>
+      <field>
+        <name>Total population</name>
+        <case_insensitive>N</case_insensitive>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>176</xloc>
+      <yloc>608</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
   <step_error_handling>
     <error>
       <source_step>Table output</source_step>
-      <target_step>Success/Fail</target_step>
+      <target_step>Dummy (do nothing)</target_step>
       <is_enabled>Y</is_enabled>
-      <nr_valuename/>
-      <descriptions_valuename/>
-      <fields_valuename/>
-      <codes_valuename/>
+      <nr_valuename>err.nrfield</nr_valuename>
+      <descriptions_valuename>err_description</descriptions_valuename>
+      <fields_valuename>err_fieldname</fields_valuename>
+      <codes_valuename>err_code</codes_valuename>
       <max_errors/>
       <max_pct_errors/>
       <min_pct_rows/>

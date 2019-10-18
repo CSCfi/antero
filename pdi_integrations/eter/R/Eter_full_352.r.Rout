@@ -1,0 +1,1212 @@
+
+R version 3.5.1 (2018-07-02) -- "Feather Spray"
+Copyright (C) 2018 The R Foundation for Statistical Computing
+Platform: x86_64-w64-mingw32/x64 (64-bit)
+
+R is free software and comes with ABSOLUTELY NO WARRANTY.
+You are welcome to redistribute it under certain conditions.
+Type 'license()' or 'licence()' for distribution details.
+
+R is a collaborative project with many contributors.
+Type 'contributors()' for more information and
+'citation()' on how to cite R or R packages in publications.
+
+Type 'demo()' for some demos, 'help()' for on-line help, or
+'help.start()' for an HTML browser interface to help.
+Type 'q()' to quit R.
+
+[Previously saved workspace restored]
+
+> 
+> 
+> Loopin_alku <- Sys.time() #Tallennetaan aloitusaika
+> 
+> #---------------------------#
+> 
+> #        load packages      #
+> 
+> #---------------------------#
+> 
+> library(httr)
+Warning message:
+package 'httr' was built under R version 3.5.3 
+> 
+> library(jsonlite)
+Warning message:
+package 'jsonlite' was built under R version 3.5.3 
+> 
+> library(tidyverse)
+-- Attaching packages --------------------------------------- tidyverse 1.2.1 --
+v ggplot2 3.2.0     v purrr   0.3.2
+v tibble  2.1.3     v dplyr   0.8.3
+v tidyr   0.8.3     v stringr 1.4.0
+v readr   1.3.1     v forcats 0.4.0
+-- Conflicts ------------------------------------------ tidyverse_conflicts() --
+x dplyr::filter()  masks stats::filter()
+x purrr::flatten() masks jsonlite::flatten()
+x dplyr::lag()     masks stats::lag()
+Warning messages:
+1: package 'tidyverse' was built under R version 3.5.3 
+2: package 'ggplot2' was built under R version 3.5.3 
+3: package 'tibble' was built under R version 3.5.3 
+4: package 'tidyr' was built under R version 3.5.3 
+5: package 'readr' was built under R version 3.5.3 
+6: package 'purrr' was built under R version 3.5.3 
+7: package 'dplyr' was built under R version 3.5.3 
+8: package 'stringr' was built under R version 3.5.3 
+9: package 'forcats' was built under R version 3.5.3 
+> library(reshape)
+
+Attaching package: 'reshape'
+
+The following object is masked from 'package:dplyr':
+
+    rename
+
+The following objects are masked from 'package:tidyr':
+
+    expand, smiths
+
+Warning message:
+package 'reshape' was built under R version 3.5.3 
+> library(plyr)
+------------------------------------------------------------------------------
+You have loaded plyr after dplyr - this is likely to cause problems.
+If you need functions from both plyr and dplyr, please load plyr first, then dplyr:
+library(plyr); library(dplyr)
+------------------------------------------------------------------------------
+
+Attaching package: 'plyr'
+
+The following objects are masked from 'package:reshape':
+
+    rename, round_any
+
+The following objects are masked from 'package:dplyr':
+
+    arrange, count, desc, failwith, id, mutate, rename, summarise,
+    summarize
+
+The following object is masked from 'package:purrr':
+
+    compact
+
+Warning message:
+package 'plyr' was built under R version 3.5.3 
+> library(purrr)
+> library(dplyr)
+> library(tidyr)
+> 
+> #---------------------------#
+> 
+> #            Login          #
+> 
+> #---------------------------#
+> 
+> 
+> 
+> cred <- '{ 
++ 
++ "email": "kristian.raitio@csc.fi",
++ 
++ "password": "eterkokeilu"
++ 
++ }'
+> 
+> 
+> 
+> url_login <- "https://www.eter-project.com/api/3.0/users/login"
+> 
+> result_login <- POST(url_login, body = cred, content_type_json())
+> 
+> 
+> 
+> # translate Unicode into text
+> 
+> login_raw <- rawToChar(result_login$content)
+> 
+> 
+> 
+> # transform json into workable format for R
+> 
+> mylogin <- fromJSON(login_raw, flatten = TRUE)
+> 
+> mytoken <- mylogin$token
+> 
+> 
+> 
+> #---------------------------#
+> 
+> ##  get all data at once  ##
+> 
+> url <- "https://www.eter-project.com/api/3.0/HEIs/full"
+> 
+> 
+> 
+> # request for all data
+> 
+> raw_result <- GET(url, add_headers(Authorization = paste("Bearer ", mytoken)))
+> 
+> 
+> 
+> #---------------------------#
+> 
+> #       data processing     #
+> 
+> #---------------------------#
+> 
+> # check the status code ("200" for all HEIs and "201" for POST request should be the output)
+> 
+> raw_result$status_code
+[1] 200
+> 
+> # translate unicode into text
+> 
+> this.raw.content <- rawToChar(raw_result$content)
+> 
+> # encoding to UTF-8
+> 
+> Encoding(this.raw.content) <- "UTF-8"
+> 
+> # transform JSON into workable format for R
+> 
+> mydata <- fromJSON(this.raw.content, flatten = TRUE)
+> 
+> 
+> 
+> #---------------------------#
+> 
+> #       check data          #
+> 
+> #---------------------------#
+> 
+> 
+> 
+> 
+> # check if mydata is a dataframe
+> 
+> class(mydata)
+[1] "data.frame"
+> 
+> # check column names
+> 
+> colnames(mydata)
+   [1] "_id"                               "createdAt"                        
+   [3] "updatedAt"                         "BAS.ETERIDYEAR.v"                 
+   [5] "BAS.ETERID.v"                      "BAS.NATID.v"                      
+   [7] "BAS.INSTNAME.v"                    "BAS.INSTNAMEENGL.v"               
+   [9] "BAS.REFYEAR.v"                     "BAS.ACRONYM.v"                    
+  [11] "BAS.COUNTRY.v"                     "BAS.LEGALSTAT.v"                  
+  [13] "BAS.LEGALSTAT.code"                "BAS.NOTESINSTNAME.v"              
+  [15] "BAS.INSTCAT.v"                     "BAS.INSTCATENGL.v"                
+  [17] "BAS.INSTCATSTAND.v"                "BAS.INSTCATSTAND.code"            
+  [19] "BAS.NOTESINSTCAT.v"                "BAS.FORCAMP.v"                    
+  [21] "BAS.FORCAMP.code"                  "BAS.NAMEFORCAMP.v"                
+  [23] "BAS.FORCAMPCOUNTRY.v"              "BAS.NOTESFORCAMP.v"               
+  [25] "BAS.FOUNDYEAR.v"                   "BAS.FOUNDYEAR.code"               
+  [27] "BAS.NOTESFOUNDYEAR.v"              "BAS.LEGALYEAR.v"                  
+  [29] "BAS.LEGALYEAR.code"                "BAS.NOTESLEGALYEAR.v"             
+  [31] "BAS.ANCESTYEAR.code"               "BAS.ANCESTYEAR.v"                 
+  [33] "BAS.NOTESANCESTYEAR.v"             "BAS.UNIHOSP.v"                    
+  [35] "BAS.UNIHOSP.code"                  "BAS.UNIHOSPID.v"                  
+  [37] "BAS.UNIHOSPNAME.v"                 "BAS.NOTESUNIHOSP.v"               
+  [39] "BAS.WEBSITE.v"                     "BAS.NOTESWEBSITE.v"               
+  [41] "GEO.NUTS2.v"                       "GEO.NUTS3.v"                      
+  [43] "GEO.NOTESREG.v"                    "GEO.CITY.v"                       
+  [45] "GEO.COORDLAT.v"                    "GEO.COORDLAT.code"                
+  [47] "GEO.COORDLON.v"                    "GEO.COORDLON.code"                
+  [49] "GEO.POSTCODE.v"                    "GEO.NOTESCITYPOSTCODE.v"          
+  [51] "GEO.MULTISITE.v"                   "GEO.NUTS3MULTISITE.v"             
+  [53] "GEO.MULTISITECITY.v"               "GEO.MULTISITELAT.code"            
+  [55] "GEO.MULTISITELAT.v"                "GEO.MULTISITELON.code"            
+  [57] "GEO.MULTISITELON.v"                "GEO.MULTISITEPOSTCODE.v"          
+  [59] "GEO.NOTESMULTISITE.v"              "GEO.FLAG.v"                       
+  [61] "EXP.CURRPERSON.NC.code"            "EXP.CURRPERSON.NC.v"              
+  [63] "EXP.CURRPERSON.NC.r"               "EXP.CURRPERSON.EURO.code"         
+  [65] "EXP.CURRPERSON.EURO.v"             "EXP.CURRPERSON.EURO.r"            
+  [67] "EXP.CURRPERSON.PPP.code"           "EXP.CURRPERSON.PPP.v"             
+  [69] "EXP.CURRPERSON.PPP.r"              "EXP.FLAGCURRPERSON.v"             
+  [71] "EXP.FLAGCURRPERSON.r"              "EXP.CURRNONPERSON.NC.code"        
+  [73] "EXP.CURRNONPERSON.NC.v"            "EXP.CURRNONPERSON.NC.r"           
+  [75] "EXP.CURRNONPERSON.EURO.code"       "EXP.CURRNONPERSON.EURO.v"         
+  [77] "EXP.CURRNONPERSON.EURO.r"          "EXP.CURRNONPERSON.PPP.code"       
+  [79] "EXP.CURRNONPERSON.PPP.v"           "EXP.CURRNONPERSON.PPP.r"          
+  [81] "EXP.FLAGCURRNONPERSON.v"           "EXP.FLAGCURRNONPERSON.r"          
+  [83] "EXP.CURRUNCL.NC.code"              "EXP.CURRUNCL.NC.v"                
+  [85] "EXP.CURRUNCL.NC.r"                 "EXP.CURRUNCL.EURO.code"           
+  [87] "EXP.CURRUNCL.EURO.v"               "EXP.CURRUNCL.EURO.r"              
+  [89] "EXP.CURRUNCL.PPP.code"             "EXP.CURRUNCL.PPP.v"               
+  [91] "EXP.CURRUNCL.PPP.r"                "EXP.FLAGCURRUNCL.v"               
+  [93] "EXP.FLAGCURRUNCL.r"                "EXP.CURRTOTAL.NC.code"            
+  [95] "EXP.CURRTOTAL.NC.v"                "EXP.CURRTOTAL.NC.r"               
+  [97] "EXP.CURRTOTAL.EURO.code"           "EXP.CURRTOTAL.EURO.v"             
+  [99] "EXP.CURRTOTAL.EURO.r"              "EXP.CURRTOTAL.PPP.code"           
+ [101] "EXP.CURRTOTAL.PPP.v"               "EXP.CURRTOTAL.PPP.r"              
+ [103] "EXP.FLAGCURRTOTAL.v"               "EXP.FLAGCURRTOTAL.r"              
+ [105] "EXP.CAPITAL.NC.code"               "EXP.CAPITAL.NC.v"                 
+ [107] "EXP.CAPITAL.NC.r"                  "EXP.CAPITAL.EURO.code"            
+ [109] "EXP.CAPITAL.EURO.v"                "EXP.CAPITAL.EURO.r"               
+ [111] "EXP.CAPITAL.PPP.code"              "EXP.CAPITAL.PPP.v"                
+ [113] "EXP.CAPITAL.PPP.r"                 "EXP.FLAGCAPITAL.v"                
+ [115] "EXP.FLAGCAPITAL.r"                 "EXP.ACCSYSTEM.code"               
+ [117] "EXP.ACCSYSTEM.v"                   "EXP.ACCSYSTEM.r"                  
+ [119] "EXP.NOTES.v"                       "REV.COREBUDGETPUBLIC.NC.code"     
+ [121] "REV.COREBUDGETPUBLIC.NC.v"         "REV.COREBUDGETPUBLIC.NC.r"        
+ [123] "REV.COREBUDGETPUBLIC.EURO.code"    "REV.COREBUDGETPUBLIC.EURO.v"      
+ [125] "REV.COREBUDGETPUBLIC.EURO.r"       "REV.COREBUDGETPUBLIC.PPP.code"    
+ [127] "REV.COREBUDGETPUBLIC.PPP.v"        "REV.COREBUDGETPUBLIC.PPP.r"       
+ [129] "REV.FLAGCOREBUDGETPUBLIC.v"        "REV.FLAGCOREBUDGETPUBLIC.r"       
+ [131] "REV.COREBUDGETOTHER.NC.code"       "REV.COREBUDGETOTHER.NC.v"         
+ [133] "REV.COREBUDGETOTHER.NC.r"          "REV.COREBUDGETOTHER.EURO.code"    
+ [135] "REV.COREBUDGETOTHER.EURO.v"        "REV.COREBUDGETOTHER.EURO.r"       
+ [137] "REV.COREBUDGETOTHER.PPP.code"      "REV.COREBUDGETOTHER.PPP.v"        
+ [139] "REV.COREBUDGETOTHER.PPP.r"         "REV.FLAGCOREBUDGETOTHER.v"        
+ [141] "REV.FLAGCOREBUDGETOTHER.r"         "REV.CORETOTAL.NC.code"            
+ [143] "REV.CORETOTAL.NC.v"                "REV.CORETOTAL.NC.r"               
+ [145] "REV.CORETOTAL.PPP.code"            "REV.CORETOTAL.PPP.v"              
+ [147] "REV.CORETOTAL.PPP.r"               "REV.CORETOTAL.EURO.code"          
+ [149] "REV.CORETOTAL.EURO.v"              "REV.CORETOTAL.EURO.r"             
+ [151] "REV.FLAGCORETOTAL.v"               "REV.FLAGCORETOTAL.r"              
+ [153] "REV.FLAGTHIRDPARTYPUBLIC.v"        "REV.FLAGTHIRDPARTYPUBLIC.r"       
+ [155] "REV.THIRDPARTYPUBLIC.NC.code"      "REV.THIRDPARTYPUBLIC.NC.v"        
+ [157] "REV.THIRDPARTYPUBLIC.NC.r"         "REV.THIRDPARTYPUBLIC.EURO.code"   
+ [159] "REV.THIRDPARTYPUBLIC.EURO.v"       "REV.THIRDPARTYPUBLIC.EURO.r"      
+ [161] "REV.THIRDPARTYPUBLIC.PPP.code"     "REV.THIRDPARTYPUBLIC.PPP.v"       
+ [163] "REV.THIRDPARTYPUBLIC.PPP.r"        "REV.THIRDPARTYPRIVATE.NC.code"    
+ [165] "REV.THIRDPARTYPRIVATE.NC.v"        "REV.THIRDPARTYPRIVATE.NC.r"       
+ [167] "REV.THIRDPARTYPRIVATE.EURO.code"   "REV.THIRDPARTYPRIVATE.EURO.v"     
+ [169] "REV.THIRDPARTYPRIVATE.EURO.r"      "REV.THIRDPARTYPRIVATE.PPP.code"   
+ [171] "REV.THIRDPARTYPRIVATE.PPP.v"       "REV.THIRDPARTYPRIVATE.PPP.r"      
+ [173] "REV.THIRDPARTYABROAD.NC.code"      "REV.THIRDPARTYABROAD.NC.v"        
+ [175] "REV.THIRDPARTYABROAD.NC.r"         "REV.THIRDPARTYABROAD.EURO.code"   
+ [177] "REV.THIRDPARTYABROAD.EURO.v"       "REV.THIRDPARTYABROAD.EURO.r"      
+ [179] "REV.THIRDPARTYABROAD.PPP.code"     "REV.THIRDPARTYABROAD.PPP.v"       
+ [181] "REV.THIRDPARTYABROAD.PPP.r"        "REV.THIRDPARTYUND.EURO.code"      
+ [183] "REV.THIRDPARTYUND.EURO.v"          "REV.THIRDPARTYUND.EURO.r"         
+ [185] "REV.THIRDPARTYUND.PPP.code"        "REV.THIRDPARTYUND.PPP.v"          
+ [187] "REV.THIRDPARTYUND.PPP.r"           "REV.THIRDPARTYUND.NC.code"        
+ [189] "REV.THIRDPARTYUND.NC.v"            "REV.THIRDPARTYUND.NC.r"           
+ [191] "REV.THIRDPARTYTOTAL.PPP.code"      "REV.THIRDPARTYTOTAL.PPP.v"        
+ [193] "REV.THIRDPARTYTOTAL.PPP.r"         "REV.THIRDPARTYTOTAL.NC.code"      
+ [195] "REV.THIRDPARTYTOTAL.NC.v"          "REV.THIRDPARTYTOTAL.NC.r"         
+ [197] "REV.THIRDPARTYTOTAL.EURO.code"     "REV.THIRDPARTYTOTAL.EURO.v"       
+ [199] "REV.THIRDPARTYTOTAL.EURO.r"        "REV.STUDFEES.PPP.code"            
+ [201] "REV.STUDFEES.PPP.v"                "REV.STUDFEES.PPP.r"               
+ [203] "REV.STUDFEES.NC.code"              "REV.STUDFEES.NC.v"                
+ [205] "REV.STUDFEES.NC.r"                 "REV.STUDFEES.EURO.code"           
+ [207] "REV.STUDFEES.EURO.v"               "REV.STUDFEES.EURO.r"              
+ [209] "REV.FLAGUNCL.v"                    "REV.FLAGUNCL.r"                   
+ [211] "REV.FLAGTHIRDPARTYTOTAL.v"         "REV.FLAGTHIRDPARTYTOTAL.r"        
+ [213] "REV.FLAGTHIRDPARTYABROAD.v"        "REV.FLAGTHIRDPARTYABROAD.r"       
+ [215] "REV.NONRECURR.NC.code"             "REV.NONRECURR.NC.v"               
+ [217] "REV.NONRECURR.NC.r"                "REV.NONRECURR.EURO.code"          
+ [219] "REV.NONRECURR.EURO.v"              "REV.NONRECURR.EURO.r"             
+ [221] "REV.NONRECURR.PPP.code"            "REV.NONRECURR.PPP.v"              
+ [223] "REV.NONRECURR.PPP.r"               "REV.FLAGSTUDFEES.v"               
+ [225] "REV.FLAGSTUDFEES.r"                "REV.CURRTOTAL.NC.code"            
+ [227] "REV.CURRTOTAL.NC.v"                "REV.CURRTOTAL.NC.r"               
+ [229] "REV.CURRTOTAL.PPP.code"            "REV.CURRTOTAL.PPP.v"              
+ [231] "REV.CURRTOTAL.PPP.r"               "REV.CURRTOTAL.EURO.code"          
+ [233] "REV.CURRTOTAL.EURO.v"              "REV.CURRTOTAL.EURO.r"             
+ [235] "REV.FLAGTHIRDPARTYPRIVATE.v"       "REV.FLAGTHIRDPARTYPRIVATE.r"      
+ [237] "REV.UNCL.EURO.code"                "REV.UNCL.EURO.v"                  
+ [239] "REV.UNCL.EURO.r"                   "REV.UNCL.NC.code"                 
+ [241] "REV.UNCL.NC.v"                     "REV.UNCL.NC.r"                    
+ [243] "REV.UNCL.PPP.code"                 "REV.UNCL.PPP.v"                   
+ [245] "REV.UNCL.PPP.r"                    "REV.FLAGTHIRDPARTYUND.v"          
+ [247] "REV.FLAGTHIRDPARTYUND.r"           "REV.TUITFEES.code"                
+ [249] "REV.TUITFEES.v"                    "REV.TUITFEES.r"                   
+ [251] "REV.FLAGNONRECURR.v"               "REV.FLAGNONRECURR.r"              
+ [253] "REV.FLAGCURRTOTAL.v"               "REV.FLAGCURRTOTAL.r"              
+ [255] "REV.NOTES.v"                       "STA.ACAFTETOTAL.code"             
+ [257] "STA.ACAFTETOTAL.v"                 "STA.ACAFTETOTAL.r"                
+ [259] "STA.FLAGACAGENDER.v"               "STA.FLAGACAGENDER.r"              
+ [261] "STA.FLAGACAFTETOTAL.v"             "STA.FLAGACAFTETOTAL.r"            
+ [263] "STA.ACAHCNAT.code"                 "STA.ACAHCNAT.v"                   
+ [265] "STA.ACAHCNAT.r"                    "STA.ACAHCFOE00.code"              
+ [267] "STA.ACAHCFOE00.r"                  "STA.ACAHCFOE00.v"                 
+ [269] "STA.ACAHCFOE01.code"               "STA.ACAHCFOE01.r"                 
+ [271] "STA.ACAHCFOE01.v"                  "STA.ACAHCFOE05.code"              
+ [273] "STA.ACAHCFOE05.r"                  "STA.ACAHCFOE05.v"                 
+ [275] "STA.ACAHCFOE06.code"               "STA.ACAHCFOE06.r"                 
+ [277] "STA.ACAHCFOE06.v"                  "STA.ACAHCFOE10.code"              
+ [279] "STA.ACAHCFOE10.r"                  "STA.ACAHCFOE10.v"                 
+ [281] "STA.ACAHCWOMEN.code"               "STA.ACAHCWOMEN.v"                 
+ [283] "STA.ACAHCWOMEN.r"                  "STA.ACAHCCITUNCL.code"            
+ [285] "STA.ACAHCCITUNCL.v"                "STA.ACAHCCITUNCL.r"               
+ [287] "STA.ACAHCFOE03.code"               "STA.ACAHCFOE03.r"                 
+ [289] "STA.ACAHCFOE03.v"                  "STA.ACAHCMEN.code"                
+ [291] "STA.ACAHCMEN.v"                    "STA.ACAHCMEN.r"                   
+ [293] "STA.ACAHCFOE08.code"               "STA.ACAHCFOE08.r"                 
+ [295] "STA.ACAHCFOE08.v"                  "STA.ACAHCFOR.code"                
+ [297] "STA.ACAHCFOR.v"                    "STA.ACAHCFOR.r"                   
+ [299] "STA.ACAHCGENUNCL.code"             "STA.ACAHCGENUNCL.v"               
+ [301] "STA.ACAHCGENUNCL.r"                "STA.ACAHCFOE02.code"              
+ [303] "STA.ACAHCFOE02.r"                  "STA.ACAHCFOE02.v"                 
+ [305] "STA.FLAGACACITIZ.v"                "STA.FLAGACACITIZ.r"               
+ [307] "STA.ACAHCFOE07.code"               "STA.ACAHCFOE07.r"                 
+ [309] "STA.ACAHCFOE07.v"                  "STA.ACAHCFOE04.code"              
+ [311] "STA.ACAHCFOE04.r"                  "STA.ACAHCFOE04.v"                 
+ [313] "STA.ACAHCFOE09.code"               "STA.ACAHCFOE09.r"                 
+ [315] "STA.ACAHCFOE09.v"                  "STA.ACAHCFOEUNCL.code"            
+ [317] "STA.ACAHCFOEUNCL.r"                "STA.ACAHCFOEUNCL.v"               
+ [319] "STA.FLAGACAFOE.v"                  "STA.FLAGACAFOE.r"                 
+ [321] "STA.TOTACAHC.code"                 "STA.TOTACAHC.v"                   
+ [323] "STA.TOTACAHC.r"                    "STA.PROFMEN.code"                 
+ [325] "STA.PROFMEN.v"                     "STA.PROFMEN.r"                    
+ [327] "STA.INCLPHDSTUD.code"              "STA.INCLPHDSTUD.v"                
+ [329] "STA.INCLPHDSTUD.r"                 "STA.PROFWOMEN.code"               
+ [331] "STA.PROFWOMEN.v"                   "STA.PROFWOMEN.r"                  
+ [333] "STA.PROFTOTAL.code"                "STA.PROFTOTAL.v"                  
+ [335] "STA.PROFTOTAL.r"                   "STA.NOTESACA.v"                   
+ [337] "STA.PROFGENUNCL.code"              "STA.PROFGENUNCL.v"                
+ [339] "STA.PROFGENUNCL.r"                 "STA.FLAGTOTACAHC.v"               
+ [341] "STA.FLAGTOTACAHC.r"                "STA.NONACAFTE.code"               
+ [343] "STA.NONACAFTE.v"                   "STA.NONACAFTE.r"                  
+ [345] "STA.FLAGPROF.v"                    "STA.FLAGPROF.r"                   
+ [347] "STA.FLAGNONACAFTE.v"               "STA.FLAGNONACAFTE.r"              
+ [349] "STA.NONACAHC.code"                 "STA.NONACAHC.v"                   
+ [351] "STA.NONACAHC.r"                    "STA.FLAGNONACAHC.v"               
+ [353] "STA.FLAGNONACAHC.r"                "STA.NOTESNONACA.v"                
+ [355] "STA.TOTALFTE.code"                 "STA.TOTALFTE.v"                   
+ [357] "STA.TOTALFTE.r"                    "STA.FLAGTOTALFTE.v"               
+ [359] "STA.FLAGTOTALFTE.r"                "STA.TOTALHC.code"                 
+ [361] "STA.TOTALHC.v"                     "STA.TOTALHC.r"                    
+ [363] "STA.FLAGTOTALHC.v"                 "STA.FLAGTOTALHC.r"                
+ [365] "STA.NOTESTOTAL.v"                  "STUD.LOWDEG.v"                    
+ [367] "STUD.LOWDEG.code"                  "STUD.LOWDEG.r"                    
+ [369] "STUD.HIGHDEG.v"                    "STUD.HIGHDEG.code"                
+ [371] "STUD.HIGHDEG.r"                    "STUD.ISCED5MEN.code"              
+ [373] "STUD.ISCED5MEN.v"                  "STUD.ISCED5MEN.r"                 
+ [375] "STUD.ISCED5WOMEN.code"             "STUD.ISCED5WOMEN.v"               
+ [377] "STUD.ISCED5WOMEN.r"                "STUD.ISCED5GENUNCL.code"          
+ [379] "STUD.ISCED5GENUNCL.v"              "STUD.ISCED5GENUNCL.r"             
+ [381] "STUD.FLAGISCED5GEN.v"              "STUD.FLAGISCED5GEN.r"             
+ [383] "STUD.ISCED5NAT.code"               "STUD.ISCED5NAT.v"                 
+ [385] "STUD.ISCED5NAT.r"                  "STUD.ISCED5FOR.code"              
+ [387] "STUD.ISCED5FOR.v"                  "STUD.ISCED5FOR.r"                 
+ [389] "STUD.ISCED5CITUNCL.code"           "STUD.ISCED5CITUNCL.v"             
+ [391] "STUD.ISCED5CITUNCL.r"              "STUD.FLAGISCED5CITIZ.v"           
+ [393] "STUD.FLAGISCED5CITIZ.r"            "STUD.ISCED5RES.code"              
+ [395] "STUD.ISCED5RES.v"                  "STUD.ISCED5RES.r"                 
+ [397] "STUD.ISCED5MOB.code"               "STUD.ISCED5MOB.v"                 
+ [399] "STUD.ISCED5MOB.r"                  "STUD.ISCED5MOBUNCL.code"          
+ [401] "STUD.ISCED5MOBUNCL.v"              "STUD.ISCED5MOBUNCL.r"             
+ [403] "STUD.FLAGISCED5MOB.v"              "STUD.FLAGISCED5MOB.r"             
+ [405] "STUD.ISCED5FOE00.code"             "STUD.ISCED5FOE00.v"               
+ [407] "STUD.ISCED5FOE00.r"                "STUD.ISCED5FOE01.code"            
+ [409] "STUD.ISCED5FOE01.v"                "STUD.ISCED5FOE01.r"               
+ [411] "STUD.ISCED5FOE02.code"             "STUD.ISCED5FOE02.v"               
+ [413] "STUD.ISCED5FOE02.r"                "STUD.ISCED5FOE03.code"            
+ [415] "STUD.ISCED5FOE03.v"                "STUD.ISCED5FOE03.r"               
+ [417] "STUD.ISCED5FOE04.code"             "STUD.ISCED5FOE04.v"               
+ [419] "STUD.ISCED5FOE04.r"                "STUD.ISCED5FOE05.code"            
+ [421] "STUD.ISCED5FOE05.v"                "STUD.ISCED5FOE05.r"               
+ [423] "STUD.ISCED5FOE06.code"             "STUD.ISCED5FOE06.v"               
+ [425] "STUD.ISCED5FOE06.r"                "STUD.ISCED5FOE09.code"            
+ [427] "STUD.ISCED5FOE09.v"                "STUD.ISCED5FOE09.r"               
+ [429] "STUD.ISCED5FOE10.code"             "STUD.ISCED5FOE10.v"               
+ [431] "STUD.ISCED5FOE10.r"                "STUD.FLAGISCED5TOTAL.v"           
+ [433] "STUD.FLAGISCED5TOTAL.r"            "STUD.ISCED5FOE07.code"            
+ [435] "STUD.ISCED5FOE07.v"                "STUD.ISCED5FOE07.r"               
+ [437] "STUD.NOTESISCED5.v"                "STUD.FLAGISCED6GEN.v"             
+ [439] "STUD.FLAGISCED6GEN.r"              "STUD.ISCED6NAT.code"              
+ [441] "STUD.ISCED6NAT.v"                  "STUD.ISCED6NAT.r"                 
+ [443] "STUD.ISCED5FOE08.code"             "STUD.ISCED5FOE08.v"               
+ [445] "STUD.ISCED5FOE08.r"                "STUD.ISCED6RES.code"              
+ [447] "STUD.ISCED6RES.v"                  "STUD.ISCED6RES.r"                 
+ [449] "STUD.ISCED6MOB.code"               "STUD.ISCED6MOB.v"                 
+ [451] "STUD.ISCED6MOB.r"                  "STUD.ISCED6FOE01.v"               
+ [453] "STUD.ISCED6FOE01.code"             "STUD.ISCED6FOE01.r"               
+ [455] "STUD.FLAGISCED5FOE.v"              "STUD.FLAGISCED5FOE.r"             
+ [457] "STUD.ISCED5FOEUNCL.code"           "STUD.ISCED5FOEUNCL.v"             
+ [459] "STUD.ISCED5FOEUNCL.r"              "STUD.ISCED5TOTAL.code"            
+ [461] "STUD.ISCED5TOTAL.v"                "STUD.ISCED5TOTAL.r"               
+ [463] "STUD.ISCED6FOE06.v"                "STUD.ISCED6FOE06.code"            
+ [465] "STUD.ISCED6FOE06.r"                "STUD.ISCED6FOE02.v"               
+ [467] "STUD.ISCED6FOE02.code"             "STUD.ISCED6FOE02.r"               
+ [469] "STUD.ISCED6WOMEN.v"                "STUD.ISCED6WOMEN.code"            
+ [471] "STUD.ISCED6WOMEN.r"                "STUD.ISCED6FOEUNCL.v"             
+ [473] "STUD.ISCED6FOEUNCL.code"           "STUD.ISCED6FOEUNCL.r"             
+ [475] "STUD.ISCED6FOE07.v"                "STUD.ISCED6FOE07.code"            
+ [477] "STUD.ISCED6FOE07.r"                "STUD.ISCED6MEN.v"                 
+ [479] "STUD.ISCED6MEN.code"               "STUD.ISCED6MEN.r"                 
+ [481] "STUD.ISCED7MEN.v"                  "STUD.ISCED7MEN.code"              
+ [483] "STUD.ISCED7MEN.r"                  "STUD.FLAGISCED6FOE.v"             
+ [485] "STUD.FLAGISCED6FOE.r"              "STUD.ISCED6CITUNCL.code"          
+ [487] "STUD.ISCED6CITUNCL.v"              "STUD.ISCED6CITUNCL.r"             
+ [489] "STUD.ISCED7FOR.code"               "STUD.ISCED7FOR.v"                 
+ [491] "STUD.ISCED7FOR.r"                  "STUD.ISCED7WOMEN.v"               
+ [493] "STUD.ISCED7WOMEN.code"             "STUD.ISCED7WOMEN.r"               
+ [495] "STUD.ISCED7MOBUNCL.code"           "STUD.ISCED7MOBUNCL.v"             
+ [497] "STUD.ISCED7MOBUNCL.r"              "STUD.ISCED6FOR.code"              
+ [499] "STUD.ISCED6FOR.v"                  "STUD.ISCED6FOR.r"                 
+ [501] "STUD.ISCED7CITUNCL.code"           "STUD.ISCED7CITUNCL.v"             
+ [503] "STUD.ISCED7CITUNCL.r"              "STUD.ISCED7FOE03.v"               
+ [505] "STUD.ISCED7FOE03.code"             "STUD.ISCED7FOE03.r"               
+ [507] "STUD.FLAGISCED6MOB.v"              "STUD.FLAGISCED6MOB.r"             
+ [509] "STUD.ISCED7FOE08.v"                "STUD.ISCED7FOE08.code"            
+ [511] "STUD.ISCED7FOE08.r"                "STUD.FLAGISCED7MOB.v"             
+ [513] "STUD.FLAGISCED7MOB.r"              "STUD.ISCED6MOBUNCL.code"          
+ [515] "STUD.ISCED6MOBUNCL.v"              "STUD.ISCED6MOBUNCL.r"             
+ [517] "STUD.ISCED7TOTAL.v"                "STUD.ISCED7TOTAL.code"            
+ [519] "STUD.ISCED7TOTAL.r"                "STUD.ISCED7FOE04.v"               
+ [521] "STUD.ISCED7FOE04.code"             "STUD.ISCED7FOE04.r"               
+ [523] "STUD.ISCED7LONGGENUNCL.code"       "STUD.ISCED7LONGGENUNCL.v"         
+ [525] "STUD.ISCED7LONGGENUNCL.r"          "STUD.ISCED6FOE04.v"               
+ [527] "STUD.ISCED6FOE04.code"             "STUD.ISCED6FOE04.r"               
+ [529] "STUD.FLAGISCED7LONGCITIZ.v"        "STUD.FLAGISCED7LONGCITIZ.r"       
+ [531] "STUD.ISCED7FOE09.v"                "STUD.ISCED7FOE09.code"            
+ [533] "STUD.ISCED7FOE09.r"                "STUD.ISCED7LONGFOE00.code"        
+ [535] "STUD.ISCED7LONGFOE00.v"            "STUD.ISCED7LONGFOE00.r"           
+ [537] "STUD.ISCED6FOE09.v"                "STUD.ISCED6FOE09.code"            
+ [539] "STUD.ISCED6FOE09.r"                "STUD.FLAGISCED7TOTAL.v"           
+ [541] "STUD.FLAGISCED7TOTAL.r"            "STUD.ISCED7LONGFOE05.code"        
+ [543] "STUD.ISCED7LONGFOE05.v"            "STUD.ISCED7LONGFOE05.r"           
+ [545] "STUD.ISCED6FOE03.v"                "STUD.ISCED6FOE03.code"            
+ [547] "STUD.ISCED6FOE03.r"                "STUD.FLAGISCED7LONGGEN.v"         
+ [549] "STUD.FLAGISCED7LONGGEN.r"          "STUD.ISCED6GENUNCL.v"             
+ [551] "STUD.ISCED6GENUNCL.code"           "STUD.ISCED6GENUNCL.r"             
+ [553] "STUD.FLAGISCED6TOTAL.v"            "STUD.FLAGISCED6TOTAL.r"           
+ [555] "STUD.ISCED7LONGFOE10.code"         "STUD.ISCED7LONGFOE10.v"           
+ [557] "STUD.ISCED7LONGFOE10.r"            "STUD.ISCED7LONGRES.code"          
+ [559] "STUD.ISCED7LONGRES.v"              "STUD.ISCED7LONGRES.r"             
+ [561] "STUD.FLAGISCED6CITIZ.v"            "STUD.FLAGISCED6CITIZ.r"           
+ [563] "STUD.NOTESISCED7LONG.v"            "STUD.ISCED7LONGFOE01.code"        
+ [565] "STUD.ISCED7LONGFOE01.v"            "STUD.ISCED7LONGFOE01.r"           
+ [567] "STUD.FLAGISCED7GEN.v"              "STUD.FLAGISCED7GEN.r"             
+ [569] "STUD.ISCED7LONGFOE06.code"         "STUD.ISCED7LONGFOE06.v"           
+ [571] "STUD.ISCED7LONGFOE06.r"            "STUD.ISCED6FOE00.v"               
+ [573] "STUD.ISCED6FOE00.code"             "STUD.ISCED6FOE00.r"               
+ [575] "STUD.ISCED7LONGFOEUNCL.code"       "STUD.ISCED7LONGFOEUNCL.v"         
+ [577] "STUD.ISCED7LONGFOEUNCL.r"          "STUD.ISCED6FOE05.v"               
+ [579] "STUD.ISCED6FOE05.code"             "STUD.ISCED6FOE05.r"               
+ [581] "STUD.ISCED6FOE08.v"                "STUD.ISCED6FOE08.code"            
+ [583] "STUD.ISCED6FOE08.r"                "STUD.NOTESDISTEDUINST.v"          
+ [585] "STUD.ISCED7RES.code"               "STUD.ISCED7RES.v"                 
+ [587] "STUD.ISCED7RES.r"                  "STUD.ISCED6TOTAL.v"               
+ [589] "STUD.ISCED6TOTAL.code"             "STUD.ISCED6TOTAL.r"               
+ [591] "STUD.ISCED6FOE10.v"                "STUD.ISCED6FOE10.code"            
+ [593] "STUD.ISCED6FOE10.r"                "STUD.TOTALISCED5_7.v"             
+ [595] "STUD.TOTALISCED5_7.code"           "STUD.TOTALISCED5_7.r"             
+ [597] "STUD.ISCED7FOE01.v"                "STUD.ISCED7FOE01.code"            
+ [599] "STUD.ISCED7FOE01.r"                "STUD.ISCED7GENUNCL.v"             
+ [601] "STUD.ISCED7GENUNCL.code"           "STUD.ISCED7GENUNCL.r"             
+ [603] "STUD.ISCED7FOE06.v"                "STUD.ISCED7FOE06.code"            
+ [605] "STUD.ISCED7FOE06.r"                "STUD.NOTESISCED6.v"               
+ [607] "STUD.ISCED7FOEUNCL.v"              "STUD.ISCED7FOEUNCL.code"          
+ [609] "STUD.ISCED7FOEUNCL.r"              "STUD.FLAGISCED7CITIZ.v"           
+ [611] "STUD.FLAGISCED7CITIZ.r"            "STUD.ISCED7LONGMEN.code"          
+ [613] "STUD.ISCED7LONGMEN.v"              "STUD.ISCED7LONGMEN.r"             
+ [615] "STUD.ISCED7NAT.code"               "STUD.ISCED7NAT.v"                 
+ [617] "STUD.ISCED7NAT.r"                  "STUD.ISCED7FOE00.v"               
+ [619] "STUD.ISCED7FOE00.code"             "STUD.ISCED7FOE00.r"               
+ [621] "STUD.ISCED7MOB.code"               "STUD.ISCED7MOB.v"                 
+ [623] "STUD.ISCED7MOB.r"                  "STUD.ISCED7LONGFOR.code"          
+ [625] "STUD.ISCED7LONGFOR.v"              "STUD.ISCED7LONGFOR.r"             
+ [627] "STUD.ISCED7FOE05.v"                "STUD.ISCED7FOE05.code"            
+ [629] "STUD.ISCED7FOE05.r"                "STUD.ISCED7FOE02.v"               
+ [631] "STUD.ISCED7FOE02.code"             "STUD.ISCED7FOE02.r"               
+ [633] "STUD.ISCED7LONGMOBUNCL.code"       "STUD.ISCED7LONGMOBUNCL.v"         
+ [635] "STUD.ISCED7LONGMOBUNCL.r"          "STUD.ISCED7FOE10.v"               
+ [637] "STUD.ISCED7FOE10.code"             "STUD.ISCED7FOE10.r"               
+ [639] "STUD.ISCED7LONGFOE03.code"         "STUD.ISCED7LONGFOE03.v"           
+ [641] "STUD.ISCED7LONGFOE03.r"            "STUD.ISCED7FOE07.v"               
+ [643] "STUD.ISCED7FOE07.code"             "STUD.ISCED7FOE07.r"               
+ [645] "STUD.NOTESISCED7.v"                "STUD.ISCED7LONGFOE08.code"        
+ [647] "STUD.ISCED7LONGFOE08.v"            "STUD.ISCED7LONGFOE08.r"           
+ [649] "STUD.FLAGISCED7FOE.v"              "STUD.FLAGISCED7FOE.r"             
+ [651] "STUD.ISCED7LONGNAT.code"           "STUD.ISCED7LONGNAT.v"             
+ [653] "STUD.ISCED7LONGNAT.r"              "STUD.ISCED7LONGTOTAL.code"        
+ [655] "STUD.ISCED7LONGTOTAL.v"            "STUD.ISCED7LONGTOTAL.r"           
+ [657] "STUD.ISCED7LONGWOMEN.code"         "STUD.ISCED7LONGWOMEN.v"           
+ [659] "STUD.ISCED7LONGWOMEN.r"            "STUD.ISCED7LONGMOB.code"          
+ [661] "STUD.ISCED7LONGMOB.v"              "STUD.ISCED7LONGMOB.r"             
+ [663] "STUD.ISCED7LONGCITUNCL.code"       "STUD.ISCED7LONGCITUNCL.v"         
+ [665] "STUD.ISCED7LONGCITUNCL.r"          "STUD.FLAGISCED7LONGMOB.v"         
+ [667] "STUD.FLAGISCED7LONGMOB.r"          "STUD.ISCED7LONGFOE04.code"        
+ [669] "STUD.ISCED7LONGFOE04.v"            "STUD.ISCED7LONGFOE04.r"           
+ [671] "STUD.ISCED7LONGFOE09.code"         "STUD.ISCED7LONGFOE09.v"           
+ [673] "STUD.ISCED7LONGFOE09.r"            "STUD.ISCED7LONGFOE02.code"        
+ [675] "STUD.ISCED7LONGFOE02.v"            "STUD.ISCED7LONGFOE02.r"           
+ [677] "STUD.FLAGISCED7LONGTOTAL.v"        "STUD.FLAGISCED7LONGTOTAL.r"       
+ [679] "STUD.ISCED7LONGFOE07.code"         "STUD.ISCED7LONGFOE07.v"           
+ [681] "STUD.ISCED7LONGFOE07.r"            "STUD.FLAGISCED7LONGFOE.v"         
+ [683] "STUD.FLAGISCED7LONGFOE.r"          "STUD.NOTESTOTALISCED5_7.v"        
+ [685] "STUD.DISTEDUINST.v"                "STUD.DISTEDUINST.code"            
+ [687] "STUD.FLAGTOTALISCED5_7.v"          "STUD.FLAGTOTALISCED5_7.r"         
+ [689] "STUD.ISCED5_7NAT.code"             "STUD.ISCED5_7NAT.v"               
+ [691] "STUD.ISCED5_7NAT.r"                "STUD.ISCED5_7MOB.code"            
+ [693] "STUD.ISCED5_7MOB.v"                "STUD.ISCED5_7MOB.r"               
+ [695] "STUD.ISCED5_7FOE02.v"              "STUD.ISCED5_7FOE02.code"          
+ [697] "STUD.ISCED5_7FOE02.r"              "STUD.ISCED5_7FOE07.v"             
+ [699] "STUD.ISCED5_7FOE07.code"           "STUD.ISCED5_7FOE07.r"             
+ [701] "STUD.ISCED5_7MEN.v"                "STUD.ISCED5_7MEN.code"            
+ [703] "STUD.ISCED5_7MEN.r"                "STUD.FLAGISCED5_7FOE.v"           
+ [705] "STUD.FLAGISCED5_7FOE.r"            "STUD.ISCED5_7FOR.code"            
+ [707] "STUD.ISCED5_7FOR.v"                "STUD.ISCED5_7FOR.r"               
+ [709] "STUD.ISCED5_7MOBUNCL.code"         "STUD.ISCED5_7MOBUNCL.v"           
+ [711] "STUD.ISCED5_7MOBUNCL.r"            "STUD.ISCED5_7FOE03.v"             
+ [713] "STUD.ISCED5_7FOE03.code"           "STUD.ISCED5_7FOE03.r"             
+ [715] "STUD.ISCED5_7FOE08.v"              "STUD.ISCED5_7FOE08.code"          
+ [717] "STUD.ISCED5_7FOE08.r"              "STUD.ISCED5_7GENUNCL.v"           
+ [719] "STUD.ISCED5_7GENUNCL.code"         "STUD.ISCED5_7GENUNCL.r"           
+ [721] "STUD.FLAGISCED5_7CITIZ.v"          "STUD.FLAGISCED5_7CITIZ.r"         
+ [723] "STUD.ISCED5_7FOE00.v"              "STUD.ISCED5_7FOE00.code"          
+ [725] "STUD.ISCED5_7FOE00.r"              "STUD.ISCED5_7FOE05.v"             
+ [727] "STUD.ISCED5_7FOE05.code"           "STUD.ISCED5_7FOE05.r"             
+ [729] "STUD.FLAGISCED5_7GEN.v"            "STUD.FLAGISCED5_7GEN.r"           
+ [731] "STUD.ISCED5_7RES.code"             "STUD.ISCED5_7RES.v"               
+ [733] "STUD.ISCED5_7RES.r"                "STUD.ISCED5_7FOE10.v"             
+ [735] "STUD.ISCED5_7FOE10.code"           "STUD.ISCED5_7FOE10.r"             
+ [737] "STUD.ISCED5_7WOMEN.v"              "STUD.ISCED5_7WOMEN.code"          
+ [739] "STUD.ISCED5_7WOMEN.r"              "STUD.ISCED5_7FOE01.v"             
+ [741] "STUD.ISCED5_7FOE01.code"           "STUD.ISCED5_7FOE01.r"             
+ [743] "STUD.ISCED5_7CITUNCL.code"         "STUD.ISCED5_7CITUNCL.v"           
+ [745] "STUD.ISCED5_7CITUNCL.r"            "STUD.ISCED5_7FOE06.v"             
+ [747] "STUD.ISCED5_7FOE06.code"           "STUD.ISCED5_7FOE06.r"             
+ [749] "STUD.FLAGISCED5_7MOB.v"            "STUD.FLAGISCED5_7MOB.r"           
+ [751] "STUD.ISCED5_7FOEUNCL.v"            "STUD.ISCED5_7FOEUNCL.code"        
+ [753] "STUD.ISCED5_7FOEUNCL.r"            "STUD.ISCED5_7FOE04.v"             
+ [755] "STUD.ISCED5_7FOE04.code"           "STUD.ISCED5_7FOE04.r"             
+ [757] "STUD.ISCED5_7FOE09.v"              "STUD.ISCED5_7FOE09.code"          
+ [759] "STUD.ISCED5_7FOE09.r"              "GRAD.ISCED5NAT.code"              
+ [761] "GRAD.ISCED5NAT.v"                  "GRAD.ISCED5NAT.r"                 
+ [763] "GRAD.ISCED5MOB.code"               "GRAD.ISCED5MOB.v"                 
+ [765] "GRAD.ISCED5MOB.r"                  "GRAD.ISCED5FOE02.code"            
+ [767] "GRAD.ISCED5FOE02.v"                "GRAD.ISCED5FOE02.r"               
+ [769] "GRAD.ISCED5FOE07.code"             "GRAD.ISCED5FOE07.v"               
+ [771] "GRAD.ISCED5FOE07.r"                "GRAD.FLAGISCED5FOE.v"             
+ [773] "GRAD.FLAGISCED5FOE.r"              "GRAD.ISCED5MEN.code"              
+ [775] "GRAD.ISCED5MEN.v"                  "GRAD.ISCED5MEN.r"                 
+ [777] "GRAD.ISCED6WOMEN.code"             "GRAD.ISCED6WOMEN.v"               
+ [779] "GRAD.ISCED6WOMEN.r"                "GRAD.ISCED5FOR.code"              
+ [781] "GRAD.ISCED5FOR.v"                  "GRAD.ISCED5FOR.r"                 
+ [783] "GRAD.ISCED6CITUNCL.code"           "GRAD.ISCED6CITUNCL.v"             
+ [785] "GRAD.ISCED6CITUNCL.r"              "GRAD.ISCED5MOBUNCL.code"          
+ [787] "GRAD.ISCED5MOBUNCL.v"              "GRAD.ISCED5MOBUNCL.r"             
+ [789] "GRAD.FLAGISCED6MOB.v"              "GRAD.FLAGISCED6MOB.r"             
+ [791] "GRAD.ISCED5FOE03.code"             "GRAD.ISCED5FOE03.v"               
+ [793] "GRAD.ISCED5FOE03.r"                "GRAD.ISCED6FOE04.code"            
+ [795] "GRAD.ISCED6FOE04.v"                "GRAD.ISCED6FOE04.r"               
+ [797] "GRAD.ISCED6FOE09.code"             "GRAD.ISCED6FOE09.v"               
+ [799] "GRAD.ISCED6FOE09.r"                "GRAD.FLAGISCED6TOTAL.v"           
+ [801] "GRAD.FLAGISCED6TOTAL.r"            "GRAD.FLAGISCED7GEN.v"             
+ [803] "GRAD.FLAGISCED7GEN.r"              "GRAD.ISCED7RES.code"              
+ [805] "GRAD.ISCED7RES.v"                  "GRAD.ISCED7RES.r"                 
+ [807] "GRAD.ISCED7FOE01.code"             "GRAD.ISCED7FOE01.v"               
+ [809] "GRAD.ISCED7FOE01.r"                "GRAD.ISCED7FOE06.code"            
+ [811] "GRAD.ISCED7FOE06.v"                "GRAD.ISCED7FOE06.r"               
+ [813] "GRAD.ISCED7FOEUNCL.code"           "GRAD.ISCED7FOEUNCL.v"             
+ [815] "GRAD.ISCED7FOEUNCL.r"              "GRAD.ISCED7LONGMEN.code"          
+ [817] "GRAD.ISCED7LONGMEN.v"              "GRAD.ISCED7LONGMEN.r"             
+ [819] "GRAD.ISCED5FOE08.code"             "GRAD.ISCED5FOE08.v"               
+ [821] "GRAD.ISCED5FOE08.r"                "GRAD.ISCED7LONGFOR.code"          
+ [823] "GRAD.ISCED7LONGFOR.v"              "GRAD.ISCED7LONGFOR.r"             
+ [825] "GRAD.ISCED5TOTAL.code"             "GRAD.ISCED5TOTAL.v"               
+ [827] "GRAD.ISCED5TOTAL.r"                "GRAD.ISCED7LONGMOBUNCL.code"      
+ [829] "GRAD.ISCED7LONGMOBUNCL.v"          "GRAD.ISCED7LONGMOBUNCL.r"         
+ [831] "GRAD.ISCED7LONGFOE03.code"         "GRAD.ISCED7LONGFOE03.v"           
+ [833] "GRAD.ISCED7LONGFOE03.r"            "GRAD.ISCED6GENUNCL.code"          
+ [835] "GRAD.ISCED6GENUNCL.v"              "GRAD.ISCED6GENUNCL.r"             
+ [837] "GRAD.ISCED7LONGFOE08.code"         "GRAD.ISCED7LONGFOE08.v"           
+ [839] "GRAD.ISCED7LONGFOE08.r"            "GRAD.FLAGISCED6CITIZ.v"           
+ [841] "GRAD.FLAGISCED6CITIZ.r"            "GRAD.ISCED7LONGTOTAL.code"        
+ [843] "GRAD.ISCED7LONGTOTAL.v"            "GRAD.ISCED7LONGTOTAL.r"           
+ [845] "GRAD.ISCED6FOE00.code"             "GRAD.ISCED6FOE00.v"               
+ [847] "GRAD.ISCED6FOE00.r"                "GRAD.ISCED6FOE05.code"            
+ [849] "GRAD.ISCED6FOE05.v"                "GRAD.ISCED6FOE05.r"               
+ [851] "GRAD.ISCED6FOE10.code"             "GRAD.ISCED6FOE10.v"               
+ [853] "GRAD.ISCED6FOE10.r"                "GRAD.NOTESISCED6.v"               
+ [855] "GRAD.ISCED7NAT.code"               "GRAD.ISCED7NAT.v"                 
+ [857] "GRAD.ISCED7NAT.r"                  "GRAD.NOTESTOTALISCED5_7.v"        
+ [859] "GRAD.ISCED7MOB.code"               "GRAD.ISCED7MOB.v"                 
+ [861] "GRAD.ISCED7MOB.r"                  "GRAD.ISCED7FOE02.code"            
+ [863] "GRAD.ISCED7FOE02.v"                "GRAD.ISCED7FOE02.r"               
+ [865] "GRAD.ISCED7FOE07.code"             "GRAD.ISCED7FOE07.v"               
+ [867] "GRAD.ISCED7FOE07.r"                "GRAD.FLAGISCED7FOE.v"             
+ [869] "GRAD.FLAGISCED7FOE.r"              "GRAD.ISCED7LONGWOMEN.code"        
+ [871] "GRAD.ISCED7LONGWOMEN.v"            "GRAD.ISCED7LONGWOMEN.r"           
+ [873] "GRAD.ISCED7LONGCITUNCL.code"       "GRAD.ISCED7LONGCITUNCL.v"         
+ [875] "GRAD.ISCED7LONGCITUNCL.r"          "GRAD.FLAGISCED7LONGMOB.v"         
+ [877] "GRAD.FLAGISCED7LONGMOB.r"          "GRAD.ISCED7LONGFOE04.code"        
+ [879] "GRAD.ISCED7LONGFOE04.v"            "GRAD.ISCED7LONGFOE04.r"           
+ [881] "GRAD.ISCED7LONGFOE09.code"         "GRAD.ISCED7LONGFOE09.v"           
+ [883] "GRAD.ISCED7LONGFOE09.r"            "GRAD.FLAGISCED7LONGTOTAL.v"       
+ [885] "GRAD.FLAGISCED7LONGTOTAL.r"        "GRAD.NOTESEDUCACT.v"              
+ [887] "GRAD.ISCED5GENUNCL.code"           "GRAD.ISCED5GENUNCL.v"             
+ [889] "GRAD.ISCED5GENUNCL.r"              "GRAD.FLAGISCED5CITIZ.v"           
+ [891] "GRAD.FLAGISCED5CITIZ.r"            "GRAD.ISCED5FOE00.code"            
+ [893] "GRAD.ISCED5FOE00.v"                "GRAD.ISCED5FOE00.r"               
+ [895] "GRAD.ISCED5FOE05.code"             "GRAD.ISCED5FOE05.v"               
+ [897] "GRAD.ISCED5FOE05.r"                "GRAD.ISCED5FOE10.code"            
+ [899] "GRAD.ISCED5FOE10.v"                "GRAD.ISCED5FOE10.r"               
+ [901] "GRAD.FLAGISCED5GEN.v"              "GRAD.FLAGISCED5GEN.r"             
+ [903] "GRAD.NOTESISCED5.v"                "GRAD.ISCED5RES.code"              
+ [905] "GRAD.ISCED5RES.v"                  "GRAD.ISCED5RES.r"                 
+ [907] "GRAD.ISCED5WOMEN.code"             "GRAD.ISCED5WOMEN.v"               
+ [909] "GRAD.ISCED5WOMEN.r"                "GRAD.ISCED6NAT.code"              
+ [911] "GRAD.ISCED6NAT.v"                  "GRAD.ISCED6NAT.r"                 
+ [913] "GRAD.ISCED5FOE01.code"             "GRAD.ISCED5FOE01.v"               
+ [915] "GRAD.ISCED5FOE01.r"                "GRAD.ISCED5CITUNCL.code"          
+ [917] "GRAD.ISCED5CITUNCL.v"              "GRAD.ISCED5CITUNCL.r"             
+ [919] "GRAD.ISCED6MOB.code"               "GRAD.ISCED6MOB.v"                 
+ [921] "GRAD.ISCED6MOB.r"                  "GRAD.ISCED5FOE06.code"            
+ [923] "GRAD.ISCED5FOE06.v"                "GRAD.ISCED5FOE06.r"               
+ [925] "GRAD.FLAGISCED5MOB.v"              "GRAD.FLAGISCED5MOB.r"             
+ [927] "GRAD.ISCED6FOE02.code"             "GRAD.ISCED6FOE02.v"               
+ [929] "GRAD.ISCED6FOE02.r"                "GRAD.ISCED5FOEUNCL.code"          
+ [931] "GRAD.ISCED5FOEUNCL.v"              "GRAD.ISCED5FOEUNCL.r"             
+ [933] "GRAD.ISCED5FOE04.code"             "GRAD.ISCED5FOE04.v"               
+ [935] "GRAD.ISCED5FOE04.r"                "GRAD.ISCED6FOE07.code"            
+ [937] "GRAD.ISCED6FOE07.v"                "GRAD.ISCED6FOE07.r"               
+ [939] "GRAD.ISCED6MEN.code"               "GRAD.ISCED6MEN.v"                 
+ [941] "GRAD.ISCED6MEN.r"                  "GRAD.ISCED5FOE09.code"            
+ [943] "GRAD.ISCED5FOE09.v"                "GRAD.ISCED5FOE09.r"               
+ [945] "GRAD.FLAGISCED6FOE.v"              "GRAD.FLAGISCED6FOE.r"             
+ [947] "GRAD.ISCED6FOR.code"               "GRAD.ISCED6FOR.v"                 
+ [949] "GRAD.ISCED6FOR.r"                  "GRAD.FLAGISCED5TOTAL.v"           
+ [951] "GRAD.FLAGISCED5TOTAL.r"            "GRAD.ISCED7WOMEN.code"            
+ [953] "GRAD.ISCED7WOMEN.v"                "GRAD.ISCED7WOMEN.r"               
+ [955] "GRAD.ISCED6MOBUNCL.code"           "GRAD.ISCED6MOBUNCL.v"             
+ [957] "GRAD.ISCED6MOBUNCL.r"              "GRAD.FLAGISCED6GEN.v"             
+ [959] "GRAD.FLAGISCED6GEN.r"              "GRAD.ISCED7CITUNCL.code"          
+ [961] "GRAD.ISCED7CITUNCL.v"              "GRAD.ISCED7CITUNCL.r"             
+ [963] "GRAD.ISCED6FOE03.code"             "GRAD.ISCED6FOE03.v"               
+ [965] "GRAD.ISCED6FOE03.r"                "GRAD.ISCED6RES.code"              
+ [967] "GRAD.ISCED6RES.v"                  "GRAD.ISCED6RES.r"                 
+ [969] "GRAD.FLAGISCED7MOB.v"              "GRAD.FLAGISCED7MOB.r"             
+ [971] "GRAD.ISCED6FOE08.code"             "GRAD.ISCED6FOE08.v"               
+ [973] "GRAD.ISCED6FOE08.r"                "GRAD.ISCED6FOE01.code"            
+ [975] "GRAD.ISCED6FOE01.v"                "GRAD.ISCED6FOE01.r"               
+ [977] "GRAD.ISCED7FOE04.code"             "GRAD.ISCED7FOE04.v"               
+ [979] "GRAD.ISCED7FOE04.r"                "GRAD.ISCED6TOTAL.code"            
+ [981] "GRAD.ISCED6TOTAL.v"                "GRAD.ISCED6TOTAL.r"               
+ [983] "GRAD.ISCED6FOE06.code"             "GRAD.ISCED6FOE06.v"               
+ [985] "GRAD.ISCED6FOE06.r"                "GRAD.ISCED7FOE09.code"            
+ [987] "GRAD.ISCED7FOE09.v"                "GRAD.ISCED7FOE09.r"               
+ [989] "GRAD.ISCED7GENUNCL.code"           "GRAD.ISCED7GENUNCL.v"             
+ [991] "GRAD.ISCED7GENUNCL.r"              "GRAD.ISCED6FOEUNCL.code"          
+ [993] "GRAD.ISCED6FOEUNCL.v"              "GRAD.ISCED6FOEUNCL.r"             
+ [995] "GRAD.FLAGISCED7TOTAL.v"            "GRAD.FLAGISCED7TOTAL.r"           
+ [997] "GRAD.FLAGISCED7CITIZ.v"            "GRAD.FLAGISCED7CITIZ.r"           
+ [999] "GRAD.ISCED7MEN.code"               "GRAD.ISCED7MEN.v"                 
+[1001] "GRAD.ISCED7MEN.r"                  "GRAD.FLAGISCED7LONGGEN.v"         
+[1003] "GRAD.FLAGISCED7LONGGEN.r"          "GRAD.ISCED7FOR.code"              
+[1005] "GRAD.ISCED7FOR.v"                  "GRAD.ISCED7FOR.r"                 
+[1007] "GRAD.ISCED7FOE00.code"             "GRAD.ISCED7FOE00.v"               
+[1009] "GRAD.ISCED7FOE00.r"                "GRAD.ISCED7LONGRES.code"          
+[1011] "GRAD.ISCED7LONGRES.v"              "GRAD.ISCED7LONGRES.r"             
+[1013] "GRAD.ISCED7FOE05.code"             "GRAD.ISCED7FOE05.v"               
+[1015] "GRAD.ISCED7FOE05.r"                "GRAD.ISCED7MOBUNCL.code"          
+[1017] "GRAD.ISCED7MOBUNCL.v"              "GRAD.ISCED7MOBUNCL.r"             
+[1019] "GRAD.ISCED7LONGFOE01.code"         "GRAD.ISCED7LONGFOE01.v"           
+[1021] "GRAD.ISCED7LONGFOE01.r"            "GRAD.ISCED7FOE10.code"            
+[1023] "GRAD.ISCED7FOE10.v"                "GRAD.ISCED7FOE10.r"               
+[1025] "GRAD.ISCED7FOE03.code"             "GRAD.ISCED7FOE03.v"               
+[1027] "GRAD.ISCED7FOE03.r"                "GRAD.ISCED7LONGFOE06.code"        
+[1029] "GRAD.ISCED7LONGFOE06.v"            "GRAD.ISCED7LONGFOE06.r"           
+[1031] "GRAD.NOTESISCED7.v"                "GRAD.ISCED7FOE08.code"            
+[1033] "GRAD.ISCED7FOE08.v"                "GRAD.ISCED7FOE08.r"               
+[1035] "GRAD.ISCED7LONGFOEUNCL.code"       "GRAD.ISCED7LONGFOEUNCL.v"         
+[1037] "GRAD.ISCED7LONGFOEUNCL.r"          "GRAD.ISCED7LONGNAT.code"          
+[1039] "GRAD.ISCED7LONGNAT.v"              "GRAD.ISCED7LONGNAT.r"             
+[1041] "GRAD.ISCED7TOTAL.code"             "GRAD.ISCED7TOTAL.v"               
+[1043] "GRAD.ISCED7TOTAL.r"                "GRAD.ISCED7LONGMOB.code"          
+[1045] "GRAD.ISCED7LONGMOB.v"              "GRAD.ISCED7LONGMOB.r"             
+[1047] "GRAD.ISCED7LONGGENUNCL.code"       "GRAD.ISCED7LONGGENUNCL.v"         
+[1049] "GRAD.ISCED7LONGGENUNCL.r"          "GRAD.ISCED7LONGFOE02.code"        
+[1051] "GRAD.ISCED7LONGFOE02.v"            "GRAD.ISCED7LONGFOE02.r"           
+[1053] "GRAD.FLAGISCED7LONGCITIZ.v"        "GRAD.FLAGISCED7LONGCITIZ.r"       
+[1055] "GRAD.ISCED7LONGFOE07.code"         "GRAD.ISCED7LONGFOE07.v"           
+[1057] "GRAD.ISCED7LONGFOE07.r"            "GRAD.ISCED7LONGFOE00.code"        
+[1059] "GRAD.ISCED7LONGFOE00.v"            "GRAD.ISCED7LONGFOE00.r"           
+[1061] "GRAD.FLAGISCED7LONGFOE.v"          "GRAD.FLAGISCED7LONGFOE.r"         
+[1063] "GRAD.ISCED7LONGFOE05.code"         "GRAD.ISCED7LONGFOE05.v"           
+[1065] "GRAD.ISCED7LONGFOE05.r"            "GRAD.ISCED7LONGFOE10.code"        
+[1067] "GRAD.ISCED7LONGFOE10.v"            "GRAD.ISCED7LONGFOE10.r"           
+[1069] "GRAD.TOTALISCED5_7.code"           "GRAD.TOTALISCED5_7.v"             
+[1071] "GRAD.TOTALISCED5_7.r"              "GRAD.NOTESISCED7LONG.v"           
+[1073] "GRAD.NOTESISCED7LONG.r"            "GRAD.FLAGTOTALISCED5_7.v"         
+[1075] "GRAD.FLAGTOTALISCED5_7.r"          "GRAD.ISCED5_7GENUNCL.code"        
+[1077] "GRAD.ISCED5_7GENUNCL.v"            "GRAD.ISCED5_7GENUNCL.r"           
+[1079] "GRAD.FLAGISCED5_7CITIZ.v"          "GRAD.FLAGISCED5_7CITIZ.r"         
+[1081] "GRAD.ISCED5_7FOE00.code"           "GRAD.ISCED5_7FOE00.v"             
+[1083] "GRAD.ISCED5_7FOE00.r"              "GRAD.ISCED5_7FOE05.code"          
+[1085] "GRAD.ISCED5_7FOE05.v"              "GRAD.ISCED5_7FOE05.r"             
+[1087] "GRAD.ISCED5_7FOE10.code"           "GRAD.ISCED5_7FOE10.v"             
+[1089] "GRAD.ISCED5_7FOE10.r"              "GRAD.FLAGISCED5_7GEN.v"           
+[1091] "GRAD.FLAGISCED5_7GEN.r"            "GRAD.ISCED5_7RES.code"            
+[1093] "GRAD.ISCED5_7RES.v"                "GRAD.ISCED5_7RES.r"               
+[1095] "GRAD.ISCED5_7FOE01.code"           "GRAD.ISCED5_7FOE01.v"             
+[1097] "GRAD.ISCED5_7FOE01.r"              "GRAD.ISCED5_7FOE06.code"          
+[1099] "GRAD.ISCED5_7FOE06.v"              "GRAD.ISCED5_7FOE06.r"             
+[1101] "GRAD.ISCED5_7FOEUNCL.code"         "GRAD.ISCED5_7FOEUNCL.v"           
+[1103] "GRAD.ISCED5_7FOEUNCL.r"            "GRAD.ISCED5_7MEN.code"            
+[1105] "GRAD.ISCED5_7MEN.v"                "GRAD.ISCED5_7MEN.r"               
+[1107] "GRAD.ISCED5_7FOR.code"             "GRAD.ISCED5_7FOR.v"               
+[1109] "GRAD.ISCED5_7FOR.r"                "GRAD.ISCED5_7MOBUNCL.code"        
+[1111] "GRAD.ISCED5_7MOBUNCL.v"            "GRAD.ISCED5_7MOBUNCL.r"           
+[1113] "GRAD.ISCED5_7FOE03.code"           "GRAD.ISCED5_7FOE03.v"             
+[1115] "GRAD.ISCED5_7FOE03.r"              "GRAD.ISCED5_7FOE08.code"          
+[1117] "GRAD.ISCED5_7FOE08.v"              "GRAD.ISCED5_7FOE08.r"             
+[1119] "GRAD.ISCED5_7WOMEN.code"           "GRAD.ISCED5_7WOMEN.v"             
+[1121] "GRAD.ISCED5_7WOMEN.r"              "GRAD.ISCED5_7CITUNCL.code"        
+[1123] "GRAD.ISCED5_7CITUNCL.v"            "GRAD.ISCED5_7CITUNCL.r"           
+[1125] "GRAD.FLAGISCED5_7MOB.v"            "GRAD.FLAGISCED5_7MOB.r"           
+[1127] "GRAD.ISCED5_7NAT.code"             "GRAD.ISCED5_7NAT.v"               
+[1129] "GRAD.ISCED5_7NAT.r"                "GRAD.ISCED5_7FOE04.code"          
+[1131] "GRAD.ISCED5_7FOE04.v"              "GRAD.ISCED5_7FOE04.r"             
+[1133] "GRAD.ISCED5_7MOB.code"             "GRAD.ISCED5_7MOB.v"               
+[1135] "GRAD.ISCED5_7MOB.r"                "GRAD.ISCED5_7FOE02.code"          
+[1137] "GRAD.ISCED5_7FOE02.v"              "GRAD.ISCED5_7FOE02.r"             
+[1139] "GRAD.ISCED5_7FOE09.code"           "GRAD.ISCED5_7FOE09.v"             
+[1141] "GRAD.ISCED5_7FOE09.r"              "GRAD.ISCED5_7FOE07.code"          
+[1143] "GRAD.ISCED5_7FOE07.v"              "GRAD.ISCED5_7FOE07.r"             
+[1145] "GRAD.FLAGISCED5_7FOE.v"            "GRAD.FLAGISCED5_7FOE.r"           
+[1147] "RES.STUDISCED8GENUNCL.v"           "RES.STUDISCED8GENUNCL.r"          
+[1149] "RES.STUDISCED8GENUNCL.code"        "RES.FLAGSTUDISCED8CITIZ.v"        
+[1151] "RES.FLAGSTUDISCED8CITIZ.r"         "RES.STUDISCED8FOE00.v"            
+[1153] "RES.STUDISCED8FOE00.code"          "RES.STUDISCED8FOE00.r"            
+[1155] "RES.STUDISCED8FOE05.v"             "RES.STUDISCED8FOE05.code"         
+[1157] "RES.STUDISCED8FOE05.r"             "RES.STUDISCED8FOE10.v"            
+[1159] "RES.STUDISCED8FOE10.code"          "RES.STUDISCED8FOE10.r"            
+[1161] "RES.NOTESSTUDISCED8.v"             "RES.GRADISCED8NAT.code"           
+[1163] "RES.GRADISCED8NAT.v"               "RES.GRADISCED8NAT.r"              
+[1165] "RES.GRADISCED8MOB.code"            "RES.GRADISCED8MOB.v"              
+[1167] "RES.GRADISCED8MOB.r"               "RES.GRADISCED8FOE02.code"         
+[1169] "RES.GRADISCED8FOE02.v"             "RES.GRADISCED8FOE02.r"            
+[1171] "RES.GRADISCED8FOE07.code"          "RES.GRADISCED8FOE07.v"            
+[1173] "RES.GRADISCED8FOE07.r"             "RES.FLAGGRADISCED8FOE.v"          
+[1175] "RES.FLAGGRADISCED8FOE.r"           "RES.R_n_DEXP.EURO.code"           
+[1177] "RES.R_n_DEXP.EURO.r"               "RES.R_n_DEXP.EURO.v"              
+[1179] "RES.R_n_DEXP.PPP.code"             "RES.R_n_DEXP.PPP.r"               
+[1181] "RES.R_n_DEXP.PPP.v"                "RES.R_n_DEXP.NC.code"             
+[1183] "RES.R_n_DEXP.NC.r"                 "RES.R_n_DEXP.NC.v"                
+[1185] "RES.RESTRAINCOOP.v"                "RES.RESTRAINCOOP.code"            
+[1187] "RES.FLAGSTUDISCED8GEN.v"           "RES.FLAGSTUDISCED8GEN.r"          
+[1189] "RES.STUDISCED8RES.code"            "RES.STUDISCED8RES.v"              
+[1191] "RES.STUDISCED8RES.r"               "RES.STUDISCED8FOE01.v"            
+[1193] "RES.STUDISCED8FOE01.code"          "RES.STUDISCED8FOE01.r"            
+[1195] "RES.STUDISCED8FOE06.v"             "RES.STUDISCED8FOE06.code"         
+[1197] "RES.STUDISCED8FOE06.r"             "RES.STUDISCED8FOEUNCL.v"          
+[1199] "RES.STUDISCED8FOEUNCL.code"        "RES.STUDISCED8FOEUNCL.r"          
+[1201] "RES.GRADISCED8MEN.code"            "RES.GRADISCED8MEN.v"              
+[1203] "RES.GRADISCED8MEN.r"               "RES.GRADISCED8FOR.code"           
+[1205] "RES.GRADISCED8FOR.v"               "RES.GRADISCED8FOR.r"              
+[1207] "RES.GRADISCED8MOBUNCL.code"        "RES.GRADISCED8MOBUNCL.v"          
+[1209] "RES.GRADISCED8MOBUNCL.r"           "RES.GRADISCED8FOE03.code"         
+[1211] "RES.GRADISCED8FOE03.v"             "RES.GRADISCED8FOE03.r"            
+[1213] "RES.GRADISCED8FOE08.code"          "RES.GRADISCED8FOE08.v"            
+[1215] "RES.GRADISCED8FOE08.r"             "RES.GRADISCED8TOTAL.code"         
+[1217] "RES.GRADISCED8TOTAL.v"             "RES.GRADISCED8TOTAL.r"            
+[1219] "RES.FLAGRESEARCHERMOB.v"           "RES.STUDISCED8MEN.v"              
+[1221] "RES.STUDISCED8MEN.r"               "RES.STUDISCED8MEN.code"           
+[1223] "RES.STUDISCED8FOR.code"            "RES.STUDISCED8FOR.v"              
+[1225] "RES.STUDISCED8FOR.r"               "RES.STUDISCED8MOBUNCL.code"       
+[1227] "RES.STUDISCED8MOBUNCL.v"           "RES.STUDISCED8MOBUNCL.r"          
+[1229] "RES.STUDISCED8FOE03.v"             "RES.STUDISCED8FOE03.code"         
+[1231] "RES.STUDISCED8FOE03.r"             "RES.STUDISCED8WOMEN.v"            
+[1233] "RES.STUDISCED8WOMEN.code"          "RES.STUDISCED8WOMEN.r"            
+[1235] "RES.STUDISCED8FOE08.v"             "RES.STUDISCED8FOE08.code"         
+[1237] "RES.STUDISCED8FOE08.r"             "RES.STUDISCED8CITUNCL.code"       
+[1239] "RES.STUDISCED8CITUNCL.v"           "RES.STUDISCED8CITUNCL.r"          
+[1241] "RES.RESACTIVE.v"                   "RES.RESACTIVE.code"               
+[1243] "RES.RESACTIVE.r"                   "RES.STUDISCED8TOTAL.v"            
+[1245] "RES.STUDISCED8TOTAL.code"          "RES.STUDISCED8TOTAL.r"            
+[1247] "RES.FLAGSTUDISCED8MOB.v"           "RES.FLAGSTUDISCED8MOB.r"          
+[1249] "RES.STUDISCED8NAT.code"            "RES.STUDISCED8NAT.v"              
+[1251] "RES.STUDISCED8NAT.r"               "RES.GRADISCED8GENUNCL.code"       
+[1253] "RES.GRADISCED8GENUNCL.v"           "RES.GRADISCED8GENUNCL.r"          
+[1255] "RES.STUDISCED8FOE04.v"             "RES.STUDISCED8FOE04.code"         
+[1257] "RES.STUDISCED8FOE04.r"             "RES.STUDISCED8MOB.code"           
+[1259] "RES.STUDISCED8MOB.v"               "RES.STUDISCED8MOB.r"              
+[1261] "RES.FLAGGRADISCED8CITIZ.v"         "RES.FLAGGRADISCED8CITIZ.r"        
+[1263] "RES.STUDISCED8FOE09.v"             "RES.STUDISCED8FOE09.code"         
+[1265] "RES.STUDISCED8FOE09.r"             "RES.STUDISCED8FOE02.v"            
+[1267] "RES.STUDISCED8FOE02.code"          "RES.STUDISCED8FOE02.r"            
+[1269] "RES.GRADISCED8FOE00.code"          "RES.GRADISCED8FOE00.v"            
+[1271] "RES.GRADISCED8FOE00.r"             "RES.FLAGSTUDISCED8TOTAL.v"        
+[1273] "RES.FLAGSTUDISCED8TOTAL.r"         "RES.STUDISCED8FOE07.v"            
+[1275] "RES.STUDISCED8FOE07.code"          "RES.STUDISCED8FOE07.r"            
+[1277] "RES.GRADISCED8FOE05.code"          "RES.GRADISCED8FOE05.v"            
+[1279] "RES.GRADISCED8FOE05.r"             "RES.FLAGGRADISCED8GEN.v"          
+[1281] "RES.FLAGGRADISCED8GEN.r"           "RES.FLAGSTUDISCED8FOE.v"          
+[1283] "RES.FLAGSTUDISCED8FOE.r"           "RES.GRADISCED8RES.code"           
+[1285] "RES.GRADISCED8RES.v"               "RES.GRADISCED8RES.r"              
+[1287] "RES.GRADISCED8WOMEN.code"          "RES.GRADISCED8WOMEN.v"            
+[1289] "RES.GRADISCED8WOMEN.r"             "RES.GRADISCED8FOE01.code"         
+[1291] "RES.GRADISCED8FOE01.v"             "RES.GRADISCED8FOE01.r"            
+[1293] "RES.GRADISCED8CITUNCL.code"        "RES.GRADISCED8CITUNCL.v"          
+[1295] "RES.GRADISCED8CITUNCL.r"           "RES.GRADISCED8FOE06.code"         
+[1297] "RES.GRADISCED8FOE06.v"             "RES.GRADISCED8FOE06.r"            
+[1299] "RES.FLAGGRADISCED8MOB.v"           "RES.FLAGGRADISCED8MOB.r"          
+[1301] "RES.GRADISCED8FOE10.code"          "RES.GRADISCED8FOE10.v"            
+[1303] "RES.GRADISCED8FOE10.r"             "RES.GRADISCED8FOEUNCL.code"       
+[1305] "RES.GRADISCED8FOEUNCL.v"           "RES.GRADISCED8FOEUNCL.r"          
+[1307] "RES.GRADISCED8FOE04.code"          "RES.GRADISCED8FOE04.v"            
+[1309] "RES.GRADISCED8FOE04.r"             "RES.NOTESGRADISCED8.v"            
+[1311] "RES.GRADISCED8FOE09.code"          "RES.GRADISCED8FOE09.v"            
+[1313] "RES.GRADISCED8FOE09.r"             "RES.RESEARCHERMOB.v"              
+[1315] "RES.RESEARCHERMOB.code"            "RES.STAFFMOB.v"                   
+[1317] "RES.STAFFMOB.code"                 "RES.FLAGGRADISCED8TOTAL.v"        
+[1319] "RES.FLAGGRADISCED8TOTAL.r"         "RES.FLAGR_n_DEXP.v"               
+[1321] "RES.FLAGR_n_DEXP.r"                "RES.NOTESRESACT.v"                
+[1323] "IND.STUD.SHAREWOMENISCED7.v"       "IND.STUD.SHAREWOMENISCED7.code"   
+[1325] "IND.STUD.SHAREWOMENISCED7.r"       "IND.STUD.SHAREFORISCED7.code"     
+[1327] "IND.STUD.SHAREFORISCED7.v"         "IND.STUD.SHAREFORISCED7.r"        
+[1329] "IND.STUD.SHAREMOBISCED5_7.code"    "IND.STUD.SHAREMOBISCED5_7.v"      
+[1331] "IND.STUD.SHAREMOBISCED5_7.r"       "IND.STUD.FLAGSHAREWOMENISCED7.v"  
+[1333] "IND.STUD.FLAGSHAREWOMENISCED7.r"   "IND.STUD.FLAGSHAREFORISCED7.v"    
+[1335] "IND.STUD.FLAGSHAREFORISCED7.r"     "IND.STUD.SHAREMOBISCED6.code"     
+[1337] "IND.STUD.SHAREMOBISCED6.v"         "IND.STUD.SHAREMOBISCED6.r"        
+[1339] "IND.STUD.FLAGSHAREMOBISCED5_7.v"   "IND.STUD.FLAGSHAREMOBISCED5_7.r"  
+[1341] "IND.STUD.STEMORIENT.v"             "IND.STUD.STEMORIENT.code"         
+[1343] "IND.STUD.STEMORIENT.r"             "IND.STUD.SHAREWOMENISCED6.v"      
+[1345] "IND.STUD.SHAREWOMENISCED6.code"    "IND.STUD.SHAREWOMENISCED6.r"      
+[1347] "IND.STUD.FLAGSHAREWOMENISCED6.v"   "IND.STUD.FLAGSHAREWOMENISCED6.r"  
+[1349] "IND.STUD.FLAGSHAREWOMENISCED5_7.v" "IND.STUD.FLAGSHAREWOMENISCED5_7.r"
+[1351] "IND.STUD.SHAREWOMENISCED5_7.v"     "IND.STUD.SHAREWOMENISCED5_7.code" 
+[1353] "IND.STUD.SHAREWOMENISCED5_7.r"     "IND.STUD.SHAREFORISCED6.code"     
+[1355] "IND.STUD.SHAREFORISCED6.v"         "IND.STUD.SHAREFORISCED6.r"        
+[1357] "IND.STUD.FLAGSHAREFORISCED6.v"     "IND.STUD.FLAGSHAREFORISCED6.r"    
+[1359] "IND.STUD.FLAGSHAREFORISCED5_7.v"   "IND.STUD.FLAGSHAREFORISCED5_7.r"  
+[1361] "IND.STUD.SHAREFORISCED5_7.code"    "IND.STUD.SHAREFORISCED5_7.v"      
+[1363] "IND.STUD.SHAREFORISCED5_7.r"       "IND.STUD.FLAGSHAREMOBISCED7.v"    
+[1365] "IND.STUD.FLAGSHAREMOBISCED7.r"     "IND.STUD.SHAREMOBISCED7.code"     
+[1367] "IND.STUD.SHAREMOBISCED7.v"         "IND.STUD.SHAREMOBISCED7.r"        
+[1369] "IND.STUD.FLAGSHAREMOBISCED6.v"     "IND.STUD.FLAGSHAREMOBISCED6.r"    
+[1371] "IND.STUD.FLAGHERFISCED5_7.v"       "IND.STUD.FLAGHERFISCED5_7.r"      
+[1373] "IND.STUD.HERFISCED5_7.v"           "IND.STUD.HERFISCED5_7.code"       
+[1375] "IND.STUD.HERFISCED5_7.r"           "IND.STUD.FLAGSTEMORIENT.v"        
+[1377] "IND.STUD.FLAGSTEMORIENT.r"         "IND.GRAD.FLAGSHAREWOMENISCED6.v"  
+[1379] "IND.GRAD.FLAGSHAREWOMENISCED6.r"   "IND.GRAD.FLAGSHAREFORISCED6.v"    
+[1381] "IND.GRAD.FLAGSHAREFORISCED6.r"     "IND.GRAD.FLAGSHAREMOBISCED7.v"    
+[1383] "IND.GRAD.FLAGSHAREMOBISCED7.r"     "IND.GRAD.MASTERDEGORIENT.code"    
+[1385] "IND.GRAD.MASTERDEGORIENT.v"        "IND.GRAD.MASTERDEGORIENT.r"       
+[1387] "IND.GRAD.SHAREWOMENISCED7.code"    "IND.GRAD.SHAREWOMENISCED7.v"      
+[1389] "IND.GRAD.SHAREWOMENISCED7.r"       "IND.GRAD.SHAREFORISCED7.code"     
+[1391] "IND.GRAD.SHAREFORISCED7.v"         "IND.GRAD.SHAREFORISCED7.r"        
+[1393] "IND.GRAD.SHAREMOBISCED5_7.code"    "IND.GRAD.SHAREMOBISCED5_7.v"      
+[1395] "IND.GRAD.SHAREMOBISCED5_7.r"       "IND.GRAD.FLAGMASTERDEGORIENT.v"   
+[1397] "IND.GRAD.FLAGMASTERDEGORIENT.r"    "IND.GRAD.SHAREWOMENISCED6.code"   
+[1399] "IND.GRAD.SHAREWOMENISCED6.v"       "IND.GRAD.SHAREWOMENISCED6.r"      
+[1401] "IND.GRAD.SHAREWOMENISCED5_7.code"  "IND.GRAD.SHAREWOMENISCED5_7.v"    
+[1403] "IND.GRAD.SHAREWOMENISCED5_7.r"     "IND.GRAD.FLAGSHAREWOMENISCED5_7.v"
+[1405] "IND.GRAD.FLAGSHAREWOMENISCED5_7.r" "IND.GRAD.FLAGSHAREWOMENISCED7.v"  
+[1407] "IND.GRAD.FLAGSHAREWOMENISCED7.r"   "IND.GRAD.SHAREFORISCED6.code"     
+[1409] "IND.GRAD.SHAREFORISCED6.v"         "IND.GRAD.SHAREFORISCED6.r"        
+[1411] "IND.GRAD.SHAREFORISCED5_7.code"    "IND.GRAD.SHAREFORISCED5_7.v"      
+[1413] "IND.GRAD.SHAREFORISCED5_7.r"       "IND.GRAD.FLAGSHAREFORISCED5_7.v"  
+[1415] "IND.GRAD.FLAGSHAREFORISCED5_7.r"   "IND.GRAD.FLAGSHAREFORISCED7.v"    
+[1417] "IND.GRAD.FLAGSHAREFORISCED7.r"     "IND.GRAD.SHAREMOBISCED7.code"     
+[1419] "IND.GRAD.SHAREMOBISCED7.v"         "IND.GRAD.SHAREMOBISCED7.r"        
+[1421] "IND.GRAD.FLAGSHAREMOBISCED6.v"     "IND.GRAD.FLAGSHAREMOBISCED6.r"    
+[1423] "IND.GRAD.SHAREMOBISCED6.code"      "IND.GRAD.SHAREMOBISCED6.v"        
+[1425] "IND.GRAD.SHAREMOBISCED6.r"         "IND.GRAD.FLAGSHAREMOBISCED5_7.v"  
+[1427] "IND.GRAD.FLAGSHAREMOBISCED5_7.r"   "IND.GRAD.FLAGSTEMORIENT.v"        
+[1429] "IND.GRAD.FLAGSTEMORIENT.r"         "IND.GRAD.STEMORIENT.code"         
+[1431] "IND.GRAD.STEMORIENT.v"             "IND.GRAD.STEMORIENT.r"            
+[1433] "IND.RES.SHAREWOMENPHDSTUD.v"       "IND.RES.SHAREWOMENPHDSTUD.r"      
+[1435] "IND.RES.SHAREWOMENPHDSTUD.code"    "IND.RES.SHAREFORPHDSTUD.code"     
+[1437] "IND.RES.SHAREFORPHDSTUD.v"         "IND.RES.SHAREFORPHDSTUD.r"        
+[1439] "IND.RES.SHAREMOBPHDGRAD.code"      "IND.RES.SHAREMOBPHDGRAD.v"        
+[1441] "IND.RES.SHAREMOBPHDGRAD.r"         "IND.RES.FLAGHERFPHDGRAD.v"        
+[1443] "IND.RES.FLAGHERFPHDGRAD.r"         "IND.RES.FLAGRESMOBINTENSITY.v"    
+[1445] "IND.RES.FLAGRESMOBINTENSITY.r"     "IND.RES.FLAGSHAREWOMENPHDSTUD.v"  
+[1447] "IND.RES.FLAGSHAREWOMENPHDSTUD.r"   "IND.RES.FLAGSHAREFORPHDSTUD.v"    
+[1449] "IND.RES.FLAGSHAREFORPHDSTUD.r"     "IND.RES.FLAGSHAREMOBPHDGRAD.v"    
+[1451] "IND.RES.FLAGSHAREMOBPHDGRAD.r"     "IND.RES.FLAGSHAREWOMENPHDGRAD.v"  
+[1453] "IND.RES.FLAGSHAREWOMENPHDGRAD.r"   "IND.RES.SHAREWOMENPHDGRAD.code"   
+[1455] "IND.RES.SHAREWOMENPHDGRAD.v"       "IND.RES.SHAREWOMENPHDGRAD.r"      
+[1457] "IND.RES.FLAGSHAREFORPHDGRAD.v"     "IND.RES.FLAGSHAREFORPHDGRAD.r"    
+[1459] "IND.RES.SHAREFORPHDGRAD.code"      "IND.RES.SHAREFORPHDGRAD.v"        
+[1461] "IND.RES.SHAREFORPHDGRAD.r"         "IND.RES.FLAGSHAREMOBPHDSTUD.v"    
+[1463] "IND.RES.FLAGSHAREMOBPHDSTUD.r"     "IND.RES.SHAREMOBPHDSTUD.code"     
+[1465] "IND.RES.SHAREMOBPHDSTUD.v"         "IND.RES.SHAREMOBPHDSTUD.r"        
+[1467] "IND.RES.HERFPHDGRAD.code"          "IND.RES.HERFPHDGRAD.v"            
+[1469] "IND.RES.HERFPHDGRAD.r"             "IND.RES.FLAGPHDINTENSITY.v"       
+[1471] "IND.RES.FLAGPHDINTENSITY.r"        "IND.RES.PHDINTENSITY.code"        
+[1473] "IND.RES.PHDINTENSITY.v"            "IND.RES.PHDINTENSITY.r"           
+[1475] "IND.RES.RESMOBINTENSITY.code"      "IND.RES.RESMOBINTENSITY.v"        
+[1477] "IND.RES.RESMOBINTENSITY.r"         "IND.STA.FLAGSHAREWOMENACA.v"      
+[1479] "IND.STA.FLAGSHAREWOMENACA.r"       "IND.STA.FLAGSHAREFORACA.v"        
+[1481] "IND.STA.FLAGSHAREFORACA.r"         "IND.STA.PROF_n_ACA.code"          
+[1483] "IND.STA.PROF_n_ACA.v"              "IND.STA.PROF_n_ACA.r"             
+[1485] "IND.STA.SHAREWOMENPROF.code"       "IND.STA.SHAREWOMENPROF.v"         
+[1487] "IND.STA.SHAREWOMENPROF.r"          "IND.STA.HERFACA.code"             
+[1489] "IND.STA.HERFACA.v"                 "IND.STA.HERFACA.r"                
+[1491] "IND.STA.FLAGPROF_n_ACA.v"          "IND.STA.FLAGPROF_n_ACA.r"         
+[1493] "IND.STA.SHAREWOMENACA.code"        "IND.STA.SHAREWOMENACA.v"          
+[1495] "IND.STA.SHAREWOMENACA.r"           "IND.STA.FLAGSHAREWOMENPROF.v"     
+[1497] "IND.STA.FLAGSHAREWOMENPROF.r"      "IND.STA.SHAREFORACA.code"         
+[1499] "IND.STA.SHAREFORACA.v"             "IND.STA.SHAREFORACA.r"            
+[1501] "IND.STA.FLAGHERFACA.v"             "IND.STA.FLAGHERFACA.r"            
+[1503] "IND.STA.FLAGACA_n_TOTALFTE.v"      "IND.STA.FLAGACA_n_TOTALFTE.r"     
+[1505] "IND.STA.ACA_n_TOTALFTE.code"       "IND.STA.ACA_n_TOTALFTE.v"         
+[1507] "IND.STA.ACA_n_TOTALFTE.r"          "IND.REV.FLAGCORE_n_TOTAL.v"       
+[1509] "IND.REV.FLAGCORE_n_TOTAL.r"        "IND.REV.THIRD_n_TOTAL.code"       
+[1511] "IND.REV.THIRD_n_TOTAL.v"           "IND.REV.THIRD_n_TOTAL.r"          
+[1513] "IND.REV.CORE_n_TOTAL.code"         "IND.REV.CORE_n_TOTAL.v"           
+[1515] "IND.REV.CORE_n_TOTAL.r"            "IND.REV.FEES_n_TOTAL.code"        
+[1517] "IND.REV.FEES_n_TOTAL.v"            "IND.REV.FEES_n_TOTAL.r"           
+[1519] "IND.REV.FLAGFEES_n_TOTAL.v"        "IND.REV.FLAGFEES_n_TOTAL.r"       
+[1521] "IND.REV.FLAGTHIRD_n_TOTAL.v"       "IND.REV.FLAGTHIRD_n_TOTAL.r"      
+[1523] "IND.ERA.CREDITMOBINCOMING.code"    "IND.ERA.CREDITMOBINCOMING.v"      
+[1525] "IND.ERA.CREDITMOBINCOMING.r"       "IND.ERA.FLAGCREDITMOBINCOMING.v"  
+[1527] "IND.ERA.FLAGCREDITMOBINCOMING.r"   "IND.ERA.FLAGCREDITMOBOUTGOING.v"  
+[1529] "IND.ERA.FLAGCREDITMOBOUTGOING.r"   "IND.ERA.CREDITMOBOUTGOING.code"   
+[1531] "IND.ERA.CREDITMOBOUTGOING.v"       "IND.ERA.CREDITMOBOUTGOING.r"      
+[1533] "IND.NOTES.v"                       "DEMO.EVENTREFYEAR.v"              
+[1535] "DEMO.AFFINSTREFYEAR.v"             "DEMO.AFFINSTPASTYEAR.v"           
+[1537] "DEMO.EVENTPASTYEAR.v"              "DEMO.DESCRIPTION.v"               
+[1539] "ERA.INCOMING_STUDENTS_ISCED6.code" "ERA.INCOMING_STUDENTS_ISCED6.v"   
+[1541] "ERA.OUTGOING_STUDENTS_ISCED5.code" "ERA.OUTGOING_STUDENTS_ISCED5.v"   
+[1543] "ERA.OUTGOING_STUDENTS_TOT.code"    "ERA.OUTGOING_STUDENTS_TOT.v"      
+[1545] "ERA.INCOMING_STUDENTS_ISCED7.code" "ERA.INCOMING_STUDENTS_ISCED7.v"   
+[1547] "ERA.OUTGOING_STUDENTS_ISCED6.code" "ERA.OUTGOING_STUDENTS_ISCED6.v"   
+[1549] "ERA.INCOMING_STAFF.code"           "ERA.INCOMING_STAFF.v"             
+[1551] "ERA.INCOMING_STUDENTS_ISCED5.code" "ERA.INCOMING_STUDENTS_ISCED5.v"   
+[1553] "ERA.CODE.v"                        "ERA.INCOMING_STUDENTS_TOT.code"   
+[1555] "ERA.INCOMING_STUDENTS_TOT.v"       "ERA.INCOMING_STUDENTS_OTHER.code" 
+[1557] "ERA.INCOMING_STUDENTS_OTHER.v"     "ERA.INCOMING_STUDENTS_ISCED8.code"
+[1559] "ERA.INCOMING_STUDENTS_ISCED8.v"    "ERA.OUTGOING_STUDENTS_OTHER.code" 
+[1561] "ERA.OUTGOING_STUDENTS_OTHER.v"     "ERA.OUTGOING_STUDENTS_ISCED8.code"
+[1563] "ERA.OUTGOING_STUDENTS_ISCED8.v"    "ERA.OUTGOING_STUDENTS_ISCED7.code"
+[1565] "ERA.OUTGOING_STUDENTS_ISCED7.v"    "ERA.NOTES.v"                      
+[1567] "ERA.FLAG.v"                        "ERA.OUTGOING_STAFF.code"          
+[1569] "ERA.OUTGOING_STAFF.v"             
+> 
+> #check number of rows and columns
+> 
+> dim(mydata)
+[1] 17285  1569
+> 
+> # replace \" by nothing (run each row 2x to replace everything)
+> 
+> mydata$BAS.INSTNAME.v <- str_replace(mydata$BAS.INSTNAME.v, '[\"]', '')
+> 
+> mydata$BAS.INSTNAME.v <- str_replace(mydata$BAS.INSTNAME.v, '[\"]', '')
+> 
+> mydata$BAS.INSTNAMEENGL.v <- str_replace(mydata$BAS.INSTNAMEENGL.v, '[\"]', '')
+> 
+> mydata$BAS.INSTNAMEENGL.v <- str_replace(mydata$BAS.INSTNAMEENGL.v, '[\"]', '')
+> 
+> 
+> #---------------------------#
+> 
+> #      data manipulation    #
+> 
+> #---------------------------#
+> 
+> # drop all columns with suffix ".r" in the column name
+> 
+> ##mydata <- mydata[, !grepl(".r", colnames(mydata))]
+> 
+> 
+> 
+> 
+> # separate data into ".code" and ".v" (== the numeric dataset)
+> 
+> data <- mydata[, !grepl(".v", colnames(mydata))]
+> 
+> 
+> data_numeric <- mydata[, !grepl((".code|.r"), colnames(mydata))]
+> 
+> 
+> 
+> # delete ".code" and ".v" from variable names
+> 
+> #names(data) <- gsub(pattern = ".code", replacement = "", x = names(data))
+> 
+> #names(data_numeric) <- gsub(pattern = ".v", replacement = "", x = names(data_numeric))
+> 
+> 
+> 
+> # add second "data_numeric" dataset for merging, since we need to convert
+> 
+> # numeric to character before merging into each other
+> 
+> data_numeric2 <- data_numeric
+> 
+> options(scipen = 999)
+> 
+> # before merging, column classes must be the same
+> 
+> data_numeric2 <- data_numeric2 %>%
++   
++   mutate_all(as.character)
+> 
+> data_numeric2[data_numeric2 == "m" | data_numeric2 == "a" | data_numeric2 == "x" | data_numeric2 == "" | data_numeric2 == "xr" |    data_numeric2 == "xc" | data_numeric2 == "x " | data_numeric2 == "m "] <- NA
+> 
+> # merge "data" and "data_numeric2" in "data" where NAs should vanish
+> 
+> data <- list(data, data_numeric2) %>%
++   
++   transpose(union(names(data), names(data_numeric2))) %>%
++   
++   map_dfc(. %>% compact %>% invoke(coalesce, .))
+> 
+> 
+> 
+> # add "data" to "data_numeric" also in order to add variables, where only codes
+> 
+> # are included
+> 
+> data2 <- data
+> 
+> 
+> 
+> # convert "m", "a", "x", "xc", "xr" etc. into NA
+> 
+> 
+> 
+> 
+> 
+> 
+> data_numeric <- merge(data_numeric2, data2, all.x = TRUE)
+> 
+> 
+> 
+> # data with only NA are of type character and thus cannot be used for
+> 
+> # calculations -> find and convert to numeric
+> 
+> colAllNA <- sapply(data, function(x) all(is.na(x)))
+> 
+> colnamesNA <- names(data)[colAllNA == TRUE]
+> 
+> data[, colnamesNA] <- apply(data_numeric[, colnamesNA], 2, function(x) as.numeric(x))
+> 
+> 
+> 
+> 
+> 
+> fulleter_df <- data_numeric %>% as.matrix() %>% as.data.frame() 
+> 
+> ##### Luetaan eri osa-alueet omiin dataframeihin. #####
+> #ID toimii aineistojen välillä avaimena. Vastaa eteridyear kenttää. 
+> 
+> bas <- fulleter_df %>% select(.,starts_with('_id'),starts_with('BAS.'))
+> geo <- fulleter_df %>% select(.,starts_with('_id'),starts_with('GEO.'))
+> exp <- fulleter_df %>% select(.,starts_with('_id'),starts_with('EXP.'))
+> rev <- fulleter_df %>% select(.,starts_with('_id'),starts_with('REV.'))
+> sta <- fulleter_df %>% select(.,starts_with('_id'),starts_with('STA.'))
+> stud <- fulleter_df %>% select(.,starts_with('_id'),starts_with('STUD.'))
+> grad <- fulleter_df %>% select(.,starts_with('_id'),starts_with('GRAD.'))
+> res <- fulleter_df %>% select(.,starts_with('_id'),starts_with('RES.'))
+> ind <- fulleter_df %>% select(.,starts_with('_id'),starts_with('IND.'))
+> demo <- fulleter_df %>% select(.,starts_with('_id'),starts_with('DEMO.'))
+> era <- fulleter_df %>% select(.,starts_with('_id'),starts_with('ERA.'))
+> 
+> ##### Kirjoitetaan csv-tiedostot #####
+> write.csv2(bas,"D:/pdi_integrations/data/eter/eter_bas.csv",row.names = FALSE, na="")
+> print("Kirjoitettu eter_bas.csv")
+[1] "Kirjoitettu eter_bas.csv"
+> write.csv2(geo,"D:/pdi_integrations/data/eter/eter_geo.csv",row.names = FALSE, na="")
+> print("Kirjoitettu eter_geo.csv")
+[1] "Kirjoitettu eter_geo.csv"
+> write.csv2(exp,"D:/pdi_integrations/data/eter/eter_exp.csv",row.names = FALSE, na="")
+> print("Kirjoitettu eter_exp.csv")
+[1] "Kirjoitettu eter_exp.csv"
+> write.csv2(rev,"D:/pdi_integrations/data/eter/eter_rev.csv",row.names = FALSE, na="")
+> print("Kirjoitettu eter_rev.csv")
+[1] "Kirjoitettu eter_rev.csv"
+> write.csv2(sta,"D:/pdi_integrations/data/eter/eter_sta.csv",row.names = FALSE, na="")
+> print("Kirjoitettu eter_sta.csv")
+[1] "Kirjoitettu eter_sta.csv"
+> write.csv2(stud,"D:/pdi_integrations/data/eter/eter_stud.csv",row.names = FALSE, na="")
+> print("Kirjoitettu eter_stud.csv")
+[1] "Kirjoitettu eter_stud.csv"
+> write.csv2(grad,"D:/pdi_integrations/data/eter/eter_grad.csv",row.names = FALSE, na="")
+> print("Kirjoitettu eter_grad.csv")
+[1] "Kirjoitettu eter_grad.csv"
+> write.csv2(res,"D:/pdi_integrations/data/eter/eter_res.csv",row.names = FALSE, na="")
+> print("Kirjoitettu eter_res.csv")
+[1] "Kirjoitettu eter_res.csv"
+> write.csv2(ind,"D:/pdi_integrations/data/eter/eter_ind.csv",row.names = FALSE, na="")
+> print("Kirjoitettu eter_ind.csv")
+[1] "Kirjoitettu eter_ind.csv"
+> write.csv2(demo,"D:/pdi_integrations/data/eter/eter_demo.csv",row.names = FALSE, na="")
+> print("Kirjoitettu eter_demo.csv")
+[1] "Kirjoitettu eter_demo.csv"
+> write.csv2(era,"D:/pdi_integrations/data/eter/eter_era.csv",row.names = FALSE, na="")
+> print("Kirjoitettu eter_era.csv")
+[1] "Kirjoitettu eter_era.csv"
+> 
+> 
+> ##### field list #####
+> #Luetaan kenttien kuvailutiedot, jossa myÃ¶s selitteet koodeille. Kirjoitetaan niistÃ¤ csv:t
+> 
+> All_fields <- fromJSON("https://www.eter-project.com/api/3.0/field-groups/find/all-fields")
+> 
+> df <- All_fields[[2]] %>%select(.,c(fieldIds,groupName,description,fields))
+> bas_descriptions <- df %>% filter(description=="BAS") %>% flatten() %>% as.data.frame %>% .[2:length(.)]
+> demo_descriptions <- df %>% filter(description=="DEMO") %>% flatten() %>% as.data.frame %>% .[2:length(.)]
+> era_descriptions <- df %>% filter(description=="ERA") %>% flatten() %>% as.data.frame %>% .[2:length(.)]
+> exp_descriptions <- df %>% filter(description=="EXP") %>% flatten() %>% as.data.frame %>% .[2:length(.)]
+> geo_descriptions <- df %>% filter(description=="GEO") %>% flatten() %>% as.data.frame %>% .[2:length(.)]
+> grad_descriptions <- df %>% filter(description=="GRAD") %>% flatten() %>% as.data.frame %>% .[2:length(.)]
+> ind_descriptions <- df %>% filter(description=="IND") %>% flatten() %>% as.data.frame %>% .[2:length(.)]
+> res_descriptions <- df %>% filter(description=="RES") %>% flatten() %>% as.data.frame %>% .[2:length(.)]
+> rev_descriptions <- df %>% filter(description=="REV") %>% flatten() %>% as.data.frame %>% .[2:length(.)]
+> sta_descriptions <- df %>% filter(description=="STA") %>% flatten() %>% as.data.frame %>% .[2:length(.)]
+> stud_descriptions <- df %>% filter(description=="STUD") %>% flatten() %>% as.data.frame %>% .[2:length(.)]
+> 
+> descriptions <- c(bas_descriptions,demo_descriptions,era_descriptions,exp_descriptions,
++                   geo_descriptions,grad_descriptions,ind_descriptions,res_descriptions,
++                   rev_descriptions,sta_descriptions,stud_descriptions)
+> Allfield_descriptions <- rbind.fill(bas_descriptions,demo_descriptions,era_descriptions,exp_descriptions,
++                                     geo_descriptions,grad_descriptions,ind_descriptions,res_descriptions,
++                                     rev_descriptions,sta_descriptions,stud_descriptions)
+> 
+> write.csv2(Allfield_descriptions,"D:/pdi_integrations/data/eter/eter_allfields.csv",row.names = FALSE)
+> 
+> ##### Eter field codes #####
+> All_fieldcodes <- fromJSON("https://www.eter-project.com/api/3.0/codes")
+> 
+> codes <- data.frame(matrix(ncol=3,nrow=0))
+> nimet <- c("name","code","value")
+> colnames(codes) <- nimet
+> lista <- list()
+> 
+> vc=names(All_fieldcodes$codes$VC)
+> 
+> for (i in 1:length(vc)){
++   pi <- All_fieldcodes$codes$VC[i]
++   afc <- pi %>% flatten() %>% as.data.frame()
++   colnames(afc) <- gsub("values.","",colnames(afc))
++   afc <- afc %>% melt(., id="name")
++   colnames(afc) <- gsub("variable","code",colnames(afc))
++   nimi <- as.character(afc$name[1])
++   lista[[nimi]]<-afc
++ }
+> sc <- All_fieldcodes$codes$SC %>% flatten() %>% as.data.frame()
+> colnames(sc) <- gsub("values.","",colnames(sc))
+> sc <- sc %>% melt(., id="name")
+> colnames(sc) <- gsub("variable","code",colnames(sc))
+> nimi <- as.character(sc$name[1])
+> lista[[nimi]]<-sc
+> 
+> df <- All_fieldcodes$codes$DF %>% flatten() %>% as.data.frame()
+> colnames(df) <- gsub("values.","",colnames(df))
+> df <- df %>% melt(., id="name")
+> colnames(df) <- gsub("variable","code",colnames(df))
+> nimi <- as.character(df$name[1])
+> lista[[nimi]]<-df
+> 
+> codes <- rbind_list(lista)
+There were 48 warnings (use warnings() to see them)
+> write.csv2(codes,"D:/pdi_integrations/data/eter/eter_allfieldcodes.csv",row.names = FALSE)
+> 
+> 
+> ##### Kesto #####
+> Loopin_loppu <- Sys.time() #Tallennetaan aikaa varten lopetusaika
+> Kesto <- Loopin_loppu-Loopin_alku
+> print(paste("Ajaminen kesti ",Kesto))
+[1] "Ajaminen kesti  5.49700466394424"
+> 
+> 
+> proc.time()
+   user  system elapsed 
+ 260.75    6.59  364.34 
