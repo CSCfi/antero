@@ -190,4 +190,5 @@ FROM (
 
 INNER JOIN sa.temp_opiskelijavuodet_opiskeluoikeus_oidit oid on oid.opiskeluoikeus_oid = ooa.opiskeluoikeus_oid
 
-
+GO
+USE [ANTERO]
