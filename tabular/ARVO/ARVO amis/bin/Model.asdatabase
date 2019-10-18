@@ -4991,6 +4991,25 @@
               "CALCULATE(IF([Vastanneet_s]>[Vastanneet (OPH)],SUM([numerovalinta])*(DIVIDE([Vastanneet (OPH)],[Vastanneet_s])),SUM([numerovalinta])),VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1)"
             ],
             "formatString": "#,0"
+          },
+          {
+            "name": "Pisteet (Rahoitus) 2",
+            "expression": [
+              " ",
+              "var taulu = ADDCOLUMNS(SUMMARIZE(FILTER(Muuttujat,[Koodit Rahoitusmallikysymys]=1),",
+              "                        [Kyselyn kohderyhmä],",
+              "                        [Koodit Koulutuksen järjestäjä]),",
+              "                        \"Vahvistetut vastanneet nimi\", AVERAGE(Muuttujat[Vahvistetut vastanneet]),",
+              "                        \"Apumittari\", [Vastanneet_s],",
+              "                        \"Numerosumma\", SUM([numerovalinta])",
+              "                    )",
+              "                    ",
+              "                    return SUMX(taulu,IF([Apumittari] > [Vahvistetut vastanneet nimi],",
+              "                     [Numerosumma] * DIVIDE([Vahvistetut vastanneet nimi], [Apumittari]),",
+              "                     [Numerosumma] ",
+              "                    )",
+              "            )"
+            ]
           }
         ],
         "annotations": [
@@ -9954,6 +9973,9 @@
               },
               {
                 "name": "Pisteet (Rahoitus)"
+              },
+              {
+                "name": "Pisteet (Rahoitus) 2"
               }
             ]
           },
