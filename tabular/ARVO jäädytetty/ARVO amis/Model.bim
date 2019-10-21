@@ -6,7 +6,7 @@
     "dataSources": [
       {
         "name": "SqlServer dwitvipusql16 ANTERO",
-        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipuarch;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
+        "connectionString": "Provider=SQLNCLI11.1;Integrated Security=SSPI;Persist Security Info=False;User ID=;Initial Catalog=ANTERO_31102019;Data Source=dwitvipuarch;Initial File Name=;Server SPN=",
         "impersonationMode": "impersonateAccount",
         "account": "dwi\\T_VIPUTK_KUUTIO",
         "annotations": [
@@ -4769,24 +4769,6 @@
             "isHidden": true
           },
           {
-            "name": "Painotetut pisteet_old",
-            "expression": [
-              "",
-              "var taulu = ADDCOLUMNS(",
-              "\t\tSUMMARIZE(Muuttujat,[Koodit Koulutuksen järjestäjä]) \t",
-              "\t\t,\"pisteet1\", CALCULATE(SUM([numerovalinta]),Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
-              "\t\t,\"pisteet2\", 3 * CALCULATE(SUM([numerovalinta]),Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
-              "\t\t,\"pisteet3\" ,CALCULATE(SUM([numerovalinta]),Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
-              "\t )",
-              "var painotettu1 = SUMX(taulu, [Katokorjauskerroin] * [pisteet1])",
-              "var painotettu2 = SUMX(taulu, [Katokorjauskerroin] * [pisteet2])",
-              "var painotettu3 = SUMX(taulu, [Katokorjauskerroin] * [pisteet3])",
-              "var painotettu = painotettu1 + painotettu2 + painotettu3",
-              "return painotettu"
-            ],
-            "formatString": "#,0"
-          },
-          {
             "name": "Weighted score %",
             "expression": " [Painotetut pisteet %]",
             "formatString": "0.00 %;-0.00 %;0.00 %"
@@ -4869,18 +4851,6 @@
             "isHidden": true
           },
           {
-            "name": "The Greatest Measure Everrr",
-            "expression": [
-              "",
-              "SUMX(",
-              "SUMMARIZE(",
-              "'Muuttujat', [Koulutuksen järjestäjä],Muuttujat[Rahoituskausi],",
-              "\"välimittari\", AVERAGE('Muuttujat'[Vahvistetut vastanneet])",
-              "), [välimittari])"
-            ],
-            "isHidden": true
-          },
-          {
             "name": "Katokorjauskerroin",
             "expression": [
               "",
@@ -4922,6 +4892,36 @@
               ""
             ],
             "formatString": "#,0"
+          },
+          {
+            "name": "Painotetut pisteet_old",
+            "expression": [
+              "",
+              "var taulu = ADDCOLUMNS(",
+              "\t\tSUMMARIZE(Muuttujat,[Koodit Koulutuksen järjestäjä]) \t",
+              "\t\t,\"pisteet1\", CALCULATE(SUM([numerovalinta]),Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
+              "\t\t,\"pisteet2\", 3 * CALCULATE(SUM([numerovalinta]),Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
+              "\t\t,\"pisteet3\" ,CALCULATE(SUM([numerovalinta]),Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
+              "\t )",
+              "var painotettu1 = SUMX(taulu, [Katokorjauskerroin] * [pisteet1])",
+              "var painotettu2 = SUMX(taulu, [Katokorjauskerroin] * [pisteet2])",
+              "var painotettu3 = SUMX(taulu, [Katokorjauskerroin] * [pisteet3])",
+              "var painotettu = painotettu1 + painotettu2 + painotettu3",
+              "return painotettu"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "The Greatest Measure Everrr",
+            "expression": [
+              "",
+              "SUMX(",
+              "SUMMARIZE(",
+              "'Muuttujat', [Koulutuksen järjestäjä],Muuttujat[Rahoituskausi],",
+              "\"välimittari\", AVERAGE('Muuttujat'[Vahvistetut vastanneet])",
+              "), [välimittari])"
+            ],
+            "isHidden": true
           }
         ],
         "annotations": [
