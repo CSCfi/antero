@@ -4999,6 +4999,56 @@
               ""
             ],
             "formatString": "#,0"
+          },
+          {
+            "name": "Keskiarvo (Rahoitus)",
+            "expression": [
+              "CALCULATE(AVERAGE('Muuttujat'[numerovalinta])",
+              "--;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
+              ",Muuttujat[vastaustyyppi_keskiarvo]=1)",
+              ""
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "Keskihajonta (Rahoitus)",
+            "expression": [
+              "CALCULATE(STDEV.P('Muuttujat'[numerovalinta])",
+              "--;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
+              ",Muuttujat[vastaustyyppi_keskiarvo]=1)",
+              ""
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "Vastanneet",
+            "expression": [
+              "",
+              "var vastanneet_ei_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[Kiusaamiskysymys]=0)",
+              "var vastanneet_kius = CALCULATE([Vastanneet_kius],Muuttujat[Kiusaamiskysymys]=1)",
+              "var summa = CALCULATE(vastanneet_ei_kius+vastanneet_kius)",
+              "",
+              "return IF(AND(summa<5,summa>0),\"<5\",summa)",
+              ""
+            ]
+          },
+          {
+            "name": "Kyselyn kohteet",
+            "expression": [
+              "IF([ehto_Kyselyn_kohteet]=TRUE(),BLANK(),IF([Vastanneet (ARVO)]=\"<5\",[Vastanneet (ARVO)],",
+              "SUMX(",
+              "\tADDCOLUMNS(",
+              "\t\tSUMMARIZE(Muuttujat,Muuttujat[Koodit Koulutuksen järjestäjä]),",
+              "\t\t\"lkm\",CALCULATE(SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm]))",
+              "\t),",
+              "[lkm]))",
+              ")",
+              ""
+            ]
+          },
+          {
+            "name": "Vastausosuus",
+            "expression": "IF([Vastanneet (ARVO)]=\"<5\",blank(),DIVIDE([Vastanneet (ARVO)],[Kyselyn kohteet (ARVO)]))"
           }
         ],
         "annotations": [
@@ -8962,10 +9012,10 @@
                 "name": "Keskihajonta"
               },
               {
-                "name": "Korjauskerroin (ARVO)"
+                "name": "Kyselyn kohteet"
               },
               {
-                "name": "Vastanneet (ARVO)"
+                "name": "Vastanneet"
               }
             ]
           },
@@ -9904,12 +9954,6 @@
                 "name": "Pisteet yhteensä %"
               },
               {
-                "name": "Keskiarvo"
-              },
-              {
-                "name": "Keskihajonta"
-              },
-              {
                 "name": "Kyselyn kohteet (ARVO)"
               },
               {
@@ -9962,6 +10006,12 @@
               },
               {
                 "name": "Pisteet (Rahoitus)"
+              },
+              {
+                "name": "Keskiarvo (Rahoitus)"
+              },
+              {
+                "name": "Keskihajonta (Rahoitus)"
               }
             ]
           },
