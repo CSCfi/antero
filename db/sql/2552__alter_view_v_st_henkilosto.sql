@@ -246,7 +246,7 @@ FROM (
 
 	FROM [dw].[f_yo_henkilon_tyo] f
 	LEFT JOIN dw.d_yo d ON d.id=f.d_yliopisto_id
-	LEFT JOIN dw.d_yo_valinta_kutsumenettelylla d2 ON d2.id = f.d_valinta_kutsumenettelylla_id
+	LEFT JOIN dw.d_yo_valinta_kutsumenettelylla d2 ON d2.id=f.d_valinta_kutsumenettelylla_id
 
 ) q
 
