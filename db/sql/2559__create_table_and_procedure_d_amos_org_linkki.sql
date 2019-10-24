@@ -72,32 +72,7 @@ ALTER PROCEDURE [dw].[p_lataa_d_amos_spl_organisaatio_linkki] AS
 -- Näkymä materialisoidaan, muuten kosken suoritedataa vasten raportoiminen koettelisi ms-alustan suorituskykyä.
 
 
-/*
 
-DROP TABLE [dw].[d_amos_spl_koski_suorite_organisaatio_linkki] 
-GO
-select *
-into [dw].[d_amos_spl_koski_suorite_organisaatio_linkki]
-from [dw].[v_amos_spl_koski_suorite_organisaatio_linkki]
-
-select *
-from [dw].[d_amos_spl_koski_suorite_organisaatio_linkki]
-where amos_spl_master_ytunnus is not null
-
-select top 10 *
-from [dw].[d_amos_spl_koski_suorite_organisaatio_linkki]
---where fuusiota_edeltava_ytunnus is not null
-
-select count(*) as rivi_lkm
-from [dw].[v_amos_spl_koski_suorite_organisaatio_linkki]
-
-
-
-select * from
-ANTERO.dw.d_organisaatioluokitus
-where organisaatio_oid='1.2.246.562.10.44207984871'
-
-*/
 truncate table [dw].[d_amos_spl_organisaatio_linkki]
 
 insert into [dw].[d_amos_spl_organisaatio_linkki]
