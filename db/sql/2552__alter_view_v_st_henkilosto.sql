@@ -8,15 +8,6 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-
-
-
-
-
-
-
-
-
 ALTER VIEW [
  as
 
@@ -243,7 +234,7 @@ FROM (
 
 		,'Yliopistokoulutus' AS sektori
 		,'Yliopistot' AS Korkeakoulusektori
-		,d2.selite_fi AS 'd_valinta_kutsumenettelylla'
+		,d2.selite_fi AS d_valinta_kutsumenettelylla
 		,-1 AS d_koulutusala02_id
 		,f.d_koulutusala_id AS d_koulutusala95_id
 		,f.d_ohjauksenala_id
