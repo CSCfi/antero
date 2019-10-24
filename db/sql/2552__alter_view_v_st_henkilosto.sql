@@ -8,8 +8,9 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-ALTER VIEW [
- as
+
+
+ALTER VIEW [dw].[v_st_henkilosto] as
 
 
 SELECT 
@@ -268,6 +269,7 @@ LEFT JOIN dw.d_ika d12 on d12.id=q.d_ika_id
 LEFT JOIN dw.d_yo_tutkijanuravaihe d13 on d13.id=q.d_tutkijanuravaihe_id
 LEFT JOIN dw.d_amk_muun_henkilokunnan_henkilostoryhma d14 on d14.id=q.d_muun_henkiloston_henkilostoryhma_id
 LEFT JOIN dw.d_amk_paatoimiset_opettajat d15 ON d15.id=q.d_amk_paatoimiset_opettajat_id
+
 
 
 
