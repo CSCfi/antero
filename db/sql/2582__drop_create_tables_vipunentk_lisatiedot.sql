@@ -1,14 +1,18 @@
 USE [VipunenTK_lisatiedot]
 GO
-ALTER TABLE [dbo].[tutkintolaji_tyollistymiseen] DROP CONSTRAINT [DF__tutkintolaji_tyollistymiseen__tietolahde]
+ALTER TABLE [dbo].[tutkintolaji_tyollistymiseen] DROP CONSTRAINT IF EXISTS [DF__tutkintolaji_tyollistymiseen__tietolahde]
 GO
-ALTER TABLE [dbo].[tutkintolaji_tyollistymiseen] DROP CONSTRAINT [DF__tutkintolaji_tyollistymiseen__paattyy]
+ALTER TABLE [dbo].[tutkintolaji_tyollistymiseen] DROP CONSTRAINT IF EXISTS [DF__tutkintolaji_tyollistymiseen__paattyy]
 GO
-ALTER TABLE [dbo].[tutkintolaji_tyollistymiseen] DROP CONSTRAINT [DF__tutkintolaji_tyollistymiseen__alkaa]
+ALTER TABLE [dbo].[tutkintolaji_tyollistymiseen] DROP CONSTRAINT IF EXISTS [DF__tutkintolaji_tyollistymiseen__alkaa]
 GO
-ALTER TABLE [dbo].[koulutuslaji3] DROP CONSTRAINT [DF__koulutusl__tieto__70547F4A]
+ALTER TABLE [dbo].[koulutuslaji3] DROP CONSTRAINT IF EXISTS [DF__koulutusl__tieto__70547F4A]
 GO
-ALTER TABLE [dbo].[koulutuslaji2] DROP CONSTRAINT [DF__koulutusl__tieto__6F605B11]
+ALTER TABLE [dbo].[koulutuslaji2] DROP CONSTRAINT IF EXISTS [DF__koulutusl__tieto__6F605B11]
+GO
+ALTER TABLE [dbo].[koulutuslaji3] DROP CONSTRAINT IF EXISTS [DF__koulutusl__tieto__0915401C]
+GO
+ALTER TABLE [dbo].[koulutuslaji2] DROP CONSTRAINT IF EXISTS [DF__koulutusl__tieto__08211BE3]
 GO
 ALTER TABLE [dbo].[koulutuslaji_okm] DROP CONSTRAINT [DF__koulutuslaji_okm__tietolahde]
 GO
