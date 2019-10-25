@@ -44,3 +44,4 @@ CREATE TABLE [dbo].[tutkinnot_ja_tutkinnonosat_valitaulu](
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 END
 GO
+USE [ANTERO]
