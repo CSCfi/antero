@@ -61,3 +61,4 @@ ALTER TABLE [dbo].[rahoituslahde_amm] ADD  CONSTRAINT [DF__rahoituslahde_amm__pa
 GO
 ALTER TABLE [dbo].[rahoituslahde_amm] ADD  CONSTRAINT [DF__rahoituslahde_amm__tietolahde]  DEFAULT ('Tilastokeskus') FOR [tietolahde]
 GO
+USE [ANTERO]
