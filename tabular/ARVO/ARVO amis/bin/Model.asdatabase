@@ -4271,63 +4271,6 @@
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
-            "name": "Keskiarvo",
-            "expression": [
-              "IF(",
-              "[ehtoFI]=TRUE()",
-              ",BLANK()",
-              ",CALCULATE(AVERAGE('Muuttujat'[numerovalinta])",
-              "--;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
-              ",Muuttujat[vastaustyyppi_keskiarvo]=1)",
-              ")"
-            ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Keskihajonta",
-            "expression": [
-              "IF(",
-              "[ehtoFI]=TRUE()",
-              ",BLANK()",
-              ",CALCULATE(STDEV.P('Muuttujat'[numerovalinta])",
-              "--;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
-              ",Muuttujat[vastaustyyppi_keskiarvo]=1)",
-              ")"
-            ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Pisteet",
-            "expression": [
-              "--IF(",
-              "--[Vastanneet_perus]=\"<5\";",
-              "--BLANK();",
-              "CALCULATE(SUM(muuttujat[numerovalinta]),Muuttujat[Koodit Rahoitusmallikysymys]=1)",
-              "--;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1))",
-              "--)"
-            ],
-            "formatString": "#,0"
-          },
-          {
-            "name": "Kyselyn kohteet",
-            "expression": [
-              "IF([ehto_Kyselyn_kohteet]=TRUE(),BLANK(),IF([Vastanneet]=\"<5\",[Vastanneet],",
-              "SUMX(",
-              "\tADDCOLUMNS(",
-              "\t\tSUMMARIZE(Muuttujat,Muuttujat[Koodit Koulutuksen järjestäjä]),",
-              "\t\t\"lkm\",CALCULATE(SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm]))",
-              "\t),",
-              "[lkm]))",
-              ")"
-            ],
-            "formatString": "#,0"
-          },
-          {
-            "name": "Vastausosuus",
-            "expression": "IF([Vastanneet]=\"<5\",blank(),DIVIDE([Vastanneet],[Kyselyn kohteet]))",
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
             "name": "Svarande",
             "expression": [
               "",
@@ -4419,17 +4362,17 @@
           },
           {
             "name": "Poäng",
-            "expression": "[Pisteet]",
+            "expression": "[Pisteet (ARVO)]",
             "formatString": "#,0"
           },
           {
             "name": "Viktade poäng",
-            "expression": "[Painotetut pisteet]",
+            "expression": "[Painotetut pisteet (ARVO)]",
             "formatString": "#,0"
           },
           {
             "name": "Svarsfrekvens",
-            "expression": "[Vastausosuus]",
+            "expression": "[Vastausosuus (ARVO)]",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
@@ -4457,7 +4400,7 @@
           },
           {
             "name": "Målgruppens storlek",
-            "expression": "IF([ehto_Kyselyn_kohteetSV]=TRUE(),BLANK(),IF([Vastanneet]=\"<5\",[Vastanneet],SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm])))",
+            "expression": "IF([ehto_Kyselyn_kohteetSV]=TRUE(),BLANK(),IF([Vastanneet (ARVO)]=\"<5\",[Vastanneet (ARVO)],SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm])))",
             "formatString": "#,0"
           },
           {
@@ -4530,38 +4473,27 @@
           },
           {
             "name": "Score",
-            "expression": "[Pisteet]",
+            "expression": "[Pisteet (ARVO)]",
             "formatString": "#,0"
           },
           {
             "name": "Weighted score",
-            "expression": "[Painotetut pisteet]",
+            "expression": "[Painotetut pisteet (ARVO)]",
             "formatString": "#,0"
           },
           {
             "name": "Size of the target group",
-            "expression": "IF([ehto_Kyselyn_kohteetEN]=TRUE(),BLANK(),IF([Vastanneet]=\"<5\",[Vastanneet],SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm])))",
+            "expression": "IF([ehto_Kyselyn_kohteetEN]=TRUE(),BLANK(),IF([Vastanneet (ARVO)]=\"<5\",[Vastanneet (ARVO)],SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm])))",
             "formatString": "#,0"
           },
           {
             "name": "Response rate",
-            "expression": "[Vastausosuus]",
+            "expression": "[Vastausosuus (ARVO)]",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
-            "name": "Painotetut pisteet %",
-            "expression": [
-              "",
-              "CALCULATE(",
-              "DIVIDE([Painotetut pisteet],",
-              "CALCULATE([Painotetut pisteet],ALLEXCEPT(Muuttujat,Muuttujat[Kyselyn kohderyhmä],Muuttujat[Rahoituskausi]))))",
-              ""
-            ],
-            "formatString": "0.00 %;-0.00 %;0.00 %"
-          },
-          {
             "name": "Viktade poäng  %",
-            "expression": " [Painotetut pisteet %]",
+            "expression": " [Painotetut pisteet % (ARVO)]",
             "formatString": "0.00 %;-0.00 %;0.00 %"
           },
           {
@@ -4643,18 +4575,6 @@
               "+IF(NOT(ISFILTERED([Monivalintavaihtoehto])),-1,0) --tämä mukaan jos haluaa subtotalin näkyviin"
             ],
             "isHidden": true
-          },
-          {
-            "name": "Vastanneet",
-            "expression": [
-              "",
-              "var vastanneet_ei_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[Kiusaamiskysymys]=0)",
-              "var vastanneet_kius = CALCULATE([Vastanneet_kius],Muuttujat[Kiusaamiskysymys]=1)",
-              "var summa = CALCULATE(vastanneet_ei_kius+vastanneet_kius)",
-              "",
-              "return IF(AND(summa<5,summa>0),\"<5\",summa)"
-            ],
-            "formatString": "#,0"
           },
           {
             "name": "Vastanneet_kius_checkSV",
@@ -4775,30 +4695,8 @@
             "isHidden": true
           },
           {
-            "name": "Painotetut pisteet",
-            "expression": [
-              "",
-              "var taulu = ADDCOLUMNS(",
-              "\t\tSUMMARIZE(Muuttujat,[Koodit Koulutuksen järjestäjä]) \t",
-              "\t\t,\"pisteet1\", CALCULATE(SUM([numerovalinta]),Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
-              "\t\t,\"pisteet2\", 3 * CALCULATE(SUM([numerovalinta]),Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
-              "\t\t,\"pisteet3\" ,CALCULATE(SUM([numerovalinta]),Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
-              "\t\t,\"kato1\",CALCULATE(IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide]),Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1)\t\t\t\t",
-              "\t\t,\"kato2\",CALCULATE(IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide]),Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1)\t\t\t\t",
-              "\t\t,\"kato3\",CALCULATE(IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide]),Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1)",
-              "\t )",
-              "var painotettu1 = SUMX(taulu, [kato1]* [pisteet1])",
-              "var painotettu2 = SUMX(taulu, [kato2] * [pisteet2])",
-              "var painotettu3 = SUMX(taulu, [kato3] * [pisteet3])",
-              "var painotettu = painotettu1 + painotettu2 + painotettu3",
-              "return painotettu",
-              ""
-            ],
-            "formatString": "#,0"
-          },
-          {
             "name": "Weighted score %",
-            "expression": " [Painotetut pisteet %]",
+            "expression": " [Painotetut pisteet % (ARVO)]",
             "formatString": "0.00 %;-0.00 %;0.00 %"
           },
           {
@@ -4869,23 +4767,127 @@
             "formatString": "#,0"
           },
           {
-            "name": "Vahvistetut vastanneet yhteensä",
+            "name": "Keskiarvo",
             "expression": [
-              " var taulu =ADDCOLUMNS(SUMMARIZE(Muuttujat,[Kyselyn kohderyhmä],[Koodit Koulutuksen järjestäjä]),\"Vahvistetut vastanneet nimi\",CALCULATE(AVERAGE([Vahvistetut vastanneet])))",
+              "IF(",
+              "[ehtoFI]=TRUE()",
+              ",BLANK()",
+              ",CALCULATE(AVERAGE('Muuttujat'[numerovalinta])",
+              "--;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
+              ",Muuttujat[vastaustyyppi_keskiarvo]=1)",
+              ")"
+            ],
+            "formatString": "0.0"
+          },
+          {
+            "name": "Keskihajonta",
+            "expression": [
+              "IF(",
+              "[ehtoFI]=TRUE()",
+              ",BLANK()",
+              ",CALCULATE(STDEV.P('Muuttujat'[numerovalinta])",
+              "--;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
+              ",Muuttujat[vastaustyyppi_keskiarvo]=1)",
+              ")"
+            ],
+            "formatString": "0.0"
+          },
+          {
+            "name": "Pisteet (ARVO)",
+            "expression": [
+              "--IF(",
+              "--[Vastanneet_perus]=\"<5\";",
+              "--BLANK();",
+              "CALCULATE(SUM(muuttujat[numerovalinta]),Muuttujat[Koodit Rahoitusmallikysymys]=1)",
+              "--;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1))",
+              "--)"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Kyselyn kohteet (ARVO)",
+            "expression": [
+              "IF([ehto_Kyselyn_kohteet]=TRUE(),BLANK(),IF([Vastanneet (ARVO)]=\"<5\",[Vastanneet (ARVO)],",
+              "SUMX(",
+              "\tADDCOLUMNS(",
+              "\t\tSUMMARIZE(Muuttujat,Muuttujat[Koodit Koulutuksen järjestäjä]),",
+              "\t\t\"lkm\",CALCULATE(SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm]))",
+              "\t),",
+              "[lkm]))",
+              ")"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Vastausosuus (ARVO)",
+            "expression": "IF([Vastanneet (ARVO)]=\"<5\",blank(),DIVIDE([Vastanneet (ARVO)],[Kyselyn kohteet (ARVO)]))",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Painotetut pisteet % (ARVO)",
+            "expression": [
+              "",
+              "CALCULATE(",
+              "DIVIDE([Painotetut pisteet (ARVO)],",
+              "CALCULATE([Painotetut pisteet (ARVO)],ALLEXCEPT(Muuttujat,Muuttujat[Kyselyn kohderyhmä],Muuttujat[Rahoituskausi]))))",
+              ""
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %"
+          },
+          {
+            "name": "Vastanneet (ARVO)",
+            "expression": [
+              "",
+              "var vastanneet_ei_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[Kiusaamiskysymys]=0)",
+              "var vastanneet_kius = CALCULATE([Vastanneet_kius],Muuttujat[Kiusaamiskysymys]=1)",
+              "var summa = CALCULATE(vastanneet_ei_kius+vastanneet_kius)",
+              "",
+              "return IF(AND(summa<5,summa>0),\"<5\",summa)"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Painotetut pisteet (ARVO)",
+            "expression": [
+              "",
+              "var taulu = ADDCOLUMNS(",
+              "\t\tSUMMARIZE(Muuttujat,[Koodit Koulutuksen järjestäjä]) \t",
+              "\t\t,\"pisteet1\", CALCULATE(SUM([numerovalinta]),Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
+              "\t\t,\"pisteet2\", 3 * CALCULATE(SUM([numerovalinta]),Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
+              "\t\t,\"pisteet3\" ,CALCULATE(SUM([numerovalinta]),Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
+              "\t\t,\"kato1\",CALCULATE(IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide]),Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1)\t\t\t\t",
+              "\t\t,\"kato2\",CALCULATE(IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide]),Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1)\t\t\t\t",
+              "\t\t,\"kato3\",CALCULATE(IF([Vastausosuus_nohide]  >=  0.8, DIVIDE(1,[Vastausosuus_nohide]),1 + (15/16) * [Vastausosuus_nohide] - (25/32) * [Vastausosuus_nohide] * [Vastausosuus_nohide]),Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1)",
+              "\t )",
+              "var painotettu1 = SUMX(taulu, [kato1]* [pisteet1])",
+              "var painotettu2 = SUMX(taulu, [kato2] * [pisteet2])",
+              "var painotettu3 = SUMX(taulu, [kato3] * [pisteet3])",
+              "var painotettu = painotettu1 + painotettu2 + painotettu3",
+              "return painotettu",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Vastanneet (OPH)",
+            "expression": [
+              " ",
+              "var taulu =ADDCOLUMNS(SUMMARIZE(Muuttujat,[Kyselyn kohderyhmä],[Koodit Koulutuksen järjestäjä]),\"Vahvistetut vastanneet nimi\",CALCULATE(AVERAGE([Vahvistetut vastanneet])))",
               "return SUMX(taulu,[Vahvistetut vastanneet nimi])"
             ],
             "formatString": "#,0"
           },
           {
-            "name": "Vahvistetut kyselyn kohteena olleet yhteensä",
+            "name": "Kyselyn kohteet (OPH)",
             "expression": [
-              " var taulu =ADDCOLUMNS(SUMMARIZE(Muuttujat,[Kyselyn kohderyhmä],[Koodit Koulutuksen järjestäjä]),\"[Vahvistetut kyselyn kohteena olleet nimi\",CALCULATE(AVERAGE([Vahvistetut kyselyn kohteena olleet])))",
+              " ",
+              "var taulu =ADDCOLUMNS(SUMMARIZE(Muuttujat,[Kyselyn kohderyhmä],[Koodit Koulutuksen järjestäjä]),\"[Vahvistetut kyselyn kohteena olleet nimi\",CALCULATE(AVERAGE([Vahvistetut kyselyn kohteena olleet])))",
               "return SUMX(taulu,[[Vahvistetut kyselyn kohteena olleet nimi])"
             ],
             "formatString": "#,0"
           },
           {
-            "name": "Katokorjauskerroin",
+            "name": "Korjauskerroin (ARVO)",
             "expression": [
               "",
               "--var taulu = ADDCOLUMNS(",
@@ -4901,34 +4903,35 @@
             "formatString": "0.00"
           },
           {
-            "name": "Vahvistettujen vastausosuus",
-            "expression": "DIVIDE([Vahvistetut vastanneet yhteensä],[Vahvistetut kyselyn kohteena olleet yhteensä])",
+            "name": "Vastausosuus (OPH)",
+            "expression": "DIVIDE([Vastanneet (OPH)],[Kyselyn kohteet (OPH)])",
             "formatString": "0.00 %;-0.00 %;0.00 %"
           },
           {
-            "name": "Pisteiden laskennassa käytetyt vastanneet",
+            "name": "Vastanneet (Rahoitus)",
             "expression": [
-              " var taulu =ADDCOLUMNS(SUMMARIZE(Muuttujat,[Kyselyn kohderyhmä],[Koodit Koulutuksen järjestäjä]),\"Pisteiden laskennassa käytetyt vastanneet nimi\",CALCULATE(IF([Vastanneet]>=[Vahvistetut vastanneet yhteensä],[Vahvistetut vastanneet yhteensä],[Vastanneet])))",
+              " ",
+              "var taulu =ADDCOLUMNS(SUMMARIZE(Muuttujat,[Kyselyn kohderyhmä],[Koodit Koulutuksen järjestäjä]),\"Pisteiden laskennassa käytetyt vastanneet nimi\",CALCULATE(IF([Vastanneet_s]>=[Vastanneet (OPH)],[Vastanneet (OPH)],[Vastanneet_s])))",
               "return SUMX(taulu,[Pisteiden laskennassa käytetyt vastanneet nimi])"
             ],
             "formatString": "#,0"
           },
           {
-            "name": "Pisteiden laskussa käytetyt kyselyn kohteena olleet",
-            "expression": " [Vahvistetut kyselyn kohteena olleet yhteensä]",
+            "name": "Kyselyn kohteet (Rahoitus)",
+            "expression": " [Kyselyn kohteet (OPH)]",
             "formatString": "#,0"
           },
           {
-            "name": "Pisteiden laskennassa käytetty vastausosuus",
-            "expression": "DIVIDE([Pisteiden laskennassa käytetyt vastanneet],[Pisteiden laskussa käytetyt kyselyn kohteena olleet])",
+            "name": "Vastausosuus (Rahoitus)",
+            "expression": "DIVIDE([Vastanneet (Rahoitus)],[Kyselyn kohteet (Rahoitus)])",
             "formatString": "0 %;-0 %;0 %"
           },
           {
-            "name": "Pisteiden laskennassa käytetty vastaajamäärä",
-            "expression": "IF([Vastanneet]>[Vahvistetut vastanneet yhteensä],\"Vahvistetut\", IF([Vastanneet]<[Vahvistetut vastanneet yhteensä],\"Vastanneet\", \"Sama\"))"
+            "name": "Vastaajamäärä (Rahoitus)",
+            "expression": "IF([Vastanneet_s]>[Vastanneet (OPH)],\"Vastanneet (OPH)\", IF([Vastanneet (ARVO)]<[Vastanneet (OPH)],\"Vastanneet (ARVO)\", \"Sama\"))"
           },
           {
-            "name": "Pisteiden laskennassa käytetty katokorjauskerroin",
+            "name": "Korjauskerroin (Rahoitus)",
             "expression": [
               "",
               "--var taulu = ADDCOLUMNS(",
@@ -4938,23 +4941,23 @@
               "",
               "--var kato = SUMX(taulu; IF([osuus] >= 0,8; DIVIDE(1; [osuus]); 1 + (15/16) * [osuus] - (25/32) * [osuus] * [osuus]))",
               "--return kato",
-              "CALCULATE(IF([Pisteiden laskennassa käytetty vastausosuus]  >=  0.8, DIVIDE(1,[Pisteiden laskennassa käytetty vastausosuus]),1 + (15/16) * [Pisteiden laskennassa käytetty vastausosuus] - (25/32) * [Pisteiden laskennassa käytetty vastausosuus] * [Pisteiden laskennassa käytetty vastausosuus]),Muuttujat[Koodit Rahoitusmallikysymys]=1)",
+              "CALCULATE(IF([Vastausosuus (Rahoitus)]  >=  0.8, DIVIDE(1,[Vastausosuus (Rahoitus)]),1 + (15/16) * [Vastausosuus (Rahoitus)] - (25/32) * [Vastausosuus (Rahoitus)] * [Vastausosuus (Rahoitus)]),Muuttujat[Koodit Rahoitusmallikysymys]=1)",
               ""
             ],
             "formatString": "0.00"
           },
           {
-            "name": "Pisteiden laskennasta saadut painotetut pisteet",
+            "name": "Painotetut pisteet (Rahoitus)",
             "expression": [
               "",
               "var taulu = ADDCOLUMNS(",
               "\t\tSUMMARIZE(Muuttujat,[Koodit Koulutuksen järjestäjä]) \t",
-              "\t\t,\"pisteet1\", CALCULATE(IF([Vastanneet_s]>[Vahvistetut vastanneet yhteensä],SUM([numerovalinta])*(DIVIDE([Vahvistetut vastanneet yhteensä],[Vastanneet_s])),SUM([numerovalinta])),Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
-              "\t\t,\"pisteet2\", 3 * CALCULATE(IF([Vastanneet_s]>[Vahvistetut vastanneet yhteensä],SUM([numerovalinta])*(DIVIDE([Vahvistetut vastanneet yhteensä],[Vastanneet_s])),SUM([numerovalinta])),Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
-              "\t\t,\"pisteet3\" ,CALCULATE(IF([Vastanneet_s]>[Vahvistetut vastanneet yhteensä],SUM([numerovalinta])*(DIVIDE([Vahvistetut vastanneet yhteensä],[Vastanneet_s])),SUM([numerovalinta])),Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
-              "\t\t,\"kato1\",CALCULATE(IF([Pisteiden laskennassa käytetty vastausosuus]  >=  0.8, DIVIDE(1,[Pisteiden laskennassa käytetty vastausosuus]),1 + (15/16) * [Pisteiden laskennassa käytetty vastausosuus] - (25/32) * [Pisteiden laskennassa käytetty vastausosuus] * [Pisteiden laskennassa käytetty vastausosuus]),Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1)\t\t\t\t",
-              "\t\t,\"kato2\",CALCULATE(IF([Pisteiden laskennassa käytetty vastausosuus]  >=  0.8, DIVIDE(1,[Pisteiden laskennassa käytetty vastausosuus]),1 + (15/16) * [Pisteiden laskennassa käytetty vastausosuus] - (25/32) * [Pisteiden laskennassa käytetty vastausosuus] * [Pisteiden laskennassa käytetty vastausosuus]),Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1)\t\t\t\t",
-              "\t\t,\"kato3\",CALCULATE(IF([Pisteiden laskennassa käytetty vastausosuus]  >=  0.8, DIVIDE(1,[Pisteiden laskennassa käytetty vastausosuus]),1 + (15/16) * [Pisteiden laskennassa käytetty vastausosuus] - (25/32) * [Pisteiden laskennassa käytetty vastausosuus] * [Pisteiden laskennassa käytetty vastausosuus]),Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1)",
+              "\t\t,\"pisteet1\", CALCULATE(IF([Vastanneet_s]>[Vastanneet (OPH)],SUM([numerovalinta])*(DIVIDE([Vastanneet (OPH)],[Vastanneet_s])),SUM([numerovalinta])),Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
+              "\t\t,\"pisteet2\", 3 * CALCULATE(IF([Vastanneet_s]>[Vastanneet (OPH)],SUM([numerovalinta])*(DIVIDE([Vastanneet (OPH)],[Vastanneet_s])),SUM([numerovalinta])),Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
+              "\t\t,\"pisteet3\" ,CALCULATE(IF([Vastanneet_s]>[Vastanneet (OPH)],SUM([numerovalinta])*(DIVIDE([Vastanneet (OPH)],[Vastanneet_s])),SUM([numerovalinta])),Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
+              "\t\t,\"kato1\",CALCULATE(IF([Vastausosuus (Rahoitus)]  >=  0.8, DIVIDE(1,[Vastausosuus (Rahoitus)]),1 + (15/16) * [Vastausosuus (Rahoitus)] - (25/32) * [Vastausosuus (Rahoitus)] * [Vastausosuus (Rahoitus)]),Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1)\t\t\t\t",
+              "\t\t,\"kato2\",CALCULATE(IF([Vastausosuus (Rahoitus)]  >=  0.8, DIVIDE(1,[Vastausosuus (Rahoitus)]),1 + (15/16) * [Vastausosuus (Rahoitus)] - (25/32) * [Vastausosuus (Rahoitus)] * [Vastausosuus (Rahoitus)]),Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1)\t\t\t\t",
+              "\t\t,\"kato3\",CALCULATE(IF([Vastausosuus (Rahoitus)]  >=  0.8, DIVIDE(1,[Vastausosuus (Rahoitus)]),1 + (15/16) * [Vastausosuus (Rahoitus)] - (25/32) * [Vastausosuus (Rahoitus)] * [Vastausosuus (Rahoitus)]),Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1)",
               "\t )",
               "var painotettu1 = SUMX(taulu, [kato1]* [pisteet1])",
               "var painotettu2 = SUMX(taulu, [kato2] * [pisteet2])",
@@ -4966,28 +4969,86 @@
             "formatString": "#,0"
           },
           {
-            "name": "Pisteiden laskennasta saadut painotetut pisteet %",
+            "name": "Painotetut pisteet % (Rahoitus)",
             "expression": [
               "",
               "CALCULATE(",
-              "DIVIDE([Pisteiden laskennasta saadut painotetut pisteet],",
-              "CALCULATE([Pisteiden laskennasta saadut painotetut pisteet],ALLEXCEPT(Muuttujat,Muuttujat[Kyselyn kohderyhmä],Muuttujat[Rahoituskausi]))))",
+              "DIVIDE([Painotetut pisteet (Rahoitus)],",
+              "CALCULATE([Painotetut pisteet (Rahoitus)],ALLEXCEPT(Muuttujat,Muuttujat[Kyselyn kohderyhmä],Muuttujat[Rahoituskausi],Muuttujat[Kysely]))))",
               ""
             ],
             "formatString": "0.00 %;-0.00 %;0.00 %"
           },
           {
-            "name": "Pisteiden laskennassa käytetyt pisteet",
+            "name": "Pisteet (Rahoitus)",
             "expression": [
-              "--IF(",
-              "--[Vastanneet_perus]=\"<5\";",
-              "--BLANK();",
               "",
-              "--;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1))",
-              "--)",
-              "CALCULATE(IF([Vastanneet_s]>[Vahvistetut vastanneet yhteensä],SUM([numerovalinta])*(DIVIDE([Vahvistetut vastanneet yhteensä],[Vastanneet_s])),SUM([numerovalinta])),VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1)"
+              "var taulu = ADDCOLUMNS(SUMMARIZE(FILTER(Muuttujat,[Koodit Rahoitusmallikysymys]=1),",
+              "                        [Kyselyn kohderyhmä],",
+              "                        [Koodit Koulutuksen järjestäjä]),",
+              "                        \"Vahvistetut vastanneet nimi\", CALCULATE(AVERAGE(Muuttujat[Vahvistetut vastanneet]), VALUES(Muuttujat[Kyselyn kohderyhmä])),",
+              "                        \"Apumittari\", CALCULATE([Vastanneet_s], VALUES(Muuttujat[Kyselyn kohderyhmä])),",
+              "                        \"Numerosumma\", CALCULATE(SUM([numerovalinta]), VALUES(Muuttujat[Kyselyn kohderyhmä]))",
+              "                    )",
+              "                    ",
+              "                    return SUMX(taulu,IF([Apumittari] > [Vahvistetut vastanneet nimi],",
+              "                     [Numerosumma] * DIVIDE([Vahvistetut vastanneet nimi], [Apumittari]),",
+              "                     [Numerosumma] ",
+              "                    )",
+              "            )",
+              ""
             ],
             "formatString": "#,0"
+          },
+          {
+            "name": "Keskiarvo (Rahoitus)",
+            "expression": [
+              "CALCULATE(AVERAGE('Muuttujat'[numerovalinta])",
+              "--;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
+              ",Muuttujat[vastaustyyppi_keskiarvo]=1)",
+              ""
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "Keskihajonta (Rahoitus)",
+            "expression": [
+              "CALCULATE(STDEV.P('Muuttujat'[numerovalinta])",
+              "--;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
+              ",Muuttujat[vastaustyyppi_keskiarvo]=1)",
+              ""
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "Vastanneet",
+            "expression": [
+              "",
+              "var vastanneet_ei_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[Kiusaamiskysymys]=0)",
+              "var vastanneet_kius = CALCULATE([Vastanneet_kius],Muuttujat[Kiusaamiskysymys]=1)",
+              "var summa = CALCULATE(vastanneet_ei_kius+vastanneet_kius)",
+              "",
+              "return IF(AND(summa<5,summa>0),\"<5\",summa)",
+              ""
+            ]
+          },
+          {
+            "name": "Kyselyn kohteet",
+            "expression": [
+              "IF([ehto_Kyselyn_kohteet]=TRUE(),BLANK(),IF([Vastanneet (ARVO)]=\"<5\",[Vastanneet (ARVO)],",
+              "SUMX(",
+              "\tADDCOLUMNS(",
+              "\t\tSUMMARIZE(Muuttujat,Muuttujat[Koodit Koulutuksen järjestäjä]),",
+              "\t\t\"lkm\",CALCULATE(SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm]))",
+              "\t),",
+              "[lkm]))",
+              ")",
+              ""
+            ]
+          },
+          {
+            "name": "Vastausosuus",
+            "expression": "IF([Vastanneet (ARVO)]=\"<5\",blank(),DIVIDE([Vastanneet (ARVO)],[Kyselyn kohteet (ARVO)]))"
           }
         ],
         "annotations": [
@@ -8939,19 +9000,19 @@
             ],
             "measures": [
               {
+                "name": "NPS"
+              },
+              {
                 "name": "Keskiarvo"
               },
               {
-                "name": "Pisteet"
+                "name": "Pisteet (ARVO)"
               },
               {
                 "name": "Keskihajonta"
               },
               {
-                "name": "NPS"
-              },
-              {
-                "name": "Katokorjauskerroin"
+                "name": "Kyselyn kohteet"
               },
               {
                 "name": "Vastanneet"
@@ -9380,25 +9441,25 @@
                 "name": "5 pistettä lkm"
               },
               {
+                "name": "NPS"
+              },
+              {
                 "name": "Keskiarvo"
               },
               {
-                "name": "Pisteet"
+                "name": "Pisteet (ARVO)"
               },
               {
                 "name": "Keskihajonta"
               },
               {
-                "name": "NPS"
+                "name": "Kyselyn kohteet (ARVO)"
               },
               {
-                "name": "Kyselyn kohteet"
+                "name": "Korjauskerroin (ARVO)"
               },
               {
-                "name": "Katokorjauskerroin"
-              },
-              {
-                "name": "Vastanneet"
+                "name": "Vastanneet (ARVO)"
               }
             ]
           },
@@ -9887,70 +9948,70 @@
                 "name": "5 pistettä lkm"
               },
               {
-                "name": "Keskiarvo"
-              },
-              {
-                "name": "Keskihajonta"
-              },
-              {
-                "name": "Kyselyn kohteet"
-              },
-              {
                 "name": "NPS"
-              },
-              {
-                "name": "Painotetut pisteet %"
-              },
-              {
-                "name": "Pisteet"
-              },
-              {
-                "name": "Vastanneet"
-              },
-              {
-                "name": "Vastausosuus"
-              },
-              {
-                "name": "Painotetut pisteet"
-              },
-              {
-                "name": "Vahvistetut vastanneet yhteensä"
-              },
-              {
-                "name": "Vahvistetut kyselyn kohteena olleet yhteensä"
-              },
-              {
-                "name": "Katokorjauskerroin"
-              },
-              {
-                "name": "Vahvistettujen vastausosuus"
-              },
-              {
-                "name": "Pisteiden laskennassa käytetty katokorjauskerroin"
-              },
-              {
-                "name": "Pisteiden laskennassa käytetty vastausosuus"
-              },
-              {
-                "name": "Pisteiden laskennassa käytetyt vastanneet"
-              },
-              {
-                "name": "Pisteiden laskussa käytetyt kyselyn kohteena olleet"
-              },
-              {
-                "name": "Pisteiden laskennasta saadut painotetut pisteet %"
-              },
-              {
-                "name": "Pisteiden laskennasta saadut painotetut pisteet"
-              },
-              {
-                "name": "Pisteiden laskennassa käytetty vastaajamäärä"
               },
               {
                 "name": "Pisteet yhteensä %"
               },
               {
-                "name": "Pisteiden laskennassa käytetyt pisteet"
+                "name": "Kyselyn kohteet (ARVO)"
+              },
+              {
+                "name": "Painotetut pisteet % (ARVO)"
+              },
+              {
+                "name": "Pisteet (ARVO)"
+              },
+              {
+                "name": "Vastanneet (ARVO)"
+              },
+              {
+                "name": "Vastausosuus (ARVO)"
+              },
+              {
+                "name": "Painotetut pisteet (ARVO)"
+              },
+              {
+                "name": "Vastanneet (OPH)"
+              },
+              {
+                "name": "Kyselyn kohteet (OPH)"
+              },
+              {
+                "name": "Korjauskerroin (ARVO)"
+              },
+              {
+                "name": "Vastausosuus (OPH)"
+              },
+              {
+                "name": "Korjauskerroin (Rahoitus)"
+              },
+              {
+                "name": "Vastausosuus (Rahoitus)"
+              },
+              {
+                "name": "Vastanneet (Rahoitus)"
+              },
+              {
+                "name": "Kyselyn kohteet (Rahoitus)"
+              },
+              {
+                "name": "Painotetut pisteet % (Rahoitus)"
+              },
+              {
+                "name": "Painotetut pisteet (Rahoitus)"
+              },
+              {
+                "name": "Vastaajamäärä (Rahoitus)"
+              },
+              {
+                "name": "Pisteet (Rahoitus)"
+              },
+              {
+                "name": "Keskiarvo (Rahoitus)"
+              },
+              {
+                "name": "Keskihajonta (Rahoitus)"
               }
             ]
           },
