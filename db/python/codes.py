@@ -32,6 +32,10 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False):
   #show("empty sa_koodistot")
   #dboperator.empty("sa_koodistot")
 
+  reqheaders = {'Content-Type': 'application/json'}
+  reqheaders['Accept'] = 'application/json'
+  reqheaders['Caller-Id'] = '1.2.246.562.10.2013112012294919827487.vipunen'
+
   url = url % codeset
   address = hostname+url
   if secure:
@@ -41,7 +45,8 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False):
     show("load from "+address)
     httpconn = httplib.HTTPConnection(hostname)
 
-  httpconn.request('GET', url)
+  httpconn.request('GET', url, reqheaders)
+  #httpconn.request('GET', url)
   r = httpconn.getresponse()
   j = json.loads(r.read())
   cnt = 0
