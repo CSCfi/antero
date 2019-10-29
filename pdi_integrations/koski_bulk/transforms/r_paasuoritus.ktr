@@ -101,12 +101,13 @@
   </connection>
   <order>
   <hop> <from>JSON Hae tutkinto_koodi</from><to>JSON osaamisala_koodiarvo</to><enabled>Y</enabled> </hop>
-  <hop> <from>JSON osaamisala_koodiarvo</from><to>r_paasuoritus csv to sql server</to><enabled>Y</enabled> </hop>
   <hop> <from>Konvertoi boolean integeriksi</from><to>JSON Hae tutkinto_koodi</to><enabled>Y</enabled> </hop>
   <hop> <from>Lis&#xe4;&#xe4; imp_created</from><to>Konvertoi boolean integeriksi</to><enabled>Y</enabled> </hop>
   <hop> <from>r_paasuoritus csv to sql server</from><to>Dummy &#x28;do nothing&#x29;</to><enabled>Y</enabled> </hop>
   <hop> <from>r_paatason_suoritus</from><to>Get Variables</to><enabled>Y</enabled> </hop>
   <hop> <from>Get Variables</from><to>Lis&#xe4;&#xe4; imp_created</to><enabled>Y</enabled> </hop>
+  <hop> <from>JSON osaamisala_koodiarvo</from><to>JSON suorituskieli_koodiarvo</to><enabled>Y</enabled> </hop>
+  <hop> <from>JSON suorituskieli_koodiarvo</from><to>r_paasuoritus csv to sql server</to><enabled>Y</enabled> </hop>
   </order>
   <step>
     <name>Dummy &#x28;do nothing&#x29;</name>
@@ -122,7 +123,7 @@
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
       <xloc>336</xloc>
-      <yloc>560</yloc>
+      <yloc>608</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
@@ -301,6 +302,70 @@
     </step>
 
   <step>
+    <name>JSON suorituskieli_koodiarvo</name>
+    <type>JsonInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+         <partitioning>
+           <method>none</method>
+           <schema_name/>
+           </partitioning>
+    <include>N</include>
+    <include_field/>
+    <rownum>N</rownum>
+    <addresultfile>N</addresultfile>
+    <readurl>N</readurl>
+    <removeSourceField>N</removeSourceField>
+    <IsIgnoreEmptyFile>Y</IsIgnoreEmptyFile>
+    <doNotFailIfNoFile>Y</doNotFailIfNoFile>
+    <ignoreMissingPath>Y</ignoreMissingPath>
+    <defaultPathLeafToNull>N</defaultPathLeafToNull>
+    <rownum_field/>
+    <file>
+      <name/>
+      <filemask/>
+      <exclude_filemask/>
+      <file_required>N</file_required>
+      <include_subfolders>N</include_subfolders>
+    </file>
+    <fields>
+      <field>
+        <name>suorituskieli_koodiarvo</name>
+        <path>&#x24;..suorituskieli.koodiarvo</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+    </fields>
+    <limit>0</limit>
+    <IsInFields>Y</IsInFields>
+    <IsAFile>N</IsAFile>
+    <valueField>data</valueField>
+    <shortFileFieldName/>
+    <pathFieldName/>
+    <hiddenFieldName/>
+    <lastModificationTimeFieldName/>
+    <uriNameFieldName/>
+    <rootUriNameFieldName/>
+    <extensionFieldName/>
+    <sizeFieldName/>
+     <cluster_schema/>
+ <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
+      <xloc>336</xloc>
+      <yloc>464</yloc>
+      <draw>Y</draw>
+      </GUI>
+    </step>
+
+  <step>
     <name>Konvertoi boolean integeriksi</name>
     <type>SelectValues</type>
     <description/>
@@ -447,7 +512,7 @@
            <method>none</method>
            <schema_name/>
            </partitioning>
-    <separator>&#x7c;&#x7c;</separator>
+    <separator>&#x7c;&#x7e;</separator>
     <enclosure/>
     <enclosure_forced>N</enclosure_forced>
     <enclosure_fix_disabled>N</enclosure_fix_disabled>
@@ -696,6 +761,18 @@
         <precision>-1</precision>
       </field>
       <field>
+        <name>suorituskieli_koodiarvo</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+      <field>
         <name>imp_created</name>
         <type>Date</type>
         <format/>
@@ -735,7 +812,7 @@
      <cluster_schema/>
  <remotesteps>   <input>   </input>   <output>   </output> </remotesteps>    <GUI>
       <xloc>336</xloc>
-      <yloc>480</yloc>
+      <yloc>544</yloc>
       <draw>Y</draw>
       </GUI>
     </step>
