@@ -529,11 +529,10 @@ FROM     dbo.f_aloittaneiden_lapaisy f LEFT JOIN
 			dbo.d_oppilaitoksen_taustatiedot AS d13 ON d13.id = f.oppilaitoksen_taustatiedot_id LEFT JOIN
 			dbo.d_oppilaitoksen_taustatiedot AS d14 ON d14.id = f.saavutettu_oppilaitoksen_taustatiedot_id
 WHERE        (f.aineistokoodi = 'K3.10') AND (d10.lahde_koodi = 51) AND (d17.tarkastelujakso <> '0,5 vuotta') AND (d1.lukuvuosi <> '1999/2000') AND (d1.lukuvuosi <> '2000/2001') AND (d6.koulutuslaji2_koodi <> '52') AND 
-                         (f.[1a Aloittaneiden opintojen kulku koulutuslajin mukaan prioriteettina mikä tahansa tutkinto] <> 'Virhetilanne');
+                         (f.[1a Aloittaneiden opintojen kulku koulutuslajin mukaan prioriteettina mikä tahansa tutkinto] <> 'Virhetilanne')
 
-
-USE ANTERO		
-			
+GO
+USE [ANTERO]					
 
 
 
