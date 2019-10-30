@@ -5,6 +5,7 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
+
 ALTER PROCEDURE [dw].[p_lataa_d_organisaatioluokitus_historia] AS
 if not exists (select * from dw.d_organisaatioluokitus_historia where id=-1) begin
   set identity_insert dw.d_organisaatioluokitus_historia on;
