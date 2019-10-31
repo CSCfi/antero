@@ -4928,7 +4928,7 @@
           },
           {
             "name": "Vastaajamäärä (Rahoitus)",
-            "expression": "IF([Vastanneet_s]>[Vastanneet (OPH)],\"Vastanneet (OPH)\", IF([Vastanneet (Arvo)]<[Vastanneet (OPH)],\"Vastanneet (ARVO)\", \"Sama\"))"
+            "expression": "IF([Vastanneet_s]>[Vastanneet (OPH)],\"Vastanneet (OPH)\", IF([Vastanneet (Arvo)]<[Vastanneet (OPH)],\"Vastanneet (Arvo)\", \"Sama\"))"
           },
           {
             "name": "Korjauskerroin (Rahoitus)",
@@ -4941,7 +4941,7 @@
               "",
               "--var kato = SUMX(taulu; IF([osuus] >= 0,8; DIVIDE(1; [osuus]); 1 + (15/16) * [osuus] - (25/32) * [osuus] * [osuus]))",
               "--return kato",
-              "IF(not(isfiltered('Muuttujat'[Koulutuksen järjestäjä])), blank(), CALCULATE(IF([Vastausosuus (Rahoitus)]  >=  0.8, DIVIDE(1,[Vastausosuus (Rahoitus)]),1 + (15/16) * [Vastausosuus (Rahoitus)] - (25/32) * [Vastausosuus (Rahoitus)] * [Vastausosuus (Rahoitus)]),Muuttujat[Koodit Rahoitusmallikysymys]=1))"
+              "IF([Vastanneet (Rahoitus)]=BLANK(),BLANK(),IF(not(isfiltered('Muuttujat'[Koulutuksen järjestäjä])), blank(), CALCULATE(IF([Vastausosuus (Rahoitus)]  >=  0.8, DIVIDE(1,[Vastausosuus (Rahoitus)]),1 + (15/16) * [Vastausosuus (Rahoitus)] - (25/32) * [Vastausosuus (Rahoitus)] * [Vastausosuus (Rahoitus)]),Muuttujat[Koodit Rahoitusmallikysymys]=1)))"
             ],
             "formatString": "0.00"
           },
@@ -5002,9 +5002,9 @@
           {
             "name": "Keskiarvo (Rahoitus)",
             "expression": [
-              "CALCULATE(AVERAGE('Muuttujat'[numerovalinta])",
+              "IF([Vastanneet (Rahoitus)]=BLANK(),BLANK(),CALCULATE(AVERAGE('Muuttujat'[numerovalinta])",
               "--;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
-              ",Muuttujat[vastaustyyppi_keskiarvo]=1)",
+              ",Muuttujat[vastaustyyppi_keskiarvo]=1))",
               ""
             ],
             "formatString": "0.00"
@@ -5012,9 +5012,9 @@
           {
             "name": "Keskihajonta (Rahoitus)",
             "expression": [
-              "CALCULATE(STDEV.P('Muuttujat'[numerovalinta])",
+              "IF([Vastanneet (Rahoitus)]=BLANK(),BLANK(),CALCULATE(STDEV.P('Muuttujat'[numerovalinta])",
               "--;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
-              ",Muuttujat[vastaustyyppi_keskiarvo]=1)",
+              ",Muuttujat[vastaustyyppi_keskiarvo]=1))",
               ""
             ],
             "formatString": "0.00"
