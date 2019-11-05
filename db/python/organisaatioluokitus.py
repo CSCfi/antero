@@ -207,9 +207,10 @@ def get_and_set_coordinates(row):
           insert_coordinates_to_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"], latitude, longitude, api_result_confidence)
       else:  # STATUS == NOK
         try:
-            print "Error:", geocoding_api_answer["RESULT"].encode('utf-8', 'ignore')
+            geo_error = geocoding_api_answer["RESULT"].encode('utf-8', 'ignore')
+            print "Error:", geo_error
         except AttributeError:
-            print "Error:", geocoding_api_answer["RESULT"]
+            print "AttributeError with geocoding_api_answer result"
 
 def load(secure,hostname,url,schema,table,verbose=False):
   if verbose: show("begin")
