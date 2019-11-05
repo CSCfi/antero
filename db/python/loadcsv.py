@@ -27,7 +27,7 @@ def load(secure,hostname,url,schema,table,verbose):
     address = "http://"+hostname+url
 
   #""" load from web
-  reqheaders = {'Caller-Id' = '1.2.246.562.10.2013112012294919827487.vipunen'}
+  reqheaders = {'Caller-Id': '1.2.246.562.10.2013112012294919827487.vipunen'}
   show("load from "+address)
   try:
     response = requests.get(address, headers=reqheaders)
