@@ -25,11 +25,13 @@ def load(secure,hostname,url,schema,table,verbose):
     address = "https://"+hostname+url
   else:
     address = "http://"+hostname+url
-  
+
   #""" load from web
+  reqheaders = {'Caller-Id' = '1.2.246.562.10.2013112012294919827487.vipunen'}
   show("load from "+address)
   try:
-    response = requests.get(address)
+    response = requests.get(address, headers=reqheaders)
+    #response = requests.get(address)
   except e:
     show('HTTP GET failed.')
     show('Reason: %s'%(e.reason))
@@ -37,7 +39,7 @@ def load(secure,hostname,url,schema,table,verbose):
   else:
     # everything is fine
     show("api call OK")
-  
+
   # read the data.
   # all of it. this is dangerous for big datasets!
   # convert to utf-8 on-the-fly if it's not
@@ -48,15 +50,15 @@ def load(secure,hostname,url,schema,table,verbose):
   f = tempfile.NamedTemporaryFile() #defaults: mode='w+b', delete=True)
   show("using tempfile: %s"%(f.name))
   f.write(data)
-  
+
   # start using data, go to start
   f.seek(0)
   # remove BOM if exists
   if f.read(3)!=codecs.BOM_UTF8: f.seek(0)
-  
+
   # make csv dictionary (first row must have column names)
   csvdata = csv.DictReader(f, delimiter=";")
-  
+
   # discover columns and their types (read through entirely!)
   show("discover table structure")
   cnt=0
@@ -67,7 +69,7 @@ def load(secure,hostname,url,schema,table,verbose):
       for col in row:
         print cnt,col,row[col]
     dboperator.columns(row)
-  
+
   # start operating with database
   # drop table
   show("drop %s.%s"%(schema,table))
@@ -83,7 +85,7 @@ def load(secure,hostname,url,schema,table,verbose):
   # remove BOM
   if f.read(3)!=codecs.BOM_UTF8: f.seek(0)
   csvdata = csv.DictReader(f, delimiter=";")
-  
+
   cnt=0
   for row in csvdata:
     cnt+=1
@@ -97,7 +99,7 @@ def load(secure,hostname,url,schema,table,verbose):
 
   show("wrote %d"%(cnt))
   dboperator.close()
-  
+
   # close (and delete) file
   f.close()
 

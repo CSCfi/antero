@@ -31,6 +31,9 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
   if verbose: print strftime("%Y-%m-%d %H:%M:%S", localtime())+" empty %s.%s"%(schema,table)
   dboperator.empty(schema,table,debug)
 
+  reqheaders = {'Content-Type': 'application/json'}
+  reqheaders['Caller-Id'] = '1.2.246.562.10.2013112012294919827487.vipunen'
+
   url = "" # replace with hardcoded values below
   if secure:
     httpconn = httplib.HTTPSConnection(hostname)
@@ -45,7 +48,8 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
   ]
   for url in links:
     print strftime("%Y-%m-%d %H:%M:%S", localtime())+" load from "+hostname+url
-    httpconn.request('GET', url)
+    httpconn.request('GET', url, headers=reqheaders)
+    #httpconn.request('GET', url)
     r = httpconn.getresponse()
     j = json.loads(r.read())
     cnt = 0
@@ -77,7 +81,9 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
           # => text values separately
 
           # get address
-          httpconn.request('GET', "/organisaatio-service/rest/organisaatio/"+row["oid"])
+
+          #httpconn.request('GET', "/organisaatio-service/rest/organisaatio/"+row["oid"]reqheaders)
+          httpconn.request('GET', "/organisaatio-service/rest/organisaatio/"+row["oid"], headers=reqheaders)
           rr = httpconn.getresponse()
           jj = json.loads(rr.read())
           if jj["kayntiosoite"]:
