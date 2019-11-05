@@ -47,9 +47,7 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
     httpconn = httplib.HTTPConnection(hostname)
     print strftime("%Y-%m-%d %H:%M:%S", localtime())+" load from "+hostname+url
 
-  headers = {'Content-Type': 'application/json'}
-  headers['Accept'] = 'application/json'
-  headers['Caller-Id'] = '1.2.246.562.10.2013112012294919827487.vipunen'
+  headers = {"Content-Type": "application/json", "Accept": "application/json", "Caller-Id": "1.2.246.562.10.2013112012294919827487.vipunen"}
   httpconn.request('GET', url, headers)
   #httpconn.request('GET', url)
   r = httpconn.getresponse()
