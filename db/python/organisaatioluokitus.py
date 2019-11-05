@@ -208,7 +208,7 @@ def get_and_set_coordinates(row):
       else:  # STATUS == NOK
         try:
             geo_error = geocoding_api_answer["RESULT"].encode('utf-8', 'ignore')
-            print "Error:", geo_error
+            print "Error: ", geo_error
         except AttributeError:
             print "AttributeError with geocoding_api_answer result"
 
