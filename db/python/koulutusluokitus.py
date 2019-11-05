@@ -79,7 +79,7 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
     row["alkupvm"] = i["voimassaAlkuPvm"]
     row["loppupvm"] = i["voimassaLoppuPvm"]
 
-    httpconn.request('GET', "/koodisto-service/rest/json/relaatio/sisaltyy-alakoodit/%s" % i["koodiUri"], headers=reqheaders))
+    httpconn.request('GET', "/koodisto-service/rest/json/relaatio/sisaltyy-alakoodit/%s" % i["koodiUri"], headers=reqheaders)
     rr = httpconn.getresponse()
     jj = json.loads(rr.read())
     ss = ""
