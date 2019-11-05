@@ -62,7 +62,11 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
     httpconn = httplib.HTTPConnection(hostname)
     print strftime("%Y-%m-%d %H:%M:%S", localtime())+" load from "+hostname+url
 
-  httpconn.request('GET', url)
+  reqheaders = {'Content-Type': 'application/json'}
+  reqheaders['Accept'] = 'application/json'
+  reqheaders['Caller-Id'] = '1.2.246.562.10.2013112012294919827487.vipunen'
+  httpconn.request('GET', url, reqheaders)
+  #httpconn.request('GET', url)
   r = httpconn.getresponse()
   j = json.loads(r.read())
   cnt = 0
@@ -141,7 +145,7 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
         row["isced2011koulutusastetaso2koodi"] = ii["koodiArvo"]
         row["isced2011koulutusastetaso2nimi"] = getnimi(ii,"FI")
         row["isced2011koulutusastetaso2nimi_sv"] = getnimi(ii,"SV")
-        row["isced2011koulutusastetaso2nimi_en"] = getnimi(ii,"EN")	
+        row["isced2011koulutusastetaso2nimi_en"] = getnimi(ii,"EN")
       if ii["koodisto"]["koodistoUri"] == "kansallinenkoulutusluokitus2016koulutusastetaso1":
         row["koulutusluokitus2016koulutusastetaso1koodi"] = ii["koodiArvo"]
         row["koulutusluokitus2016koulutusastetaso1nimi"] = getnimi(ii,"FI")
