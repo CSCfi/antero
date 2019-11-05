@@ -114,7 +114,9 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
   show("load securely from "+hostname+url)
 
   # get list of oids
-  httpconn.request('GET', url)
+  reqheaders = {'Caller-id': '1.2.246.562.10.2013112012294919827487.vipunen'}
+  httpconn.request('GET', url, headers=reqheaders)
+  #httpconn.request('GET', url)
   rr = httpconn.getresponse()
   jj = json.loads(rr.read())
   cnt = 0
@@ -132,7 +134,7 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
       # get one koulutus. skip koodisto meta etc
       url = "/tarjonta-service/rest/v1/koulutus/%s?meta=false&img=false"%(ii["oid"])
       try:
-        httpconn.request('GET', url)
+        httpconn.request('GET', url, headers=reqheaders)
         r = httpconn.getresponse()
         j = json.loads(r.read())
       except ValueError, e:

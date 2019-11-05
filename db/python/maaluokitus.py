@@ -52,7 +52,9 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False):
     httpconn = httplib.HTTPConnection(hostname)
     show("load from "+hostname+url)
 
-  httpconn.request('GET', url)
+  reqheaders = {'Caller-id': '1.2.246.562.10.2013112012294919827487.vipunen'}
+  httpconn.request('GET', url, headers=reqheaders)
+  #httpconn.request('GET', url)
   r = httpconn.getresponse()
   j = json.loads(r.read())
   cnt = 0
@@ -67,7 +69,7 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False):
     row["alkupvm"] = jv(i,"voimassaAlkuPvm")
     row["loppupvm"] = jv(i,"voimassaLoppuPvm")
 
-    httpconn.request('GET', "/koodisto-service/rest/json/relaatio/sisaltyy-ylakoodit/%s" % i["koodiUri"])
+    httpconn.request('GET', "/koodisto-service/rest/json/relaatio/sisaltyy-ylakoodit/%s" % i["koodiUri"], headers=reqheaders)
     rr = httpconn.getresponse()
     jj = json.loads(rr.read())
     ss = ""
