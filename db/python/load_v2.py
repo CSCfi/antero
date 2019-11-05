@@ -25,6 +25,8 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
   show("load from "+address)
 
   reqheaders = {'Content-Type': 'application/json'}
+  reqheaders['Caller-Id'] = '1.2.246.562.10.2013112012294919827487.vipunen'
+
   # api credentials from env vars
   if os.getenv("API_USERNAME"):
     show("using authentication")

@@ -35,6 +35,7 @@ def load(url, schema, table, condition):
         show("load from " + url)
 
         reqheaders = {'Content-Type': 'application/json'}
+        reqheaders['Caller-Id'] = '1.2.246.562.10.2013112012294919827487.vipunen'
         # api credentials from env vars
         if os.getenv("VARDA_API_KEY"):
             show("using authentication")
