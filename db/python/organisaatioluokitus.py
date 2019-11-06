@@ -209,8 +209,8 @@ def get_and_set_coordinates(row):
         try:
             geo_error = geocoding_api_answer["RESULT"].encode('utf-8', 'ignore')
             print "Error: ", geo_error
-        except AttributeError:
-            print "AttributeError with geocoding_api_answer result"
+        except AttributeError as e :
+            print ("AttributeError:", e)
 
 def load(secure,hostname,url,schema,table,verbose=False):
   if verbose: show("begin")
