@@ -55,8 +55,8 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
 
   reqheaders = {'Content-Type': 'application/json', 'Caller-Id': '1.2.246.562.10.2013112012294919827487.vipunen'}
   httpconn.request('GET', url, headers=reqheaders)
+  #httpconn.request('GET', url,, headers=reqheaders)
 
-  #httpconn.request('GET', url)
   r = httpconn.getresponse()
   j = json.loads(r.read())
   cnt = 0
@@ -72,7 +72,7 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
     row["loppupvm"] = jv(i,"voimassaLoppuPvm")
 
     # classifications (nb! avi is in different direction!)
-    httpconn.request('GET', "/koodisto-service/rest/json/relaatio/sisaltyy-ylakoodit/%s" % i["koodiUri"])
+    httpconn.request('GET', "/koodisto-service/rest/json/relaatio/sisaltyy-ylakoodit/%s" % i["koodiUri"], headers=reqheaders)
     rr = httpconn.getresponse()
     jj = json.loads(rr.read())
     ss = ""
@@ -83,7 +83,7 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
         row["avinimi_sv"] = getnimi(ii,"SV")
         row["avinimi_en"] = getnimi(ii,"EN")
     # other classifications
-    httpconn.request('GET', "/koodisto-service/rest/json/relaatio/sisaltyy-alakoodit/%s" % i["koodiUri"])
+    httpconn.request('GET', "/koodisto-service/rest/json/relaatio/sisaltyy-alakoodit/%s" % i["koodiUri"], headers=reqheaders)
     rr = httpconn.getresponse()
     jj = json.loads(rr.read())
     ss = ""
