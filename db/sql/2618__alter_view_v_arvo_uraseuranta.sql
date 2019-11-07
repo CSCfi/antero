@@ -1,7 +1,7 @@
 USE [ANTERO]
 GO
 
-/****** Object:  View [dw].[v_arvo_uraseuranta]    Script Date: 7.11.2019 10:25:48 ******/
+/****** Object:  View [dw].[v_arvo_uraseuranta]    Script Date: 7.11.2019 10:39:09 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -9,7 +9,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-CREATE VIEW [dw].[v_arvo_uraseuranta] AS
+ALTER VIEW [dw].[v_arvo_uraseuranta] AS
 
 SELECT-- TOP 0
 
@@ -316,7 +316,6 @@ SELECT  --TOP 1
       ,[jarjestys_koulutusala3]
       ,[jarjestys_monivalinta]
 FROM [ANTERO].dw.f_arvo_yo_uraseuranta_2018
-
 
 
 
