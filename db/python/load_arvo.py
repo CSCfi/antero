@@ -19,7 +19,7 @@ import dboperator
 
 
 def show(message):
-    print strftime("%Y-%m-%d %H:%M:%S", localtime()) + " " + message
+    print(strftime("%Y-%m-%d %H:%M:%S", localtime()) + " " + message)
 
 
 def load(url, schema, table, condition):
@@ -45,21 +45,21 @@ def load(url, schema, table, condition):
         try:
             r = requests.get(url, headers=reqheaders)
         except requests.exceptions.RequestException as e:
-            print e
+            print("RequestException: ", e)
             sys.exit(1)
 
         if r.status_code != 200:
-            print "Error! HTTP status code: " + str(r.status_code)
+            print("Error! HTTP status code: " + str(r.status_code))
             sys.exit(2)
 
         try:
             result = json.loads(r.content)
         except ValueError as e:
-            print e
+            print("ValueError: ", e)
             sys.exit(3)
 
         if "pagination" not in result or "data" not in result:
-            print "Error! Received JSON-data not valid."
+            print("Error! Received JSON-data not valid.")
             sys.exit(4)
 
         # everything is fine
@@ -172,7 +172,7 @@ def load(url, schema, table, condition):
 
 
 def usage():
-    print "usage: load.py -u|--url <url> -e|--schema <schema> -t|--table <table> [-c|--condition <condition>]"
+    print("usage: load.py -u|--url <url> -e|--schema <schema> -t|--table <table> [-c|--condition <condition>]")
 
 
 def main(argv):

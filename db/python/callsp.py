@@ -13,7 +13,7 @@ from time import localtime, strftime
 import dboperator
 
 def show(message):
-  print strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message
+  print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message)
 
 def load(schema,procedure,verbose=False):
   show("begin with "+schema+" "+procedure)
@@ -31,12 +31,12 @@ def load(schema,procedure,verbose=False):
   show("ready")
 
 def usage():
-  print """
+  print("""
 usage: callsp.py [-e|--schema <schema>] -p|--procedure <procedure> [-v|--verbose]
 
 schema defaults to $SCHEMA then to "" (for database default if set)
 procedure is mandatory argument. Name of the procedure to execute.
-"""
+""")
 
 def main(argv):
   # variables that are given as arguments with possible default values

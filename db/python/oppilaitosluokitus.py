@@ -21,14 +21,14 @@ def makerow():
   }
 
 def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
-  if verbose: print strftime("%Y-%m-%d %H:%M:%S", localtime())+" begin"
+  if verbose: print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" begin")
 
   # make "columnlist" (type has no meaning as we're not creating table)
   row = makerow()
   # setup dboperator so other calls work
   dboperator.columns(row,debug)
 
-  if verbose: print strftime("%Y-%m-%d %H:%M:%S", localtime())+" empty %s.%s"%(schema,table)
+  if verbose: print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" empty %s.%s"%(schema,table))
   dboperator.empty(schema,table,debug)
 
   reqheaders = {'Content-Type': 'application/json'}
@@ -37,17 +37,17 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
   url = "" # replace with hardcoded values below
   if secure:
     httpconn = httplib.HTTPSConnection(hostname)
-    print strftime("%Y-%m-%d %H:%M:%S", localtime())+" load securely from "+hostname+url
+    print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" load securely from "+hostname+url)
   else:
     httpconn = httplib.HTTPConnection(hostname)
-    print strftime("%Y-%m-%d %H:%M:%S", localtime())+" load from "+hostname+url
+    print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" load from "+hostname+url)
 
   links = [
       "/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?organisaatiotyyppi=Koulutustoimija&aktiiviset=true&suunnitellut=true&lakkautetut=false",
       "/organisaatio-service/rest/organisaatio/v2/hierarkia/hae?organisaatiotyyppi=Koulutustoimija&aktiiviset=false&suunnitellut=false&lakkautetut=true"
   ]
   for url in links:
-    print strftime("%Y-%m-%d %H:%M:%S", localtime())+" load from "+hostname+url
+    print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" load from "+hostname+url)
     httpconn.request('GET', url, headers=reqheaders)
     #httpconn.request('GET', url)
     r = httpconn.getresponse()
@@ -105,15 +105,15 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
           # todo get coordinates (see geocoding.py)
 
 
-          if verbose: print strftime("%Y-%m-%d %H:%M:%S", localtime())+" %d -- %s"%(cnt,row["koodi"])
+          if verbose: print (strftime("%Y-%m-%d %H:%M:%S", localtime())+" %d -- %s"%(cnt,row["koodi"]))
           dboperator.insert(hostname+url,schema,table,row,debug)
 
   dboperator.close(debug)
 
-  if verbose: print strftime("%Y-%m-%d %H:%M:%S", localtime())+" ready"
+  if verbose: print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" ready")
 
 def usage():
-  print """
+  print("""
 usage: oppilaitosluokitus.py [-s|--secure] [-H|--hostname <hostname>] [-u|--url <url>] [-e|--schema <schema>] [-t|--table <table>] -c|--codeset <codeset> [-v|--verbose] [-d|--debug]
 
 secure defaults to being secure (HTTPS) (so no point in using this argument at all)
@@ -122,7 +122,7 @@ url not used
 schema defaults to $SCHEMA then to "" (for database default if set)
 table defaults to $TABLE then to "sa_oppilaitosluokitus"
 codeset not used
-"""
+""")
 
 def main(argv):
   # variables from arguments with possible defaults
@@ -153,7 +153,7 @@ def main(argv):
     usage()
     sys.exit(2)
 
-  if debug: print "debugging"
+  if debug: print("debugging")
 
   load(secure,hostname,url,schema,table,codeset,verbose,debug)
 

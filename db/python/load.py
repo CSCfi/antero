@@ -14,7 +14,7 @@ from time import localtime, strftime
 import dboperator
 
 def show(message):
-  print strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message
+  print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message)
 
 def load(secure,hostname,url,schema,table,postdata,condition,verbose):
   show("begin "+hostname+" "+url+" "+schema+" "+table+" "+(postdata or "")+" "+(condition or ""))
@@ -38,15 +38,15 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose):
   request = urllib2.Request(address, data=postdata, headers=reqheaders)
   try:
     response = urllib2.urlopen(request)
-  except httplib.IncompleteRead, e:
+  except httplib.IncompleteRead as e:
     show('IncompleteRead exception.')
     show('Received: %d'%(e.partial))
     sys.exit(2)
-  except urllib2.HTTPError, e:
+  except urllib2.HTTPError as e:
     show('The server couldn\'t fulfill the request.')
     show('Error code: %d'%(e.code))
     sys.exit(2)
-  except urllib2.URLError, e:
+  except urllib2.URLError as e:
     show('We failed to reach a server.')
     show('Reason: %s'%(e.reason))
     sys.exit(2)
@@ -89,9 +89,9 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose):
   show("ready")
 
 def usage():
-  print """
+  print("""
 usage: load.py [-s|--secure] -H|--hostname <hostname> -u|--url <url> -e|--schema <schema> -t|--table <table> [-p|--postdata] [-c|--condition <condition>] [-v|--verbose]
-"""
+""")
 
 def main(argv):
   # muuttujat jotka kerrotaan argumentein

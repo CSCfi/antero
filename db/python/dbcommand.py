@@ -10,12 +10,13 @@ NB! Depends on dboperator which takes care of connection and other db stuff.
 import sys,getopt
 from time import localtime, strftime
 import dboperator
+from imp import reload
 
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
 def show(message):
-  print strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message
+  print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message)
 
 def load(command,expect,verbose=False):
   if verbose: show("begin with "+command) # no point in trying to show expect!
@@ -37,7 +38,7 @@ def load(command,expect,verbose=False):
         ret = resql
     else:
       dboperator.execute(sql)
-  except Exception, f:
+  except Exception as f:
     print(f)
     e = sys.exc_info()[0] #for debugging error 1.11.2018 VHä
     show("Something went wrong. Over and out. %s" % e)
@@ -48,7 +49,7 @@ def load(command,expect,verbose=False):
   return ret
 
 def usage():
-  print """
+  print("""
 usage: dbcommand.py -c|--command <string> [-e|--expect <string>] [-v|--verbose] [-r|--return]
 
 command is mandatory argument. The SQL to execute.
@@ -60,7 +61,7 @@ expect  is for getting results from a query.
         of column names in result, for ex. "*", and/or results give exactly NOT one row.
 return is an optional argument. By default the dbcommand prints the result to shell. With this
         paremeter the dbcommand returns the result to user.
-"""
+""")
 
 def main(argv):
   # variables that are given as arguments with possible default values
@@ -91,7 +92,7 @@ def main(argv):
      if return_wanted:
          return ret
      else:
-         print ret
+         print(ret)
 
   dboperator.close()
 

@@ -47,7 +47,7 @@ def getmeta(i,tieto,kieli):
   return None
 
 def show(message):
-  print strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message
+  print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message)
 
 def get_osoite_array(osoite, postinumero, kunta):
   osoite_array = ["--address"]
@@ -59,12 +59,12 @@ def get_kotikunta_by_kuntakoodi(koodi):
     r = requests.get("https://virkailija.opintopolku.fi/koodisto-service/rest/json/kunta/koodi/arvo/" + str(koodi),
                      headers={"Accept": "application/json", 'Caller-id': '1.2.246.562.10.2013112012294919827487.vipunen'})
   except requests.exceptions.RequestException as e:
-    print "Error: virkailija.opintopolku.fi, no kunta for koodi: " + str(koodi)
+    print("Error: virkailija.opintopolku.fi, no kunta for koodi: " + str(koodi))
 
   try:
     result_json = json.loads(r.text)
-  except ValueError, e:
-    print "Error: virkailija.opintopolku.fi, " + str(e)
+  except ValueError as e:
+    print("Error: virkailija.opintopolku.fi, " + str(e))
 
   if r.status_code == 200:
     for i in result_json[0]["metadata"]:
@@ -116,9 +116,9 @@ def fetch_coordinates_from_server(osoite_array):
   try:
     geocoding_api_answer = geocoding.main(osoite_array)
     api_fetch_successful = True
-  except Exception, e:
-    print "Error: " + str(e)
-    print "Osoite: " + ''.join(osoite_array)  # convert osoite_array to string
+  except Exception as e:
+    print("Error: " + str(e))
+    print("Osoite: " + ''.join(osoite_array))  # convert osoite_array to string
   except SystemExit:
     pass  # catch the sys.exit from geocoding. It prints the usage().
 
@@ -192,7 +192,7 @@ def get_and_set_coordinates(row):
 
               insert_coordinates_to_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"], latitude, longitude, api_result_confidence)
             else:  # STATUS == NOK
-              print "Error:", geocoding_api_answer["RESULT"].encode('utf-8', 'ignore')
+              print("Error:", geocoding_api_answer["RESULT"].encode('utf-8', 'ignore'))
 
         else:  # First external-API fetching successful (=high confidence) or we don't have better info (kotikunta is not known!)
           latitude = geocoding_api_answer["RESULT"]["latitude"]
@@ -208,9 +208,9 @@ def get_and_set_coordinates(row):
       else:  # STATUS == NOK
         try:
             geo_error = geocoding_api_answer["RESULT"].encode('utf-8', 'ignore')
-            print "Error: ", geo_error
+            print("Error: ", geo_error)
         except AttributeError as e :
-            print ("AttributeError:", e)
+            print ("AttributeError: ", e)
 
 def load(secure,hostname,url,schema,table,verbose=False):
   if verbose: show("begin")
@@ -255,9 +255,9 @@ def load(secure,hostname,url,schema,table,verbose=False):
     liitosresponse = requests.get(address+"v2/liitokset", headers = {'Caller-id': '1.2.246.562.10.2013112012294919827487.vipunen'})
     # actual data
     response = requests.get(address, headers = {'Caller-id': '1.2.246.562.10.2013112012294919827487.vipunen'})
-  except e:
+  except Exception as e:
     show('HTTP GET failed.')
-    show('Reason: %s'%(e.reason))
+    show('Reason: %s'%(str(e)))
     sys.exit(2)
   else:
     # everything is fine
@@ -356,16 +356,16 @@ def load(secure,hostname,url,schema,table,verbose=False):
 
           if verbose: show(" %5d -- %s %s (%s)"%(cnt,row["tyyppi"],row["koodi"],row["nimi"]))
           dboperator.insert(hostname+url,schema,table,row)
-    except ValueError, ve:
-        print "Error: " + str(ve)
-        print "vika: " + str(address) + " oid:" + str(o)
+    except ValueError as ve:
+        print("ValueError: " + str(ve))
+        print("vika: " + str(address) + " oid:" + str(o))
 
   dboperator.close()
 
   if verbose: show("ready")
 
 def usage():
-  print """
+  print("""
 usage: organisaatioluokitus.py [-s|--secure] [-H|--hostname <hostname>] [-u|--url <url>] [-e|--schema <schema>] [-t|--table <table>] [-v|--verbose]
 
 secure defaults to secure, so no actual use here!
@@ -373,7 +373,7 @@ hostname defaults to $OPINTOPOLKU then to "virkailija.opintopolku.fi"
 url defaults to "/organisaatio-service/rest/organisaatio/"
 schema defaults to $SCHEMA then to "sa"
 table defaults to $TABLE then to "sa_organisaatioluokitus"
-"""
+""")
 
 def main(argv):
   # variables from arguments with possible defaults
