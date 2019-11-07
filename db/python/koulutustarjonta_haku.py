@@ -13,7 +13,7 @@ from time import localtime, strftime
 import dboperator
 
 def show(message):
-  print strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message
+  print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message)
 
 def makerow():
   return {
@@ -110,20 +110,20 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
         row[col] = ''.join(map(str,json.dumps(row[col])))
 
     if verbose: show("%d -- %s"%(cnt,row["oid"]))
-    if debug: print row
+    if debug: print(row)
     dboperator.insert(hostname+url,schema,table,row,debug)
 
   if verbose: show("ready")
 
 def usage():
-  print """
+  print("""
 usage: koulutustarjonta_haku.py [-H|--hostname <hostname>] [-u|--url <url>] [-e|--schema <schema>] [-t|--table <table>] [-v|--verbose] [-d|--debug]
 
 hostname defaults to "virkailija.testiopintopolku.fi"
 url defaults to "/tarjonta-service/rest/v1/haku/findAll"
 schema defaults to $SCHEMA then to "sa"
 table defaults to $TABLE then to "koulutustarjonta_haku"
-"""
+""")
 
 def main(argv):
   # variables from arguments with possible defaults
@@ -150,7 +150,7 @@ def main(argv):
     usage()
     sys.exit(2)
 
-  if debug: print "debugging"
+  if debug: print("debugging")
 
   load(hostname,url,schema,table,verbose,debug)
 

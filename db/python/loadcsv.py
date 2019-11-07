@@ -17,7 +17,7 @@ from time import localtime, strftime
 import dboperator
 
 def show(message):
-  print strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message
+  print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message)
 
 def load(secure,hostname,url,schema,table,verbose):
   show("begin "+hostname+" "+url+" "+schema+" "+table)
@@ -64,10 +64,10 @@ def load(secure,hostname,url,schema,table,verbose):
   cnt=0
   for row in csvdata:
     cnt+=1
-    if verbose: print cnt,row
+    if verbose: print(cnt,row)
     if verbose:
       for col in row:
-        print cnt,col,row[col]
+        print(cnt,col,row[col])
     dboperator.columns(row)
 
   # start operating with database
@@ -106,9 +106,9 @@ def load(secure,hostname,url,schema,table,verbose):
   show("ready")
 
 def usage():
-  print """
+  print("""
 usage: loadcsv.py [-s|--secure] -H|--hostname <hostname> -u|--url <url> -e|--schema <schema> -t|--table <table> [-v|--verbose]
-"""
+""")
 
 def main(argv):
   # muuttujat jotka kerrotaan argumentein

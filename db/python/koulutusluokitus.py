@@ -46,21 +46,21 @@ def getnimi(i,kieli):
   return None
 
 def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
-  if verbose: print strftime("%Y-%m-%d %H:%M:%S", localtime())+" begin"
+  if verbose: print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" begin")
 
   row = makerow()
   dboperator.columns(row,debug)
 
-  if verbose: print strftime("%Y-%m-%d %H:%M:%S", localtime())+" empty %s.%s"%(schema,table)
+  if verbose: print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" empty %s.%s"%(schema,table))
   dboperator.empty(schema,table,debug)
 
   url = url % codeset # korvaa placeholder
   if secure:
     httpconn = httplib.HTTPSConnection(hostname)
-    print strftime("%Y-%m-%d %H:%M:%S", localtime())+" load securely from "+hostname+url
+    print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" load securely from "+hostname+url)
   else:
     httpconn = httplib.HTTPConnection(hostname)
-    print strftime("%Y-%m-%d %H:%M:%S", localtime())+" load from "+hostname+url
+    print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" load from "+hostname+url)
 
   reqheaders = {'Caller-id': '1.2.246.562.10.2013112012294919827487.vipunen'}
   httpconn.request('GET', url, headers=reqheaders)
@@ -82,7 +82,6 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
     httpconn.request('GET', "/koodisto-service/rest/json/relaatio/sisaltyy-alakoodit/%s" % i["koodiUri"], headers=reqheaders)
     rr = httpconn.getresponse()
     jj = json.loads(rr.read())
-    ss = ""
     for ii in jj:
       if ii["koodisto"]["koodistoUri"] == "koulutusasteoph2002":
         row["koulutusaste2002koodi"] = ii["koodiArvo"]
@@ -192,15 +191,15 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
         row["okmohjauksenalanimi_sv"] = getnimi(ii,"SV")
         row["okmohjauksenalanimi_en"] = getnimi(ii,"EN")
 
-    if verbose: print strftime("%Y-%m-%d %H:%M:%S", localtime())+" %d -- %s"%(cnt,row["koodi"])
+    if verbose: print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" %d -- %s"%(cnt,row["koodi"]))
     dboperator.insert(hostname+url,schema,table,row,debug)
 
   dboperator.close(debug)
 
-  if verbose: print strftime("%Y-%m-%d %H:%M:%S", localtime())+" ready"
+  if verbose: print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" ready")
 
 def usage():
-  print """
+  print("""
 usage: koulutusluokitus.py [-s|--secure] [-H|--hostname <hostname>] [-u|--url <url>] [-e|--schema <schema>] [-t|--table <table>] -c|--codeset <codeset> [-v|--verbose] [-d|--debug]
 
 secure defaults to being secure (HTTPS) (so no point in using this argument at all)
@@ -209,7 +208,7 @@ url defaults to "/koodisto-service/rest/json/%s/koodi" (do notice the %s in midd
 schema defaults to $SCHEMA then to "" (for database default if set)
 table defaults to $TABLE then to "sa_koulutusluokitus"
 codeset defaults to "koulutus" (probably not going to change -- ever)
-"""
+""")
 
 def main(argv):
   # variables from arguments with possible defaults
@@ -240,7 +239,7 @@ def main(argv):
     usage()
     sys.exit(2)
 
-  if debug: print "debugging"
+  if debug: print("debugging")
 
   load(secure,hostname,url,schema,table,codeset,verbose,debug)
 

@@ -31,7 +31,8 @@ AUTHOR
 
 #----------------------------------------------------------------------------
 
-import csv ; from csv import *
+import csv
+from csv import unicode
 
 __version__ = '1.0 Unicode'
 __dropins__ = [ 'reader', 'writer', 'DictReader', 'DictWriter' ]
@@ -140,9 +141,7 @@ class DictWriter:
         self.fieldnames = fieldnames    # list of keys for the dict
         self.restval = restval          # for writing short dicts
         if extrasaction.lower() not in ("raise", "ignore"):
-            raise ValueError, \
-                  ("extrasaction (%s) must be 'raise' or 'ignore'" %
-                   extrasaction)
+            raise ValueError ("extrasaction (%s) must be 'raise' or 'ignore'" % extrasaction)
         self.extrasaction = extrasaction
         self.writer = writer(f, dialect, *args, **kwds)
         self.writer.writerow(fieldnames)
@@ -151,7 +150,7 @@ class DictWriter:
         if self.extrasaction == "raise":
             for k in rowdict.keys():
                 if k not in self.fieldnames:
-                    raise ValueError, "dict contains fields not in fieldnames"
+                    raise ValueError ("dict contains fields not in fieldnames")
         return [rowdict.get(key, self.restval) for key in self.fieldnames]
 
     def writerow(self, rowdict):

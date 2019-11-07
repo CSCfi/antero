@@ -19,7 +19,7 @@ def getnimi(i,kieli):
   return None
 
 def show(message):
-  print strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message
+  print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message)
 
 def load(secure,hostname,url,schema,table,codeset,verbose=False):
   if verbose: show("begin")
@@ -72,7 +72,7 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False):
   if verbose: show("ready")
 
 def usage():
-  print """
+  print("""
 usage: codes.py [-s|--secure] [-H|--hostname <hostname>] [-u|--url <url>] [-e|--schema <schema>] [-t|--table <table>] -c|--codeset <codeset> [-v|--verbose]
 
 secure defaults to being secure (HTTPS) (so no point in using this argument at all)
@@ -81,7 +81,7 @@ url defaults to "/koodisto-service/rest/json/%s/koodi" (do notice the %s in midd
 schema defaults to $SCHEMA then to "" (for database default if set)
 table defaults to $TABLE then to "sa_koodistot"
 codeset is the only mandatory argument. No default. Name of the "koodisto" to be loaded.
-"""
+""")
 
 def main(argv):
   # variables from arguments with possible defaults
