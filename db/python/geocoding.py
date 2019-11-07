@@ -23,7 +23,7 @@ import time
 
 
 def usage():
-    print "Usage: geocoding.py -A|--address <address>, where <address> = Kadunnimi talon_numero [porras asunto], postinumero, kaupunki"
+    print("Usage: geocoding.py -A|--address <address>, where <address> = Kadunnimi talon_numero [porras asunto], postinumero, kaupunki")
 
 
 def get_result_dictionary(status_ok, result):
@@ -59,7 +59,7 @@ def get_geo_coordinates_from_server(address, postalcode, city):
         # GET-request sent successfully to server, and a reply was received.
         try:
             result_json = json.loads(r.text)
-        except ValueError, e:
+        except ValueError as e:
             return get_result_dictionary(False, "Invalid JSON from server.")
 
         # Check HTTP error codes
@@ -121,10 +121,10 @@ def parse_url_address(argument_array):
     if len(zip_code) == 5 and zip_code != "00000":
         for j in range(0, len(zip_code)):
             if not zip_code[j].isdigit():
-                print "Error: Postalcode incorrect: " + zip_code
+                print("Error: Postalcode incorrect: " + zip_code)
                 sys.exit(5)
     else:
-        print "Error: Postalcode incorrect: " + zip_code
+        print("Error: Postalcode incorrect: " + zip_code)
         sys.exit(6)
 
     if city != "" and city[0] == "+":

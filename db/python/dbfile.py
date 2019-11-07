@@ -18,7 +18,7 @@ import codecs
 import dboperator
 
 def show(message):
-  print strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message
+  print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message)
 
 def loadsql(sqlfile,verbose=False):
   fd = open(sqlfile, 'r')
@@ -64,9 +64,9 @@ def load(sqlfile,migrate,verbose=False):
   show("ready")
 
 def usage():
-  print """
+  print("""
 usage: dbfile.py -f|--file <file> [-m|--migrate <phase>] [-v|--verbose]
-"""
+""")
 
 def main(argv):
   # muuttujat jotka kerrotaan argumentein
