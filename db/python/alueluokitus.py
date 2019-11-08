@@ -6,7 +6,7 @@ alueluokitus
 todo doc
 """
 import sys, os, getopt
-import httplib
+import http.client as httplib
 import json
 from time import localtime, strftime
 
