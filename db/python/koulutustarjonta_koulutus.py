@@ -139,14 +139,14 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
         j = json.loads(r.read())
       except ValueError as e:
         show("-- %d -- could not load %s"%(cnt,ii["oid"]))
-        shoe("ValueError: ", e)
+        show("ValueError: %s" % (str(e)))
       else:
         # some results may give KeyError
         try:
           i = j["result"]
         except KeyError as details:
           show("-- %d -- could not load result for %s"%(cnt,ii["oid"]))
-          show("KeyError: ", details)
+          show("KeyError: %s" % (details))
         row = makerow()
 
         for col in row:
