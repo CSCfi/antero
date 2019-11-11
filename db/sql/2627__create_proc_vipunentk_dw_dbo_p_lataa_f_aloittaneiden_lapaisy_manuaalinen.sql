@@ -11,7 +11,9 @@ GO
 
 
 
-CREATE PROCEDURE IF NOT EXISTS [dbo].[p_lataa_f_aloittaneiden_lapaisy_manuaalinen] AS
+DROP PROCEDURE IF EXISTS [dbo].[p_lataa_f_aloittaneiden_lapaisy_manuaalinen];
+
+CREATE PROCEDURE [dbo].[p_lataa_f_aloittaneiden_lapaisy_manuaalinen] AS
 
 -- 4.11.2019 / jsyrjala: tämän voi ajaa käsin hiljaiseen aikaan (osana TK-viikonloppujobia kerryttää logia)
 
