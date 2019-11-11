@@ -103,7 +103,8 @@
           {
             "name": "Koodit Sukupuoli",
             "dataType": "string",
-            "sourceColumn": "Koodit Sukupuoli"
+            "sourceColumn": "Koodit Sukupuoli",
+            "displayFolder": "Koodimuuttujat"
           },
           {
             "name": "Opiskelijamaara_brutto",
@@ -127,12 +128,14 @@
             "name": "OKM ohjauksen ala",
             "dataType": "string",
             "sourceColumn": "OKM ohjauksen ala",
-            "sortByColumn": "Jarjestys_Ohjauksenala"
+            "sortByColumn": "Jarjestys_Ohjauksenala",
+            "displayFolder": "Koulutusmuuttujat"
           },
           {
             "name": "Koodit Ohjauksenala",
             "dataType": "string",
-            "sourceColumn": "Koodit Ohjauksenala"
+            "sourceColumn": "Koodit Ohjauksenala",
+            "displayFolder": "Koodimuuttujat"
           },
           {
             "name": "y_opiston_jarjestama_koul_tutk_opisk",
@@ -198,12 +201,14 @@
             "name": "Koulutusala (1995)",
             "dataType": "string",
             "sourceColumn": "Koulutusala (1995)",
-            "sortByColumn": "Jarjestys_koulutusalakoodi"
+            "sortByColumn": "Jarjestys_koulutusalakoodi",
+            "displayFolder": "Koulutusmuuttujat"
           },
           {
             "name": "Koodit Koulutusala 1995",
             "dataType": "string",
-            "sourceColumn": "Koodit Koulutusala 1995"
+            "sourceColumn": "Koodit Koulutusala 1995",
+            "displayFolder": "Koodimuuttujat"
           },
           {
             "name": "Jarjestys_koulutusalakoodi",
@@ -818,13 +823,13 @@
         "measures": [
           {
             "name": "Avoimen yliopisto-opetuksen opiskelijat (netto-opiskelijamäärä)",
-            "expression": "sum(Muuttujat[suorittaneiden_lkm])",
+            "expression": "IF(sum(Muuttujat[suorittaneiden_lkm])=0,BLANK(),sum(Muuttujat[suorittaneiden_lkm]))",
             "formatString": "#,0"
           },
           {
             "name": "Avoimeen yliopisto-opetukseen osallistuneet (brutto-opiskelijamäärä)",
             "expression": [
-              " sum(Muuttujat[Opiskelijamaara_brutto])",
+              " IF(sum(Muuttujat[Opiskelijamaara_brutto])=0, BLANK(),sum(Muuttujat[Opiskelijamaara_brutto]))",
               ""
             ],
             "formatString": "#,0"
@@ -832,7 +837,7 @@
           {
             "name": "Avoimessa yliopistossa tarjottujen opintopisteiden määrä",
             "expression": [
-              " sum(Muuttujat[tarjotut_lkm])",
+              " IF(sum(Muuttujat[tarjotut_lkm])=0,BLANK(), sum(Muuttujat[tarjotut_lkm]))",
               ""
             ],
             "formatString": "#,0"
@@ -840,7 +845,7 @@
           {
             "name": "Avoimessa yliopistossa suoritetut opintopisteet",
             "expression": [
-              " sum(Muuttujat[suoritetut_lkm])",
+              " IF(sum(Muuttujat[suoritetut_lkm])=0,BLANK(),sum(Muuttujat[suoritetut_lkm]))",
               ""
             ],
             "formatString": "#,0"
@@ -848,54 +853,54 @@
           {
             "name": "Yliopiston itse järjestämä koulutus - YO:n tutkinto-opiskelijat",
             "expression": [
-              "sum(Muuttujat[y_opiston_jarjestama_koul_tutk_opisk])",
+              "IF(sum(Muuttujat[y_opiston_jarjestama_koul_tutk_opisk])=0,BLANK(),sum(Muuttujat[y_opiston_jarjestama_koul_tutk_opisk]))",
               ""
             ],
             "formatString": "#,0"
           },
           {
             "name": "Yliopiston itse järjestämä koulutus - muut kuin YO:n tutkinto-opiskelijat",
-            "expression": "sum(Muuttujat[y_opiston_jarjestama_koul_ei_tutk_opisk])",
+            "expression": "IF(sum(Muuttujat[y_opiston_jarjestama_koul_ei_tutk_opisk])=0,BLANK(),sum(Muuttujat[y_opiston_jarjestama_koul_ei_tutk_opisk]))",
             "formatString": "#,0"
           },
           {
             "name": "Kansalais- ja työväenopistojen järjestämä koulutus - YO:n tutkinto-opiskelijat",
-            "expression": "sum([kt_opiston_jarjestama_koul_tutk_opisk])",
+            "expression": "IF(sum([kt_opiston_jarjestama_koul_tutk_opisk])=0, BLANK(),sum([kt_opiston_jarjestama_koul_tutk_opisk]))",
             "formatString": "#,0"
           },
           {
             "name": "Kansalais- ja työväenopistojen järjestämä koulutus - muut kuin YO:n tutkinto-opiskelijat",
-            "expression": "sum([kt_opiston_jarjestama_koul_ei_tutk_opisk])",
+            "expression": "IF(sum([kt_opiston_jarjestama_koul_ei_tutk_opisk])=0,BLANK(),sum([kt_opiston_jarjestama_koul_ei_tutk_opisk]))",
             "formatString": "#,0"
           },
           {
             "name": "Kansanopistojen järjestämä koulutus - muut kuin YO:n tutkinto-opiskelijat",
-            "expression": "sum([k_opiston_jarjestama_koul_ei_tutk_opisk])",
+            "expression": "IF(sum([k_opiston_jarjestama_koul_ei_tutk_opisk])=0,BLANK(), sum([k_opiston_jarjestama_koul_ei_tutk_opisk]))",
             "formatString": "#,0"
           },
           {
             "name": "Kansanopistojen järjestämä koulutus - YO:n tutkinto-opiskelijat",
-            "expression": "sum([k_opiston_jarjestama_koul_tutk_opisk])",
+            "expression": "IF(sum([k_opiston_jarjestama_koul_tutk_opisk]) = 0, BLANK(), sum([k_opiston_jarjestama_koul_tutk_opisk]))",
             "formatString": "#,0"
           },
           {
             "name": "Kesäyliopistot - muut kuin YO:n tutkinto-opiskelijat",
-            "expression": "sum([ky_opiston_jarjestama_koul_ei_tutk_opisk])",
+            "expression": "IF(sum([ky_opiston_jarjestama_koul_ei_tutk_opisk]) = 0, BLANK(), sum([ky_opiston_jarjestama_koul_ei_tutk_opisk]))",
             "formatString": "#,0"
           },
           {
             "name": "Kesäyliopistot - YO:n tutkinto-opiskelijat",
-            "expression": "sum([ky_opiston_jarjestama_koul_tutk_opisk])",
+            "expression": "IF(sum([ky_opiston_jarjestama_koul_tutk_opisk]) = 0, BLANK(), sum([ky_opiston_jarjestama_koul_tutk_opisk]))",
             "formatString": "#,0"
           },
           {
             "name": "Muut järjestäjät - muut kuin YO:n tutkinto-opiskelijat",
-            "expression": "sum([muu_jarjestama_koul_ei_tutk_opisk])",
+            "expression": "IF(sum([muu_jarjestama_koul_ei_tutk_opisk]) = 0,BLANK(), sum([muu_jarjestama_koul_ei_tutk_opisk]))",
             "formatString": "#,0"
           },
           {
             "name": "Muut järjestäjät - YO:n tutkinto-opiskelijat",
-            "expression": "sum([muu_jarjestama_koul_tutk_opisk])",
+            "expression": "IF(sum([muu_jarjestama_koul_tutk_opisk])=0, BLANK(), sum([muu_jarjestama_koul_tutk_opisk]))",
             "formatString": "#,0"
           }
         ],
