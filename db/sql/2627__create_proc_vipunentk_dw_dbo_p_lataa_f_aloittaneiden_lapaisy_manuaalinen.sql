@@ -11,7 +11,8 @@ GO
 
 
 
-DROP PROCEDURE IF EXISTS [dbo].[p_lataa_f_aloittaneiden_lapaisy_manuaalinen];
+DROP PROCEDURE IF EXISTS [dbo].[p_lataa_f_aloittaneiden_lapaisy_manuaalinen]
+GO
 
 CREATE PROCEDURE [dbo].[p_lataa_f_aloittaneiden_lapaisy_manuaalinen] AS
 
