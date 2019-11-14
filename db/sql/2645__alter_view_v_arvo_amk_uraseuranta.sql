@@ -14,7 +14,7 @@ ALTER VIEW [dw].[v_arvo_amk_uraseuranta] AS
 SELECT 
 														--AIKAMUUTTUJAT
 f.valmistumisvuosi							AS 'Valmistumisvuosi'			--virtatiedoista "valmistumisvuosi"
-, f.tilastovuosi							
+, f.tilastovuosi							AS 'Tilastovuosi'
 											--KYSELYMUUTTUJAT
 , d4.kysymys_fi								AS 'Kysymys'
 , d4.kysymysryhma_fi						AS 'Kysymysryhmä'
