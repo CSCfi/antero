@@ -13,7 +13,8 @@ import dboperator
 from imp import reload
 
 reload(sys)
-sys.setdefaultencoding('utf-8')
+if sys.version_info < (3,0):
+    sys.setdefaultencoding('utf-8')
 
 def show(message):
   print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message)
