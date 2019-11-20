@@ -6105,7 +6105,7 @@
             "formatString": "0.00"
           },
           {
-            "name": "Viittausindeksi (Maailma 4v)",
+            "name": "Viittausindeksi (Maailma 4v) 2018",
             "expression": [
               "IF(AND([Julkaisut (Maailma 4v Ositettu) 2018]>=50,[Sisäinen kattavuus (maailma 4v) 2018]>=0.4),CALCULATE(SUMX(SUMMARIZE('Bibliometriikka 2018',[IDkoodi],",
               "[Sitaatiot Maailma 4 vuotta]),[Sitaatiot Maailma 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka 2018',[IDkoodi],[Analyysijulkaisut Maailma 4 vuotta]),[Analyysijulkaisut Maailma 4 vuotta]),",
@@ -6125,8 +6125,8 @@
             "formatString": "#,0"
           },
           {
-            "name": "Viittausindeksi (Suomi 4v)",
-            "expression": "if([Julkaisut (Suomi 4v Ositettu) 2018]<50,BLANK(),CALCULATE(SUM([Sitaatiot Suomi 4 vuotta])/SUM([Analyysijulkaisut Suomi 4 vuotta])/1,FILTER('Bibliometriikka 2018','Bibliometriikka 2018'[Vuosikoodi]<14)))",
+            "name": "Viittausindeksi (Suomi 4v) 2018",
+            "expression": "if([Julkaisut (Suomi 4v Ositettu) 2018]<50,BLANK(),CALCULATE(SUM('Bibliometriikka 2018'[Sitaatiot Suomi 4 vuotta])/SUM('Bibliometriikka 2018'[Analyysijulkaisut Suomi 4 vuotta])/1,FILTER('Bibliometriikka 2018','Bibliometriikka 2018'[Vuosikoodi]<14)))",
             "formatString": "0.00"
           },
           {
@@ -6135,7 +6135,7 @@
             "formatString": "0.00"
           },
           {
-            "name": "Top1-indeksi(maailma 4v)",
+            "name": "Top1-indeksi(maailma 4v) 2018",
             "expression": "IF(AND([Julkaisut (Maailma 4v Ositettu) 2018]>=50,[Sisäinen kattavuus (maailma 4v) 2018]>=0.4),CALCULATE(SUMX(SUMMARIZE('Bibliometriikka 2018',[IDkoodi],[TOP 1 Indeksi Maailma 4 vuotta]),[TOP 1 Indeksi Maailma 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka 2018',[IDkoodi],[TOP 1 Julkaisut Maailma 4 vuotta]),[TOP 1 Julkaisut Maailma 4 vuotta]),FILTER('Bibliometriikka 2018','Bibliometriikka 2018'[Vuosikoodi]<14)),BLANK())",
             "formatString": "0.00"
           },
@@ -6145,8 +6145,8 @@
             "formatString": "0.00"
           },
           {
-            "name": "Top1-indeksi(Suomi 4v)",
-            "expression": "IF(AND([Julkaisut (Suomi 4v Ositettu) 2018]>=50,[Sisäinen kattavuus (suomi 4v) 2018]>=0.4),CALCULATE(DIVIDE((SUM([TOP 1 Indeksi Suomi 4 vuotta])/SUM([TOP 1 Julkaisut Suomi 4 vuotta])),1),FILTER('Bibliometriikka 2018','Bibliometriikka 2018'[Vuosikoodi]<14)),BLANK())",
+            "name": "Top1-indeksi(Suomi 4v) 2018",
+            "expression": "IF(AND([Julkaisut (Suomi 4v Ositettu) 2018]>=50,[Sisäinen kattavuus (suomi 4v) 2018]>=0.4),CALCULATE(DIVIDE((SUM('Bibliometriikka 2018'[TOP 1 Indeksi Suomi 4 vuotta])/SUM('Bibliometriikka 2018'[TOP 1 Julkaisut Suomi 4 vuotta])),1),FILTER('Bibliometriikka 2018','Bibliometriikka 2018'[Vuosikoodi]<14)),BLANK())",
             "formatString": "0.00"
           },
           {
@@ -6155,7 +6155,7 @@
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
-            "name": "Top 10 Julkaisut (Maailma 4v Ositettu)",
+            "name": "Top 10 Julkaisut (Maailma 4v Ositettu) 2018",
             "expression": "CALCULATE(SUMX(SUMMARIZE('Bibliometriikka 2018',[IDkoodi],[Top10 Julkaisut (Maailma 4v Ositettu)]),[Top10 Julkaisut (Maailma 4v Ositettu)]),FILTER('Bibliometriikka 2018','Bibliometriikka 2018'[Vuosikoodi]<14))",
             "formatString": "#,0"
           }
@@ -7857,7 +7857,7 @@
         ]
       },
       {
-        "name": "Bibliometriikka 2019",
+        "name": "Bibliometriikka",
         "columns": [
           {
             "name": "Vuosikoodi",
@@ -7987,7 +7987,8 @@
             "name": "Yhteistyö",
             "dataType": "string",
             "sourceColumn": "Yhteistyö",
-            "sourceProviderType": "Char"
+            "sourceProviderType": "Char",
+            "displayFolder": "Yhteistyömuuttujat"
           },
           {
             "name": "Päätieteenala koodi",
@@ -8305,37 +8306,67 @@
         "measures": [
           {
             "name": "Julkaisut (Maailma 4v Ositettu)",
-            "expression": "SUMX(SUMMARIZE('Bibliometriikka 2019',[IDkoodi],[Julkaisut Maailma 4 vuotta]),[Julkaisut Maailma 4 vuotta])",
+            "expression": "SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Julkaisut Maailma 4 vuotta]),[Julkaisut Maailma 4 vuotta])",
             "formatString": "#,0"
           },
           {
             "name": "Top10-indeksi (maailma 4v)",
-            "expression": "IF(AND([Julkaisut (Maailma 4v Ositettu)]>=50,[Sisäinen kattavuus (maailma 4v) 2018]>=0.4),CALCULATE(SUMX(SUMMARIZE('Bibliometriikka 2019',[IDkoodi],[TOP 10 Indeksi Maailma 4 vuotta]),[TOP 10 Indeksi Maailma 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka 2019',[IDkoodi],[TOP 10 Julkaisut Maailma 4 vuotta]),[TOP 10 Julkaisut Maailma 4 vuotta]),FILTER('Bibliometriikka 2019','Bibliometriikka 2019'[Vuosikoodi]<15)),BLANK())",
+            "expression": "IF(AND([Julkaisut (Maailma 4v Ositettu)]>=50,[Sisäinen kattavuus (maailma 4v) 2018]>=0.4),CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 10 Indeksi Maailma 4 vuotta]),[TOP 10 Indeksi Maailma 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 10 Julkaisut Maailma 4 vuotta]),[TOP 10 Julkaisut Maailma 4 vuotta]),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<15)),BLANK())",
             "formatString": "0.00"
           },
           {
             "name": "Sisäinen kattavuus (maailma 4v)",
-            "expression": "SUMX(SUMMARIZE('Bibliometriikka 2019',[IDkoodi],[Sisäinen kattavuus Maailma 4 vuotta]),[Sisäinen kattavuus Maailma 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka 2019',[IDkoodi],[Julkaisut Maailma 4 vuotta]),[Julkaisut Maailma 4 vuotta])",
+            "expression": "SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Sisäinen kattavuus Maailma 4 vuotta]),[Sisäinen kattavuus Maailma 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Julkaisut Maailma 4 vuotta]),[Julkaisut Maailma 4 vuotta])",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Julkaisut (Suomi 4v Ositettu)",
-            "expression": "SUM('Bibliometriikka 2019'[Julkaisut Suomi 4 vuotta])",
+            "expression": "SUM('Bibliometriikka'[Julkaisut Suomi 4 vuotta])",
             "formatString": "#,0"
           },
           {
             "name": "Top10-indeksi(Suomi 4v)",
-            "expression": "IF(AND([Julkaisut (Suomi 4v Ositettu)]>=50,[Sisäinen kattavuus (suomi 4v)]>=0.4),CALCULATE(DIVIDE((SUM('Bibliometriikka 2019'[TOP 10 Indeksi Suomi 4 vuotta])/SUM('Bibliometriikka 2019'[TOP 10 Julkaisut Suomi 4 vuotta])),1),FILTER('Bibliometriikka 2019','Bibliometriikka 2019'[Vuosikoodi]<15)),BLANK())",
+            "expression": "IF(AND([Julkaisut (Suomi 4v Ositettu)]>=50,[Sisäinen kattavuus (suomi 4v)]>=0.4),CALCULATE(DIVIDE((SUM('Bibliometriikka'[TOP 10 Indeksi Suomi 4 vuotta])/SUM('Bibliometriikka'[TOP 10 Julkaisut Suomi 4 vuotta])),1),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<15)),BLANK())",
             "formatString": "0.00"
           },
           {
             "name": "Sisäinen kattavuus (suomi 4v)",
-            "expression": "SUM('Bibliometriikka 2019'[Sisäinen kattavuus Suomi 4 vuotta])/SUM('Bibliometriikka 2019'[Julkaisut Suomi 4 vuotta])",
+            "expression": "SUM('Bibliometriikka'[Sisäinen kattavuus Suomi 4 vuotta])/SUM('Bibliometriikka'[Julkaisut Suomi 4 vuotta])",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Julkaisut (suomi 1v)",
-            "expression": "DISTINCTCOUNT('Bibliometriikka 2019'[PID])",
+            "expression": "DISTINCTCOUNT('Bibliometriikka'[PID])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Viittausindeksi (Maailma 4v)",
+            "expression": [
+              "IF(AND([Julkaisut (Maailma 4v Ositettu)]>=50,[Sisäinen kattavuus (maailma 4v)]>=0.4),CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],",
+              "[Sitaatiot Maailma 4 vuotta]),[Sitaatiot Maailma 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Analyysijulkaisut Maailma 4 vuotta]),[Analyysijulkaisut Maailma 4 vuotta]),",
+              "FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<15)),BLANK())",
+              ""
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "Top1-indeksi(maailma 4v)",
+            "expression": "IF(AND([Julkaisut (Maailma 4v Ositettu)]>=50,[Sisäinen kattavuus (maailma 4v)]>=0.4),CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 1 Indeksi Maailma 4 vuotta]),[TOP 1 Indeksi Maailma 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 1 Julkaisut Maailma 4 vuotta]),[TOP 1 Julkaisut Maailma 4 vuotta]),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<15)),BLANK())",
+            "formatString": "0.00"
+          },
+          {
+            "name": "Top1-indeksi(Suomi 4v)",
+            "expression": "IF(AND([Julkaisut (Suomi 4v Ositettu)]>=50,[Sisäinen kattavuus (suomi 4v)]>=0.4),CALCULATE(DIVIDE((SUM('Bibliometriikka'[TOP 1 Indeksi Suomi 4 vuotta])/SUM('Bibliometriikka'[TOP 1 Julkaisut Suomi 4 vuotta])),1),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<15)),BLANK())",
+            "formatString": "0.00"
+          },
+          {
+            "name": "Viittausindeksi (Suomi 4v)",
+            "expression": "if([Julkaisut (Suomi 4v Ositettu)]<50,BLANK(),CALCULATE(SUM('Bibliometriikka'[Sitaatiot Suomi 4 vuotta])/SUM('Bibliometriikka'[Analyysijulkaisut Suomi 4 vuotta])/1,FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<15)))",
+            "formatString": "0.00"
+          },
+          {
+            "name": "Top 10 Julkaisut (Maailma 4v Ositettu) 2019",
+            "expression": "CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Top10 Julkaisut (Maailma 4v Ositettu)]),[Top10 Julkaisut (Maailma 4v Ositettu)]),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<15))",
             "formatString": "#,0"
           }
         ],
@@ -8357,7 +8388,7 @@
     ],
     "perspectives": [
       {
-        "name": "Analyysiraportti KV",
+        "name": "Analyysiraportti KV 2017",
         "tables": [
           {
             "name": "Sarakeleveys",
@@ -8431,7 +8462,7 @@
         ]
       },
       {
-        "name": "Analyysiraportti Suomi",
+        "name": "Analyysiraportti Suomi 2017",
         "tables": [
           {
             "name": "Bibliometriikka 2017",
@@ -8519,7 +8550,7 @@
             ]
           },
           {
-            "name": "Bibliometriikka 2019",
+            "name": "Bibliometriikka",
             "columns": [
               {
                 "name": "EU-maat"
@@ -8587,7 +8618,7 @@
             ]
           },
           {
-            "name": "Bibliometriikka 2019",
+            "name": "Bibliometriikka",
             "columns": [
               {
                 "name": "Organisaatio"
@@ -8603,6 +8634,9 @@
               },
               {
                 "name": "Tieteenala"
+              },
+              {
+                "name": "Yhteistyö"
               }
             ],
             "measures": [
@@ -8631,7 +8665,7 @@
             ]
           },
           {
-            "name": "Bibliometriikka 2019",
+            "name": "Bibliometriikka",
             "columns": [
               {
                 "name": "Organisaatio"
@@ -8714,10 +8748,10 @@
                 "name": "Top10-indeksi (maailma 4v) 2018"
               },
               {
-                "name": "Top1-indeksi(maailma 4v)"
+                "name": "Top1-indeksi(maailma 4v) 2018"
               },
               {
-                "name": "Viittausindeksi (Maailma 4v)"
+                "name": "Viittausindeksi (Maailma 4v) 2018"
               }
             ]
           },
@@ -8788,10 +8822,10 @@
                 "name": "Top10-indeksi(Suomi 4v) 2018"
               },
               {
-                "name": "Top1-indeksi(Suomi 4v)"
+                "name": "Top1-indeksi(Suomi 4v) 2018"
               },
               {
-                "name": "Viittausindeksi (Suomi 4v)"
+                "name": "Viittausindeksi (Suomi 4v) 2018"
               }
             ]
           },
@@ -8809,7 +8843,7 @@
         ]
       },
       {
-        "name": "Top 10 julkaisut",
+        "name": "Top 10 julkaisut 2018",
         "tables": [
           {
             "name": "Bibliometriikka 2018",
@@ -8853,7 +8887,217 @@
             ],
             "measures": [
               {
-                "name": "Top 10 Julkaisut (Maailma 4v Ositettu)"
+                "name": "Top 10 Julkaisut (Maailma 4v Ositettu) 2018"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "AR KV",
+        "tables": [
+          {
+            "name": "Bibliometriikka",
+            "columns": [
+              {
+                "name": "EU15-maat"
+              },
+              {
+                "name": "EU-maat"
+              },
+              {
+                "name": "IC-maat"
+              },
+              {
+                "name": "Kansainvälinen yhteistyö"
+              },
+              {
+                "name": "Maa"
+              },
+              {
+                "name": "Maaryhmä"
+              },
+              {
+                "name": "Manner"
+              },
+              {
+                "name": "Nelivuotiskausi"
+              },
+              {
+                "name": "OECD-maat"
+              },
+              {
+                "name": "Pohjoismaat"
+              },
+              {
+                "name": "Päätieteenala"
+              },
+              {
+                "name": "Tieteenala"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Julkaisut (Maailma 4v Ositettu)"
+              },
+              {
+                "name": "Sisäinen kattavuus (maailma 4v)"
+              },
+              {
+                "name": "Top10-indeksi (maailma 4v)"
+              },
+              {
+                "name": "Top1-indeksi(maailma 4v)"
+              },
+              {
+                "name": "Viittausindeksi (Maailma 4v)"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "AR Suomi",
+        "tables": [
+          {
+            "name": "Bibliometriikka",
+            "columns": [
+              {
+                "name": "Kansainvälinen yhteistyö"
+              },
+              {
+                "name": "Kansallinen Yhteistyö"
+              },
+              {
+                "name": "Kansallinen Yliopistoyhteistyö"
+              },
+              {
+                "name": "Kansallinen Yritysyhteistyö"
+              },
+              {
+                "name": "Nelivuotiskausi"
+              },
+              {
+                "name": "Organisaatio"
+              },
+              {
+                "name": "Organisaatiotyyppi"
+              },
+              {
+                "name": "Päätieteenala"
+              },
+              {
+                "name": "Tieteenala"
+              },
+              {
+                "name": "Vuosi"
+              },
+              {
+                "name": "Yhteistyö"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Julkaisut (suomi 1v)"
+              },
+              {
+                "name": "Julkaisut (Suomi 4v Ositettu)"
+              },
+              {
+                "name": "Sisäinen kattavuus (suomi 4v)"
+              },
+              {
+                "name": "Top10-indeksi(Suomi 4v)"
+              },
+              {
+                "name": "Top1-indeksi(Suomi 4v)"
+              },
+              {
+                "name": "Viittausindeksi (Suomi 4v)"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Top 10 julk 2019",
+        "tables": [
+          {
+            "name": "Bibliometriikka",
+            "columns": [
+              {
+                "name": "EU15-maat"
+              },
+              {
+                "name": "EU-maat"
+              },
+              {
+                "name": "IC-maat"
+              },
+              {
+                "name": "Kansainvälinen yhteistyö"
+              },
+              {
+                "name": "Maa"
+              },
+              {
+                "name": "Maaryhmä"
+              },
+              {
+                "name": "Manner"
+              },
+              {
+                "name": "Nelivuotiskausi"
+              },
+              {
+                "name": "OECD-maat"
+              },
+              {
+                "name": "Pohjoismaat"
+              },
+              {
+                "name": "Päätieteenala"
+              },
+              {
+                "name": "Tieteenala"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Top 10 Julkaisut (Maailma 4v Ositettu) 2019"
               }
             ]
           },
