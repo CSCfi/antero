@@ -214,12 +214,6 @@
             "sourceProviderType": "WChar"
           },
           {
-            "name": "luodut_vastaajatunnukset_id",
-            "dataType": "int64",
-            "isHidden": true,
-            "sourceColumn": "luodut_vastaajatunnukset_id"
-          },
-          {
             "name": "Koodit Tutkinto",
             "dataType": "string",
             "sourceColumn": "Koodit Tutkinto",
@@ -388,6 +382,12 @@
             "isDataTypeInferred": true,
             "isHidden": true,
             "expression": "CONCATENATE([kyselykertaid],CONCATENATE([Koodit Oppilaitos],[Koodit Tutkinto]))"
+          },
+          {
+            "name": "luodut_vastaajatunnukset_id",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "luodut_vastaajatunnukset_id"
           },
           {
             "name": "Tilastovuosi",
@@ -1372,12 +1372,11 @@
           {
             "name": "Keskiarvo",
             "expression": [
+              "",
               "IF(",
-              "[ehtoFI]=TRUE()",
-              ",BLANK()",
-              ",CALCULATE(AVERAGE(Muuttujat[numerovalinta])",
-              "--;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
-              ",Muuttujat[vastaustyyppi_keskiarvo]=1)",
+              "\t[ehtoFI]=TRUE()",
+              "\t,BLANK()",
+              "\t,CALCULATE(AVERAGE(Muuttujat[numerovalinta]),Muuttujat[vastaustyyppi_keskiarvo]=1)",
               ")",
               ""
             ],
@@ -1438,10 +1437,12 @@
             "name": "Keskiarvo (rahoitusmalli)",
             "expression": [
               "",
+              "--total keskiarvo siten, että lasketaan ensin osaamis-kysymysten (6 kpl) keskiarvo, siihen lisätään 4:n väittämäkysymyksen tulos erillisinä",
               "var vastanneet_painotettu = AVERAGEX(Muuttujat,COUNTROWS(Muuttujat) * [rahoituskysmys_paino])",
               "var total_testi = HASONEVALUE(Muuttujat[Kysymysryhmä])",
               "var keskiarvo_total = [Pisteet] / vastanneet_painotettu",
-              "return IF(total_testi=FALSE(), keskiarvo_total, [Keskiarvo])"
+              "return IF([ehtoFI]=TRUE(),BLANK(),",
+              "IF(total_testi=FALSE(), keskiarvo_total, [Keskiarvo]))"
             ],
             "formatString": "0.0"
           }
