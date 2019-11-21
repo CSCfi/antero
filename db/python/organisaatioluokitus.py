@@ -152,9 +152,9 @@ def get_and_set_coordinates(row):
   """
   First check if the coordinates are found in our database.
   """
-  check_coordinates = float(check_if_coordinates_in_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"]))
+  check_coordinates = check_if_coordinates_in_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"])
   if check_coordinates["coordinates_found"]:
-    if check_coordinates["confidence"] >= EXT_API_QUERY_CONFIDENCE_LIMIT and coordinate_length_ok(check_coordinates["latitude"], check_coordinates["longitude"]):
+    if float(check_coordinates["confidence"]) >= EXT_API_QUERY_CONFIDENCE_LIMIT and coordinate_length_ok(check_coordinates["latitude"], check_coordinates["longitude"]):
       row["latitude"] = check_coordinates["latitude"]
       row["longitude"] = check_coordinates["longitude"]
     else:
