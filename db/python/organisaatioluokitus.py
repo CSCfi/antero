@@ -18,6 +18,7 @@ import geocoding
 import json
 import requests
 from time import localtime, strftime
+from imp import reload
 reload(sys)
 if sys.version_info < (3,0):
     sys.setdefaultencoding('utf-8')
