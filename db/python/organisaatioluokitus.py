@@ -18,6 +18,9 @@ import geocoding
 import json
 import requests
 from time import localtime, strftime
+reload(sys)
+if sys.version_info < (3,0):
+    sys.setdefaultencoding('utf-8')
 
 import dbcommand
 import dboperator
@@ -148,7 +151,7 @@ def get_and_set_coordinates(row):
   """
   First check if the coordinates are found in our database.
   """
-  check_coordinates = check_if_coordinates_in_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"])
+  check_coordinates = float(check_if_coordinates_in_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"]))
   if check_coordinates["coordinates_found"]:
     if check_coordinates["confidence"] >= EXT_API_QUERY_CONFIDENCE_LIMIT and coordinate_length_ok(check_coordinates["latitude"], check_coordinates["longitude"]):
       row["latitude"] = check_coordinates["latitude"]
