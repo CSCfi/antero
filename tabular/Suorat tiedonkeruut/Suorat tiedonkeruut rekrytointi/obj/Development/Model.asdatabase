@@ -593,7 +593,11 @@
           },
           {
             "name": "Valitut",
-            "expression": "IF(CALCULATE(SUM('Muuttujat - Valitut'[Valittuja]))=0,BLANK(),CALCULATE(SUM('Muuttujat - Valitut'[Valittuja])))",
+            "expression": [
+              "",
+              "var summa=CALCULATE(SUM('Muuttujat - Valitut'[Valittuja]))",
+              "return IF(summa=0,BLANK(),summa)"
+            ],
             "formatString": "#,0"
           },
           {
@@ -1575,6 +1579,7 @@
           {
             "name": "henkilonumero",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "henkilonumero"
           },
           {
@@ -1773,6 +1778,7 @@
           {
             "name": "työkokemus_vastanneet",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "työkokemus_vastanneet"
           },
           {
@@ -1784,6 +1790,7 @@
           {
             "name": "ed_tyopaikka_vastanneet",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "ed_tyopaikka_vastanneet"
           },
           {
@@ -7810,8 +7817,23 @@
             "name": "CalculatedTable 2",
             "source": {
               "type": "calculated",
-              "expression": "SUMMARIZE(Muuttujat,[Hakuavain],\"Valittuja2\",DISTINCTCOUNT(Muuttujat[henkilonumero]),\"Hakijoita2\",SUMX(FILTER(RELATEDTABLE(_Muuttujat),[Hakuavain]=EARLIER([Hakuavain])),[hakijat_lkm]),\"Ulk hakijoita2\",SUMX(FILTER(RELATEDTABLE(_Muuttujat),[Hakuavain]=EARLIER([Hakuavain]) && [Kansalaisuus Suomi]=\"Ei\"),[hakijat_lkm]))"
+              "expression": [
+                "SUMMARIZE(Muuttujat,[Hakuavain],\"Valittuja2\",DISTINCTCOUNT(Muuttujat[henkilonumero]),\"Hakijoita2\",",
+                "SUMX(FILTER(RELATEDTABLE(_Muuttujat),[Hakuavain]=EARLIER([Hakuavain])),[hakijat_lkm]),\"Ulk hakijoita2\", SUMX(FILTER(RELATEDTABLE(_Muuttujat),[Hakuavain]=EARLIER([Hakuavain]) && [Kansalaisuus Suomi]=\"Ei\"),[hakijat_lkm]))"
+              ]
             }
+          }
+        ],
+        "measures": [
+          {
+            "name": "V",
+            "expression": "SUM('Haku-valitut'[Valittuja2])",
+            "isHidden": true
+          },
+          {
+            "name": "H",
+            "expression": "SUM('Haku-valitut'[Hakijoita2])",
+            "isHidden": true
           }
         ]
       },
@@ -7863,6 +7885,13 @@
               "expression": "SUMMARIZE(Muuttujat,[Hakuavain],[Tutkijanuravaihe],[Tieteenala],\"Valittuja\",DISTINCTCOUNT(Muuttujat[henkilonumero]))"
             }
           }
+        ],
+        "measures": [
+          {
+            "name": "Val",
+            "expression": "SUM('Muuttujat - Valitut'[Valittuja])",
+            "isHidden": true
+          }
         ]
       }
     ],
@@ -7876,16 +7905,16 @@
         "crossFilteringBehavior": "bothDirections"
       },
       {
-        "name": "28444efc-1512-4e04-a3c9-c2202e127ec1",
-        "fromTable": "Muuttujat - Valitut",
+        "name": "3bc8cc05-0ec9-400f-b95b-42a1f9d0cf5c",
+        "fromTable": "_Muuttujat",
         "fromColumn": "Hakuavain",
         "toTable": "Haku-valitut",
         "toColumn": "Hakuavain",
         "crossFilteringBehavior": "bothDirections"
       },
       {
-        "name": "7b898d53-ef36-47c4-ab32-a8ecb6786e49",
-        "fromTable": "_Muuttujat",
+        "name": "46083494-cbd6-45eb-baf0-ad6ad5b4dd36",
+        "fromTable": "Muuttujat - Valitut",
         "fromColumn": "Hakuavain",
         "toTable": "Haku-valitut",
         "toColumn": "Hakuavain",
@@ -8016,6 +8045,33 @@
               },
               {
                 "name": "vast_pros"
+              },
+              {
+                "name": "Koodit Kansalaisuus"
+              },
+              {
+                "name": "Koodit Koulutusala, taso 1"
+              },
+              {
+                "name": "Koodit Koulutusala, taso 2"
+              },
+              {
+                "name": "Koodit Koulutusala, taso 3"
+              },
+              {
+                "name": "Koodit Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koodit Koulutusaste, taso 2"
+              },
+              {
+                "name": "Koodit Koulutusnimike"
+              },
+              {
+                "name": "Koodit OKM ohjauksen ala"
+              },
+              {
+                "name": "Koodit Äidinkieli"
               }
             ],
             "measures": [
@@ -8114,6 +8170,33 @@
               },
               {
                 "name": "vast_pros"
+              },
+              {
+                "name": "Koodit Kansalaisuus"
+              },
+              {
+                "name": "Koodit Koulutusala, taso 1"
+              },
+              {
+                "name": "Koodit Koulutusala, taso 2"
+              },
+              {
+                "name": "Koodit Koulutusala, taso 3"
+              },
+              {
+                "name": "Koodit Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koodit Koulutusaste, taso 2"
+              },
+              {
+                "name": "Koodit Koulutusnimike"
+              },
+              {
+                "name": "Koodit OKM ohjauksen ala"
+              },
+              {
+                "name": "Koodit Äidinkieli"
               }
             ],
             "measures": [
@@ -8191,6 +8274,33 @@
               },
               {
                 "name": "vast_pros"
+              },
+              {
+                "name": "Koodit Kansalaisuus"
+              },
+              {
+                "name": "Koodit Koulutusala, taso 1"
+              },
+              {
+                "name": "Koodit Koulutusala, taso 2"
+              },
+              {
+                "name": "Koodit Koulutusala, taso 3"
+              },
+              {
+                "name": "Koodit Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koodit Koulutusaste, taso 2"
+              },
+              {
+                "name": "Koodit Koulutusnimike"
+              },
+              {
+                "name": "Koodit OKM ohjauksen ala"
+              },
+              {
+                "name": "Koodit Äidinkieli"
               }
             ],
             "measures": [
@@ -8301,6 +8411,33 @@
               },
               {
                 "name": "Kansalaisuus (maanosa)"
+              },
+              {
+                "name": "Koodit Kansalaisuus"
+              },
+              {
+                "name": "Koodit Koulutusala, taso 1"
+              },
+              {
+                "name": "Koodit Koulutusala, taso 2"
+              },
+              {
+                "name": "Koodit Koulutusala, taso 3"
+              },
+              {
+                "name": "Koodit Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koodit Koulutusaste, taso 2"
+              },
+              {
+                "name": "Koodit Koulutusnimike"
+              },
+              {
+                "name": "Koodit OKM ohjauksen ala"
+              },
+              {
+                "name": "Koodit Äidinkieli"
               }
             ],
             "measures": [
@@ -8402,6 +8539,41 @@
                 "name": "Sarakeleveys"
               }
             ]
+          },
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Koodit Kansalaisuus"
+              },
+              {
+                "name": "Koodit Korkeakoulu"
+              },
+              {
+                "name": "Koodit Koulutusala, taso 1"
+              },
+              {
+                "name": "Koodit Koulutusala, taso 2"
+              },
+              {
+                "name": "Koodit Koulutusala, taso 3"
+              },
+              {
+                "name": "Koodit Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koodit Koulutusaste, taso 2"
+              },
+              {
+                "name": "Koodit Koulutusnimike"
+              },
+              {
+                "name": "Koodit OKM ohjauksen ala"
+              },
+              {
+                "name": "Koodit Äidinkieli"
+              }
+            ]
           }
         ]
       },
@@ -8446,6 +8618,33 @@
               },
               {
                 "name": "vast_pros"
+              },
+              {
+                "name": "Koodit Kansalaisuus"
+              },
+              {
+                "name": "Koodit Koulutusala, taso 1"
+              },
+              {
+                "name": "Koodit Koulutusala, taso 2"
+              },
+              {
+                "name": "Koodit Koulutusala, taso 3"
+              },
+              {
+                "name": "Koodit Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koodit Koulutusaste, taso 2"
+              },
+              {
+                "name": "Koodit Koulutusnimike"
+              },
+              {
+                "name": "Koodit OKM ohjauksen ala"
+              },
+              {
+                "name": "Koodit Äidinkieli"
               }
             ],
             "measures": [
