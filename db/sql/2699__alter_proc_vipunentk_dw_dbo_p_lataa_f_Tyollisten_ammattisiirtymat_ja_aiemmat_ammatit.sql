@@ -1,13 +1,13 @@
 USE [VipunenTK_DW]
 GO
-/****** Object:  StoredProcedure [dbo].[p_lataa_f_tyollisten_ammattisiirtymat_ja_aiemmat_ammatit]    Script Date: 9.12.2019 21:10:55 ******/
+
 SET ANSI_NULLS ON
 GO
+
 SET QUOTED_IDENTIFIER ON
 GO
 
-/****** Script for SelectTopNRows command from SSMS  ******/
--- ,koulutussektori_id = coalesce(d37.id,-2)
+
 ALTER PROCEDURE [dbo].[p_lataa_f_tyollisten_ammattisiirtymat_ja_aiemmat_ammatit] AS
 
 TRUNCATE TABLE [VipunenTK].[dbo].[f_Tyollisten_ammattisiirtymat_ja_aiemmat_ammatit];
