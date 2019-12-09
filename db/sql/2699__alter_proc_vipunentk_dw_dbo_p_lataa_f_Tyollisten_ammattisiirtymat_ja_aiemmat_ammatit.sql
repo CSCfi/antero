@@ -12,10 +12,9 @@ ALTER PROCEDURE [dbo].[p_lataa_f_tyollisten_ammattisiirtymat_ja_aiemmat_ammatit]
 
 TRUNCATE TABLE [VipunenTK].[dbo].[f_Tyollisten_ammattisiirtymat_ja_aiemmat_ammatit];
 
-INSERT INTO [VipunenTK].[dbo].[f_Tyollisten_ammattisiirtymat_ja_aiemmat_ammatit]
-
-
-SELECT f.[tilastovuosi]
+with cte as 
+(
+  SELECT f.[tilastovuosi]
       ,f.[sukupuoli_koodi]
       ,sukupuoli_id = coalesce(d1.id, -2)
       ,f.[aidinkieli_versio1_koodi]
@@ -102,9 +101,9 @@ SELECT f.[tilastovuosi]
   LEFT OUTER JOIN VipunenTK..d_koulutusluokitus d28 ON d28.koulutusluokitus_avain = '-1'
   LEFT OUTER JOIN VipunenTK..d_koulutusluokitus d29 ON d29.koulutusluokitus_avain = '-1'
 
-UNION ALL
+  UNION ALL
 
-SELECT f.[tilastovuosi]
+  SELECT f.[tilastovuosi]
       ,'-1'
       ,sukupuoli_id = coalesce(d1.id, -2)
       ,'-1'
@@ -191,7 +190,11 @@ SELECT f.[tilastovuosi]
   LEFT OUTER JOIN VipunenTK..d_koulutusluokitus d27 ON d27.koulutusluokitus_avain = f.opintoala_erikoistumiskoulutus_siirtyman_paassa
   LEFT OUTER JOIN VipunenTK..d_koulutusluokitus d28 ON d28.koulutusluokitus_avain = f.koulutusala_taso1_erikoistumiskoulutus_amk_siirtyman_paassa
   LEFT OUTER JOIN VipunenTK..d_koulutusluokitus d29 ON d29.koulutusluokitus_avain = f.koulutusala_taso1_erikoistumiskoulutus_yo_siirtyman_paassa
+)
 
-  GO
-  USE [ANTERO]
+INSERT INTO [VipunenTK].[dbo].[f_Tyollisten_ammattisiirtymat_ja_aiemmat_ammatit]
+SELECT * FROM cte;
+
+GO
+USE [ANTERO]
   
