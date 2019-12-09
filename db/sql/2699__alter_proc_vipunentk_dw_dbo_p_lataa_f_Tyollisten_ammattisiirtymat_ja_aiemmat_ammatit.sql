@@ -192,4 +192,3 @@ SELECT f.[tilastovuosi]
   LEFT OUTER JOIN VipunenTK..d_koulutusluokitus d28 ON d28.koulutusluokitus_avain = f.koulutusala_taso1_erikoistumiskoulutus_amk_siirtyman_paassa
   LEFT OUTER JOIN VipunenTK..d_koulutusluokitus d29 ON d29.koulutusluokitus_avain = f.koulutusala_taso1_erikoistumiskoulutus_yo_siirtyman_paassa
   
-  USE [ANTERO]
