@@ -540,7 +540,6 @@
           {
             "name": "jarjestys_monivalinta",
             "dataType": "int64",
-            "isHidden": true,
             "sourceColumn": "jarjestys_monivalinta"
           },
           {
@@ -2881,7 +2880,15 @@
           },
           {
             "name": "Keskihajonta (maisterit)",
-            "expression": "IF(OR(OR([vast-ura-mais-tilasto] < 6, ISFILTERED([Monivalintavaihtoehto])), [Keskiarvo / Vastausjakauma (maisterit)] = BLANK()), BLANK(),[kh-ura-mais-tilasto])",
+            "expression": [
+              "",
+              "",
+              "IF(OR(OR([vast-ura-mais-tilasto] < 6, ",
+              "",
+              "ISFILTERED([Monivalintavaihtoehto])), [Keskiarvo / Vastausjakauma (maisterit)] = BLANK()), ",
+              "",
+              "BLANK(),[kh-ura-mais-tilasto])"
+            ],
             "formatString": "0.0"
           },
           {
@@ -3289,6 +3296,42 @@
               "/*Maisterin rahoitusmallikysys.*/"
             ],
             "formatString": "0.0"
+          },
+          {
+            "name": "Keskiarvo (maisterit)",
+            "expression": [
+              "",
+              "            ",
+              "              IF(",
+              "\t( [Vastaajamäärä]<6|| ISFILTERED('Muuttujat'[Monivalintavaihtoehto]) || NOT(ISFILTERED('Muuttujat'[Kysymys]))),",
+              "",
+              "\tBLANK()",
+              "\t,CALCULATE(AVERAGE([numerovalinta]),'Muuttujat'[ura_maisteri]=1, 'Muuttujat'[vastaustyyppi]<>\"kylla_ei_valinta\"",
+              "\t",
+              "\t,'Muuttujat'[vastaustyyppi]=\"arvosana6\"",
+              "\t",
+              "\t,'Muuttujat'[vuosi_tilasto]=1",
+              "\t",
+              "\t",
+              "\t )",
+              ")"
+            ],
+            "formatString": "0.0"
+          },
+          {
+            "name": "Vastausjakauma (maisterit)",
+            "expression": [
+              "",
+              " IF",
+              " ",
+              "  (OR ([vast-ura-mais-tilasto] < 6 , not(isfiltered('Muuttujat'[Monivalintavaihtoehto]))),",
+              "          \t BLANK(), ",
+              "          \t          \t      ",
+              "          \t FORMAT([ka-ura-mais2], \"0%\"))",
+              "          \t       ",
+              "          \t       ",
+              "          \t      "
+            ]
           }
         ],
         "annotations": [
@@ -5605,6 +5648,12 @@
               },
               {
                 "name": "Keskiarvo (rahoitusmalli)"
+              },
+              {
+                "name": "Keskiarvo (maisterit)"
+              },
+              {
+                "name": "Vastausjakauma (maisterit)"
               }
             ]
           },
