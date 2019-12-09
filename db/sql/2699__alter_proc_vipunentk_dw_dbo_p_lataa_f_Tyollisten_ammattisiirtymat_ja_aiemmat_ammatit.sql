@@ -1,6 +1,6 @@
 USE [VipunenTK_DW]
 GO
-/****** Object:  StoredProcedure [dbo].[p_lataa_f_tyollisten_ammattisiirtymat_ja_aiemmat_ammatit]    Script Date: 9.12.2019 19:59:47 ******/
+/****** Object:  StoredProcedure [dbo].[p_lataa_f_tyollisten_ammattisiirtymat_ja_aiemmat_ammatit]    Script Date: 9.12.2019 21:10:55 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -191,8 +191,7 @@ SELECT f.[tilastovuosi]
   LEFT OUTER JOIN VipunenTK..d_koulutusluokitus d27 ON d27.koulutusluokitus_avain = f.opintoala_erikoistumiskoulutus_siirtyman_paassa
   LEFT OUTER JOIN VipunenTK..d_koulutusluokitus d28 ON d28.koulutusluokitus_avain = f.koulutusala_taso1_erikoistumiskoulutus_amk_siirtyman_paassa
   LEFT OUTER JOIN VipunenTK..d_koulutusluokitus d29 ON d29.koulutusluokitus_avain = f.koulutusala_taso1_erikoistumiskoulutus_yo_siirtyman_paassa
-  where 1=1
-  
+
   GO
   USE [ANTERO]
   
