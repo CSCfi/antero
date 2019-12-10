@@ -5212,13 +5212,38 @@
         "measures": [
           {
             "name": "Opiskelijat",
-            "expression": "IF(SUM([Opisk2]) = 0, BLANK(), SUM([Opisk2]))",
+            "expression": [
+              "",
+              "var lkm = SUM([Opisk2])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Aloittaneet",
-            "expression": "IF(SUM([Aloitt2]) = 0, BLANK(), SUM([Aloitt2]))",
+            "expression": [
+              "",
+              "var lkm = SUM([Aloitt2])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
+              ""
+            ],
             "formatString": "#,0"
+          },
+          {
+            "name": "Opiskelijat_s",
+            "expression": "IF(not([kytkin]=1), BLANK(), IF(SUM([Opisk2]) = 0, BLANK(), SUM([Opisk2])))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Aloittaneet_s",
+            "expression": "IF(not([kytkin]=1), BLANK(), IF(SUM([Aloitt2]) = 0, BLANK(), SUM([Aloitt2])))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "kytkin",
+            "expression": " IF(LEFT(USERNAME(), 4) = \"DWI\\\", 1, 0)",
+            "formatString": "0",
+            "isHidden": true
           }
         ],
         "annotations": [
@@ -9053,6 +9078,10 @@
           {
             "memberName": "DWI\\Z_T_Antero_Read_TAB",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-4155"
+          },
+          {
+            "memberName": "DWI\\Z_P_Antero_Full_Read_TAB",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-2272"
           }
         ]
       },
