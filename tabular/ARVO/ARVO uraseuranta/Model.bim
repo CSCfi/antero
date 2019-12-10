@@ -3167,7 +3167,7 @@
             "isHidden": true
           },
           {
-            "name": "Vastaajamäärä (uraseuranta-tohtorit)",
+            "name": "Vastaajamäärä (tohtorit)",
             "expression": "IF(AND([vast-ura-toht-tilasto]>0,[vast-ura-toht-tilasto]<6),\"<5\",[vast-ura-toht-tilasto])",
             "formatString": "#,0"
           },
@@ -3177,7 +3177,7 @@
             "formatString": "#,0"
           },
           {
-            "name": "Keskihajonta (uraseuranta-tohtorit)",
+            "name": "Keskihajonta (tohtorit)",
             "expression": "IF(OR(OR([vast-ura-toht-tilasto] < 6, ISFILTERED([Monivalintavaihtoehto])), [Keskiarvo / Vastausjakauma (uraseuranta-tohtorit)] = BLANK()), BLANK(),[kh-ura-toht-tilasto])",
             "formatString": "0.0"
           },
@@ -3303,10 +3303,14 @@
               "",
               "            ",
               "              IF(",
-              "\t( [Vastaajamäärä]<6|| ISFILTERED('Muuttujat'[Monivalintavaihtoehto]) || NOT(ISFILTERED('Muuttujat'[Kysymys]))),",
+              "\t( [Vastaajamäärä]<6|| ISFILTERED('Muuttujat'[Monivalintavaihtoehto] )),",
               "",
               "\tBLANK()",
-              "\t,CALCULATE(AVERAGE([numerovalinta]),'Muuttujat'[ura_maisteri]=1, 'Muuttujat'[vastaustyyppi]<>\"kylla_ei_valinta\"",
+              "\t,CALCULATE(AVERAGE([numerovalinta]),",
+              "\t",
+              "\t'Muuttujat'[ura_maisteri]=1, ",
+              "\t",
+              "\t'Muuttujat'[vastaustyyppi]<>\"kylla_ei_valinta\"",
               "\t",
               "\t,'Muuttujat'[vastaustyyppi]=\"arvosana6\"",
               "\t",
@@ -3339,7 +3343,7 @@
               "",
               "            ",
               "              IF(",
-              "\t( [Vastaajamäärä]<6|| ISFILTERED('Muuttujat'[Monivalintavaihtoehto]) || NOT(ISFILTERED('Muuttujat'[Kysymys]))),",
+              "\t( [Vastaajamäärä]<6|| ISFILTERED('Muuttujat'[Monivalintavaihtoehto])),",
               "",
               "\tBLANK()",
               "\t,CALCULATE(AVERAGE([numerovalinta]),'Muuttujat'[ura_tohtori]=1, 'Muuttujat'[vastaustyyppi]<>\"kylla_ei_valinta\"",
@@ -5669,9 +5673,6 @@
             ],
             "measures": [
               {
-                "name": "Keskiarvo / Vastausjakauma (maisterit)"
-              },
-              {
                 "name": "Keskihajonta (maisterit)"
               },
               {
@@ -5679,9 +5680,6 @@
               },
               {
                 "name": "Vastaajamäärä (maisterit)"
-              },
-              {
-                "name": "Keskiarvo (rahoitusmalli)"
               },
               {
                 "name": "Keskiarvo (maisterit)"
@@ -5775,13 +5773,10 @@
             ],
             "measures": [
               {
-                "name": "Keskihajonta (uraseuranta-tohtorit)"
+                "name": "Keskihajonta (tohtorit)"
               },
               {
-                "name": "Vastaajamäärä (uraseuranta-tohtorit)"
-              },
-              {
-                "name": "Keskiarvo / Vastausjakauma (uraseuranta-tohtorit)"
+                "name": "Vastaajamäärä (tohtorit)"
               },
               {
                 "name": "Keskiarvo (tohtorit)"
