@@ -473,8 +473,8 @@ SELECT --top 10
 	  ,[Pohjakoulutus järjestys] = LEFT(d22.selite_fi,40)--d22.jarjestys--case d22.jarjestys when '98' then 'yy' when 'yo' then 'aa' else d22.jarjestys end
 	  ,[Sektori järjestys] = d20.jarjestys_koulutussektori_koodi
 	  ,[Sukupuoli järjestys] = d7.jarjestys_sukupuoli_koodi
-	  ,[Toisen asteen koulutuksen suoritusvuosi järjestys] = case when f.toisen_asteen_koulutuksen_suoritusvuosi in ('0','Tieto puuttuu') then 9999 else 9999-f.toisen_asteen_koulutuksen_suoritusvuosi end
-	  ,[Ylioppilastutkinnon suoritusvuosi järjestys] = case when f.ylioppilastutkinnon_suoritusvuosi in ('0', 'Tieto puuttuu') then 9999 else 9999-f.ylioppilastutkinnon_suoritusvuosi end
+	  ,[Toisen asteen koulutuksen suoritusvuosi järjestys] = case when f.toisen_asteen_koulutuksen_suoritusvuosi in ('0','Tieto puuttuu') then 1 else 9999-f.toisen_asteen_koulutuksen_suoritusvuosi end
+	  ,[Ylioppilastutkinnon suoritusvuosi järjestys] = case when f.ylioppilastutkinnon_suoritusvuosi in ('0', 'Tieto puuttuu') then 1 else 9999-f.ylioppilastutkinnon_suoritusvuosi end
 	  ,[Tutkinnon taso (hakukohde) järjestys] = d45.jarjestys_koodi
 	  ,[Tutkinnon aloitussykli (hakukohde) järjestys] = d44.jarjestys_koodi
 	  ,[Äidinkieli versio1 järjestys] = d8.jarjestys_kieliryhma1
@@ -925,8 +925,8 @@ Select distinct --top 0
 	  ,[Pohjakoulutus järjestys] = 'ööö'
 	  ,[Sektori järjestys] = d6.jarjestys_koulutussektori_koodi
 	  ,[Sukupuoli järjestys] = 999999
-	  ,[Toisen asteen koulutuksen suoritusvuosi järjestys] = 9999
-	  ,[Ylioppilastutkinnon suoritusvuosi järjestys] = 9999
+	  ,[Toisen asteen koulutuksen suoritusvuosi järjestys] = 1
+	  ,[Ylioppilastutkinnon suoritusvuosi järjestys] = 1
 	  ,[Tutkinnon taso (hakukohde) järjestys] = d45.jarjestys_koodi
 	  ,[Tutkinnon aloitussykli (hakukohde) järjestys] = d44.jarjestys_koodi
 	  ,[Äidinkieli versio1 järjestys] = 999999
