@@ -2518,6 +2518,7 @@
                 </Source>
               </NameColumn>
               <OrderBy>Key</OrderBy>
+              <AttributeHierarchyVisible>false</AttributeHierarchyVisible>
             </Attribute>
             <Attribute>
               <Annotations>
@@ -2553,6 +2554,7 @@
                 </Source>
               </NameColumn>
               <OrderBy>Key</OrderBy>
+              <AttributeHierarchyVisible>false</AttributeHierarchyVisible>
             </Attribute>
             <Attribute>
               <Annotations>
@@ -2588,6 +2590,7 @@
                 </Source>
               </NameColumn>
               <OrderBy>Key</OrderBy>
+              <AttributeHierarchyVisible>false</AttributeHierarchyVisible>
             </Attribute>
             <Attribute>
               <Annotations>
@@ -4551,12 +4554,15 @@
                 </Attribute>
                 <Attribute>
                   <AttributeID>aloittaneet_lkm</AttributeID>
+                  <AttributeHierarchyVisible>false</AttributeHierarchyVisible>
                 </Attribute>
                 <Attribute>
                   <AttributeID>opiskelijat_lkm</AttributeID>
+                  <AttributeHierarchyVisible>false</AttributeHierarchyVisible>
                 </Attribute>
                 <Attribute>
                   <AttributeID>tutkinnot_lkm</AttributeID>
+                  <AttributeHierarchyVisible>false</AttributeHierarchyVisible>
                 </Attribute>
                 <Attribute>
                   <AttributeID>Statistikår</AttributeID>
@@ -7510,7 +7516,7 @@ CREATE MEASURE 'Muuttujat'[Qualifications]=[Tutkinnot];
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Aloittaneet_s]=calculate(sum([aloittaneet_lkm]),filter(Muuttujat,[Koulutusaste taso 2]&lt;&gt;"Koulutusaste tuntematon"));
+CREATE MEASURE 'Muuttujat'[Aloittaneet_s]=IF([kytkin]=0, BLANK(), calculate(sum([aloittaneet_lkm]),filter(Muuttujat,[Koulutusaste taso 2]&lt;&gt;"Koulutusaste tuntematon")));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -7529,7 +7535,7 @@ CREATE MEASURE 'Muuttujat'[Aloittaneet_s]=calculate(sum([aloittaneet_lkm]),filte
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Opiskelijat_s]=sum([opiskelijat_lkm]);
+CREATE MEASURE 'Muuttujat'[Opiskelijat_s]=IF([kytkin]=0, BLANK(), sum([opiskelijat_lkm]));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -7548,12 +7554,31 @@ CREATE MEASURE 'Muuttujat'[Opiskelijat_s]=sum([opiskelijat_lkm]);
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Tutkinnot_s]=sum([tutkinnot_lkm]);
+CREATE MEASURE 'Muuttujat'[Tutkinnot_s]=IF([kytkin]=0, BLANK(), sum([tutkinnot_lkm]));
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
                       <Value>Tutkinnot_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[kytkin]=IF(LEFT(USERNAME(), 4) = "DWI\", 1, 0);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>kytkin</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -7814,6 +7839,28 @@ CREATE MEASURE 'Muuttujat'[Tutkinnot_s]=sum([tutkinnot_lkm]);
                   <CalculationReference>[Tutkinnot_s]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>True</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[kytkin]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <Visible>false</Visible>
+                  <FormatString>'0'</FormatString>
                 </CalculationProperty>
                 <CalculationProperty>
                   <CalculationReference>Measures.[__No measures defined]</CalculationReference>
@@ -8335,6 +8382,10 @@ CREATE MEASURE 'Muuttujat'[Tutkinnot_s]=sum([tutkinnot_lkm]);
             <Member>
               <Name>DWI\Z_T_Antero_Read_TAB</Name>
               <Sid>S-1-5-21-2196741920-3238685902-2581541251-4155</Sid>
+            </Member>
+            <Member>
+              <Name>DWI\Z_P_Antero_Full_Read_TAB</Name>
+              <Sid>S-1-5-21-2196741920-3238685902-2581541251-2272</Sid>
             </Member>
           </Members>
         </Role>
