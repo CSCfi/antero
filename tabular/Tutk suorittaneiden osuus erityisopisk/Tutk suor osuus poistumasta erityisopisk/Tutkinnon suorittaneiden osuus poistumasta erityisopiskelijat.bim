@@ -6994,77 +6994,138 @@
         "measures": [
           {
             "name": "Henkilöt lkm",
-            "expression": "SUM([lkm_int2])",
+            "expression": [
+              "",
+              "var lkm = SUM([lkm_int2])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Keskeyttäneet",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [1a] = 4))",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [1a] = 4))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Keskeyttäneiden osuus",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [1a] = 4))/[Henkilöt lkm]",
+            "expression": [
+              "",
+              "var osa = [Keskeyttäneet]",
+              "var kaikki = [Henkilöt lkm]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, \"0.0 %\"",
+              ", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Alkuperäisellä koulutusasteella tutkinnon suorittaneet (tutkinto priorisoitu)",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [3a] = 0))",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [3a] = 0))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Alkup. koul.asteella tutk. suorittaneeet / alkup. koul.asteella tutk. suorittaneet + keskeyttäneet",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [3a] = 0))/(CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [3a] = 0))+CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [1a] = 4)))",
+            "expression": [
+              "",
+              "var osa = [Alkuperäisellä koulutusasteella tutkinnon suorittaneet (tutkinto priorisoitu)]",
+              "var kaikki = MROUND(CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [3a] = 0)) + CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [1a] = 4)), 3)",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki < 5, \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, \"0.0 %\"",
+              ", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Personer antal",
-            "expression": "SUM([lkm_int2])",
+            "expression": "[Henkilöt lkm]",
             "formatString": "#,0"
           },
           {
             "name": "No. of persons",
-            "expression": "SUM([lkm_int2])",
+            "expression": "[Henkilöt lkm]",
             "formatString": "#,0"
           },
           {
             "name": "Personer som avbrutit sina studier",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [1a] = 4))",
+            "expression": "[Keskeyttäneet]",
             "formatString": "#,0"
           },
           {
             "name": "Discontinued",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [1a] = 4))",
+            "expression": "[Keskeyttäneet]",
             "formatString": "#,0"
           },
           {
             "name": "Andel som avbrutit sina studier",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [1a] = 4))/[Henkilöt lkm]",
+            "expression": "[Keskeyttäneiden osuus]",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Percentage of students who discontinued studies",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [1a] = 4))/[Henkilöt lkm]",
+            "expression": "[Keskeyttäneiden osuus]",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Personer som avlagt en examen på ursprunglig utbildningsnivå (examen har prioriterats)",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [3a] = 0))",
+            "expression": "[Alkuperäisellä koulutusasteella tutkinnon suorittaneet (tutkinto priorisoitu)]",
             "formatString": "#,0"
           },
           {
             "name": "Qualification at the original level of education (qualification prioritised)",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [3a] = 0))",
+            "expression": "[Alkuperäisellä koulutusasteella tutkinnon suorittaneet (tutkinto priorisoitu)]",
             "formatString": "#,0"
           },
           {
             "name": "Avlagt en examen på urspr. utb.nivå/avlagt examen + avbrutit sina studier på urspr. utb.nivå",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [3a] = 0))/(CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [3a] = 0))+CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [1a] = 4)))",
+            "expression": "[Alkup. koul.asteella tutk. suorittaneeet / alkup. koul.asteella tutk. suorittaneet + keskeyttäneet]",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Qualification at the original level of ed. / qualification at the original level of ed.+discontinued",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [3a] = 0))/(CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [3a] = 0))+CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [1a] = 4)))",
+            "expression": "[Alkup. koul.asteella tutk. suorittaneeet / alkup. koul.asteella tutk. suorittaneet + keskeyttäneet]",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "kytkin",
+            "expression": "IF(LEFT(USERNAME(), 4) = \"DWI\\\", 1, 0)",
+            "formatString": "0",
+            "isHidden": true
+          },
+          {
+            "name": "Henkilöt lkm_s",
+            "expression": "IF([kytkin]=0, BLANK(), SUM([lkm_int2]))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Keskeyttäneet_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [1a] = 4)))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Keskeyttäneiden osuus_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [1a] = 4))/[Henkilöt lkm])",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Alkuperäisellä koulutusasteella tutkinnon suorittaneet (tutkinto priorisoitu)_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [3a] = 0)))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Alkup. koul.asteella tutk. suorittaneeet / alkup. koul.asteella tutk. suorittaneet + keskeyttäneet_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [3a] = 0))/(CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [3a] = 0))+CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [1a] = 4))))",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           }
         ],
@@ -14631,6 +14692,10 @@
           {
             "memberName": "DWI\\Z_T_Antero_Read_TAB",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-4155"
+          },
+          {
+            "memberName": "DWI\\Z_P_Antero_Full_Read_TAB",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-2272"
           }
         ]
       },
@@ -14649,6 +14714,10 @@
           {
             "memberName": "DWI\\Z_T_Antero_Read_TAB",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-4155"
+          },
+          {
+            "memberName": "DWI\\Z_P_Antero_Full_Read_TAB",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-2272"
           }
         ]
       }
