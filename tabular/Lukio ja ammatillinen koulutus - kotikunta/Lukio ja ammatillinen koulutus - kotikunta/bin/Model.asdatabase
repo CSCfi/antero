@@ -3598,32 +3598,54 @@
         "measures": [
           {
             "name": "Uudet opiskelijat",
-            "expression": "sum([aloittaneet])",
+            "expression": [
+              "var lkm = SUM([aloittaneet])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Opiskelijat",
-            "expression": "sum([opiskelijat2])",
+            "expression": [
+              "var lkm = sum([opiskelijat2])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Nya studerande",
-            "expression": "sum([aloittaneet])",
+            "expression": "[Uudet opiskelijat]",
             "formatString": "#,0"
           },
           {
             "name": "Studerande",
-            "expression": "sum([opiskelijat2])",
+            "expression": "[Opiskelijat]",
             "formatString": "#,0"
           },
           {
             "name": "New students",
-            "expression": "sum([aloittaneet])",
+            "expression": "[Uudet opiskelijat]",
             "formatString": "#,0"
           },
           {
             "name": "Students",
-            "expression": "sum([opiskelijat2])",
+            "expression": "[Opiskelijat]",
+            "formatString": "#,0"
+          },
+          {
+            "name": "kytkin",
+            "expression": "IF(LEFT(USERNAME(), 4) = \"DWI\\\", 1, 0)",
+            "formatString": "0",
+            "isHidden": true
+          },
+          {
+            "name": "Uudet opiskelijat_s",
+            "expression": "IF([kytkin]=0, BLANK(), sum([aloittaneet]))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Opiskelijat_s",
+            "expression": "IF([kytkin]=0, BLANK(), sum([opiskelijat2]))",
             "formatString": "#,0"
           }
         ],
@@ -6205,9 +6227,6 @@
                 "name": "Oppilaitoksen kunta"
               },
               {
-                "name": "Oppilaitoskoodi"
-              },
-              {
                 "name": "Oppilaitoksen maakunta"
               },
               {
@@ -6248,6 +6267,9 @@
               },
               {
                 "name": "Koulutuksen kieli"
+              },
+              {
+                "name": "Oppilaitoskoodi"
               }
             ],
             "measures": [
@@ -7023,6 +7045,10 @@
           {
             "memberName": "DWI\\Z_T_Antero_Read_TAB",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-4155"
+          },
+          {
+            "memberName": "DWI\\Z_P_Antero_Full_Read_TAB",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-2272"
           }
         ]
       },
@@ -7041,6 +7067,10 @@
           {
             "memberName": "DWI\\Z_T_Antero_Read_TAB",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-4155"
+          },
+          {
+            "memberName": "DWI\\Z_P_Antero_Full_Read_TAB",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-2272"
           }
         ]
       }

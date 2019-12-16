@@ -1599,138 +1599,245 @@
         "measures": [
           {
             "name": "Henkilöt lkm",
-            "expression": "SUM([lkm_int2])",
+            "expression": [
+              "",
+              "var lkm = SUM([lkm_int2])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Suoritetut tutkinnot alkuperäisessä koulutuksessa (6-numeroinen koulutuskoodi)",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [suoritettu_tutkinto] = \"01\"))",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [suoritettu_tutkinto] = \"01\"))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Suoritetut tutkinnot ammatillisessa peruskoulutuksessa (mikä tahansa ammatillinen perustutk.)",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, OR([suoritettu_tutkinto] = \"01\", [suoritettu_tutkinto] = \"02\")))",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, OR([suoritettu_tutkinto] = \"01\", [suoritettu_tutkinto] = \"02\")))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Suoritetut tutkinnot missä tahansa ammatillisessa koulutuksessa",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, OR([suoritettu_tutkinto] = \"03\", OR([suoritettu_tutkinto] = \"01\", [suoritettu_tutkinto] = \"02\"))))",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, OR([suoritettu_tutkinto] = \"03\", OR([suoritettu_tutkinto] = \"01\", [suoritettu_tutkinto] = \"02\"))))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Suoritetut tutkinnot missä tahansa koulutuksessa",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, OR([suoritettu_tutkinto] = \"05\", OR([suoritettu_tutkinto] = \"04\",OR([suoritettu_tutkinto] = \"03\", OR([suoritettu_tutkinto] = \"01\", [suoritettu_tutkinto] = \"02\"))))))",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, OR([suoritettu_tutkinto] = \"05\", OR([suoritettu_tutkinto] = \"04\",OR([suoritettu_tutkinto] = \"03\", OR([suoritettu_tutkinto] = \"01\", [suoritettu_tutkinto] = \"02\"))))))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Alkuperäisessä koulutuksessa (6-numeroinen koulutuskoodi) tutkinnon suorittaneiden osuus",
-            "expression": "[Suoritetut tutkinnot alkuperäisessä koulutuksessa (6-numeroinen koulutuskoodi)]/CALCULATE([Henkilöt lkm], ALL(Muuttujat[Tutk. suor. alkup. koulutusalalla]))",
+            "expression": [
+              "",
+              "var osa = [Suoritetut tutkinnot alkuperäisessä koulutuksessa (6-numeroinen koulutuskoodi)]",
+              "var kaikki = CALCULATE([Henkilöt lkm], ALL(Muuttujat[Tutk. suor. alkup. koulutusalalla]))",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, \"0.0 %\"",
+              ", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Ammatillisessa peruskoulutuksessa (mikä tahansa ammatillinen perustutk.) tutkinnon suor. osuus",
-            "expression": "[Suoritetut tutkinnot ammatillisessa peruskoulutuksessa (mikä tahansa ammatillinen perustutk.)]/CALCULATE([Henkilöt lkm], ALL(Muuttujat[Tutk. suor. alkup. koulutusalalla]))",
+            "expression": [
+              "",
+              "var osa = [Suoritetut tutkinnot ammatillisessa peruskoulutuksessa (mikä tahansa ammatillinen perustutk.)]",
+              "var kaikki = CALCULATE([Henkilöt lkm], ALL(Muuttujat[Tutk. suor. alkup. koulutusalalla]))",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, \"0.0 %\"",
+              ", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Missä tahansa ammatillisessa koulutuksessa tutkinnon suorittaneiden osuus",
-            "expression": "[Suoritetut tutkinnot missä tahansa ammatillisessa koulutuksessa]/CALCULATE([Henkilöt lkm], ALL(Muuttujat[Tutk. suor. alkup. koulutusalalla]))",
+            "expression": [
+              "",
+              "var osa = [Suoritetut tutkinnot missä tahansa ammatillisessa koulutuksessa]",
+              "var kaikki = CALCULATE([Henkilöt lkm], ALL(Muuttujat[Tutk. suor. alkup. koulutusalalla]))",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, \"0.0 %\"",
+              ", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Missä tahansa koulutuksessa tutkinnon suorittaneiden osuus",
-            "expression": "[Suoritetut tutkinnot missä tahansa koulutuksessa]/CALCULATE([Henkilöt lkm], ALL(Muuttujat[Tutk. suor. alkup. koulutusalalla]))",
+            "expression": [
+              "",
+              "var osa = [Suoritetut tutkinnot missä tahansa koulutuksessa]",
+              "var kaikki = CALCULATE([Henkilöt lkm], ALL(Muuttujat[Tutk. suor. alkup. koulutusalalla]))",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, \"0.0 %\"",
+              ", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Personer antal",
-            "expression": "SUM([lkm_int2])",
+            "expression": "[Henkilöt lkm]",
             "formatString": "#,0"
           },
           {
             "name": "Avlagda examina i det ursprungliga utbildning (6-siffrig utbildningskod)",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [suoritettu_tutkinto] = \"01\"))",
+            "expression": "[Suoritetut tutkinnot alkuperäisessä koulutuksessa (6-numeroinen koulutuskoodi)]",
             "formatString": "#,0"
           },
           {
             "name": "Avlagda examina inom grundläggande yrkesutbildning (vilken som helst grundl. yrkesutb.)",
-            "expression": "CALCULATE(SUM([lkm_int2]), OR(Muuttujat[suoritettu_tutkinto] = \"01\", Muuttujat[suoritettu_tutkinto] = \"02\"))",
+            "expression": "[Suoritetut tutkinnot ammatillisessa peruskoulutuksessa (mikä tahansa ammatillinen perustutk.)]",
             "formatString": "#,0"
           },
           {
             "name": "Avlagda examina inom vilken som helst yrkesutbildning",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, OR([suoritettu_tutkinto] = \"03\", OR([suoritettu_tutkinto] = \"01\", [suoritettu_tutkinto] = \"02\"))))",
+            "expression": "[Suoritetut tutkinnot missä tahansa ammatillisessa koulutuksessa]",
             "formatString": "#,0"
           },
           {
             "name": "Avlagda examina inom vilken som helst utbildning",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, OR([suoritettu_tutkinto] = \"05\", OR([suoritettu_tutkinto] = \"04\",OR([suoritettu_tutkinto] = \"03\", OR([suoritettu_tutkinto] = \"01\", [suoritettu_tutkinto] = \"02\"))))))",
+            "expression": "[Suoritetut tutkinnot missä tahansa koulutuksessa]",
             "formatString": "#,0"
           },
           {
             "name": "Andel som avlagt en examen inom ursprungliga utbildning (6-siffrig utbildningskod)",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [suoritettu_tutkinto] = \"01\"))/CALCULATE([Henkilöt lkm], ALL(Muuttujat[Tutk. suor. alkup. koulutusalalla]))",
+            "expression": "[Alkuperäisessä koulutuksessa (6-numeroinen koulutuskoodi) tutkinnon suorittaneiden osuus]",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Andel som avlagt en examen inom grundl. yrkesutb. (vilken som helst grundl. yrkesexamen)",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, OR([suoritettu_tutkinto] = \"01\", [suoritettu_tutkinto] = \"02\")))/CALCULATE([Henkilöt lkm], ALL(Muuttujat[Tutk. suor. alkup. koulutusalalla]))",
+            "expression": "[Ammatillisessa peruskoulutuksessa (mikä tahansa ammatillinen perustutk.) tutkinnon suor. osuus]",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Andel som avlagt en examen inom vilken som helst yrkesutbildning",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, OR([suoritettu_tutkinto] = \"03\", OR([suoritettu_tutkinto] = \"01\", [suoritettu_tutkinto] = \"02\"))))/CALCULATE([Henkilöt lkm], ALL(Muuttujat[Tutk. suor. alkup. koulutusalalla]))",
+            "expression": "[Missä tahansa ammatillisessa koulutuksessa tutkinnon suorittaneiden osuus]",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Andel som avlagt en examen inom vilken som helst utbildning",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, OR([suoritettu_tutkinto] = \"05\", OR([suoritettu_tutkinto] = \"04\",OR([suoritettu_tutkinto] = \"03\", OR([suoritettu_tutkinto] = \"01\", [suoritettu_tutkinto] = \"02\"))))))/CALCULATE([Henkilöt lkm], ALL(Muuttujat[Tutk. suor. alkup. koulutusalalla]))",
+            "expression": "[Missä tahansa koulutuksessa tutkinnon suorittaneiden osuus]",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "No. of persons",
-            "expression": "SUM([lkm_int2])",
+            "expression": "[Henkilöt lkm]",
             "formatString": "#,0"
           },
           {
             "name": "Attained qualifications in the original education (the 6-number education code)",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [suoritettu_tutkinto] = \"01\"))",
+            "expression": "[Suoritetut tutkinnot alkuperäisessä koulutuksessa (6-numeroinen koulutuskoodi)]",
             "formatString": "#,0"
           },
           {
             "name": "Attained qualifications in vocational upper secondary education and training (any qualification)",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, OR([suoritettu_tutkinto] = \"01\", [suoritettu_tutkinto] = \"02\")))",
+            "expression": "[Suoritetut tutkinnot ammatillisessa peruskoulutuksessa (mikä tahansa ammatillinen perustutk.)]",
             "formatString": "#,0"
           },
           {
             "name": "Attained qualifications in any vocational education and training",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, OR([suoritettu_tutkinto] = \"03\", OR([suoritettu_tutkinto] = \"01\", [suoritettu_tutkinto] = \"02\"))))",
+            "expression": "[Suoritetut tutkinnot missä tahansa ammatillisessa koulutuksessa]",
             "formatString": "#,0"
           },
           {
             "name": "Attained qualifications in any education",
-            "expression": "CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, OR([suoritettu_tutkinto] = \"05\", OR([suoritettu_tutkinto] = \"04\",OR([suoritettu_tutkinto] = \"03\", OR([suoritettu_tutkinto] = \"01\", [suoritettu_tutkinto] = \"02\"))))))",
+            "expression": "[Suoritetut tutkinnot missä tahansa koulutuksessa]",
             "formatString": "#,0"
           },
           {
             "name": "Percentage of students who completed the original education (the 6-number education code)",
-            "expression": "[Suoritetut tutkinnot alkuperäisessä koulutuksessa (6-numeroinen koulutuskoodi)]/CALCULATE([Henkilöt lkm], ALL(Muuttujat[Tutk. suor. alkup. koulutusalalla]))",
+            "expression": "[Alkuperäisessä koulutuksessa (6-numeroinen koulutuskoodi) tutkinnon suorittaneiden osuus]",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Percentage of students who completed vocational upper secondary education and training",
-            "expression": "[Suoritetut tutkinnot ammatillisessa peruskoulutuksessa (mikä tahansa ammatillinen perustutk.)]/CALCULATE([Henkilöt lkm], ALL(Muuttujat[Tutk. suor. alkup. koulutusalalla]))",
+            "expression": "[Ammatillisessa peruskoulutuksessa (mikä tahansa ammatillinen perustutk.) tutkinnon suor. osuus]",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Percentage of students who completed any vocational education",
-            "expression": "[Suoritetut tutkinnot missä tahansa ammatillisessa koulutuksessa]/CALCULATE([Henkilöt lkm], ALL(Muuttujat[Tutk. suor. alkup. koulutusalalla]))",
+            "expression": "[Missä tahansa ammatillisessa koulutuksessa tutkinnon suorittaneiden osuus]",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Percentage of students who completed any education",
-            "expression": "[Suoritetut tutkinnot missä tahansa koulutuksessa]/CALCULATE([Henkilöt lkm], ALL(Muuttujat[Tutk. suor. alkup. koulutusalalla]))",
+            "expression": "[Missä tahansa koulutuksessa tutkinnon suorittaneiden osuus]",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Henkilöt lkm_s",
+            "expression": "IF([kytkin]=0, BLANK(), SUM([lkm_int2]))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Suoritetut tutkinnot alkuperäisessä koulutuksessa (6-numeroinen koulutuskoodi)_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, [suoritettu_tutkinto] = \"01\")))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Suoritetut tutkinnot ammatillisessa peruskoulutuksessa (mikä tahansa ammatillinen perustutk.)_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, OR([suoritettu_tutkinto] = \"01\", [suoritettu_tutkinto] = \"02\"))))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Suoritetut tutkinnot missä tahansa ammatillisessa koulutuksessa_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, OR([suoritettu_tutkinto] = \"03\", OR([suoritettu_tutkinto] = \"01\", [suoritettu_tutkinto] = \"02\")))))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Suoritetut tutkinnot missä tahansa koulutuksessa_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE(SUM([lkm_int2]), FILTER(Muuttujat, OR([suoritettu_tutkinto] = \"05\", OR([suoritettu_tutkinto] = \"04\",OR([suoritettu_tutkinto] = \"03\", OR([suoritettu_tutkinto] = \"01\", [suoritettu_tutkinto] = \"02\")))))))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Alkuperäisessä koulutuksessa (6-numeroinen koulutuskoodi) tutkinnon suorittaneiden osuus_s",
+            "expression": "IF([kytkin]=0, BLANK(), [Suoritetut tutkinnot alkuperäisessä koulutuksessa (6-numeroinen koulutuskoodi)_s]/CALCULATE([Henkilöt lkm_s], ALL(Muuttujat[Tutk. suor. alkup. koulutusalalla])))",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Ammatillisessa peruskoulutuksessa (mikä tahansa ammatillinen perustutk.) tutkinnon suor. osuus_s",
+            "expression": "IF([kytkin]=0, BLANK(), [Suoritetut tutkinnot ammatillisessa peruskoulutuksessa (mikä tahansa ammatillinen perustutk.)_s]/CALCULATE([Henkilöt lkm_s], ALL(Muuttujat[Tutk. suor. alkup. koulutusalalla])))",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Missä tahansa ammatillisessa koulutuksessa tutkinnon suorittaneiden osuus_s",
+            "expression": "IF([kytkin]=0, BLANK(), [Suoritetut tutkinnot missä tahansa ammatillisessa koulutuksessa_s]/CALCULATE([Henkilöt lkm_s], ALL(Muuttujat[Tutk. suor. alkup. koulutusalalla])))",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Missä tahansa koulutuksessa tutkinnon suorittaneiden osuus_s",
+            "expression": "IF([kytkin]=0, BLANK(), [Suoritetut tutkinnot missä tahansa koulutuksessa_s]/CALCULATE([Henkilöt lkm_s], ALL(Muuttujat[Tutk. suor. alkup. koulutusalalla])))",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "kytkin",
+            "expression": "IF(LEFT(USERNAME(), 4) = \"DWI\\\", 1, 0)",
+            "formatString": "0",
+            "isHidden": true
           }
         ],
         "annotations": [
@@ -3435,6 +3542,10 @@
           {
             "memberName": "DWI\\Z_T_Antero_Read_TAB",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-4155"
+          },
+          {
+            "memberName": "DWI\\Z_P_Antero_Full_Read_TAB",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-2272"
           }
         ]
       },
@@ -3453,6 +3564,10 @@
           {
             "memberName": "DWI\\Z_T_Antero_Read_TAB",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-4155"
+          },
+          {
+            "memberName": "DWI\\Z_P_Antero_Full_Read_TAB",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-2272"
           }
         ]
       }
