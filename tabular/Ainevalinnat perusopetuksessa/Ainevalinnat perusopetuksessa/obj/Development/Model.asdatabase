@@ -2068,7 +2068,7 @@ return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 
 
 CREATE MEASURE 'Muuttujat'[Oppilaiden lukumäärä]=
-var lkm = if(sum([ainevalinnat yht]) = 0, BLANK(), CALCULATE(sum(Muuttujat[yht lkm]), ALL(Muuttujat[Aine], Muuttujat[Aineryhmä], Muuttujat[Kielen taso], Muuttujat[Ämne], Muuttujat[Ämnesgrupp], Muuttujat[Språknivå], Muuttujat[Subject], Muuttujat[Subject group], Muuttujat[Language level])))
+var lkm = if(sum(Muuttujat[ainevalinnat yht]) = 0, blank(), CALCULATE(sum(Muuttujat[yht lkm]), ALL(Muuttujat[Aine], Muuttujat[Aineryhmä], Muuttujat[Kielen taso], Muuttujat[Ämne], Muuttujat[Ämnesgrupp], Muuttujat[Språknivå], Muuttujat[Subject], Muuttujat[Subject group], Muuttujat[Language level])))
 return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text><Annotations><Annotation><Name>FullName</Name><Value>Oppilaiden lukumäärä</Value></Annotation><Annotation><Name>Table</Name><Value>Muuttujat</Value></Annotation></Annotations></Command><Command><Text>----------------------------------------------------------
 -- PowerPivot measures command (do not modify manually) --
@@ -2078,11 +2078,10 @@ return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 CREATE MEASURE 'Muuttujat'[Ainevalinnat yhteensä / Oppilaiden lukumäärä]=
 var osa = [Ainevalinnat yhteensä]
 var kaikki = [Oppilaiden lukumäärä]
-return IF(osa = BLANK(), BLANK(),
-IF(kaikki = "1-4", "25 % – 100 %",
+return IF(osa = BLANK() || kaikki = BLANK() || kaikki = "1-4", BLANK(),
 IF(osa = "1-4", IF(kaikki &gt; 8000, "0.0 %"
 , CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
-osa / kaikki)));
+osa / kaikki));
 </Text><Annotations><Annotation><Name>FullName</Name><Value>Ainevalinnat yhteensä / Oppilaiden lukumäärä</Value></Annotation><Annotation><Name>Table</Name><Value>Muuttujat</Value></Annotation></Annotations></Command><Command><Text>----------------------------------------------------------
 -- PowerPivot measures command (do not modify manually) --
 ----------------------------------------------------------
