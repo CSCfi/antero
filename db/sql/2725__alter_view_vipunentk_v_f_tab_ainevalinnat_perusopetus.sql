@@ -1,7 +1,7 @@
 USE [VipunenTK]
 GO
 
-/****** Object:  View [dbo].[v_f_tab_ainevalinnat_perusopetus]    Script Date: 17.12.2019 21:56:38 ******/
+/****** Object:  View [dbo].[v_f_tab_ainevalinnat_perusopetus]    Script Date: 17.12.2019 21:44:36 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -630,90 +630,92 @@ inner join d_oppilaitoksen_taustatiedot d3 on d3.id=f.oppilaitos_id
 inner join d_alueluokitus d4 on d4.id=f.oppilaitoksensijainti_id
 where (f.lkm_pojat>0 or f.lkm_tytot>0) and d2.luokkajako_16_79='Luokat 1-6'
 
-UNION ALL
---7-9 luokkien katsomus ja suomi/ruotsi -valintoja varten, sukupuoli asetetaan tuntemattomaksi
-select 
-	[Tilastovuosi] = tilv
+--UNION ALL
+/* 17.12.2019 / jsyrjala: tämä otetaan kielivalinnoista, joiden ainevalintoihin saadaan tieto sukupuolesta */
 
-	,[Sukupuoli] = 'Tuntematon'
+----7-9 luokkien katsomus ja suomi/ruotsi -valintoja varten, sukupuoli asetetaan tuntemattomaksi 
+--select 
+--	[Tilastovuosi] = tilv
 
-	,[Aine] = null
-	,[Aineryhmä] = 'Katsomusaineet'
-	,[Kielen taso] = null
-	,[Vuosiluokat] = 'Luokat 7-9'
-	,[Vuosiluokka] = 'Tietoa ei kerätty (7-9)'
+--	,[Sukupuoli] = 'Tuntematon'
 
-	,[Opetuksen järjestäjä] = d3.koulutuksen_jarjestaja
-	,[Oppilaitoksen omistajatyyppi] = d3.oppilaitoksen_omistajatyyppi
-	,[Oppilaitostyyppi] = d3.oppilaitostyyppi
-	,[Oppilaitoksen maakunta] = d4.maakunta
-	,[Oppilaitoksen kunta] = d4.kunta
-	,[Oppilaitos] = d3.oppilaitos + ' (' + d3.oppilaitoskoodi + ')'
-	,[Oppilaitoksen opetuskieli] = d3.opetuskieli
+--	,[Aine] = null
+--	,[Aineryhmä] = 'Katsomusaineet'
+--	,[Kielen taso] = null
+--	,[Vuosiluokat] = 'Luokat 7-9'
+--	,[Vuosiluokka] = 'Tietoa ei kerätty (7-9)'
 
-	--,[ainevalinnat pojat] = 0
-	--,[ainevalinnat tytöt] = 0
-	,[ainevalinnat yht] = 0
-	--,[pojat] = f.lkm_pojat
-	--,[tytöt] = f.lkm_tytot
-	,[yht] = isnull(f.lkm_pojat,0)+isnull(f.lkm_tytot,0)
+--	,[Opetuksen järjestäjä] = d3.koulutuksen_jarjestaja
+--	,[Oppilaitoksen omistajatyyppi] = d3.oppilaitoksen_omistajatyyppi
+--	,[Oppilaitostyyppi] = d3.oppilaitostyyppi
+--	,[Oppilaitoksen maakunta] = d4.maakunta
+--	,[Oppilaitoksen kunta] = d4.kunta
+--	,[Oppilaitos] = d3.oppilaitos + ' (' + d3.oppilaitoskoodi + ')'
+--	,[Oppilaitoksen opetuskieli] = d3.opetuskieli
 
-	--ruotsi
-	,[Statistikår] = tilv
-	,[Kön] = 'Okänd'
-	,[Ämne] = null
-	,[Ämnesgrupp] = 'Åskådningsämnen'
-	,[Språknivå] = null
-	,[Årsklasser] = 'Årskurserna 7–9'
-	,[Årsklass] = 'Uppgifter har inte samlats in (7–9)'
-	,[Utbildningsanordnare] = d3.koulutuksen_jarjestaja_SV
-	,[Läroanstaltens ägartyp] = d3.oppilaitoksen_omistajatyyppi_SV
-	,[Läroanstaltstyp] = d3.oppilaitostyyppi_SV
-	,[Läroanstaltens landskap] = d4.maakunta_SV
-	,[Läroanstaltens kommun] = d4.kunta_SV
-	,[Läroanstalt] = d3.oppilaitos_SV + ' (' + d3.oppilaitoskoodi + ')'
-	,[Läroanstaltens undervisningsspråk] = d3.opetuskieli_SV
+--	--,[ainevalinnat pojat] = 0
+--	--,[ainevalinnat tytöt] = 0
+--	,[ainevalinnat yht] = 0
+--	--,[pojat] = f.lkm_pojat
+--	--,[tytöt] = f.lkm_tytot
+--	,[yht] = isnull(f.lkm_pojat,0)+isnull(f.lkm_tytot,0)
 
-	--englanti
-	,[Statistical year] = tilv
-	,[Gender] = 'Unknown'
-	,[Subject] = null
-	,[Subject group] = 'Ethical subjects'
-	,[Language level] = null
-	,[Year groups] = 'Grades 7-9'
-	,[Year group] = 'Data not collected (7-9)'
-	,[Education provider] = d3.koulutuksen_jarjestaja_EN
-	,[Type of institution owner] = d3.oppilaitoksen_omistajatyyppi_EN
-	,[Type of institution] = d3.oppilaitostyyppi_EN
-	,[Region of the institution] = d4.maakunta_EN
-	,[Municipality of the institution] = d4.kunta_EN
-	,[Educational institution] = d3.oppilaitos_EN + ' (' + d3.oppilaitoskoodi + ')'
-	,[Language of the institution] = d3.opetuskieli_EN
+--	--ruotsi
+--	,[Statistikår] = tilv
+--	,[Kön] = 'Okänd'
+--	,[Ämne] = null
+--	,[Ämnesgrupp] = 'Åskådningsämnen'
+--	,[Språknivå] = null
+--	,[Årsklasser] = 'Årskurserna 7–9'
+--	,[Årsklass] = 'Uppgifter har inte samlats in (7–9)'
+--	,[Utbildningsanordnare] = d3.koulutuksen_jarjestaja_SV
+--	,[Läroanstaltens ägartyp] = d3.oppilaitoksen_omistajatyyppi_SV
+--	,[Läroanstaltstyp] = d3.oppilaitostyyppi_SV
+--	,[Läroanstaltens landskap] = d4.maakunta_SV
+--	,[Läroanstaltens kommun] = d4.kunta_SV
+--	,[Läroanstalt] = d3.oppilaitos_SV + ' (' + d3.oppilaitoskoodi + ')'
+--	,[Läroanstaltens undervisningsspråk] = d3.opetuskieli_SV
 
-	--koodit
-	,[Koodit Opetuksen järjestäjä] = d3.koulutuksen_jarjestajakoodi
-	,[Koodit Oppilaitos] = d3.oppilaitoskoodi
-	,[Koodit Oppilaitoksen maakunta] = d4.maakunta_koodi
-	,[Koodit Oppilaitoksen kunta] = d4.kunta_koodi
+--	--englanti
+--	,[Statistical year] = tilv
+--	,[Gender] = 'Unknown'
+--	,[Subject] = null
+--	,[Subject group] = 'Ethical subjects'
+--	,[Language level] = null
+--	,[Year groups] = 'Grades 7-9'
+--	,[Year group] = 'Data not collected (7-9)'
+--	,[Education provider] = d3.koulutuksen_jarjestaja_EN
+--	,[Type of institution owner] = d3.oppilaitoksen_omistajatyyppi_EN
+--	,[Type of institution] = d3.oppilaitostyyppi_EN
+--	,[Region of the institution] = d4.maakunta_EN
+--	,[Municipality of the institution] = d4.kunta_EN
+--	,[Educational institution] = d3.oppilaitos_EN + ' (' + d3.oppilaitoskoodi + ')'
+--	,[Language of the institution] = d3.opetuskieli_EN
 
-	--järjestys
-	,[Sukupuoli järj] = 1
-	,[Aine järj] = 99999
-	,[Aineryhmä järj] = 99999
-	,[Kielen taso järj] = 99999
-	,[Vuosiluokka järj] = d2.jarjestys
-	,[Vuosiluokat järj] = d2.luokkajako_16_79_jarjestys
-	,[Oppilaitoksen omistajatyyppi järj] = d3.jarjestys_omistajatyyppi
-	,[Oppilaitostyyppi järj] = d3.jarjestys_oppilaitostyyppi
-	,[Oppilaitoksen maakunta järj] = d4.jarjestys_maakunta
-	,[Oppilaitoksen opetuskieli järj] = d3.jarjestys_opetuskieli
+--	--koodit
+--	,[Koodit Opetuksen järjestäjä] = d3.koulutuksen_jarjestajakoodi
+--	,[Koodit Oppilaitos] = d3.oppilaitoskoodi
+--	,[Koodit Oppilaitoksen maakunta] = d4.maakunta_koodi
+--	,[Koodit Oppilaitoksen kunta] = d4.kunta_koodi
+
+--	--järjestys
+--	,[Sukupuoli järj] = 1
+--	,[Aine järj] = 99999
+--	,[Aineryhmä järj] = 99999
+--	,[Kielen taso järj] = 99999
+--	,[Vuosiluokka järj] = d2.jarjestys
+--	,[Vuosiluokat järj] = d2.luokkajako_16_79_jarjestys
+--	,[Oppilaitoksen omistajatyyppi järj] = d3.jarjestys_omistajatyyppi
+--	,[Oppilaitostyyppi järj] = d3.jarjestys_oppilaitostyyppi
+--	,[Oppilaitoksen maakunta järj] = d4.jarjestys_maakunta
+--	,[Oppilaitoksen opetuskieli järj] = d3.jarjestys_opetuskieli
 	
 
-from dbo.f_perusopetuksen_oppilasmaarat f
-inner join d_perusopetuksen_vuosiluokat d2 on d2.id=f.vuosiluokka_id
-inner join d_oppilaitoksen_taustatiedot d3 on d3.id=f.oppilaitos_id
-inner join d_alueluokitus d4 on d4.id=f.oppilaitoksensijainti_id
-where (f.lkm_pojat>0 or f.lkm_tytot>0) and d2.luokkajako_16_79='Luokat 7-9'
+--from dbo.f_perusopetuksen_oppilasmaarat f
+--inner join d_perusopetuksen_vuosiluokat d2 on d2.id=f.vuosiluokka_id
+--inner join d_oppilaitoksen_taustatiedot d3 on d3.id=f.oppilaitos_id
+--inner join d_alueluokitus d4 on d4.id=f.oppilaitoksensijainti_id
+--where (f.lkm_pojat>0 or f.lkm_tytot>0) and d2.luokkajako_16_79='Luokat 7-9'
 
 union all
 --lisäopetuksen oppilaiden määrä katsomus ja suomi/ruotsi valintoja varten, vuosi 2010
