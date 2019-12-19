@@ -7847,7 +7847,7 @@
               <Commands>
                 <Command>
                   <Text>CALCULATE; 
-CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1; 
+CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1, VISIBLE = 0; 
 ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measures defined]; </Text>
                 </Command>
                 <Command>
@@ -7856,7 +7856,9 @@ ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measure
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Ainevalinnat yhteensä]=if(sum([ainevalinnat yht])=0,blank(),sum([ainevalinnat yht]));
+CREATE MEASURE 'Muuttujat'[Ainevalinnat yhteensä]=
+var lkm = sum([ainevalinnat yht])
+return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -7875,7 +7877,9 @@ CREATE MEASURE 'Muuttujat'[Ainevalinnat yhteensä]=if(sum([ainevalinnat yht])=0,
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Oppilaiden lukumäärä]=if([Ainevalinnat yhteensä]=0,blank(),CALCULATE(sum(Muuttujat[yht lkm]),ALL(Muuttujat[Aine],Muuttujat[Aineryhmä],Muuttujat[Kielen taso])));
+CREATE MEASURE 'Muuttujat'[Oppilaiden lukumäärä]=
+var lkm = if(sum(Muuttujat[ainevalinnat yht]) = 0, blank(), CALCULATE(sum(Muuttujat[yht lkm]), ALL(Muuttujat[Aine], Muuttujat[Aineryhmä], Muuttujat[Kielen taso], Muuttujat[Ämne], Muuttujat[Ämnesgrupp], Muuttujat[Språknivå], Muuttujat[Subject], Muuttujat[Subject group], Muuttujat[Language level])))
+return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -7894,7 +7898,13 @@ CREATE MEASURE 'Muuttujat'[Oppilaiden lukumäärä]=if([Ainevalinnat yhteensä]=
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Ainevalinnat yhteensä / Oppilaiden lukumäärä]=[Ainevalinnat yhteensä]/[Oppilaiden lukumäärä];
+CREATE MEASURE 'Muuttujat'[Ainevalinnat yhteensä / Oppilaiden lukumäärä]=
+var osa = [Ainevalinnat yhteensä]
+var kaikki = [Oppilaiden lukumäärä]
+return IF(osa = BLANK() || kaikki = BLANK() || kaikki = "1-4", BLANK(),
+IF(osa = "1-4", IF(kaikki &gt; 8000, "0.0 %"
+, CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+osa / kaikki));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -7913,7 +7923,7 @@ CREATE MEASURE 'Muuttujat'[Ainevalinnat yhteensä / Oppilaiden lukumäärä]=[Ai
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Number of students]=if([Subject choices in total]=0,blank(),CALCULATE(sum(Muuttujat[yht lkm]),ALL(Muuttujat[Subject],Muuttujat[Subject group],Muuttujat[Language level])));
+CREATE MEASURE 'Muuttujat'[Number of students]=[Oppilaiden lukumäärä];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -7932,7 +7942,7 @@ CREATE MEASURE 'Muuttujat'[Number of students]=if([Subject choices in total]=0,b
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Antal elever]=if([Ämnesval totalt]=0,blank(),CALCULATE(sum(Muuttujat[yht lkm]),ALL(Muuttujat[Ämne]),ALL(Muuttujat[Ämnesgrupp]),ALL(Muuttujat[Språknivå])));
+CREATE MEASURE 'Muuttujat'[Antal elever]=[Oppilaiden lukumäärä];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -7951,7 +7961,7 @@ CREATE MEASURE 'Muuttujat'[Antal elever]=if([Ämnesval totalt]=0,blank(),CALCULA
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Ämnesval totalt]=if(sum([ainevalinnat yht])=0,blank(),sum([ainevalinnat yht]));
+CREATE MEASURE 'Muuttujat'[Ämnesval totalt]=[Ainevalinnat yhteensä];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -7970,7 +7980,7 @@ CREATE MEASURE 'Muuttujat'[Ämnesval totalt]=if(sum([ainevalinnat yht])=0,blank(
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Subject choices in total]=if(sum([ainevalinnat yht])=0,blank(),sum([ainevalinnat yht]));
+CREATE MEASURE 'Muuttujat'[Subject choices in total]=[Ainevalinnat yhteensä];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -7989,7 +7999,7 @@ CREATE MEASURE 'Muuttujat'[Subject choices in total]=if(sum([ainevalinnat yht])=
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Ämnesval totalt / Antal elever]=[Ämnesval totalt]/[Antal elever];
+CREATE MEASURE 'Muuttujat'[Ämnesval totalt / Antal elever]=[Ainevalinnat yhteensä / Oppilaiden lukumäärä];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -8008,12 +8018,88 @@ CREATE MEASURE 'Muuttujat'[Ämnesval totalt / Antal elever]=[Ämnesval totalt]/[
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Subject choices in total / Number of students]=[Subject choices in total]/[Number of students];
+CREATE MEASURE 'Muuttujat'[Subject choices in total / Number of students]=[Ainevalinnat yhteensä / Oppilaiden lukumäärä];
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
                       <Value>Subject choices in total / Number of students</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Ainevalinnat yhteensä_s]=IF([kytkin]=0, BLANK(), if(sum([ainevalinnat yht])=0,blank(),sum([ainevalinnat yht])));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Ainevalinnat yhteensä_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Oppilaiden lukumäärä_s]=IF([kytkin]=0, BLANK(), if(sum(Muuttujat[ainevalinnat yht]) = 0, blank(), CALCULATE(sum(Muuttujat[yht lkm]), ALL(Muuttujat[Aine], Muuttujat[Aineryhmä], Muuttujat[Kielen taso]))));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Oppilaiden lukumäärä_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Ainevalinnat yhteensä / Oppilaiden lukumäärä_s]=IF([kytkin]=0, BLANK(), [Ainevalinnat yhteensä_s]/[Oppilaiden lukumäärä_s]);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Ainevalinnat yhteensä / Oppilaiden lukumäärä_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[kytkin]=IF(LEFT(USERNAME(), 4) = "DWI\", 1, 0);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>kytkin</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -8213,6 +8299,91 @@ CREATE MEASURE 'Muuttujat'[Subject choices in total / Number of students]=[Subje
                   <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
                 </CalculationProperty>
                 <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Ainevalinnat yhteensä_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Oppilaiden lukumäärä_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="Percentage" Accuracy="1" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Ainevalinnat yhteensä / Oppilaiden lukumäärä_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>True</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[kytkin]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <Visible>false</Visible>
+                  <FormatString>'0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
                   <CalculationReference>Measures.[__No measures defined]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <Visible>false</Visible>
@@ -8243,7 +8414,7 @@ CREATE MEASURE 'Muuttujat'[Subject choices in total / Number of students]=[Subje
           <ConnectionString>Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=VipunenTK;Integrated Security=SSPI;Persist Security Info=false</ConnectionString>
           <ImpersonationInfo>
             <ImpersonationMode>ImpersonateAccount</ImpersonationMode>
-            <Account>dwi\pankalai</Account>
+            <Account>DWI\T_VIPUTK_KUUTIO</Account>
           </ImpersonationInfo>
           <Timeout>PT0S</Timeout>
         </DataSource>
@@ -8720,6 +8891,10 @@ CREATE MEASURE 'Muuttujat'[Subject choices in total / Number of students]=[Subje
             <Member>
               <Name>NT AUTHORITY\IUSR</Name>
               <Sid>S-1-5-17</Sid>
+            </Member>
+            <Member>
+              <Name>DWI\Z_P_Antero_Full_Read_TAB</Name>
+              <Sid>S-1-5-21-2196741920-3238685902-2581541251-2272</Sid>
             </Member>
           </Members>
         </Role>

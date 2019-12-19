@@ -1694,6 +1694,7 @@
                 </Source>
               </NameColumn>
               <OrderBy>Key</OrderBy>
+              <AttributeHierarchyVisible>false</AttributeHierarchyVisible>
             </Attribute>
             <Attribute>
               <Annotations>
@@ -3056,6 +3057,7 @@
                 </Attribute>
                 <Attribute>
                   <AttributeID>Oppilaat</AttributeID>
+                  <AttributeHierarchyVisible>false</AttributeHierarchyVisible>
                 </Attribute>
                 <Attribute>
                   <AttributeID>Statistikår</AttributeID>
@@ -4944,7 +4946,7 @@
               <Commands>
                 <Command>
                   <Text>CALCULATE; 
-CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1; 
+CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1, VISIBLE = 0; 
 ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measures defined]; </Text>
                 </Command>
                 <Command>
@@ -4953,7 +4955,8 @@ ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measure
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Oppilaat]=sum([Oppilaat2]);
+CREATE MEASURE 'Muuttujat'[Oppilaat]=var lkm = sum([Oppilaat2])
+return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -4972,7 +4975,7 @@ CREATE MEASURE 'Muuttujat'[Oppilaat]=sum([Oppilaat2]);
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Elever]=sum([Oppilaat2]);
+CREATE MEASURE 'Muuttujat'[Elever]=[Oppilaat];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -4991,7 +4994,7 @@ CREATE MEASURE 'Muuttujat'[Elever]=sum([Oppilaat2]);
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Pupils]=sum([Oppilaat2]);
+CREATE MEASURE 'Muuttujat'[Pupils]=[Oppilaat];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -5010,7 +5013,14 @@ CREATE MEASURE 'Muuttujat'[Pupils]=sum([Oppilaat2]);
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Oppilaat %]=[Oppilaat]/calculate([Oppilaat],ALL('Muuttujat'[Kielten määrä]));
+CREATE MEASURE 'Muuttujat'[Oppilaat %]=
+var osa = [Oppilaat]
+var kaikki = calculate([Oppilaat],ALL('Muuttujat'[Kielten määrä], 'Muuttujat'[Antal språk], 'Muuttujat'[Number of languages]))
+return IF(osa = BLANK(), BLANK(),
+IF(kaikki = "1-4", "25 % – 100 %",
+IF(osa = "1-4", IF(kaikki &gt; 8000, "0.0 %"
+, CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+osa / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -5029,7 +5039,7 @@ CREATE MEASURE 'Muuttujat'[Oppilaat %]=[Oppilaat]/calculate([Oppilaat],ALL('Muut
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Elever %]=[Oppilaat]/calculate([Elever],ALL('Muuttujat'[Antal språk]));
+CREATE MEASURE 'Muuttujat'[Elever %]=[Oppilaat %];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -5048,12 +5058,69 @@ CREATE MEASURE 'Muuttujat'[Elever %]=[Oppilaat]/calculate([Elever],ALL('Muuttuja
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Pupils %]=[Pupils]/calculate([Pupils],ALL('Muuttujat'[Number of languages]));
+CREATE MEASURE 'Muuttujat'[Pupils %]=[Oppilaat %];
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
                       <Value>Pupils %</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Oppilaat_s]=IF([kytkin]=0, BLANK(), sum([Oppilaat2]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Oppilaat_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Oppilaat %_s]=IF([kytkin]=0, BLANK(), [Oppilaat_s]/calculate([Oppilaat_s],ALL('Muuttujat'[Kielten määrä])));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Oppilaat %_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[kytkin]=IF(LEFT(USERNAME(), 4) = "DWI\", 1, 0);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>kytkin</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -5190,6 +5257,70 @@ CREATE MEASURE 'Muuttujat'[Pupils %]=[Pupils]/calculate([Pupils],ALL('Muuttujat'
                   <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
                 </CalculationProperty>
                 <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Oppilaat_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="Percentage" Accuracy="1" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Oppilaat %_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>True</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[kytkin]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <Visible>false</Visible>
+                  <FormatString>'0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
                   <CalculationReference>Measures.[__No measures defined]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <Visible>false</Visible>
@@ -5220,7 +5351,7 @@ CREATE MEASURE 'Muuttujat'[Pupils %]=[Pupils]/calculate([Pupils],ALL('Muuttujat'
           <ConnectionString>Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=VipunenTK;Integrated Security=SSPI;Persist Security Info=false</ConnectionString>
           <ImpersonationInfo>
             <ImpersonationMode>ImpersonateAccount</ImpersonationMode>
-            <Account>dwi\pankalai</Account>
+            <Account>DWI\T_VIPUTK_KUUTIO</Account>
           </ImpersonationInfo>
           <Timeout>PT0S</Timeout>
         </DataSource>
@@ -5574,6 +5705,10 @@ CREATE MEASURE 'Muuttujat'[Pupils %]=[Pupils]/calculate([Pupils],ALL('Muuttujat'
             <Member>
               <Name>DWI\Z_T_Antero_Read_TAB</Name>
               <Sid>S-1-5-21-2196741920-3238685902-2581541251-4155</Sid>
+            </Member>
+            <Member>
+              <Name>DWI\Z_P_Antero_Full_Read_TAB</Name>
+              <Sid>S-1-5-21-2196741920-3238685902-2581541251-2272</Sid>
             </Member>
           </Members>
         </Role>
