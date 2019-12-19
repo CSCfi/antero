@@ -1626,7 +1626,7 @@
               <Commands>
                 <Command>
                   <Text>CALCULATE; 
-CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1; 
+CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1, VISIBLE = 0; 
 ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measures defined]; </Text>
                 </Command>
                 <Command>
@@ -1673,7 +1673,9 @@ CREATE MEASURE 'Muuttujat'[Tutkinnon suorittaneet]=SUM([tutk2]);
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Päättötodistuksen saaneet]=SUM([tod])+SUM([tutkt])+SUM([suor10]);
+CREATE MEASURE 'Muuttujat'[Päättötodistuksen saaneet]=
+var lkm = SUM([tod])+SUM([tutkt])+SUM([suor10])
+return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -1692,7 +1694,9 @@ CREATE MEASURE 'Muuttujat'[Päättötodistuksen saaneet]=SUM([tod])+SUM([tutkt])
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Ilman peruskoulun päättötodistusta jääneet oppivelvollisuusiän ylittäneet]=SUM([ilmtod]);
+CREATE MEASURE 'Muuttujat'[Ilman peruskoulun päättötodistusta jääneet oppivelvollisuusiän ylittäneet]=
+var lkm = SUM([ilmtod])
+return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -1711,7 +1715,9 @@ CREATE MEASURE 'Muuttujat'[Ilman peruskoulun päättötodistusta jääneet oppiv
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Oppivelvollisuutensa keväällä laiminlyöneet]=SUM([kelaim]);
+CREATE MEASURE 'Muuttujat'[Oppivelvollisuutensa keväällä laiminlyöneet]=
+var lkm = SUM([kelaim])
+return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -1730,7 +1736,9 @@ CREATE MEASURE 'Muuttujat'[Oppivelvollisuutensa keväällä laiminlyöneet]=SUM(
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Oppilaat 1-9 luokat]=SUM([opiskelijat_1_9_luokka]);
+CREATE MEASURE 'Muuttujat'[Oppilaat 1-9 luokat]=
+var lkm = SUM([opiskelijat_1_9_luokka])
+return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -1749,7 +1757,9 @@ CREATE MEASURE 'Muuttujat'[Oppilaat 1-9 luokat]=SUM([opiskelijat_1_9_luokka]);
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Oppilaat 1-10 luokat]=SUM([opiskelijat_1_10_luokka]);
+CREATE MEASURE 'Muuttujat'[Oppilaat 1-10 luokat]=
+var lkm = SUM([opiskelijat_1_10_luokka])
+return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -1787,7 +1797,14 @@ CREATE MEASURE 'Muuttujat'[9 luokan päättyessä peruskoulututkinnon suorittane
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Päättötodistuksen saaneiden osuus päättötodistuksen saaneista ja ilman päättötodistusta jääneistä]=(SUM([tod])+SUM([tutkt])+SUM([suor10]))/(SUM([ilmtod])+SUM([tod])+SUM([tutkt])+SUM([suor10]));
+CREATE MEASURE 'Muuttujat'[Päättötodistuksen saaneiden osuus päättötodistuksen saaneista ja ilman päättötodistusta jääneistä]=
+var osa = [Päättötodistuksen saaneet]
+var kaikki = MROUND(SUM([ilmtod])+SUM([tod])+SUM([tutkt])+SUM([suor10]), 3)
+return IF(osa = BLANK(), BLANK(),	
+IF(kaikki &lt; 5, "25 % – 100 %",
+IF(osa = "1-4", IF(kaikki &gt; 8000, "0.0 %"
+, CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+osa / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -1806,7 +1823,9 @@ CREATE MEASURE 'Muuttujat'[Päättötodistuksen saaneiden osuus päättötodistu
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Oppivelvolliset yhteensä]=SUM([kelaim])+SUM([opiskelijat_1_10_luokka]);
+CREATE MEASURE 'Muuttujat'[Oppivelvolliset yhteensä]=
+var lkm = SUM([kelaim])+SUM([opiskelijat_1_10_luokka])
+return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -1825,12 +1844,191 @@ CREATE MEASURE 'Muuttujat'[Oppivelvolliset yhteensä]=SUM([kelaim])+SUM([opiskel
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Peruskouluissa olevat/oppivelvolliset yhteensä]=SUM([opiskelijat_1_10_luokka])/(SUM([kelaim])+SUM([opiskelijat_1_10_luokka]));
+CREATE MEASURE 'Muuttujat'[Peruskouluissa olevat/oppivelvolliset yhteensä]=
+var osa = [Oppilaat 1-10 luokat]
+var kaikki = [Oppivelvolliset yhteensä]
+return IF(osa = BLANK(), BLANK(),	
+IF(kaikki = "1-4", "25 % – 100 %",
+IF(osa = "1-4", IF(kaikki &gt; 8000, "0.0 %"
+, CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+osa / kaikki)))
+;
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
                       <Value>Peruskouluissa olevat/oppivelvolliset yhteensä</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[kytkin]=IF(LEFT(USERNAME(), 4) = "DWI\", 1, 0);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>kytkin</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Päättötodistuksen saaneet_s]=IF([kytkin]=0, BLANK(), SUM([tod])+SUM([tutkt])+SUM([suor10]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Päättötodistuksen saaneet_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Päättötodistuksen saaneiden osuus päättötodistuksen saaneista ja ilman päättötodistusta jääneistä_s]=IF([kytkin]=0, BLANK(), (SUM([tod])+SUM([tutkt])+SUM([suor10]))/(SUM([ilmtod])+SUM([tod])+SUM([tutkt])+SUM([suor10])));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Päättötodistuksen saaneiden osuus päättötodistuksen saaneista ja ilman päättötodistusta jääneistä_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Ilman peruskoulun päättötodistusta jääneet oppivelvollisuusiän ylittäneet_s]=IF([kytkin]=0, BLANK(), SUM([ilmtod]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Ilman peruskoulun päättötodistusta jääneet oppivelvollisuusiän ylittäneet_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Oppivelvollisuutensa keväällä laiminlyöneet_s]=IF([kytkin]=0, BLANK(), SUM([kelaim]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Oppivelvollisuutensa keväällä laiminlyöneet_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Oppivelvolliset yhteensä_s]=IF([kytkin]=0, BLANK(), SUM([kelaim])+SUM([opiskelijat_1_10_luokka]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Oppivelvolliset yhteensä_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Peruskouluissa olevat/oppivelvolliset yhteensä_s]=IF([kytkin]=0, BLANK(), SUM([opiskelijat_1_10_luokka])/(SUM([kelaim])+SUM([opiskelijat_1_10_luokka])));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Peruskouluissa olevat/oppivelvolliset yhteensä_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Oppilaat 1-9 luokat_s]=IF([kytkin]=0, BLANK(), SUM([opiskelijat_1_9_luokka]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Oppilaat 1-9 luokat_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Oppilaat 1-10 luokat_s]=IF([kytkin]=0, BLANK(), SUM([opiskelijat_1_10_luokka]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Oppilaat 1-10 luokat_s</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -2075,6 +2273,196 @@ CREATE MEASURE 'Muuttujat'[Peruskouluissa olevat/oppivelvolliset yhteensä]=SUM(
                   <FormatString>'#,0.00 %;-#,0.00 %;#,0.00 %'</FormatString>
                 </CalculationProperty>
                 <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>True</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[kytkin]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <Visible>false</Visible>
+                  <FormatString>'0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Päättötodistuksen saaneet_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="Percentage" Accuracy="1" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Päättötodistuksen saaneiden osuus päättötodistuksen saaneista ja ilman päättötodistusta jääneistä_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0.0 %;-#,0.0 %;#,0.0 %'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Ilman peruskoulun päättötodistusta jääneet oppivelvollisuusiän ylittäneet_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Oppivelvollisuutensa keväällä laiminlyöneet_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Oppivelvolliset yhteensä_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="Percentage" Accuracy="2" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Peruskouluissa olevat/oppivelvolliset yhteensä_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0.00 %;-#,0.00 %;#,0.00 %'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Oppilaat 1-9 luokat_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Oppilaat 1-10 luokat_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
                   <CalculationReference>Measures.[__No measures defined]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <Visible>false</Visible>
@@ -2239,6 +2627,10 @@ CREATE MEASURE 'Muuttujat'[Peruskouluissa olevat/oppivelvolliset yhteensä]=SUM(
             <Member>
               <Name>DWI\Z_T_Antero_Read_TAB</Name>
               <Sid>S-1-5-21-2196741920-3238685902-2581541251-4155</Sid>
+            </Member>
+            <Member>
+              <Name>DWI\Z_P_Antero_Full_Read_TAB</Name>
+              <Sid>S-1-5-21-2196741920-3238685902-2581541251-2272</Sid>
             </Member>
           </Members>
         </Role>
