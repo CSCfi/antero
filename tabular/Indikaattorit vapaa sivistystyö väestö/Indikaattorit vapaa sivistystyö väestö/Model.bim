@@ -1249,6 +1249,10 @@
                   <Name>[Measures].[Undervisningstimmar i proportion till befolkning över 25 år (timmar per person)]</Name>
                   <Type>Member</Type>
                 </Calculation>
+                <Calculation>
+                  <Name>[Measures].[Befolkning över 25 år]</Name>
+                  <Type>Member</Type>
+                </Calculation>
               </Calculations>
             </Perspective>
             <Perspective>
@@ -1293,6 +1297,10 @@
                 </Calculation>
                 <Calculation>
                   <Name>[Measures].[Deltagare i proportion till befolkning över 25 år]</Name>
+                  <Type>Member</Type>
+                </Calculation>
+                <Calculation>
+                  <Name>[Measures].[Befolkning över 25 år]</Name>
                   <Type>Member</Type>
                 </Calculation>
               </Calculations>
@@ -1381,6 +1389,10 @@
               <Calculations>
                 <Calculation>
                   <Name>[Measures].[Participants]</Name>
+                  <Type>Member</Type>
+                </Calculation>
+                <Calculation>
+                  <Name>[Measures].[Population over 25 years old]</Name>
                   <Type>Member</Type>
                 </Calculation>
                 <Calculation>
@@ -2099,7 +2111,7 @@
               <Commands>
                 <Command>
                   <Text>CALCULATE; 
-CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1; 
+CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1, VISIBLE = 0; 
 ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measures defined]; </Text>
                 </Command>
                 <Command>
@@ -2108,7 +2120,9 @@ ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measure
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Yli 25 v. väestö]=sum([yli25v2]);
+CREATE MEASURE 'Muuttujat'[Yli 25 v. väestö]=
+var lkm = sum([yli25v2])
+return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -2146,7 +2160,12 @@ CREATE MEASURE 'Muuttujat'[Opetustunnit]=sum([Opetustunnit2]);
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Opetustunnit suhteessa yli 25 v. väestöön (tuntia per henkilö)]=[Opetustunnit]/[Yli 25 v. väestö];
+CREATE MEASURE 'Muuttujat'[Opetustunnit suhteessa yli 25 v. väestöön (tuntia per henkilö)]=
+var lkm = [Opetustunnit]
+var lkm2 = [Yli 25 v. väestö]
+return IF(lkm2 = BLANK(), BLANK(),	
+IF(lkm2= "1-4",  CONCATENATE(FORMAT(lkm / 4, "0.0 – "), FORMAT(lkm / 1, "0.0"))
+, lkm / lkm2));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -2165,7 +2184,9 @@ CREATE MEASURE 'Muuttujat'[Opetustunnit suhteessa yli 25 v. väestöön (tuntia 
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Osallistuneet]=sum([Osallistuneet2]);
+CREATE MEASURE 'Muuttujat'[Osallistuneet]=
+var lkm = sum([Osallistuneet2])
+return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -2184,7 +2205,14 @@ CREATE MEASURE 'Muuttujat'[Osallistuneet]=sum([Osallistuneet2]);
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Osallistuneet suhteessa yli 25 v. väestöön]=[Osallistuneet]/[Yli 25 v. väestö];
+CREATE MEASURE 'Muuttujat'[Osallistuneet suhteessa yli 25 v. väestöön]=
+var osa = [Osallistuneet]
+var kaikki = [Yli 25 v. väestö]
+return IF(osa = BLANK(), BLANK(),	
+IF(kaikki = "1-4", "25 % – 100 %",
+IF(osa = "1-4", IF(kaikki &gt; 8000, "0.0 %"
+, CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+osa / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -2203,12 +2231,12 @@ CREATE MEASURE 'Muuttujat'[Osallistuneet suhteessa yli 25 v. väestöön]=[Osall
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Yli 25 v. väestöSV]=sum([yli25v2]);
+CREATE MEASURE 'Muuttujat'[Befolkning över 25 år]=[Yli 25 v. väestö];
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
-                      <Value>Yli 25 v. väestöSV</Value>
+                      <Value>Befolkning över 25 år</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -2222,7 +2250,7 @@ CREATE MEASURE 'Muuttujat'[Yli 25 v. väestöSV]=sum([yli25v2]);
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Population over 25 years old]=sum([yli25v2]);
+CREATE MEASURE 'Muuttujat'[Population over 25 years old]=[Yli 25 v. väestö];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -2260,7 +2288,7 @@ CREATE MEASURE 'Muuttujat'[Teaching hours]=sum([Opetustunnit2]);
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Teaching hours in comparison to population over 25 years old (hours per person)]=[Opetustunnit]/[Yli 25 v. väestö];
+CREATE MEASURE 'Muuttujat'[Teaching hours in comparison to population over 25 years old (hours per person)]=[Opetustunnit suhteessa yli 25 v. väestöön (tuntia per henkilö)];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -2279,7 +2307,7 @@ CREATE MEASURE 'Muuttujat'[Teaching hours in comparison to population over 25 ye
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Participants]=sum([Osallistuneet2]);
+CREATE MEASURE 'Muuttujat'[Participants]=[Osallistuneet];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -2298,7 +2326,7 @@ CREATE MEASURE 'Muuttujat'[Participants]=sum([Osallistuneet2]);
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Participants in comparison to population over 25 years old]=[Osallistuneet]/[Yli 25 v. väestö];
+CREATE MEASURE 'Muuttujat'[Participants in comparison to population over 25 years old]=[Osallistuneet suhteessa yli 25 v. väestöön];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -2336,7 +2364,7 @@ CREATE MEASURE 'Muuttujat'[Undervisningstimmar]=sum([Opetustunnit2]);
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Undervisningstimmar i proportion till befolkning över 25 år (timmar per person)]=[Opetustunnit]/[Yli 25 v. väestö];
+CREATE MEASURE 'Muuttujat'[Undervisningstimmar i proportion till befolkning över 25 år (timmar per person)]=[Opetustunnit suhteessa yli 25 v. väestöön (tuntia per henkilö)];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -2355,7 +2383,7 @@ CREATE MEASURE 'Muuttujat'[Undervisningstimmar i proportion till befolkning öve
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Deltagare]=sum([Osallistuneet2]);
+CREATE MEASURE 'Muuttujat'[Deltagare]=[Osallistuneet];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -2374,12 +2402,126 @@ CREATE MEASURE 'Muuttujat'[Deltagare]=sum([Osallistuneet2]);
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Deltagare i proportion till befolkning över 25 år]=[Osallistuneet]/[Yli 25 v. väestö];
+CREATE MEASURE 'Muuttujat'[Deltagare i proportion till befolkning över 25 år]=[Osallistuneet suhteessa yli 25 v. väestöön];
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
                       <Value>Deltagare i proportion till befolkning över 25 år</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[kytkin]=IF(LEFT(USERNAME(), 4) = "DWI\", 1, 0);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>kytkin</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Yli 25 v. väestö_s]=IF([kytkin]=0, BLANK(), sum([yli25v2]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Yli 25 v. väestö_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Opetustunnit_s]=IF([kytkin]=0, BLANK(), sum([Opetustunnit2]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Opetustunnit_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Opetustunnit suhteessa yli 25 v. väestöön (tuntia per henkilö)_s]=IF([kytkin]=0, BLANK(), [Opetustunnit_s]/[Yli 25 v. väestö_s]);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Opetustunnit suhteessa yli 25 v. väestöön (tuntia per henkilö)_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Osallistuneet_s]=IF([kytkin]=0, BLANK(), sum([Osallistuneet2]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Osallistuneet_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Osallistuneet suhteessa yli 25 v. väestöön_s]=IF([kytkin]=0, BLANK(), [Osallistuneet_s]/[Yli 25 v. väestö_s]);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Osallistuneet suhteessa yli 25 v. väestöön_s</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -2511,7 +2653,7 @@ CREATE MEASURE 'Muuttujat'[Deltagare i proportion till befolkning över 25 år]=
                       </Value>
                     </Annotation>
                   </Annotations>
-                  <CalculationReference>[Yli 25 v. väestöSV]</CalculationReference>
+                  <CalculationReference>[Befolkning över 25 år]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
@@ -2705,6 +2847,133 @@ CREATE MEASURE 'Muuttujat'[Deltagare i proportion till befolkning över 25 år]=
                   <FormatString>'#,0.0 %;-#,0.0 %;#,0.0 %'</FormatString>
                 </CalculationProperty>
                 <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>True</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[kytkin]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <Visible>false</Visible>
+                  <FormatString>'0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Yli 25 v. väestö_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Opetustunnit_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberDecimal" Accuracy="1" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Opetustunnit suhteessa yli 25 v. väestöön (tuntia per henkilö)_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'0.0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Osallistuneet_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="Percentage" Accuracy="1" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Osallistuneet suhteessa yli 25 v. väestöön_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
                   <CalculationReference>Measures.[__No measures defined]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <Visible>false</Visible>
@@ -2881,6 +3150,10 @@ CREATE MEASURE 'Muuttujat'[Deltagare i proportion till befolkning över 25 år]=
             <Member>
               <Name>DWI\Z_T_Antero_Read_TAB</Name>
               <Sid>S-1-5-21-2196741920-3238685902-2581541251-4155</Sid>
+            </Member>
+            <Member>
+              <Name>DWI\Z_P_Antero_Full_Read_TAB</Name>
+              <Sid>S-1-5-21-2196741920-3238685902-2581541251-2272</Sid>
             </Member>
           </Members>
         </Role>
