@@ -10057,7 +10057,11 @@
         "measures": [
           {
             "name": "Henkilöt lkm",
-            "expression": "CALCULATE(IF(SUM([lkm_int]) = 0, BLANK(),IF(SUM([lkm_int]) = 1, 3, MROUND(SUM([lkm_int]),3))),Muuttujat[Aineisto]=\"Lopullinen\")",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([lkm_int]), Muuttujat[Aineisto]=\"Lopullinen\")",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
@@ -10077,27 +10081,64 @@
           },
           {
             "name": "Tutkinnon suorittaneiden osuus (koulutusasteen mukaan)",
-            "expression": "CALCULATE([Henkilöt lkm], FILTER(Muuttujat, [jarjestys_2bb] = \"1\"))/CALCULATE([Henkilöt lkm], ALL(Muuttujat[Tutk. suor. alkup. koul. järjestäjällä]), ALL(Muuttujat[Tutk. suor. alkup. koul.alalla]), ALL(Muuttujat[Tutk. suor. alkup. koul.asteella]), ALL(Muuttujat[Tutk. suor. alkup. koul.sektorilla]), ALL(Muuttujat[Tutk. suor. alkup. maakunnassa]), ALL(Muuttujat[Tutk. suor. alkup. opintoalalla]), ALL(Muuttujat[Tutk. suor. alkup. oppilaitoksessa]))",
+            "expression": [
+              "",
+              "var osa = CALCULATE([Henkilöt lkm], FILTER(Muuttujat, [jarjestys_2bb] = \"1\"))",
+              "var kaikki = CALCULATE([Henkilöt lkm], ALL(Muuttujat[Tutk. suor. alkup. koul. järjestäjällä]), ALL(Muuttujat[Tutk. suor. alkup. koul.alalla]), ALL(Muuttujat[Tutk. suor. alkup. koul.asteella]), ALL(Muuttujat[Tutk. suor. alkup. koul.sektorilla]), ALL(Muuttujat[Tutk. suor. alkup. maakunnassa]), ALL(Muuttujat[Tutk. suor. alkup. opintoalalla]), ALL(Muuttujat[Tutk. suor. alkup. oppilaitoksessa]))",
+              "return IF(osa = BLANK(), BLANK(),\t",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, \"0.0 %\"",
+              ", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Tutkinnon suorittaneet ja keskeyttäneet (koulutusasteen mukaan)",
-            "expression": "[Keskeyttäneet (koulutusasteen mukaan)]+[Tutkinnon suorittaneet (koulutusasteen mukaan)]",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", OR(OR(OR(OR([jarjestys_2bb] = \"4\", [jarjestys_2bb] = \"5\"),[jarjestys_2bb] = \"6\"), [jarjestys_2bb] = \"7\"), [jarjestys_2bb] = \"8\"))))",
+              "+CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", [jarjestys_2bb] = \"1\")))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Tutkinnon suorittaneiden osuus tutkinnon suorittaneista ja keskeyttäneistä (koulutusasteen mukaan)",
-            "expression": "[Tutkinnon suorittaneet (koulutusasteen mukaan)]/[Tutkinnon suorittaneet ja keskeyttäneet (koulutusasteen mukaan)]",
+            "expression": [
+              "",
+              "var osa = [Tutkinnon suorittaneet (koulutusasteen mukaan)]",
+              "var kaikki = [Tutkinnon suorittaneet ja keskeyttäneet (koulutusasteen mukaan)]",
+              "return IF(osa = BLANK(), BLANK(),\t",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, \"0.0 %\"",
+              ", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Keskeyttäneiden osuus tutkinnon suorittaneista ja keskeyttäneistä (koulutusasteen mukaan)",
-            "expression": "[Keskeyttäneet (koulutusasteen mukaan)]/[Tutkinnon suorittaneet ja keskeyttäneet (koulutusasteen mukaan)]",
+            "expression": [
+              "",
+              "var osa = [Keskeyttäneet (koulutusasteen mukaan)]",
+              "var kaikki = [Tutkinnon suorittaneet ja keskeyttäneet (koulutusasteen mukaan)]",
+              "return IF(osa = BLANK(), BLANK(),\t",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, \"0.0 %\"",
+              ", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Keskeyttäneet (koulutusalan mukaan)",
-            "expression": "CALCULATE([Henkilöt lkm], FILTER(Muuttujat, AND([Koodit Koulutusala (02 luokitus)]<>[Koodit Seur. vuoden koulutusala (02 luokitus)],[Koodit Koulutusala (02 luokitus)] <> [Koodit Tutkinnon koulutusala (02 luokitus)])))+CALCULATE([Henkilöt lkm], FILTER(Muuttujat, AND(AND([jarjestys_2bb] <> \"1\", [Koodit Koulutusala (02 luokitus)] = [Koodit Tutkinnon koulutusala (02 luokitus)]), [Koodit Koulutusala (02 luokitus)] <> [Koodit Seur. vuoden koulutusala (02 luokitus)])))",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND([Koodit Koulutusala (02 luokitus)]<>[Koodit Seur. vuoden koulutusala (02 luokitus)],[Koodit Koulutusala (02 luokitus)] <> [Koodit Tutkinnon koulutusala (02 luokitus)]))))",
+              "+CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND(AND([jarjestys_2bb] <> \"1\", [Koodit Koulutusala (02 luokitus)] = [Koodit Tutkinnon koulutusala (02 luokitus)]), [Koodit Koulutusala (02 luokitus)] <> [Koodit Seur. vuoden koulutusala (02 luokitus)]))))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
@@ -10107,22 +10148,47 @@
           },
           {
             "name": "Tutkinnon suorittaneet ja keskeyttäneet (koulutusalan mukaan)",
-            "expression": "[Keskeyttäneet (koulutusalan mukaan)]+[Tutkinnon suorittaneet (koulutusalan mukaan)]",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND([Koodit Koulutusala (02 luokitus)]<>[Koodit Seur. vuoden koulutusala (02 luokitus)],[Koodit Koulutusala (02 luokitus)] <> [Koodit Tutkinnon koulutusala (02 luokitus)]))))",
+              "+CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND(AND([jarjestys_2bb] <> \"1\", [Koodit Koulutusala (02 luokitus)] = [Koodit Tutkinnon koulutusala (02 luokitus)]), [Koodit Koulutusala (02 luokitus)] <> [Koodit Seur. vuoden koulutusala (02 luokitus)]))))",
+              "+CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND([jarjestys_2bb] = \"1\", [Koodit Koulutusala (02 luokitus)] = [Koodit Tutkinnon koulutusala (02 luokitus)]))))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Tutkinnon suorittaneiden osuus tutkinnon suorittaneista ja keskeyttäneistä (koulutusalan mukaan)",
-            "expression": "[Tutkinnon suorittaneet (koulutusalan mukaan)]/[Tutkinnon suorittaneet ja keskeyttäneet (koulutusalan mukaan)]",
+            "expression": [
+              "",
+              "var osa = [Tutkinnon suorittaneet (koulutusalan mukaan)]",
+              "var kaikki = [Tutkinnon suorittaneet ja keskeyttäneet (koulutusalan mukaan)]",
+              "return IF(osa = BLANK(), BLANK(),\t",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, \"0.0 %\"",
+              ", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Keskeyttäneet (maakunnan mukaan)",
-            "expression": "CALCULATE([Henkilöt lkm], FILTER(Muuttujat, AND([Koodit Koulutuksen maakunta]<>[Koodit Seur. vuoden koul. maakunta],[Koodit Koulutuksen maakunta] <> [Koodit Tutk. suoritusmaakunta])))+CALCULATE([Henkilöt lkm], FILTER(Muuttujat, AND(AND([jarjestys_2bb] <> \"1\", [Koodit Koulutuksen maakunta] = [Koodit Tutk. suoritusmaakunta]), [Koodit Koulutuksen maakunta] <> [Koodit Seur. vuoden koul. maakunta])))",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND([Koodit Koulutuksen maakunta]<>[Koodit Seur. vuoden koul. maakunta],[Koodit Koulutuksen maakunta] <> [Koodit Tutk. suoritusmaakunta]))))",
+              "+CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND(AND([jarjestys_2bb] <> \"1\", [Koodit Koulutuksen maakunta] = [Koodit Tutk. suoritusmaakunta]), [Koodit Koulutuksen maakunta] <> [Koodit Seur. vuoden koul. maakunta]))))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Keskeyttäneet (opintoalan mukaan)",
-            "expression": "CALCULATE([Henkilöt lkm], FILTER(Muuttujat, AND([Koodit Opintoala]<>[Koodit Seur. vuoden opintoala],[Koodit Opintoala] <> [Koodit Tutkinnon opintoala])))+CALCULATE([Henkilöt lkm], FILTER(Muuttujat, AND(AND([jarjestys_2bb] <> \"1\", [Koodit Opintoala] = [Koodit Tutkinnon opintoala]), [Koodit Opintoala] <> [Koodit Seur. vuoden opintoala])))",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND([Koodit Opintoala]<>[Koodit Seur. vuoden opintoala],[Koodit Opintoala] <> [Koodit Tutkinnon opintoala]))))",
+              "+CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND(AND([jarjestys_2bb] <> \"1\", [Koodit Opintoala] = [Koodit Tutkinnon opintoala]), [Koodit Opintoala] <> [Koodit Seur. vuoden opintoala]))))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
@@ -10132,12 +10198,22 @@
           },
           {
             "name": "Keskeyttäneet (oppilaitoksen mukaan) - ei toimi",
-            "expression": "CALCULATE([Henkilöt lkm], FILTER(Muuttujat, AND([Koodit Oppilaitos]<>[Koodit Seur. vuoden oppilaitos],[Koodit Oppilaitos] <> [Koodit Tutkinnon oppilaitos])))+CALCULATE([Henkilöt lkm], FILTER(Muuttujat, AND(AND([jarjestys_2bb] <> \"1\", [Koodit Oppilaitos] = [Koodit Tutkinnon oppilaitos]), [Koodit Oppilaitos] <> [Koodit Seur. vuoden oppilaitos])))",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND([Koodit Oppilaitos]<>[Koodit Seur. vuoden oppilaitos],[Koodit Oppilaitos] <> [Koodit Tutkinnon oppilaitos]))))",
+              "+CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND(AND([jarjestys_2bb] <> \"1\", [Koodit Oppilaitos] = [Koodit Tutkinnon oppilaitos]), [Koodit Oppilaitos] <> [Koodit Seur. vuoden oppilaitos]))))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Keskeyttäneet (koulutuksen järjestäjän mukaan) - ei toimi",
-            "expression": "CALCULATE([Henkilöt lkm], FILTER(Muuttujat, AND([Koodit Koulutuksen järjestäjä]<>[Koodit Seur. vuoden koul. järjestäjä],[Koodit Koulutuksen järjestäjä] <> [Koodit Tutkinnon koul. järjestäjä])))+CALCULATE([Henkilöt lkm], FILTER(Muuttujat, AND(AND([jarjestys_2bb] <> \"1\", [Koodit Koulutuksen järjestäjä] = [Koodit Tutkinnon koul. järjestäjä]), [Koodit Koulutuksen järjestäjä] <> [Koodit Seur. vuoden koul. järjestäjä])))",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND([Koodit Koulutuksen järjestäjä]<>[Koodit Seur. vuoden koul. järjestäjä],[Koodit Koulutuksen järjestäjä] <> [Koodit Tutkinnon koul. järjestäjä]))))",
+              "+CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND(AND([jarjestys_2bb] <> \"1\", [Koodit Koulutuksen järjestäjä] = [Koodit Tutkinnon koul. järjestäjä]), [Koodit Koulutuksen järjestäjä] <> [Koodit Seur. vuoden koul. järjestäjä]))))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
@@ -10177,108 +10253,387 @@
           },
           {
             "name": "Tutkinnon suorittaneet ja keskeyttäneet (opintoalan mukaan)",
-            "expression": "[Keskeyttäneet (opintoalan mukaan)]+[Tutkinnon suorittaneet (opintoalan mukaan)]",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND([Koodit Opintoala]<>[Koodit Seur. vuoden opintoala],[Koodit Opintoala] <> [Koodit Tutkinnon opintoala]))))",
+              "+CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND(AND([jarjestys_2bb] <> \"1\", [Koodit Opintoala] = [Koodit Tutkinnon opintoala]), [Koodit Opintoala] <> [Koodit Seur. vuoden opintoala]))))",
+              "+CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND([jarjestys_2bb] = \"1\", [Koodit Opintoala] = [Koodit Tutkinnon opintoala]))))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Tutkinnon suorittaneiden osuus tutkinnon suorittaneista ja keskeyttäneistä (opintoalan mukaan)",
-            "expression": "[Tutkinnon suorittaneet (opintoalan mukaan)]/[Tutkinnon suorittaneet ja keskeyttäneet (opintoalan mukaan)]",
+            "expression": [
+              "",
+              "var osa = [Tutkinnon suorittaneet (opintoalan mukaan)]",
+              "var kaikki = [Tutkinnon suorittaneet ja keskeyttäneet (opintoalan mukaan)]",
+              "return IF(osa = BLANK(), BLANK(),\t",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, \"0.0 %\"",
+              ", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Tutkinnon suorittaneet ja keskeyttäneet (koulutusnimikkeen mukaan)",
-            "expression": "[Keskeyttäneet (koulutusnimikkeen mukaan)]+[Tutkinnon suorittaneet (koulutusnimikkeen mukaan)]",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND(AND([Koodit Koulutusnimike]<>[Koodit Seur. vuoden koulutusnimike],[Koodit Koulutusnimike] <> [Koodit Tutkinnon koulutusnimike]),[Koodit Koulutusaste] <> \"63\"))))",
+              "+CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND(AND([jarjestys_2bb] = \"1\", [Koodit Koulutusnimike] = [Koodit Tutkinnon koulutusnimike]), [Koodit Koulutusaste] <> \"63\"))))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Tutkinnon suorittaneiden osuus tutkinnon suorittaneista ja keskeyttäneistä (koulutusnim. mukaan)",
-            "expression": "[Tutkinnon suorittaneet (koulutusnimikkeen mukaan)]/[Tutkinnon suorittaneet ja keskeyttäneet (koulutusnimikkeen mukaan)]",
+            "expression": [
+              "",
+              "var osa = [Tutkinnon suorittaneet (koulutusnimikkeen mukaan)]",
+              "var kaikki = [Tutkinnon suorittaneet ja keskeyttäneet (koulutusnimikkeen mukaan)]",
+              "return IF(osa = BLANK(), BLANK(),\t",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, \"0.0 %\"",
+              ", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Tutkinnon suorittaneet ja keskeyttäneet (maakunnan mukaan)",
-            "expression": "[Keskeyttäneet (maakunnan mukaan)]+[Tutkinnon suorittaneet (maakunnan mukaan)]",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND([Koodit Koulutuksen maakunta]<>[Koodit Seur. vuoden koul. maakunta],[Koodit Koulutuksen maakunta] <> [Koodit Tutk. suoritusmaakunta]))))",
+              "+CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND(AND([jarjestys_2bb] <> \"1\", [Koodit Koulutuksen maakunta] = [Koodit Tutk. suoritusmaakunta]), [Koodit Koulutuksen maakunta] <> [Koodit Seur. vuoden koul. maakunta]))))",
+              "+CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND([jarjestys_2bb] = \"1\", [Koodit Koulutuksen maakunta] = [Koodit Tutk. suoritusmaakunta]))))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Tutkinnon suorittaneiden osuus tutkinnon suorittaneista ja keskeyttäneistä (maakunnan mukaan)",
-            "expression": "[Tutkinnon suorittaneet (maakunnan mukaan)]/[Tutkinnon suorittaneet ja keskeyttäneet (maakunnan mukaan)]",
+            "expression": [
+              "",
+              "var osa = [Tutkinnon suorittaneet (maakunnan mukaan)]",
+              "var kaikki = [Tutkinnon suorittaneet ja keskeyttäneet (maakunnan mukaan)]",
+              "return IF(osa = BLANK(), BLANK(),\t",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, \"0.0 %\"",
+              ", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Tutkinnon suorittaneet ja keskeyttäneet (oppilaitoksen mukaan)",
-            "expression": "[Keskeyttäneet (oppilaitoksen mukaan) - ei toimi]+[Tutkinnon suorittaneet (oppilaitoksen mukaan) - ei toimi]",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND([Koodit Oppilaitos]<>[Koodit Seur. vuoden oppilaitos],[Koodit Oppilaitos] <> [Koodit Tutkinnon oppilaitos]))))",
+              "+CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND(AND([jarjestys_2bb] <> \"1\", [Koodit Oppilaitos] = [Koodit Tutkinnon oppilaitos]), [Koodit Oppilaitos] <> [Koodit Seur. vuoden oppilaitos]))))",
+              "+CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND([jarjestys_2bb] = \"1\", [Koodit Oppilaitos] = [Koodit Tutkinnon oppilaitos]))))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Tutkinnon suorittaneiden osuus tutkinnon suorittaneista ja keskeyttäneistä (oppilaitoksen mukaan)",
-            "expression": "[Tutkinnon suorittaneet (oppilaitoksen mukaan) - ei toimi]/[Tutkinnon suorittaneet ja keskeyttäneet (oppilaitoksen mukaan)]",
+            "expression": [
+              "",
+              "var osa = [Tutkinnon suorittaneet (oppilaitoksen mukaan) - ei toimi]",
+              "var kaikki = [Tutkinnon suorittaneet ja keskeyttäneet (oppilaitoksen mukaan)]",
+              "return IF(osa = BLANK(), BLANK(),\t",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, \"0.0 %\"",
+              ", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Tutkinnon suorittaneet ja keskeyttäneet (koulutuksen järjestäjän mukaan)",
-            "expression": "[Keskeyttäneet (koulutuksen järjestäjän mukaan) - ei toimi]+[Tutkinnon suorittaneet (koulutuksen järjestäjän mukaan) - ei toimi]",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND([Koodit Koulutuksen järjestäjä]<>[Koodit Seur. vuoden koul. järjestäjä],[Koodit Koulutuksen järjestäjä] <> [Koodit Tutkinnon koul. järjestäjä]))))",
+              "+CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND(AND([jarjestys_2bb] <> \"1\", [Koodit Koulutuksen järjestäjä] = [Koodit Tutkinnon koul. järjestäjä]), [Koodit Koulutuksen järjestäjä] <> [Koodit Seur. vuoden koul. järjestäjä]))))",
+              "+CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND([jarjestys_2bb] = \"1\", [Koodit Koulutuksen järjestäjä] = [Koodit Tutkinnon koul. järjestäjä]))))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Tutkinnon suorittaneiden osuus tutkinnon suorittaneista ja keskeyttäneistä (koul. järj. mukaan)",
-            "expression": "[Tutkinnon suorittaneet (koulutuksen järjestäjän mukaan) - ei toimi]/[Tutkinnon suorittaneet ja keskeyttäneet (koulutuksen järjestäjän mukaan)]",
+            "expression": [
+              "",
+              "var osa = [Tutkinnon suorittaneet (koulutuksen järjestäjän mukaan) - ei toimi]",
+              "var kaikki = [Tutkinnon suorittaneet ja keskeyttäneet (koulutuksen järjestäjän mukaan)]",
+              "return IF(osa = BLANK(), BLANK(),\t",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, \"0.0 %\"",
+              ", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Tutkinnon suorittaneet ja keskeyttäneet (koko koulutusjärjestelmä)",
-            "expression": "[Keskeyttäneet (koko koulutusjärjestelmä)]+[Tutkinnon suorittaneet (mikä tahansa tutkinto)]",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", AND([Koodit Tutkinnon koulutusnimike] = \"-1\", [Koodit Seur. vuoden koulutusnimike] = \"-1\"))))",
+              "+CALCULATE(SUM([lkm_int]), FILTER(Muuttujat, AND([Aineisto]=\"Lopullinen\", OR([jarjestys_2a] = \"01\", [jarjestys_2a] = \"02\"))))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Tutkinnon suorittaneiden osuus tutkinnon suorittaneista ja keskeyttäneistä (koko koul.järjestelmä)",
-            "expression": "[Tutkinnon suorittaneet (mikä tahansa tutkinto)]/[Tutkinnon suorittaneet ja keskeyttäneet (koko koulutusjärjestelmä)]",
+            "expression": [
+              "",
+              "var osa = [Tutkinnon suorittaneet (mikä tahansa tutkinto)]",
+              "var kaikki = [Tutkinnon suorittaneet ja keskeyttäneet (koko koulutusjärjestelmä)]",
+              "return IF(osa = BLANK(), BLANK(),\t",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, \"0.0 %\"",
+              ", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Antal de som avbrutit",
-            "expression": "CALCULATE([Henkilöt lkm], FILTER(Muuttujat, OR(OR(OR(OR([jarjestys_2bb] = \"4\", [jarjestys_2bb] = \"5\"),[jarjestys_2bb] = \"6\"), [jarjestys_2bb] = \"7\"), [jarjestys_2bb] = \"8\")))",
+            "expression": "[Keskeyttäneet (koulutusasteen mukaan)]",
             "formatString": "#,0"
           },
           {
             "name": "Personer som avlagt examen",
-            "expression": "CALCULATE([Henkilöt lkm], FILTER(Muuttujat, [jarjestys_2bb] = \"1\"))",
+            "expression": "[Tutkinnon suorittaneet (koulutusasteen mukaan)]",
             "formatString": "#,0"
           },
           {
             "name": "Antal de som avbrutit + personer som avlagt examen",
-            "expression": "[Keskeyttäneet (koulutusasteen mukaan)]+[Tutkinnon suorittaneet (koulutusasteen mukaan)]",
+            "expression": "[Tutkinnon suorittaneet ja keskeyttäneet (koulutusasteen mukaan)]",
             "formatString": "#,0"
           },
           {
             "name": "Personer som avlagt examen / (Antal de som avbrutit + Personer som avlagt examen)",
-            "expression": "[Tutkinnon suorittaneet (koulutusasteen mukaan)]/[Tutkinnon suorittaneet ja keskeyttäneet (koulutusasteen mukaan)]",
+            "expression": "[Tutkinnon suorittaneiden osuus tutkinnon suorittaneista ja keskeyttäneistä (koulutusasteen mukaan)]",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "No. of those who discontinued (by level of education)",
-            "expression": "CALCULATE([Henkilöt lkm], FILTER(Muuttujat, OR(OR(OR(OR([jarjestys_2bb] = \"4\", [jarjestys_2bb] = \"5\"),[jarjestys_2bb] = \"6\"), [jarjestys_2bb] = \"7\"), [jarjestys_2bb] = \"8\")))",
+            "expression": "[Keskeyttäneet (koulutusasteen mukaan)]",
             "formatString": "#,0"
           },
           {
             "name": "Completers (by level of education)",
-            "expression": "CALCULATE([Henkilöt lkm], FILTER(Muuttujat, [jarjestys_2bb] = \"1\"))",
+            "expression": "[Tutkinnon suorittaneet (koulutusasteen mukaan)]",
             "formatString": "#,0"
           },
           {
             "name": "Those who discontinued + those who completed their education (by level of ed.)",
-            "expression": "[Keskeyttäneet (koulutusasteen mukaan)]+[Tutkinnon suorittaneet (koulutusasteen mukaan)]",
+            "expression": "[Tutkinnon suorittaneet ja keskeyttäneet (koulutusasteen mukaan)]",
             "formatString": "#,0"
           },
           {
             "name": "Completers / (Those who discontinued their education + Completers)",
-            "expression": "[Tutkinnon suorittaneet (koulutusasteen mukaan)]/[Tutkinnon suorittaneet ja keskeyttäneet (koulutusasteen mukaan)]",
+            "expression": "[Tutkinnon suorittaneiden osuus tutkinnon suorittaneista ja keskeyttäneistä (koulutusasteen mukaan)]",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Henkilöt lkm (sis. ennakko)",
-            "expression": "IF(SUM([lkm_int]) = 0, BLANK(),IF(SUM([lkm_int]) = 1, 3, MROUND(SUM([lkm_int]),3)))",
+            "expression": "IF(SUM([lkm_int]) = 0, BLANK(),IF(SUM([lkm_int]) < 5, \"1-4\", MROUND(SUM([lkm_int]),3)))",
             "formatString": "#,0"
+          },
+          {
+            "name": "kytkin",
+            "expression": "IF(LEFT(USERNAME(), 4) = \"DWI\\\", 1, 0)",
+            "formatString": "0",
+            "isHidden": true
+          },
+          {
+            "name": "Henkilöt lkm_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE(SUM([lkm_int]), Muuttujat[Aineisto]=\"Lopullinen\"))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Henkilöt lkm (sis. ennakko)_s",
+            "expression": "IF([kytkin]=0, BLANK(), SUM([lkm_int]))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Keskeyttäneet (koulutusasteen mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE([Henkilöt lkm_s], FILTER(Muuttujat, OR(OR(OR(OR([jarjestys_2bb] = \"4\", [jarjestys_2bb] = \"5\"),[jarjestys_2bb] = \"6\"), [jarjestys_2bb] = \"7\"), [jarjestys_2bb] = \"8\"))))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Keskeyttäneiden osuus (koulutusasteen mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE([Henkilöt lkm_s], FILTER(Muuttujat, OR(OR(OR(OR([jarjestys_2bb] = \"4\", [jarjestys_2bb] = \"5\"),[jarjestys_2bb] = \"6\"), [jarjestys_2bb] = \"7\"), [jarjestys_2bb] = \"8\")))/[Henkilöt lkm_s])",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Keskeyttäneet (koulutusalan mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE([Henkilöt lkm_s], FILTER(Muuttujat, AND([Koodit Koulutusala (02 luokitus)]<>[Koodit Seur. vuoden koulutusala (02 luokitus)],[Koodit Koulutusala (02 luokitus)] <> [Koodit Tutkinnon koulutusala (02 luokitus)])))+CALCULATE([Henkilöt lkm_s], FILTER(Muuttujat, AND(AND([jarjestys_2bb] <> \"1\", [Koodit Koulutusala (02 luokitus)] = [Koodit Tutkinnon koulutusala (02 luokitus)]), [Koodit Koulutusala (02 luokitus)] <> [Koodit Seur. vuoden koulutusala (02 luokitus)]))))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnon suorittaneet (koulutusalan mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE([Henkilöt lkm_s], FILTER(Muuttujat, AND([jarjestys_2bb] = \"1\", [Koodit Koulutusala (02 luokitus)] = [Koodit Tutkinnon koulutusala (02 luokitus)]))))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnon suorittaneet (koulutusasteen mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE([Henkilöt lkm_s], FILTER(Muuttujat, [jarjestys_2bb] = \"1\")))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Keskeyttäneet (opintoalan mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE([Henkilöt lkm_s], FILTER(Muuttujat, AND([Koodit Opintoala]<>[Koodit Seur. vuoden opintoala],[Koodit Opintoala] <> [Koodit Tutkinnon opintoala])))+CALCULATE([Henkilöt lkm_s], FILTER(Muuttujat, AND(AND([jarjestys_2bb] <> \"1\", [Koodit Opintoala] = [Koodit Tutkinnon opintoala]), [Koodit Opintoala] <> [Koodit Seur. vuoden opintoala]))))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnon suorittaneet (opintoalan mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE([Henkilöt lkm_s], FILTER(Muuttujat, AND([jarjestys_2bb] = \"1\", [Koodit Opintoala] = [Koodit Tutkinnon opintoala]))))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnon suorittaneiden osuus (koulutusasteen mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE([Henkilöt lkm_s], FILTER(Muuttujat, [jarjestys_2bb] = \"1\"))/CALCULATE([Henkilöt lkm_s], ALL(Muuttujat[Tutk. suor. alkup. koul. järjestäjällä]), ALL(Muuttujat[Tutk. suor. alkup. koul.alalla]), ALL(Muuttujat[Tutk. suor. alkup. koul.asteella]), ALL(Muuttujat[Tutk. suor. alkup. koul.sektorilla]), ALL(Muuttujat[Tutk. suor. alkup. maakunnassa]), ALL(Muuttujat[Tutk. suor. alkup. opintoalalla]), ALL(Muuttujat[Tutk. suor. alkup. oppilaitoksessa])))",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Keskeyttäneet (koulutusnimikkeen mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE([Henkilöt lkm_s], FILTER(Muuttujat, AND(AND([Koodit Koulutusnimike]<>[Koodit Seur. vuoden koulutusnimike],[Koodit Koulutusnimike] <> [Koodit Tutkinnon koulutusnimike]),[Koodit Koulutusaste] <> \"63\"))))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnon suorittaneet (koulutusnimikkeen mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE([Henkilöt lkm_s], FILTER(Muuttujat, AND(AND([jarjestys_2bb] = \"1\", [Koodit Koulutusnimike] = [Koodit Tutkinnon koulutusnimike]), [Koodit Koulutusaste] <> \"63\"))))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnon suorittaneet ja keskeyttäneet (koulutusasteen mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), [Keskeyttäneet (koulutusasteen mukaan)_s]+[Tutkinnon suorittaneet (koulutusasteen mukaan)_s])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Keskeyttäneet (maakunnan mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE([Henkilöt lkm_s], FILTER(Muuttujat, AND([Koodit Koulutuksen maakunta]<>[Koodit Seur. vuoden koul. maakunta],[Koodit Koulutuksen maakunta] <> [Koodit Tutk. suoritusmaakunta])))+CALCULATE([Henkilöt lkm_s], FILTER(Muuttujat, AND(AND([jarjestys_2bb] <> \"1\", [Koodit Koulutuksen maakunta] = [Koodit Tutk. suoritusmaakunta]), [Koodit Koulutuksen maakunta] <> [Koodit Seur. vuoden koul. maakunta]))))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnon suorittaneet (maakunnan mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE([Henkilöt lkm_s], FILTER(Muuttujat, AND([jarjestys_2bb] = \"1\", [Koodit Koulutuksen maakunta] = [Koodit Tutk. suoritusmaakunta]))))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnon suorittaneiden osuus tutkinnon suorittaneista ja keskeyttäneistä (koulutusasteen mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), [Tutkinnon suorittaneet (koulutusasteen mukaan)_s]/[Tutkinnon suorittaneet ja keskeyttäneet (koulutusasteen mukaan)_s])",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Keskeyttäneet (oppilaitoksen mukaan) - ei toimi_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE([Henkilöt lkm_s], FILTER(Muuttujat, AND([Koodit Oppilaitos]<>[Koodit Seur. vuoden oppilaitos],[Koodit Oppilaitos] <> [Koodit Tutkinnon oppilaitos])))+CALCULATE([Henkilöt lkm_s], FILTER(Muuttujat, AND(AND([jarjestys_2bb] <> \"1\", [Koodit Oppilaitos] = [Koodit Tutkinnon oppilaitos]), [Koodit Oppilaitos] <> [Koodit Seur. vuoden oppilaitos]))))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnon suorittaneet (oppilaitoksen mukaan) - ei toimi_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE([Henkilöt lkm_s], FILTER(Muuttujat, AND([jarjestys_2bb] = \"1\", [Koodit Oppilaitos] = [Koodit Tutkinnon oppilaitos]))))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Keskeyttäneiden osuus tutkinnon suorittaneista ja keskeyttäneistä (koulutusasteen mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), [Keskeyttäneet (koulutusasteen mukaan)_s]/[Tutkinnon suorittaneet ja keskeyttäneet (koulutusasteen mukaan)_s])",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Keskeyttäneet (koulutuksen järjestäjän mukaan) - ei toimi_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE([Henkilöt lkm_s], FILTER(Muuttujat, AND([Koodit Koulutuksen järjestäjä]<>[Koodit Seur. vuoden koul. järjestäjä],[Koodit Koulutuksen järjestäjä] <> [Koodit Tutkinnon koul. järjestäjä])))+CALCULATE([Henkilöt lkm_s], FILTER(Muuttujat, AND(AND([jarjestys_2bb] <> \"1\", [Koodit Koulutuksen järjestäjä] = [Koodit Tutkinnon koul. järjestäjä]), [Koodit Koulutuksen järjestäjä] <> [Koodit Seur. vuoden koul. järjestäjä]))))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnon suorittaneet (koulutuksen järjestäjän mukaan) - ei toimi_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE([Henkilöt lkm_s], FILTER(Muuttujat, AND([jarjestys_2bb] = \"1\", [Koodit Koulutuksen järjestäjä] = [Koodit Tutkinnon koul. järjestäjä]))))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Keskeyttäneet (koko koulutusjärjestelmä)_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE([Henkilöt lkm_s], FILTER(Muuttujat, AND([Koodit Tutkinnon koulutusnimike] = \"-1\", [Koodit Seur. vuoden koulutusnimike] = \"-1\"))))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnon suorittaneet (mikä tahansa tutkinto)_s",
+            "expression": "IF([kytkin]=0, BLANK(), CALCULATE([Henkilöt lkm_s], FILTER(Muuttujat, OR([jarjestys_2a] = \"01\", [jarjestys_2a] = \"02\"))))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnon suorittaneet ja keskeyttäneet (koulutusalan mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), [Keskeyttäneet (koulutusalan mukaan)_s]+[Tutkinnon suorittaneet (koulutusalan mukaan)_s])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnon suorittaneet ja keskeyttäneet (opintoalan mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), [Keskeyttäneet (opintoalan mukaan)_s]+[Tutkinnon suorittaneet (opintoalan mukaan)_s])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnon suorittaneet ja keskeyttäneet (koulutusnimikkeen mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), [Keskeyttäneet (koulutusnimikkeen mukaan)_s]+[Tutkinnon suorittaneet (koulutusnimikkeen mukaan)_s])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnon suorittaneiden osuus tutkinnon suorittaneista ja keskeyttäneistä (koulutusalan mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), [Tutkinnon suorittaneet (koulutusalan mukaan)_s]/[Tutkinnon suorittaneet ja keskeyttäneet (koulutusalan mukaan)_s])",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Tutkinnon suorittaneiden osuus tutkinnon suorittaneista ja keskeyttäneistä (opintoalan mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), [Tutkinnon suorittaneet (opintoalan mukaan)_s]/[Tutkinnon suorittaneet ja keskeyttäneet (opintoalan mukaan)_s])",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Tutkinnon suorittaneiden osuus tutkinnon suorittaneista ja keskeyttäneistä (koulutusnim. mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), [Tutkinnon suorittaneet (koulutusnimikkeen mukaan)_s]/[Tutkinnon suorittaneet ja keskeyttäneet (koulutusnimikkeen mukaan)_s])",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Tutkinnon suorittaneet ja keskeyttäneet (maakunnan mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), [Keskeyttäneet (maakunnan mukaan)_s]+[Tutkinnon suorittaneet (maakunnan mukaan)_s])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnon suorittaneet ja keskeyttäneet (oppilaitoksen mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), [Keskeyttäneet (oppilaitoksen mukaan) - ei toimi_s]+[Tutkinnon suorittaneet (oppilaitoksen mukaan) - ei toimi_s])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnon suorittaneet ja keskeyttäneet (koulutuksen järjestäjän mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), [Keskeyttäneet (koulutuksen järjestäjän mukaan) - ei toimi_s]+[Tutkinnon suorittaneet (koulutuksen järjestäjän mukaan) - ei toimi_s])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnon suorittaneiden osuus tutkinnon suorittaneista ja keskeyttäneistä (maakunnan mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), [Tutkinnon suorittaneet (maakunnan mukaan)_s]/[Tutkinnon suorittaneet ja keskeyttäneet (maakunnan mukaan)_s])",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Tutkinnon suorittaneiden osuus tutkinnon suorittaneista ja keskeyttäneistä (oppilaitoksen mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), [Tutkinnon suorittaneet (oppilaitoksen mukaan) - ei toimi_s]/[Tutkinnon suorittaneet ja keskeyttäneet (oppilaitoksen mukaan)_s])",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Tutkinnon suorittaneiden osuus tutkinnon suorittaneista ja keskeyttäneistä (koul. järj. mukaan)_s",
+            "expression": "IF([kytkin]=0, BLANK(), [Tutkinnon suorittaneet (koulutuksen järjestäjän mukaan) - ei toimi_s]/[Tutkinnon suorittaneet ja keskeyttäneet (koulutuksen järjestäjän mukaan)_s])",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Tutkinnon suorittaneet ja keskeyttäneet (koko koulutusjärjestelmä)_s",
+            "expression": "IF([kytkin]=0, BLANK(), [Keskeyttäneet (koko koulutusjärjestelmä)_s]+[Tutkinnon suorittaneet (mikä tahansa tutkinto)_s])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnon suorittaneiden osuus tutkinnon suorittaneista ja keskeyttäneistä (koko koul.järjestelmä)_s",
+            "expression": "IF([kytkin]=0, BLANK(), [Tutkinnon suorittaneet (mikä tahansa tutkinto)_s]/[Tutkinnon suorittaneet ja keskeyttäneet (koko koulutusjärjestelmä)_s])",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           }
         ],
         "annotations": [
@@ -11100,6 +11455,10 @@
           {
             "memberName": "DWI\\Z_T_Antero_Read_TAB",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-4155"
+          },
+          {
+            "memberName": "DWI\\Z_P_Antero_Full_Read_TAB",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-2272"
           }
         ]
       },

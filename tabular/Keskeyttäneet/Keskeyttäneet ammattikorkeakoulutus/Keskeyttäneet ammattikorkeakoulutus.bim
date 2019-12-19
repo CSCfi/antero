@@ -28725,7 +28725,9 @@ ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measure
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Henkilöt lkm]=CALCULATE(IF(SUM([lkm_int]) = 0, BLANK(),IF(SUM([lkm_int]) = 1, 3, MROUND(SUM([lkm_int]),3))),Muuttujat[Aineisto]="Lopullinen");
+CREATE MEASURE 'Muuttujat'[Henkilöt lkm]=
+var lkm = CALCULATE(SUM([lkm_int]), Muuttujat[Aineisto]="Lopullinen")
+return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -28763,7 +28765,14 @@ CREATE MEASURE 'Muuttujat'[Keskeyttäneet]=CALCULATE([Henkilöt lkm], FILTER(Muu
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Keskeyttäneiden osuus]=CALCULATE([Henkilöt lkm], FILTER(Muuttujat, OR([jarjestys_2bb]= "5",[jarjestys_2bb]= "6")))/[Henkilöt lkm];
+CREATE MEASURE 'Muuttujat'[Keskeyttäneiden osuus]=
+var osa = [Keskeyttäneet]
+var kaikki = [Henkilöt lkm]
+return IF(osa = BLANK(), BLANK(),	
+IF(kaikki = "1-4", "25 % – 100 %",
+IF(osa = "1-4", IF(kaikki &gt; 8000, "0.0 %"
+, CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+osa / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -28782,7 +28791,7 @@ CREATE MEASURE 'Muuttujat'[Keskeyttäneiden osuus]=CALCULATE([Henkilöt lkm], FI
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Personer antal]=CALCULATE(IF(SUM([lkm_int]) = 0, BLANK(),IF(SUM([lkm_int]) = 1, 3, MROUND(SUM([lkm_int]),3))),Muuttujat[Aineisto]="Lopullinen");
+CREATE MEASURE 'Muuttujat'[Personer antal]=[Henkilöt lkm];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -28801,7 +28810,7 @@ CREATE MEASURE 'Muuttujat'[Personer antal]=CALCULATE(IF(SUM([lkm_int]) = 0, BLAN
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[No. of persons]=CALCULATE(IF(SUM([lkm_int]) = 0, BLANK(),IF(SUM([lkm_int]) = 1, 3, MROUND(SUM([lkm_int]),3))),Muuttujat[Aineisto]="Lopullinen");
+CREATE MEASURE 'Muuttujat'[No. of persons]=[Henkilöt lkm];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -28820,7 +28829,7 @@ CREATE MEASURE 'Muuttujat'[No. of persons]=CALCULATE(IF(SUM([lkm_int]) = 0, BLAN
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Personer som avbrutit sina studier]=CALCULATE([Henkilöt lkm], FILTER(Muuttujat, OR([jarjestys_2bb] = "5",[jarjestys_2bb] = "6")));
+CREATE MEASURE 'Muuttujat'[Personer som avbrutit sina studier]=[Keskeyttäneet];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -28839,7 +28848,7 @@ CREATE MEASURE 'Muuttujat'[Personer som avbrutit sina studier]=CALCULATE([Henkil
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Discontinued]=CALCULATE([Henkilöt lkm], FILTER(Muuttujat, OR([jarjestys_2bb] = "5",[jarjestys_2bb] = "6")));
+CREATE MEASURE 'Muuttujat'[Discontinued]=[Keskeyttäneet];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -28858,7 +28867,7 @@ CREATE MEASURE 'Muuttujat'[Discontinued]=CALCULATE([Henkilöt lkm], FILTER(Muutt
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Andel som avbrutit sina studier]=CALCULATE([Henkilöt lkm], FILTER(Muuttujat, OR([jarjestys_2bb]= "5",[jarjestys_2bb]= "6")))/[Henkilöt lkm];
+CREATE MEASURE 'Muuttujat'[Andel som avbrutit sina studier]=[Keskeyttäneiden osuus];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -28877,7 +28886,7 @@ CREATE MEASURE 'Muuttujat'[Andel som avbrutit sina studier]=CALCULATE([Henkilöt
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Percentage of students who discontinued studies]=CALCULATE([Henkilöt lkm], FILTER(Muuttujat, OR([jarjestys_2bb]= "5",[jarjestys_2bb]= "6")))/[Henkilöt lkm];
+CREATE MEASURE 'Muuttujat'[Percentage of students who discontinued studies]=[Keskeyttäneiden osuus];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -28896,12 +28905,107 @@ CREATE MEASURE 'Muuttujat'[Percentage of students who discontinued studies]=CALC
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Henkilöt lkm (sis. ennakko)]=IF(SUM([lkm_int]) = 0, BLANK(),IF(SUM([lkm_int]) = 1, 3, MROUND(SUM([lkm_int]),3)));
+CREATE MEASURE 'Muuttujat'[Henkilöt lkm (sis. ennakko)]=IF(SUM([lkm_int]) = 0, BLANK(),IF(SUM([lkm_int]) &lt; 5, "1-4", MROUND(SUM([lkm_int]), 3)));
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
                       <Value>Henkilöt lkm (sis. ennakko)</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[kytkin]=IF(LEFT(USERNAME(), 4) = "DWI\", 1, 0);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>kytkin</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Henkilöt lkm_s]=IF([kytkin]=0, BLANK(), CALCULATE(SUM([lkm_int]), Muuttujat[Aineisto]="Lopullinen"));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Henkilöt lkm_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Keskeyttäneet_s]=IF([kytkin]=0, BLANK(), CALCULATE([Henkilöt lkm_s], FILTER(Muuttujat, OR([jarjestys_2bb] = "5",[jarjestys_2bb] = "6"))));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Keskeyttäneet_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Keskeyttäneiden osuus_s]=IF([kytkin]=0, BLANK(), CALCULATE([Henkilöt lkm_s], FILTER(Muuttujat, OR([jarjestys_2bb]= "5",[jarjestys_2bb]= "6")))/[Henkilöt lkm_s]);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Keskeyttäneiden osuus_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Henkilöt lkm (sis. ennakko)_s]=IF([kytkin]=0, BLANK(), SUM([lkm_int]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Henkilöt lkm (sis. ennakko)_s</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -29118,6 +29222,112 @@ CREATE MEASURE 'Muuttujat'[Henkilöt lkm (sis. ennakko)]=IF(SUM([lkm_int]) = 0, 
                     </Annotation>
                   </Annotations>
                   <CalculationReference>[Henkilöt lkm (sis. ennakko)]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>True</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[kytkin]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <Visible>false</Visible>
+                  <FormatString>'0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Henkilöt lkm_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Keskeyttäneet_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="Percentage" Accuracy="1" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Keskeyttäneiden osuus_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0.0 %;-#,0.0 %;#,0.0 %'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Henkilöt lkm (sis. ennakko)_s]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
@@ -31090,6 +31300,10 @@ CREATE MEASURE 'Muuttujat'[Henkilöt lkm (sis. ennakko)]=IF(SUM([lkm_int]) = 0, 
             <Member>
               <Name>DWI\Z_T_Antero_Read_TAB</Name>
               <Sid>S-1-5-21-2196741920-3238685902-2581541251-4155</Sid>
+            </Member>
+            <Member>
+              <Name>DWI\Z_P_Antero_Full_Read_TAB</Name>
+              <Sid>S-1-5-21-2196741920-3238685902-2581541251-2272</Sid>
             </Member>
           </Members>
         </Role>
