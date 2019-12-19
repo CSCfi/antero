@@ -3338,6 +3338,7 @@
               </NameColumn>
               <OrderBy>AttributeKey</OrderBy>
               <OrderByAttributeID>Joustava perusopetus jarjestys</OrderByAttributeID>
+              <AttributeHierarchyDisplayFolder>Koulutusmuuttujat</AttributeHierarchyDisplayFolder>
             </Attribute>
             <Attribute>
               <Annotations>
@@ -3374,6 +3375,7 @@
               </NameColumn>
               <OrderBy>AttributeKey</OrderBy>
               <OrderByAttributeID>Kuljetusetuus jarjestys</OrderByAttributeID>
+              <AttributeHierarchyDisplayFolder>Henkilömuuttujat</AttributeHierarchyDisplayFolder>
             </Attribute>
             <Attribute>
               <Annotations>
@@ -3410,6 +3412,7 @@
               </NameColumn>
               <OrderBy>AttributeKey</OrderBy>
               <OrderByAttributeID>Majoitusetuus jarjestys</OrderByAttributeID>
+              <AttributeHierarchyDisplayFolder>Henkilömuuttujat</AttributeHierarchyDisplayFolder>
             </Attribute>
             <Attribute>
               <Annotations>
@@ -4662,6 +4665,7 @@
               </NameColumn>
               <OrderBy>AttributeKey</OrderBy>
               <OrderByAttributeID>Joustava perusopetus jarjestys</OrderByAttributeID>
+              <AttributeHierarchyDisplayFolder>Utbildningsvariabler</AttributeHierarchyDisplayFolder>
             </Attribute>
             <Attribute>
               <ID>Skolskjuts förmån</ID>
@@ -4687,6 +4691,7 @@
                 </Source>
               </NameColumn>
               <OrderBy>Key</OrderBy>
+              <AttributeHierarchyDisplayFolder>Personvariabler</AttributeHierarchyDisplayFolder>
             </Attribute>
             <Attribute>
               <ID>Inkvarteringsförmån</ID>
@@ -4712,6 +4717,7 @@
                 </Source>
               </NameColumn>
               <OrderBy>Key</OrderBy>
+              <AttributeHierarchyDisplayFolder>Personvariabler</AttributeHierarchyDisplayFolder>
             </Attribute>
             <Attribute>
               <ID>Intensifierat stöd</ID>
@@ -4792,6 +4798,7 @@
               </NameColumn>
               <OrderBy>AttributeKey</OrderBy>
               <OrderByAttributeID>Vieraskielisyys jarjestys</OrderByAttributeID>
+              <AttributeHierarchyDisplayFolder>Personvariabler</AttributeHierarchyDisplayFolder>
             </Attribute>
             <Attribute>
               <ID>Kön</ID>
@@ -5193,6 +5200,7 @@
               </NameColumn>
               <OrderBy>AttributeKey</OrderBy>
               <OrderByAttributeID>Joustava perusopetus jarjestys</OrderByAttributeID>
+              <AttributeHierarchyDisplayFolder>Education variables</AttributeHierarchyDisplayFolder>
             </Attribute>
             <Attribute>
               <ID>Transport benefit</ID>
@@ -5218,6 +5226,7 @@
                 </Source>
               </NameColumn>
               <OrderBy>Key</OrderBy>
+              <AttributeHierarchyDisplayFolder>Person variables</AttributeHierarchyDisplayFolder>
             </Attribute>
             <Attribute>
               <ID>Accommodation benefit</ID>
@@ -5243,6 +5252,7 @@
                 </Source>
               </NameColumn>
               <OrderBy>Key</OrderBy>
+              <AttributeHierarchyDisplayFolder>Person variables</AttributeHierarchyDisplayFolder>
             </Attribute>
             <Attribute>
               <ID>Intensified support</ID>
@@ -5323,6 +5333,7 @@
               </NameColumn>
               <OrderBy>AttributeKey</OrderBy>
               <OrderByAttributeID>Vieraskielisyys jarjestys</OrderByAttributeID>
+              <AttributeHierarchyDisplayFolder>Person variables</AttributeHierarchyDisplayFolder>
             </Attribute>
             <Attribute>
               <ID>Gender</ID>
@@ -10850,7 +10861,7 @@
               <Commands>
                 <Command>
                   <Text>CALCULATE; 
-CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1; 
+CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1, VISIBLE = 0; 
 ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measures defined]; </Text>
                 </Command>
                 <Command>
@@ -10954,7 +10965,14 @@ CREATE MEASURE 'Muuttujat'[Kaikki vieraskieliset oppilaat]=calculate([Kaikki opp
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Vieraskielisten erityisen tuen oppilaiden osuus kaikista vieraskielisistä]=[Vieraskieliset erityisen tuen oppilaat]/[Kaikki vieraskieliset oppilaat];
+CREATE MEASURE 'Muuttujat'[Vieraskielisten erityisen tuen oppilaiden osuus kaikista vieraskielisistä]=
+var osa = [Vieraskieliset erityisen tuen oppilaat]
+var kaikki = [Kaikki vieraskieliset oppilaat]
+return IF(osa = BLANK(), BLANK(),	
+IF(kaikki = "1-4", "25 % – 100 %",
+IF(osa = "1-4", IF(kaikki &gt; 8000, "0.0 %"
+, CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+osa / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -10973,7 +10991,14 @@ CREATE MEASURE 'Muuttujat'[Vieraskielisten erityisen tuen oppilaiden osuus kaiki
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Erityisen tuen oppilaiden osuus kaikista oppilaista]=[Erityisen tuen oppilaat]/[Kaikki oppilaat];
+CREATE MEASURE 'Muuttujat'[Erityisen tuen oppilaiden osuus kaikista oppilaista]=
+var osa = [Erityisen tuen oppilaat]
+var kaikki = [Kaikki oppilaat]
+return IF(osa = BLANK(), BLANK(),	
+IF(kaikki = "1-4", "25 % – 100 %",
+IF(osa = "1-4", IF(kaikki &gt; 8000, "0.0 %"
+, CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+osa / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -10992,7 +11017,14 @@ CREATE MEASURE 'Muuttujat'[Erityisen tuen oppilaiden osuus kaikista oppilaista]=
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Tehostetun tuen oppilaiden osuus kaikista oppilaista]=[Tehostetun tuen oppilaat]/[Kaikki oppilaat];
+CREATE MEASURE 'Muuttujat'[Tehostetun tuen oppilaiden osuus kaikista oppilaista]=
+var osa = [Tehostetun tuen oppilaat]
+var kaikki = [Kaikki oppilaat]
+return IF(osa = BLANK(), BLANK(),	
+IF(kaikki = "1-4", "25 % – 100 %",
+IF(osa = "1-4", IF(kaikki &gt; 8000, "0.0 %"
+, CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+osa / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -11011,7 +11043,14 @@ CREATE MEASURE 'Muuttujat'[Tehostetun tuen oppilaiden osuus kaikista oppilaista]
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Osuus kaikista erityisen tuen oppilaista]=[Erityisen tuen oppilaat]/CALCULATE([Kaikki oppilaat2],ALL(Muuttujat[Opetuksen toteutuspaikka]),Muuttujat[Erityisen tuen päätös]="Erityisen tuen päätös");
+CREATE MEASURE 'Muuttujat'[Osuus kaikista erityisen tuen oppilaista]=
+var osa = [Erityisen tuen oppilaat]
+var kaikki = CALCULATE([Kaikki oppilaat2],ALL(Muuttujat[Opetuksen toteutuspaikka]),Muuttujat[Erityisen tuen päätös]="Erityisen tuen päätös")
+return IF(osa = BLANK(), BLANK(),	
+IF(kaikki = "1-4", "25 % – 100 %",
+IF(osa = "1-4", IF(kaikki &gt; 8000, "0.0 %"
+, CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+osa / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -11030,7 +11069,14 @@ CREATE MEASURE 'Muuttujat'[Osuus kaikista erityisen tuen oppilaista]=[Erityisen 
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Erityisen tuen oppilaiden osuus kaikista tuen piirissä olevista]=[Erityisen tuen oppilaat]/[Kaikki oppilaat2];
+CREATE MEASURE 'Muuttujat'[Erityisen tuen oppilaiden osuus kaikista tuen piirissä olevista]=
+var osa = [Erityisen tuen oppilaat]
+var kaikki = [Kaikki oppilaat2]
+return IF(osa = BLANK(), BLANK(),	
+IF(kaikki = "1-4", "25 % – 100 %",
+IF(osa = "1-4", IF(kaikki &gt; 8000, "0.0 %"
+, CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+osa / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -11049,7 +11095,14 @@ CREATE MEASURE 'Muuttujat'[Erityisen tuen oppilaiden osuus kaikista tuen piiriss
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Osuus erityisen tuen oppilaista]=[Erityisen tuen oppilaat]/CALCULATE([Kaikki oppilaat2],ALL(Muuttujat[Oppimäärän yksilöllistäminen]),Muuttujat[Erityisen tuen päätös]="Erityisen tuen päätös");
+CREATE MEASURE 'Muuttujat'[Osuus erityisen tuen oppilaista]=
+var osa = [Erityisen tuen oppilaat]
+var kaikki = CALCULATE([Kaikki oppilaat2],ALL(Muuttujat[Oppimäärän yksilöllistäminen]),Muuttujat[Erityisen tuen päätös]="Erityisen tuen päätös")
+return IF(osa = BLANK(), BLANK(),	
+IF(kaikki = "1-4", "25 % – 100 %",
+IF(osa = "1-4", IF(kaikki &gt; 8000, "0.0 %"
+, CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+osa / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -11087,7 +11140,14 @@ CREATE MEASURE 'Muuttujat'[Jopo-oppilaat]=CALCULATE([Kaikki oppilaat2],Muuttujat
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Jopo-oppilaiden osuus kaikista oppilaista]=[Jopo-oppilaat]/CALCULATE([Kaikki oppilaat2],ALL(Muuttujat[Joustava perusopetus]));
+CREATE MEASURE 'Muuttujat'[Jopo-oppilaiden osuus kaikista oppilaista]=
+var osa = [Jopo-oppilaat]
+var kaikki = CALCULATE([Kaikki oppilaat2],ALL(Muuttujat[Joustava perusopetus]))
+return IF(osa = BLANK(), BLANK(),	
+IF(kaikki = "1-4", "25 % – 100 %",
+IF(osa = "1-4", IF(kaikki &gt; 8000, "0.0 %"
+, CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+osa / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -11106,7 +11166,7 @@ CREATE MEASURE 'Muuttujat'[Jopo-oppilaiden osuus kaikista oppilaista]=[Jopo-oppi
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Kuljetusetuutta saavat oppilaat]=CALCULATE(sum([lkm]),Muuttujat[Kuljetusetuus]="Kuljetusetuus");
+CREATE MEASURE 'Muuttujat'[Kuljetusetuutta saavat oppilaat]=CALCULATE([Kaikki oppilaat2],Muuttujat[Kuljetusetuus]="Kuljetusetuus");
 </Text>
                   <Annotations>
                     <Annotation>
@@ -11125,7 +11185,7 @@ CREATE MEASURE 'Muuttujat'[Kuljetusetuutta saavat oppilaat]=CALCULATE(sum([lkm])
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Majoitusetuutta saavat oppilaat]=CALCULATE(sum([lkm]),Muuttujat[Majoitusetuus]="Majoitusetuus",all(Muuttujat[Faktataulu]));
+CREATE MEASURE 'Muuttujat'[Majoitusetuutta saavat oppilaat]=CALCULATE([Kaikki oppilaat2],Muuttujat[Majoitusetuus]="Majoitusetuus",all(Muuttujat[Faktataulu]));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -11144,7 +11204,14 @@ CREATE MEASURE 'Muuttujat'[Majoitusetuutta saavat oppilaat]=CALCULATE(sum([lkm])
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Kuljetusetuutta saavien osuus kaikista oppilaista]=[Kuljetusetuutta saavat oppilaat]/sum([lkm]);
+CREATE MEASURE 'Muuttujat'[Kuljetusetuutta saavien osuus kaikista oppilaista]=
+var osa = [Kuljetusetuutta saavat oppilaat]
+var kaikki = [Kaikki oppilaat2]
+return IF(osa = BLANK(), BLANK(),	
+IF(kaikki = "1-4", "25 % – 100 %",
+IF(osa = "1-4", IF(kaikki &gt; 8000, "0.0 %"
+, CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+osa / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -11163,7 +11230,14 @@ CREATE MEASURE 'Muuttujat'[Kuljetusetuutta saavien osuus kaikista oppilaista]=[K
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Majoitusetuutta saavien osuus kaikista oppilaista]=[Majoitusetuutta saavat oppilaat]/sum([lkm]);
+CREATE MEASURE 'Muuttujat'[Majoitusetuutta saavien osuus kaikista oppilaista]=
+var osa = [Majoitusetuutta saavat oppilaat]
+var kaikki = [Kaikki oppilaat2]
+return IF(osa = BLANK(), BLANK(),	
+IF(kaikki = "1-4", "25 % – 100 %",
+IF(osa = "1-4", IF(kaikki &gt; 8000, "0.0 %"
+, CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+osa / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -11182,7 +11256,14 @@ CREATE MEASURE 'Muuttujat'[Majoitusetuutta saavien osuus kaikista oppilaista]=[M
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Tehostetun tuen oppilaiden osuus kaikista tuen piirissä olevista]=[Tehostetun tuen oppilaat]/[Kaikki oppilaat2];
+CREATE MEASURE 'Muuttujat'[Tehostetun tuen oppilaiden osuus kaikista tuen piirissä olevista]=
+var osa = [Tehostetun tuen oppilaat]
+var kaikki = [Kaikki oppilaat2]
+return IF(osa = BLANK(), BLANK(),	
+IF(kaikki = "1-4", "25 % – 100 %",
+IF(osa = "1-4", IF(kaikki &gt; 8000, "0.0 %"
+, CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+osa / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -11201,7 +11282,8 @@ CREATE MEASURE 'Muuttujat'[Tehostetun tuen oppilaiden osuus kaikista tuen piiris
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Kaikki oppilaat2]=IF(SUM([lkm]) = 0, BLANK(),IF(SUM([lkm]) = 1, 3, MROUND(SUM([lkm]),3)));
+CREATE MEASURE 'Muuttujat'[Kaikki oppilaat2]=var summa = SUM([lkm])
+return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -11296,7 +11378,7 @@ CREATE MEASURE 'Muuttujat'[Of all pupils, the share that receive accommodation b
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Elever som får skolskjutsförmån]=CALCULATE(sum([lkm]),Muuttujat[Kuljetusetuus]="Kuljetusetuus");
+CREATE MEASURE 'Muuttujat'[Elever som får skolskjutsförmån]=[Kuljetusetuutta saavat oppilaat];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -11315,7 +11397,7 @@ CREATE MEASURE 'Muuttujat'[Elever som får skolskjutsförmån]=CALCULATE(sum([lk
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Pupils who receive transport benefit]=CALCULATE(sum([lkm]),Muuttujat[Kuljetusetuus]="Kuljetusetuus");
+CREATE MEASURE 'Muuttujat'[Pupils who receive transport benefit]=[Kuljetusetuutta saavat oppilaat];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -11334,7 +11416,7 @@ CREATE MEASURE 'Muuttujat'[Pupils who receive transport benefit]=CALCULATE(sum([
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Elever som får inkvarteringsförmån]=CALCULATE(sum([lkm]),Muuttujat[Majoitusetuus]="Majoitusetuus",all(Muuttujat[Faktataulu]));
+CREATE MEASURE 'Muuttujat'[Elever som får inkvarteringsförmån]=[Majoitusetuutta saavat oppilaat];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -11353,7 +11435,7 @@ CREATE MEASURE 'Muuttujat'[Elever som får inkvarteringsförmån]=CALCULATE(sum(
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Pupils who receive accommodation benefit]=CALCULATE(sum([lkm]),Muuttujat[Majoitusetuus]="Majoitusetuus",all(Muuttujat[Faktataulu]));
+CREATE MEASURE 'Muuttujat'[Pupils who receive accommodation benefit]=[Majoitusetuutta saavat oppilaat];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -11372,7 +11454,7 @@ CREATE MEASURE 'Muuttujat'[Pupils who receive accommodation benefit]=CALCULATE(s
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Samtliga elever]=calculate(IF(SUM([lkm]) = 0, BLANK(),IF(SUM([lkm]) = 1, 3, MROUND(SUM([lkm]),3))),all(Muuttujat[Erityinen tuki]),all(Muuttujat[Erityinen tuki2]));
+CREATE MEASURE 'Muuttujat'[Samtliga elever]=[Kaikki oppilaat];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -11391,7 +11473,7 @@ CREATE MEASURE 'Muuttujat'[Samtliga elever]=calculate(IF(SUM([lkm]) = 0, BLANK()
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[All pupils]=calculate(IF(SUM([lkm]) = 0, BLANK(),IF(SUM([lkm]) = 1, 3, MROUND(SUM([lkm]),3))),all(Muuttujat[Erityinen tuki]),all(Muuttujat[Erityinen tuki2]));
+CREATE MEASURE 'Muuttujat'[All pupils]=[Kaikki oppilaat];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -11904,7 +11986,14 @@ CREATE MEASURE 'Muuttujat'[Andel av alla elever som får särskilt stöd]=[Eleve
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Erityistä tai tehostettua tukea saavien oppilaiden osuus (esiopetus)]=calculate(calculate([Erityisen tuen oppilaat]+[Tehostetun tuen oppilaat],Muuttujat[Vuosiluokka]="Esiopetus")/calculate([Kaikki oppilaat],Muuttujat[Vuosiluokka]="Esiopetus"),Muuttujat[Faktataulu]="Tehostettu tuki");
+CREATE MEASURE 'Muuttujat'[Erityistä tai tehostettua tukea saavien oppilaiden osuus (esiopetus)]=
+var osa = calculate(calculate(sum([lkm]), Muuttujat[Erityisen tuen päätös]="Erityisen tuen päätös") + calculate(sum([lkm]), Muuttujat[Erityinen tuki]="Tehostetun tuen oppimissuunnitelma", Muuttujat[Erityinen tuki2]="Tehostetun tuen oppimissuunnitelma"), Muuttujat[Vuosiluokka]="Esiopetus", Muuttujat[Faktataulu]="Tehostettu tuki")
+var kaikki = calculate([Kaikki oppilaat], Muuttujat[Vuosiluokka]="Esiopetus", Muuttujat[Faktataulu]="Tehostettu tuki")
+return IF(osa = 0, BLANK(),	
+IF(kaikki = "1-4", "25 % – 100 %",
+IF(osa &lt; 5, IF(kaikki &gt; 8000, "0.0 %"
+, CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+MROUND(osa, 3) / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -11923,7 +12012,15 @@ CREATE MEASURE 'Muuttujat'[Erityistä tai tehostettua tukea saavien oppilaiden o
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Erityistä tai tehostettua tukea saavien oppilaiden osuus (1-9 luokat)]=calculate(calculate([Erityisen tuen oppilaat]+[Tehostetun tuen oppilaat],Muuttujat[Vuosiluokka]&lt;&gt;"Esiopetus",Muuttujat[Vuosiluokka]&lt;&gt;"Lisäopetus")/calculate([Kaikki oppilaat2],Muuttujat[Vuosiluokka]&lt;&gt;"Esiopetus",Muuttujat[Vuosiluokka]&lt;&gt;"Lisäopetus"),Muuttujat[Faktataulu]="Tehostettu tuki");
+CREATE MEASURE 'Muuttujat'[Erityistä tai tehostettua tukea saavien oppilaiden osuus (1-9 luokat)]=
+var osa = calculate(calculate(sum([lkm]), Muuttujat[Erityisen tuen päätös]="Erityisen tuen päätös") + calculate(sum([lkm]), Muuttujat[Erityinen tuki]="Tehostetun tuen oppimissuunnitelma", Muuttujat[Erityinen tuki2]="Tehostetun tuen oppimissuunnitelma"), Muuttujat[Vuosiluokka]&lt;&gt;"Esiopetus", Muuttujat[Vuosiluokka]&lt;&gt;"Lisäopetus", Muuttujat[Faktataulu]="Tehostettu tuki")
+var kaikki = calculate([Kaikki oppilaat], Muuttujat[Vuosiluokka]&lt;&gt;"Esiopetus", Muuttujat[Vuosiluokka]&lt;&gt;"Lisäopetus", Muuttujat[Faktataulu]="Tehostettu tuki")
+return IF(osa = 0, BLANK(),	
+IF(kaikki = "1-4", "25 % – 100 %",
+IF(osa &lt; 5, IF(kaikki &gt; 8000, "0.0 %"
+, CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+MROUND(osa, 3) / kaikki)))
+;
 </Text>
                   <Annotations>
                     <Annotation>
@@ -12005,6 +12102,424 @@ CREATE MEASURE 'Muuttujat'[Of all pupils in grades 1–9, the share that receive
                     <Annotation>
                       <Name>FullName</Name>
                       <Value>Of all pupils in grades 1–9, the share that receive special or intensified support</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Kaikki oppilaat_s]=IF([kytkin]=0, BLANK(), calculate([Kaikki oppilaat2_s],all(Muuttujat[Erityinen tuki]),all(Muuttujat[Erityinen tuki2])));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Kaikki oppilaat_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[kytkin]=IF(LEFT(USERNAME(), 4) = "DWI\", 1, 0);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>kytkin</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Erityisen tuen oppilaat_s]=IF([kytkin]=0, BLANK(), calculate([Kaikki oppilaat2_s],Muuttujat[Erityisen tuen päätös]="Erityisen tuen päätös"));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Erityisen tuen oppilaat_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Tehostetun tuen oppilaat_s]=IF([kytkin]=0, BLANK(), calculate([Kaikki oppilaat2_s],Muuttujat[Erityinen tuki]="Tehostetun tuen oppimissuunnitelma",Muuttujat[Erityinen tuki2]="Tehostetun tuen oppimissuunnitelma"));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Tehostetun tuen oppilaat_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Vieraskieliset erityisen tuen oppilaat_s]=IF([kytkin]=0, BLANK(), calculate([Kaikki oppilaat2_s],Muuttujat[Vieraskielisyys]="Vieraskieliset (äidinkieli muu kuin suomi, ruotsi, saame tai romani ja viittomakieli)",Muuttujat[Erityisen tuen päätös]="Erityisen tuen päätös"));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Vieraskieliset erityisen tuen oppilaat_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Kaikki vieraskieliset oppilaat_s]=IF([kytkin]=0, BLANK(), calculate([Kaikki oppilaat2_s],Muuttujat[Vieraskielisyys]="Vieraskieliset (äidinkieli muu kuin suomi, ruotsi, saame tai romani ja viittomakieli)",all(Muuttujat[Erityinen tuki]),all(Muuttujat[Erityinen tuki2])));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Kaikki vieraskieliset oppilaat_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Jopo-oppilaat_s]=IF([kytkin]=0, BLANK(), CALCULATE([Kaikki oppilaat2_s],Muuttujat[Joustava perusopetus]="oppilas joustavassa perusopetuksessa"));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Jopo-oppilaat_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Kuljetusetuutta saavat oppilaat_s]=IF([kytkin]=0, BLANK(), CALCULATE([Kaikki oppilaat2_s], Muuttujat[Kuljetusetuus]="Kuljetusetuus"));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Kuljetusetuutta saavat oppilaat_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Majoitusetuutta saavat oppilaat_s]=IF([kytkin]=0, BLANK(), CALCULATE([Kaikki oppilaat2_s], Muuttujat[Majoitusetuus]="Majoitusetuus",all(Muuttujat[Faktataulu])));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Majoitusetuutta saavat oppilaat_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Kaikki oppilaat2_s]=IF(SUM([lkm]) = 0, BLANK(), SUM([lkm]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Kaikki oppilaat2_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Kuljetusetuutta saavien osuus kaikista oppilaista_s]=IF([kytkin]=0, BLANK(), [Kuljetusetuutta saavat oppilaat_s]/[Kaikki oppilaat2_s]);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Kuljetusetuutta saavien osuus kaikista oppilaista_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Majoitusetuutta saavien osuus kaikista oppilaista_s]=IF([kytkin]=0, BLANK(), [Majoitusetuutta saavat oppilaat_s]/[Kaikki oppilaat2_s]);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Majoitusetuutta saavien osuus kaikista oppilaista_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Erityisen tuen oppilaiden osuus kaikista oppilaista_s]=IF([kytkin]=0, BLANK(), [Erityisen tuen oppilaat_s]/[Kaikki oppilaat_s]);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Erityisen tuen oppilaiden osuus kaikista oppilaista_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Tehostetun tuen oppilaiden osuus kaikista oppilaista_s]=IF([kytkin]=0, BLANK(), [Tehostetun tuen oppilaat_s]/[Kaikki oppilaat_s]);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Tehostetun tuen oppilaiden osuus kaikista oppilaista_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Vieraskielisten erityisen tuen oppilaiden osuus kaikista vieraskielisistä_s]=IF([kytkin]=0, BLANK(), [Vieraskieliset erityisen tuen oppilaat_s]/[Kaikki vieraskieliset oppilaat_s]);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Vieraskielisten erityisen tuen oppilaiden osuus kaikista vieraskielisistä_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Jopo-oppilaiden osuus kaikista oppilaista_s]=IF([kytkin]=0, BLANK(), [Jopo-oppilaat_s]/CALCULATE([Kaikki oppilaat2_s],ALL(Muuttujat[Joustava perusopetus])));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Jopo-oppilaiden osuus kaikista oppilaista_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Osuus kaikista erityisen tuen oppilaista_s]=IF([kytkin]=0, BLANK(), [Erityisen tuen oppilaat_s]/CALCULATE([Kaikki oppilaat2_s],ALL(Muuttujat[Opetuksen toteutuspaikka]),Muuttujat[Erityisen tuen päätös]="Erityisen tuen päätös"));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Osuus kaikista erityisen tuen oppilaista_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Osuus erityisen tuen oppilaista_s]=IF([kytkin]=0, BLANK(), [Erityisen tuen oppilaat_s]/CALCULATE([Kaikki oppilaat2_s],ALL(Muuttujat[Oppimäärän yksilöllistäminen]),Muuttujat[Erityisen tuen päätös]="Erityisen tuen päätös"));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Osuus erityisen tuen oppilaista_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Erityisen tuen oppilaiden osuus kaikista tuen piirissä olevista_s]=IF([kytkin]=0, BLANK(), [Erityisen tuen oppilaat_s]/[Kaikki oppilaat2_s]);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Erityisen tuen oppilaiden osuus kaikista tuen piirissä olevista_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Tehostetun tuen oppilaiden osuus kaikista tuen piirissä olevista_s]=IF([kytkin]=0, BLANK(), [Tehostetun tuen oppilaat_s]/[Kaikki oppilaat2_s]);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Tehostetun tuen oppilaiden osuus kaikista tuen piirissä olevista_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Erityistä tai tehostettua tukea saavien oppilaiden osuus (esiopetus)_s]=IF([kytkin]=0, BLANK(), calculate(calculate([Erityisen tuen oppilaat_s]+[Tehostetun tuen oppilaat_s],Muuttujat[Vuosiluokka]="Esiopetus")/calculate([Kaikki oppilaat_s],Muuttujat[Vuosiluokka]="Esiopetus"),Muuttujat[Faktataulu]="Tehostettu tuki"));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Erityistä tai tehostettua tukea saavien oppilaiden osuus (esiopetus)_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Erityistä tai tehostettua tukea saavien oppilaiden osuus (1-9 luokat)_s]=IF([kytkin]=0, BLANK(), calculate(calculate([Erityisen tuen oppilaat_s]+[Tehostetun tuen oppilaat_s],Muuttujat[Vuosiluokka]&lt;&gt;"Esiopetus",Muuttujat[Vuosiluokka]&lt;&gt;"Lisäopetus")/calculate([Kaikki oppilaat_s],Muuttujat[Vuosiluokka]&lt;&gt;"Esiopetus",Muuttujat[Vuosiluokka]&lt;&gt;"Lisäopetus"),Muuttujat[Faktataulu]="Tehostettu tuki"));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Erityistä tai tehostettua tukea saavien oppilaiden osuus (1-9 luokat)_s</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -12400,7 +12915,7 @@ CREATE MEASURE 'Muuttujat'[Of all pupils in grades 1–9, the share that receive
                     </Annotation>
                     <Annotation>
                       <Name>IsPrivate</Name>
-                      <Value>False</Value>
+                      <Value>True</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Format</Name>
@@ -12411,6 +12926,7 @@ CREATE MEASURE 'Muuttujat'[Of all pupils in grades 1–9, the share that receive
                   </Annotations>
                   <CalculationReference>[Kaikki oppilaat2]</CalculationReference>
                   <CalculationType>Member</CalculationType>
+                  <Visible>false</Visible>
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
                 <CalculationProperty>
@@ -13296,6 +13812,470 @@ CREATE MEASURE 'Muuttujat'[Of all pupils in grades 1–9, the share that receive
                   <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
                 </CalculationProperty>
                 <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Kaikki oppilaat_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>True</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[kytkin]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <Visible>false</Visible>
+                  <FormatString>'0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Erityisen tuen oppilaat_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Tehostetun tuen oppilaat_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Vieraskieliset erityisen tuen oppilaat_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Kaikki vieraskieliset oppilaat_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Jopo-oppilaat_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Kuljetusetuutta saavat oppilaat_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Majoitusetuutta saavat oppilaat_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>True</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Kaikki oppilaat2_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <Visible>false</Visible>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="Percentage" Accuracy="1" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Kuljetusetuutta saavien osuus kaikista oppilaista_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="Percentage" Accuracy="1" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Majoitusetuutta saavien osuus kaikista oppilaista_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="Percentage" Accuracy="1" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Erityisen tuen oppilaiden osuus kaikista oppilaista_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="Percentage" Accuracy="1" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Tehostetun tuen oppilaiden osuus kaikista oppilaista_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="Percentage" Accuracy="1" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Vieraskielisten erityisen tuen oppilaiden osuus kaikista vieraskielisistä_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="Percentage" Accuracy="1" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Jopo-oppilaiden osuus kaikista oppilaista_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="Percentage" Accuracy="1" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Osuus kaikista erityisen tuen oppilaista_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="Percentage" Accuracy="1" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Osuus erityisen tuen oppilaista_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="Percentage" Accuracy="1" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Erityisen tuen oppilaiden osuus kaikista tuen piirissä olevista_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="Percentage" Accuracy="1" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Tehostetun tuen oppilaiden osuus kaikista tuen piirissä olevista_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="Percentage" Accuracy="1" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Erityistä tai tehostettua tukea saavien oppilaiden osuus (esiopetus)_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="Percentage" Accuracy="1" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Erityistä tai tehostettua tukea saavien oppilaiden osuus (1-9 luokat)_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
                   <CalculationReference>Measures.[__No measures defined]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <Visible>false</Visible>
@@ -13871,6 +14851,10 @@ CREATE MEASURE 'Muuttujat'[Of all pupils in grades 1–9, the share that receive
               <Name>DWI\Z_T_Antero_Read_TAB</Name>
               <Sid>S-1-5-21-2196741920-3238685902-2581541251-4155</Sid>
             </Member>
+            <Member>
+              <Name>DWI\Z_P_Antero_Full_Read_TAB</Name>
+              <Sid>S-1-5-21-2196741920-3238685902-2581541251-2272</Sid>
+            </Member>
           </Members>
         </Role>
         <Role>
@@ -13888,6 +14872,10 @@ CREATE MEASURE 'Muuttujat'[Of all pupils in grades 1–9, the share that receive
             <Member>
               <Name>DWI\Z_T_Antero_Read_TAB</Name>
               <Sid>S-1-5-21-2196741920-3238685902-2581541251-4155</Sid>
+            </Member>
+            <Member>
+              <Name>DWI\Z_P_Antero_Full_Read_TAB</Name>
+              <Sid>S-1-5-21-2196741920-3238685902-2581541251-2272</Sid>
             </Member>
           </Members>
         </Role>
