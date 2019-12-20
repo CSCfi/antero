@@ -4828,17 +4828,16 @@
         "measures": [
           {
             "name": "Henkilöt lkm",
-            "expression": "IF(SUM([lkm_int2]) = 0, BLANK(), IF(SUM([lkm_int2]) = 1, 3, MROUND(SUM([lkm_int2]), 3)))",
-            "formatString": "#,0"
-          },
-          {
-            "name": "Personer antal",
-            "expression": "IF(SUM([lkm_int2]) = 0, BLANK(), IF(SUM([lkm_int2]) = 1, 3, MROUND(SUM([lkm_int2]), 3)))",
+            "expression": [
+              "",
+              "var lkm = SUM([lkm_int2])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "No. of persons",
-            "expression": "IF(SUM([lkm_int2]) = 0, BLANK(), IF(SUM([lkm_int2]) = 1, 3, MROUND(SUM([lkm_int2]), 3)))",
+            "expression": "[Henkilöt lkm]",
             "formatString": "#,0"
           },
           {
@@ -4923,7 +4922,11 @@
           },
           {
             "name": "Ei hakenut eikä opiskellut korkea-asteella, opiskellut ammatti- tai erikoisammattitutkintokoul.",
-            "expression": "CALCULATE([Henkilöt lkm], 'Muuttujat'[eihaku_kk_eiopisk_kk_opisk_at] = 1) + CALCULATE([Henkilöt lkm], 'Muuttujat'[eihaku_kk_eiopisk_kk_opisk_eat] = 1)",
+            "expression": [
+              "",
+              "var lkm = SUMX(Muuttujat, [lkm_int2] * ([eihaku_kk_eiopisk_kk_opisk_at] + [eihaku_kk_eiopisk_kk_opisk_eat]))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
@@ -4938,103 +4941,113 @@
           },
           {
             "name": "Henkilöt lkm_s",
-            "expression": "IF(SUM([lkm_int2]) = 0, BLANK(), SUM([lkm_int2]))",
+            "expression": "IF([kytkin]=0, BLANK(), SUM([lkm_int2]))",
             "formatString": "#,0"
           },
           {
             "name": "Ei hakenut eikä opiskellut mitään_s",
-            "expression": "CALCULATE([Henkilöt lkm_s], 'Muuttujat'[eihaku_kk_eiopisk] = 1)",
+            "expression": "IF([kytkin]=0, BLANK(), SUMX(Muuttujat, [lkm_int2] * [eihaku_kk_eiopisk]))",
             "formatString": "#,0"
           },
           {
             "name": "Ei hakenut eikä opiskellut korkea-asteella, opiskellut toisen asteen koulutuksessa_s",
-            "expression": "CALCULATE([Henkilöt lkm_s], 'Muuttujat'[eihaku_kk_eiopisk_kk_opisk_ta] = 1)",
+            "expression": "IF([kytkin]=0, BLANK(), SUMX(Muuttujat, [lkm_int2] * [eihaku_kk_eiopisk_kk_opisk_ta]))",
             "formatString": "#,0"
           },
           {
             "name": "Hakenut korkea-asteelle, ei opiskellut korkea-asteella_s",
-            "expression": "CALCULATE([Henkilöt lkm_s], 'Muuttujat'[haku_kk_eiopisk_kk] = 1)",
+            "expression": "IF([kytkin]=0, BLANK(), SUMX(Muuttujat, [lkm_int2] * [haku_kk_eiopisk_kk]))",
             "formatString": "#,0"
           },
           {
             "name": "Hakenut korkea-asteelle, ei opiskellut korkea-asteella, ei opiskellut toisen asteen koulutuksessa_s",
-            "expression": "CALCULATE([Henkilöt lkm_s], 'Muuttujat'[haku_kk_eiopisk_kk_eiopisk_ta] = 1)",
+            "expression": "IF([kytkin]=0, BLANK(), SUMX(Muuttujat, [lkm_int2] * [haku_kk_eiopisk_kk_eiopisk_ta]))",
             "formatString": "#,0"
           },
           {
             "name": "Hakenut korkea-asteelle, ei opiskellut korkea-asteella, opiskellut toisen asteen koulutuksessa_s",
-            "expression": "CALCULATE([Henkilöt lkm_s], 'Muuttujat'[haku_kk_eiopisk_kk_opisk_ta] = 1)",
+            "expression": "IF([kytkin]=0, BLANK(), SUMX(Muuttujat, [lkm_int2] * [haku_kk_eiopisk_kk_opisk_ta]))",
             "formatString": "#,0"
           },
           {
             "name": "Hakenut vain ammattikorkeakouluun, ei opiskellut korkea-asteella_s",
-            "expression": "CALCULATE([Henkilöt lkm_s], 'Muuttujat'[haku_amk_eiopisk_kk] = 1)",
+            "expression": "IF([kytkin]=0, BLANK(), SUMX(Muuttujat, [lkm_int2] * [haku_amk_eiopisk_kk]))",
             "formatString": "#,0"
           },
           {
             "name": "Hakenut vain yliopistokoulutukseen, ei opiskellut korkea-asteella_s",
-            "expression": "CALCULATE([Henkilöt lkm_s], 'Muuttujat'[haku_yo_eiopisk_kk] = 1)",
+            "expression": "IF([kytkin]=0, BLANK(), SUMX(Muuttujat, [lkm_int2] * [haku_yo_eiopisk_kk]))",
             "formatString": "#,0"
           },
           {
             "name": "Hakenut sekä amk- että yliopistokoulutukseen, ei opiskellut korkea-asteella_s",
-            "expression": "CALCULATE([Henkilöt lkm_s], 'Muuttujat'[haku_amkyo_eiopisk_kk] = 1)",
+            "expression": "IF([kytkin]=0, BLANK(), SUMX(Muuttujat, [lkm_int2] * [haku_amkyo_eiopisk_kk]))",
             "formatString": "#,0"
           },
           {
             "name": "Opiskellut korkea-asteella_s",
-            "expression": "CALCULATE([Henkilöt lkm_s], 'Muuttujat'[opisk_kk] = 1)",
+            "expression": "IF([kytkin]=0, BLANK(), SUMX(Muuttujat, [lkm_int2] * [opisk_kk]))",
             "formatString": "#,0"
           },
           {
             "name": "Opiskellut korkea-asteella, ei opiskellut toisen asteen koulutuksessa_s",
-            "expression": "CALCULATE([Henkilöt lkm_s], 'Muuttujat'[opisk_kk_eiopisk_ta] = 1)",
+            "expression": "IF([kytkin]=0, BLANK(), SUMX(Muuttujat, [lkm_int2] * [opisk_kk_eiopisk_ta]))",
             "formatString": "#,0"
           },
           {
             "name": "Opiskellut korkea-asteella, opiskellut toisen asteen koulutuksessa_s",
-            "expression": "CALCULATE([Henkilöt lkm_s], 'Muuttujat'[opisk_kk_opisk_ta] = 1)",
+            "expression": "IF([kytkin]=0, BLANK(), SUMX(Muuttujat, [lkm_int2] * [opisk_kk_opisk_ta]))",
             "formatString": "#,0"
           },
           {
             "name": "Opiskellut vain ammattikorkeakoulussa_s",
-            "expression": "CALCULATE([Henkilöt lkm_s], 'Muuttujat'[opisk_vain_amk] = 1)",
+            "expression": "IF([kytkin]=0, BLANK(), SUMX(Muuttujat, [lkm_int2] * [opisk_vain_amk]))",
             "formatString": "#,0"
           },
           {
             "name": "Opiskellut vain yliopistokoulutuksessa_s",
-            "expression": "CALCULATE([Henkilöt lkm_s], 'Muuttujat'[opisk_vain_yo] = 1)",
+            "expression": "IF([kytkin]=0, BLANK(), SUMX(Muuttujat, [lkm_int2] * [opisk_vain_yo]))",
             "formatString": "#,0"
           },
           {
             "name": "Opiskellut sekä amk- että yliopistokoulutuksessa_s",
-            "expression": "CALCULATE([Henkilöt lkm_s], 'Muuttujat'[opisk_amkyo] = 1)",
+            "expression": "IF([kytkin]=0, BLANK(), SUMX(Muuttujat, [lkm_int2] * [opisk_amkyo]))",
             "formatString": "#,0"
           },
           {
             "name": "Ei hakenut eikä opiskellut korkea-asteella, opiskellut lukiokoulutuksessa_s",
-            "expression": "CALCULATE([Henkilöt lkm_s], 'Muuttujat'[eihaku_kk_eiopisk_kk_opisk_lu] = 1)",
+            "expression": "IF([kytkin]=0, BLANK(), SUMX(Muuttujat, [lkm_int2] * [eihaku_kk_eiopisk_kk_opisk_lu]))",
             "formatString": "#,0"
           },
           {
             "name": "Ei hakenut eikä opiskellut korkea-asteella, opiskellut ammatillisessa peruskoulutuksessa_s",
-            "expression": "CALCULATE([Henkilöt lkm_s], 'Muuttujat'[eihaku_kk_eiopisk_kk_opisk_pk] = 1)",
+            "expression": "IF([kytkin]=0, BLANK(), SUMX(Muuttujat, [lkm_int2] * [eihaku_kk_eiopisk_kk_opisk_pk]))",
             "formatString": "#,0"
           },
           {
             "name": "Ei hakenut eikä opiskellut korkea-asteella, opiskellut ammatti- tai erikoisammattitutkintokoul._s",
-            "expression": "CALCULATE([Henkilöt lkm_s], 'Muuttujat'[eihaku_kk_eiopisk_kk_opisk_at] = 1) + CALCULATE([Henkilöt lkm_s], 'Muuttujat'[eihaku_kk_eiopisk_kk_opisk_eat] = 1)",
+            "expression": "IF([kytkin]=0, BLANK(), SUMX(Muuttujat, [lkm_int2] * ([eihaku_kk_eiopisk_kk_opisk_at] + [eihaku_kk_eiopisk_kk_opisk_eat])))",
             "formatString": "#,0"
           },
           {
             "name": "Ei hakenut eikä opiskellut korkea-asteella, opiskellut ammattitutkintokoulutuksessa_s",
-            "expression": "CALCULATE([Henkilöt lkm_s], 'Muuttujat'[eihaku_kk_eiopisk_kk_opisk_at] = 1)",
+            "expression": "IF([kytkin]=0, BLANK(), SUMX(Muuttujat, [lkm_int2] * [eihaku_kk_eiopisk_kk_opisk_at]))",
             "formatString": "#,0"
           },
           {
             "name": "Ei hakenut eikä opiskellut korkea-asteella, opiskellut erikoisammattitutkintokoulutuksessa_s",
-            "expression": "CALCULATE([Henkilöt lkm_s], 'Muuttujat'[eihaku_kk_eiopisk_kk_opisk_eat] = 1)",
+            "expression": "IF([kytkin]=0, BLANK(), SUMX(Muuttujat, [lkm_int2] * [eihaku_kk_eiopisk_kk_opisk_eat]))",
             "formatString": "#,0"
+          },
+          {
+            "name": "kytkin",
+            "expression": "IF(LEFT(USERNAME(), 4) = \"DWI\\\", 1, 0)",
+            "formatString": "0",
+            "isHidden": true
+          },
+          {
+            "name": "Personer antal",
+            "expression": "[Henkilöt lkm]"
           }
         ],
         "annotations": [
@@ -9895,6 +9908,10 @@
           {
             "memberName": "DWI\\Z_T_Antero_Read_TAB",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-4155"
+          },
+          {
+            "memberName": "DWI\\Z_P_Antero_Full_Read_TAB",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-2272"
           }
         ]
       }
