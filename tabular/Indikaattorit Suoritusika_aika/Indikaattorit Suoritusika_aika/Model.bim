@@ -4433,77 +4433,130 @@
         "measures": [
           {
             "name": "Suoritusiän mediaani",
-            "expression": "(MINX(FILTER(VALUES('Muuttujat'[suoritusika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusika2] <= EARLIER('Muuttujat'[suoritusika2])) > SUM('Muuttujat'[Tutk3]) / 2), 'Muuttujat'[suoritusika2]) + MINX(FILTER(VALUES('Muuttujat'[suoritusika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusika2] <= EARLIER('Muuttujat'[suoritusika2])) > (SUM('Muuttujat'[Tutk3]) - 1 ) / 2), 'Muuttujat'[suoritusika2])) / 2",
+            "expression": [
+              "",
+              "IF(SUM([Tutk3]) < 5, BLANK()",
+              ", (MINX(FILTER(VALUES('Muuttujat'[suoritusika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusika2] <= EARLIER('Muuttujat'[suoritusika2])) > SUM('Muuttujat'[Tutk3]) / 2), 'Muuttujat'[suoritusika2]) ",
+              "+ MINX(FILTER(VALUES('Muuttujat'[suoritusika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusika2] <= EARLIER('Muuttujat'[suoritusika2])) > (SUM('Muuttujat'[Tutk3]) - 1 ) / 2), 'Muuttujat'[suoritusika2])) / 2)"
+            ],
             "formatString": "#,0.0"
           },
           {
             "name": "Suoritusajan mediaani",
-            "expression": "(MINX(FILTER(VALUES('Muuttujat'[suoritusaika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusaika2] <= EARLIER('Muuttujat'[suoritusaika2])) > SUM('Muuttujat'[Tutk3]) / 2), 'Muuttujat'[suoritusaika2]) + MINX(FILTER(VALUES('Muuttujat'[suoritusaika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusaika2] <= EARLIER('Muuttujat'[suoritusaika2])) > (SUM('Muuttujat'[Tutk3]) - 1 ) / 2), 'Muuttujat'[suoritusaika2])) / 2",
+            "expression": [
+              "",
+              "IF(SUM([Tutk3]) < 5, BLANK()",
+              ", (MINX(FILTER(VALUES('Muuttujat'[suoritusaika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusaika2] <= EARLIER('Muuttujat'[suoritusaika2])) > SUM('Muuttujat'[Tutk3]) / 2), 'Muuttujat'[suoritusaika2]) ",
+              "+ MINX(FILTER(VALUES('Muuttujat'[suoritusaika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusaika2] <= EARLIER('Muuttujat'[suoritusaika2])) > (SUM('Muuttujat'[Tutk3]) - 1 ) / 2), 'Muuttujat'[suoritusaika2])) / 2)"
+            ],
             "formatString": "#,0.0"
           },
           {
             "name": "Suoritusiän keskiarvo",
-            "expression": "SUMX('Muuttujat',[suoritusika2] * 'Muuttujat'[Tutk3]) / SUM([Tutk3])",
+            "expression": [
+              "",
+              "IF(SUM([Tutk3]) < 5, BLANK()",
+              ", SUMX('Muuttujat',[suoritusika2] * 'Muuttujat'[Tutk3]) / SUM([Tutk3]))"
+            ],
             "formatString": "#,0.0"
           },
           {
             "name": "Suoritusajan keskiarvo",
-            "expression": "SUMX('Muuttujat',[suoritusaika2] * 'Muuttujat'[Tutk3]) / SUM([Tutk3])",
+            "expression": [
+              "",
+              "IF(SUM([Tutk3]) < 5, BLANK()",
+              ", SUMX('Muuttujat',[suoritusaika2] * 'Muuttujat'[Tutk3]) / SUM([Tutk3]))"
+            ],
             "formatString": "#,0.0"
           },
           {
             "name": "Tutkinnot",
-            "expression": "SUM([Tutk3])",
+            "expression": [
+              "",
+              "var lkm = SUM([Tutk3])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Examina",
-            "expression": "SUM([Tutk3])",
+            "expression": "[Tutkinnot]",
             "formatString": "#,0"
           },
           {
             "name": "Degrees and qualifications",
-            "expression": "SUM([Tutk3])",
+            "expression": "[Tutkinnot]",
             "formatString": "#,0"
           },
           {
             "name": "Medianålder",
-            "expression": "(MINX(FILTER(VALUES('Muuttujat'[suoritusika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusika2] <= EARLIER('Muuttujat'[suoritusika2])) > SUM('Muuttujat'[Tutk3]) / 2), 'Muuttujat'[suoritusika2]) + MINX(FILTER(VALUES('Muuttujat'[suoritusika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusika2] <= EARLIER('Muuttujat'[suoritusika2])) > (SUM('Muuttujat'[Tutk3]) - 1 ) / 2), 'Muuttujat'[suoritusika2])) / 2",
+            "expression": "[Suoritusiän mediaani]",
             "formatString": "#,0.0"
           },
           {
             "name": "Genomsnittlig ålder",
-            "expression": "SUMX('Muuttujat',[suoritusika2] * 'Muuttujat'[Tutk3]) / SUM([Tutk3])",
+            "expression": "[Suoritusiän keskiarvo]",
             "formatString": "#,0.0"
           },
           {
             "name": "Mediantid",
-            "expression": "(MINX(FILTER(VALUES('Muuttujat'[suoritusaika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusaika2] <= EARLIER('Muuttujat'[suoritusaika2])) > SUM('Muuttujat'[Tutk3]) / 2), 'Muuttujat'[suoritusaika2]) + MINX(FILTER(VALUES('Muuttujat'[suoritusaika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusaika2] <= EARLIER('Muuttujat'[suoritusaika2])) > (SUM('Muuttujat'[Tutk3]) - 1 ) / 2), 'Muuttujat'[suoritusaika2])) / 2",
+            "expression": "[Suoritusajan mediaani]",
             "formatString": "#,0.0"
           },
           {
             "name": "Genomsnittlig tid",
-            "expression": "SUMX('Muuttujat',[suoritusaika2] * 'Muuttujat'[Tutk3]) / SUM([Tutk3])",
+            "expression": "[Suoritusajan keskiarvo]",
             "formatString": "#,0.0"
           },
           {
             "name": "Median age",
-            "expression": "(MINX(FILTER(VALUES('Muuttujat'[suoritusika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusika2] <= EARLIER('Muuttujat'[suoritusika2])) > SUM('Muuttujat'[Tutk3]) / 2), 'Muuttujat'[suoritusika2]) + MINX(FILTER(VALUES('Muuttujat'[suoritusika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusika2] <= EARLIER('Muuttujat'[suoritusika2])) > (SUM('Muuttujat'[Tutk3]) - 1 ) / 2), 'Muuttujat'[suoritusika2])) / 2",
+            "expression": "[Suoritusiän mediaani]",
             "formatString": "#,0.0"
           },
           {
             "name": "Average age",
-            "expression": "SUMX('Muuttujat',[suoritusika2] * 'Muuttujat'[Tutk3]) / SUM([Tutk3])",
+            "expression": "[Suoritusiän keskiarvo]",
             "formatString": "#,0.0"
           },
           {
             "name": "Median time",
-            "expression": "(MINX(FILTER(VALUES('Muuttujat'[suoritusaika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusaika2] <= EARLIER('Muuttujat'[suoritusaika2])) > SUM('Muuttujat'[Tutk3]) / 2), 'Muuttujat'[suoritusaika2]) + MINX(FILTER(VALUES('Muuttujat'[suoritusaika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusaika2] <= EARLIER('Muuttujat'[suoritusaika2])) > (SUM('Muuttujat'[Tutk3]) - 1 ) / 2), 'Muuttujat'[suoritusaika2])) / 2",
+            "expression": "[Suoritusajan mediaani]",
             "formatString": "#,0.0"
           },
           {
             "name": "Average time",
-            "expression": "SUMX('Muuttujat',[suoritusaika2] * 'Muuttujat'[Tutk3]) / SUM([Tutk3])",
+            "expression": "[Suoritusajan keskiarvo]",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "kytkin",
+            "expression": "IF(LEFT(USERNAME(), 4) = \"DWI\\\", 1, 0)",
+            "formatString": "0",
+            "isHidden": true
+          },
+          {
+            "name": "Tutkinnot_s",
+            "expression": "IF([kytkin]=0, BLANK(), SUM([Tutk3]))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Suoritusiän mediaani_s",
+            "expression": "IF([kytkin]=0, BLANK(), (MINX(FILTER(VALUES('Muuttujat'[suoritusika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusika2] <= EARLIER('Muuttujat'[suoritusika2])) > SUM('Muuttujat'[Tutk3]) / 2), 'Muuttujat'[suoritusika2]) + MINX(FILTER(VALUES('Muuttujat'[suoritusika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusika2] <= EARLIER('Muuttujat'[suoritusika2])) > (SUM('Muuttujat'[Tutk3]) - 1 ) / 2), 'Muuttujat'[suoritusika2])) / 2)",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Suoritusajan mediaani_s",
+            "expression": "IF([kytkin]=0, BLANK(), (MINX(FILTER(VALUES('Muuttujat'[suoritusaika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusaika2] <= EARLIER('Muuttujat'[suoritusaika2])) > SUM('Muuttujat'[Tutk3]) / 2), 'Muuttujat'[suoritusaika2]) + MINX(FILTER(VALUES('Muuttujat'[suoritusaika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusaika2] <= EARLIER('Muuttujat'[suoritusaika2])) > (SUM('Muuttujat'[Tutk3]) - 1 ) / 2), 'Muuttujat'[suoritusaika2])) / 2)",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Suoritusiän keskiarvo_s",
+            "expression": "IF([kytkin]=0, BLANK(), SUMX('Muuttujat',[suoritusika2] * 'Muuttujat'[Tutk3]) / SUM([Tutk3]))",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Suoritusajan keskiarvo_s",
+            "expression": "IF([kytkin]=0, BLANK(), SUMX('Muuttujat',[suoritusaika2] * 'Muuttujat'[Tutk3]) / SUM([Tutk3]))",
             "formatString": "#,0.0"
           }
         ],
@@ -5053,6 +5106,10 @@
           {
             "memberName": "DWI\\Z_T_Antero_Read_TAB",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-4155"
+          },
+          {
+            "memberName": "DWI\\Z_P_Antero_Full_Read_TAB",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-2272"
           }
         ]
       },
