@@ -1,4 +1,4 @@
-USE [VipunenTK]
+﻿USE [VipunenTK]
 GO
 
 /****** Object:  View [dbo].[v_f_aloittaneiden_lapaisy_K3_10_amk]    Script Date: 20.12.2019 8:34:20 ******/
@@ -531,5 +531,5 @@ WHERE        aineistokoodi = 'K3.10' AND d10.lahde_koodi = 41 AND d17.tarkastelu
 				AND d6.koulutuslaji2_koodi != '52' AND [1a Aloittaneiden opintojen kulku koulutuslajin mukaan prioriteettina mikä tahansa tutkinto] != 'Virhetilanne'
 
 
-				
+GO				
 USE ANTERO
