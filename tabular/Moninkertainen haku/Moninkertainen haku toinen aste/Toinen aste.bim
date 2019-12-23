@@ -238,7 +238,11 @@
           },
           {
             "name": "Hakijat, haut ja aikaisemmat tutkinnot",
-            "expression": "IF([lkm_hak3] = 1, 3, MROUND([lkm_hak3],3))",
+            "expression": [
+              "",
+              "var lkm = [lkm_hak3] ",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
@@ -255,12 +259,41 @@
           },
           {
             "name": "Hakijat, haut ja edellisen vuoden opiskelut",
-            "expression": "IF([lkm_hak4] = 1, 3, MROUND([lkm_hak4],3))",
+            "expression": [
+              "",
+              "var lkm = [lkm_hak4]",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Hakijat, haut ja edelliset haut",
-            "expression": "IF([lkm_hak5] = 1, 3, MROUND([lkm_hak5],3))",
+            "expression": [
+              "",
+              "var lkm = [lkm_hak5]",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "kytkin",
+            "expression": "IF(LEFT(USERNAME(), 4) = \"DWI\\\", 1, 0)",
+            "formatString": "0",
+            "isHidden": true
+          },
+          {
+            "name": "Hakijat, haut ja aikaisemmat tutkinnot_s",
+            "expression": "IF([kytkin]=0, BLANK(), [lkm_hak3])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Hakijat, haut ja edellisen vuoden opiskelut_s",
+            "expression": "IF([kytkin]=0, BLANK(), [lkm_hak4])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Hakijat, haut ja edelliset haut_s",
+            "expression": "IF([kytkin]=0, BLANK(), [lkm_hak5])",
             "formatString": "#,0"
           }
         ],
@@ -1707,7 +1740,16 @@
         "measures": [
           {
             "name": "Hakujen lkm",
-            "expression": "IF(SUM([lkm_uusih2]) = 1, 3, MROUND(SUM([lkm_uusih2]),3))",
+            "expression": [
+              "",
+              "var lkm = SUM([lkm_uusih2])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Hakujen lkm_s",
+            "expression": "IF([kytkin]=0, BLANK(), SUM([lkm_uusih2]))",
             "formatString": "#,0"
           }
         ],
@@ -2632,7 +2674,16 @@
         "measures": [
           {
             "name": "Aikaisemmat tutkinnot lkm",
-            "expression": "IF(SUM([lkm_edtutk2]) = 1, 3, MROUND(SUM([lkm_edtutk2]),3))",
+            "expression": [
+              "",
+              "var lkm = SUM([lkm_edtutk2])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Aikaisemmat tutkinnot lkm_s",
+            "expression": "IF([kytkin]=0, BLANK(), SUM([lkm_edtutk2]))",
             "formatString": "#,0"
           }
         ],
@@ -3514,7 +3565,15 @@
         "measures": [
           {
             "name": "Edellisen vuoden opiskelut lkm",
-            "expression": "IF(SUM([lkm_edop2]) = 1, 3, MROUND(SUM([lkm_edop2]),3))"
+            "expression": [
+              "",
+              "var lkm = SUM([lkm_edop2])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ]
+          },
+          {
+            "name": "Edellisen vuoden opiskelut lkm_s",
+            "expression": "IF([kytkin]=0, BLANK(), SUM([lkm_edop2]))"
           }
         ],
         "annotations": [
@@ -3612,7 +3671,16 @@
         "measures": [
           {
             "name": "Edelliset haut lkm",
-            "expression": "IF(SUM([lkm_edhaut2]) = 1, 3, MROUND(SUM([lkm_edhaut2]),3))",
+            "expression": [
+              "",
+              "var lkm = SUM([lkm_edhaut2])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Edelliset haut lkm_s",
+            "expression": "IF([kytkin]=0, BLANK(), SUM([lkm_edhaut2]))",
             "formatString": "#,0"
           }
         ],
@@ -4126,6 +4194,10 @@
           {
             "memberName": "DWI\\Z_T_Antero_Read_TAB",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-4155"
+          },
+          {
+            "memberName": "DWI\\Z_P_Antero_Full_Read_TAB",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-2272"
           }
         ]
       },
