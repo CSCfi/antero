@@ -24064,13 +24064,14 @@ CREATE MEASURE 'Muuttujat'[Opiskelumaakunnasta siirtyneet]=CALCULATE([1 v. tutki
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Opiskelumaakunnasta siirtyneiden osuus kaikista tutkinnon suorittaneista]=var lkm = [Opiskelumaakunnasta siirtyneet]
-return IF(lkm = BLANK(), BLANK(),
-	var kaikki = [Tutkinnon suorittaneet (pl. tutk. suor.maakunta tai asuinmaakunta tuntematon)]
-                return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  IF(kaikki &gt; 8000, "0.0 %",
-                                	              CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
-                                     lkm / kaikki)));
+CREATE MEASURE 'Muuttujat'[Opiskelumaakunnasta siirtyneiden osuus kaikista tutkinnon suorittaneista]=
+var osa = [Opiskelumaakunnasta siirtyneet]
+var kaikki = [Tutkinnon suorittaneet (pl. tutk. suor.maakunta tai asuinmaakunta tuntematon)]
+return IF(osa = BLANK(), BLANK(),	
+IF(kaikki = "1-4", "25 % – 100 %",
+IF(osa = "1-4", IF(kaikki &gt; 8000, "0.0 %"
+, CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %")))
+, osa / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -24127,13 +24128,14 @@ CREATE MEASURE 'Muuttujat'[Työlliset]=CALCULATE([1 v. tutkinnon jälkeen], FILT
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Työllisten osuus tutkinnon suorittaneista]=var lkm = [Työlliset]
-return IF(lkm = BLANK(), BLANK(),
-	var kaikki = [1 v. tutkinnon jälkeen]
-                return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  IF(kaikki &gt; 8000, "0.0 %",
-                                	              CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
-                                     lkm / kaikki)));
+CREATE MEASURE 'Muuttujat'[Työllisten osuus tutkinnon suorittaneista]=
+var osa = [Työlliset]
+var kaikki = [1 v. tutkinnon jälkeen]
+return IF(osa = BLANK(), BLANK(),	
+IF(kaikki = "1-4", "25 % – 100 %",
+IF(osa = "1-4", IF(kaikki &gt; 8000, "0.0 %"
+, CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %")))
+, osa / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -24171,13 +24173,14 @@ CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneet]=CALCULATE([1 v. tutkin
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneiden osuus tutkinnon suorittaneista]=var lkm = [Jatko-opintoihin sijoittuneet]
-return IF(lkm = BLANK(), BLANK(),
-	var kaikki = [1 v. tutkinnon jälkeen]
-                return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  IF(kaikki &gt; 8000, "0.0 %",
-                                	              CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
-                                     lkm / kaikki)));
+CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneiden osuus tutkinnon suorittaneista]=
+var osa = [Jatko-opintoihin sijoittuneet]
+var kaikki = [1 v. tutkinnon jälkeen]
+return IF(osa = BLANK(), BLANK(),	
+IF(kaikki = "1-4", "25 % – 100 %",
+IF(osa = "1-4", IF(kaikki &gt; 8000, "0.0 %"
+, CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %")))
+, osa / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -24215,13 +24218,14 @@ CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneet (ml. työlliset opiskel
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneiden (ml. työlliset opiskelijat) osuus tutkinnon suorittaneista]=var lkm = [Jatko-opintoihin sijoittuneet (ml. työlliset opiskelijat)]
-return IF(lkm = BLANK(), BLANK(),
-	var kaikki = [1 v. tutkinnon jälkeen]
-                return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  IF(kaikki &gt; 8000, "0.0 %",
-                                	              CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
-                                     lkm / kaikki)));
+CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneiden (ml. työlliset opiskelijat) osuus tutkinnon suorittaneista]=
+var osa = [Jatko-opintoihin sijoittuneet (ml. työlliset opiskelijat)]
+var kaikki = [1 v. tutkinnon jälkeen]
+return IF(osa = BLANK(), BLANK(),	
+IF(kaikki = "1-4", "25 % – 100 %",
+IF(osa = "1-4", IF(kaikki &gt; 8000, "0.0 %"
+, CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %")))
+, osa / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -24259,13 +24263,14 @@ CREATE MEASURE 'Muuttujat'[Maasta muuttaneet]=CALCULATE([1 v. tutkinnon jälkeen
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Maasta muuttaneiden osuus tutkinnon suorittaneista]=var lkm = [Maasta muuttaneet]
-return IF(lkm = BLANK(), BLANK(),
-	var kaikki = [1 v. tutkinnon jälkeen]
-                return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  IF(kaikki &gt; 8000, "0.0 %",
-                                	              CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
-                                     lkm / kaikki)));
+CREATE MEASURE 'Muuttujat'[Maasta muuttaneiden osuus tutkinnon suorittaneista]=
+var osa = [Maasta muuttaneet]
+var kaikki = [1 v. tutkinnon jälkeen]
+return IF(osa = BLANK(), BLANK(),	
+IF(kaikki = "1-4", "25 % – 100 %",
+IF(osa = "1-4", IF(kaikki &gt; 8000, "0.0 %"
+, CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %")))
+, osa / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -24873,88 +24878,7 @@ CREATE MEASURE 'Muuttujat'[Completers]=[1 v. tutkinnon jälkeen];
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[1 v. tutkinnon jälkeen (suojaamaton)]=var lasku = SUM([lkm_1vr2])
-var user=USERNAME()
-
-return SWITCH(TRUE(),user="NT AUTHORITY\IUSR",BLANK(),
-	user="DWI\Z_P_Antero_Read_TAB",BLANK(),
-	user="DWI\Z_T_Antero_Read_TAB",BLANK(),
-	user="DWI\T_SP_Excel_S_Read",BLANK(),
-	user="DWI\P_SP_Excel_S_Read",BLANK(),
-	lasku);
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>1 v. tutkinnon jälkeen (suojaamaton)</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[3 v. tutkinnon jälkeen (suojaamaton)]=var lasku = SUM([lkm_3vr2])
-var user=USERNAME()
-
-return SWITCH(TRUE(),user="NT AUTHORITY\IUSR",BLANK(),
-	user="DWI\Z_P_Antero_Read_TAB",BLANK(),
-	user="DWI\Z_T_Antero_Read_TAB",BLANK(),
-	user="DWI\T_SP_Excel_S_Read",BLANK(),
-	user="DWI\P_SP_Excel_S_Read",BLANK(),
-	lasku);
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>3 v. tutkinnon jälkeen (suojaamaton)</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[5 v. tutkinnon jälkeen (suojaamaton)]=var lasku = SUM([lkm_5vr2])
-var user=USERNAME()
-
-return SWITCH(TRUE(),user="NT AUTHORITY\IUSR",BLANK(),
-	user="DWI\Z_P_Antero_Read_TAB",BLANK(),
-	user="DWI\Z_T_Antero_Read_TAB",BLANK(),
-	user="DWI\T_SP_Excel_S_Read",BLANK(),
-	user="DWI\P_SP_Excel_S_Read",BLANK(),
-	lasku);
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>5 v. tutkinnon jälkeen (suojaamaton)</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Opiskelumaakunnasta siirtyneet_s]=CALCULATE([1 v. tutkinnon jälkeen_s], FILTER(Muuttujat, [suormaakkoodi] &lt;&gt; [asmaakkoodi] &amp;&amp; [suormaakkoodi] &lt;&gt; "-1" &amp;&amp; [asmaakkoodi] &lt;&gt; "-1"));
+CREATE MEASURE 'Muuttujat'[Opiskelumaakunnasta siirtyneet_s]=IF([kytkin]=0, BLANK(), CALCULATE([1 v. tutkinnon jälkeen_s], FILTER(Muuttujat, [suormaakkoodi] &lt;&gt; [asmaakkoodi] &amp;&amp; [suormaakkoodi] &lt;&gt; "-1" &amp;&amp; [asmaakkoodi] &lt;&gt; "-1")));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -24973,7 +24897,7 @@ CREATE MEASURE 'Muuttujat'[Opiskelumaakunnasta siirtyneet_s]=CALCULATE([1 v. tut
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Opiskelumaakunnasta siirtyneiden osuus kaikista tutkinnon suorittaneista_s]=[Opiskelumaakunnasta siirtyneet_s]/[Tutkinnon suorittaneet (pl. tutk. suor.maakunta tai asuinmaakunta tuntematon)_s];
+CREATE MEASURE 'Muuttujat'[Opiskelumaakunnasta siirtyneiden osuus kaikista tutkinnon suorittaneista_s]=IF([kytkin]=0, BLANK(), [Opiskelumaakunnasta siirtyneet_s]/[Tutkinnon suorittaneet (pl. tutk. suor.maakunta tai asuinmaakunta tuntematon)_s]);
 </Text>
                   <Annotations>
                     <Annotation>
@@ -24992,7 +24916,7 @@ CREATE MEASURE 'Muuttujat'[Opiskelumaakunnasta siirtyneiden osuus kaikista tutki
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Tutkinnon suorittaneet (pl. tutk. suor.maakunta tai asuinmaakunta tuntematon)_s]=CALCULATE([1 v. tutkinnon jälkeen_s], FILTER(Muuttujat, [suormaakkoodi] &lt;&gt; "-1" &amp;&amp; [asmaakkoodi] &lt;&gt; "-1"));
+CREATE MEASURE 'Muuttujat'[Tutkinnon suorittaneet (pl. tutk. suor.maakunta tai asuinmaakunta tuntematon)_s]=IF([kytkin]=0, BLANK(), CALCULATE([1 v. tutkinnon jälkeen_s], FILTER(Muuttujat, [suormaakkoodi] &lt;&gt; "-1" &amp;&amp; [asmaakkoodi] &lt;&gt; "-1")));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -25011,7 +24935,7 @@ CREATE MEASURE 'Muuttujat'[Tutkinnon suorittaneet (pl. tutk. suor.maakunta tai a
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Työlliset_s]=CALCULATE([1 v. tutkinnon jälkeen_s], FILTER(Muuttujat, OR([paaskoodi] = "1", [paaskoodi] = "2")));
+CREATE MEASURE 'Muuttujat'[Työlliset_s]=IF([kytkin]=0, BLANK(), CALCULATE([1 v. tutkinnon jälkeen_s], FILTER(Muuttujat, OR([paaskoodi] = "1", [paaskoodi] = "2"))));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -25030,7 +24954,7 @@ CREATE MEASURE 'Muuttujat'[Työlliset_s]=CALCULATE([1 v. tutkinnon jälkeen_s], 
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Työllisten osuus tutkinnon suorittaneista_s]=[Työlliset_s]/[1 v. tutkinnon jälkeen_s];
+CREATE MEASURE 'Muuttujat'[Työllisten osuus tutkinnon suorittaneista_s]=IF([kytkin]=0, BLANK(), [Työlliset_s]/[1 v. tutkinnon jälkeen_s]);
 </Text>
                   <Annotations>
                     <Annotation>
@@ -25049,7 +24973,7 @@ CREATE MEASURE 'Muuttujat'[Työllisten osuus tutkinnon suorittaneista_s]=[Työll
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneet_s]=CALCULATE([1 v. tutkinnon jälkeen_s], FILTER(Muuttujat, [paaskoodi] = "3"));
+CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneet_s]=IF([kytkin]=0, BLANK(), CALCULATE([1 v. tutkinnon jälkeen_s], FILTER(Muuttujat, [paaskoodi] = "3")));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -25068,7 +24992,7 @@ CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneet_s]=CALCULATE([1 v. tutk
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneiden osuus tutkinnon suorittaneista_s]=[Jatko-opintoihin sijoittuneet_s]/[1 v. tutkinnon jälkeen_s];
+CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneiden osuus tutkinnon suorittaneista_s]=IF([kytkin]=0, BLANK(), [Jatko-opintoihin sijoittuneet_s]/[1 v. tutkinnon jälkeen_s]);
 </Text>
                   <Annotations>
                     <Annotation>
@@ -25087,7 +25011,7 @@ CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneiden osuus tutkinnon suori
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneet (ml. työlliset opiskelijat)_s]=CALCULATE([1 v. tutkinnon jälkeen_s], FILTER(Muuttujat, OR([paaskoodi] = "2", [paaskoodi] = "3")));
+CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneet (ml. työlliset opiskelijat)_s]=IF([kytkin]=0, BLANK(), CALCULATE([1 v. tutkinnon jälkeen_s], FILTER(Muuttujat, OR([paaskoodi] = "2", [paaskoodi] = "3"))));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -25106,7 +25030,7 @@ CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneet (ml. työlliset opiskel
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneiden (ml. työlliset opiskelijat) osuus tutkinnon suorittaneista_s]=[Jatko-opintoihin sijoittuneet (ml. työlliset opiskelijat)_s]/[1 v. tutkinnon jälkeen_s];
+CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneiden (ml. työlliset opiskelijat) osuus tutkinnon suorittaneista_s]=IF([kytkin]=0, BLANK(), [Jatko-opintoihin sijoittuneet (ml. työlliset opiskelijat)_s]/[1 v. tutkinnon jälkeen_s]);
 </Text>
                   <Annotations>
                     <Annotation>
@@ -25125,7 +25049,7 @@ CREATE MEASURE 'Muuttujat'[Jatko-opintoihin sijoittuneiden (ml. työlliset opisk
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Maasta muuttaneet_s]=CALCULATE([1 v. tutkinnon jälkeen_s], FILTER(Muuttujat, [paaskoodi] = "8"));
+CREATE MEASURE 'Muuttujat'[Maasta muuttaneet_s]=IF([kytkin]=0, BLANK(), CALCULATE([1 v. tutkinnon jälkeen_s], FILTER(Muuttujat, [paaskoodi] = "8")));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -25144,7 +25068,7 @@ CREATE MEASURE 'Muuttujat'[Maasta muuttaneet_s]=CALCULATE([1 v. tutkinnon jälke
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Maasta muuttaneiden osuus tutkinnon suorittaneista_s]=[Maasta muuttaneet_s]/[1 v. tutkinnon jälkeen_s];
+CREATE MEASURE 'Muuttujat'[Maasta muuttaneiden osuus tutkinnon suorittaneista_s]=IF([kytkin]=0, BLANK(), [Maasta muuttaneet_s]/[1 v. tutkinnon jälkeen_s]);
 </Text>
                   <Annotations>
                     <Annotation>
@@ -25163,7 +25087,7 @@ CREATE MEASURE 'Muuttujat'[Maasta muuttaneiden osuus tutkinnon suorittaneista_s]
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Tutkinnon suorittaneet_s]=[1 v. tutkinnon jälkeen_s];
+CREATE MEASURE 'Muuttujat'[Tutkinnon suorittaneet_s]=IF([kytkin]=0, BLANK(), [1 v. tutkinnon jälkeen_s]);
 </Text>
                   <Annotations>
                     <Annotation>
@@ -25182,7 +25106,7 @@ CREATE MEASURE 'Muuttujat'[Tutkinnon suorittaneet_s]=[1 v. tutkinnon jälkeen_s]
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[1 v. tutkinnon jälkeen_s]=IF(SUM([lkm_1vr2]) = 0, BLANK(),SUM([lkm_1vr2]));
+CREATE MEASURE 'Muuttujat'[1 v. tutkinnon jälkeen_s]=IF([kytkin]=0, BLANK(), IF(SUM([lkm_1vr2]) = 0, BLANK(),SUM([lkm_1vr2])));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -25201,7 +25125,7 @@ CREATE MEASURE 'Muuttujat'[1 v. tutkinnon jälkeen_s]=IF(SUM([lkm_1vr2]) = 0, BL
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[3 v. tutkinnon jälkeen_s]=IF(SUM([lkm_3vr2]) = 0, BLANK(),SUM([lkm_3vr2]));
+CREATE MEASURE 'Muuttujat'[3 v. tutkinnon jälkeen_s]=IF([kytkin]=0, BLANK(), IF(SUM([lkm_3vr2]) = 0, BLANK(),SUM([lkm_3vr2])));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -25220,12 +25144,31 @@ CREATE MEASURE 'Muuttujat'[3 v. tutkinnon jälkeen_s]=IF(SUM([lkm_3vr2]) = 0, BL
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[5 v. tutkinnon jälkeen_s]=IF(SUM([lkm_5vr2]) = 0, BLANK(),SUM([lkm_5vr2]));
+CREATE MEASURE 'Muuttujat'[5 v. tutkinnon jälkeen_s]=IF([kytkin]=0, BLANK(), IF(SUM([lkm_5vr2]) = 0, BLANK(),SUM([lkm_5vr2])));
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
                       <Value>5 v. tutkinnon jälkeen_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[kytkin]=IF(LEFT(USERNAME(), 4) = "DWI\", 1, 0);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>kytkin</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -26193,69 +26136,6 @@ CREATE MEASURE 'Muuttujat'[5 v. tutkinnon jälkeen_s]=IF(SUM([lkm_5vr2]) = 0, BL
                     <Annotation>
                       <Name>Format</Name>
                       <Value>
-                        <Format Format="General" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[1 v. tutkinnon jälkeen (suojaamaton)]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>''</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="General" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[3 v. tutkinnon jälkeen (suojaamaton)]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>''</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="General" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[5 v. tutkinnon jälkeen (suojaamaton)]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>''</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
                         <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
                       </Value>
                     </Annotation>
@@ -26557,6 +26437,28 @@ CREATE MEASURE 'Muuttujat'[5 v. tutkinnon jälkeen_s]=IF(SUM([lkm_5vr2]) = 0, BL
                   <CalculationReference>[5 v. tutkinnon jälkeen_s]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>True</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[kytkin]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <Visible>false</Visible>
+                  <FormatString>'0'</FormatString>
                 </CalculationProperty>
                 <CalculationProperty>
                   <CalculationReference>Measures.[__No measures defined]</CalculationReference>
@@ -27968,6 +27870,10 @@ CREATE MEASURE 'Muuttujat'[5 v. tutkinnon jälkeen_s]=IF(SUM([lkm_5vr2]) = 0, BL
             <Member>
               <Name>DWI\Z_T_Antero_Read_TAB</Name>
               <Sid>S-1-5-21-2196741920-3238685902-2581541251-4155</Sid>
+            </Member>
+            <Member>
+              <Name>DWI\Z_P_Antero_Full_Read_TAB</Name>
+              <Sid>S-1-5-21-2196741920-3238685902-2581541251-2272</Sid>
             </Member>
           </Members>
         </Role>

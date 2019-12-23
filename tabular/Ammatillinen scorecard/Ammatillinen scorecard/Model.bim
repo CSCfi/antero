@@ -953,12 +953,13 @@
             "name": "Alkuperäisessä tutkintolajissa tutkinnon suorittaneiden osuus kaikista aloittaneista",
             "expression": [
               "",
-              "var lkm = [Suoritetut tutkinnot alkuperäisessä tutkintolajissa]",
-              "return IF(lkm = BLANK(), BLANK(),",
-              "\tvar kaikki = [Henkilöt]",
-              "                return IF(kaikki = \"1-4\", \"25 % – 100 %\",",
-              "                                IF(lkm = \"1-4\",  CONCATENATE(FORMAT(1 / kaikki, \"#0.0 % – \"), FORMAT(4 / kaikki, \"#0.0 %\")),",
-              "                                     lkm / kaikki)))"
+              "var osa = [Suoritetut tutkinnot alkuperäisessä tutkintolajissa]",
+              "var kaikki = [Henkilöt]",
+              "return IF(osa = BLANK(), BLANK(),\t",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, \"0.0 %\"",
+              ", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\")))",
+              ", osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Läpäisy"
@@ -973,12 +974,13 @@
             "name": "Missä tahansa tutkintolajissa tutkinnon suorittaneiden osuus kaikista aloittaneista",
             "expression": [
               "",
-              "var lkm = [Suoritetut tutkinnot missä tahansa tutkintolajissa]",
-              "return IF(lkm = BLANK(), BLANK(),",
-              "\tvar kaikki = [Henkilöt]",
-              "                return IF(kaikki = \"1-4\", \"25 % – 100 %\",",
-              "                                IF(lkm = \"1-4\",  CONCATENATE(FORMAT(1 / kaikki, \"#0.0 % – \"), FORMAT(4 / kaikki, \"#0.0 %\")),",
-              "                                     lkm / kaikki)))"
+              "var osa = [Suoritetut tutkinnot missä tahansa tutkintolajissa]",
+              "var kaikki = [Henkilöt]",
+              "return IF(osa = BLANK(), BLANK(),\t",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, \"0.0 %\"",
+              ", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\")))",
+              ", osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Läpäisy"
@@ -993,12 +995,13 @@
             "name": "Missä tahansa amm. koulutuksen tutkintolajissa tutkinnon suorittaneiden osuus kaikista aloittaneista",
             "expression": [
               "",
-              "var lkm = [Suoritetut tutkinnot missä tahansa ammatillisen koulutuksen tutkintolajissa]",
-              "return IF(lkm = BLANK(), BLANK(),",
-              "\tvar kaikki = [Henkilöt]",
-              "                return IF(kaikki = \"1-4\", \"25 % – 100 %\",",
-              "                                IF(lkm = \"1-4\",  CONCATENATE(FORMAT(1 / kaikki, \"#0.0 % – \"), FORMAT(4 / kaikki, \"#0.0 %\")),",
-              "                                     lkm / kaikki)))"
+              "var osa = [Suoritetut tutkinnot missä tahansa ammatillisen koulutuksen tutkintolajissa]",
+              "var kaikki = [Henkilöt]",
+              "return IF(osa = BLANK(), BLANK(),\t",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, \"0.0 %\"",
+              ", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\")))",
+              ", osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Läpäisy"
@@ -1037,12 +1040,13 @@
             "name": "Työllisten osuus tutkinnon suorittaneista",
             "expression": [
               "",
-              "var lkm = [Työlliset]",
-              "return IF(lkm = BLANK(), BLANK(),",
-              "\tvar kaikki = [1 v. tutkinnon jälkeen]",
-              "                return IF(kaikki = \"1-4\", \"25 % – 100 %\",",
-              "                                IF(lkm = \"1-4\",  CONCATENATE(FORMAT(1 / kaikki, \"#0.0 % – \"), FORMAT(4 / kaikki, \"#0.0 %\")),",
-              "                                     lkm / kaikki)))"
+              "var osa  = [Työlliset]",
+              "var kaikki = [1 v. tutkinnon jälkeen]",
+              "return IF(osa = BLANK(), BLANK(),\t",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, \"0.0 %\"",
+              ", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\")))",
+              ", osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Työllistyminen"
@@ -1051,13 +1055,13 @@
             "name": "Keskiarvo - työllisten osuus",
             "expression": [
               "",
-              "var lkm = CALCULATE([Työlliset], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))",
-              "return IF(lkm = BLANK(), BLANK(),",
-              "\tvar kaikki = CALCULATE([1 v. tutkinnon jälkeen], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))",
-              "                return IF(kaikki = \"1-4\", \"25 % – 100 %\",",
-              "                                IF(lkm = \"1-4\",  CONCATENATE(FORMAT(1 / kaikki, \"#0.0 % – \"), FORMAT(4 / kaikki, \"#0.0 %\")),",
-              "                                     lkm / kaikki)))",
-              ""
+              "var osa = CALCULATE([Työlliset], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))",
+              "var kaikki = CALCULATE([1 v. tutkinnon jälkeen], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))",
+              "return IF(osa = BLANK(), BLANK(),\t",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, \"0.0 %\"",
+              ", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\")))",
+              ", osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Keskiarvot"
@@ -1066,12 +1070,13 @@
             "name": "Keskiarvo - läpäisy",
             "expression": [
               "",
-              "var lkm = CALCULATE([Suoritetut tutkinnot alkuperäisessä tutkintolajissa], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))",
-              "return IF(lkm = BLANK(), BLANK(),",
-              "\tvar kaikki = CALCULATE([Henkilöt], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))",
-              "                return IF(kaikki = \"1-4\", \"25 % – 100 %\",",
-              "                                IF(lkm = \"1-4\",  CONCATENATE(FORMAT(1 / kaikki, \"#0.0 % – \"), FORMAT(4 / kaikki, \"#0.0 %\")),",
-              "                                     lkm / kaikki)))"
+              "var osa = CALCULATE([Suoritetut tutkinnot alkuperäisessä tutkintolajissa], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))",
+              "var kaikki = CALCULATE([Henkilöt], ALL(Muuttujat[Koulutuksen järjestäjä]), ALL(Muuttujat[Koulutuksen maakunta]), ALL(Muuttujat[Koulutusala 2002]), ALL(Muuttujat[Koulutusala, taso 1]))",
+              "return IF(osa = BLANK(), BLANK(),\t",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, \"0.0 %\"",
+              ", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\")))",
+              ", osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Keskiarvot"
@@ -1105,9 +1110,8 @@
               "return IF(OR(hakijat= BLANK(), paikat = BLANK()),  BLANK(),",
               "\tIF(hakijat = \"1-4\", IF(paikat= \"1-4\", CONCATENATE(FORMAT(1 / 4, \"0.0 – \"), FORMAT(4 / 1, \"0.0\")),",
               "\t\t\t   CONCATENATE(FORMAT(1 / paikat, \"0.0 – \"), FORMAT(4 / paikat, \"0.0\"))),",
-              "                     IF(paikat = \"1-4\", CONCATENATE(FORMAT(hakijat / 4, \"0.0 – \"), FORMAT(hakijat / 1, \"0.0\")),",
-              "                          hakijat / paikat)))",
-              ""
+              "\t     IF(paikat = \"1-4\", CONCATENATE(FORMAT(hakijat / 4, \"0.0 – \"), FORMAT(hakijat / 1, \"0.0\")),",
+              "\t          hakijat / paikat)))"
             ],
             "formatString": "0.0",
             "displayFolder": "Haku"
