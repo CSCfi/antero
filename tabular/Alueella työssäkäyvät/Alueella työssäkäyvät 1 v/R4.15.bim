@@ -1161,18 +1161,32 @@
         "measures": [
           {
             "name": "Työlliset",
-            "expression": "sum([lkm])",
+            "expression": [
+              "",
+              "var lkm = sum([lkm])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Sysselsatta",
-            "expression": "sum([lkm])",
+            "expression": "[Työlliset]",
             "formatString": "#,0"
           },
           {
             "name": "Employed",
-            "expression": "sum([lkm])",
+            "expression": "[Työlliset]",
             "formatString": "#,0"
+          },
+          {
+            "name": "kytkin",
+            "expression": "IF(LEFT(USERNAME(), 4) = \"DWI\\\", 1, 0)",
+            "formatString": "0",
+            "isHidden": true
+          },
+          {
+            "name": "Työlliset_s",
+            "expression": "IF([kytkin]=0, BLANK(), sum([lkm]))"
           }
         ],
         "annotations": [
@@ -2329,6 +2343,10 @@
           {
             "memberName": "DWI\\Z_T_Antero_Read_TAB",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-4155"
+          },
+          {
+            "memberName": "DWI\\Z_P_Antero_Full_Read_TAB",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-2272"
           }
         ]
       }
