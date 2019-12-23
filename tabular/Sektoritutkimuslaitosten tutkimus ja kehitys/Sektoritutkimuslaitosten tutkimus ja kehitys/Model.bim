@@ -13074,7 +13074,7 @@
               <Commands>
                 <Command>
                   <Text>CALCULATE; 
-CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1; 
+CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1, VISIBLE = 0; 
 ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measures defined]; </Text>
                 </Command>
                 <Command>
@@ -13102,7 +13102,9 @@ CREATE MEASURE 'Muuttujat'[Tutkimusrahoitus (1000 euroa)]=SUM([Tutkimusrahoitus 
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Tutkimushenkilökunnan lkm (alueittain)]=IF(SUM([Tutkimushenkilökunnan lkm alueittain2]) = 0, BLANK(),IF(SUM([Tutkimushenkilökunnan lkm alueittain2]) = 1, 3, MROUND(SUM([Tutkimushenkilökunnan lkm alueittain2]),3)));
+CREATE MEASURE 'Muuttujat'[Tutkimushenkilökunnan lkm (alueittain)]=
+var lkm = SUM([Tutkimushenkilökunnan lkm alueittain2])
+return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -13121,7 +13123,9 @@ CREATE MEASURE 'Muuttujat'[Tutkimushenkilökunnan lkm (alueittain)]=IF(SUM([Tutk
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Tutkimushenkilökunnan lkm (tehtävittäin)]=IF(SUM([Tutkimushenkilökunnan lkm tehtävittäin2]) = 0, BLANK(),IF(SUM([Tutkimushenkilökunnan lkm tehtävittäin2]) = 1, 3, MROUND(SUM([Tutkimushenkilökunnan lkm tehtävittäin2]),3)));
+CREATE MEASURE 'Muuttujat'[Tutkimushenkilökunnan lkm (tehtävittäin)]=
+var lkm = SUM([Tutkimushenkilökunnan lkm tehtävittäin2])
+return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -13140,7 +13144,9 @@ CREATE MEASURE 'Muuttujat'[Tutkimushenkilökunnan lkm (tehtävittäin)]=IF(SUM([
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Tutkimushenkilökunnan lkm (tutkintotasoittain)]=IF(SUM([Tutkimushenkilökunnan lkm tutkintotasoittain2]) = 0, BLANK(),IF(SUM([Tutkimushenkilökunnan lkm tutkintotasoittain2]) = 1, 3, MROUND(SUM([Tutkimushenkilökunnan lkm tutkintotasoittain2]),3)));
+CREATE MEASURE 'Muuttujat'[Tutkimushenkilökunnan lkm (tutkintotasoittain)]=
+var lkm = SUM([Tutkimushenkilökunnan lkm tutkintotasoittain2])
+return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -13235,7 +13241,9 @@ CREATE MEASURE 'Muuttujat'[Tutkimusmenot (1000 euroa) (tieteenaloittain)]=SUM([T
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Tutkimustyövuodet (alueittain)]=IF(SUM([Tutkimustyövuodet alueittain2]) = 0, BLANK(),IF(SUM([Tutkimustyövuodet alueittain2]) = 1, 3, MROUND(SUM([Tutkimustyövuodet alueittain2]),3)));
+CREATE MEASURE 'Muuttujat'[Tutkimustyövuodet (alueittain)]=
+var lkm = SUM([Tutkimustyövuodet alueittain2])
+return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -13254,7 +13262,9 @@ CREATE MEASURE 'Muuttujat'[Tutkimustyövuodet (alueittain)]=IF(SUM([Tutkimustyö
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Tutkimustyövuodet (tehtävittäin)]=IF(SUM([Tutkimustyövuodet tehtävittäin2]) = 0, BLANK(),IF(SUM([Tutkimustyövuodet tehtävittäin2]) = 1, 3, MROUND(SUM([Tutkimustyövuodet tehtävittäin2]),3)));
+CREATE MEASURE 'Muuttujat'[Tutkimustyövuodet (tehtävittäin)]=
+var lkm = SUM([Tutkimustyövuodet tehtävittäin2])
+return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -13273,7 +13283,9 @@ CREATE MEASURE 'Muuttujat'[Tutkimustyövuodet (tehtävittäin)]=IF(SUM([Tutkimus
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Tutkimustyövuodet (tutkintotasoittain)]=IF(SUM([Tutkimustyövuodet tutkintotasoittain2]) = 0, BLANK(),IF(SUM([Tutkimustyövuodet tutkintotasoittain2]) = 1, 3, MROUND(SUM([Tutkimustyövuodet tutkintotasoittain2]),3)));
+CREATE MEASURE 'Muuttujat'[Tutkimustyövuodet (tutkintotasoittain)]=
+var lkm = SUM([Tutkimustyövuodet tutkintotasoittain2])
+return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -13311,7 +13323,7 @@ CREATE MEASURE 'Muuttujat'[Forskningsfinansiering (1000 euro)]=SUM([Tutkimusraho
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Forskningspersonalens antal (områdesvis)]=IF(SUM([Tutkimushenkilökunnan lkm alueittain2]) = 0, BLANK(),IF(SUM([Tutkimushenkilökunnan lkm alueittain2]) = 1, 3, MROUND(SUM([Tutkimushenkilökunnan lkm alueittain2]),3)));
+CREATE MEASURE 'Muuttujat'[Forskningspersonalens antal (områdesvis)]=[Tutkimushenkilökunnan lkm (alueittain)];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -13330,7 +13342,7 @@ CREATE MEASURE 'Muuttujat'[Forskningspersonalens antal (områdesvis)]=IF(SUM([Tu
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Forskningspersonalens antal (enligt uppgift)]=IF(SUM([Tutkimushenkilökunnan lkm tehtävittäin2]) = 0, BLANK(),IF(SUM([Tutkimushenkilökunnan lkm tehtävittäin2]) = 1, 3, MROUND(SUM([Tutkimushenkilökunnan lkm tehtävittäin2]),3)));
+CREATE MEASURE 'Muuttujat'[Forskningspersonalens antal (enligt uppgift)]=[Tutkimushenkilökunnan lkm (tehtävittäin)];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -13349,7 +13361,7 @@ CREATE MEASURE 'Muuttujat'[Forskningspersonalens antal (enligt uppgift)]=IF(SUM(
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Forskningspersonalens antal (enligt examensnivå)]=IF(SUM([Tutkimushenkilökunnan lkm tutkintotasoittain2]) = 0, BLANK(),IF(SUM([Tutkimushenkilökunnan lkm tutkintotasoittain2]) = 1, 3, MROUND(SUM([Tutkimushenkilökunnan lkm tutkintotasoittain2]),3)));
+CREATE MEASURE 'Muuttujat'[Forskningspersonalens antal (enligt examensnivå)]=[Tutkimushenkilökunnan lkm (tutkintotasoittain)];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -13425,7 +13437,7 @@ CREATE MEASURE 'Muuttujat'[Forskningsutgifter (1000 euro) (enligt forskningsomr�
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Forskningsårsverken (områdesvis)]=IF(SUM([Tutkimustyövuodet alueittain2]) = 0, BLANK(),IF(SUM([Tutkimustyövuodet alueittain2]) = 1, 3, MROUND(SUM([Tutkimustyövuodet alueittain2]),3)));
+CREATE MEASURE 'Muuttujat'[Forskningsårsverken (områdesvis)]=[Tutkimustyövuodet (alueittain)];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -13444,7 +13456,7 @@ CREATE MEASURE 'Muuttujat'[Forskningsårsverken (områdesvis)]=IF(SUM([Tutkimust
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Forskningsårsverken (enligt uppgift)]=IF(SUM([Tutkimustyövuodet tehtävittäin2]) = 0, BLANK(),IF(SUM([Tutkimustyövuodet tehtävittäin2]) = 1, 3, MROUND(SUM([Tutkimustyövuodet tehtävittäin2]),3)));
+CREATE MEASURE 'Muuttujat'[Forskningsårsverken (enligt uppgift)]=[Tutkimustyövuodet (tehtävittäin)];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -13463,7 +13475,7 @@ CREATE MEASURE 'Muuttujat'[Forskningsårsverken (enligt uppgift)]=IF(SUM([Tutkim
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Forskningsårsverken (enligt examensnivå)]=IF(SUM([Tutkimustyövuodet tutkintotasoittain2]) = 0, BLANK(),IF(SUM([Tutkimustyövuodet tutkintotasoittain2]) = 1, 3, MROUND(SUM([Tutkimustyövuodet tutkintotasoittain2]),3)));
+CREATE MEASURE 'Muuttujat'[Forskningsårsverken (enligt examensnivå)]=[Tutkimustyövuodet (tutkintotasoittain)];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -13501,7 +13513,7 @@ CREATE MEASURE 'Muuttujat'[R&amp;D funding (1000 euros)]=SUM([Tutkimusrahoitus 1
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[R&amp;D personnel (by region)]=IF(SUM([Tutkimushenkilökunnan lkm alueittain2]) = 0, BLANK(),IF(SUM([Tutkimushenkilökunnan lkm alueittain2]) = 1, 3, MROUND(SUM([Tutkimushenkilökunnan lkm alueittain2]),3)));
+CREATE MEASURE 'Muuttujat'[R&amp;D personnel (by region)]=[Tutkimushenkilökunnan lkm (alueittain)];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -13520,7 +13532,7 @@ CREATE MEASURE 'Muuttujat'[R&amp;D personnel (by region)]=IF(SUM([Tutkimushenkil
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[R&amp;D personnel (by task)]=IF(SUM([Tutkimushenkilökunnan lkm tehtävittäin2]) = 0, BLANK(),IF(SUM([Tutkimushenkilökunnan lkm tehtävittäin2]) = 1, 3, MROUND(SUM([Tutkimushenkilökunnan lkm tehtävittäin2]),3)));
+CREATE MEASURE 'Muuttujat'[R&amp;D personnel (by task)]=[Tutkimushenkilökunnan lkm (tehtävittäin)];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -13539,7 +13551,7 @@ CREATE MEASURE 'Muuttujat'[R&amp;D personnel (by task)]=IF(SUM([Tutkimushenkilö
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[R&amp;D personnel (by level of degree)]=IF(SUM([Tutkimushenkilökunnan lkm tutkintotasoittain2]) = 0, BLANK(),IF(SUM([Tutkimushenkilökunnan lkm tutkintotasoittain2]) = 1, 3, MROUND(SUM([Tutkimushenkilökunnan lkm tutkintotasoittain2]),3)));
+CREATE MEASURE 'Muuttujat'[R&amp;D personnel (by level of degree)]=[Tutkimushenkilökunnan lkm (tutkintotasoittain)];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -13615,7 +13627,7 @@ CREATE MEASURE 'Muuttujat'[R&amp;D budget funds (1000 euros) (by discipline)]=SU
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[R&amp;D full-time equivalents (FTE) (by region)]=IF(SUM([Tutkimustyövuodet alueittain2]) = 0, BLANK(),IF(SUM([Tutkimustyövuodet alueittain2]) = 1, 3, MROUND(SUM([Tutkimustyövuodet alueittain2]),3)));
+CREATE MEASURE 'Muuttujat'[R&amp;D full-time equivalents (FTE) (by region)]=[Tutkimustyövuodet (alueittain)];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -13634,7 +13646,7 @@ CREATE MEASURE 'Muuttujat'[R&amp;D full-time equivalents (FTE) (by region)]=IF(S
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[R&amp;D full-time equivalents (FTE) (by task)]=IF(SUM([Tutkimustyövuodet tehtävittäin2]) = 0, BLANK(),IF(SUM([Tutkimustyövuodet tehtävittäin2]) = 1, 3, MROUND(SUM([Tutkimustyövuodet tehtävittäin2]),3)));
+CREATE MEASURE 'Muuttujat'[R&amp;D full-time equivalents (FTE) (by task)]=[Tutkimustyövuodet (tehtävittäin)];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -13653,12 +13665,145 @@ CREATE MEASURE 'Muuttujat'[R&amp;D full-time equivalents (FTE) (by task)]=IF(SUM
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[R&amp;D full-time equivalents (FTE) (by level of degree)]=IF(SUM([Tutkimustyövuodet tutkintotasoittain2]) = 0, BLANK(),IF(SUM([Tutkimustyövuodet tutkintotasoittain2]) = 1, 3, MROUND(SUM([Tutkimustyövuodet tutkintotasoittain2]),3)));
+CREATE MEASURE 'Muuttujat'[R&amp;D full-time equivalents (FTE) (by level of degree)]=[Tutkimustyövuodet (tutkintotasoittain)];
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
                       <Value>R&amp;D full-time equivalents (FTE) (by level of degree)</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[kytkin]=IF(LEFT(USERNAME(), 4) = "DWI\", 1, 0);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>kytkin</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Tutkimushenkilökunnan lkm (alueittain)_s]=IF([kytkin]=0, BLANK(), SUM([Tutkimushenkilökunnan lkm alueittain2]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Tutkimushenkilökunnan lkm (alueittain)_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Tutkimushenkilökunnan lkm (tehtävittäin)_s]=IF([kytkin]=0, BLANK(), SUM([Tutkimushenkilökunnan lkm tehtävittäin2]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Tutkimushenkilökunnan lkm (tehtävittäin)_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Tutkimushenkilökunnan lkm (tutkintotasoittain)_s]=IF([kytkin]=0, BLANK(), SUM([Tutkimushenkilökunnan lkm tutkintotasoittain2]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Tutkimushenkilökunnan lkm (tutkintotasoittain)_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Tutkimustyövuodet (alueittain)_s]=IF([kytkin]=0, BLANK(), SUM([Tutkimustyövuodet alueittain2]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Tutkimustyövuodet (alueittain)_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Tutkimustyövuodet (tehtävittäin)_s]=IF([kytkin]=0, BLANK(), SUM([Tutkimustyövuodet tehtävittäin2]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Tutkimustyövuodet (tehtävittäin)_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Tutkimustyövuodet (tutkintotasoittain)_s]=IF([kytkin]=0, BLANK(), SUM([Tutkimustyövuodet tutkintotasoittain2]));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Tutkimustyövuodet (tutkintotasoittain)_s</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -14317,6 +14462,154 @@ CREATE MEASURE 'Muuttujat'[R&amp;D full-time equivalents (FTE) (by level of degr
                     </Annotation>
                   </Annotations>
                   <CalculationReference>[R&amp;D full-time equivalents (FTE) (by level of degree)]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>True</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[kytkin]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <Visible>false</Visible>
+                  <FormatString>'0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberDecimal" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Tutkimushenkilökunnan lkm (alueittain)_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberDecimal" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Tutkimushenkilökunnan lkm (tehtävittäin)_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberDecimal" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Tutkimushenkilökunnan lkm (tutkintotasoittain)_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberDecimal" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Tutkimustyövuodet (alueittain)_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberDecimal" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Tutkimustyövuodet (tehtävittäin)_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberDecimal" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Tutkimustyövuodet (tutkintotasoittain)_s]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
@@ -15065,6 +15358,10 @@ CREATE MEASURE 'Muuttujat'[R&amp;D full-time equivalents (FTE) (by level of degr
             <Member>
               <Name>DWI\Z_T_Antero_Read_TAB</Name>
               <Sid>S-1-5-21-2196741920-3238685902-2581541251-4155</Sid>
+            </Member>
+            <Member>
+              <Name>DWI\Z_P_Antero_Full_Read_TAB</Name>
+              <Sid>S-1-5-21-2196741920-3238685902-2581541251-2272</Sid>
             </Member>
           </Members>
         </Role>
