@@ -13929,12 +13929,14 @@ return IF(lkm = 0,BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Opiskelumaakunnan ulkopuolelta tulleiden uusien opiskelijoiden osuus]=var lkm = [Opiskelumaakunnan ulkopuolelta tulleet uudet opiskelijat]
-return IF(lkm = BLANK(), BLANK(),
-	var kaikki = [Uudet opiskelijat (pl. edellisen vuoden asuinmaakunta tai koulutuksen maakunta tuntematon)]
-	return IF(kaikki = "1-4", "25 % – 100 %",
-		IF(lkm = "1-4", CONCATENATE(FORMAT(1 / kaikki, "#0.0 % – "), FORMAT(4 / kaikki, "#0.0 %")),
-		     lkm / kaikki)));
+CREATE MEASURE 'Muuttujat'[Opiskelumaakunnan ulkopuolelta tulleiden uusien opiskelijoiden osuus]=
+var osa = [Opiskelumaakunnan ulkopuolelta tulleet uudet opiskelijat]
+var kaikki = [Uudet opiskelijat (pl. edellisen vuoden asuinmaakunta tai koulutuksen maakunta tuntematon)]
+return IF(osa = BLANK(), BLANK(),
+IF(kaikki = "1-4", "25 % – 100 %",
+IF(osa = "1-4", IF(kaikki &gt; 8000, "0.0 %",
+CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+osa / kaikki)));
 </Text><Annotations><Annotation><Name>FullName</Name><Value>Opiskelumaakunnan ulkopuolelta tulleiden uusien opiskelijoiden osuus</Value></Annotation><Annotation><Name>Table</Name><Value>Muuttujat</Value></Annotation></Annotations></Command><Command><Text>----------------------------------------------------------
 -- PowerPivot measures command (do not modify manually) --
 ----------------------------------------------------------

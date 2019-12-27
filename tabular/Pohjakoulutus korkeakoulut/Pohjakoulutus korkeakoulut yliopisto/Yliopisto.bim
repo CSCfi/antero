@@ -7005,7 +7005,7 @@
               "return IF(summa = 0, BLANK(),",
               "\tvar opisk = CALCULATE([Opiskelijat], ALL(Muuttujat[Ylioppilastutkinto]))",
               "\treturn IF(opisk = \"1-4\", \"25 % – 100 %\",",
-              "\t\tIF(summa < 5, CONCATENATE(FORMAT(ROUND(1/opisk, 3), \"#0.0 % – \"), FORMAT(ROUND(4/opisk, 3), \"#0.0 %\")),",
+              "\t\tIF(summa < 5, IF(opisk > 8000, \"0.0 %\", CONCATENATE(FORMAT(1/opisk, \"0.0 % – \"), FORMAT(4/opisk, \"0.0 %\"))),",
               "                                     MROUND(summa, 3) / opisk)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
@@ -7018,7 +7018,7 @@
               "return IF(summa = 0, BLANK(),",
               "\tvar opisk = CALCULATE([Opiskelijat], ALL(Muuttujat[Ammatillinen_perustutkinto]))",
               "\treturn IF(opisk = \"1-4\", \"25 % – 100 %\",",
-              "\t\tIF(summa < 5, CONCATENATE(FORMAT(ROUND(1/opisk, 3), \"#0.0 % – \"), FORMAT(ROUND(4/opisk, 3), \"#0.0 %\")),",
+              "\t\tIF(summa < 5, IF(opisk > 8000, \"0.0 %\", CONCATENATE(FORMAT(1/opisk, \"0.0 % – \"), FORMAT(4/opisk, \"0.0 %\"))),",
               "                                     MROUND(summa, 3) / opisk)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
@@ -7031,7 +7031,7 @@
               "return IF(summa = 0, BLANK(),",
               "\tvar opisk = CALCULATE([Opiskelijat], ALL(Muuttujat[Amk_tutkinto]))",
               "\treturn IF(opisk = \"1-4\", \"25 % – 100 %\",",
-              "\t\tIF(summa < 5, CONCATENATE(FORMAT(ROUND(1/opisk, 3), \"#0.0 % – \"), FORMAT(ROUND(4/opisk, 3), \"#0.0 %\")),",
+              "\t\tIF(summa < 5, IF(opisk > 8000, \"0.0 %\", CONCATENATE(FORMAT(1/opisk, \"0.0 % – \"), FORMAT(4/opisk, \"0.0 %\"))),",
               "                                     MROUND(summa, 3) / opisk)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
@@ -7044,7 +7044,7 @@
               "return IF(summa = 0, BLANK(),",
               "\tvar opisk = CALCULATE([Opiskelijat], ALL(Muuttujat[Alempi_korkeakoulututkinto]))",
               "\treturn IF(opisk = \"1-4\", \"25 % – 100 %\",",
-              "\t\tIF(summa < 5, CONCATENATE(FORMAT(ROUND(1/opisk, 3), \"#0.0 % – \"), FORMAT(ROUND(4/opisk, 3), \"#0.0 %\")),",
+              "\t\tIF(summa < 5, IF(opisk > 8000, \"0.0 %\", CONCATENATE(FORMAT(1/opisk, \"0.0 % – \"), FORMAT(4/opisk, \"0.0 %\"))),",
               "                                     MROUND(summa, 3) / opisk)))",
               ""
             ],
@@ -7058,7 +7058,7 @@
               "return IF(summa = 0, BLANK(),",
               "\tvar opisk = CALCULATE([Opiskelijat], ALL(Muuttujat[Ylempi_amk_tutkinto]))",
               "\treturn IF(opisk = \"1-4\", \"25 % – 100 %\",",
-              "\t\tIF(summa < 5, CONCATENATE(FORMAT(ROUND(1/opisk, 3), \"#0.0 % – \"), FORMAT(ROUND(4/opisk, 3), \"#0.0 %\")),",
+              "\t\tIF(summa < 5, IF(opisk > 8000, \"0.0 %\", CONCATENATE(FORMAT(1/opisk, \"0.0 % – \"), FORMAT(4/opisk, \"0.0 %\"))),",
               "\t\t     MROUND(summa, 3) / opisk)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
@@ -7071,7 +7071,7 @@
               "return IF(summa = 0, BLANK(),",
               "\tvar opisk = CALCULATE([Opiskelijat], ALL(Muuttujat[Ylempi_korkeakoulututkinto]))",
               "\treturn IF(opisk = \"1-4\", \"25 % – 100 %\",",
-              "\t\tIF(summa < 5, CONCATENATE(FORMAT(ROUND(1/opisk, 3), \"#0.0 % – \"), FORMAT(ROUND(4/opisk, 3), \"#0.0 %\")),",
+              "\t\tIF(summa < 5, IF(opisk > 8000, \"0.0 %\", CONCATENATE(FORMAT(1/opisk, \"0.0 % – \"), FORMAT(4/opisk, \"0.0 %\"))),",
               "                                     MROUND(summa, 3) / opisk)))",
               ""
             ],
@@ -7139,7 +7139,8 @@
               "",
               "IF(SUM([Ylempi_amk_tutkinto])= 0, BLANK(),",
               "     var summa = CALCULATE(SUM([Ylempi_amk_tutkinto]), FILTER('Muuttujat', [Aloitt2] <> 0),",
-              "     \t\t\t\t\t\tFILTER('Muuttujat', [Koodit Koulutusaste] <> \"73\"),\t\t\t\t\t\t         \t\t\t\t\t\t\tFILTER('Muuttujat', [Koodit Koulutusaste] <> \"81\"),",
+              "     \t\t\t\t\t\tFILTER('Muuttujat', [Koodit Koulutusaste] <> \"73\"),\t",
+              "     \t\t\t\t\t\tFILTER('Muuttujat', [Koodit Koulutusaste] <> \"81\"),",
               "\t\t\t\t\t\tFILTER('Muuttujat', [Koodit Koulutusaste] <> \"82\"))",
               "     return IF(summa = 0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3))))",
               ""
@@ -7172,7 +7173,7 @@
               "    return IF(summa = 0, BLANK(),",
               "\t    var uudet= [Uudet opiskelijat]",
               "\t    return IF(uudet= \"1-4\", \"25 % – 100 %\",",
-              "\t\t    IF(summa < 5, CONCATENATE(FORMAT(ROUND(1/uudet, 3), \"#0.0 % – \"), FORMAT(ROUND(4/uudet, 3), \"#0.0 %\")),",
+              "\t\t    IF(summa < 5, IF(uudet > 8000, \"0.0 %\", CONCATENATE(FORMAT(1/uudet, \"0.0 % – \"), FORMAT(4/uudet, \"0.0 %\"))),",
               "                                         MROUND(summa, 3) / uudet))))",
               ""
             ],
@@ -7190,7 +7191,7 @@
               "    return IF(summa = 0, BLANK(),",
               "\t    var uudet= [Uudet opiskelijat]",
               "\t    return IF(uudet= \"1-4\", \"25 % – 100 %\",",
-              "\t\t    IF(summa < 5, CONCATENATE(FORMAT(ROUND(1/uudet, 3), \"#0.0 % – \"), FORMAT(ROUND(4/uudet, 3), \"#0.0 %\")),",
+              "\t\t    IF(summa < 5, IF(uudet > 8000, \"0.0 %\", CONCATENATE(FORMAT(1/uudet, \"0.0 % – \"), FORMAT(4/uudet, \"0.0 %\"))),",
               "                                         MROUND(summa, 3) / uudet))))",
               ""
             ],
@@ -7208,7 +7209,7 @@
               "    return IF(summa = 0, BLANK(),",
               "\t    var uudet= [Uudet opiskelijat]",
               "\t    return IF(uudet= \"1-4\", \"25 % – 100 %\",",
-              "\t\t    IF(summa < 5, CONCATENATE(FORMAT(ROUND(1/uudet, 3), \"#0.0 % – \"), FORMAT(ROUND(4/uudet, 3), \"#0.0 %\")),",
+              "\t\t    IF(summa < 5, IF(uudet > 8000, \"0.0 %\", CONCATENATE(FORMAT(1/uudet, \"0.0 % – \"), FORMAT(4/uudet, \"0.0 %\"))),",
               "                                         MROUND(summa, 3) / uudet))))",
               ""
             ],
@@ -7226,7 +7227,7 @@
               "    return IF(summa = 0, BLANK(),",
               "\t    var uudet= [Uudet opiskelijat]",
               "\t    return IF(uudet= \"1-4\", \"25 % – 100 %\",",
-              "\t\t    IF(summa < 5, CONCATENATE(FORMAT(ROUND(1/uudet, 3), \"#0.0 % – \"), FORMAT(ROUND(4/uudet, 3), \"#0.0 %\")),",
+              "\t\t    IF(summa < 5, IF(uudet > 8000, \"0.0 %\", CONCATENATE(FORMAT(1/uudet, \"0.0 % – \"), FORMAT(4/uudet, \"0.0 %\"))),",
               "                                         MROUND(summa, 3) / uudet))))",
               ""
             ],
@@ -7244,7 +7245,7 @@
               "    return IF(summa = 0, BLANK(),",
               "\t    var uudet= [Uudet opiskelijat]",
               "\t    return IF(uudet= \"1-4\", \"25 % – 100 %\",",
-              "\t\t    IF(summa < 5, CONCATENATE(FORMAT(ROUND(1/uudet, 3), \"#0.0 % – \"), FORMAT(ROUND(4/uudet, 3), \"#0.0 %\")),",
+              "\t\t    IF(summa < 5, IF(uudet > 8000, \"0.0 %\", CONCATENATE(FORMAT(1/uudet, \"0.0 % – \"), FORMAT(4/uudet, \"0.0 %\"))),",
               "                                         MROUND(summa, 3) / uudet))))",
               "",
               ""
@@ -7263,7 +7264,7 @@
               "    return IF(summa = 0, BLANK(),",
               "\t    var uudet= [Uudet opiskelijat]",
               "\t    return IF(uudet= \"1-4\", \"25 % – 100 %\",",
-              "\t\t    IF(summa < 5, CONCATENATE(FORMAT(ROUND(1/uudet, 3), \"#0.0 % – \"), FORMAT(ROUND(4/uudet, 3), \"#0.0 %\")),",
+              "\t\t    IF(summa < 5, IF(uudet > 8000, \"0.0 %\", CONCATENATE(FORMAT(1/uudet, \"0.0 % – \"), FORMAT(4/uudet, \"0.0 %\"))),",
               "                                         MROUND(summa, 3) / uudet))))",
               ""
             ],
@@ -7277,7 +7278,7 @@
               "return IF(summa = 0, BLANK(),",
               "\tvar opisk = CALCULATE([Opiskelijat], ALL(Muuttujat[Ei_perusasteen_jalkeista_koulutusta]))",
               "\treturn IF(opisk = \"1-4\", \"25 % – 100 %\",",
-              "\t\tIF(summa < 5, CONCATENATE(FORMAT(ROUND(1/opisk, 3), \"#0.0 % – \"), FORMAT(ROUND(4/opisk, 3), \"#0.0 %\")),",
+              "\t\tIF(summa < 5, IF(opisk > 8000, \"0.0 %\", CONCATENATE(FORMAT(1/opisk, \"0.0 % – \"), FORMAT(4/opisk, \"0.0 %\"))),",
               "                                     MROUND(summa, 3) / opisk)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
@@ -7308,7 +7309,7 @@
               "    return IF(summa = 0, BLANK(),",
               "\t    var uudet= [Uudet opiskelijat]",
               "\t    return IF(uudet= \"1-4\", \"25 % – 100 %\",",
-              "\t\t    IF(summa < 5, CONCATENATE(FORMAT(ROUND(1/uudet, 3), \"#0.0 % – \"), FORMAT(ROUND(4/uudet, 3), \"#0.0 %\")),",
+              "\t\t    IF(summa < 5, IF(uudet > 8000, \"0.0 %\", CONCATENATE(FORMAT(1/uudet, \"0.0 % – \"), FORMAT(4/uudet, \"0.0 %\"))),",
               "                                         MROUND(summa, 3) / uudet))))",
               ""
             ],
@@ -7316,177 +7317,183 @@
           },
           {
             "name": "Opiskelijat_s",
-            "expression": "IF(SUM([Opisk2]) = 0, BLANK(), SUM([Opisk2]))",
+            "expression": "IF([kytkin] = 0, BLANK(), IF(SUM([Opisk2]) = 0, BLANK(), SUM([Opisk2])))",
             "formatString": "#,0"
           },
           {
             "name": "Uudet opiskelijat_s",
             "expression": [
-              "IF(SUM([Aloitt2]) = 0, BLANK(),CALCULATE( SUM([Aloitt2]), FILTER('Muuttujat',",
-              "[Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\")))"
+              "IF([kytkin] = 0, BLANK(), IF(SUM([Aloitt2]) = 0, BLANK(),CALCULATE( SUM([Aloitt2]), FILTER('Muuttujat',",
+              "[Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\"))))"
             ],
             "formatString": "#,0"
           },
           {
             "name": "Aiemman ylemmän kk-tutkinnon suorittaneiden lkm_s",
-            "expression": "IF(SUM([Ylempi_korkeakoulututkinto]) = 0, BLANK(), SUM([Ylempi_korkeakoulututkinto]))",
+            "expression": "IF([kytkin] = 0, BLANK(), IF(SUM([Ylempi_korkeakoulututkinto]) = 0, BLANK(), SUM([Ylempi_korkeakoulututkinto])))",
             "formatString": "#,0"
           },
           {
             "name": "Aiemman ylemmän kk-tutkinnon suorittaneiden osuus opiskelijoista_s",
-            "expression": "SUM([Ylempi_korkeakoulututkinto])/CALCULATE(SUM([Opisk2]), ALL(Muuttujat[Ylempi_korkeakoulututkinto]) )",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([Ylempi_korkeakoulututkinto])/CALCULATE(SUM([Opisk2]), ALL(Muuttujat[Ylempi_korkeakoulututkinto])))",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Aiemman ylemmän kk-tutkinnon suorittaneet_s",
             "expression": [
-              "IF(SUM([Ylempi_korkeakoulututkinto]) = 0, BLANK(),CALCULATE( SUM([Ylempi_korkeakoulututkinto]), FILTER('Muuttujat',",
-              "[Aloitt2]<>0),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\")))"
+              "IF([kytkin] = 0, BLANK(), IF(SUM([Ylempi_korkeakoulututkinto]) = 0, BLANK(),CALCULATE( SUM([Ylempi_korkeakoulututkinto]), FILTER('Muuttujat',",
+              "[Aloitt2]<>0),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\"))))"
             ],
             "formatString": "#,0"
           },
           {
             "name": "Aiemman ylemmän kk-tutkinnon suorittaneiden osuus uusista opiskelijoista_s",
-            "expression": "CALCULATE(SUM([Ylempi_korkeakoulututkinto]), FILTER('Muuttujat',[Aloitt2]<>0),FILTER('Muuttujat', [Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\"))/[Uudet opiskelijat]",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([Ylempi_korkeakoulututkinto]), FILTER('Muuttujat',[Aloitt2]<>0),FILTER('Muuttujat', [Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\"))/[Uudet opiskelijat])",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Aiemman ylemmän amk-tutkinnon suorittaneiden lkm_s",
-            "expression": "IF(SUM([Ylempi_amk_tutkinto]) = 0, BLANK(), SUM([Ylempi_amk_tutkinto]))",
+            "expression": "IF([kytkin] = 0, BLANK(), IF(SUM([Ylempi_amk_tutkinto]) = 0, BLANK(), SUM([Ylempi_amk_tutkinto])))",
             "formatString": "#,0"
           },
           {
             "name": "Aiemman ylemmän amk-tutkinnon suorittaneiden osuus opiskelijoista_s",
-            "expression": "SUM([Ylempi_amk_tutkinto])/CALCULATE(SUM([Opisk2]), ALL(Muuttujat[Ylempi_amk_tutkinto]) )",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([Ylempi_amk_tutkinto])/CALCULATE(SUM([Opisk2]), ALL(Muuttujat[Ylempi_amk_tutkinto])))",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Aiemman ylemmän amk-tutkinnon suorittaneet_s",
             "expression": [
-              "IF(SUM([Ylempi_amk_tutkinto]) = 0, BLANK(),CALCULATE( SUM([Ylempi_amk_tutkinto]), FILTER('Muuttujat',",
-              "[Aloitt2]<>0),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\")))"
+              "IF([kytkin] = 0, BLANK(), IF(SUM([Ylempi_amk_tutkinto]) = 0, BLANK(),CALCULATE( SUM([Ylempi_amk_tutkinto]), FILTER('Muuttujat',",
+              "[Aloitt2]<>0),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\"))))"
             ],
             "formatString": "#,0"
           },
           {
             "name": "Aiemman ylemmän amk-tutkinnon suorittaneiden osuus uusista opiskelijoista_s",
-            "expression": "CALCULATE(SUM([Ylempi_amk_tutkinto]), FILTER('Muuttujat',[Aloitt2]<>0),FILTER('Muuttujat', [Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\"))/[Uudet opiskelijat]",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([Ylempi_amk_tutkinto]), FILTER('Muuttujat',[Aloitt2]<>0),FILTER('Muuttujat', [Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\"))/[Uudet opiskelijat])",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Aiemman alemman kk-tutkinnon suorittaneiden lkm_s",
-            "expression": "IF(SUM([Alempi_korkeakoulututkinto]) = 0, BLANK(), SUM([Alempi_korkeakoulututkinto]))",
+            "expression": "IF([kytkin] = 0, BLANK(), IF(SUM([Alempi_korkeakoulututkinto]) = 0, BLANK(), SUM([Alempi_korkeakoulututkinto])))",
             "formatString": "#,0"
           },
           {
             "name": "Aiemman alemman kk-tutkinnon suorittaneiden osuus opiskelijoista_s",
-            "expression": "SUM([Alempi_korkeakoulututkinto])/CALCULATE(SUM([Opisk2]), ALL(Muuttujat[Alempi_korkeakoulututkinto]) )",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([Alempi_korkeakoulututkinto])/CALCULATE(SUM([Opisk2]), ALL(Muuttujat[Alempi_korkeakoulututkinto])))",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Aiemman alemman kk-tutkinnon suorittaneet_s",
             "expression": [
-              "IF(SUM([Alempi_korkeakoulututkinto]) = 0, BLANK(),CALCULATE( SUM([Alempi_korkeakoulututkinto]), FILTER('Muuttujat',",
-              "[Aloitt2]<>0),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\")))"
+              "IF([kytkin] = 0, BLANK(), IF(SUM([Alempi_korkeakoulututkinto]) = 0, BLANK(),CALCULATE( SUM([Alempi_korkeakoulututkinto]), FILTER('Muuttujat',",
+              "[Aloitt2]<>0),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\"))))"
             ],
             "formatString": "#,0"
           },
           {
             "name": "Aiemman alemman kk-tutkinnon suorittaneiden osuus uusista opiskelijoista_s",
-            "expression": "CALCULATE(SUM([Alempi_korkeakoulututkinto]), FILTER('Muuttujat',[Aloitt2]<>0),FILTER('Muuttujat', [Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\"))/[Uudet opiskelijat]",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([Alempi_korkeakoulututkinto]), FILTER('Muuttujat',[Aloitt2]<>0),FILTER('Muuttujat', [Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\"))/[Uudet opiskelijat])",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Aiemman amk-tutkinnon suorittaneiden lkm_s",
-            "expression": "IF(SUM([Amk_tutkinto]) = 0, BLANK(), SUM([Amk_tutkinto]))",
+            "expression": "IF([kytkin] = 0, BLANK(), IF(SUM([Amk_tutkinto]) = 0, BLANK(), SUM([Amk_tutkinto])))",
             "formatString": "#,0"
           },
           {
             "name": "Aiemman amk-tutkinnon suorittaneiden osuus opiskelijoista_s",
-            "expression": "SUM([Amk_tutkinto])/CALCULATE(SUM([Opisk2]), ALL(Muuttujat[Amk_tutkinto]) )",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([Amk_tutkinto])/CALCULATE(SUM([Opisk2]), ALL(Muuttujat[Amk_tutkinto])))",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Aiemman amk-tutkinnon suorittaneet_s",
             "expression": [
-              "IF(SUM([Amk_tutkinto]) = 0, BLANK(),CALCULATE( SUM([Amk_tutkinto]), FILTER('Muuttujat',",
-              "[Aloitt2]<>0),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\")))"
+              "IF([kytkin] = 0, BLANK(), IF(SUM([Amk_tutkinto]) = 0, BLANK(),CALCULATE( SUM([Amk_tutkinto]), FILTER('Muuttujat',",
+              "[Aloitt2]<>0),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\"))))"
             ],
             "formatString": "#,0"
           },
           {
             "name": "Aiemman amk-tutkinnon suorittaneiden osuus uusista opiskelijoista_s",
-            "expression": "CALCULATE(SUM([Amk_tutkinto]), FILTER('Muuttujat',[Aloitt2]<>0),FILTER('Muuttujat', [Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\"))/[Uudet opiskelijat]",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([Amk_tutkinto]), FILTER('Muuttujat',[Aloitt2]<>0),FILTER('Muuttujat', [Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\"))/[Uudet opiskelijat])",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Aiemman ammatillisen tutkinnon suorittaneiden lkm_s",
-            "expression": "IF(SUM([Ammatillinen_perustutkinto]) = 0, BLANK(), SUM([Ammatillinen_perustutkinto]))",
+            "expression": "IF([kytkin] = 0, BLANK(), IF(SUM([Ammatillinen_perustutkinto]) = 0, BLANK(), SUM([Ammatillinen_perustutkinto])))",
             "formatString": "#,0"
           },
           {
             "name": "Aiemman ammatillisen tutkinnon suorittaneiden osuus opiskelijoista_s",
-            "expression": "SUM([Ammatillinen_perustutkinto])/CALCULATE(SUM([Opisk2]), ALL(Muuttujat[Ammatillinen_perustutkinto]) )",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([Ammatillinen_perustutkinto])/CALCULATE(SUM([Opisk2]), ALL(Muuttujat[Ammatillinen_perustutkinto])))",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Aiemman ammatillisen tutkinnon suorittaneet_s",
             "expression": [
-              "IF(SUM([Ammatillinen_perustutkinto]) = 0, BLANK(),CALCULATE( SUM([Ammatillinen_perustutkinto]), FILTER('Muuttujat',",
-              "[Aloitt2]<>0),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\")))"
+              "IF([kytkin] = 0, BLANK(), IF(SUM([Ammatillinen_perustutkinto]) = 0, BLANK(),CALCULATE( SUM([Ammatillinen_perustutkinto]), FILTER('Muuttujat',",
+              "[Aloitt2]<>0),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\"))))"
             ],
             "formatString": "#,0"
           },
           {
             "name": "Aiemman ammatillisen tutkinnon suorittaneiden osuus uusista opiskelijoista_s",
-            "expression": "CALCULATE(SUM([Ammatillinen_perustutkinto]), FILTER('Muuttujat',[Aloitt2]<>0),FILTER('Muuttujat', [Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\"))/[Uudet opiskelijat]",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([Ammatillinen_perustutkinto]), FILTER('Muuttujat',[Aloitt2]<>0),FILTER('Muuttujat', [Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\"))/[Uudet opiskelijat])",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Aiemman ylioppilastutkinnon suorittaneiden lkm_s",
-            "expression": "IF(SUM([Ylioppilastutkinto]) = 0, BLANK(), SUM([Ylioppilastutkinto]))",
+            "expression": "IF([kytkin] = 0, BLANK(), IF(SUM([Ylioppilastutkinto]) = 0, BLANK(), SUM([Ylioppilastutkinto])))",
             "formatString": "#,0"
           },
           {
             "name": "Aiemman ylioppilastutkinnon suorittaneiden osuus opiskelijoista_s",
-            "expression": "SUM([Ylioppilastutkinto])/CALCULATE(SUM([Opisk2]), ALL(Muuttujat[Ylioppilastutkinto]) )",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([Ylioppilastutkinto])/CALCULATE(SUM([Opisk2]), ALL(Muuttujat[Ylioppilastutkinto])))",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Aiemman ylioppilastutkinnon suorittaneet_s",
             "expression": [
-              "IF(SUM([Ylioppilastutkinto]) = 0, BLANK(),CALCULATE( SUM([Ylioppilastutkinto]), FILTER('Muuttujat',",
-              "[Aloitt2]<>0),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\")))"
+              "IF([kytkin] = 0, BLANK(), IF(SUM([Ylioppilastutkinto]) = 0, BLANK(),CALCULATE( SUM([Ylioppilastutkinto]), FILTER('Muuttujat',",
+              "[Aloitt2]<>0),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\"))))"
             ],
             "formatString": "#,0"
           },
           {
             "name": "Aiemman ylioppilastutkinnon suorittaneiden osuus uusista opiskelijoista_s",
-            "expression": "CALCULATE(SUM([Ylioppilastutkinto]), FILTER('Muuttujat',[Aloitt2]<>0),FILTER('Muuttujat', [Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\"))/[Uudet opiskelijat]",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([Ylioppilastutkinto]), FILTER('Muuttujat',[Aloitt2]<>0),FILTER('Muuttujat', [Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\"))/[Uudet opiskelijat])",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Ei aiempaa tutkintoa tutkintorekisterissä lkm_s",
-            "expression": "IF(SUM([Ei_perusasteen_jalkeista_koulutusta]) = 0, BLANK(), SUM([Ei_perusasteen_jalkeista_koulutusta]))",
+            "expression": "IF([kytkin] = 0, BLANK(), IF(SUM([Ei_perusasteen_jalkeista_koulutusta]) = 0, BLANK(), SUM([Ei_perusasteen_jalkeista_koulutusta])))",
             "formatString": "#,0"
           },
           {
             "name": "Ei aiempaa tutkintoa tutkintorekisterissä osuus opiskelijoista_s",
-            "expression": "SUM([Ei_perusasteen_jalkeista_koulutusta])/CALCULATE(SUM([Opisk2]), ALL(Muuttujat[Ei_perusasteen_jalkeista_koulutusta]) )",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([Ei_perusasteen_jalkeista_koulutusta])/CALCULATE(SUM([Opisk2]), ALL(Muuttujat[Ei_perusasteen_jalkeista_koulutusta])))",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Ei aiempaa tutkintoa tutkintorekisterissä_s",
             "expression": [
-              "IF(SUM([Ei_perusasteen_jalkeista_koulutusta]) = 0, BLANK(),CALCULATE( SUM([Ei_perusasteen_jalkeista_koulutusta]), FILTER('Muuttujat',",
-              "[Aloitt2]<>0),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\")))"
+              "IF([kytkin] = 0, BLANK(), IF(SUM([Ei_perusasteen_jalkeista_koulutusta]) = 0, BLANK(),CALCULATE( SUM([Ei_perusasteen_jalkeista_koulutusta]), FILTER('Muuttujat',",
+              "[Aloitt2]<>0),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\"))))"
             ],
             "formatString": "#,0"
           },
           {
             "name": "Ei aiempaa tutkintoa tutkintorekisterissä osuus uusista opiskelijoista_s",
-            "expression": "CALCULATE(SUM([Ei_perusasteen_jalkeista_koulutusta]), FILTER('Muuttujat',[Aloitt2]<>0),FILTER('Muuttujat', [Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\"))/[Uudet opiskelijat]",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([Ei_perusasteen_jalkeista_koulutusta]), FILTER('Muuttujat',[Aloitt2]<>0),FILTER('Muuttujat', [Koodit Koulutusaste]<>\"73\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"81\"),FILTER('Muuttujat',[Koodit Koulutusaste]<>\"82\"))/[Uudet opiskelijat])",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "kytkin",
+            "expression": "IF(LEFT(USERNAME(), 4) = \"DWI\\\", 1, 0)",
+            "formatString": "0",
+            "isHidden": true
           }
         ],
         "annotations": [
@@ -13364,6 +13371,10 @@
           {
             "memberName": "DWI\\Z_T_Antero_Read_TAB",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-4155"
+          },
+          {
+            "memberName": "DWI\\Z_P_Antero_Full_Read_TAB",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-2272"
           }
         ]
       },

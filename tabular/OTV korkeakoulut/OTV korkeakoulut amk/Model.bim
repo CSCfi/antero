@@ -9869,11 +9869,12 @@
             "expression": [
               "",
               "var lkm = [Yli 55 op suorittaneet]",
+              "var kaikki = [Alemman ja ylemmän kk-tutkinnon opiskelijat]",
               "return IF(lkm = BLANK(), BLANK(),",
-              "\tvar kaikki = [Alemman ja ylemmän kk-tutkinnon opiskelijat]",
-              "\treturn IF(kaikki = \"1-4\", \"25 % – 100 %\",",
-              "\t\tIF(lkm = \"1-4\", CONCATENATE(FORMAT(1 / kaikki, \"#0.0 % – \"), FORMAT(4 / kaikki, \"#0.0 %\")),",
-              "\t\t     lkm / kaikki)))",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(lkm = \"1-4\", IF(kaikki > 8000, \"0.0 %\",",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "lkm / kaikki)))",
               ""
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
@@ -9902,11 +9903,12 @@
             "expression": [
               "",
               "var lkm = [Yli 55 op suorittaneet (amk)]",
+              "var kaikki = [Amk opiskelijat]",
               "return IF(lkm = BLANK(), BLANK(),",
-              "\tvar kaikki = [Amk opiskelijat]",
-              "\treturn IF(kaikki = \"1-4\", \"25 % – 100 %\",",
-              "\t\tIF(lkm = \"1-4\", CONCATENATE(FORMAT(1 / kaikki, \"#0.0 % – \"), FORMAT(4 / kaikki, \"#0.0 %\")),",
-              "\t\t     lkm / kaikki)))",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(lkm = \"1-4\", IF(kaikki > 8000, \"0.0 %\",",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "lkm / kaikki)))",
               ""
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
@@ -9956,15 +9958,13 @@
             "expression": [
               "",
               "var uudet = [Alemman ja ylemmän korkeakoulututkinnon uudet opiskelijat] ",
-              "var summa = SUM([ika19_21_lkm])",
               "var vuosia = 3",
               "var ka = [19-21 vuotiaiden keskimääräinen ikäluokka]",
-              "return IF(OR(uudet = BLANK(), summa = 0), BLANK(),",
-              "\tIF(uudet = \"1-4\", IF(summa < 5, CONCATENATE(FORMAT(1 / (4 / vuosia), \"0.0 – \"), FORMAT(4 / (1 / vuosia), \"0.0\")),",
-              "\t\t\t  CONCATENATE(FORMAT(1 / ka, \"0.0 – \"), FORMAT(4 / ka, \"0.0\"))),",
-              "                    IF(summa < 5, CONCATENATE(FORMAT(uudet / (4 / vuosia), \"0.0 – \"), FORMAT(uudet / (1 / vuosia), \"0.0\")),",
-              "                         uudet / ka)))",
-              ""
+              "return IF(OR(uudet = BLANK(), ka = BLANK()), BLANK(),",
+              "IF(FIND(\"–\", ka, 1, 0) > 0, IF(uudet = \"1-4\", CONCATENATE(FORMAT(1 / (4 / vuosia), \"0.0 – \"), FORMAT(4 / (1 / vuosia), \"0.0\")),",
+              "CONCATENATE(FORMAT(uudet / (4 / vuosia), \"0.0 – \"), FORMAT(uudet / (1 / vuosia), \"0.0\"))),",
+              "IF(uudet = \"1-4\", CONCATENATE(FORMAT(1 / ka, \"0.0 – \"), FORMAT(4 / ka, \"0.0\")),",
+              "uudet / ka)))"
             ],
             "formatString": "#,0.0"
           },
@@ -9973,15 +9973,13 @@
             "expression": [
               "",
               "var uudet = [Ammattikorkeakoulujen nuorten koulutuksen uudet opiskelijat]",
-              "var summa = SUM([ika19_21_lkm])",
               "var vuosia = 3",
               "var ka = [19-21 vuotiaiden keskimääräinen ikäluokka]",
-              "return IF(OR(uudet = BLANK(), summa = 0), BLANK(),",
-              "\tIF(uudet = \"1-4\", IF(summa < 5, CONCATENATE(FORMAT(1 / (4 / vuosia), \"0.0 – \"), FORMAT(4 / (1 / vuosia), \"0.0\")),",
-              "\t\t\t  CONCATENATE(FORMAT(1 / ka, \"0.0 – \"), FORMAT(4 / ka, \"0.0\"))),",
-              "                    IF(summa < 5, CONCATENATE(FORMAT(uudet / (4 / vuosia), \"0.0 – \"), FORMAT(uudet / (1 / vuosia), \"0.0\")),",
-              "                         uudet / ka)))",
-              ""
+              "return IF(OR(uudet = BLANK(), ka = BLANK()), BLANK(),",
+              "IF(FIND(\"–\", ka, 1, 0) > 0, IF(uudet = \"1-4\", CONCATENATE(FORMAT(1 / (4 / vuosia), \"0.0 – \"), FORMAT(4 / (1 / vuosia), \"0.0\")),",
+              "CONCATENATE(FORMAT(uudet / (4 / vuosia), \"0.0 – \"), FORMAT(uudet / (1 / vuosia), \"0.0\"))),",
+              "IF(uudet = \"1-4\", CONCATENATE(FORMAT(1 / ka, \"0.0 – \"), FORMAT(4 / ka, \"0.0\")),",
+              "uudet / ka)))"
             ],
             "formatString": "#,0.0"
           },
@@ -9990,15 +9988,13 @@
             "expression": [
               "",
               "var uudet = [Ammattikorkeakoulujen aikuiskoulutuksen uudet opiskelijat]",
-              "var summa = SUM([ika25_64_lkm])",
               "var vuosia = 40",
               "var ka = [25-64 vuotiaiden keskimääräinen ikäluokka]",
-              "return IF(OR(uudet = BLANK(), summa = 0), BLANK(),",
-              "\tIF(uudet = \"1-4\", IF(summa < 5, CONCATENATE(FORMAT(1 / (4 / vuosia), \"0.0 – \"), FORMAT(4 / (1 / vuosia), \"0.0\")),",
-              "\t\t\t  CONCATENATE(FORMAT(1 / ka, \"0.0 – \"), FORMAT(4 / ka, \"0.0\"))),",
-              "                    IF(summa < 5, CONCATENATE(FORMAT(uudet / (4 / vuosia), \"0.0 – \"), FORMAT(uudet / (1 / vuosia), \"0.0\")),",
-              "                         uudet / ka)))",
-              ""
+              "return IF(OR(uudet = BLANK(), ka = BLANK()), BLANK(),",
+              "IF(FIND(\"–\", ka, 1, 0) > 0, IF(uudet = \"1-4\", CONCATENATE(FORMAT(1 / (4 / vuosia), \"0.0 – \"), FORMAT(4 / (1 / vuosia), \"0.0\")),",
+              "CONCATENATE(FORMAT(uudet / (4 / vuosia), \"0.0 – \"), FORMAT(uudet / (1 / vuosia), \"0.0\"))),",
+              "IF(uudet = \"1-4\", CONCATENATE(FORMAT(1 / ka, \"0.0 – \"), FORMAT(4 / ka, \"0.0\")),",
+              "uudet / ka)))"
             ],
             "formatString": "#,0.0"
           },
@@ -10007,15 +10003,13 @@
             "expression": [
               "",
               "var uudet = [Ylemmän ammattikorkeakoulututkinnon uudet opiskelijat]",
-              "var summa = SUM([ika25_64_lkm])",
               "var vuosia = 40",
               "var ka = [25-64 vuotiaiden keskimääräinen ikäluokka]",
-              "return IF(OR(uudet = BLANK(), summa = 0), BLANK(),",
-              "\tIF(uudet = \"1-4\", IF(summa < 5, CONCATENATE(FORMAT(1 / (4 / vuosia), \"0.0 – \"), FORMAT(4 / (1 / vuosia), \"0.0\")),",
-              "\t\t\t  CONCATENATE(FORMAT(1 / ka, \"0.0 – \"), FORMAT(4 / ka, \"0.0\"))),",
-              "                    IF(summa < 5, CONCATENATE(FORMAT(uudet / (4 / vuosia), \"0.0 – \"), FORMAT(uudet / (1 / vuosia), \"0.0\")),",
-              "                         uudet / ka)))",
-              ""
+              "return IF(OR(uudet = BLANK(), ka = BLANK()), BLANK(),",
+              "IF(FIND(\"–\", ka, 1, 0) > 0, IF(uudet = \"1-4\", CONCATENATE(FORMAT(1 / (4 / vuosia), \"0.0 – \"), FORMAT(4 / (1 / vuosia), \"0.0\")),",
+              "CONCATENATE(FORMAT(uudet / (4 / vuosia), \"0.0 – \"), FORMAT(uudet / (1 / vuosia), \"0.0\"))),",
+              "IF(uudet = \"1-4\", CONCATENATE(FORMAT(1 / ka, \"0.0 – \"), FORMAT(4 / ka, \"0.0\")),",
+              "uudet / ka)))"
             ],
             "formatString": "#,0.0"
           },
@@ -10412,11 +10406,12 @@
             "expression": [
               "",
               "var lkm = [Yli 55 op suorittaneet - indikaattori]",
+              "var kaikki = [Amk opiskelijat]",
               "return IF(lkm = BLANK(), BLANK(),",
-              "\tvar kaikki = [Amk opiskelijat]",
-              "\treturn IF(kaikki = \"1-4\", \"25 % – 100 %\",",
-              "\t\tIF(lkm = \"1-4\", CONCATENATE(FORMAT(1 / kaikki, \"#0.0 % – \"), FORMAT(4 / kaikki, \"#0.0 %\")),",
-              "\t\t     lkm / kaikki)))",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(lkm = \"1-4\", IF(kaikki > 8000, \"0.0 %\",",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "lkm / kaikki)))",
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
@@ -10456,11 +10451,12 @@
             "expression": [
               "",
               "var lkm = [Maakuntaan muuttaneet uudet opiskelijat (pl. edellisen vuoden maakunta Tuntematon)]",
+              "var kaikki = MROUND(CALCULATE(SUM([Aloit2]), FILTER(Muuttujat, [Koodit Koulutuksen maakunta] <> \"-1\" && [asmaak1xmk] <> \"-1\")), 3)",
               "return IF(lkm = BLANK(), BLANK(),",
-              "\tvar kaikki = CALCULATE(SUM([Aloit2]), FILTER(Muuttujat, [Koodit Koulutuksen maakunta] <> \"-1\" && [asmaak1xmk] <> \"-1\"))",
-              "\treturn IF(kaikki < 5, \"25 % – 100 %\",",
-              "\t\tIF(lkm = \"1-4\", CONCATENATE(FORMAT(1 / MROUND(kaikki, 3), \"#0.0 % – \"), FORMAT(4 / MROUND(kaikki, 3), \"#0.0 %\")),",
-              "\t\t     lkm / MROUND(kaikki, 3))))",
+              "IF(kaikki < 5, \"25 % – 100 %\",",
+              "IF(lkm = \"1-4\", IF(kaikki > 8000, \"0.0 %\",",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "lkm / kaikki)))",
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
@@ -10487,263 +10483,269 @@
           },
           {
             "name": "19-21 vuotiaiden keskimääräinen ikäluokka_s",
-            "expression": "SUM([ika19_21_lkm])/3",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([ika19_21_lkm])/3)",
             "formatString": "#,0.0"
           },
           {
             "name": "20-24 vuotiaiden keskimääräinen ikäluokka_s",
-            "expression": "SUM([ika20_24_lkm])/5",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([ika20_24_lkm])/5)",
             "formatString": "#,0.0"
           },
           {
             "name": "25-34 vuotiaiden keskimääräinen ikäluokka_s",
-            "expression": "SUM([ika25_34_lkm])/10",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([ika25_34_lkm])/10)",
             "formatString": "#,0.0"
           },
           {
             "name": "25-64 vuotiaiden keskimääräinen ikäluokka_s",
-            "expression": "SUM([ika25_64_lkm])/40",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([ika25_64_lkm])/40)",
             "formatString": "#,0.0"
           },
           {
             "name": "Alemman ja ylemmän korkeakoulututkinnon uudet opiskelijat_s",
-            "expression": "CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"90\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"62\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"71\"))",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"90\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"62\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"71\")))",
             "formatString": "#,0"
           },
           {
             "name": "Alemman ja ylemmän korkeakoulututk. uudet opiskelijat / 19-21 vuotiaiden keskimääräinen ikäluokka_s",
-            "expression": "[Alemman ja ylemmän korkeakoulututkinnon uudet opiskelijat_s]/[19-21 vuotiaiden keskimääräinen ikäluokka_s]",
+            "expression": "IF([kytkin] = 0, BLANK(), [Alemman ja ylemmän korkeakoulututkinnon uudet opiskelijat_s]/[19-21 vuotiaiden keskimääräinen ikäluokka_s])",
             "formatString": "#,0.0"
           },
           {
             "name": "Ammattikorkeakoulujen nuorten koulutuksen uudet opiskelijat_s",
-            "expression": "CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"90\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"63\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"71\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"72\"), FILTER('Muuttujat', [Koodit Koulutustyyppi] <> \"2\"))",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"90\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"63\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"71\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"72\"), FILTER('Muuttujat', [Koodit Koulutustyyppi] <> \"2\")))",
             "formatString": "#,0"
           },
           {
             "name": "Ammattikorkeak. nuorten koulutuksen uudet opiskelijat / 19-21 vuotiaiden keskimääräinen ikäluokka_s",
-            "expression": "[Ammattikorkeakoulujen nuorten koulutuksen uudet opiskelijat_s]/[19-21 vuotiaiden keskimääräinen ikäluokka_s]",
+            "expression": "IF([kytkin] = 0, BLANK(), [Ammattikorkeakoulujen nuorten koulutuksen uudet opiskelijat_s]/[19-21 vuotiaiden keskimääräinen ikäluokka_s])",
             "formatString": "#,0.0"
           },
           {
             "name": "Ammattikorkeakoulujen aikuiskoulutuksen uudet opiskelijat_s",
-            "expression": "CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"90\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"63\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"71\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"72\"), FILTER('Muuttujat', [Koodit Koulutustyyppi] <> \"1\"))",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"90\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"63\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"71\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"72\"), FILTER('Muuttujat', [Koodit Koulutustyyppi] <> \"1\")))",
             "formatString": "#,0"
           },
           {
             "name": "Ylemmän ammattikorkeakoulututkinnon uudet opiskelijat_s",
-            "expression": "CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"90\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"63\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"72\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"62\"))",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"90\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"63\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"72\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"62\")))",
             "formatString": "#,0"
           },
           {
             "name": "Ammattikorkeak. aikuiskoulutuksen uudet opiskelijat / 25-64 vuotiaiden keskimääräinen ikäluokka_s",
-            "expression": "[Ammattikorkeakoulujen aikuiskoulutuksen uudet opiskelijat_s]/[25-64 vuotiaiden keskimääräinen ikäluokka_s]",
+            "expression": "IF([kytkin] = 0, BLANK(), [Ammattikorkeakoulujen aikuiskoulutuksen uudet opiskelijat_s]/[25-64 vuotiaiden keskimääräinen ikäluokka_s])",
             "formatString": "#,0.0"
           },
           {
             "name": "Ylemmän ammattikorkeakoulututkinnon uudet opiskelijat / 25-64 vuotiaiden keskimääräinen ikäluokka_s",
-            "expression": "[Ylemmän ammattikorkeakoulututkinnon uudet opiskelijat_s]/[25-64 vuotiaiden keskimääräinen ikäluokka_s]",
+            "expression": "IF([kytkin] = 0, BLANK(), [Ylemmän ammattikorkeakoulututkinnon uudet opiskelijat_s]/[25-64 vuotiaiden keskimääräinen ikäluokka_s])",
             "formatString": "#,0.0"
           },
           {
             "name": "Tutkinnot_s",
-            "expression": "CALCULATE(SUM([Tutk2]))",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([Tutk2])))",
             "formatString": "#,0"
           },
           {
             "name": "Ulkomaalaisten opiskelijoiden suorittamat tutkinnot_s",
-            "expression": "CALCULATE(SUM([Tutk2]), FILTER('Muuttujat', [Kansalaisuus] <> \"suomi\"),FILTER(Muuttujat,[Aineisto]=\"Lopullinen\"))",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([Tutk2]), FILTER('Muuttujat', [Kansalaisuus] <> \"suomi\"),FILTER(Muuttujat,[Aineisto]=\"Lopullinen\")))",
             "formatString": "#,0"
           },
           {
             "name": "Maakuntaan muuttaneet uudet opiskelijat (pl. edellisen vuoden maakunta Tuntematon)_s",
-            "expression": "CALCULATE(SUM([Aloit2]), FILTER(Muuttujat, [Koodit Koulutuksen maakunta] <> [asmaak1xmk] && [Koodit Koulutuksen maakunta] <> \"-1\" && [asmaak1xmk] <> \"-1\"))",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([Aloit2]), FILTER(Muuttujat, [Koodit Koulutuksen maakunta] <> [asmaak1xmk] && [Koodit Koulutuksen maakunta] <> \"-1\" && [asmaak1xmk] <> \"-1\")))",
             "formatString": "#,0"
           },
           {
             "name": "Maakuntaan muuttaneiden uusien opiskelijoiden osuus_s",
-            "expression": "CALCULATE(SUM([Aloit2]), FILTER(Muuttujat, [Koodit Koulutuksen maakunta] <> [asmaak1xmk] && [Koodit Koulutuksen maakunta] <> \"-1\" && [asmaak1xmk] <> \"-1\"))/CALCULATE(SUM([Aloit2]), FILTER(Muuttujat, [Koodit Koulutuksen maakunta] <> \"-1\" && [asmaak1xmk] <> \"-1\"))",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([Aloit2]), FILTER(Muuttujat, [Koodit Koulutuksen maakunta] <> [asmaak1xmk] && [Koodit Koulutuksen maakunta] <> \"-1\" && [asmaak1xmk] <> \"-1\"))/CALCULATE(SUM([Aloit2]), FILTER(Muuttujat, [Koodit Koulutuksen maakunta] <> \"-1\" && [asmaak1xmk] <> \"-1\")))",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Opiskelijat_s",
-            "expression": "SUM([Opisk2])",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([Opisk2]))",
             "formatString": "#,0"
           },
           {
             "name": "Uudet opiskelijat_s",
-            "expression": "IF(SUM([Aloit2])=0,blank(),SUM([Aloit2]))",
+            "expression": "IF([kytkin] = 0, BLANK(), IF(SUM([Aloit2])=0,blank(),SUM([Aloit2])))",
             "formatString": "#,0"
           },
           {
             "name": "Yli 55 op suorittaneet_s",
-            "expression": "CALCULATE(SUM([lkm_op55]), FILTER('Muuttujat', [Kirjoihintulovuosi] <> [Tilastovuosi]), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"90\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"62\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"71\"))",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([lkm_op55]), FILTER('Muuttujat', [Kirjoihintulovuosi] <> [Tilastovuosi]), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"90\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"62\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"71\")))",
             "formatString": "#,0"
           },
           {
             "name": "Yli 55 op suorittaneet - indikaattori_s",
-            "expression": "CALCULATE(SUM([lkm_op55]), FILTER('Muuttujat', [Kirjoihintulovuosi] <> [Tilastovuosi]), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"90\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"63\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"72\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"71\"), FILTER('Muuttujat', [kirjoillaolosyys_koodi] = \"1\"))",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([lkm_op55]), FILTER('Muuttujat', [Kirjoihintulovuosi] <> [Tilastovuosi]), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"90\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"63\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"72\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"71\"), FILTER('Muuttujat', [kirjoillaolosyys_koodi] = \"1\")))",
             "formatString": "#,0"
           },
           {
             "name": "Yli 55 op suorittaneiden osuus - indikaattori_s",
-            "expression": "[Yli 55 op suorittaneet - indikaattori_s]/[Amk opiskelijat_s]",
+            "expression": "IF([kytkin] = 0, BLANK(), [Yli 55 op suorittaneet - indikaattori_s]/[Amk opiskelijat_s])",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Aloittaneet_s",
-            "expression": "SUM([Aloit2])",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([Aloit2]))",
             "formatString": "#,0"
           },
           {
             "name": "Alemman ja ylemmän kk-tutkinnon opiskelijat_s",
-            "expression": "CALCULATE(SUM([Opisk2]), FILTER('Muuttujat', [Kirjoihintulovuosi] <> [Tilastovuosi]), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"90\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"62\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"71\"))",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([Opisk2]), FILTER('Muuttujat', [Kirjoihintulovuosi] <> [Tilastovuosi]), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"90\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"62\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"71\")))",
             "formatString": "#,0"
           },
           {
             "name": "Yli 55 op suorittaneiden osuus_s",
-            "expression": "[Yli 55 op suorittaneet_s]/[Alemman ja ylemmän kk-tutkinnon opiskelijat_s]",
+            "expression": "IF([kytkin] = 0, BLANK(), [Yli 55 op suorittaneet_s]/[Alemman ja ylemmän kk-tutkinnon opiskelijat_s])",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Yli 55 op suorittaneet (amk)_s",
-            "expression": "CALCULATE(SUM([lkm_op55]), FILTER('Muuttujat', [Kirjoihintulovuosi] <> [Tilastovuosi]), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"90\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"63\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"72\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"71\"))",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([lkm_op55]), FILTER('Muuttujat', [Kirjoihintulovuosi] <> [Tilastovuosi]), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"90\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"63\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"72\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"71\")))",
             "formatString": "#,0"
           },
           {
             "name": "Amk opiskelijat_s",
-            "expression": "CALCULATE(SUM([Opisk2]), FILTER('Muuttujat', [Kirjoihintulovuosi] <> [Tilastovuosi]), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"90\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"63\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"72\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"71\"), FILTER('Muuttujat', [kirjoillaolosyys_koodi] = \"1\"))",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([Opisk2]), FILTER('Muuttujat', [Kirjoihintulovuosi] <> [Tilastovuosi]), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"90\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"63\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"72\"), FILTER('Muuttujat', [Koodit Koulutusaste 2002] <> \"71\"), FILTER('Muuttujat', [kirjoillaolosyys_koodi] = \"1\")))",
             "formatString": "#,0"
           },
           {
             "name": "Yli 55 op suorittaneiden osuus (amk)_s",
-            "expression": "[Yli 55 op suorittaneet (amk)_s]/[Amk opiskelijat_s]",
+            "expression": "IF([kytkin] = 0, BLANK(), [Yli 55 op suorittaneet (amk)_s]/[Amk opiskelijat_s])",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Uudet ulkomaalaiset opiskelijat_s",
-            "expression": "IF(CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Kansalaisuus] <> \"suomi\"),FILTER(Muuttujat,[Aineisto]=\"Lopullinen\"))=0,blank(),CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Kansalaisuus] <> \"suomi\"),FILTER(Muuttujat,[Aineisto]=\"Lopullinen\")))",
+            "expression": "IF([kytkin] = 0, BLANK(), IF(CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Kansalaisuus] <> \"suomi\"),FILTER(Muuttujat,[Aineisto]=\"Lopullinen\"))=0,blank(),CALCULATE(SUM([Aloit2]), FILTER('Muuttujat', [Kansalaisuus] <> \"suomi\"),FILTER(Muuttujat,[Aineisto]=\"Lopullinen\"))))",
             "formatString": "#,0"
           },
           {
             "name": "Ulkomaalaiset opiskelijat_s",
-            "expression": "CALCULATE(SUM([Opisk2]), FILTER('Muuttujat', [Kansalaisuus] <> \"suomi\"),FILTER(Muuttujat,[Aineisto]=\"Lopullinen\"))",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([Opisk2]), FILTER('Muuttujat', [Kansalaisuus] <> \"suomi\"),FILTER(Muuttujat,[Aineisto]=\"Lopullinen\")))",
             "formatString": "#,0"
           },
           {
             "name": "0 op suorittaneet (ml. poissaolevat)_s",
-            "expression": "CALCULATE(SUM([lkm_op0]), FILTER('Muuttujat', [Kirjoihintulovuosi kk läsnä] <> [Tilastovuosi]), FILTER('Muuttujat', OR([Koodit Koulutusaste 2002] = \"62\",[Koodit Koulutusaste 2002] = \"71\")))",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([lkm_op0]), FILTER('Muuttujat', [Kirjoihintulovuosi kk läsnä] <> [Tilastovuosi]), FILTER('Muuttujat', OR([Koodit Koulutusaste 2002] = \"62\",[Koodit Koulutusaste 2002] = \"71\"))))",
             "formatString": "#,0"
           },
           {
             "name": "1-14 op suorittaneet_s",
-            "expression": "SUM([lkm_op1_14])",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([lkm_op1_14]))",
             "formatString": "#,0"
           },
           {
             "name": "15-29 op suorittaneet_s",
-            "expression": "SUM([lkm_op15_29])",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([lkm_op15_29]))",
             "formatString": "#,0"
           },
           {
             "name": "30-44 op suorittaneet_s",
-            "expression": "SUM([lkm_op30_44])",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([lkm_op30_44]))",
             "formatString": "#,0"
           },
           {
             "name": "45-59 op suorittaneet_s",
-            "expression": "SUM([lkm_op45_59])",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([lkm_op45_59]))",
             "formatString": "#,0"
           },
           {
             "name": "60-74 op suorittaneet_s",
-            "expression": "SUM([lkm_op60_74])",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([lkm_op60_74]))",
             "formatString": "#,0"
           },
           {
             "name": "75-89 op suorittaneet_s",
-            "expression": "SUM([lkm_op75_89])",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([lkm_op75_89]))",
             "formatString": "#,0"
           },
           {
             "name": "90-104 op suorittaneet_s",
-            "expression": "SUM([lkm_op90_104])",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([lkm_op90_104]))",
             "formatString": "#,0"
           },
           {
             "name": "105-119 op suorittaneet_s",
-            "expression": "SUM([lkm_op105_119])",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([lkm_op105_119]))",
             "formatString": "#,0"
           },
           {
             "name": "Yli 120 op suorittaneet_s",
-            "expression": "SUM([lkm_op120_])",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([lkm_op120_]))",
             "formatString": "#,0"
           },
           {
             "name": "Aloittaneet (TK määritelmä)_s",
-            "expression": "calculate(SUM([aloittaneet_kirjoihintulovuosi]),FILTER(Muuttujat,[Koodit Koulutusaste taso 2]<>\"91\"))",
+            "expression": "IF([kytkin] = 0, BLANK(), calculate(SUM([aloittaneet_kirjoihintulovuosi]),FILTER(Muuttujat,[Koodit Koulutusaste taso 2]<>\"91\")))",
             "formatString": "#,0"
           },
           {
             "name": "Aloittaneet (korkeakoulusektori)_s",
-            "expression": "SUM([aloittaneet_korkeakoulusektori])",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([aloittaneet_korkeakoulusektori]))",
             "formatString": "#,0"
           },
           {
             "name": "Aloittaneet (korkeakoulusektori läsnäoleva)_s",
-            "expression": "SUM([aloittaneet_korkeakoulusektori_lasnaoleva])",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([aloittaneet_korkeakoulusektori_lasnaoleva]))",
             "formatString": "#,0"
           },
           {
             "name": "Aloittaneet (sektori)_s",
-            "expression": "SUM([aloittaneet_sektori])",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([aloittaneet_sektori]))",
             "formatString": "#,0"
           },
           {
             "name": "Aloittaneet (sektori läsnäoleva)_s",
-            "expression": "SUM([aloittaneet_sektori_lasnaoleva])",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([aloittaneet_sektori_lasnaoleva]))",
             "formatString": "#,0"
           },
           {
             "name": "Aloittaneet (korkeakoulu)_s",
-            "expression": "SUM([aloittaneet_korkeakoulu])",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([aloittaneet_korkeakoulu]))",
             "formatString": "#,0"
           },
           {
             "name": "Aloittaneet (korkeakoulu läsnäoleva)_s",
-            "expression": "SUM([aloittaneet_korkeakoulu_lasnaoleva])",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([aloittaneet_korkeakoulu_lasnaoleva]))",
             "formatString": "#,0"
           },
           {
             "name": "Aloittaneet (opintoala)_s",
-            "expression": "SUM([aloittaneet_opintoala])",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([aloittaneet_opintoala]))",
             "formatString": "#,0"
           },
           {
             "name": "Aloittaneet (opintoala läsnäoleva)_s",
-            "expression": "SUM([aloittaneet_opintoala_lasnaoleva])",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([aloittaneet_opintoala_lasnaoleva]))",
             "formatString": "#,0"
           },
           {
             "name": "Opiskelijat (läsnä)_s",
-            "expression": "SUM([opiskelijat_lasna])",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([opiskelijat_lasna]))",
             "formatString": "#,0"
           },
           {
             "name": "Opiskelijat FTE_s",
-            "expression": "SUM([opiskelijat_fte])",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM([opiskelijat_fte]))",
             "formatString": "#,0.0"
           },
           {
             "name": "Ulkomaalaiset opiskelijat FTE_s",
-            "expression": "CALCULATE(SUM([opiskelijat_fte]), FILTER('Muuttujat', [Kansalaisuus] <> \"suomi\"),FILTER(Muuttujat,[Aineisto]=\"Lopullinen\"))",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([opiskelijat_fte]), FILTER('Muuttujat', [Kansalaisuus] <> \"suomi\"),FILTER(Muuttujat,[Aineisto]=\"Lopullinen\")))",
             "formatString": "#,0"
           },
           {
             "name": "Students who attained more than 55 credits (polytechnic)",
             "expression": "[Yli 55 op suorittaneet (amk)]",
             "formatString": "#,0"
+          },
+          {
+            "name": "kytkin",
+            "expression": "IF(LEFT(USERNAME(), 4) = \"DWI\\\", 1, 0)",
+            "formatString": "0",
+            "isHidden": true
           }
         ],
         "annotations": [

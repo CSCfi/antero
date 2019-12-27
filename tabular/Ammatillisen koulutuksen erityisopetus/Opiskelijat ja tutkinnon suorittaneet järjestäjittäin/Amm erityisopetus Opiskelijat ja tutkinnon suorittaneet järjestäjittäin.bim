@@ -5353,13 +5353,19 @@
           },
           {
             "name": "Erityisopetuksen opiskelijat_s",
-            "expression": "CALCULATE(SUM([opiskelijat]))",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([opiskelijat])))",
             "formatString": "#,0"
           },
           {
             "name": "Erityisopetuksen tutkinnon suorittaneet_s",
-            "expression": "CALCULATE(SUM([lkm]),FILTER(Muuttujat, [Perusjoukko] = \"Tutkinnon suorittaneet (ei sisällä osatutkintoja)\"))",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([lkm]),FILTER(Muuttujat, [Perusjoukko] = \"Tutkinnon suorittaneet (ei sisällä osatutkintoja)\")))",
             "formatString": "#,0"
+          },
+          {
+            "name": "kytkin",
+            "expression": "IF(LEFT(USERNAME(), 4) = \"DWI\\\", 1, 0)",
+            "formatString": "0",
+            "isHidden": true
           }
         ],
         "annotations": [
@@ -6032,6 +6038,10 @@
           {
             "memberName": "DWI\\T_VIPU_SSAS_DB_R_TK",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1753"
+          },
+          {
+            "memberName": "DWI\\Z_P_Antero_Full_Read_TAB",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-2272"
           }
         ]
       },
@@ -6050,6 +6060,10 @@
           {
             "memberName": "DWI\\P_VIPU_SSAS_DB_R_TK",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1754"
+          },
+          {
+            "memberName": "DWI\\Z_P_Antero_Full_Read_TAB",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-2272"
           }
         ]
       }

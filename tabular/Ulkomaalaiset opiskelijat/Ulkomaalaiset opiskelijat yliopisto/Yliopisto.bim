@@ -21866,14 +21866,12 @@ CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirjautuneet ulkomailla syntyneet opi
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Vieraskielisten opiskelijoiden osuus kaikista opiskelijoista]=
-var lkm = [Vieraskieliset opiskelijat]
+CREATE MEASURE 'Muuttujat'[Vieraskielisten opiskelijoiden osuus kaikista opiskelijoista]=var lkm = [Vieraskieliset opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki opiskelijat], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -21892,14 +21890,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Ulkomaalaisten opiskelijoiden osuus kaikista opiskelijoista]=
-var lkm = [Ulkomaalaiset opiskelijat]
+CREATE MEASURE 'Muuttujat'[Ulkomaalaisten opiskelijoiden osuus kaikista opiskelijoista]=var lkm = [Ulkomaalaiset opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki opiskelijat], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -21918,14 +21914,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneiden opiskelijoiden osuus kaikista opiskelijoista]=
-var lkm = [Ulkomailla syntyneet opiskelijat]
+CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneiden opiskelijoiden osuus kaikista opiskelijoista]=var lkm = [Ulkomailla syntyneet opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki opiskelijat], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -21944,14 +21938,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Vieraskielisten aloittaneiden osuus kaikista aloittaneista]=
-var lkm = [Vieraskieliset aloittaneet]
+CREATE MEASURE 'Muuttujat'[Vieraskielisten aloittaneiden osuus kaikista aloittaneista]=var lkm = [Vieraskieliset aloittaneet]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki aloittaneet], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -21970,14 +21962,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Ulkomaalaisten aloittaneiden osuus kaikista aloittaneista]=
-var lkm = [Ulkomaalaiset aloittaneet]
+CREATE MEASURE 'Muuttujat'[Ulkomaalaisten aloittaneiden osuus kaikista aloittaneista]=var lkm = [Ulkomaalaiset aloittaneet]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki aloittaneet], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -21996,14 +21986,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneiden aloittaneiden osuus kaikista aloittaneista]=
-var lkm = [Ulkomailla syntyneet aloittaneet]
+CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneiden aloittaneiden osuus kaikista aloittaneista]=var lkm = [Ulkomailla syntyneet aloittaneet]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki aloittaneet], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -22022,14 +22010,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Vieraskielisten uusien opiskelijoiden osuus kaikista uusista opiskelijoista]=
-var lkm = [Vieraskieliset uudet opiskelijat]
+CREATE MEASURE 'Muuttujat'[Vieraskielisten uusien opiskelijoiden osuus kaikista uusista opiskelijoista]=var lkm = [Vieraskieliset uudet opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki uudet opiskelijat], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -22048,14 +22034,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Ulkomaalaisten uusien opiskelijoiden osuus kaikista uusista opiskelijoista]=
-var lkm = [Ulkomaalaiset uudet opiskelijat]
+CREATE MEASURE 'Muuttujat'[Ulkomaalaisten uusien opiskelijoiden osuus kaikista uusista opiskelijoista]=var lkm = [Ulkomaalaiset uudet opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki uudet opiskelijat], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -22074,14 +22058,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneiden uusien opiskelijoiden osuus kaikista uusista opiskelijoista]=
-var lkm = [Ulkomailla syntyneet uudet opiskelijat]
+CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneiden uusien opiskelijoiden osuus kaikista uusista opiskelijoista]=var lkm = [Ulkomailla syntyneet uudet opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki uudet opiskelijat], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -22100,14 +22082,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirj. vieraskielisten opiskelijoiden osuus kaikista läsnäolevista]=
-var lkm = [Läsnäolevaksi kirjautuneet vieraskieliset opiskelijat]
+CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirj. vieraskielisten opiskelijoiden osuus kaikista läsnäolevista]=var lkm = [Läsnäolevaksi kirjautuneet vieraskieliset opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -22126,14 +22106,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirj. ulkomaalaisten opiskelijoiden osuus kaik. läsnäolevista]=
-var lkm = [Läsnäolevaksi kirjautuneet ulkomaalaiset opiskelijat]
+CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirj. ulkomaalaisten opiskelijoiden osuus kaik. läsnäolevista]=var lkm = [Läsnäolevaksi kirjautuneet ulkomaalaiset opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -22152,14 +22130,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirj. ulkomailla syntyneiden opiskelijoiden osuus kaikista läsnäolevista]=
-var lkm = [Läsnäolevaksi kirjautuneet ulkomailla syntyneet opiskelijat]
+CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirj. ulkomailla syntyneiden opiskelijoiden osuus kaikista läsnäolevista]=var lkm = [Läsnäolevaksi kirjautuneet ulkomailla syntyneet opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -22254,14 +22230,12 @@ CREATE MEASURE 'Muuttujat'[Studerande som är utrikes födda]=CALCULATE([Kaikki 
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Andel som studerande med ett främmande modersmål av samtliga studerande]=
-var lkm = [Vieraskieliset opiskelijat]
+CREATE MEASURE 'Muuttujat'[Andel som studerande med ett främmande modersmål av samtliga studerande]=var lkm = [Vieraskieliset opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki opiskelijat], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -22280,14 +22254,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Andel som utländska studerande av samtliga studerande]=
-var lkm = [Ulkomaalaiset opiskelijat]
+CREATE MEASURE 'Muuttujat'[Andel som utländska studerande av samtliga studerande]=var lkm = [Ulkomaalaiset opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki opiskelijat], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -22306,14 +22278,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Andel som studerande som är utrikes födda av samtliga studerande]=
-var lkm = [Ulkomailla syntyneet opiskelijat]
+CREATE MEASURE 'Muuttujat'[Andel som studerande som är utrikes födda av samtliga studerande]=var lkm = [Ulkomailla syntyneet opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki opiskelijat], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -22560,14 +22530,12 @@ CREATE MEASURE 'Muuttujat'[Närvarande studerande som är utrikes födda]=CALCUL
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Andel som nybörjare med ett främmande modersmål av samtliga nybörjare]=
-var lkm = [Vieraskieliset aloittaneet]
+CREATE MEASURE 'Muuttujat'[Andel som nybörjare med ett främmande modersmål av samtliga nybörjare]=var lkm = [Vieraskieliset aloittaneet]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki aloittaneet], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -22586,14 +22554,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Andel som utländska nybörjare av samtliga nybörjare]=
-var lkm = [Ulkomaalaiset aloittaneet]
+CREATE MEASURE 'Muuttujat'[Andel som utländska nybörjare av samtliga nybörjare]=var lkm = [Ulkomaalaiset aloittaneet]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki aloittaneet], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -22612,14 +22578,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Andel som nybörjare som är utrikes födda av samtliga nybörjare]=
-var lkm = [Ulkomailla syntyneet aloittaneet]
+CREATE MEASURE 'Muuttujat'[Andel som nybörjare som är utrikes födda av samtliga nybörjare]=var lkm = [Ulkomailla syntyneet aloittaneet]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki aloittaneet], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -22638,14 +22602,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Andel som nya studerande med ett främmande modersmål av samtliga nya studerande]=
-var lkm = [Vieraskieliset uudet opiskelijat]
+CREATE MEASURE 'Muuttujat'[Andel som nya studerande med ett främmande modersmål av samtliga nya studerande]=var lkm = [Vieraskieliset uudet opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki uudet opiskelijat], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -22664,14 +22626,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Andel som utländska nya studerande av samtliga nya studerande]=
-var lkm = [Ulkomaalaiset uudet opiskelijat]
+CREATE MEASURE 'Muuttujat'[Andel som utländska nya studerande av samtliga nya studerande]=var lkm = [Ulkomaalaiset uudet opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki uudet opiskelijat], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -22690,14 +22650,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Andel som nya studerande som är utrikes födda av samtliga nya studerande]=
-var lkm = [Ulkomailla syntyneet uudet opiskelijat]
+CREATE MEASURE 'Muuttujat'[Andel som nya studerande som är utrikes födda av samtliga nya studerande]=var lkm = [Ulkomailla syntyneet uudet opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki uudet opiskelijat], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -22716,14 +22674,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Andel som närvarande studerande med ett främmande modersmål av samtliga närvarande]=
-var lkm = [Läsnäolevaksi kirjautuneet vieraskieliset opiskelijat]
+CREATE MEASURE 'Muuttujat'[Andel som närvarande studerande med ett främmande modersmål av samtliga närvarande]=var lkm = [Läsnäolevaksi kirjautuneet vieraskieliset opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -22742,14 +22698,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Andel som närvarande utländska studerande av samtliga närvarande]=
-var lkm = [Läsnäolevaksi kirjautuneet ulkomaalaiset opiskelijat]
+CREATE MEASURE 'Muuttujat'[Andel som närvarande utländska studerande av samtliga närvarande]=var lkm = [Läsnäolevaksi kirjautuneet ulkomaalaiset opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -22768,14 +22722,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Andel som närvarande studerande som är utrikes födda av samtliga närvarande]=
-var lkm = [Läsnäolevaksi kirjautuneet ulkomailla syntyneet opiskelijat]
+CREATE MEASURE 'Muuttujat'[Andel som närvarande studerande som är utrikes födda av samtliga närvarande]=var lkm = [Läsnäolevaksi kirjautuneet ulkomailla syntyneet opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -22984,14 +22936,12 @@ CREATE MEASURE 'Muuttujat'[New foreign students]=CALCULATE([Kaikki uudet opiskel
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Percentage of foreign-language students (of all students)]=
-var lkm = [Vieraskieliset opiskelijat]
+CREATE MEASURE 'Muuttujat'[Percentage of foreign-language students (of all students)]=var lkm = [Vieraskieliset opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki opiskelijat], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23010,14 +22960,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Percentage of foreign students (of all students)]=
-var lkm = [Ulkomaalaiset opiskelijat]
+CREATE MEASURE 'Muuttujat'[Percentage of foreign students (of all students)]=var lkm = [Ulkomaalaiset opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki opiskelijat], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23036,14 +22984,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Percentage of students born abroad (of all students)]=
-var lkm = [Ulkomailla syntyneet opiskelijat]
+CREATE MEASURE 'Muuttujat'[Percentage of students born abroad (of all students)]=var lkm = [Ulkomailla syntyneet opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki opiskelijat], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23176,14 +23122,12 @@ CREATE MEASURE 'Muuttujat'[Students born abroad enrolled as present]=CALCULATE([
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Percentage of foreign-language admitted (of all admitted)]=
-var lkm = [Vieraskieliset aloittaneet]
+CREATE MEASURE 'Muuttujat'[Percentage of foreign-language admitted (of all admitted)]=var lkm = [Vieraskieliset aloittaneet]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki aloittaneet], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23202,14 +23146,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Percentage of foreign admitted (of all admitted)]=
-var lkm = [Ulkomaalaiset aloittaneet]
+CREATE MEASURE 'Muuttujat'[Percentage of foreign admitted (of all admitted)]=var lkm = [Ulkomaalaiset aloittaneet]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki aloittaneet], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23228,14 +23170,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Percentage of admitted born abroad (of all admitted)]=
-var lkm = [Ulkomailla syntyneet aloittaneet]
+CREATE MEASURE 'Muuttujat'[Percentage of admitted born abroad (of all admitted)]=var lkm = [Ulkomailla syntyneet aloittaneet]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki aloittaneet], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23254,14 +23194,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Percentage of new foreign-language students (of all new students)]=
-var lkm = [Vieraskieliset uudet opiskelijat]
+CREATE MEASURE 'Muuttujat'[Percentage of new foreign-language students (of all new students)]=var lkm = [Vieraskieliset uudet opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki uudet opiskelijat], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23280,14 +23218,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Percentage of new foreign students (of all new students)]=
-var lkm = [Ulkomaalaiset uudet opiskelijat]
+CREATE MEASURE 'Muuttujat'[Percentage of new foreign students (of all new students)]=var lkm = [Ulkomaalaiset uudet opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki uudet opiskelijat], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23306,14 +23242,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Percentage of new students born abroad (of all new students)]=
-var lkm = [Ulkomailla syntyneet uudet opiskelijat]
+CREATE MEASURE 'Muuttujat'[Percentage of new students born abroad (of all new students)]=var lkm = [Ulkomailla syntyneet uudet opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki uudet opiskelijat], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23332,14 +23266,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Percentage of foreign-language students enrolled as present (of all present students)]=
-var lkm = [Läsnäolevaksi kirjautuneet vieraskieliset opiskelijat]
+CREATE MEASURE 'Muuttujat'[Percentage of foreign-language students enrolled as present (of all present students)]=var lkm = [Läsnäolevaksi kirjautuneet vieraskieliset opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23358,14 +23290,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Percentage of foreign students enrolled as present (of all present students)]=
-var lkm = [Läsnäolevaksi kirjautuneet ulkomaalaiset opiskelijat]
+CREATE MEASURE 'Muuttujat'[Percentage of foreign students enrolled as present (of all present students)]=var lkm = [Läsnäolevaksi kirjautuneet ulkomaalaiset opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23384,14 +23314,12 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Percentage of students born abroad enrolled as present (of all present students)]=
-var lkm = [Läsnäolevaksi kirjautuneet ulkomailla syntyneet opiskelijat]
+CREATE MEASURE 'Muuttujat'[Percentage of students born abroad enrolled as present (of all present students)]=var lkm = [Läsnäolevaksi kirjautuneet ulkomailla syntyneet opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4",  CONCATENATE(FORMAT(ROUND(1 / kaikki, 3), "#0.0 % – "), FORMAT(ROUND(4 / kaikki, 3), "#0.0 %")),
-                                     lkm / kaikki)))
-;
+                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                     lkm / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23410,7 +23338,7 @@ return IF(lkm = BLANK(), BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Kaikki opiskelijat_s]=IF(SUM([lkm_op2]) = 0, BLANK(),SUM([lkm_op2]));
+CREATE MEASURE 'Muuttujat'[Kaikki opiskelijat_s]=IF([kytkin] = 0, BLANK(), IF(SUM([lkm_op2]) = 0, BLANK(),SUM([lkm_op2])));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23429,7 +23357,7 @@ CREATE MEASURE 'Muuttujat'[Kaikki opiskelijat_s]=IF(SUM([lkm_op2]) = 0, BLANK(),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Vieraskieliset opiskelijat_s]=CALCULATE([Kaikki opiskelijat_s], FILTER('Muuttujat', [koodi_ai] &lt;&gt; "fs" &amp;&amp; [koodi_ai] &lt;&gt; "sv"));
+CREATE MEASURE 'Muuttujat'[Vieraskieliset opiskelijat_s]=IF([kytkin] = 0, BLANK(), CALCULATE([Kaikki opiskelijat_s], FILTER('Muuttujat', [koodi_ai] &lt;&gt; "fs" &amp;&amp; [koodi_ai] &lt;&gt; "sv")));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23448,7 +23376,7 @@ CREATE MEASURE 'Muuttujat'[Vieraskieliset opiskelijat_s]=CALCULATE([Kaikki opisk
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Ulkomaalaiset opiskelijat_s]=CALCULATE([Kaikki opiskelijat_s], FILTER('Muuttujat', [koodi_kan] &lt;&gt; "1"));
+CREATE MEASURE 'Muuttujat'[Ulkomaalaiset opiskelijat_s]=IF([kytkin] = 0, BLANK(), CALCULATE([Kaikki opiskelijat_s], FILTER('Muuttujat', [koodi_kan] &lt;&gt; "1")));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23467,7 +23395,7 @@ CREATE MEASURE 'Muuttujat'[Ulkomaalaiset opiskelijat_s]=CALCULATE([Kaikki opiske
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneet opiskelijat_s]=CALCULATE([Kaikki opiskelijat_s], FILTER('Muuttujat', [koodi_syn] &lt;&gt; "1"));
+CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneet opiskelijat_s]=IF([kytkin] = 0, BLANK(), CALCULATE([Kaikki opiskelijat_s], FILTER('Muuttujat', [koodi_syn] &lt;&gt; "1")));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23486,7 +23414,7 @@ CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneet opiskelijat_s]=CALCULATE([Kaikki
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Vieraskielisten opiskelijoiden osuus kaikista opiskelijoista_s]=[Vieraskieliset opiskelijat_s]/CALCULATE([Kaikki opiskelijat_s], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]));
+CREATE MEASURE 'Muuttujat'[Vieraskielisten opiskelijoiden osuus kaikista opiskelijoista_s]=IF([kytkin] = 0, BLANK(), [Vieraskieliset opiskelijat_s]/CALCULATE([Kaikki opiskelijat_s], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)])));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23505,7 +23433,7 @@ CREATE MEASURE 'Muuttujat'[Vieraskielisten opiskelijoiden osuus kaikista opiskel
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Ulkomaalaisten opiskelijoiden osuus kaikista opiskelijoista_s]=[Ulkomaalaiset opiskelijat_s]/CALCULATE([Kaikki opiskelijat_s], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]));
+CREATE MEASURE 'Muuttujat'[Ulkomaalaisten opiskelijoiden osuus kaikista opiskelijoista_s]=IF([kytkin] = 0, BLANK(), [Ulkomaalaiset opiskelijat_s]/CALCULATE([Kaikki opiskelijat_s], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)])));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23524,7 +23452,7 @@ CREATE MEASURE 'Muuttujat'[Ulkomaalaisten opiskelijoiden osuus kaikista opiskeli
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneiden opiskelijoiden osuus kaikista opiskelijoista_s]=[Ulkomailla syntyneet opiskelijat_s]/CALCULATE([Kaikki opiskelijat_s], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]));
+CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneiden opiskelijoiden osuus kaikista opiskelijoista_s]=IF([kytkin] = 0, BLANK(), [Ulkomailla syntyneet opiskelijat_s]/CALCULATE([Kaikki opiskelijat_s], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)])));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23543,7 +23471,7 @@ CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneiden opiskelijoiden osuus kaikista 
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Kaikki aloittaneet_s]=IF([lkm_aloit3] = 0, BLANK(),[lkm_aloit3]);
+CREATE MEASURE 'Muuttujat'[Kaikki aloittaneet_s]=IF([kytkin] = 0, BLANK(), IF([lkm_aloit3] = 0, BLANK(),[lkm_aloit3]));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23562,7 +23490,7 @@ CREATE MEASURE 'Muuttujat'[Kaikki aloittaneet_s]=IF([lkm_aloit3] = 0, BLANK(),[l
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Kaikki läsnäolevaksi kirjautuneet opiskelijat_s]=IF(SUM([lkm_opiskolo2]) = 0, BLANK(),SUM([lkm_opiskolo2]));
+CREATE MEASURE 'Muuttujat'[Kaikki läsnäolevaksi kirjautuneet opiskelijat_s]=IF([kytkin] = 0, BLANK(), IF(SUM([lkm_opiskolo2]) = 0, BLANK(),SUM([lkm_opiskolo2])));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23581,7 +23509,7 @@ CREATE MEASURE 'Muuttujat'[Kaikki läsnäolevaksi kirjautuneet opiskelijat_s]=IF
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Kaikki uudet opiskelijat_s]=IF([lkm_aloit3] = 0, BLANK(),[lkm_aloit3]);
+CREATE MEASURE 'Muuttujat'[Kaikki uudet opiskelijat_s]=IF([kytkin] = 0, BLANK(), IF([lkm_aloit3] = 0, BLANK(),[lkm_aloit3]));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23600,7 +23528,7 @@ CREATE MEASURE 'Muuttujat'[Kaikki uudet opiskelijat_s]=IF([lkm_aloit3] = 0, BLAN
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Ulkomaalaiset aloittaneet_s]=CALCULATE([Kaikki aloittaneet_s], FILTER('Muuttujat', [koodi_kan] &lt;&gt; "1"));
+CREATE MEASURE 'Muuttujat'[Ulkomaalaiset aloittaneet_s]=IF([kytkin] = 0, BLANK(), CALCULATE([Kaikki aloittaneet_s], FILTER('Muuttujat', [koodi_kan] &lt;&gt; "1")));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23619,7 +23547,7 @@ CREATE MEASURE 'Muuttujat'[Ulkomaalaiset aloittaneet_s]=CALCULATE([Kaikki aloitt
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Vieraskieliset aloittaneet_s]=CALCULATE([Kaikki aloittaneet_s], FILTER('Muuttujat', [koodi_ai] &lt;&gt; "fs" &amp;&amp; [koodi_ai] &lt;&gt; "sv"));
+CREATE MEASURE 'Muuttujat'[Vieraskieliset aloittaneet_s]=IF([kytkin] = 0, BLANK(), CALCULATE([Kaikki aloittaneet_s], FILTER('Muuttujat', [koodi_ai] &lt;&gt; "fs" &amp;&amp; [koodi_ai] &lt;&gt; "sv")));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23638,7 +23566,7 @@ CREATE MEASURE 'Muuttujat'[Vieraskieliset aloittaneet_s]=CALCULATE([Kaikki aloit
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneet aloittaneet_s]=CALCULATE([Kaikki aloittaneet_s], FILTER('Muuttujat', [koodi_syn] &lt;&gt; "1"));
+CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneet aloittaneet_s]=IF([kytkin] = 0, BLANK(), CALCULATE([Kaikki aloittaneet_s], FILTER('Muuttujat', [koodi_syn] &lt;&gt; "1")));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23657,7 +23585,7 @@ CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneet aloittaneet_s]=CALCULATE([Kaikki
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Vieraskieliset uudet opiskelijat_s]=CALCULATE([Kaikki uudet opiskelijat_s], FILTER('Muuttujat', [koodi_ai] &lt;&gt; "fs" &amp;&amp; [koodi_ai] &lt;&gt; "sv"));
+CREATE MEASURE 'Muuttujat'[Vieraskieliset uudet opiskelijat_s]=IF([kytkin] = 0, BLANK(), CALCULATE([Kaikki uudet opiskelijat_s], FILTER('Muuttujat', [koodi_ai] &lt;&gt; "fs" &amp;&amp; [koodi_ai] &lt;&gt; "sv")));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23676,7 +23604,7 @@ CREATE MEASURE 'Muuttujat'[Vieraskieliset uudet opiskelijat_s]=CALCULATE([Kaikki
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Ulkomaalaiset uudet opiskelijat_s]=CALCULATE([Kaikki uudet opiskelijat_s], FILTER('Muuttujat', [koodi_kan] &lt;&gt; "1"));
+CREATE MEASURE 'Muuttujat'[Ulkomaalaiset uudet opiskelijat_s]=IF([kytkin] = 0, BLANK(), CALCULATE([Kaikki uudet opiskelijat_s], FILTER('Muuttujat', [koodi_kan] &lt;&gt; "1")));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23695,7 +23623,7 @@ CREATE MEASURE 'Muuttujat'[Ulkomaalaiset uudet opiskelijat_s]=CALCULATE([Kaikki 
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneet uudet opiskelijat_s]=CALCULATE([Kaikki uudet opiskelijat_s], FILTER('Muuttujat', [koodi_syn] &lt;&gt; "1"));
+CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneet uudet opiskelijat_s]=IF([kytkin] = 0, BLANK(), CALCULATE([Kaikki uudet opiskelijat_s], FILTER('Muuttujat', [koodi_syn] &lt;&gt; "1")));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23714,7 +23642,7 @@ CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneet uudet opiskelijat_s]=CALCULATE([
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirjautuneet vieraskieliset opiskelijat_s]=CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat_s], FILTER('Muuttujat', [koodi_ai] &lt;&gt; "fs" &amp;&amp; [koodi_ai] &lt;&gt; "sv"));
+CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirjautuneet vieraskieliset opiskelijat_s]=IF([kytkin] = 0, BLANK(), CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat_s], FILTER('Muuttujat', [koodi_ai] &lt;&gt; "fs" &amp;&amp; [koodi_ai] &lt;&gt; "sv")));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23733,7 +23661,7 @@ CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirjautuneet vieraskieliset opiskelij
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Vieraskielisten aloittaneiden osuus kaikista aloittaneista_s]=[Vieraskieliset aloittaneet_s]/CALCULATE([Kaikki aloittaneet_s], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]));
+CREATE MEASURE 'Muuttujat'[Vieraskielisten aloittaneiden osuus kaikista aloittaneista_s]=IF([kytkin] = 0, BLANK(), [Vieraskieliset aloittaneet_s]/CALCULATE([Kaikki aloittaneet_s], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)])));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23752,7 +23680,7 @@ CREATE MEASURE 'Muuttujat'[Vieraskielisten aloittaneiden osuus kaikista aloittan
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Ulkomaalaisten aloittaneiden osuus kaikista aloittaneista_s]=[Ulkomaalaiset aloittaneet_s]/CALCULATE([Kaikki aloittaneet_s], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]));
+CREATE MEASURE 'Muuttujat'[Ulkomaalaisten aloittaneiden osuus kaikista aloittaneista_s]=IF([kytkin] = 0, BLANK(), [Ulkomaalaiset aloittaneet_s]/CALCULATE([Kaikki aloittaneet_s], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)])));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23771,7 +23699,7 @@ CREATE MEASURE 'Muuttujat'[Ulkomaalaisten aloittaneiden osuus kaikista aloittane
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneiden aloittaneiden osuus kaikista aloittaneista_s]=[Ulkomailla syntyneet aloittaneet_s]/CALCULATE([Kaikki aloittaneet_s], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]));
+CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneiden aloittaneiden osuus kaikista aloittaneista_s]=IF([kytkin] = 0, BLANK(), [Ulkomailla syntyneet aloittaneet_s]/CALCULATE([Kaikki aloittaneet_s], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)])));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23790,7 +23718,7 @@ CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneiden aloittaneiden osuus kaikista a
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Vieraskielisten uusien opiskelijoiden osuus kaikista uusista opiskelijoista_s]=[Vieraskieliset uudet opiskelijat_s]/CALCULATE([Kaikki uudet opiskelijat_s], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]));
+CREATE MEASURE 'Muuttujat'[Vieraskielisten uusien opiskelijoiden osuus kaikista uusista opiskelijoista_s]=IF([kytkin] = 0, BLANK(), [Vieraskieliset uudet opiskelijat_s]/CALCULATE([Kaikki uudet opiskelijat_s], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)])));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23809,7 +23737,7 @@ CREATE MEASURE 'Muuttujat'[Vieraskielisten uusien opiskelijoiden osuus kaikista 
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Ulkomaalaisten uusien opiskelijoiden osuus kaikista uusista opiskelijoista_s]=[Ulkomaalaiset uudet opiskelijat_s]/CALCULATE([Kaikki uudet opiskelijat_s], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]));
+CREATE MEASURE 'Muuttujat'[Ulkomaalaisten uusien opiskelijoiden osuus kaikista uusista opiskelijoista_s]=IF([kytkin] = 0, BLANK(), [Ulkomaalaiset uudet opiskelijat_s]/CALCULATE([Kaikki uudet opiskelijat_s], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)])));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23828,7 +23756,7 @@ CREATE MEASURE 'Muuttujat'[Ulkomaalaisten uusien opiskelijoiden osuus kaikista u
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneiden uusien opiskelijoiden osuus kaikista uusista opiskelijoista_s]=[Ulkomailla syntyneet uudet opiskelijat_s]/CALCULATE([Kaikki uudet opiskelijat_s], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]));
+CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneiden uusien opiskelijoiden osuus kaikista uusista opiskelijoista_s]=IF([kytkin] = 0, BLANK(), [Ulkomailla syntyneet uudet opiskelijat_s]/CALCULATE([Kaikki uudet opiskelijat_s], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)])));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23847,7 +23775,7 @@ CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneiden uusien opiskelijoiden osuus ka
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirj. vieraskielisten opiskelijoiden osuus kaikista läsnäolevista_s]=[Läsnäolevaksi kirjautuneet vieraskieliset opiskelijat_s]/CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat_s], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]));
+CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirj. vieraskielisten opiskelijoiden osuus kaikista läsnäolevista_s]=IF([kytkin] = 0, BLANK(), [Läsnäolevaksi kirjautuneet vieraskieliset opiskelijat_s]/CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat_s], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)])));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23866,7 +23794,7 @@ CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirj. vieraskielisten opiskelijoiden 
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirj. ulkomaalaisten opiskelijoiden osuus kaik. läsnäolevista_s]=[Läsnäolevaksi kirjautuneet ulkomaalaiset opiskelijat_s]/CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat_s], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]));
+CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirj. ulkomaalaisten opiskelijoiden osuus kaik. läsnäolevista_s]=IF([kytkin] = 0, BLANK(), [Läsnäolevaksi kirjautuneet ulkomaalaiset opiskelijat_s]/CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat_s], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)])));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23885,7 +23813,7 @@ CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirj. ulkomaalaisten opiskelijoiden o
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirj. ulkomailla syntyneiden opiskelijoiden osuus kaikista läsnäolevista_s]=[Läsnäolevaksi kirjautuneet ulkomailla syntyneet opiskelijat_s]/CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat_s], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]));
+CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirj. ulkomailla syntyneiden opiskelijoiden osuus kaikista läsnäolevista_s]=IF([kytkin] = 0, BLANK(), [Läsnäolevaksi kirjautuneet ulkomailla syntyneet opiskelijat_s]/CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat_s], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)])));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23904,64 +23832,7 @@ CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirj. ulkomailla syntyneiden opiskeli
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Samtliga studerande_s]=IF(SUM([lkm_op2]) = 0, BLANK(),SUM([lkm_op2]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Samtliga studerande_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Studerande med ett främmande modersmål_s]=CALCULATE([Kaikki opiskelijat_s], FILTER('Muuttujat', [koodi_ai] &lt;&gt; "fs" &amp;&amp; [koodi_ai] &lt;&gt; "sv"));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Studerande med ett främmande modersmål_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Utländska studerande_s]=CALCULATE([Kaikki opiskelijat_s], FILTER('Muuttujat', [koodi_kan] &lt;&gt; "1"));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Utländska studerande_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirjautuneet ulkomaalaiset opiskelijat_s]=CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat_s], FILTER('Muuttujat', [koodi_kan] &lt;&gt; "1"));
+CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirjautuneet ulkomaalaiset opiskelijat_s]=IF([kytkin] = 0, BLANK(), CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat_s], FILTER('Muuttujat', [koodi_kan] &lt;&gt; "1")));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23980,7 +23851,7 @@ CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirjautuneet ulkomaalaiset opiskelija
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirjautuneet ulkomailla syntyneet opiskelijat_s]=CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat_s], FILTER('Muuttujat', [koodi_syn] &lt;&gt; "1"));
+CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirjautuneet ulkomailla syntyneet opiskelijat_s]=IF([kytkin] = 0, BLANK(), CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat_s], FILTER('Muuttujat', [koodi_syn] &lt;&gt; "1")));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -23999,1000 +23870,12 @@ CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirjautuneet ulkomailla syntyneet opi
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Studerande som är utrikes födda_s]=CALCULATE([Kaikki opiskelijat_s], FILTER('Muuttujat', [koodi_syn] &lt;&gt; "1"));
+CREATE MEASURE 'Muuttujat'[kytkin]=IF(LEFT(USERNAME(), 4) = "DWI\", 1, 0);
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
-                      <Value>Studerande som är utrikes födda_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Andel som studerande med ett främmande modersmål av samtliga studerande_s]=[Vieraskieliset opiskelijat_s]/CALCULATE([Kaikki opiskelijat_s], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Andel som studerande med ett främmande modersmål av samtliga studerande_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Andel som utländska studerande av samtliga studerande_s]=[Ulkomaalaiset opiskelijat_s]/CALCULATE([Kaikki opiskelijat_s], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Andel som utländska studerande av samtliga studerande_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Andel som studerande som är utrikes födda av samtliga studerande_s]=[Ulkomailla syntyneet opiskelijat_s]/CALCULATE([Kaikki opiskelijat_s], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Andel som studerande som är utrikes födda av samtliga studerande_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Nya studerande med ett främmande modersmål_s]=CALCULATE([Kaikki uudet opiskelijat_s], FILTER('Muuttujat', [koodi_ai] &lt;&gt; "fs" &amp;&amp; [koodi_ai] &lt;&gt; "sv"));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Nya studerande med ett främmande modersmål_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Nybörjare som är utrikes födda_s]=CALCULATE([Kaikki aloittaneet_s], FILTER('Muuttujat', [koodi_syn] &lt;&gt; "1"));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Nybörjare som är utrikes födda_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Nybörjare med ett främmande modersmål_s]=CALCULATE([Kaikki aloittaneet_s], FILTER('Muuttujat', [koodi_ai] &lt;&gt; "fs" &amp;&amp; [koodi_ai] &lt;&gt; "sv"));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Nybörjare med ett främmande modersmål_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Samtliga närvarande studerande_s]=IF(SUM([lkm_opiskolo2]) = 0, BLANK(),SUM([lkm_opiskolo2]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Samtliga närvarande studerande_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Samtliga nya studerande_s]=IF([lkm_aloit3] = 0, BLANK(),[lkm_aloit3]);
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Samtliga nya studerande_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Utländska nybörjare_s]=CALCULATE([Kaikki aloittaneet_s], FILTER('Muuttujat', [koodi_kan] &lt;&gt; "1"));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Utländska nybörjare_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Utländska nya studerande_s]=CALCULATE([Kaikki uudet opiskelijat_s], FILTER('Muuttujat', [koodi_kan] &lt;&gt; "1"));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Utländska nya studerande_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Samtliga nybörjare_s]=IF([lkm_aloit3] = 0, BLANK(),[lkm_aloit3]);
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Samtliga nybörjare_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Nya studerande som är utrikes födda_s]=CALCULATE([Kaikki uudet opiskelijat_s], FILTER('Muuttujat', [koodi_syn] &lt;&gt; "1"));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Nya studerande som är utrikes födda_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Andel som nya studerande som är utrikes födda av samtliga nya studerande_s]=[Ulkomailla syntyneet uudet opiskelijat_s]/CALCULATE([Kaikki uudet opiskelijat_s], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Andel som nya studerande som är utrikes födda av samtliga nya studerande_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Andel som utländska nya studerande av samtliga nya studerande_s]=[Ulkomaalaiset uudet opiskelijat_s]/CALCULATE([Kaikki uudet opiskelijat_s], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Andel som utländska nya studerande av samtliga nya studerande_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Andel som nya studerande med ett främmande modersmål av samtliga nya studerande_s]=[Vieraskieliset uudet opiskelijat_s]/CALCULATE([Kaikki uudet opiskelijat_s], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Andel som nya studerande med ett främmande modersmål av samtliga nya studerande_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Andel som nybörjare som är utrikes födda av samtliga nybörjare_s]=[Ulkomailla syntyneet aloittaneet_s]/CALCULATE([Kaikki aloittaneet_s], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Andel som nybörjare som är utrikes födda av samtliga nybörjare_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Närvarande studerande med ett främmande modersmål_s]=CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat_s], FILTER('Muuttujat', [koodi_ai] &lt;&gt; "fs" &amp;&amp; [koodi_ai] &lt;&gt; "sv"));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Närvarande studerande med ett främmande modersmål_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Närvarande utländska studerande_s]=CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat_s], FILTER('Muuttujat', [koodi_kan] &lt;&gt; "1"));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Närvarande utländska studerande_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Närvarande studerande som är utrikes födda_s]=CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat_s], FILTER('Muuttujat', [koodi_syn] &lt;&gt; "1"));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Närvarande studerande som är utrikes födda_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Andel som nybörjare med ett främmande modersmål av samtliga nybörjare_s]=[Vieraskieliset aloittaneet_s]/CALCULATE([Kaikki aloittaneet_s], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Andel som nybörjare med ett främmande modersmål av samtliga nybörjare_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Andel som utländska nybörjare av samtliga nybörjare_s]=[Ulkomaalaiset aloittaneet_s]/CALCULATE([Kaikki aloittaneet_s], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Andel som utländska nybörjare av samtliga nybörjare_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Andel som närvarande studerande med ett främmande modersmål av samtliga närvarande_s]=[Läsnäolevaksi kirjautuneet vieraskieliset opiskelijat_s]/CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat_s], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Andel som närvarande studerande med ett främmande modersmål av samtliga närvarande_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Andel som närvarande utländska studerande av samtliga närvarande_s]=[Läsnäolevaksi kirjautuneet ulkomaalaiset opiskelijat_s]/CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat_s], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Andel som närvarande utländska studerande av samtliga närvarande_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Andel som närvarande studerande som är utrikes födda av samtliga närvarande_s]=[Läsnäolevaksi kirjautuneet ulkomailla syntyneet opiskelijat_s]/CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat_s], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Andel som närvarande studerande som är utrikes födda av samtliga närvarande_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[All students_s]=IF(SUM([lkm_op2]) = 0, BLANK(),SUM([lkm_op2]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>All students_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Foreign-language students_s]=CALCULATE([Kaikki opiskelijat_s], FILTER('Muuttujat', [koodi_ai] &lt;&gt; "fs" &amp;&amp; [koodi_ai] &lt;&gt; "sv"));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Foreign-language students_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Foreign students_s]=CALCULATE([Kaikki opiskelijat_s], FILTER('Muuttujat', [koodi_kan] &lt;&gt; "1"));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Foreign students_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Percentage of foreign-language students (of all students)_s]=[Vieraskieliset opiskelijat_s]/CALCULATE([Kaikki opiskelijat_s], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Percentage of foreign-language students (of all students)_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[New foreign students_s]=CALCULATE([Kaikki uudet opiskelijat_s], FILTER('Muuttujat', [koodi_kan] &lt;&gt; "1"));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>New foreign students_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[New foreign-language students_s]=CALCULATE([Kaikki uudet opiskelijat_s], FILTER('Muuttujat', [koodi_ai] &lt;&gt; "fs" &amp;&amp; [koodi_ai] &lt;&gt; "sv"));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>New foreign-language students_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Admitted born abroad_s]=CALCULATE([Kaikki aloittaneet_s], FILTER('Muuttujat', [koodi_syn] &lt;&gt; "1"));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Admitted born abroad_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Percentage of foreign students (of all students)_s]=[Ulkomaalaiset opiskelijat_s]/CALCULATE([Kaikki opiskelijat_s], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Percentage of foreign students (of all students)_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Percentage of students born abroad (of all students)_s]=[Ulkomailla syntyneet opiskelijat_s]/CALCULATE([Kaikki opiskelijat_s], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Percentage of students born abroad (of all students)_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[All students enrolled as present_s]=IF(SUM([lkm_opiskolo2]) = 0, BLANK(),SUM([lkm_opiskolo2]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>All students enrolled as present_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[All admitted_s]=IF([lkm_aloit3] = 0, BLANK(),[lkm_aloit3]);
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>All admitted_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[New students born abroad_s]=CALCULATE([Kaikki uudet opiskelijat_s], FILTER('Muuttujat', [koodi_syn] &lt;&gt; "1"));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>New students born abroad_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Percentage of new students born abroad (of all new students)_s]=[Ulkomailla syntyneet uudet opiskelijat_s]/CALCULATE([Kaikki uudet opiskelijat_s], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Percentage of new students born abroad (of all new students)_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Percentage of new foreign students (of all new students)_s]=[Ulkomaalaiset uudet opiskelijat_s]/CALCULATE([Kaikki uudet opiskelijat_s], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Percentage of new foreign students (of all new students)_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Percentage of new foreign-language students (of all new students)_s]=[Vieraskieliset uudet opiskelijat_s]/CALCULATE([Kaikki uudet opiskelijat_s], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Percentage of new foreign-language students (of all new students)_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Percentage of admitted born abroad (of all admitted)_s]=[Ulkomailla syntyneet aloittaneet_s]/CALCULATE([Kaikki aloittaneet_s], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Percentage of admitted born abroad (of all admitted)_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Percentage of foreign-language students enrolled as present (of all present students)_s]=[Läsnäolevaksi kirjautuneet vieraskieliset opiskelijat_s]/CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat_s], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Percentage of foreign-language students enrolled as present (of all present students)_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Percentage of foreign students enrolled as present (of all present students)_s]=[Läsnäolevaksi kirjautuneet ulkomaalaiset opiskelijat_s]/CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat_s], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Percentage of foreign students enrolled as present (of all present students)_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Percentage of students born abroad enrolled as present (of all present students)_s]=[Läsnäolevaksi kirjautuneet ulkomailla syntyneet opiskelijat_s]/CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat_s], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Percentage of students born abroad enrolled as present (of all present students)_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Students born abroad_s]=CALCULATE([Kaikki opiskelijat_s], FILTER('Muuttujat', [koodi_syn] &lt;&gt; "1"));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Students born abroad_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[All new students_s]=IF([lkm_aloit3] = 0, BLANK(),[lkm_aloit3]);
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>All new students_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Foreign admitted_s]=CALCULATE([Kaikki aloittaneet_s], FILTER('Muuttujat', [koodi_kan] &lt;&gt; "1"));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Foreign admitted_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Foreign-language admitted_s]=CALCULATE([Kaikki aloittaneet_s], FILTER('Muuttujat', [koodi_ai] &lt;&gt; "fs" &amp;&amp; [koodi_ai] &lt;&gt; "sv"));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Foreign-language admitted_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Foreign-language students enrolled as present_s]=CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat_s], FILTER('Muuttujat', [koodi_ai] &lt;&gt; "fs" &amp;&amp; [koodi_ai] &lt;&gt; "sv"));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Foreign-language students enrolled as present_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Foreign students enrolled as present_s]=CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat_s], FILTER('Muuttujat', [koodi_kan] &lt;&gt; "1"));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Foreign students enrolled as present_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Students born abroad enrolled as present_s]=CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat_s], FILTER('Muuttujat', [koodi_syn] &lt;&gt; "1"));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Students born abroad enrolled as present_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Percentage of foreign-language admitted (of all admitted)_s]=[Vieraskieliset aloittaneet_s]/CALCULATE([Kaikki aloittaneet_s], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Percentage of foreign-language admitted (of all admitted)_s</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Table</Name>
-                      <Value>Muuttujat</Value>
-                    </Annotation>
-                  </Annotations>
-                </Command>
-                <Command>
-                  <Text>----------------------------------------------------------
--- PowerPivot measures command (do not modify manually) --
-----------------------------------------------------------
-
-
-CREATE MEASURE 'Muuttujat'[Percentage of foreign admitted (of all admitted)_s]=[Ulkomaalaiset aloittaneet_s]/CALCULATE([Kaikki aloittaneet_s], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]));
-</Text>
-                  <Annotations>
-                    <Annotation>
-                      <Name>FullName</Name>
-                      <Value>Percentage of foreign admitted (of all admitted)_s</Value>
+                      <Value>kytkin</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -27351,69 +26234,6 @@ CREATE MEASURE 'Muuttujat'[Percentage of foreign admitted (of all admitted)_s]=[
                       </Value>
                     </Annotation>
                   </Annotations>
-                  <CalculationReference>[Samtliga studerande_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Studerande med ett främmande modersmål_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Utländska studerande_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
                   <CalculationReference>[Läsnäolevaksi kirjautuneet ulkomaalaiset opiskelijat_s]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
@@ -27447,1110 +26267,19 @@ CREATE MEASURE 'Muuttujat'[Percentage of foreign admitted (of all admitted)_s]=[
                     </Annotation>
                     <Annotation>
                       <Name>IsPrivate</Name>
-                      <Value>False</Value>
+                      <Value>True</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Format</Name>
                       <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                        <Format Format="NumberWhole" xmlns="" />
                       </Value>
                     </Annotation>
                   </Annotations>
-                  <CalculationReference>[Studerande som är utrikes födda_s]</CalculationReference>
+                  <CalculationReference>[kytkin]</CalculationReference>
                   <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="Percentage" Accuracy="1" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Andel som studerande med ett främmande modersmål av samtliga studerande_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="Percentage" Accuracy="1" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Andel som utländska studerande av samtliga studerande_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="Percentage" Accuracy="1" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Andel som studerande som är utrikes födda av samtliga studerande_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Nya studerande med ett främmande modersmål_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Nybörjare som är utrikes födda_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Nybörjare med ett främmande modersmål_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Samtliga närvarande studerande_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Samtliga nya studerande_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Utländska nybörjare_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Utländska nya studerande_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Samtliga nybörjare_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Nya studerande som är utrikes födda_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="Percentage" Accuracy="1" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Andel som nya studerande som är utrikes födda av samtliga nya studerande_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="Percentage" Accuracy="1" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Andel som utländska nya studerande av samtliga nya studerande_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="Percentage" Accuracy="1" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Andel som nya studerande med ett främmande modersmål av samtliga nya studerande_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="Percentage" Accuracy="1" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Andel som nybörjare som är utrikes födda av samtliga nybörjare_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Närvarande studerande med ett främmande modersmål_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Närvarande utländska studerande_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Närvarande studerande som är utrikes födda_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="Percentage" Accuracy="1" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Andel som nybörjare med ett främmande modersmål av samtliga nybörjare_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="Percentage" Accuracy="1" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Andel som utländska nybörjare av samtliga nybörjare_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="Percentage" Accuracy="1" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Andel som närvarande studerande med ett främmande modersmål av samtliga närvarande_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="Percentage" Accuracy="1" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Andel som närvarande utländska studerande av samtliga närvarande_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="Percentage" Accuracy="1" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Andel som närvarande studerande som är utrikes födda av samtliga närvarande_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[All students_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Foreign-language students_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Foreign students_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="Percentage" Accuracy="1" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Percentage of foreign-language students (of all students)_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[New foreign students_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[New foreign-language students_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Admitted born abroad_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="Percentage" Accuracy="1" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Percentage of foreign students (of all students)_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="Percentage" Accuracy="1" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Percentage of students born abroad (of all students)_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[All students enrolled as present_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[All admitted_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[New students born abroad_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="Percentage" Accuracy="1" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Percentage of new students born abroad (of all new students)_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="Percentage" Accuracy="1" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Percentage of new foreign students (of all new students)_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="Percentage" Accuracy="1" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Percentage of new foreign-language students (of all new students)_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="Percentage" Accuracy="1" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Percentage of admitted born abroad (of all admitted)_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="Percentage" Accuracy="1" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Percentage of foreign-language students enrolled as present (of all present students)_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="Percentage" Accuracy="1" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Percentage of foreign students enrolled as present (of all present students)_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="Percentage" Accuracy="1" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Percentage of students born abroad enrolled as present (of all present students)_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Students born abroad_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[All new students_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Foreign admitted_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Foreign-language admitted_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Foreign-language students enrolled as present_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Foreign students enrolled as present_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Students born abroad enrolled as present_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'#,0'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="Percentage" Accuracy="1" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Percentage of foreign-language admitted (of all admitted)_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
-                </CalculationProperty>
-                <CalculationProperty>
-                  <Annotations>
-                    <Annotation>
-                      <Name>Type</Name>
-                      <Value>User</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>IsPrivate</Name>
-                      <Value>False</Value>
-                    </Annotation>
-                    <Annotation>
-                      <Name>Format</Name>
-                      <Value>
-                        <Format Format="Percentage" Accuracy="1" xmlns="" />
-                      </Value>
-                    </Annotation>
-                  </Annotations>
-                  <CalculationReference>[Percentage of foreign admitted (of all admitted)_s]</CalculationReference>
-                  <CalculationType>Member</CalculationType>
-                  <FormatString>'0.0 %;-0.0 %;0.0 %'</FormatString>
+                  <Visible>false</Visible>
+                  <FormatString>'0'</FormatString>
                 </CalculationProperty>
                 <CalculationProperty>
                   <CalculationReference>Measures.[__No measures defined]</CalculationReference>
@@ -29852,6 +27581,10 @@ CREATE MEASURE 'Muuttujat'[Percentage of foreign admitted (of all admitted)_s]=[
             <Member>
               <Name>DWI\Z_T_Antero_Read_TAB</Name>
               <Sid>S-1-5-21-2196741920-3238685902-2581541251-4155</Sid>
+            </Member>
+            <Member>
+              <Name>DWI\Z_P_Antero_Full_Read_TAB</Name>
+              <Sid>S-1-5-21-2196741920-3238685902-2581541251-2272</Sid>
             </Member>
           </Members>
         </Role>
