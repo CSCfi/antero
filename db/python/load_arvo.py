@@ -40,9 +40,8 @@ def load(url, schema, table, condition):
             show("using authentication")
             apiuser = os.getenv("API_USERNAME")
             apipass = os.getenv("API_PASSWORD")
-            apitmp = apiuser +":"+ apipass
-            apikey = apitmp.encode("utf-8")
-            reqheaders['Authorization'] = 'Basic %s' % base64.b64encode(apikey)
+            apitmp = "%s:%s" % (apiuser, apipass)
+            reqheaders['Authorization'] = "Basic %s" % base64.b64encode(apitmp.encode('utf-8')).decode('utf-8')
             #reqheaders['Authorization'] = 'Basic %s' % base64.b64encode(apiuser + ":" + apipass)
 
         try:
