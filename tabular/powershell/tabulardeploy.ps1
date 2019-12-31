@@ -97,8 +97,8 @@ try
                     $connstr += ";"
                 }
                 if ($s[0] -eq 'Data Source') {
-					if ($s[2] -like '*arch') {
-						$connstr += $s[0]+"="+$prodsqlserver.replace("sql16","arch")
+					if ($s[1] -like '*arch') {
+						$connstr += $s[0]+"="+"dwitvipuarch" #$prodsqlserver.replace("sql16","arch")
 					}
 					else {
 						$connstr += $s[0]+"="+$prodsqlserver # replace
