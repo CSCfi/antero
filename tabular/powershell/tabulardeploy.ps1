@@ -101,7 +101,7 @@ try
 						$connstr += $s[0]+"="+$prodsqlserver.replace("sql16","arch")
 					}
 					else {
-						$connstr += $s[0]+"="+"dwipvipusql16"#$prodsqlserver # replace
+						$connstr += $s[0]+"="+$prodsqlserver # replace
 					}
                 } else {
                     $connstr += $_ # keep
