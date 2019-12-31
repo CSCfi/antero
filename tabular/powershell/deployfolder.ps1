@@ -55,11 +55,13 @@ forEach ($file in $files)
     {
         $projectname = $xml.Project.PropertyGroup[2].DeploymentServerDatabase
     }
+	
     $xml = [xml](Get-Content ($workdir + "Model.deploymenttargets"))
     $xml.DeploymentTarget.Database = $projectname
     $xml.Save($workdir + "Model.deploymenttargets")
     $destfile = $workdir + "Model.bim"
     Remove-Item $destfile
+	
     if([bool]((Get-Content $file) -as [xml]))
     {
         $asdatabase = $file.DirectoryName + "\bin\" + $file.BaseName + ".asdatabase"
