@@ -142,7 +142,7 @@
             "name": "Hakukohde",
             "dataType": "string",
             "sourceColumn": "Hakukohde",
-            "displayFolder": "Koulutusmuuttujat"
+            "displayFolder": "Hakumuuttujat"
           },
           {
             "name": "Hakukohteen koulutustoimija",
@@ -2248,13 +2248,6 @@
             "sourceColumn": "Haku OID"
           },
           {
-            "name": "Yo-tutk. suor.vuosi (YTL)",
-            "dataType": "string",
-            "sourceColumn": "Ylioppilastutkinnon suoritusvuosi",
-            "sortByColumn": "Ylioppilastutkinnon suoritusvuosi järjestys",
-            "displayFolder": "Henkilömuuttujat"
-          },
-          {
             "name": "Valintatapajono",
             "dataType": "string",
             "sourceColumn": "Valintatapajono",
@@ -2266,6 +2259,13 @@
             "dataType": "double",
             "isHidden": true,
             "sourceColumn": "Pisteet"
+          },
+          {
+            "name": "Yo-tutk. suor.vuosi (YTL)",
+            "dataType": "string",
+            "sourceColumn": "Ylioppilastutkinnon suoritusvuosi",
+            "sortByColumn": "Ylioppilastutkinnon suoritusvuosi järjestys",
+            "displayFolder": "Henkilömuuttujat"
           },
           {
             "name": "Valintatapajono järjestys",
@@ -8716,11 +8716,13 @@
           {
             "name": "Alin hyväksytty pistemäärä",
             "expression": [
-              "CALCULATE(MIN(Muuttujat[Pisteet]),Muuttujat[Valitut2]=1,Muuttujat[Pisteet]<>0)",
+              "",
+              "var alin = CALCULATE(MIN(Muuttujat[Pisteet]),Muuttujat[Valitut2]=1,Muuttujat[Pisteet]<>0)",
+              "return IF(AND(alin<1,[Kaikki hakijat]>0),\"-\",alin)",
               "",
               ""
             ],
-            "formatString": "#,0.00"
+            "formatString": "0.00"
           },
           {
             "name": "Ylin hyväksytty pistemäärä",
@@ -15561,10 +15563,10 @@
                 "name": "Koodit Tutkinto (hakukohde)"
               },
               {
-                "name": "Yo-tutk. suor.vuosi (YTL)"
+                "name": "Tutkinto (hakukohde)"
               },
               {
-                "name": "Tutkinto (hakukohde)"
+                "name": "Yo-tutk. suor.vuosi (YTL)"
               },
               {
                 "name": "Hakijan kotimaakunta sama kuin hakukohteen maakunta"
