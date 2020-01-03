@@ -58,7 +58,7 @@ foreach ($tabular in $table)
     $updateCommand.commandtext = "UPDATE [$database].[dbo].[tabulardeploy] SET [ready] = 1 WHERE [tabular] = " + "'" + $tabular + "'"
     $updateCommand.executenonquery()
 }
-
+pause
 Remove-Item $gitdir\* -recurse
 $connection.Close()
 
