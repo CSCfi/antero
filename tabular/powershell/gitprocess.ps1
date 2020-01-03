@@ -47,18 +47,18 @@ Copy-Item ($gitdir+"\antero-master\tabular\powershell") ($tabulardir) -recurse -
 foreach ($tabular in $table)
 {
 	
-	#if (Test-Path ($gitdir+"\antero-master\tabular\"+$tabular)) {
+	if (Test-Path ($gitdir+"\antero-master\tabular\"+$tabular)) {
 		Copy-Item ($gitdir+"\antero-master\tabular\"+$tabular) ($tabulardir+$tabular) -recurse
-	#} else {	
-	#	Copy-Item ($gitdir+"\antero-master\tabular jäädytys\"+$tabular) ($tabulardir+$tabular) -recurse
-	#}
+	} else {	
+		Copy-Item ($gitdir+"\antero-master\tabular jäädytys\"+$tabular) ($tabulardir+$tabular) -recurse
+	}
 	
     $updateCommand = New-Object System.Data.SqlClient.SqlCommand
     $updateCommand.Connection = $connection
     $updateCommand.commandtext = "UPDATE [$database].[dbo].[tabulardeploy] SET [ready] = 1 WHERE [tabular] = " + "'" + $tabular + "'"
     $updateCommand.executenonquery()
 }
-pause
+
 Remove-Item $gitdir\* -recurse
 $connection.Close()
 
