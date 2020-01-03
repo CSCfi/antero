@@ -8718,7 +8718,7 @@
             "expression": [
               "",
               "var alin = CALCULATE(MIN(Muuttujat[Pisteet]),Muuttujat[Valitut2]=1,Muuttujat[Pisteet]<>0)",
-              "return IF(AND(alin<1,[Kaikki hakijat]>0),\"-\",alin)",
+              "return IF(NOT(ISFILTERED([Hakukohde])),\"\t\",IF(AND(alin<1,[Kaikki hakijat]>0),\"−\",alin))",
               "",
               ""
             ],
@@ -8726,7 +8726,11 @@
           },
           {
             "name": "Ylin hyväksytty pistemäärä",
-            "expression": "CALCULATE(MAX(Muuttujat[Pisteet]),Muuttujat[Valitut2]=1,Muuttujat[Pisteet]<>0)",
+            "expression": [
+              "",
+              "var ylin = CALCULATE(MAX(Muuttujat[Pisteet]),Muuttujat[Valitut2]=1,Muuttujat[Pisteet]<>0)",
+              "return IF(NOT(ISFILTERED([Hakukohde])),\"\t\",IF(AND(ylin<1,[Kaikki hakijat]>0),\"−\",ylin))"
+            ],
             "formatString": "#,0.00"
           }
         ],

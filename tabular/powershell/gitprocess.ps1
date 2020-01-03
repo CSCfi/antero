@@ -46,11 +46,14 @@ Copy-Item ($gitdir+"\antero-master\tabular\powershell") ($tabulardir) -recurse -
 
 foreach ($tabular in $table)
 {
-	if $tabular -like '*jäädytys' {
+	#Get-ChildItem -Path $gitdir+"\antero-master\tabular" -Recurse -Directory -Filter $_.FOLDERNAME | ForEach-Object {
+	#	Copy-Item $_.FullName d:\CopyFolder\$InstanceName -Recurse
+    #}
+	#if $tabular -like '*jäädytys' {
 		Copy-Item ($gitdir+"\antero-master\tabular jäädytys\"+$tabular) ($tabulardir+$tabular) -recurse
-	} else {	
+	#} else {	
 		Copy-Item ($gitdir+"\antero-master\tabular\"+$tabular) ($tabulardir+$tabular) -recurse
-	}
+	#}
 
     $updateCommand = New-Object System.Data.SqlClient.SqlCommand
     $updateCommand.Connection = $connection
