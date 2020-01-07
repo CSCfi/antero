@@ -16039,6 +16039,9 @@
                   <CubeDimensionID>v_f_tab_otv_toinen_aste_da69a159-305f-4104-85ab-c6ac3bcad1d5</CubeDimensionID>
                   <Attributes>
                     <Attribute>
+                      <AttributeID>Tilastovuosi</AttributeID>
+                    </Attribute>
+                    <Attribute>
                       <AttributeID>Koulutuksen kunta</AttributeID>
                     </Attribute>
                     <Attribute>
@@ -16083,9 +16086,6 @@
                     <Attribute>
                       <AttributeID>Koulutussektori</AttributeID>
                     </Attribute>
-                    <Attribute>
-                      <AttributeID>Tilastovuosi</AttributeID>
-                    </Attribute>
                   </Attributes>
                 </Dimension>
               </Dimensions>
@@ -16123,9 +16123,6 @@
                       <AttributeID>Ungdoms-vuxenutbildning</AttributeID>
                     </Attribute>
                     <Attribute>
-                      <AttributeID>Utbildningsanordnare</AttributeID>
-                    </Attribute>
-                    <Attribute>
                       <AttributeID>Utbildningens kommun</AttributeID>
                     </Attribute>
                     <Attribute>
@@ -16157,6 +16154,9 @@
                     </Attribute>
                     <Attribute>
                       <AttributeID>Åldersgrupp II</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Utbildningsanordnare</AttributeID>
                     </Attribute>
                   </Attributes>
                 </Dimension>
@@ -16636,12 +16636,6 @@
                       <AttributeID>Utbildningsområde</AttributeID>
                     </Attribute>
                     <Attribute>
-                      <AttributeID>Statistikår</AttributeID>
-                    </Attribute>
-                    <Attribute>
-                      <AttributeID>Utbildnområde nivå 1</AttributeID>
-                    </Attribute>
-                    <Attribute>
                       <AttributeID>Formen i vilken utbildningen ordnas</AttributeID>
                     </Attribute>
                     <Attribute>
@@ -16715,6 +16709,12 @@
                     </Attribute>
                     <Attribute>
                       <AttributeID>Förvaltningsområde</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Statistikår</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Utbildnområde nivå 1</AttributeID>
                     </Attribute>
                   </Attributes>
                 </Dimension>
@@ -26203,7 +26203,7 @@ CREATE MEASURE 'Muuttujat'[Attained a qualification]=var lkm = sum([Tutkinnot2])
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Personer som avlagt studentexamen]=var lkm = sum([Tutkinnot2]) return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
+CREATE MEASURE 'Muuttujat'[Personer som avlagt studentexamen]=var lkm = CALCULATE(sum([Tutkinnot2]),Muuttujat[Koodit Koulutusaste taso 2]="31") return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -26222,7 +26222,7 @@ CREATE MEASURE 'Muuttujat'[Personer som avlagt studentexamen]=var lkm = sum([Tut
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Completed the matriculation examination]=var lkm = sum([Tutkinnot2]) return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
+CREATE MEASURE 'Muuttujat'[Completed the matriculation examination]=var lkm = CALCULATE(sum([Tutkinnot2]),Muuttujat[Koodit Koulutusaste taso 2]="31") return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
