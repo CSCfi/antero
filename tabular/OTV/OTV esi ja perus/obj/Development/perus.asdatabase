@@ -7491,7 +7491,7 @@ CREATE MEASURE 'Muuttujat'[Number of ed. institutions (pre-primary)]=IF(ISFILTER
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Esiopetuksen oppilaat / Oppilaitos]=IF(OR(ISFILTERED(Muuttujat[Oppilaitos _]), [Esiopetuksen oppilaat] = "1-4"), [Esiopetuksen oppilaat], [Esiopetuksen oppilaat]/[Oppilaitoksia (esiopetus)]);
+CREATE MEASURE 'Muuttujat'[Esiopetuksen oppilaat / Oppilaitos]=IF(ISFILTERED(Muuttujat[Oppilaitos _]) || ISFILTERED(Muuttujat[Läroanstalt _]) || ISFILTERED(Muuttujat[Educational institution _]) || [Esiopetuksen oppilaat] = "1-4", [Esiopetuksen oppilaat], [Esiopetuksen oppilaat]/[Oppilaitoksia (esiopetus)]);
 </Text><Annotations><Annotation><Name>FullName</Name><Value>Esiopetuksen oppilaat / Oppilaitos</Value></Annotation><Annotation><Name>Table</Name><Value>Muuttujat</Value></Annotation></Annotations></Command><Command><Text>----------------------------------------------------------
 -- PowerPivot measures command (do not modify manually) --
 ----------------------------------------------------------
@@ -7527,7 +7527,7 @@ CREATE MEASURE 'Muuttujat'[Number of ed. institutions]=IF(ISFILTERED(Muuttujat[E
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Oppilaat / Oppilaitos]=IF(OR(ISFILTERED(Muuttujat[Oppilaitos _]), [Perusopetuksen oppilaat] = "1-4"), [Perusopetuksen oppilaat], [Perusopetuksen oppilaat]/[Oppilaitoksia]);
+CREATE MEASURE 'Muuttujat'[Oppilaat / Oppilaitos]=IF(ISFILTERED(Muuttujat[Oppilaitos _]) || ISFILTERED(Muuttujat[Läroanstalt _]) || ISFILTERED(Muuttujat[Educational institution _]) ||  [Perusopetuksen oppilaat] = "1-4", [Perusopetuksen oppilaat], [Perusopetuksen oppilaat]/[Oppilaitoksia]);
 </Text><Annotations><Annotation><Name>FullName</Name><Value>Oppilaat / Oppilaitos</Value></Annotation><Annotation><Name>Table</Name><Value>Muuttujat</Value></Annotation></Annotations></Command><Command><Text>----------------------------------------------------------
 -- PowerPivot measures command (do not modify manually) --
 ----------------------------------------------------------
@@ -7654,8 +7654,7 @@ CREATE MEASURE 'Muuttujat'[9. luokalle jääneet]=var lkm = sum([9 luokalle jä�
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Osuus 1. luokan oppilaista]=
-var osa = [1. luokalle jääneet]
+CREATE MEASURE 'Muuttujat'[Osuus 1. luokan oppilaista]=var osa = [1. luokalle jääneet]
 var kaikki = [1. luokan oppilaat]
 return IF(osa = BLANK(), BLANK(),
 IF(kaikki = "1-4", "25 % – 100 %",
@@ -7667,8 +7666,7 @@ osa / kaikki)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Osuus 2. luokan oppilaista]=
-var osa = [2. luokalle jääneet]
+CREATE MEASURE 'Muuttujat'[Osuus 2. luokan oppilaista]=var osa = [2. luokalle jääneet]
 var kaikki = [2. luokan oppilaat]
 return IF(osa = BLANK(), BLANK(),
 IF(kaikki = "1-4", "25 % – 100 %",
@@ -7680,8 +7678,7 @@ osa / kaikki)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Osuus 3. luokan oppilaista]=
-var osa = [3. luokalle jääneet]
+CREATE MEASURE 'Muuttujat'[Osuus 3. luokan oppilaista]=var osa = [3. luokalle jääneet]
 var kaikki = [3. luokan oppilaat]
 return IF(osa = BLANK(), BLANK(),
 IF(kaikki = "1-4", "25 % – 100 %",
@@ -7693,8 +7690,7 @@ osa / kaikki)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Osuus 4. luokan oppilaista]=
-var osa = [4. luokalle jääneet]
+CREATE MEASURE 'Muuttujat'[Osuus 4. luokan oppilaista]=var osa = [4. luokalle jääneet]
 var kaikki = [4. luokan oppilaat]
 return IF(osa = BLANK(), BLANK(),
 IF(kaikki = "1-4", "25 % – 100 %",
@@ -7706,8 +7702,7 @@ osa / kaikki)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Osuus 5. luokan oppilaista]=
-var osa = [5. luokalle jääneet]
+CREATE MEASURE 'Muuttujat'[Osuus 5. luokan oppilaista]=var osa = [5. luokalle jääneet]
 var kaikki = [5. luokan oppilaat]
 return IF(osa = BLANK(), BLANK(),
 IF(kaikki = "1-4", "25 % – 100 %",
@@ -7719,8 +7714,7 @@ osa / kaikki)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Osuus 6. luokan oppilaista]=
-var osa = [6. luokalle jääneet]
+CREATE MEASURE 'Muuttujat'[Osuus 6. luokan oppilaista]=var osa = [6. luokalle jääneet]
 var kaikki = [6. luokan oppilaat]
 return IF(osa = BLANK(), BLANK(),
 IF(kaikki = "1-4", "25 % – 100 %",
@@ -7732,8 +7726,7 @@ osa / kaikki)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Osuus 7. luokan oppilaista]=
-var osa = [7. luokalle jääneet]
+CREATE MEASURE 'Muuttujat'[Osuus 7. luokan oppilaista]=var osa = [7. luokalle jääneet]
 var kaikki = [7. luokan oppilaat]
 return IF(osa = BLANK(), BLANK(),
 IF(kaikki = "1-4", "25 % – 100 %",
@@ -7745,8 +7738,7 @@ osa / kaikki)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Osuus 8. luokan oppilaista]=
-var osa = [8. luokalle jääneet]
+CREATE MEASURE 'Muuttujat'[Osuus 8. luokan oppilaista]=var osa = [8. luokalle jääneet]
 var kaikki = [8. luokan oppilaat]
 return IF(osa = BLANK(), BLANK(),
 IF(kaikki = "1-4", "25 % – 100 %",
@@ -7758,8 +7750,7 @@ osa / kaikki)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Osuus 9. luokan oppilaista]=
-var osa = [9. luokalle jääneet]
+CREATE MEASURE 'Muuttujat'[Osuus 9. luokan oppilaista]=var osa = [9. luokalle jääneet]
 var kaikki = [9. luokan oppilaat]
 return IF(osa = BLANK(), BLANK(),
 IF(kaikki = "1-4", "25 % – 100 %",
@@ -7777,15 +7768,13 @@ CREATE MEASURE 'Muuttujat'[Luokalle jääneet yhteensä]=var lkm = sumx('Muuttuj
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Osuus oppilaista]=
-var osa = [Luokalle jääneet yhteensä]
+CREATE MEASURE 'Muuttujat'[Osuus oppilaista]=var osa = [Luokalle jääneet yhteensä]
 var kaikki = [1.-9. luokkien oppilaat]
 return IF(osa = BLANK(), BLANK(),
 IF(kaikki = "1-4", "25 % – 100 %",
 IF(osa = "1-4", IF(kaikki &gt; 8000, "0.0 %"
 , CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
-osa / kaikki)))
-;
+osa / kaikki)));
 </Text><Annotations><Annotation><Name>FullName</Name><Value>Osuus oppilaista</Value></Annotation><Annotation><Name>Table</Name><Value>Muuttujat</Value></Annotation></Annotations></Command><Command><Text>----------------------------------------------------------
 -- PowerPivot measures command (do not modify manually) --
 ----------------------------------------------------------
