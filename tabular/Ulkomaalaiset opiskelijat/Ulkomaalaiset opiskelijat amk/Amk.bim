@@ -14533,9 +14533,6 @@
                       <AttributeID>Utbildnområde nivå 2</AttributeID>
                     </Attribute>
                     <Attribute>
-                      <AttributeID>Utbildnnivå nivå 2</AttributeID>
-                    </Attribute>
-                    <Attribute>
                       <AttributeID>Förvaltningsområde</AttributeID>
                     </Attribute>
                     <Attribute>
@@ -14582,6 +14579,9 @@
                     </Attribute>
                     <Attribute>
                       <AttributeID>Utbildningssektor</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Utbildnnivå nivå 2</AttributeID>
                     </Attribute>
                   </Attributes>
                 </Dimension>
@@ -14628,9 +14628,6 @@
                       <AttributeID>Utbildnområde nivå 2</AttributeID>
                     </Attribute>
                     <Attribute>
-                      <AttributeID>Utbildnnivå nivå 2</AttributeID>
-                    </Attribute>
-                    <Attribute>
                       <AttributeID>Förvaltningsområde</AttributeID>
                     </Attribute>
                     <Attribute>
@@ -14677,6 +14674,9 @@
                     </Attribute>
                     <Attribute>
                       <AttributeID>Utbildningssektor</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Utbildnnivå nivå 2</AttributeID>
                     </Attribute>
                   </Attributes>
                 </Dimension>
@@ -14726,22 +14726,10 @@
                       <AttributeID>Region of education</AttributeID>
                     </Attribute>
                     <Attribute>
-                      <AttributeID>Field of education</AttributeID>
-                    </Attribute>
-                    <Attribute>
-                      <AttributeID>Level of education tier 2</AttributeID>
-                    </Attribute>
-                    <Attribute>
                       <AttributeID>Field of education tier 3</AttributeID>
                     </Attribute>
                     <Attribute>
                       <AttributeID>Subfield of education</AttributeID>
-                    </Attribute>
-                    <Attribute>
-                      <AttributeID>Field of education tier 1</AttributeID>
-                    </Attribute>
-                    <Attribute>
-                      <AttributeID>Level of education tier 1</AttributeID>
                     </Attribute>
                     <Attribute>
                       <AttributeID>Administrative sector</AttributeID>
@@ -14772,6 +14760,18 @@
                     </Attribute>
                     <Attribute>
                       <AttributeID>Sector of education</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Field of education</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Level of education tier 2</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Field of education tier 1</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Level of education tier 1</AttributeID>
                     </Attribute>
                   </Attributes>
                 </Dimension>
@@ -14821,22 +14821,10 @@
                       <AttributeID>Region of education</AttributeID>
                     </Attribute>
                     <Attribute>
-                      <AttributeID>Field of education</AttributeID>
-                    </Attribute>
-                    <Attribute>
-                      <AttributeID>Level of education tier 2</AttributeID>
-                    </Attribute>
-                    <Attribute>
                       <AttributeID>Field of education tier 3</AttributeID>
                     </Attribute>
                     <Attribute>
                       <AttributeID>Subfield of education</AttributeID>
-                    </Attribute>
-                    <Attribute>
-                      <AttributeID>Field of education tier 1</AttributeID>
-                    </Attribute>
-                    <Attribute>
-                      <AttributeID>Level of education tier 1</AttributeID>
                     </Attribute>
                     <Attribute>
                       <AttributeID>Administrative sector</AttributeID>
@@ -14867,6 +14855,18 @@
                     </Attribute>
                     <Attribute>
                       <AttributeID>Sector of education</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Field of education</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Level of education tier 2</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Field of education tier 1</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Level of education tier 1</AttributeID>
                     </Attribute>
                   </Attributes>
                 </Dimension>
@@ -21870,7 +21870,7 @@ CREATE MEASURE 'Muuttujat'[Vieraskielisten opiskelijoiden osuus kaikista opiskel
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki opiskelijat], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -21894,7 +21894,7 @@ CREATE MEASURE 'Muuttujat'[Ulkomaalaisten opiskelijoiden osuus kaikista opiskeli
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki opiskelijat], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -21918,7 +21918,7 @@ CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneiden opiskelijoiden osuus kaikista 
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki opiskelijat], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -21942,7 +21942,7 @@ CREATE MEASURE 'Muuttujat'[Vieraskielisten aloittaneiden osuus kaikista aloittan
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki aloittaneet], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -21966,7 +21966,7 @@ CREATE MEASURE 'Muuttujat'[Ulkomaalaisten aloittaneiden osuus kaikista aloittane
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki aloittaneet], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -21990,7 +21990,7 @@ CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneiden aloittaneiden osuus kaikista a
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki aloittaneet], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -22014,7 +22014,7 @@ CREATE MEASURE 'Muuttujat'[Vieraskielisten uusien opiskelijoiden osuus kaikista 
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki uudet opiskelijat], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -22038,7 +22038,7 @@ CREATE MEASURE 'Muuttujat'[Ulkomaalaisten uusien opiskelijoiden osuus kaikista u
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki uudet opiskelijat], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -22062,7 +22062,7 @@ CREATE MEASURE 'Muuttujat'[Ulkomailla syntyneiden uusien opiskelijoiden osuus ka
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki uudet opiskelijat], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -22086,7 +22086,7 @@ CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirj. vieraskielisten opiskelijoiden 
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -22110,7 +22110,7 @@ CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirj. ulkomaalaisten opiskelijoiden o
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -22134,7 +22134,7 @@ CREATE MEASURE 'Muuttujat'[Läsnäolevaksi kirj. ulkomailla syntyneiden opiskeli
 return IF(lkm = BLANK(), BLANK(),
 	var kaikki = CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -22232,9 +22232,9 @@ CREATE MEASURE 'Muuttujat'[Studerande som är utrikes födda]=CALCULATE([Kaikki 
 
 CREATE MEASURE 'Muuttujat'[Andel som studerande med ett främmande modersmål av samtliga studerande]=var lkm = [Vieraskieliset opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
-	var kaikki = CALCULATE([Kaikki opiskelijat], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]))
+	var kaikki = CALCULATE([Kaikki opiskelijat], ALL(Muuttujat[Modersmål]), ALL(Muuttujat[Modersmål (finska/andra)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -22256,9 +22256,9 @@ return IF(lkm = BLANK(), BLANK(),
 
 CREATE MEASURE 'Muuttujat'[Andel som utländska studerande av samtliga studerande]=var lkm = [Ulkomaalaiset opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
-	var kaikki = CALCULATE([Kaikki opiskelijat], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]))
+	var kaikki = CALCULATE([Kaikki opiskelijat], ALL('Muuttujat'[Medborgarskap (världsdel)]), ALL('Muuttujat'[Medborgarskap (land)]), ALL('Muuttujat'[Medborgarskap (finska/andra)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -22280,9 +22280,9 @@ return IF(lkm = BLANK(), BLANK(),
 
 CREATE MEASURE 'Muuttujat'[Andel som studerande som är utrikes födda av samtliga studerande]=var lkm = [Ulkomailla syntyneet opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
-	var kaikki = CALCULATE([Kaikki opiskelijat], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]))
+	var kaikki = CALCULATE([Kaikki opiskelijat], ALL(Muuttujat[Födelseland]), ALL(Muuttujat[Födelseland (världsdel)]), ALL(Muuttujat[Födelseland (Finland/andra)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -22532,9 +22532,9 @@ CREATE MEASURE 'Muuttujat'[Närvarande studerande som är utrikes födda]=CALCUL
 
 CREATE MEASURE 'Muuttujat'[Andel som nybörjare med ett främmande modersmål av samtliga nybörjare]=var lkm = [Vieraskieliset aloittaneet]
 return IF(lkm = BLANK(), BLANK(),
-	var kaikki = CALCULATE([Kaikki aloittaneet], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]))
+	var kaikki = CALCULATE([Kaikki aloittaneet], ALL(Muuttujat[Modersmål]), ALL(Muuttujat[Modersmål (finska/andra)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -22556,9 +22556,9 @@ return IF(lkm = BLANK(), BLANK(),
 
 CREATE MEASURE 'Muuttujat'[Andel som utländska nybörjare av samtliga nybörjare]=var lkm = [Ulkomaalaiset aloittaneet]
 return IF(lkm = BLANK(), BLANK(),
-	var kaikki = CALCULATE([Kaikki aloittaneet], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]))
+	var kaikki = CALCULATE([Kaikki aloittaneet], ALL('Muuttujat'[Medborgarskap (världsdel)]), ALL('Muuttujat'[Medborgarskap (land)]), ALL('Muuttujat'[Medborgarskap (finska/andra)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -22580,9 +22580,9 @@ return IF(lkm = BLANK(), BLANK(),
 
 CREATE MEASURE 'Muuttujat'[Andel som nybörjare som är utrikes födda av samtliga nybörjare]=var lkm = [Ulkomailla syntyneet aloittaneet]
 return IF(lkm = BLANK(), BLANK(),
-	var kaikki = CALCULATE([Kaikki aloittaneet], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]))
+	var kaikki = CALCULATE([Kaikki aloittaneet], ALL(Muuttujat[Födelseland]), ALL(Muuttujat[Födelseland (världsdel)]), ALL(Muuttujat[Födelseland (Finland/andra)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -22604,9 +22604,9 @@ return IF(lkm = BLANK(), BLANK(),
 
 CREATE MEASURE 'Muuttujat'[Andel som nya studerande med ett främmande modersmål av samtliga nya studerande]=var lkm = [Vieraskieliset uudet opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
-	var kaikki = CALCULATE([Kaikki uudet opiskelijat], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]))
+	var kaikki = CALCULATE([Kaikki uudet opiskelijat],ALL(Muuttujat[Modersmål]), ALL(Muuttujat[Modersmål (finska/andra)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -22628,9 +22628,9 @@ return IF(lkm = BLANK(), BLANK(),
 
 CREATE MEASURE 'Muuttujat'[Andel som utländska nya studerande av samtliga nya studerande]=var lkm = [Ulkomaalaiset uudet opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
-	var kaikki = CALCULATE([Kaikki uudet opiskelijat], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]))
+	var kaikki = CALCULATE([Kaikki uudet opiskelijat], ALL('Muuttujat'[Medborgarskap (världsdel)]), ALL('Muuttujat'[Medborgarskap (land)]), ALL('Muuttujat'[Medborgarskap (finska/andra)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -22652,9 +22652,9 @@ return IF(lkm = BLANK(), BLANK(),
 
 CREATE MEASURE 'Muuttujat'[Andel som nya studerande som är utrikes födda av samtliga nya studerande]=var lkm = [Ulkomailla syntyneet uudet opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
-	var kaikki = CALCULATE([Kaikki uudet opiskelijat], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]))
+	var kaikki = CALCULATE([Kaikki uudet opiskelijat], ALL(Muuttujat[Födelseland]), ALL(Muuttujat[Födelseland (världsdel)]), ALL(Muuttujat[Födelseland (Finland/andra)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -22676,9 +22676,9 @@ return IF(lkm = BLANK(), BLANK(),
 
 CREATE MEASURE 'Muuttujat'[Andel som närvarande studerande med ett främmande modersmål av samtliga närvarande]=var lkm = [Läsnäolevaksi kirjautuneet vieraskieliset opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
-	var kaikki = CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]))
+	var kaikki = CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat], ALL(Muuttujat[Modersmål]), ALL(Muuttujat[Modersmål (finska/andra)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -22700,9 +22700,9 @@ return IF(lkm = BLANK(), BLANK(),
 
 CREATE MEASURE 'Muuttujat'[Andel som närvarande utländska studerande av samtliga närvarande]=var lkm = [Läsnäolevaksi kirjautuneet ulkomaalaiset opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
-	var kaikki = CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]))
+	var kaikki = CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat], ALL('Muuttujat'[Medborgarskap (världsdel)]), ALL('Muuttujat'[Medborgarskap (land)]), ALL('Muuttujat'[Medborgarskap (finska/andra)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -22724,9 +22724,9 @@ return IF(lkm = BLANK(), BLANK(),
 
 CREATE MEASURE 'Muuttujat'[Andel som närvarande studerande som är utrikes födda av samtliga närvarande]=var lkm = [Läsnäolevaksi kirjautuneet ulkomailla syntyneet opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
-	var kaikki = CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]))
+	var kaikki = CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat], ALL(Muuttujat[Födelseland]), ALL(Muuttujat[Födelseland (världsdel)]), ALL(Muuttujat[Födelseland (Finland/andra)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -22938,9 +22938,9 @@ CREATE MEASURE 'Muuttujat'[New foreign students]=CALCULATE([Kaikki uudet opiskel
 
 CREATE MEASURE 'Muuttujat'[Percentage of foreign-language students (of all students)]=var lkm = [Vieraskieliset opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
-	var kaikki = CALCULATE([Kaikki opiskelijat], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]))
+	var kaikki = CALCULATE([Kaikki opiskelijat], ALL(Muuttujat[Mother tongue]), ALL(Muuttujat[Mother tongue (Finnish/Other)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -22962,9 +22962,9 @@ return IF(lkm = BLANK(), BLANK(),
 
 CREATE MEASURE 'Muuttujat'[Percentage of foreign students (of all students)]=var lkm = [Ulkomaalaiset opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
-	var kaikki = CALCULATE([Kaikki opiskelijat], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]))
+	var kaikki = CALCULATE([Kaikki opiskelijat], ALL('Muuttujat'[Nationality (continent)]), ALL('Muuttujat'[Nationality (country)]), ALL('Muuttujat'[Nationality (Finn/Other)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -22986,9 +22986,9 @@ return IF(lkm = BLANK(), BLANK(),
 
 CREATE MEASURE 'Muuttujat'[Percentage of students born abroad (of all students)]=var lkm = [Ulkomailla syntyneet opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
-	var kaikki = CALCULATE([Kaikki opiskelijat], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]))
+	var kaikki = CALCULATE([Kaikki opiskelijat], ALL(Muuttujat[Country of birth]), ALL(Muuttujat[Country of birth (continent)]), ALL(Muuttujat[Country of birth (Finland/Other)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -23124,9 +23124,9 @@ CREATE MEASURE 'Muuttujat'[Students born abroad enrolled as present]=CALCULATE([
 
 CREATE MEASURE 'Muuttujat'[Percentage of foreign-language admitted (of all admitted)]=var lkm = [Vieraskieliset aloittaneet]
 return IF(lkm = BLANK(), BLANK(),
-	var kaikki = CALCULATE([Kaikki aloittaneet], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]))
+	var kaikki = CALCULATE([Kaikki aloittaneet], ALL(Muuttujat[Mother tongue]), ALL(Muuttujat[Mother tongue (Finnish/Other)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -23148,9 +23148,9 @@ return IF(lkm = BLANK(), BLANK(),
 
 CREATE MEASURE 'Muuttujat'[Percentage of foreign admitted (of all admitted)]=var lkm = [Ulkomaalaiset aloittaneet]
 return IF(lkm = BLANK(), BLANK(),
-	var kaikki = CALCULATE([Kaikki aloittaneet], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]))
+	var kaikki = CALCULATE([Kaikki aloittaneet], ALL('Muuttujat'[Nationality (continent)]), ALL('Muuttujat'[Nationality (country)]), ALL('Muuttujat'[Nationality (Finn/Other)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -23172,9 +23172,9 @@ return IF(lkm = BLANK(), BLANK(),
 
 CREATE MEASURE 'Muuttujat'[Percentage of admitted born abroad (of all admitted)]=var lkm = [Ulkomailla syntyneet aloittaneet]
 return IF(lkm = BLANK(), BLANK(),
-	var kaikki = CALCULATE([Kaikki aloittaneet], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]))
+	var kaikki = CALCULATE([Kaikki aloittaneet], ALL(Muuttujat[Country of birth]), ALL(Muuttujat[Country of birth (continent)]), ALL(Muuttujat[Country of birth (Finland/Other)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -23196,9 +23196,9 @@ return IF(lkm = BLANK(), BLANK(),
 
 CREATE MEASURE 'Muuttujat'[Percentage of new foreign-language students (of all new students)]=var lkm = [Vieraskieliset uudet opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
-	var kaikki = CALCULATE([Kaikki uudet opiskelijat], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]))
+	var kaikki = CALCULATE([Kaikki uudet opiskelijat], ALL(Muuttujat[Mother tongue]), ALL(Muuttujat[Mother tongue (Finnish/Other)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -23220,9 +23220,9 @@ return IF(lkm = BLANK(), BLANK(),
 
 CREATE MEASURE 'Muuttujat'[Percentage of new foreign students (of all new students)]=var lkm = [Ulkomaalaiset uudet opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
-	var kaikki = CALCULATE([Kaikki uudet opiskelijat], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]))
+	var kaikki = CALCULATE([Kaikki uudet opiskelijat], ALL('Muuttujat'[Nationality (continent)]), ALL('Muuttujat'[Nationality (country)]), ALL('Muuttujat'[Nationality (Finn/Other)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -23244,9 +23244,9 @@ return IF(lkm = BLANK(), BLANK(),
 
 CREATE MEASURE 'Muuttujat'[Percentage of new students born abroad (of all new students)]=var lkm = [Ulkomailla syntyneet uudet opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
-	var kaikki = CALCULATE([Kaikki uudet opiskelijat], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]))
+	var kaikki = CALCULATE([Kaikki uudet opiskelijat], ALL(Muuttujat[Country of birth]), ALL(Muuttujat[Country of birth (continent)]), ALL(Muuttujat[Country of birth (Finland/Other)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -23268,9 +23268,9 @@ return IF(lkm = BLANK(), BLANK(),
 
 CREATE MEASURE 'Muuttujat'[Percentage of foreign-language students enrolled as present (of all present students)]=var lkm = [Läsnäolevaksi kirjautuneet vieraskieliset opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
-	var kaikki = CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat], ALL(Muuttujat[Äidinkieli]), ALL(Muuttujat[Äidinkieli (suomi/muu)]))
+	var kaikki = CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat], ALL(Muuttujat[Mother tongue]), ALL(Muuttujat[Mother tongue (Finnish/Other)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -23292,9 +23292,9 @@ return IF(lkm = BLANK(), BLANK(),
 
 CREATE MEASURE 'Muuttujat'[Percentage of foreign students enrolled as present (of all present students)]=var lkm = [Läsnäolevaksi kirjautuneet ulkomaalaiset opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
-	var kaikki = CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat], ALL('Muuttujat'[Kansalaisuus (maanosa)]), ALL('Muuttujat'[Kansalaisuus (maa)]), ALL('Muuttujat'[Kansalaisuus (suomi/muu)]))
+	var kaikki = CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat], ALL('Muuttujat'[Nationality (continent)]), ALL('Muuttujat'[Nationality (country)]), ALL('Muuttujat'[Nationality (Finn/Other)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
@@ -23316,9 +23316,9 @@ return IF(lkm = BLANK(), BLANK(),
 
 CREATE MEASURE 'Muuttujat'[Percentage of students born abroad enrolled as present (of all present students)]=var lkm = [Läsnäolevaksi kirjautuneet ulkomailla syntyneet opiskelijat]
 return IF(lkm = BLANK(), BLANK(),
-	var kaikki = CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat], ALL(Muuttujat[Syntymämaa]), ALL(Muuttujat[Syntymämaa (maanosa)]), ALL(Muuttujat[Syntymämaa (suomi/muu)]))
+	var kaikki = CALCULATE([Kaikki läsnäolevaksi kirjautuneet opiskelijat], ALL(Muuttujat[Country of birth]), ALL(Muuttujat[Country of birth (continent)]), ALL(Muuttujat[Country of birth (Finland/Other)]))
                 return IF(kaikki = "1-4", "25 % – 100 %",
-                                IF(lkm = "1-4", IF(kaikki > 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
+                                IF(lkm = "1-4", IF(kaikki &gt; 8000, "0.0 %", CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
                                      lkm / kaikki)));
 </Text>
                   <Annotations>
