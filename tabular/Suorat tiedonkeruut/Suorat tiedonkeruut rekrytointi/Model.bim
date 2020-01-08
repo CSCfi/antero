@@ -62,7 +62,7 @@
         ]
       },
       {
-        "name": "_Muuttujat",
+        "name": "Muuttujat - Haku",
         "columns": [
           {
             "name": "Tilastovuosi",
@@ -602,7 +602,7 @@
           },
           {
             "name": "Ulkomaalaiset hakijat",
-            "expression": "IF(CALCULATE(SUM([hakijat_lkm]),'_Muuttujat'[Kansalaisuus Suomi]=\"Ei\")=0,BLANK(),CALCULATE(SUMX(FILTER(_Muuttujat,'_Muuttujat'[Kansalaisuus Suomi]=\"Ei\"),[hakijat_lkm])))",
+            "expression": "IF(CALCULATE(SUM([hakijat_lkm]),'Muuttujat - Haku'[Kansalaisuus Suomi]=\"Ei\")=0,BLANK(),CALCULATE(SUMX(FILTER('Muuttujat - Haku','Muuttujat - Haku'[Kansalaisuus Suomi]=\"Ei\"),[hakijat_lkm])))",
             "formatString": "#,0"
           },
           {
@@ -617,19 +617,19 @@
           },
           {
             "name": "Keskihajonta hakijoita per valittu",
-            "expression": "STDEVX.P('_Muuttujat',IF(ISERROR([Hakijat]/[Valitut]),0,[Hakijat]/[Valitut]))",
+            "expression": "STDEVX.P('Muuttujat - Haku',IF(ISERROR([Hakijat]/[Valitut]),0,[Hakijat]/[Valitut]))",
             "formatString": "0.0"
           },
           {
             "name": "Keskihajonta ulk. hakijoita per valittu",
-            "expression": "CALCULATE(STDEVX.P('_Muuttujat',IF(ISERROR([Hakijat]/[Valitut]),0,[Hakijat]/[Valitut])),'_Muuttujat'[Kansalaisuus Suomi]=\"Ei\")",
+            "expression": "CALCULATE(STDEVX.P('Muuttujat - Haku',IF(ISERROR([Hakijat]/[Valitut]),0,[Hakijat]/[Valitut])),'Muuttujat - Haku'[Kansalaisuus Suomi]=\"Ei\")",
             "formatString": "0.0"
           },
           {
             "name": "Ulkomaalaisten hakijoiden osuus",
             "expression": [
               "CALCULATE([Ulkomaalaiset hakijat]/",
-              "IF(ISFILTERED(_Muuttujat[Kansalaisuus (maanosa)]),CALCULATE(SUM([hakijat_lkm]),ALL(_Muuttujat[Kansalaisuus (maanosa)])),[Hakijat]))"
+              "IF(ISFILTERED('Muuttujat - Haku'[Kansalaisuus (maanosa)]),CALCULATE(SUM([hakijat_lkm]),ALL('Muuttujat - Haku'[Kansalaisuus (maanosa)])),[Hakijat]))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
@@ -658,12 +658,12 @@
           },
           {
             "name": "Hakijat naiset",
-            "expression": "CALCULATE(SUMX(FILTER(_Muuttujat,[Sukupuoli]=\"nainen\"),[hakijat_lkm]))",
+            "expression": "CALCULATE(SUMX(FILTER('Muuttujat - Haku',[Sukupuoli]=\"nainen\"),[hakijat_lkm]))",
             "isHidden": true
           },
           {
             "name": "Hakijat miehet",
-            "expression": "CALCULATE(SUMX(FILTER(_Muuttujat,[Sukupuoli]=\"mies\"),[hakijat_lkm]))",
+            "expression": "CALCULATE(SUMX(FILTER('Muuttujat - Haku',[Sukupuoli]=\"mies\"),[hakijat_lkm]))",
             "isHidden": true
           },
           {
@@ -678,7 +678,7 @@
           },
           {
             "name": "Hakijat muut",
-            "expression": "CALCULATE(SUMX(FILTER(_Muuttujat,[Sukupuoli]=\"tieto puuttuu\"),[hakijat_lkm]))",
+            "expression": "CALCULATE(SUMX(FILTER('Muuttujat - Haku',[Sukupuoli]=\"tieto puuttuu\"),[hakijat_lkm]))",
             "isHidden": true
           },
           {
@@ -690,25 +690,25 @@
             "name": "Suomalaisten hakijoiden osuus",
             "expression": [
               "CALCULATE([Suomalaiset hakijat]/",
-              "IF(ISFILTERED(_Muuttujat[Kansalaisuus (maanosa)]),CALCULATE(SUM([hakijat_lkm]),ALL(_Muuttujat[Kansalaisuus (maanosa)])),[Hakijat]))",
+              "IF(ISFILTERED('Muuttujat - Haku'[Kansalaisuus (maanosa)]),CALCULATE(SUM([hakijat_lkm]),ALL('Muuttujat - Haku'[Kansalaisuus (maanosa)])),[Hakijat]))",
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Suomalaiset hakijat",
-            "expression": "IF(CALCULATE(SUM([hakijat_lkm]),'_Muuttujat'[Kansalaisuus Suomi]=\"Kyllä\")=0,BLANK(),CALCULATE(SUMX(FILTER(_Muuttujat,'_Muuttujat'[Kansalaisuus Suomi]=\"Kyllä\"),[hakijat_lkm])))",
+            "expression": "IF(CALCULATE(SUM([hakijat_lkm]),'Muuttujat - Haku'[Kansalaisuus Suomi]=\"Kyllä\")=0,BLANK(),CALCULATE(SUMX(FILTER('Muuttujat - Haku','Muuttujat - Haku'[Kansalaisuus Suomi]=\"Kyllä\"),[hakijat_lkm])))",
             "formatString": "#,0"
           },
           {
             "name": "Kansalaisuus puuttuu",
-            "expression": "IF(CALCULATE(SUM([hakijat_lkm]),'_Muuttujat'[Kansalaisuus Suomi]=\"Tieto puuttuu\")=0,BLANK(),CALCULATE(SUMX(FILTER(_Muuttujat,'_Muuttujat'[Kansalaisuus Suomi]=\"Tieto puuttuu\"),[hakijat_lkm])))"
+            "expression": "IF(CALCULATE(SUM([hakijat_lkm]),'Muuttujat - Haku'[Kansalaisuus Suomi]=\"Tieto puuttuu\")=0,BLANK(),CALCULATE(SUMX(FILTER('Muuttujat - Haku','Muuttujat - Haku'[Kansalaisuus Suomi]=\"Tieto puuttuu\"),[hakijat_lkm])))"
           },
           {
             "name": "Kansalaisuustieto puuttuu",
             "expression": [
               "CALCULATE([Kansalaisuus puuttuu]/",
-              "IF(ISFILTERED(_Muuttujat[Kansalaisuus (maanosa)]),CALCULATE(SUM([hakijat_lkm]),ALL(_Muuttujat[Kansalaisuus (maanosa)])),[Hakijat]))",
+              "IF(ISFILTERED('Muuttujat - Haku'[Kansalaisuus (maanosa)]),CALCULATE(SUM([hakijat_lkm]),ALL('Muuttujat - Haku'[Kansalaisuus (maanosa)])),[Hakijat]))",
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
@@ -7762,7 +7762,7 @@
             "dataType": "string",
             "isNameInferred": true,
             "isDataTypeInferred": true,
-            "sourceColumn": "_Muuttujat[Hakuavain]"
+            "sourceColumn": "Muuttujat - Haku[Hakuavain]"
           }
         ],
         "partitions": [
@@ -7770,7 +7770,7 @@
             "name": "CalculatedTable 1",
             "source": {
               "type": "calculated",
-              "expression": "SUMMARIZE(_Muuttujat,[Hakuavain],\"Hakijoita\",SUM(_Muuttujat[hakijat_lkm]),\"Ulk hakijat\",CALCULATE(SUM(_Muuttujat[hakijat_lkm]),_Muuttujat[Kansalaisuus Suomi]=\"Ei\"))"
+              "expression": "SUMMARIZE('Muuttujat - Haku',[Hakuavain],\"Hakijoita\",SUM('Muuttujat - Haku'[hakijat_lkm]),\"Ulk hakijat\",CALCULATE(SUM('Muuttujat - Haku'[hakijat_lkm]),'Muuttujat - Haku'[Kansalaisuus Suomi]=\"Ei\"))"
             }
           }
         ]
@@ -7819,7 +7819,7 @@
               "type": "calculated",
               "expression": [
                 "SUMMARIZE(Muuttujat,[Hakuavain],\"Valittuja2\",DISTINCTCOUNT(Muuttujat[henkilonumero]),\"Hakijoita2\",",
-                "SUMX(FILTER(RELATEDTABLE(_Muuttujat),[Hakuavain]=EARLIER([Hakuavain])),[hakijat_lkm]),\"Ulk hakijoita2\", SUMX(FILTER(RELATEDTABLE(_Muuttujat),[Hakuavain]=EARLIER([Hakuavain]) && [Kansalaisuus Suomi]=\"Ei\"),[hakijat_lkm]))"
+                "SUMX(FILTER(RELATEDTABLE('Muuttujat - Haku'),[Hakuavain]=EARLIER([Hakuavain])),[hakijat_lkm]),\"Ulk hakijoita2\", SUMX(FILTER(RELATEDTABLE('Muuttujat - Haku'),[Hakuavain]=EARLIER([Hakuavain]) && [Kansalaisuus Suomi]=\"Ei\"),[hakijat_lkm]))"
               ]
             }
           }
@@ -7906,7 +7906,7 @@
       },
       {
         "name": "3bc8cc05-0ec9-400f-b95b-42a1f9d0cf5c",
-        "fromTable": "_Muuttujat",
+        "fromTable": "Muuttujat - Haku",
         "fromColumn": "Hakuavain",
         "toTable": "Haku-valitut",
         "toColumn": "Hakuavain",
@@ -7926,7 +7926,7 @@
         "name": "Hakijat_ja_valitut",
         "tables": [
           {
-            "name": "_Muuttujat",
+            "name": "Muuttujat - Haku",
             "columns": [
               {
                 "name": "Kansainvälinen haku"
@@ -8466,7 +8466,7 @@
         "name": "Hakijat",
         "tables": [
           {
-            "name": "_Muuttujat",
+            "name": "Muuttujat - Haku",
             "columns": [
               {
                 "name": "Kansainvälinen haku"
@@ -8528,41 +8528,6 @@
               },
               {
                 "name": "Sarakeleveys"
-              }
-            ]
-          },
-          {
-            "name": "Muuttujat",
-            "columns": [
-              {
-                "name": "Koodit Kansalaisuus"
-              },
-              {
-                "name": "Koodit Korkeakoulu"
-              },
-              {
-                "name": "Koodit Koulutusala, taso 1"
-              },
-              {
-                "name": "Koodit Koulutusala, taso 2"
-              },
-              {
-                "name": "Koodit Koulutusala, taso 3"
-              },
-              {
-                "name": "Koodit Koulutusaste, taso 1"
-              },
-              {
-                "name": "Koodit Koulutusaste, taso 2"
-              },
-              {
-                "name": "Koodit Koulutusnimike"
-              },
-              {
-                "name": "Koodit OKM ohjauksen ala"
-              },
-              {
-                "name": "Koodit Äidinkieli"
               }
             ]
           }
