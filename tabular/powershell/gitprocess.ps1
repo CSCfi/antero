@@ -48,7 +48,7 @@ foreach ($tabular in $table)
 {
 	#NEW
 	Get-Childitem $gitdir+"\antero-master\" -recurse -filter $tabular | %{
-		Copy-Item -Path $_.FullName -Destination $tabulardir+$tabular -recurse}
+		Copy-Item -Path $_.FullName -Destination C:\Users\pankalai.000\Downloads -recurse}
 	
 	#OLD
 	#if (Test-Path ($gitdir+"\antero-master\tabular\"+$tabular)) {
