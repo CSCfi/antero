@@ -48,9 +48,9 @@ foreach ($tabular in $table)
 {
 	#NEW
 	Get-Childitem $gitdir+"\antero-master\" -recurse -filter $tabular | %{
-		Copy-Item -Path $_.FullName -Destination $tabulardir+$tabular -recurse
+		Copy-Item -Path $_.FullName -Destination D:\Antero\jenkins -recurse
 	}
-	
+	#($tabulardir+$tabular)
 	#OLD
 	#if (Test-Path ($gitdir+"\antero-master\tabular\"+$tabular)) {
 	#	Copy-Item ($gitdir+"\antero-master\tabular\"+$tabular) ($tabulardir+$tabular) -recurse
