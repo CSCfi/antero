@@ -46,12 +46,16 @@ Copy-Item ($gitdir+"\antero-master\tabular\powershell") ($tabulardir) -recurse -
 
 foreach ($tabular in $table)
 {
+	#NEW
+	Get-Childitem $gitdir+"\antero-master\" -recurse -filter $tabular | %{
+		Copy-Item -Path $_.FullName -Destination $tabulardir+$tabular -recurse}
 	
-	if (Test-Path ($gitdir+"\antero-master\tabular\"+$tabular)) {
-		Copy-Item ($gitdir+"\antero-master\tabular\"+$tabular) ($tabulardir+$tabular) -recurse
-	} else {	
-		Copy-Item ($gitdir+"\antero-master\tabular jäädytys\"+$tabular) ($tabulardir+$tabular) -recurse
-	}
+	#OLD
+	#if (Test-Path ($gitdir+"\antero-master\tabular\"+$tabular)) {
+	#	Copy-Item ($gitdir+"\antero-master\tabular\"+$tabular) ($tabulardir+$tabular) -recurse
+	#} else {	
+	#	Copy-Item ($gitdir+"\antero-master\tabular jäädytys\"+$tabular) ($tabulardir+$tabular) -recurse
+	#}
 	
     $updateCommand = New-Object System.Data.SqlClient.SqlCommand
     $updateCommand.Connection = $connection
