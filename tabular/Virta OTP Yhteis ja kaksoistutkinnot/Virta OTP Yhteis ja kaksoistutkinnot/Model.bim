@@ -1,6 +1,5 @@
 {
   "name": "SemanticModel",
-  "id": "SemanticModel",
   "compatibilityLevel": 1200,
   "model": {
     "culture": "fi-FI",
@@ -64,13 +63,6 @@
       {
         "name": "Muuttujat",
         "columns": [
-          {
-            "name": "Tilastovuosi",
-            "dataType": "int64",
-            "sourceColumn": "Tilastovuosi",
-            "sourceProviderType": "Integer",
-            "displayFolder": "Aikamuuttujat"
-          },
           {
             "name": "Sektori",
             "dataType": "string",
@@ -175,7 +167,6 @@
           {
             "name": "Kansalaisuus",
             "dataType": "string",
-            "isHidden": true,
             "sourceColumn": "Kansalaisuus",
             "sourceProviderType": "WChar",
             "displayFolder": "Henkilömuuttujat"
@@ -249,6 +240,13 @@
             "isHidden": true,
             "sourceColumn": "Ikäryhmä jarj",
             "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Tilastovuosi",
+            "dataType": "int64",
+            "sourceColumn": "Tilastovuosi",
+            "sourceProviderType": "Integer",
+            "displayFolder": "Aikamuuttujat"
           }
         ],
         "partitions": [
@@ -264,13 +262,23 @@
         "measures": [
           {
             "name": "Yhteistutkintoja",
-            "expression": "CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),\nFILTER('Muuttujat',(\n'Muuttujat'[Luokittelu]=\"Kansainvälinen yhteistutkinto\" \n) ) )",
+            "expression": [
+              "CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),",
+              "FILTER('Muuttujat',(",
+              "'Muuttujat'[Luokittelu]=\"Kansainvälinen yhteistutkinto\" ",
+              ") ) )"
+            ],
             "formatString": "#,0",
             "isHidden": true
           },
           {
             "name": "Kaksoistutkintoja",
-            "expression": "CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),\nFILTER('Muuttujat',(\n'Muuttujat'[Luokittelu]=\"Kansainvälinen kaksoistutkinto\" \n) ) )",
+            "expression": [
+              "CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),",
+              "FILTER('Muuttujat',(",
+              "'Muuttujat'[Luokittelu]=\"Kansainvälinen kaksoistutkinto\" ",
+              ") ) )"
+            ],
             "formatString": "#,0",
             "isHidden": true
           },
@@ -357,6 +365,9 @@
               },
               {
                 "name": "Tilastovuosi"
+              },
+              {
+                "name": "Kansalaisuus"
               }
             ],
             "measures": [
@@ -405,12 +416,12 @@
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1732"
           },
           {
-            "memberName": "IUSR",
-            "memberId": "S-1-5-17"
-          },
-          {
             "memberName": "DWI\\ffinnber",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1355"
+          },
+          {
+            "memberName": "NT AUTHORITY\\IUSR",
+            "memberId": "S-1-5-17"
           }
         ]
       }
@@ -421,5 +432,6 @@
         "value": "400"
       }
     ]
-  }
+  },
+  "id": "SemanticModel"
 }
