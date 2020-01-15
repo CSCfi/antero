@@ -602,7 +602,7 @@
           },
           {
             "name": "Ulkomaalaiset hakijat",
-            "expression": "IF(CALCULATE(SUM([hakijat_lkm]),'Muuttujat - Haku'[Kansalaisuus Suomi]=\"Ei\")=0,BLANK(),CALCULATE(SUMX(FILTER('Muuttujat - Haku','Muuttujat - Haku'[Kansalaisuus Suomi]=\"Ei\"),[hakijat_lkm])))",
+            "expression": "IF(CALCULATE([Hakijat],'Muuttujat - Haku'[Kansalaisuus Suomi]=\"Ei\")=0,BLANK(),CALCULATE(SUMX(FILTER('Muuttujat - Haku','Muuttujat - Haku'[Kansalaisuus Suomi]=\"Ei\"),[hakijat_lkm])))",
             "formatString": "#,0"
           },
           {
@@ -678,7 +678,11 @@
           },
           {
             "name": "Hakijat muut",
-            "expression": "CALCULATE(SUMX(FILTER('Muuttujat - Haku',[Sukupuoli]=\"tieto puuttuu\"),[hakijat_lkm]))",
+            "expression": [
+              "",
+              "var summa = CALCULATE(SUMX(FILTER('Muuttujat - Haku',[Sukupuoli]=\"tieto puuttuu\"),[hakijat_lkm]))",
+              "return IF(summa=0,BLANK(),summa)"
+            ],
             "isHidden": true
           },
           {
@@ -697,12 +701,13 @@
           },
           {
             "name": "Suomalaiset hakijat",
-            "expression": "IF(CALCULATE(SUM([hakijat_lkm]),'Muuttujat - Haku'[Kansalaisuus Suomi]=\"Kyllä\")=0,BLANK(),CALCULATE(SUMX(FILTER('Muuttujat - Haku','Muuttujat - Haku'[Kansalaisuus Suomi]=\"Kyllä\"),[hakijat_lkm])))",
+            "expression": "IF(CALCULATE([Hakijat],'Muuttujat - Haku'[Kansalaisuus Suomi]=\"Kyllä\")=0,BLANK(),CALCULATE(SUMX(FILTER('Muuttujat - Haku','Muuttujat - Haku'[Kansalaisuus Suomi]=\"Kyllä\"),[hakijat_lkm])))",
             "formatString": "#,0"
           },
           {
             "name": "Kansalaisuus puuttuu",
-            "expression": "IF(CALCULATE(SUM([hakijat_lkm]),'Muuttujat - Haku'[Kansalaisuus Suomi]=\"Tieto puuttuu\")=0,BLANK(),CALCULATE(SUMX(FILTER('Muuttujat - Haku','Muuttujat - Haku'[Kansalaisuus Suomi]=\"Tieto puuttuu\"),[hakijat_lkm])))"
+            "expression": "IF(CALCULATE([Hakijat],'Muuttujat - Haku'[Kansalaisuus Suomi]=\"Tieto puuttuu\")=0,BLANK(),CALCULATE(SUMX(FILTER('Muuttujat - Haku','Muuttujat - Haku'[Kansalaisuus Suomi]=\"Tieto puuttuu\"),[hakijat_lkm])))",
+            "formatString": "#,0"
           },
           {
             "name": "Kansalaisuustieto puuttuu",
