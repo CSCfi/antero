@@ -19,7 +19,7 @@
     ],
     "tables": [
       {
-        "name": "Muuttujat",
+        "name": "Muuttujat - seurantaryhmät",
         "columns": [
           {
             "name": "Tilastovuosi",
@@ -383,17 +383,17 @@
           {
             "name": "Määrä",
             "expression": "SUM([euroa])",
-            "formatString": "#,0.00 \"€\";-#,0.00 \"€\";#,0.00 \"€\"",
+            "formatString": "#,0 \"€\";-#,0 \"€\";#,0 \"€\"",
             "annotations": [
               {
                 "name": "Format",
-                "value": "<Format Format=\"Currency\" Accuracy=\"2\"><Currency LCID=\"1035\" DisplayName=\"€ Finnish (Finland)\" Symbol=\"€\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1035\" DisplayName=\"€ Finnish (Finland)\" Symbol=\"€\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
               }
             ]
           },
           {
             "name": "Painottamattomat opiskelijavuodet",
-            "expression": "CALCULATE(SUM(Opiskelijavuodet[ov_painottamaton]), FILTER(Opiskelijavuodet,CONTAINS(Muuttujat,[ov_avain],Opiskelijavuodet[avain])))",
+            "expression": "CALCULATE(SUM(Opiskelijavuodet[ov_painottamaton]), FILTER(Opiskelijavuodet,CONTAINS('Muuttujat - seurantaryhmät',[ov_avain],Opiskelijavuodet[avain_R12])))",
             "formatString": "#,0.00"
           },
           {
@@ -409,7 +409,7 @@
           },
           {
             "name": "Painotetut opiskelijavuodet",
-            "expression": "CALCULATE(SUM(Opiskelijavuodet[ov_painotettu]), FILTER(Opiskelijavuodet,CONTAINS(Muuttujat,[ov_avain],Opiskelijavuodet[avain])))",
+            "expression": "CALCULATE(SUM(Opiskelijavuodet[ov_painotettu]), FILTER(Opiskelijavuodet,CONTAINS('Muuttujat - seurantaryhmät',[ov_avain],Opiskelijavuodet[avain_R12])))",
             "formatString": "#,0.00"
           },
           {
@@ -744,11 +744,6 @@
         "isHidden": true,
         "columns": [
           {
-            "name": "avain",
-            "dataType": "string",
-            "sourceColumn": "avain"
-          },
-          {
             "name": "ov_painottamaton",
             "dataType": "double",
             "sourceColumn": "ov_painottamaton"
@@ -757,6 +752,16 @@
             "name": "ov_painotettu",
             "dataType": "double",
             "sourceColumn": "ov_painotettu"
+          },
+          {
+            "name": "avain_R12",
+            "dataType": "string",
+            "sourceColumn": "avain_R12"
+          },
+          {
+            "name": "avain_R92",
+            "dataType": "string",
+            "sourceColumn": "avain_R92"
           }
         ],
         "partitions": [
@@ -766,7 +771,8 @@
             "source": {
               "query": [
                 "SELECT",
-                "\tavain = CONCAT(tilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi, d2.koulutusalataso1_koodi, d3.koodi, d4.kytkin_koodi, d5.kytkin_koodi)",
+                "\tavain_R12 = CONCAT(tilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi, d2.koulutusalataso1_koodi, d3.koodi, d4.kytkin_koodi, d5.kytkin_koodi)",
+                "\t,avain_R92 = CONCAT(tilastovuosi, d1.organisaatio_koodi)",
                 "\t,ov_painottamaton = SUM(f.opiskelijavuodet_painottamaton)",
                 "\t,ov_painotettu = SUM(f.opiskelijavuodet_painotettu_yhteensa)",
                 "FROM dw.f_amos_opiskelijavuodet_painotetut f",
@@ -777,7 +783,7 @@
                 "left join dw.d_kytkin d4 on d4.id=f.d_kytkin_oppisopimuskoulutus_id",
                 "left join dw.d_kytkin d5 on d5.id=f.d_kytkin_vankilaopetus_id",
                 "",
-                "WHERE tilastovuosi = 2018 GROUP BY CONCAT(tilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi, d2.koulutusalataso1_koodi, d3.koodi, d4.kytkin_koodi, d5.kytkin_koodi)"
+                "GROUP BY tilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi, d2.koulutusalataso1_koodi, d3.koodi, d4.kytkin_koodi, d5.kytkin_koodi"
               ],
               "dataSource": "SqlServer dwitvipusql16 antero"
             },
@@ -786,7 +792,8 @@
                 "name": "QueryEditorSerialization",
                 "value": [
                   "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT",
-                  "\tavain = CONCAT(tilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi, d2.koulutusalataso1_koodi, d3.koodi, d4.kytkin_koodi, d5.kytkin_koodi)",
+                  "\tavain_R12 = CONCAT(tilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi, d2.koulutusalataso1_koodi, d3.koodi, d4.kytkin_koodi, d5.kytkin_koodi)",
+                  "\t,avain_R92 = CONCAT(tilastovuosi, d1.organisaatio_koodi)",
                   "\t,ov_painottamaton = SUM(f.opiskelijavuodet_painottamaton)",
                   "\t,ov_painotettu = SUM(f.opiskelijavuodet_painotettu_yhteensa)",
                   "FROM dw.f_amos_opiskelijavuodet_painotetut f",
@@ -797,7 +804,7 @@
                   "left join dw.d_kytkin d4 on d4.id=f.d_kytkin_oppisopimuskoulutus_id",
                   "left join dw.d_kytkin d5 on d5.id=f.d_kytkin_vankilaopetus_id",
                   "",
-                  "WHERE tilastovuosi = 2018 GROUP BY CONCAT(tilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi, d2.koulutusalataso1_koodi, d3.koodi, d4.kytkin_koodi, d5.kytkin_koodi)</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+                  "GROUP BY tilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi, d2.koulutusalataso1_koodi, d3.koodi, d4.kytkin_koodi, d5.kytkin_koodi</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
                 ]
               }
             ]
@@ -808,7 +815,8 @@
             "name": "_TM_ExtProp_QueryDefinition",
             "value": [
               "SELECT",
-              "\tavain = CONCAT(tilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi, d2.koulutusalataso1_koodi, d3.koodi, d4.kytkin_koodi, d5.kytkin_koodi)",
+              "\tavain_R12 = CONCAT(tilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi, d2.koulutusalataso1_koodi, d3.koodi, d4.kytkin_koodi, d5.kytkin_koodi)",
+              "\t,avain_R92 = CONCAT(tilastovuosi, d1.organisaatio_koodi)",
               "\t,ov_painottamaton = SUM(f.opiskelijavuodet_painottamaton)",
               "\t,ov_painotettu = SUM(f.opiskelijavuodet_painotettu_yhteensa)",
               "FROM dw.f_amos_opiskelijavuodet_painotetut f",
@@ -819,7 +827,7 @@
               "left join dw.d_kytkin d4 on d4.id=f.d_kytkin_oppisopimuskoulutus_id",
               "left join dw.d_kytkin d5 on d5.id=f.d_kytkin_vankilaopetus_id",
               "",
-              "WHERE tilastovuosi = 2018 GROUP BY CONCAT(tilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi, d2.koulutusalataso1_koodi, d3.koodi, d4.kytkin_koodi, d5.kytkin_koodi)"
+              "GROUP BY tilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi, d2.koulutusalataso1_koodi, d3.koodi, d4.kytkin_koodi, d5.kytkin_koodi"
             ]
           },
           {
@@ -830,7 +838,8 @@
             "name": "QueryEditorSerialization",
             "value": [
               "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT",
-              "\tavain = CONCAT(tilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi, d2.koulutusalataso1_koodi, d3.koodi, d4.kytkin_koodi, d5.kytkin_koodi)",
+              "\tavain_R12 = CONCAT(tilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi, d2.koulutusalataso1_koodi, d3.koodi, d4.kytkin_koodi, d5.kytkin_koodi)",
+              "\t,avain_R92 = CONCAT(tilastovuosi, d1.organisaatio_koodi)",
               "\t,ov_painottamaton = SUM(f.opiskelijavuodet_painottamaton)",
               "\t,ov_painotettu = SUM(f.opiskelijavuodet_painotettu_yhteensa)",
               "FROM dw.f_amos_opiskelijavuodet_painotetut f",
@@ -841,20 +850,791 @@
               "left join dw.d_kytkin d4 on d4.id=f.d_kytkin_oppisopimuskoulutus_id",
               "left join dw.d_kytkin d5 on d5.id=f.d_kytkin_vankilaopetus_id",
               "",
-              "WHERE tilastovuosi = 2018 GROUP BY CONCAT(tilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi, d2.koulutusalataso1_koodi, d3.koodi, d4.kytkin_koodi, d5.kytkin_koodi)</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+              "GROUP BY tilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi, d2.koulutusalataso1_koodi, d3.koodi, d4.kytkin_koodi, d5.kytkin_koodi</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
             ]
+          }
+        ]
+      },
+      {
+        "name": "Muuttujat - tili",
+        "columns": [
+          {
+            "name": "Tilastovuosi",
+            "dataType": "double",
+            "sourceColumn": "Tilastovuosi",
+            "sourceProviderType": "Double"
+          },
+          {
+            "name": "Koulutuksen järjestäjä",
+            "dataType": "string",
+            "sourceColumn": "Koulutuksen järjestäjä",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Taso 0",
+            "dataType": "string",
+            "sourceColumn": "Taso 0",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Taso 1",
+            "dataType": "string",
+            "sourceColumn": "Taso 1",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Taso 2",
+            "dataType": "string",
+            "sourceColumn": "Taso 2",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Taso 3",
+            "dataType": "string",
+            "sourceColumn": "Taso 3",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Taso 4",
+            "dataType": "string",
+            "sourceColumn": "Taso 4",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Taso 5",
+            "dataType": "string",
+            "sourceColumn": "Taso 5",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Taso, alin",
+            "dataType": "string",
+            "sourceColumn": "Taso, alin",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Omistajatyyppi",
+            "dataType": "string",
+            "sourceColumn": "Omistajatyyppi",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "maara_euroa",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "maara_euroa",
+            "sourceProviderType": "Double"
+          },
+          {
+            "name": "ov_avain",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "ov_avain"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "v_amos_kustannuskysely_tili",
+            "dataView": "full",
+            "source": {
+              "query": " SELECT [dw].[v_amos_kustannuskysely_tili].* FROM [dw].[v_amos_kustannuskysely_tili] ",
+              "dataSource": "SqlServer dwitvipusql16 antero"
+            },
+            "annotations": [
+              {
+                "name": "TableWidgetSerialization",
+                "value": [
+                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"TableWidgetSerialization\"><AnnotationContent><![CDATA[<?xml version=\"1.0\"?>",
+                  "<TableWidgetGridSerialization xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">",
+                  "  <ColumnSuggestedType />",
+                  "  <ColumnFormat />",
+                  "  <ColumnAccuracy />",
+                  "  <ColumnCurrencySymbol />",
+                  "  <ColumnPositivePattern />",
+                  "  <ColumnNegativePattern />",
+                  "  <ColumnWidths>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Tilastovuosi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>123</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koulutuksen järjestäjä</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>195</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Taso 0</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>87</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Taso 1</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>87</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Taso 2</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>87</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Taso 3</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>87</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Taso 4</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>87</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Taso 5</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>87</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Taso, alin</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>108</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Omistajatyyppi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>145</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>ov_avain</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>102</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>maara_euroa</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>132</int>",
+                  "      </value>",
+                  "    </item>",
+                  "  </ColumnWidths>",
+                  "  <ColumnDisplayIndex>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Tilastovuosi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>0</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koulutuksen järjestäjä</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>1</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Taso 0</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>2</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Taso 1</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>3</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Taso 2</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>4</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Taso 3</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>5</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Taso 4</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>6</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Taso 5</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>7</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Taso, alin</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>8</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Omistajatyyppi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>9</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>ov_avain</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>10</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>maara_euroa</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>11</int>",
+                  "      </value>",
+                  "    </item>",
+                  "  </ColumnDisplayIndex>",
+                  "  <ColumnFrozen />",
+                  "  <ColumnChecked>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>ov_avain</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "  </ColumnChecked>",
+                  "  <ColumnFilter />",
+                  "  <SelectionFilter />",
+                  "  <FilterParameters />",
+                  "  <IsSortDescending>false</IsSortDescending>",
+                  "</TableWidgetGridSerialization>]]></AnnotationContent></Gemini>"
+                ]
+              }
+            ]
+          }
+        ],
+        "measures": [
+          {
+            "name": "Määrä (euroa)",
+            "expression": "SUM([maara_euroa])",
+            "formatString": "#,0 \"€\";-#,0 \"€\";#,0 \"€\"",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1035\" DisplayName=\"€ Finnish (Finland)\" Symbol=\"€\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "Painottamattomat ov",
+            "expression": "CALCULATE(SUM('Opiskelijavuodet_R92'[sum_painottamaton]))",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Painotetut ov",
+            "expression": "CALCULATE(SUM('Opiskelijavuodet_R92'[sum_painotettu]))",
+            "formatString": "#,0.00"
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [dw].[v_amos_kustannuskysely_tili].* FROM [dw].[v_amos_kustannuskysely_tili] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "v_amos_kustannuskysely_tili"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dw"
+          },
+          {
+            "name": "TableWidgetSerialization",
+            "value": [
+              "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"TableWidgetSerialization\"><AnnotationContent><![CDATA[<?xml version=\"1.0\"?>",
+              "<TableWidgetGridSerialization xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">",
+              "  <ColumnSuggestedType />",
+              "  <ColumnFormat />",
+              "  <ColumnAccuracy />",
+              "  <ColumnCurrencySymbol />",
+              "  <ColumnPositivePattern />",
+              "  <ColumnNegativePattern />",
+              "  <ColumnWidths>",
+              "    <item>",
+              "      <key>",
+              "        <string>Tilastovuosi</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>123</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koulutuksen järjestäjä</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>195</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Taso 0</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>87</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Taso 1</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>87</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Taso 2</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>87</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Taso 3</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>87</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Taso 4</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>87</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Taso 5</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>87</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Taso, alin</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>108</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Omistajatyyppi</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>145</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>ov_avain</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>102</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>maara_euroa</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>132</int>",
+              "      </value>",
+              "    </item>",
+              "  </ColumnWidths>",
+              "  <ColumnDisplayIndex>",
+              "    <item>",
+              "      <key>",
+              "        <string>Tilastovuosi</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>0</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koulutuksen järjestäjä</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>1</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Taso 0</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>2</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Taso 1</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>3</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Taso 2</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>4</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Taso 3</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>5</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Taso 4</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>6</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Taso 5</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>7</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Taso, alin</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>8</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Omistajatyyppi</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>9</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>ov_avain</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>10</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>maara_euroa</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>11</int>",
+              "      </value>",
+              "    </item>",
+              "  </ColumnDisplayIndex>",
+              "  <ColumnFrozen />",
+              "  <ColumnChecked>",
+              "    <item>",
+              "      <key>",
+              "        <string>ov_avain</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "  </ColumnChecked>",
+              "  <ColumnFilter />",
+              "  <SelectionFilter />",
+              "  <FilterParameters />",
+              "  <IsSortDescending>false</IsSortDescending>",
+              "</TableWidgetGridSerialization>]]></AnnotationContent></Gemini>"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Opiskelijavuodet_R92",
+        "isHidden": true,
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "avain_R92",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Opiskelijavuodet[avain_R92]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "sum_painottamaton",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[sum_painottamaton]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "sum_painotettu",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[sum_painotettu]"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": "SUMMARIZE(FILTER(Opiskelijavuodet,CONTAINS('Muuttujat - tili',[ov_avain],Opiskelijavuodet[avain_R92])),[avain_R92],\"sum_painottamaton\",sum(Opiskelijavuodet[ov_painottamaton]),\"sum_painotettu\",SUM(Opiskelijavuodet[ov_painotettu]))"
+            }
           }
         ]
       }
     ],
     "relationships": [
       {
-        "name": "4ff00438-e88a-4c01-b301-878c8d0beb30",
-        "fromTable": "Muuttujat",
-        "fromColumn": "ov_avain",
-        "toTable": "Opiskelijavuodet",
-        "toColumn": "avain",
+        "name": "6599ff83-e90b-4bb3-9f0a-1cbde08ac1aa",
+        "fromTable": "Opiskelijavuodet",
+        "fromColumn": "avain_R92",
+        "toTable": "Opiskelijavuodet_R92",
+        "toColumn": "avain_R92",
         "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "28c75d61-1aba-42b5-a9ef-9bf918d390c6",
+        "fromTable": "Muuttujat - tili",
+        "fromColumn": "ov_avain",
+        "toTable": "Opiskelijavuodet_R92",
+        "toColumn": "avain_R92",
+        "crossFilteringBehavior": "bothDirections"
+      }
+    ],
+    "perspectives": [
+      {
+        "name": "Seuranta",
+        "tables": [
+          {
+            "name": "Muuttujat - seurantaryhmät",
+            "columns": [
+              {
+                "name": "euroa"
+              },
+              {
+                "name": "Koulutuksen järjestäjä"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Kustannusryhmä"
+              },
+              {
+                "name": "Omistajatyyppi"
+              },
+              {
+                "name": "Oppisopimuskoulutus"
+              },
+              {
+                "name": "ov_avain"
+              },
+              {
+                "name": "Seurantaryhmä, taso 1"
+              },
+              {
+                "name": "Seurantaryhmä, taso 2"
+              },
+              {
+                "name": "Seurantaryhmä, taso 3"
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Tutkintotyyppi"
+              },
+              {
+                "name": "Vankilaopetus"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Määrä"
+              },
+              {
+                "name": "Määrä per painotettu opiskelijavuosi"
+              },
+              {
+                "name": "Määrä per painottamaton opiskelijavuosi"
+              },
+              {
+                "name": "Painotetut opiskelijavuodet"
+              },
+              {
+                "name": "Painottamattomat opiskelijavuodet"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Tili",
+        "tables": [
+          {
+            "name": "Muuttujat - tili",
+            "columns": [
+              {
+                "name": "Koulutuksen järjestäjä"
+              },
+              {
+                "name": "maara_euroa"
+              },
+              {
+                "name": "Omistajatyyppi"
+              },
+              {
+                "name": "ov_avain"
+              },
+              {
+                "name": "Taso 0"
+              },
+              {
+                "name": "Taso 1"
+              },
+              {
+                "name": "Taso 2"
+              },
+              {
+                "name": "Taso 3"
+              },
+              {
+                "name": "Taso 4"
+              },
+              {
+                "name": "Taso 5"
+              },
+              {
+                "name": "Taso, alin"
+              },
+              {
+                "name": "Tilastovuosi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Määrä (euroa)"
+              },
+              {
+                "name": "Painotetut ov"
+              },
+              {
+                "name": "Painottamattomat ov"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
       }
     ],
     "annotations": [
