@@ -9,9 +9,6 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-
-
-
 ALTER view [dw].[v_st_avoin_yliopisto] as
 
 select
@@ -321,10 +318,3 @@ from (
 
 -- Edellisen vuoden data julkaistaan vasta 4.3
 where cast((cast((Tilastovuosi + 1) as varchar(4)) + '-03-04') as date) <= convert(date, getdate())  
-
-
-
-
-
-
-
