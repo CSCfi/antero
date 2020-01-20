@@ -114,4 +114,3 @@ end)
 GO
 
 USE [ANTERO]
-GO
