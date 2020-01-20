@@ -111,5 +111,7 @@ f.aineisto <>
 	else 'L'
 end)
 
+GO
+
 USE [ANTERO]
 GO
