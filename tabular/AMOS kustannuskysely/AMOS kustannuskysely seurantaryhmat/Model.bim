@@ -92,12 +92,6 @@
             "sourceProviderType": "Double"
           },
           {
-            "name": "ov_avain",
-            "dataType": "string",
-            "isHidden": true,
-            "sourceColumn": "ov_avain"
-          },
-          {
             "name": "Oppisopimuskoulutus",
             "dataType": "string",
             "sourceColumn": "Oppisopimuskoulutus",
@@ -108,6 +102,12 @@
             "dataType": "string",
             "sourceColumn": "Vankilaopetus",
             "displayFolder": "Koulutusmuuttujat"
+          },
+          {
+            "name": "ov_op_avain",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "ov_op_avain"
           }
         ],
         "partitions": [
@@ -213,14 +213,6 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>ov_avain</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <int>102</int>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
                   "        <string>Oppisopimuskoulutus</string>",
                   "      </key>",
                   "      <value>",
@@ -233,6 +225,14 @@
                   "      </key>",
                   "      <value>",
                   "        <int>137</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>ov_op_avain</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>129</int>",
                   "      </value>",
                   "    </item>",
                   "  </ColumnWidths>",
@@ -319,7 +319,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>ov_avain</string>",
+                  "        <string>Oppisopimuskoulutus</string>",
                   "      </key>",
                   "      <value>",
                   "        <int>10</int>",
@@ -327,7 +327,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Oppisopimuskoulutus</string>",
+                  "        <string>Vankilaopetus</string>",
                   "      </key>",
                   "      <value>",
                   "        <int>11</int>",
@@ -335,7 +335,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Vankilaopetus</string>",
+                  "        <string>ov_op_avain</string>",
                   "      </key>",
                   "      <value>",
                   "        <int>12</int>",
@@ -346,14 +346,6 @@
                   "  <ColumnChecked>",
                   "    <item>",
                   "      <key>",
-                  "        <string>ov_avain</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <boolean>true</boolean>",
-                  "      </value>",
-                  "    </item>",
-                  "    <item>",
-                  "      <key>",
                   "        <string>Oppisopimuskoulutus</string>",
                   "      </key>",
                   "      <value>",
@@ -363,6 +355,14 @@
                   "    <item>",
                   "      <key>",
                   "        <string>Vankilaopetus</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>ov_op_avain</string>",
                   "      </key>",
                   "      <value>",
                   "        <boolean>true</boolean>",
@@ -382,7 +382,11 @@
         "measures": [
           {
             "name": "Määrä",
-            "expression": "SUM([euroa])",
+            "expression": [
+              "",
+              "var summa = CALCULATE(SUM([euroa]))",
+              "return IF(summa=0,BLANK(),summa)"
+            ],
             "formatString": "#,0 \"€\";-#,0 \"€\";#,0 \"€\"",
             "annotations": [
               {
@@ -393,12 +397,12 @@
           },
           {
             "name": "Painottamattomat opiskelijavuodet",
-            "expression": "CALCULATE(SUM(Opiskelijavuodet[ov_painottamaton]), FILTER(Opiskelijavuodet,CONTAINS('Muuttujat - seurantaryhmät',[ov_avain],Opiskelijavuodet[avain_R12])))",
+            "expression": "CALCULATE(SUM(Opiskelijavuodet[ov_painottamaton]), FILTER(Opiskelijavuodet,CONTAINS('Muuttujat - seurantaryhmät',[ov_op_avain],Opiskelijavuodet[avain_R12])))",
             "formatString": "#,0.00"
           },
           {
             "name": "Määrä per painottamaton opiskelijavuosi",
-            "expression": "[Määrä] / [Painottamattomat opiskelijavuodet]",
+            "expression": "DIVIDE([Määrä] , [Painottamattomat opiskelijavuodet])",
             "formatString": "#,0 \"€\";-#,0 \"€\";#,0 \"€\"",
             "annotations": [
               {
@@ -409,12 +413,52 @@
           },
           {
             "name": "Painotetut opiskelijavuodet",
-            "expression": "CALCULATE(SUM(Opiskelijavuodet[ov_painotettu]), FILTER(Opiskelijavuodet,CONTAINS('Muuttujat - seurantaryhmät',[ov_avain],Opiskelijavuodet[avain_R12])))",
+            "expression": "CALCULATE(SUM(Opiskelijavuodet[ov_painotettu]), FILTER(Opiskelijavuodet,CONTAINS('Muuttujat - seurantaryhmät',[ov_op_avain],Opiskelijavuodet[avain_R12])))",
             "formatString": "#,0.00"
           },
           {
             "name": "Määrä per painotettu opiskelijavuosi",
-            "expression": "[Määrä] / [Painotetut opiskelijavuodet]",
+            "expression": "DIVIDE([Määrä] , [Painotetut opiskelijavuodet])",
+            "formatString": "#,0 \"€\";-#,0 \"€\";#,0 \"€\"",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1035\" DisplayName=\"€ Finnish (Finland)\" Symbol=\"€\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "Painottamattomat osaamispisteet",
+            "expression": "CALCULATE(SUM(Osaamispisteet[op_painottamaton]), FILTER(Osaamispisteet,CONTAINS('Muuttujat - seurantaryhmät',[ov_op_avain],Osaamispisteet[avain_R12])))",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Painotetut osaamispisteet",
+            "expression": "CALCULATE(SUM(Osaamispisteet[op_painotettu]), FILTER(Osaamispisteet,CONTAINS('Muuttujat - seurantaryhmät',[ov_op_avain],Osaamispisteet[avain_R12])))",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Määrä per painottamaton osaamispiste",
+            "expression": [
+              "",
+              "var kaava = DIVIDE([Määrä] , [Painottamattomat osaamispisteet])",
+              "return IF(kaava=0,BLANK(),kaava)"
+            ],
+            "formatString": "#,0 \"€\";-#,0 \"€\";#,0 \"€\"",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1035\" DisplayName=\"€ Finnish (Finland)\" Symbol=\"€\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "Määrä per painotettu osaamispiste",
+            "expression": [
+              "",
+              "var kaava = DIVIDE([Määrä] , [Painotetut osaamispisteet])",
+              "return IF(kaava=0,BLANK(),kaava)"
+            ],
             "formatString": "#,0 \"€\";-#,0 \"€\";#,0 \"€\"",
             "annotations": [
               {
@@ -531,14 +575,6 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>ov_avain</string>",
-              "      </key>",
-              "      <value>",
-              "        <int>102</int>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
               "        <string>Oppisopimuskoulutus</string>",
               "      </key>",
               "      <value>",
@@ -551,6 +587,14 @@
               "      </key>",
               "      <value>",
               "        <int>137</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>ov_op_avain</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>129</int>",
               "      </value>",
               "    </item>",
               "  </ColumnWidths>",
@@ -637,7 +681,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>ov_avain</string>",
+              "        <string>Oppisopimuskoulutus</string>",
               "      </key>",
               "      <value>",
               "        <int>10</int>",
@@ -645,7 +689,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Oppisopimuskoulutus</string>",
+              "        <string>Vankilaopetus</string>",
               "      </key>",
               "      <value>",
               "        <int>11</int>",
@@ -653,7 +697,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Vankilaopetus</string>",
+              "        <string>ov_op_avain</string>",
               "      </key>",
               "      <value>",
               "        <int>12</int>",
@@ -664,14 +708,6 @@
               "  <ColumnChecked>",
               "    <item>",
               "      <key>",
-              "        <string>ov_avain</string>",
-              "      </key>",
-              "      <value>",
-              "        <boolean>true</boolean>",
-              "      </value>",
-              "    </item>",
-              "    <item>",
-              "      <key>",
               "        <string>Oppisopimuskoulutus</string>",
               "      </key>",
               "      <value>",
@@ -681,6 +717,14 @@
               "    <item>",
               "      <key>",
               "        <string>Vankilaopetus</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>ov_op_avain</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -936,7 +980,7 @@
             "sourceProviderType": "Double"
           },
           {
-            "name": "ov_avain",
+            "name": "avain",
             "dataType": "string",
             "isHidden": true,
             "sourceColumn": "ov_avain"
@@ -1233,7 +1277,7 @@
           },
           {
             "name": "Määrä per painottamaton ov",
-            "expression": "[Määrä (euroa)] / [Painottamattomat ov]",
+            "expression": " DIVIDE([Määrä (euroa)] , [Painottamattomat ov])",
             "formatString": "#,0 \"€\";-#,0 \"€\";#,0 \"€\"",
             "annotations": [
               {
@@ -1244,7 +1288,39 @@
           },
           {
             "name": "Määrä per painotettu ov",
-            "expression": "[Määrä (euroa)] / [Painotetut ov]",
+            "expression": " DIVIDE([Määrä (euroa)] , [Painotetut ov])",
+            "formatString": "#,0 \"€\";-#,0 \"€\";#,0 \"€\"",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1035\" DisplayName=\"€ Finnish (Finland)\" Symbol=\"€\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "Painottamattomat op",
+            "expression": "CALCULATE(SUM('Osaamispisteet_R92'[sum_painottamaton]))",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Painotetut op",
+            "expression": "CALCULATE(SUM('Osaamispisteet_R92'[sum_painotettu]))",
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Määrä per painottamaton oo",
+            "expression": "DIVIDE([Määrä (euroa)] , [Painottamattomat op])",
+            "formatString": "#,0 \"€\";-#,0 \"€\";#,0 \"€\"",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1035\" DisplayName=\"€ Finnish (Finland)\" Symbol=\"€\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "Määrä per painotettu op",
+            "expression": "DIVIDE([Määrä (euroa)] , [Painotetut op])",
             "formatString": "#,0 \"€\";-#,0 \"€\";#,0 \"€\"",
             "annotations": [
               {
@@ -1590,7 +1666,164 @@
             "name": "CalculatedTable 1",
             "source": {
               "type": "calculated",
-              "expression": "SUMMARIZE(FILTER(Opiskelijavuodet,CONTAINS('Muuttujat - tili',[ov_avain],Opiskelijavuodet[avain_R92])),[avain_R92],\"sum_painottamaton\",sum(Opiskelijavuodet[ov_painottamaton]),\"sum_painotettu\",SUM(Opiskelijavuodet[ov_painotettu]))"
+              "expression": "SUMMARIZE(Opiskelijavuodet,[avain_R92],\"sum_painottamaton\",sum(Opiskelijavuodet[ov_painottamaton]),\"sum_painotettu\",SUM(Opiskelijavuodet[ov_painotettu]))"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Osaamispisteet",
+        "isHidden": true,
+        "columns": [
+          {
+            "name": "avain_R12",
+            "dataType": "string",
+            "sourceColumn": "avain_R12",
+            "sourceProviderType": "VarChar"
+          },
+          {
+            "name": "avain_R92",
+            "dataType": "string",
+            "sourceColumn": "avain_R92",
+            "sourceProviderType": "VarChar"
+          },
+          {
+            "name": "op_painottamaton",
+            "dataType": "double",
+            "sourceColumn": "op_painottamaton"
+          },
+          {
+            "name": "op_painotettu",
+            "dataType": "double",
+            "sourceColumn": "op_painotettu"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Query",
+            "dataView": "full",
+            "source": {
+              "query": [
+                "SELECT",
+                "\tavain_R12 = CONCAT(tilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi, d2.koulutusalataso1_koodi, d3.koodi, d4.kytkin_koodi, d5.kytkin_koodi) ",
+                "\t,avain_R92 = CONCAT(tilastovuosi, d1.organisaatio_koodi)",
+                "\t,op_painottamaton = SUM(f.painottamaton_osaamispisteet)",
+                "\t,op_painotettu = SUM(f.painotettu_tutkinnon_osien_osaamispisteet_yht)",
+                "FROM dw.f_amos_tutkinnot_ja_tutkinnonosat_painotetut f",
+                "",
+                "left join dw.d_organisaatioluokitus d1 on d1.id=f.d_organisaatioluokitus_jarjestaja_id",
+                "left join dw.d_koulutusluokitus d2 on d2.id=f.d_koulutusluokitus_id",
+                "left join dw.d_ammatillisen_tutkinnon_kustannusryhma d3 on d3.id=f.d_kustannusryhma_id",
+                "left join dw.d_kytkin d4 on d4.id=f.d_oppisopimuskoulutus_id",
+                "left join dw.d_kytkin d5 on d5.id=f.d_kytkin_vankilaopetus_id",
+                "",
+                "GROUP BY tilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi, d2.koulutusalataso1_koodi, d3.koodi, d4.kytkin_koodi, d5.kytkin_koodi"
+              ],
+              "dataSource": "SqlServer dwitvipusql16 antero"
+            },
+            "annotations": [
+              {
+                "name": "QueryEditorSerialization",
+                "value": [
+                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT",
+                  "\tavain_R12 = CONCAT(tilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi, d2.koulutusalataso1_koodi, d3.koodi, d4.kytkin_koodi, d5.kytkin_koodi) ",
+                  "\t,avain_R92 = CONCAT(tilastovuosi, d1.organisaatio_koodi)",
+                  "\t,op_painottamaton = SUM(f.painottamaton_osaamispisteet)",
+                  "\t,op_painotettu = SUM(f.painotettu_tutkinnon_osien_osaamispisteet_yht)",
+                  "FROM dw.f_amos_tutkinnot_ja_tutkinnonosat_painotetut f",
+                  "",
+                  "left join dw.d_organisaatioluokitus d1 on d1.id=f.d_organisaatioluokitus_jarjestaja_id",
+                  "left join dw.d_koulutusluokitus d2 on d2.id=f.d_koulutusluokitus_id",
+                  "left join dw.d_ammatillisen_tutkinnon_kustannusryhma d3 on d3.id=f.d_kustannusryhma_id",
+                  "left join dw.d_kytkin d4 on d4.id=f.d_oppisopimuskoulutus_id",
+                  "left join dw.d_kytkin d5 on d5.id=f.d_kytkin_vankilaopetus_id",
+                  "",
+                  "GROUP BY tilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi, d2.koulutusalataso1_koodi, d3.koodi, d4.kytkin_koodi, d5.kytkin_koodi</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+                ]
+              }
+            ]
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": [
+              "SELECT",
+              "\tavain_R12 = CONCAT(tilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi, d2.koulutusalataso1_koodi, d3.koodi, d4.kytkin_koodi, d5.kytkin_koodi) ",
+              "\t,avain_R92 = CONCAT(tilastovuosi, d1.organisaatio_koodi)",
+              "\t,op_painottamaton = SUM(f.painottamaton_osaamispisteet)",
+              "\t,op_painotettu = SUM(f.painotettu_tutkinnon_osien_osaamispisteet_yht)",
+              "FROM dw.f_amos_tutkinnot_ja_tutkinnonosat_painotetut f",
+              "",
+              "left join dw.d_organisaatioluokitus d1 on d1.id=f.d_organisaatioluokitus_jarjestaja_id",
+              "left join dw.d_koulutusluokitus d2 on d2.id=f.d_koulutusluokitus_id",
+              "left join dw.d_ammatillisen_tutkinnon_kustannusryhma d3 on d3.id=f.d_kustannusryhma_id",
+              "left join dw.d_kytkin d4 on d4.id=f.d_oppisopimuskoulutus_id",
+              "left join dw.d_kytkin d5 on d5.id=f.d_kytkin_vankilaopetus_id",
+              "",
+              "GROUP BY tilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi, d2.koulutusalataso1_koodi, d3.koodi, d4.kytkin_koodi, d5.kytkin_koodi"
+            ]
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "Query"
+          },
+          {
+            "name": "QueryEditorSerialization",
+            "value": [
+              "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT",
+              "\tavain_R12 = CONCAT(tilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi, d2.koulutusalataso1_koodi, d3.koodi, d4.kytkin_koodi, d5.kytkin_koodi) ",
+              "\t,avain_R92 = CONCAT(tilastovuosi, d1.organisaatio_koodi)",
+              "\t,op_painottamaton = SUM(f.painottamaton_osaamispisteet)",
+              "\t,op_painotettu = SUM(f.painotettu_tutkinnon_osien_osaamispisteet_yht)",
+              "FROM dw.f_amos_tutkinnot_ja_tutkinnonosat_painotetut f",
+              "",
+              "left join dw.d_organisaatioluokitus d1 on d1.id=f.d_organisaatioluokitus_jarjestaja_id",
+              "left join dw.d_koulutusluokitus d2 on d2.id=f.d_koulutusluokitus_id",
+              "left join dw.d_ammatillisen_tutkinnon_kustannusryhma d3 on d3.id=f.d_kustannusryhma_id",
+              "left join dw.d_kytkin d4 on d4.id=f.d_oppisopimuskoulutus_id",
+              "left join dw.d_kytkin d5 on d5.id=f.d_kytkin_vankilaopetus_id",
+              "",
+              "GROUP BY tilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi, d2.koulutusalataso1_koodi, d3.koodi, d4.kytkin_koodi, d5.kytkin_koodi</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Osaamispisteet_R92",
+        "isHidden": true,
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "avain_R92",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Osaamispisteet[avain_R92]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "sum_painottamaton",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[sum_painottamaton]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "sum_painotettu",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[sum_painotettu]"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": "SUMMARIZE(Osaamispisteet,[avain_R92],\"sum_painottamaton\",sum(Osaamispisteet[op_painottamaton]),\"sum_painotettu\",SUM(Osaamispisteet[op_painotettu]))"
             }
           }
         ]
@@ -1608,10 +1841,41 @@
       {
         "name": "28c75d61-1aba-42b5-a9ef-9bf918d390c6",
         "fromTable": "Muuttujat - tili",
-        "fromColumn": "ov_avain",
+        "fromColumn": "avain",
         "toTable": "Opiskelijavuodet_R92",
         "toColumn": "avain_R92",
         "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "d3508a01-7f9c-47b1-871b-0eea83e0eb61",
+        "fromTable": "Osaamispisteet",
+        "fromColumn": "avain_R92",
+        "toTable": "Osaamispisteet_R92",
+        "toColumn": "avain_R92",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "8f17bea4-e043-450a-82a8-5cf2dfb18346",
+        "fromTable": "Muuttujat - tili",
+        "fromColumn": "avain",
+        "toTable": "Osaamispisteet_R92",
+        "toColumn": "avain_R92",
+        "isActive": false,
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "6bf9f7f1-ce70-4850-a2ed-b89a9586aa64",
+        "fromTable": "Muuttujat - seurantaryhmät",
+        "fromColumn": "ov_op_avain",
+        "toTable": "Osaamispisteet",
+        "toColumn": "avain_R12"
+      },
+      {
+        "name": "2d235b01-5ae9-4fa9-a093-099f7ba77cab",
+        "fromTable": "Muuttujat - seurantaryhmät",
+        "fromColumn": "ov_op_avain",
+        "toTable": "Opiskelijavuodet",
+        "toColumn": "avain_R12"
       }
     ],
     "perspectives": [
@@ -1638,9 +1902,6 @@
               },
               {
                 "name": "Oppisopimuskoulutus"
-              },
-              {
-                "name": "ov_avain"
               },
               {
                 "name": "Seurantaryhmä, taso 1"
@@ -1676,6 +1937,18 @@
               },
               {
                 "name": "Painottamattomat opiskelijavuodet"
+              },
+              {
+                "name": "Määrä per painotettu osaamispiste"
+              },
+              {
+                "name": "Määrä per painottamaton osaamispiste"
+              },
+              {
+                "name": "Painotetut osaamispisteet"
+              },
+              {
+                "name": "Painottamattomat osaamispisteet"
               }
             ]
           },
@@ -1708,7 +1981,7 @@
                 "name": "Omistajatyyppi"
               },
               {
-                "name": "ov_avain"
+                "name": "avain"
               },
               {
                 "name": "Taso 0"
@@ -1733,6 +2006,9 @@
               },
               {
                 "name": "Tilastovuosi"
+              },
+              {
+                "name": "tili_jarjestys"
               }
             ],
             "hierarchies": [
@@ -1755,6 +2031,18 @@
               },
               {
                 "name": "Määrä per painottamaton ov"
+              },
+              {
+                "name": "Määrä per painotettu op"
+              },
+              {
+                "name": "Määrä per painottamaton oo"
+              },
+              {
+                "name": "Painotetut op"
+              },
+              {
+                "name": "Painottamattomat op"
               }
             ]
           },
