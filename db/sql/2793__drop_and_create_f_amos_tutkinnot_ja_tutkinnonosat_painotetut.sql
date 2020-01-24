@@ -38,6 +38,3 @@ CREATE TABLE [dw].[f_amos_tutkinnot_ja_tutkinnonosat_painotetut](
 	[painotettu_tutkinnon_osien_osaamispisteet_yht] [float] NULL
 ) ON [PRIMARY]
 
-GO
-
-USE [ANTERO]

@@ -29,6 +29,3 @@ CREATE TABLE [dw].[f_amos_tutkinnot_ja_tutkinnonosat](
 	[osaamispisteet] [float] NULL
 ) ON [PRIMARY]
 
-GO
-
-
