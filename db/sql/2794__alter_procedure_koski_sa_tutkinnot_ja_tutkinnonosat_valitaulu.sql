@@ -17,6 +17,7 @@ TRUNCATE TABLE [dbo].[tutkinnot_ja_tutkinnonosat_valitaulu]
 INSERT INTO [dbo].[tutkinnot_ja_tutkinnonosat_valitaulu]
 
 SELECT 
+
 	YEAR(ptkr.vahvistus_paiva) as vuosi,
 	MONTH(ptkr.vahvistus_paiva) as kuukausi,
 	ptkr.toimipiste_oid, 
@@ -73,6 +74,7 @@ UNION
 
 
 SELECT distinct
+
 	YEAR(tos.arviointi_paiva) as vuosi,
 	MONTH(tos.arviointi_paiva) as kuukausi,
 	ptkr.toimipiste_oid, 
