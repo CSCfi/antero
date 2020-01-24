@@ -2005,7 +2005,7 @@
             "expression": [
               "",
               "var lkm = DISTINCTCOUNT([vastaajaid])",
-              "return IF(AND(lkm>0,lkm<6),\"<5\",lkm)"
+              "return IF(AND(lkm>0,lkm<5),[alle5],lkm)"
             ],
             "formatString": "#,0"
           },
@@ -2013,7 +2013,7 @@
             "name": "Keskiarvo LIVE",
             "expression": [
               "IF(",
-              "OR([Vastaajamäärä LIVE]<6,AND(ISFILTERED([Kysymysryhmä]),NOT(ISFILTERED([Kysymys]))))",
+              "OR([Vastaajamäärä LIVE]=[alle5],AND(ISFILTERED([Kysymysryhmä]),NOT(ISFILTERED([Kysymys]))))",
               ",BLANK()",
               ",CALCULATE(AVERAGE([numerovalinta]),FILTER(VALUES(Muuttujat[numerovalinta]),[numerovalinta]<>1),Muuttujat[vastaustyyppi_keskiarvo]=1)",
               ")",
@@ -2026,7 +2026,7 @@
             "expression": [
               "",
               "var hajonta = CALCULATE(STDEV.P(Muuttujat[numerovalinta]),Muuttujat[vastaustyyppi_keskiarvo]=1,Muuttujat[numerovalinta]<>1)",
-              "return IF([Vastaajamäärä LIVE]<6,BLANK(),hajonta)"
+              "return IF([Vastaajamäärä LIVE]=[alle5],BLANK(),hajonta)"
             ],
             "formatString": "0.0"
           },
@@ -2035,7 +2035,7 @@
             "expression": [
               "",
               "var summa = CALCULATE(SUM(Muuttujat[numerovalinta]),Muuttujat[Koodit Rahoitusmallikysymys]=1)",
-              "return IF([Vastaajamäärä LIVE]<6,BLANK(),summa)"
+              "return IF([Vastaajamäärä LIVE]=[alle5],BLANK(),summa)"
             ],
             "formatString": "#,0"
           },
@@ -2044,7 +2044,7 @@
             "expression": [
               "",
               "var lkm = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1)",
-              "return IF(AND(lkm>0,lkm<5),\"<5\",IF(lkm=0,BLANK(),lkm))",
+              "return IF(AND(lkm>0,lkm<5),[alle5],IF(lkm=0,BLANK(),lkm))",
               ""
             ],
             "formatString": "#,0"
@@ -2054,7 +2054,7 @@
             "expression": [
               "",
               "IF(",
-              "\tOR([Vastaajamäärä]<6,AND(ISFILTERED([Kysymysryhmä]),NOT(ISFILTERED([Kysymys]))))",
+              "\tOR([Vastaajamäärä]=[alle5],AND(ISFILTERED([Kysymysryhmä]),NOT(ISFILTERED([Kysymys]))))",
               "\t,BLANK()",
               "\t,CALCULATE(AVERAGE([numerovalinta]),FILTER(VALUES(Muuttujat[numerovalinta]),[numerovalinta]<>1),Muuttujat[vuosi_tilasto]=1,Muuttujat[vastaustyyppi_keskiarvo]=1)",
               ")",
@@ -2067,7 +2067,7 @@
             "expression": [
               "",
               "var hajonta = CALCULATE(STDEV.P(Muuttujat[numerovalinta]),Muuttujat[vuosi_tilasto]=1,Muuttujat[vastaustyyppi_keskiarvo]=1,Muuttujat[numerovalinta]<>1)",
-              "return IF([Vastaajamäärä]<6,BLANK(),hajonta)",
+              "return IF([Vastaajamäärä]=[alle5],BLANK(),hajonta)",
               ""
             ],
             "formatString": "0.0"
@@ -2077,7 +2077,7 @@
             "expression": [
               "",
               "var summa = CALCULATE(SUM(Muuttujat[numerovalinta]),Muuttujat[Koodit Rahoitusmallikysymys]=1,Muuttujat[vuosi_tilasto]=1)",
-              "return IF([Vastaajamäärä]<6,BLANK(),summa)",
+              "return IF([Vastaajamäärä]=[alle5],BLANK(),summa)",
               ""
             ],
             "formatString": "#,0"
@@ -2087,7 +2087,7 @@
             "expression": [
               "",
               "IF(",
-              "\tOR([Vastaajamäärä]<6,AND(ISFILTERED([Kysymysryhmä]),NOT(ISFILTERED([Kysymys]))))",
+              "\tOR([Vastaajamäärä]=[alle5],AND(ISFILTERED([Kysymysryhmä]),NOT(ISFILTERED([Kysymys]))))",
               "\t,BLANK()",
               "\t,CALCULATE(AVERAGE([numerovalinta]),Muuttujat[vuosi_tilasto]=1)",
               ")"
@@ -2143,6 +2143,10 @@
             "name": "Score",
             "expression": "[Pisteet]",
             "formatString": "#,0"
+          },
+          {
+            "name": "alle5",
+            "expression": "\"1-4\""
           }
         ],
         "annotations": [
