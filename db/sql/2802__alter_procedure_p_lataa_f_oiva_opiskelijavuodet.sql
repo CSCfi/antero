@@ -1,5 +1,3 @@
-USE [ANTERO]
-
 ALTER PROCEDURE [dw].[p_lataa_f_oiva_opiskelijavuodet]
 AS
 TRUNCATE TABLE dw.f_oiva_opiskelijavuodet;
