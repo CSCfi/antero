@@ -1,14 +1,14 @@
 USE [ANTERO]
 GO
 
-/****** Object:  View [sa].[v_amos_spl_oiva_jarjestamisluvat]    Script Date: 28.1.2020 16:32:31 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
-
-ALTER VIEW [sa].[v_amos_spl_oiva_jarjestamisluvat]
+DROP view if exists [sa].[v_amos_spl_oiva_jarjestamisluvat]
+GO
+CREATE VIEW [sa].[v_amos_spl_oiva_jarjestamisluvat]
 AS
 SELECT DISTINCT
                          ojl.jarjestajaYtunnus AS ytunnus, ol.organisaatio_fi AS jarjestaja_nimi,
