@@ -114,12 +114,14 @@
           {
             "name": "Syntymävuosi",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "Syntymävuosi",
             "displayFolder": "Henkilömuuttujat"
           },
           {
             "name": "Syntymäkuukausi",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "Syntymäkuukausi",
             "displayFolder": "Henkilömuuttujat"
           },
@@ -346,12 +348,14 @@
           {
             "name": "Tutk. suorituslukukausi",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "Tutk. suorituslukukausi",
             "displayFolder": "Koulutusmuuttujat"
           },
           {
             "name": "Tutk. suorituskuukausi",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "Tutk. suorituskuukausi",
             "displayFolder": "Koulutusmuuttujat"
           },
@@ -4529,66 +4533,25 @@
             "formatString": "#,0.0"
           },
           {
-            "name": "kytkin",
-            "expression": "IF(LEFT(USERNAME(), 4) = \"DWI\\\", 1, 0)",
-            "formatString": "0",
-            "isHidden": true
-          },
-          {
-            "name": "Tutkinnot_s",
-            "expression": "IF([kytkin]=0, BLANK(), SUM([Tutk3]))",
-            "formatString": "#,0"
-          },
-          {
-            "name": "Suoritusiän mediaani_s",
-            "expression": "IF([kytkin]=0, BLANK(), (MINX(FILTER(VALUES('Muuttujat'[suoritusika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusika2] <= EARLIER('Muuttujat'[suoritusika2])) > SUM('Muuttujat'[Tutk3]) / 2), 'Muuttujat'[suoritusika2]) + MINX(FILTER(VALUES('Muuttujat'[suoritusika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusika2] <= EARLIER('Muuttujat'[suoritusika2])) > (SUM('Muuttujat'[Tutk3]) - 1 ) / 2), 'Muuttujat'[suoritusika2])) / 2)",
-            "formatString": "#,0.0"
-          },
-          {
-            "name": "Suoritusajan mediaani_s",
-            "expression": "IF([kytkin]=0, BLANK(), (MINX(FILTER(VALUES('Muuttujat'[suoritusaika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusaika2] <= EARLIER('Muuttujat'[suoritusaika2])) > SUM('Muuttujat'[Tutk3]) / 2), 'Muuttujat'[suoritusaika2]) + MINX(FILTER(VALUES('Muuttujat'[suoritusaika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusaika2] <= EARLIER('Muuttujat'[suoritusaika2])) > (SUM('Muuttujat'[Tutk3]) - 1 ) / 2), 'Muuttujat'[suoritusaika2])) / 2)",
-            "formatString": "#,0.0"
-          },
-          {
-            "name": "Suoritusiän keskiarvo_s",
-            "expression": "IF([kytkin]=0, BLANK(), SUMX('Muuttujat',[suoritusika2] * 'Muuttujat'[Tutk3]) / SUM([Tutk3]))",
-            "formatString": "#,0.0"
-          },
-          {
-            "name": "Suoritusajan keskiarvo_s",
-            "expression": "IF([kytkin]=0, BLANK(), SUMX('Muuttujat',[suoritusaika2] * 'Muuttujat'[Tutk3]) / SUM([Tutk3]))",
-            "formatString": "#,0.0"
-          },
-          {
-            "name": "Suoritusiän 20%-persentiili",
+            "name": "Suoritusiän 20. persentiili",
             "expression": [
               "",
               "IF(SUM([Tutk3]) < 5, BLANK()",
-              ", (MINX(FILTER(VALUES('Muuttujat'[suoritusika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusika2] <= EARLIER('Muuttujat'[suoritusika2])) > SUM('Muuttujat'[Tutk3])/5), 'Muuttujat'[suoritusika2]) ",
-              "+ MINX(FILTER(VALUES('Muuttujat'[suoritusika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusika2] <= EARLIER('Muuttujat'[suoritusika2])) > (SUM('Muuttujat'[Tutk3]) - 1 ) /5), 'Muuttujat'[suoritusika2])) / 2)",
-              ""
+              ", (MINX(FILTER(VALUES('Muuttujat'[suoritusika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusika2] <= EARLIER('Muuttujat'[suoritusika2])) > SUM('Muuttujat'[Tutk3])*0.20), 'Muuttujat'[suoritusika2]) ",
+              "+ MINX(FILTER(VALUES('Muuttujat'[suoritusika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusika2] <= EARLIER('Muuttujat'[suoritusika2])) > (SUM('Muuttujat'[Tutk3]) - 1)*0.20), 'Muuttujat'[suoritusika2])) ",
+              "/ 2)"
             ],
             "formatString": "0.0"
           },
           {
-            "name": "Suoritusiän 80%-persentiili",
+            "name": "Suoritusiän 80. persentiili",
             "expression": [
               "",
               "IF(SUM([Tutk3]) < 5, BLANK()",
-              ", (MINX(FILTER(VALUES('Muuttujat'[suoritusika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusika2] <= EARLIER('Muuttujat'[suoritusika2])) > SUM('Muuttujat'[Tutk3])*0.8), 'Muuttujat'[suoritusika2]) ",
-              "+ MINX(FILTER(VALUES('Muuttujat'[suoritusika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusika2] <= EARLIER('Muuttujat'[suoritusika2])) > (SUM('Muuttujat'[Tutk3]) - 1 )*0.8), 'Muuttujat'[suoritusika2])) / 2)",
-              ""
+              ", (MINX(FILTER(VALUES('Muuttujat'[suoritusika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusika2] <= EARLIER('Muuttujat'[suoritusika2])) > SUM('Muuttujat'[Tutk3])*0.80), 'Muuttujat'[suoritusika2]) ",
+              "+ MINX(FILTER(VALUES('Muuttujat'[suoritusika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusika2] <= EARLIER('Muuttujat'[suoritusika2])) > (SUM('Muuttujat'[Tutk3]) - 1)*0.80), 'Muuttujat'[suoritusika2])) ",
+              "/ 2)"
             ],
-            "formatString": "0.0"
-          },
-          {
-            "name": "Suoritusiän 20%-persentiilii_s",
-            "expression": "IF([kytkin]=0, BLANK(), (MINX(FILTER(VALUES('Muuttujat'[suoritusika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusika2] <= EARLIER('Muuttujat'[suoritusika2])) > SUM('Muuttujat'[Tutk3]) / 5), 'Muuttujat'[suoritusika2]) + MINX(FILTER(VALUES('Muuttujat'[suoritusika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusika2] <= EARLIER('Muuttujat'[suoritusika2])) > (SUM('Muuttujat'[Tutk3]) - 1 ) / 5), 'Muuttujat'[suoritusika2])) / 2)",
-            "formatString": "0.0"
-          },
-          {
-            "name": "Suoritusiän 80%-persentiilii_s",
-            "expression": "IF([kytkin]=0, BLANK(), (MINX(FILTER(VALUES('Muuttujat'[suoritusika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusika2] <= EARLIER('Muuttujat'[suoritusika2])) > SUM('Muuttujat'[Tutk3]) *0.8), 'Muuttujat'[suoritusika2]) + MINX(FILTER(VALUES('Muuttujat'[suoritusika2]), CALCULATE(SUM('Muuttujat'[Tutk3]), 'Muuttujat'[suoritusika2] <= EARLIER('Muuttujat'[suoritusika2])) > (SUM('Muuttujat'[Tutk3]) - 1 )*0.8), 'Muuttujat'[suoritusika2])) / 2)",
             "formatString": "0.0"
           }
         ],
@@ -4711,10 +4674,10 @@
                 "name": "Suoritusiän mediaani"
               },
               {
-                "name": "Suoritusiän 20%-persentiili"
+                "name": "Suoritusiän 20. persentiili"
               },
               {
-                "name": "Suoritusiän 80%-persentiili"
+                "name": "Suoritusiän 80. persentiili"
               }
             ]
           }
@@ -5144,10 +5107,6 @@
           {
             "memberName": "DWI\\Z_T_Antero_Read_TAB",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-4155"
-          },
-          {
-            "memberName": "DWI\\Z_P_Antero_Full_Read_TAB",
-            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-2272"
           }
         ]
       },
