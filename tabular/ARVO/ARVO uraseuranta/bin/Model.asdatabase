@@ -3231,9 +3231,8 @@
               "             \t     IF(ISFILTERED('Muuttujat'[Monivalintavaihtoehto]),",
               "             \t         FORMAT([ka-ura-mais2], \"0%\"),",
               "             \t         IF(ka = 0,  BLANK(), ka)",
-              "             \t     ),[Keskiarvo (maisterit)]",
-              "             \t     BLANK()",
-              "       \t )",
+              "             \t     ), BLANK()",
+              "             \t)",
               "             )",
               "             ",
               "/*",
@@ -3753,11 +3752,12 @@
               "",
               "IF(OR(OR([vast-ura-mais-tilasto] < 6, ",
               "",
-              "ISFILTERED([Monivalintavaihtoehto])), [Keskiarvo / Vastausjakauma (maisterit)] = BLANK()), ",
+              "ISFILTERED([Multiple choice option])), [Average / deviation] = BLANK()), ",
               "",
               "BLANK(),[kh-ura-mais-tilasto])",
               ""
-            ]
+            ],
+            "formatString": "0.0"
           },
           {
             "name": "Average",
@@ -3765,7 +3765,7 @@
               "",
               "            ",
               "              IF(",
-              "\t( [Vastaajamäärä]<6|| ISFILTERED('Muuttujat'[Monivalintavaihtoehto] )),",
+              "\t( [Vastaajamäärä]<6|| ISFILTERED('Muuttujat'[Multiple choice option] )),",
               "",
               "\tBLANK()",
               "\t,CALCULATE(AVERAGE([numerovalinta]),",
@@ -3801,7 +3801,7 @@
               "",
               "IF(OR(OR([vast-ura-mais-tilasto] < 6, ",
               "",
-              "ISFILTERED([Monivalintavaihtoehto])), [Keskiarvo / Vastausjakauma (maisterit)] = BLANK()), ",
+              "ISFILTERED([Flervalsalternativ])), [Medeltal / vikkelse] = BLANK()), ",
               "",
               "BLANK(),[kh-ura-mais-tilasto])"
             ],
@@ -3813,7 +3813,7 @@
               "",
               "            ",
               "              IF(",
-              "\t( [Vastaajamäärä]<6|| ISFILTERED('Muuttujat'[Monivalintavaihtoehto] )),",
+              "\t( [Vastaajamäärä]<6|| ISFILTERED('Muuttujat'[Flervalsalternativ] )),",
               "",
               "\tBLANK()",
               "\t,CALCULATE(AVERAGE([numerovalinta]),",
@@ -3832,6 +3832,39 @@
               ""
             ],
             "formatString": "0.0"
+          },
+          {
+            "name": "Average / deviation",
+            "expression": [
+              "",
+              "var ka = [ka-ura-mais-tilasto]",
+              "RETURN IF([vast-ura-mais-tilasto] < 6, ",
+              "          \t BLANK(),",
+              "          \t IF(ISFILTERED('Muuttujat'[Question]),             \t            ",
+              "             \t     IF(ISFILTERED('Muuttujat'[Multiple choice option]),",
+              "             \t         FORMAT([ka-ura-mais2], \"0%\"),",
+              "             \t         IF(ka = 0,  BLANK(), ka)",
+              "             \t     ), BLANK()",
+              "             \t)",
+              "             )",
+              ""
+            ]
+          },
+          {
+            "name": "Medeltal / vikkelse",
+            "expression": [
+              "",
+              "var ka = [ka-ura-mais-tilasto]",
+              "RETURN IF([vast-ura-mais-tilasto] < 6, ",
+              "          \t BLANK(),",
+              "          \t IF(ISFILTERED('Muuttujat'[Fråga]),             \t            ",
+              "             \t     IF(ISFILTERED('Muuttujat'[Flervalsalternativ]),",
+              "             \t         FORMAT([ka-ura-mais2], \"0%\"),",
+              "             \t         IF(ka = 0,  BLANK(), ka)",
+              "             \t     ), BLANK()",
+              "             \t)",
+              "             )"
+            ]
           }
         ],
         "annotations": [
