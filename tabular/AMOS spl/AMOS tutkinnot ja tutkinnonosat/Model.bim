@@ -212,30 +212,6 @@
             "displayFolder": "Koulutusmuuttujat"
           },
           {
-            "name": "painotettu_tutkinnon_osien_osaamispisteet_pt_kr_oikaisu",
-            "dataType": "double",
-            "isHidden": true,
-            "sourceColumn": "painotettu_tutkinnon_osien_osaamispisteet_pt_kr_oikaisu"
-          },
-          {
-            "name": "oikaisu",
-            "dataType": "int64",
-            "isHidden": true,
-            "sourceColumn": "oikaisu"
-          },
-          {
-            "name": "painotettu_tutkinnon_osien_osaamispisteet_at_eat_kr_oikaisu",
-            "dataType": "double",
-            "isHidden": true,
-            "sourceColumn": "painotettu_tutkinnon_osien_osaamispisteet_at_eat_kr_oikaisu"
-          },
-          {
-            "name": "painotettu_tutkinnon_osien_osaamispisteet_erityistuki_oikaisu",
-            "dataType": "double",
-            "isHidden": true,
-            "sourceColumn": "painotettu_tutkinnon_osien_osaamispisteet_erityistuki_oikaisu"
-          },
-          {
             "name": "leikkauskerroin2",
             "dataType": "double",
             "isHidden": true,
@@ -313,12 +289,6 @@
             "sourceColumn": "Tilastokuukausi",
             "sortByColumn": "jarj Tilastokuukausi",
             "displayFolder": "Aikamuuttujat"
-          },
-          {
-            "name": "jarj Tilastokuukausi",
-            "dataType": "int64",
-            "isHidden": true,
-            "sourceColumn": "jarj Tilastokuukausi"
           },
           {
             "name": "Sukupuoli",
@@ -442,6 +412,12 @@
             "displayFolder": "Organisaatiomuuttujat"
           },
           {
+            "name": "jarj Tilastokuukausi",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "jarj Tilastokuukausi"
+          },
+          {
             "name": "jarj Sukupuoli",
             "dataType": "string",
             "isHidden": true,
@@ -518,6 +494,30 @@
             "dataType": "string",
             "isHidden": true,
             "sourceColumn": "jarj Toimipisteen maakunta"
+          },
+          {
+            "name": "painotettu_tutkinnon_osien_osaamispisteet_pt_kr_oikaisu",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "painotettu_tutkinnon_osien_osaamispisteet_pt_kr_oikaisu"
+          },
+          {
+            "name": "oikaisu",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "oikaisu"
+          },
+          {
+            "name": "painotettu_tutkinnon_osien_osaamispisteet_at_eat_kr_oikaisu",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "painotettu_tutkinnon_osien_osaamispisteet_at_eat_kr_oikaisu"
+          },
+          {
+            "name": "painotettu_tutkinnon_osien_osaamispisteet_erityistuki_oikaisu",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "painotettu_tutkinnon_osien_osaamispisteet_erityistuki_oikaisu"
           }
         ],
         "partitions": [
@@ -2403,7 +2403,7 @@
             "expression": [
               "",
               "[Tutkintojen ja tutkinnon osien painotetut pisteet yhteensä] /",
-              "CALCULATE([Tutkintojen ja tutkinnon osien painotetut pisteet yhteensä],ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusmuoto]))",
+              "CALCULATE([Tutkintojen ja tutkinnon osien painotetut pisteet yhteensä],ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusmuoto],Muuttujat[Tilastovuosi]))",
               ""
             ],
             "formatString": "0.00 %;-0.00 %;0.00 %",
@@ -2425,6 +2425,56 @@
             ],
             "formatString": "0.00 %;-0.00 %;0.00 %",
             "displayFolder": "Prosenttiosuudet"
+          },
+          {
+            "name": "Leikkauskerroin",
+            "expression": "AVERAGE([leikkauskerroin2])",
+            "formatString": "0.00"
+          },
+          {
+            "name": "Tavoitteelliset opiskelijavuodet",
+            "expression": [
+              "",
+              "SUMX(",
+              "\tSUMMARIZE(Muuttujat,[Koodit Koulutuksen järjestäjä],[tavoitteelliset_opv])",
+              "\t,[tavoitteelliset_opv]",
+              ")"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Maksimiosaamispisteet",
+            "expression": "[Tavoitteelliset opiskelijavuodet] * 120.0",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnon osien painottamattomat osaamispisteet yhteensä",
+            "expression": "[Osaamispisteiden määrä (ei suorita koko tutkintoa)]+[Osaamispisteiden määrä (suorittaa koko tutkintoa)]",
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Laskentaan hyväksytyt painotetut osaamispisteet",
+            "expression": [
+              "",
+              "var summa1 = SUMX(Muuttujat,[painotettu_tutkinnon_osien_osaamispisteet_pt_kr] * IF(Muuttujat[rahoitusmuoto_maksetaan]=1,[leikkauskerroin2],0))",
+              "var summa2 = SUMX(Muuttujat,[painotettu_tutkinnon_osien_osaamispisteet_at_eat_kr] * IF(Muuttujat[rahoitusmuoto_maksetaan]=1,[leikkauskerroin2],0))",
+              "var summa3 = SUMX(Muuttujat,[painotettu_tutkinnon_osien_osaamispisteet_erityistuki] * IF(Muuttujat[rahoitusmuoto_maksetaan]=1,[leikkauskerroin2],0))",
+              "return summa1 + summa2 + summa3"
+            ],
+            "formatString": "#,0.00",
+            "displayFolder": "Painotetut"
+          },
+          {
+            "name": "Laskentaan hyväksytyt painottamattomat osaamispisteet",
+            "expression": [
+              "",
+              "var summa = SUMX(Muuttujat, [painottamaton_osaamispisteet] * IF(Muuttujat[rahoitusmuoto_maksetaan]=1,Muuttujat[leikkauskerroin2],0))",
+              "",
+              "return IF(summa=0,BLANK(),summa)",
+              ""
+            ],
+            "formatString": "#,0.0",
+            "displayFolder": "Painottamattomat"
           },
           {
             "name": "Tutkintojen ja tutkinnon osien painotetut pisteet, järj. %-osuus OIKAISU",
@@ -2494,56 +2544,6 @@
             ],
             "formatString": "0.00 %;-0.00 %;0.00 %",
             "isHidden": true
-          },
-          {
-            "name": "Laskentaan hyväksytyt painotetut osaamispisteet",
-            "expression": [
-              "",
-              "var summa1 = SUMX(Muuttujat,[painotettu_tutkinnon_osien_osaamispisteet_pt_kr] * IF(Muuttujat[rahoitusmuoto_maksetaan]=1,[leikkauskerroin2],0))",
-              "var summa2 = SUMX(Muuttujat,[painotettu_tutkinnon_osien_osaamispisteet_at_eat_kr] * IF(Muuttujat[rahoitusmuoto_maksetaan]=1,[leikkauskerroin2],0))",
-              "var summa3 = SUMX(Muuttujat,[painotettu_tutkinnon_osien_osaamispisteet_erityistuki] * IF(Muuttujat[rahoitusmuoto_maksetaan]=1,[leikkauskerroin2],0))",
-              "return summa1 + summa2 + summa3"
-            ],
-            "formatString": "#,0.00",
-            "displayFolder": "Painotetut"
-          },
-          {
-            "name": "Laskentaan hyväksytyt painottamattomat osaamispisteet",
-            "expression": [
-              "",
-              "var summa = SUMX(Muuttujat, [painottamaton_osaamispisteet] * IF(Muuttujat[rahoitusmuoto_maksetaan]=1,Muuttujat[leikkauskerroin2],0))",
-              "",
-              "return IF(summa=0,BLANK(),summa)",
-              ""
-            ],
-            "formatString": "#,0.0",
-            "displayFolder": "Painottamattomat"
-          },
-          {
-            "name": "Leikkauskerroin",
-            "expression": "AVERAGE([leikkauskerroin2])",
-            "formatString": "0.00"
-          },
-          {
-            "name": "Tavoitteelliset opiskelijavuodet",
-            "expression": [
-              "",
-              "SUMX(",
-              "\tSUMMARIZE(Muuttujat,[Koodit Koulutuksen järjestäjä],[tavoitteelliset_opv])",
-              "\t,[tavoitteelliset_opv]",
-              ")"
-            ],
-            "formatString": "#,0"
-          },
-          {
-            "name": "Maksimiosaamispisteet",
-            "expression": "[Tavoitteelliset opiskelijavuodet] * 120.0",
-            "formatString": "#,0"
-          },
-          {
-            "name": "Tutkinnon osien painottamattomat osaamispisteet yhteensä",
-            "expression": "[Osaamispisteiden määrä (ei suorita koko tutkintoa)]+[Osaamispisteiden määrä (suorittaa koko tutkintoa)]",
-            "formatString": "#,0.0"
           }
         ],
         "annotations": [
@@ -4280,9 +4280,6 @@
                 "name": "Oppisopimuskoulutus"
               },
               {
-                "name": "Tilastokuukausi"
-              },
-              {
                 "name": "Ikä"
               },
               {
@@ -4335,6 +4332,9 @@
               },
               {
                 "name": "Äidinkieli"
+              },
+              {
+                "name": "Tilastokuukausi"
               }
             ],
             "measures": [
