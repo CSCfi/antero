@@ -247,6 +247,3 @@ left join dw.d_valintatapajono d34 on d34.koodi = d33.JonoTyyppi
 
 
 
-GO
-
-
