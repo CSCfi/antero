@@ -147,9 +147,9 @@ coalesce(d26b.id,'-1') as d_hakukohde_kuudes_hakukohde_id,
 coalesce(d26e.id,'-1') as d_koulutus_kuudes_hakukohde_id,
 coalesce(d26f.id,'-1') as d_organisaatioluokitus_kuudes_hakukohde_id,
 coalesce(d26g.id,'-1') as d_tutkinnon_aloitussykli_kuudes_hakukohde_id,
-coalesce(d34.id,'-1') as d_valintatapajono_id,
-d33.JonoNimi,
-d33.Kokonaispisteet as kokonaispisteet, 
+--coalesce(d34.id,'-1') as d_valintatapajono_id,
+--d33.JonoNimi,
+--d33.Kokonaispisteet as kokonaispisteet, 
 getdate(),
 'ETL: p_lataa_f_haku_ja_valinta_hakeneet_korkea_aste' AS source,
 suser_name()
@@ -241,8 +241,8 @@ left join (
 		WHEN MONTH(d8.loppuPvm) < 8 AND d16.koulutuksen_alkamiskausi = 'k' THEN d8.loppuPvm
 		ELSE cast((cast((YEAR(d8.loppuPvm) + 1) as varchar(4)) + '-01-01') as date) END
 
-left join sa.sa_odw_valintatapajono d33 on d33.HakuOID = f.HakuOid and d33.HakukohdeOID = f.HakukohdeOID and d33.HenkiloOID = f.HenkiloOID
-left join dw.d_valintatapajono d34 on d34.koodi = d33.JonoTyyppi
+--left join sa.sa_odw_valintatapajono d33 on d33.HakuOID = f.HakuOid and d33.HakukohdeOID = f.HakukohdeOID and d33.HenkiloOID = f.HenkiloOID
+--left join dw.d_valintatapajono d34 on d34.koodi = d33.JonoTyyppi
 
 
 
