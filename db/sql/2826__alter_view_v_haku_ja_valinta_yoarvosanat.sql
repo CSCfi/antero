@@ -70,7 +70,7 @@ SELECT DISTINCT
 
 	,[valittu] = CASE WHEN f.valinnan_tila IN ('HYVAKSYTTY','VARASIJALTA_HYVAKSYTTY','PERUNUT') THEN 1 ELSE 0 END
 	,[vastaanottanut paikan] = CASE WHEN f.vastaanoton_tila IN ('VASTAANOTTANUT_SITOVASTI') THEN 1 ELSE 0 END
-	,[Valintatapajonon tyyppi] = d50.selite_fi
+	--,[Valintatapajonon tyyppi] = d50.selite_fi
 
 	--Järjestys-kentät
 	,[Jarjestys Sukupuoli] = d7.jarjestys_sukupuoli_koodi
@@ -119,7 +119,7 @@ LEFT JOIN ANTERO.dw.d_haku_amk_yo d46 ON d46.id=f.d_haku_amk_yo_id
 LEFT JOIN ANTERO.dw.d_ytl_aine d47 ON d47.id = f2.d_ytl_aine_id
 LEFT JOIN ANTERO.dw.d_ytl_aine_laajuus d48 ON d48.id = f2.d_ytl_aine_laajuus_id
 LEFT JOIN ANTERO.dw.d_ytl_aine d49 ON d49.id = f2.d_ytl_aine_matikka_id
-LEFT JOIN ANTERO.dw.d_valintatapajono d50 ON d50.id = f.d_valintatapajono_id
+--LEFT JOIN ANTERO.dw.d_valintatapajono d50 ON d50.id = f.d_valintatapajono_id
 
 
 WHERE f.koulutuksen_alkamisvuosi >= 2015 AND f2.valmistumisvuosi >= 2010
