@@ -156,7 +156,7 @@ coalesce(d34.id,'-1') as d_valintatapajono_id,
 d33.JonoNimi,
 d33.Kokonaispisteet as kokonaispisteet, 
 coalesce(d35.id,'-1') as d_valittu_ensisijaiseen_kohteeseen_id,
-coalesce(d36.id,'-1') as d_valittu_ensisijaisen_kohteen_koulutusalalle_id,
+coalesce(d36.id,'0') as d_valittu_ensisijaisen_kohteen_koulutusalalle_id,
 getdate(),
 'ETL: p_lataa_f_haku_ja_valinta_hakeneet_korkea_aste' AS source,
 suser_name()
