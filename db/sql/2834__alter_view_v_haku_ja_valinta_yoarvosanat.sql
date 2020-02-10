@@ -72,8 +72,8 @@ SELECT DISTINCT
 	,[valittu] = CASE WHEN f.valinnan_tila IN ('HYVAKSYTTY','VARASIJALTA_HYVAKSYTTY','PERUNUT') THEN 1 ELSE 0 END
 	,[vastaanottanut paikan] = CASE WHEN f.vastaanoton_tila IN ('VASTAANOTTANUT_SITOVASTI') THEN 1 ELSE 0 END
 	,[Valintatapajonon tyyppi] = d50.selite_fi
-	,[Valittu ensisijaiseen hakukohteeseen] = CASE WHEN f.d_valittu_ensisijaiseen_kohteeseen_id = '1' THEN 'Kyllä' ELSE 'EI' END
-	,[Valittu ensisijaiselle koulutusalalle] = CASE WHEN f.d_valittu_ensisijaisen_kohteen_koulutusalalle_id = '1' THEN 'Kyllä' ELSE 'EI' END
+	,[Valittu ensisijaiseen hakukohteeseen] = CASE WHEN f.d_valittu_ensisijaiseen_kohteeseen_id = '1' THEN 'Kyllä' ELSE 'Ei' END
+	,[Valittu ensisijaiselle koulutusalalle] = CASE WHEN f.d_valittu_ensisijaisen_kohteen_koulutusalalle_id = '1' THEN 'Kyllä' ELSE 'Ei' END
 
 	--Järjestys-kentät
 	,[Jarjestys Sukupuoli] = d7.jarjestys_sukupuoli_koodi
