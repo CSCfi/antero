@@ -282,7 +282,7 @@ left join (
 		FROM sa.sa_odw_hakeneet f
 		left join sa.sa_hakukohde_koulutus d1 on d1.hakukohde_oid = f.HakukohdeOID and hakukohdekoulutus_nro = 1
 		left join dw.d_koulutusluokitus d2 on d2.koulutusluokitus_koodi = d1.hakukohdekoulutus_koodi
-		WHERE f.HakutoiveNumero = '1') d3 on d3.HakuOid = f.HakuOid and d3.HenkiloOID = f.HenkiloOID and d3.koulutusalataso1_koodi = d2.koulutusalataso1_koodi
+		WHERE f.HakutoiveNumero = '1') d3 on d3.HakuOid = f.HakuOid and d3.HenkiloOID = f.HenkiloOID and d3.koulutusalataso1_koodi = d2.koulutusalataso1_koodi and f.HakemusOid = d3.HakemusOid
 	WHERE f.ValinnanTila in ('HYVAKSYTTY','VARASIJALTA_HYVAKSYTTY','PERUNUT')
 	GROUP BY f.HenkiloOID, f.HakuOid, d2.koulutusalataso1_koodi, d3.id, f.HakemusOid) d36 on d36.HenkiloOID = f.HenkiloOID and d36.HakuOid = f.HakuOid and f.HakemusOid = d36.HakemusOid
 
