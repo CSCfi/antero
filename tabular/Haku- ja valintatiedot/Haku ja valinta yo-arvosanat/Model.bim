@@ -2066,6 +2066,37 @@
           {
             "name": "Paikan vastaanottaneet",
             "expression": " CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]), Muuttujat[vastaanottanut paikan] = 1)"
+          },
+          {
+            "name": "Mediaani (keskiarvo)",
+            "expression": [
+              " ",
+              "",
+              "var taulu = CALCULATETABLE(SUMMARIZE(Muuttujat, Muuttujat[Henkilö OID], \"Keskiarvo\", AVERAGE([Arvosana, numero (0-7)])))",
+              "",
+              "return",
+              "",
+              "PERCENTILEX.INC(taulu, [Keskiarvo], 0.5)",
+              ""
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "Aineen kirjoittaneiden osuus",
+            "expression": [
+              " ",
+              "DIVIDE(",
+              "\tCALCULATE(",
+              "\t\tDISTINCTCOUNT(Muuttujat[Henkilö OID]), VALUES(Muuttujat[Aine + laajuus])),",
+              "\tCALCULATE(",
+              "\t\tDISTINCTCOUNT(Muuttujat[Henkilö OID]),",
+              "\t\tALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi], Muuttujat[vastaanottanut paikan], Muuttujat[valittu],",
+              "\t\tMuuttujat[Korkeakoulu], Muuttujat[Sektori], Muuttujat[Koulutusala, taso 1 (hakukohde)], Muuttujat[Koulutusala, taso 2 (hakukohde)], ",
+              "\t\tMuuttujat[Koulutusala, taso 3 (hakukohde)], Muuttujat[Koulutusaste, taso 1 (hakukohde)], Muuttujat[Koulutusaste, taso 2 (hakukohde)], ",
+              "\t\tMuuttujat[Valintatapajonon tyyppi], Muuttujat[Valittu ensisijaiseen hakukohteeseen], Muuttujat[Valittu ensisijaiselle koulutusalalle])))",
+              "\t\t"
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
           }
         ],
         "annotations": [
@@ -4003,6 +4034,12 @@
               },
               {
                 "name": "Keskiarvo (0-7)"
+              },
+              {
+                "name": "Aineen kirjoittaneiden osuus"
+              },
+              {
+                "name": "Mediaani (keskiarvo)"
               }
             ]
           }
