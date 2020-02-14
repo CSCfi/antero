@@ -2022,17 +2022,8 @@
               "return",
               "AVERAGEX(taulu, [Arvosana, numero])"
             ],
-            "formatString": "0.00"
-          },
-          {
-            "name": "Keskiarvo (0-7)",
-            "expression": [
-              " var taulu = GROUPBY(Muuttujat, [Aine + laajuus], [Arvosana, numero (0-7)], [Henkilö OID])",
-              "return",
-              "AVERAGEX(taulu, [Arvosana, numero (0-7)])",
-              ""
-            ],
-            "formatString": "0.00"
+            "formatString": "0.00",
+            "isHidden": true
           },
           {
             "name": "20. persentiili (keskiarvo)",
@@ -2065,7 +2056,7 @@
           },
           {
             "name": "Paikan vastaanottaneet",
-            "expression": " CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]), Muuttujat[vastaanottanut paikan] = 1)"
+            "expression": " CALCULATE(MROUND(DISTINCTCOUNT(Muuttujat[Henkilö OID]),3), Muuttujat[vastaanottanut paikan] = 1)"
           },
           {
             "name": "Mediaani (keskiarvo)",
@@ -2095,13 +2086,88 @@
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
-            "name": "Keskiarvo (AMK:t)",
-            "expression": " CALCULATE([Keskiarvo (0-7)], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi], Muuttujat[valittu], Muuttujat[vastaanottanut paikan], Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[Sektori] = \"Ammattikorkeakoulukoulutus\")",
+            "name": "AMK, kaikki hakijat",
+            "expression": " CALCULATE([*Hakijat], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi], Muuttujat[valittu], Muuttujat[vastaanottanut paikan], Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[Sektori] = \"Ammattikorkeakoulukoulutus\")",
             "formatString": "0.00"
           },
           {
-            "name": "Keskiarvo (yliopistot)",
-            "expression": " CALCULATE([Keskiarvo (0-7)], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi], Muuttujat[valittu], Muuttujat[vastaanottanut paikan], Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[Sektori] = \"Yliopistokoulutus\")",
+            "name": "YO, kaikki hakijat",
+            "expression": " CALCULATE([*Hakijat], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi], Muuttujat[valittu], Muuttujat[vastaanottanut paikan], Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[Sektori] = \"Yliopistokoulutus\")",
+            "formatString": "0.00"
+          },
+          {
+            "name": "*Hakijat",
+            "expression": [
+              " var taulu = GROUPBY(Muuttujat, [Aine + laajuus], [Arvosana, numero (0-7)], [Henkilö OID])",
+              "return",
+              "AVERAGEX(taulu, [Arvosana, numero (0-7)])",
+              ""
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "Paikan vastaanottaneet_s",
+            "expression": " CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]), Muuttujat[vastaanottanut paikan] = 1)",
+            "formatString": "0"
+          },
+          {
+            "name": "*Paikan vastaanottaneet",
+            "expression": " CALCULATE([*Hakijat], Muuttujat[vastaanottanut paikan] = 1)",
+            "formatString": "0.00"
+          },
+          {
+            "name": "*Valitut",
+            "expression": " CALCULATE([*Hakijat], Muuttujat[valittu] = 1)",
+            "formatString": "0.00"
+          },
+          {
+            "name": "YO, kaikki paikan vastaanottaneet",
+            "expression": " CALCULATE([*Hakijat], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi], Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[vastaanottanut paikan] = 1, Muuttujat[Sektori] = \"Yliopistokoulutus\")",
+            "formatString": "0.00"
+          },
+          {
+            "name": "AMK, kaikki paikan vastaanottaneet",
+            "expression": " CALCULATE([*Hakijat], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi], Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[vastaanottanut paikan] = 1, Muuttujat[Sektori] = \"Ammattikorkeakoulukoulutus\")",
+            "formatString": "0.00"
+          },
+          {
+            "name": "YO, kaikki valitut",
+            "expression": " CALCULATE([*Hakijat], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi], Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[valittu] = 1, Muuttujat[Sektori] = \"Yliopistokoulutus\")",
+            "formatString": "0.00"
+          },
+          {
+            "name": "AMK, kaikki valitut",
+            "expression": " CALCULATE([*Hakijat], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi],Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[valittu] = 1, Muuttujat[Sektori] = \"Ammattikorkeakoulukoulutus\")",
+            "formatString": "0.00"
+          },
+          {
+            "name": "Kaikki paikan vastaanottaneet",
+            "expression": " CALCULATE([*Hakijat], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi],Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[vastaanottanut paikan] = 1)",
+            "formatString": "0.00"
+          },
+          {
+            "name": "Kaikki valitut",
+            "expression": " CALCULATE([*Hakijat], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi], Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[valittu]= 1)",
+            "formatString": "0.00"
+          },
+          {
+            "name": "Kaikki hakeneet",
+            "expression": " CALCULATE([*Hakijat], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi], Muuttujat[Tutkinnon aloitussykli (hakukohde)]))",
+            "formatString": "0.00"
+          },
+          {
+            "name": "*20. persentiili (paikan vastaanottaneet)",
+            "expression": " CALCULATE([20. persentiili (keskiarvo)], Muuttujat[vastaanottanut paikan] = 1)",
+            "formatString": "0.00"
+          },
+          {
+            "name": "*80. persentiili (paikan vastaanottaneet)",
+            "expression": " CALCULATE([80. persentiili (keskiarvo)], Muuttujat[vastaanottanut paikan] = 1)",
+            "formatString": "0.00"
+          },
+          {
+            "name": "*Mediaani (paikan vastaanottaneet)",
+            "expression": " CALCULATE([Mediaani (keskiarvo)], Muuttujat[vastaanottanut paikan] = 1)",
             "formatString": "0.00"
           }
         ],
@@ -4039,19 +4105,118 @@
                 "name": "80. persentiili (keskiarvo)"
               },
               {
-                "name": "Keskiarvo (0-7)"
-              },
-              {
                 "name": "Aineen kirjoittaneiden osuus"
               },
               {
                 "name": "Mediaani (keskiarvo)"
               },
               {
-                "name": "Keskiarvo (AMK:t)"
+                "name": "AMK, kaikki hakijat"
               },
               {
-                "name": "Keskiarvo (yliopistot)"
+                "name": "YO, kaikki hakijat"
+              },
+              {
+                "name": "*Hakijat"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Keskiarvot",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Korkeakoulu"
+              },
+              {
+                "name": "Koulutuksen alkamiskausi"
+              },
+              {
+                "name": "Koulutuksen alkamisvuosi"
+              },
+              {
+                "name": "Koulutusala, taso 1 (hakukohde)"
+              },
+              {
+                "name": "Koulutusala, taso 2 (hakukohde)"
+              },
+              {
+                "name": "Koulutusala, taso 3 (hakukohde)"
+              },
+              {
+                "name": "OKM ohjauksen ala (hakukohde)"
+              },
+              {
+                "name": "Sektori"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Tutkinnon aloitussykli (hakukohde)"
+              },
+              {
+                "name": "Valintatapajonon tyyppi"
+              },
+              {
+                "name": "Valittu ensisijaiseen hakukohteeseen"
+              },
+              {
+                "name": "Valittu ensisijaiselle koulutusalalle"
+              }
+            ],
+            "measures": [
+              {
+                "name": "*20. persentiili (paikan vastaanottaneet)"
+              },
+              {
+                "name": "*80. persentiili (paikan vastaanottaneet)"
+              },
+              {
+                "name": "*Hakijat"
+              },
+              {
+                "name": "*Mediaani (paikan vastaanottaneet)"
+              },
+              {
+                "name": "*Paikan vastaanottaneet"
+              },
+              {
+                "name": "*Valitut"
+              },
+              {
+                "name": "AMK, kaikki hakijat"
+              },
+              {
+                "name": "AMK, kaikki paikan vastaanottaneet"
+              },
+              {
+                "name": "AMK, kaikki valitut"
+              },
+              {
+                "name": "Kaikki hakeneet"
+              },
+              {
+                "name": "Kaikki paikan vastaanottaneet"
+              },
+              {
+                "name": "Kaikki valitut"
+              },
+              {
+                "name": "Mediaani (keskiarvo)"
+              },
+              {
+                "name": "YO, kaikki hakijat"
+              },
+              {
+                "name": "YO, kaikki paikan vastaanottaneet"
+              },
+              {
+                "name": "YO, kaikki valitut"
               }
             ]
           }
