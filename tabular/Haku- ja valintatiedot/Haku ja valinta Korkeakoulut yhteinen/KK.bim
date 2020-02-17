@@ -8747,10 +8747,10 @@
             "name": "Alin hyväksytty pistemäärä",
             "expression": [
               "",
-              "var alin = CALCULATE(MIN(Muuttujat[Pisteet]),Muuttujat[Valitut2]=1,Muuttujat[Pisteet]>0)",
-              "return IF(NOT(ISFILTERED([Hakukohde])),\"\t\",IF(AND(alin<1,[Kaikki hakijat]>0),\"−\",alin))",
-              "",
-              ""
+              "var alin = CALCULATE(MIN(Muuttujat[Pisteet]),FILTER(Muuttujat,Muuttujat[Pisteet]>0 && Muuttujat[Valitut2]=1))",
+              "var tyhja = \"−\"",
+              "var ehto = AND(ISFILTERED([Hakukohde]),NOT(ISFILTERED(Muuttujat[Valintatapajono])))",
+              "return IF(NOT(ISFILTERED([Hakukohde])),\"\t\",IF(AND(ehto=TRUE(),alin=0),tyhja,alin))"
             ],
             "formatString": "0.00"
           },
@@ -8758,8 +8758,11 @@
             "name": "Ylin hyväksytty pistemäärä",
             "expression": [
               "",
-              "var ylin = CALCULATE(MAX(Muuttujat[Pisteet]),Muuttujat[Valitut2]=1,Muuttujat[Pisteet]<>0)",
-              "return IF(NOT(ISFILTERED([Hakukohde])),\"\t\",IF(AND(ylin<1,[Kaikki hakijat]>0),\"−\",ylin))"
+              "var ylin = CALCULATE(MAX(Muuttujat[Pisteet]),FILTER(Muuttujat,Muuttujat[Pisteet]>0 && Muuttujat[Valitut2]=1))",
+              "var tyhja = \"−\"",
+              "var ehto = AND(ISFILTERED([Hakukohde]),NOT(ISFILTERED(Muuttujat[Valintatapajono])))",
+              "return IF(NOT(ISFILTERED([Hakukohde])),\"\t\",IF(AND(ehto=TRUE(),ylin=0),tyhja,ylin))",
+              ""
             ],
             "formatString": "#,0.00"
           }
