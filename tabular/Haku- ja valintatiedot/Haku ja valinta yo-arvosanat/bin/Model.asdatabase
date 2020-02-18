@@ -2059,21 +2059,14 @@
               "\t,Muuttujat[OKM ohjauksen ala (hakukohde)]",
               "\t,Muuttujat[Sektori]",
               "\t,Muuttujat[Sukupuoli]",
-              "\t,Muuttujat[Arvosanojen lkm L]",
-              "\t,Muuttujat[Arvosanojen lkm E/L]",
-              "\t,Muuttujat[Arvosanojen lkm M/E/L]",
-              "\t,Muuttujat[Arvosanojen L lkm]",
-              "\t,Muuttujat[Arvosanojen M/E/L lkm]",
-              "\t, Muuttujat[Arvosanojen E/L lkm]",
               "\t,Muuttujat[Tutkinnon aloitussykli (hakukohde)]",
-              "",
               "\t)",
               ")",
               ")",
               "return num/den",
               ""
             ],
-            "formatString": "0 %;-0 %;0 %"
+            "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Osuus ylioppilastutkinnon suorittaneista",
@@ -2153,7 +2146,7 @@
           },
           {
             "name": "Paikan vastaanottaneet",
-            "expression": " CALCULATE(MROUND(DISTINCTCOUNT(Muuttujat[Henkilö OID]),3), Muuttujat[vastaanottanut paikan] = 1)"
+            "expression": " CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]), Muuttujat[vastaanottanut paikan] = 1)"
           },
           {
             "name": "Mediaani (keskiarvo)",
@@ -2204,11 +2197,6 @@
             ],
             "formatString": "0.00",
             "displayFolder": "Keskiarvomuuttujat"
-          },
-          {
-            "name": "Paikan vastaanottaneet_s",
-            "expression": " CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]), Muuttujat[vastaanottanut paikan] = 1)",
-            "formatString": "0"
           },
           {
             "name": "*Paikan vastaanottaneet",
@@ -2297,7 +2285,7 @@
               "\t\tMuuttujat[Aine] = \"Matematiikka\"))",
               ""
             ],
-            "formatString": "0.00 %;-0.00 %;0.00 %"
+            "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Matematiikan arvosanan osuus (valitut)",
@@ -2305,7 +2293,7 @@
               "",
               "CALCULATE([Matematiikan arvosanan osuus (hakijat)], Muuttujat[valittu] = 1)"
             ],
-            "formatString": "0.00 %;-0.00 %;0.00 %"
+            "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Matematiikan arvosanan osuus (paikan vastaanottaneet)",
@@ -2314,12 +2302,42 @@
               "CALCULATE([Matematiikan arvosanan osuus (hakijat)], Muuttujat[vastaanottanut paikan] = 1)",
               ""
             ],
-            "formatString": "0.00 %;-0.00 %;0.00 %"
+            "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Osuus paikan vastaanottaneista",
-            "expression": " CALCULATE([Osuus valituista], Muuttujat[vastaanottanut paikan] = 1)",
-            "formatString": "0.00 %;-0.00 %;0.00 %"
+            "expression": [
+              " ",
+              "var num =[Paikan vastaanottaneet]",
+              "var den = IF([ehto]=TRUE(),",
+              "CALCULATE([Paikan vastaanottaneet],ALL(",
+              "\tMuuttujat[Arvosanojen lkm L]",
+              "\t,Muuttujat[Arvosanojen lkm E/L]",
+              "\t,Muuttujat[Arvosanojen lkm M/E/L]",
+              "\t,Muuttujat[Aine]",
+              "\t,Muuttujat[Kirjoitettujen reaaliaineiden lkm]",
+              "\t,Muuttujat[Kirjoitettujen kielten lkm]",
+              "\t,Muuttujat[Arvosanojen L lkm]",
+              "\t,Muuttujat[Arvosanojen M/E/L lkm]",
+              "\t, Muuttujat[Arvosanojen E/L lkm]",
+              ")),",
+              "CALCULATE([Paikan vastaanottaneet],ALLEXCEPT(Muuttujat,",
+              "\tMuuttujat[Koulutuksen alkamisvuosi]",
+              "\t,Muuttujat[Koulutuksen alkamiskausi]",
+              "\t,Muuttujat[Koulutusala, taso 1 (hakukohde)]",
+              "\t,Muuttujat[Koulutusala, taso 2 (hakukohde)]\t\t",
+              "\t,Muuttujat[Koulutusala, taso 3 (hakukohde)]",
+              "\t,Muuttujat[OKM ohjauksen ala (hakukohde)]",
+              "\t,Muuttujat[Sektori]",
+              "\t,Muuttujat[Sukupuoli]",
+              "\t,Muuttujat[Tutkinnon aloitussykli (hakukohde)]",
+              "\t)",
+              ")",
+              ")",
+              "return num/den",
+              ""
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
           }
         ],
         "annotations": [
@@ -4575,6 +4593,72 @@
             "measures": [
               {
                 "name": "Aineen kirjoittaneiden osuus"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Arvosanojen_lkm",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Arvosanojen E/L lkm"
+              },
+              {
+                "name": "Arvosanojen L lkm"
+              },
+              {
+                "name": "Arvosanojen M/E/L lkm"
+              },
+              {
+                "name": "Korkeakoulu"
+              },
+              {
+                "name": "Koulutuksen alkamiskausi"
+              },
+              {
+                "name": "Koulutuksen alkamisvuosi"
+              },
+              {
+                "name": "Koulutusala, taso 1 (hakukohde)"
+              },
+              {
+                "name": "Koulutusala, taso 2 (hakukohde)"
+              },
+              {
+                "name": "Koulutusala, taso 3 (hakukohde)"
+              },
+              {
+                "name": "OKM ohjauksen ala (hakukohde)"
+              },
+              {
+                "name": "Sektori"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Tutkinnon aloitussykli (hakukohde)"
+              },
+              {
+                "name": "Valintatapajonon tyyppi"
+              },
+              {
+                "name": "Valittu ensisijaiseen hakukohteeseen"
+              },
+              {
+                "name": "Valittu ensisijaiselle koulutusalalle"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Osuus paikan vastaanottaneista"
+              },
+              {
+                "name": "Osuus valituista"
               }
             ]
           }
