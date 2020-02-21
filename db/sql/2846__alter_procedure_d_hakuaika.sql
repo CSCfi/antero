@@ -144,3 +144,6 @@ WHEN NOT MATCHED AND src.tila = 'JULKAISTU'
 			,src.haku_oid
 			,src.source
 			);
+			
+GO
+USE [ANTERO]
