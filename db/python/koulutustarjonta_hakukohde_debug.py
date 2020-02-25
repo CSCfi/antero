@@ -160,8 +160,9 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
         #dboperator.insert(hostname+url,schema,table,row,debug)
         rows=[]
     #TÄHÄN VIELÄ INSERT dataset[] #< 5000
-    dboperator.insertMany(hostname+url,schema,table,rows)
-    show("Total rows: %d" % (cnt))
+  dboperator.insertMany(hostname+url,schema,table,rows)
+  show("Total rows: %d" % (cnt))
+  
   if verbose: show("ready")
 
 def usage():
