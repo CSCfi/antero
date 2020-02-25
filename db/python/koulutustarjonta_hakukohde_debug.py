@@ -102,8 +102,6 @@ def getnimi(i,kieli):
   if lang in i["nimi"]:
     return i["nimi"][lang]
   return None
-def insert(address,schema,table,rows):
-    dboperator.insertMany(address,schema,table,rows)
 
 def load(hostname,url,schema,table,verbose=False,debug=False):
   if verbose: show("begin")
@@ -135,6 +133,7 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
       show("-- %d" % (cnt))
 
     url = "/tarjonta-service/rest/v1/hakukohde/%s?populateAdditionalKomotoFields=true"%(ii["oid"])
+
     try:
       httpconn.request('GET', url, headers=reqheaders)
       r = httpconn.getresponse()
@@ -157,11 +156,11 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
       if debug: print(row)
       rows.append(row)
       if cnt%5000 == 0:
-        insert(address,schema,table,rows)
+        dboperator.insertMany(hostname+url,schema,table,rows)
         #dboperator.insert(hostname+url,schema,table,row,debug)
         rows=[]
     #TÄHÄN VIELÄ INSERT dataset[] #< 5000
-    insert(address,schema,table,rows)
+    dboperator.insertMany(hostname+url,schema,table,rows)
     show("Total rows: %d" % (cnt))
   if verbose: show("ready")
 
