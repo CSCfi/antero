@@ -61,7 +61,7 @@ def get_osoite_array(osoite, postinumero, kunta):
 def get_kotikunta_by_kuntakoodi(koodi):
   try:
     r = requests.get("https://virkailija.opintopolku.fi/koodisto-service/rest/json/kunta/koodi/arvo/" + str(koodi),
-                     headers={"Accept": "application/json", 'Caller-id': '1.2.246.562.10.2013112012294919827487.vipunen'})
+                     headers={"Accept": "application/json", 'Caller-Id': '1.2.246.562.10.2013112012294919827487.vipunen'})
   except requests.exceptions.RequestException as e:
     print("Error: virkailija.opintopolku.fi, no kunta for koodi: " + str(koodi))
 
@@ -256,9 +256,9 @@ def load(secure,hostname,url,schema,table,verbose=False):
 
   try:
     # first create a "hash map" of liitokset
-    liitosresponse = requests.get(address+"v2/liitokset", headers = {'Caller-id': '1.2.246.562.10.2013112012294919827487.vipunen'})
+    liitosresponse = requests.get(address+"v2/liitokset", headers = {'Caller-Id': '1.2.246.562.10.2013112012294919827487.vipunen'})
     # actual data
-    response = requests.get(address, headers = {'Caller-id': '1.2.246.562.10.2013112012294919827487.vipunen'})
+    response = requests.get(address, headers = {'Caller-Id': '1.2.246.562.10.2013112012294919827487.vipunen'})
   except Exception as e:
     show('HTTP GET failed.')
     show('Reason: %s'%(str(e)))
@@ -288,7 +288,7 @@ def load(secure,hostname,url,schema,table,verbose=False):
 
     # make another requets to actual organization data
     try:
-        r = requests.get(address+o, headers = {'Caller-id': '1.2.246.562.10.2013112012294919827487.vipunen'})
+        r = requests.get(address+o, headers = {'Caller-Id': '1.2.246.562.10.2013112012294919827487.vipunen'})
         i = r.json()
 
         # make "row" (clear values)

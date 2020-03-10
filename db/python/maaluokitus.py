@@ -52,7 +52,7 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False):
     httpconn = httplib.HTTPConnection(hostname)
     show("load from "+hostname+url)
 
-  reqheaders = {'Caller-id': '1.2.246.562.10.2013112012294919827487.vipunen'}
+  reqheaders = {'Caller-Id': '1.2.246.562.10.2013112012294919827487.vipunen'}
   httpconn.request('GET', url, headers=reqheaders)
   #httpconn.request('GET', url)
   r = httpconn.getresponse()

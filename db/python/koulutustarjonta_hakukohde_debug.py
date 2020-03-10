@@ -116,7 +116,7 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
   show("load securely from "+hostname+url)
 
   # get list of oids
-  reqheaders = {'Caller-id': '1.2.246.562.10.2013112012294919827487.vipunen'}
+  reqheaders = {'Caller-Id': '1.2.246.562.10.2013112012294919827487.vipunen'}
   httpconn.request('GET', url, headers=reqheaders)
   #httpconn.request('GET', url)
   rr = httpconn.getresponse()
@@ -162,7 +162,7 @@ def load(hostname,url,schema,table,verbose=False,debug=False):
     #TÄHÄN VIELÄ INSERT dataset[] #< 5000
   dboperator.insertMany(hostname+url,schema,table,rows)
   show("Total rows: %d" % (cnt))
-  
+
   if verbose: show("ready")
 
 def usage():
