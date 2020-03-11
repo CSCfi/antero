@@ -49,7 +49,9 @@ Insert into VipunenTK_DW.dbo._aloittaneiden_lapaisy_tiivistetty_ja_lasketut_sara
 
 Insert into VipunenTK_DW.dbo._aloittaneiden_lapaisy_tiivistetty_ja_lasketut_sarakkeet
   Select * from VipunenTK_DW.dbo.v_aloittaneiden_lapaisy_lasketut_sarakkeet
-  where tarkasteluperiodi_char in ('15,5', '16', '16,5', '17'/*, '17,5', '18'*/);
+  where tarkasteluperiodi_char in ('15,5', '16', '16,5', '17'/*, '17,5', '18'*/)
+  
+GO
 
 --dwitestdesk1
 --22.3.2016
