@@ -498,12 +498,14 @@
             "name": "Fråga",
             "dataType": "string",
             "sourceColumn": "Fråga",
+            "sortByColumn": "jarjestys_kysymys",
             "displayFolder": "Frågevariabler"
           },
           {
             "name": "Question",
             "dataType": "string",
             "sourceColumn": "Question",
+            "sortByColumn": "jarjestys_kysymys",
             "displayFolder": "Survey variables"
           },
           {
@@ -3678,7 +3680,7 @@
               "",
               "            ",
               "              IF(",
-              "\t( [Vastaajamäärä]<6|| ISFILTERED('Muuttujat'[Monivalintavaihtoehto])),",
+              "\t( [Vastaajamäärä]<6|| ISFILTERED('Muuttujat'[Multiple choice option])),",
               "",
               "\tBLANK()",
               "\t,CALCULATE(AVERAGE([numerovalinta]),'Muuttujat'[ura_tohtori]=1, 'Muuttujat'[vastaustyyppi]<>\"kylla_ei_valinta\"",
@@ -3722,10 +3724,10 @@
               "",
               " IF",
               " ",
-              "  (OR ([vast-ura-toht-tilasto] < 6 , not(isfiltered('Muuttujat'[Monivalintavaihtoehto]))),",
+              "  (OR ([vast-ura-toht-tilasto] < 6 , not(isfiltered('Muuttujat'[Multiple choice option]))),",
               "          \t BLANK(), ",
               "          \t          \t      ",
-              "          \t FORMAT([ka-ura-toht2], \"0%\"))",
+              "          \t FORMAT([ka-ura-toht2_en], \"0%\"))",
               "          \t       ",
               ""
             ]
@@ -3966,7 +3968,7 @@
           },
           {
             "name": "Standard deviation (Doctoral degrees)",
-            "expression": "IF(OR(OR([vast-ura-toht-tilasto] < 6, ISFILTERED([Monivalintavaihtoehto])), [Keskiarvo / Vastausjakauma (uraseuranta-tohtorit)] = BLANK()), BLANK(),[kh-ura-toht-tilasto])"
+            "expression": "IF(OR(OR([vast-ura-toht-tilasto] < 6, ISFILTERED([Multiple choice option])), [Keskiarvo / Vastausjakauma (uraseuranta-tohtorit)_en] = BLANK()), BLANK(),[kh-ura-toht-tilasto])"
           },
           {
             "name": "Standardavvikkelse (Doktorexamen)",
@@ -3975,6 +3977,34 @@
           {
             "name": "ka-ura-mais2_en",
             "expression": "CALCULATE([vast-ura-mais-tilasto])/CALCULATE([vast-ura-mais-tilasto],ALL(Muuttujat[Multiple choice option]))"
+          },
+          {
+            "name": "ka-ura-toht2_en",
+            "expression": "CALCULATE([vast-ura-toht-tilasto])/CALCULATE([vast-ura-toht-tilasto],ALL(Muuttujat[Multiple choice option]))"
+          },
+          {
+            "name": "Keskiarvo / Vastausjakauma (uraseuranta-tohtorit)_en",
+            "expression": [
+              "",
+              "var ka = [ka-ura-toht-tilasto]",
+              "RETURN IF([vast-ura-toht-tilasto] < 6, ",
+              "          \t BLANK(),",
+              "          \t IF(ISFILTERED('Muuttujat'[Kysymys]),             \t            ",
+              "             \t     IF(ISFILTERED('Muuttujat'[Multiple choice option]),",
+              "             \t         FORMAT([ka-ura-toht2], \"0%\"),",
+              "             \t         IF(ka = 0,  BLANK(), ka)",
+              "             \t     ),",
+              "             \t     BLANK()",
+              "       \t )",
+              "             )",
+              "",
+              " ",
+              " /*",
+              " OR(SELECTEDVALUE([Kysymysryhmä], '') = \"II  NYKYINEN TYÖSUHDE JA SEN LAATU\"; SELECTEDVALUE([Kysymysryhmä], '') = \"III  TOHTORIKOULUTUS JA SEN MERKITYS (1/4)\")",
+              " CALCULATE(ka; 'Muuttujat'[Kysymysryhmä] <> \"II  NYKYINEN TYÖSUHDE JA SEN LAATU\"; 'Muuttujat'[Kysymysryhmä] <> \"III  TOHTORIKOULUTUS JA SEN MERKITYS (1/4)\")",
+              " */",
+              ""
+            ]
           }
         ],
         "annotations": [
@@ -6676,6 +6706,12 @@
               },
               {
                 "name": "Vastausjakauma (tohtorit)"
+              },
+              {
+                "name": "Vastaajamäärä (tohtorit)"
+              },
+              {
+                "name": "Keskihajonta (tohtorit)"
               }
             ]
           }
