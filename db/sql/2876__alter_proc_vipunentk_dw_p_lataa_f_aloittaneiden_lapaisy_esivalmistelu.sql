@@ -29,27 +29,27 @@ Truncate table VipunenTK_DW.dbo._aloittaneiden_lapaisy_tiivistetty_ja_lasketut_s
 
 Insert into VipunenTK_DW.dbo._aloittaneiden_lapaisy_tiivistetty_ja_lasketut_sarakkeet
   Select * from VipunenTK_DW.dbo.v_aloittaneiden_lapaisy_lasketut_sarakkeet
-  where tarkasteluperiodi_char in ('0,5', '1', '1,5', '2', '2,5', '3')
+  where tarkasteluperiodi_char in ('0,5', '1', '1,5', '2', '2,5', '3');
 
 Insert into VipunenTK_DW.dbo._aloittaneiden_lapaisy_tiivistetty_ja_lasketut_sarakkeet
   Select * from VipunenTK_DW.dbo.v_aloittaneiden_lapaisy_lasketut_sarakkeet
-  where tarkasteluperiodi_char in ('3,5', '4', '4,5', '5', '5,5', '6')
+  where tarkasteluperiodi_char in ('3,5', '4', '4,5', '5', '5,5', '6');
 
 Insert into VipunenTK_DW.dbo._aloittaneiden_lapaisy_tiivistetty_ja_lasketut_sarakkeet
   Select * from VipunenTK_DW.dbo.v_aloittaneiden_lapaisy_lasketut_sarakkeet
-  where tarkasteluperiodi_char in ('6,5', '7', '7,5', '8', '8,5', '9')
+  where tarkasteluperiodi_char in ('6,5', '7', '7,5', '8', '8,5', '9');
 
 Insert into VipunenTK_DW.dbo._aloittaneiden_lapaisy_tiivistetty_ja_lasketut_sarakkeet
   Select * from VipunenTK_DW.dbo.v_aloittaneiden_lapaisy_lasketut_sarakkeet
-  where tarkasteluperiodi_char in ('9,5', '10', '10,5', '11', '11,5', '12')
+  where tarkasteluperiodi_char in ('9,5', '10', '10,5', '11', '11,5', '12');
 
 Insert into VipunenTK_DW.dbo._aloittaneiden_lapaisy_tiivistetty_ja_lasketut_sarakkeet
   Select * from VipunenTK_DW.dbo.v_aloittaneiden_lapaisy_lasketut_sarakkeet
-  where tarkasteluperiodi_char in ('12,5', '13', '13,5', '14', '14,5', '15')
+  where tarkasteluperiodi_char in ('12,5', '13', '13,5', '14', '14,5', '15');
 
 Insert into VipunenTK_DW.dbo._aloittaneiden_lapaisy_tiivistetty_ja_lasketut_sarakkeet
   Select * from VipunenTK_DW.dbo.v_aloittaneiden_lapaisy_lasketut_sarakkeet
-  where tarkasteluperiodi_char in ('15,5', '16', '16,5', '17'/*, '17,5', '18'*/)
+  where tarkasteluperiodi_char in ('15,5', '16', '16,5', '17'/*, '17,5', '18'*/);
 
 --dwitestdesk1
 --22.3.2016

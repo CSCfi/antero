@@ -17,12 +17,14 @@ GO
 
 ALTER procedure [dbo].[p_lataa_sa_aloittaneiden_lapaisy_tiivistetty_nykytila] AS
 
---Huom. 20.2.2020 / jsyrjala
-	-- Tarkastelujaksoja täytyy lisätä manuaalisesti loppuun sekä myöhempään esivalmistelulataukseen.
-	-- Sarakeryhmiä on 55 kappaletta esivalmistelulatauksen kohdetaulun sarakemäärärajoitteen vuoksi, joten tähän pitänee keksiä jotain ettei havaintoja ala ajan myötä jäädä pois.
-	-- Faktalatauksessa riveistä karsiutuu lähes puolet (tulevaisuuteen ulottuvat tarkastelujaksot), enimmän karsimisen voisi ehkä hoitaa jo lopussa (tyhjät alvv_kk -> alvv huomioiden)
-	-- DW-kanta luotiin uusiksi pienempänä, mietitään tarvittaessa erillistä levyä tai poistettavaa rakennetta indeksien testaamista varten.
-	-- AL-nykytilaluokituksia ei taideta ylläpitää.
+/*
+	Huom. 20.2.2020 / jsyrjala
+	- Tarkastelujaksoja täytyy lisätä manuaalisesti loppuun sekä myöhempään esivalmistelulataukseen.
+	- Sarakeryhmiä on 55 kappaletta esivalmistelulatauksen kohdetaulun sarakemäärärajoitteen vuoksi, joten tähän pitänee keksiä jotain ettei havaintoja ala ajan myötä jäädä pois.
+	- Faktalatauksessa riveistä karsiutuu lähes puolet (tulevaisuuteen ulottuvat tarkastelujaksot), enimmän karsimisen voisi ehkä hoitaa jo lopussa (tyhjät alvv_kk -> alvv huomioiden)
+	- DW-kanta luotiin uusiksi pienempänä, mietitään tarvittaessa erillistä levyä tai poistettavaa rakennetta indeksien testaamista varten.
+	- AL-nykytilaluokituksia ei taideta ylläpitää.
+*/
 
 --Taulun _sa_K3_10_Tutk_suor_osuus_aloittaneista_korkeakoulut_surrogaattiavaimet täyttö on pilkottu useampaan osaan
 
@@ -5310,6 +5312,9 @@ order by SarakeID.rivinumero
 
 --DROP TABLE _aloittaneiden_lapaisy_tiivistetty
 
+--USE [VipunenTK_DW]
+--GO
+
 --CREATE TABLE [dbo].[_aloittaneiden_lapaisy_tiivistetty](
 --	[rivinumero] [int] IDENTITY(1,1) NOT NULL,
 --	[tarkasteluperiodi] [nvarchar](20) NOT NULL,
@@ -6949,6 +6954,8 @@ update _aloittaneiden_lapaisy_tiivistetty set
 
 -- CSC Lasse 21.11.2016 tyhjennetään seuraavan askeleen (Visual Basic skriptin ajo) kohdetaulu. Tämä puuttui aiemmin ajoketjusta.
 TRUNCATE TABLE  [VipunenTK_DW].[dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet]
+GO
+
 
 
 
