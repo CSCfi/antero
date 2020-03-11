@@ -6954,8 +6954,7 @@ update _aloittaneiden_lapaisy_tiivistetty set
 
 -- CSC Lasse 21.11.2016 tyhjennetään seuraavan askeleen (Visual Basic skriptin ajo) kohdetaulu. Tämä puuttui aiemmin ajoketjusta.
 TRUNCATE TABLE  [VipunenTK_DW].[dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet]
-
-
+GO
 
 
 
