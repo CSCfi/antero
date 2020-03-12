@@ -3438,7 +3438,7 @@
               "",
               "            ",
               "              IF(",
-              "\t( [Vastaajamäärä]<6|| ISFILTERED('Muuttujat'[Monivalintavaihtoehto])),",
+              "\t( [Vastaajamäärä]<6|| ISFILTERED('Muuttujat'[Flervalsalternativ])),",
               "",
               "\tBLANK()",
               "\t,CALCULATE(AVERAGE([numerovalinta]),'Muuttujat'[ura_tohtori]=1, 'Muuttujat'[vastaustyyppi]<>\"kylla_ei_valinta\"",
@@ -3474,10 +3474,10 @@
               "",
               " IF",
               " ",
-              "  (OR ([vast-ura-toht-tilasto] < 6 , not(isfiltered('Muuttujat'[Monivalintavaihtoehto]))),",
+              "  (OR ([vast-ura-toht-tilasto] < 6 , not(isfiltered('Muuttujat'[Flervalsalternativ]))),",
               "          \t BLANK(), ",
               "          \t          \t      ",
-              "          \t FORMAT([ka-ura-toht2], \"0%\"))",
+              "          \t FORMAT([ka-ura-toht2_sv], \"0%\"))",
               ""
             ]
           },
@@ -3683,7 +3683,7 @@
               "  (OR ([vast-ura-mais-tilasto] < 6 , not(isfiltered('Muuttujat'[Flervalsalternativ]))),",
               "          \t BLANK(), ",
               "          \t          \t      ",
-              "          \t FORMAT([ka-ura-mais2], \"0%\"))"
+              "          \t FORMAT([ka-ura-mais2_sv], \"0%\"))"
             ]
           },
           {
@@ -3708,7 +3708,7 @@
           },
           {
             "name": "Standardavvikkelse (Doktorexamen)",
-            "expression": "IF(OR(OR([vast-ura-toht-tilasto] < 6, ISFILTERED([Monivalintavaihtoehto])), [Keskiarvo / Vastausjakauma (uraseuranta-tohtorit)] = BLANK()), BLANK(),[kh-ura-toht-tilasto])"
+            "expression": "IF(OR(OR([vast-ura-toht-tilasto] < 6, ISFILTERED([Flervalsalternativ])), [Keskiarvo / Vastausjakauma (uraseuranta-tohtorit)_sv] = BLANK()), BLANK(),[kh-ura-toht-tilasto])"
           },
           {
             "name": "ka-ura-mais2_en",
@@ -3749,6 +3749,32 @@
           {
             "name": "Vastaajamäärä",
             "expression": "IF(AND([vast-tilasto]>0,[vast-tilasto]<6),3,[vast-tilasto])"
+          },
+          {
+            "name": "ka-ura-toht2_sv",
+            "expression": "CALCULATE([vast-ura-toht-tilasto])/CALCULATE([vast-ura-toht-tilasto],ALL(Muuttujat[Flervalsalternativ]))"
+          },
+          {
+            "name": "Keskiarvo / Vastausjakauma (uraseuranta-tohtorit)_sv",
+            "expression": [
+              "",
+              "var ka = [ka-ura-toht-tilasto]",
+              "RETURN IF([vast-ura-toht-tilasto] < 6, ",
+              "          \t BLANK(),",
+              "          \t IF(ISFILTERED('Muuttujat'[Kysymys]),             \t            ",
+              "             \t     IF(ISFILTERED('Muuttujat'[Flervalsalternativ]),",
+              "             \t         FORMAT([ka-ura-toht2], \"0%\"),",
+              "             \t         IF(ka = 0,  BLANK(), ka)",
+              "             \t     ),",
+              "             \t     BLANK()",
+              "       \t )",
+              "             )",
+              ""
+            ]
+          },
+          {
+            "name": "ka-ura-mais2_sv",
+            "expression": "CALCULATE([vast-ura-mais-tilasto])/CALCULATE([vast-ura-mais-tilasto],ALL(Muuttujat[Flervalsalternativ]))"
           }
         ],
         "annotations": [
@@ -6530,9 +6556,6 @@
                 "name": "Average (Master's degrees)"
               },
               {
-                "name": "Average / deviation (Master's degrees)"
-              },
-              {
                 "name": "Distribution of answers (Master's decrees)"
               },
               {
@@ -6686,7 +6709,7 @@
                 "name": "Medeltal (Magisterexamen)"
               },
               {
-                "name": "Medeltal / vikkelse (Magisterexamen)"
+                "name": "Standardavvikkelse (Magisterexamen)"
               }
             ]
           }
@@ -6746,10 +6769,16 @@
             ],
             "measures": [
               {
-                "name": "Antal personer som svarat (Magisterexamen)"
+                "name": "Fördelningen av svar (Doktorexamen)"
               },
               {
-                "name": "Fördelningen av svar (Doktorexamen)"
+                "name": "Medeltal (Doktorexamen)"
+              },
+              {
+                "name": "Standardavvikkelse (Doktorexamen)"
+              },
+              {
+                "name": "Antal personer som svarat (Doktorexcamen)"
               }
             ]
           }
