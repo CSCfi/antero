@@ -190,6 +190,11 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
         row["okmohjauksenalanimi"] = getnimi(ii,"FI")
         row["okmohjauksenalanimi_sv"] = getnimi(ii,"SV")
         row["okmohjauksenalanimi_en"] = getnimi(ii,"EN")
+      if ii["koodisto"]["koodistoUri"] == "tutkintonimikkeet":
+        row["tutkintonimikekoodi"] = ii["koodiArvo"]
+        row["tutkintonimike"] = getnimi(ii,"FI")
+        row["tutkintonimike_sv"] = getnimi(ii,"SV")
+        row["tutkintonimike_en"] = getnimi(ii,"EN")
 
     if verbose: print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" %d -- %s"%(cnt,row["koodi"]))
     dboperator.insert(hostname+url,schema,table,row,debug)
