@@ -5,44 +5,8 @@
     "culture": "fi-FI",
     "dataSources": [
       {
-        "name": "sqlserver dwitvipusql16",
-        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
-        "impersonationMode": "impersonateAccount",
-        "account": "dwi\\t_viputk_kuutio",
-        "annotations": [
-          {
-            "name": "ConnectionEditUISource",
-            "value": "SqlServer"
-          }
-        ]
-      },
-      {
         "name": "SqlServer dwitvipusql16 ANTERO",
         "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
-        "impersonationMode": "impersonateAccount",
-        "account": "dwi\\t_viputk_kuutio",
-        "annotations": [
-          {
-            "name": "ConnectionEditUISource",
-            "value": "SqlServer"
-          }
-        ]
-      },
-      {
-        "name": "SqlServer dwitvipusql16 ANTERO 2",
-        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
-        "impersonationMode": "impersonateAccount",
-        "account": "dwi\\t_viputk_kuutio",
-        "annotations": [
-          {
-            "name": "ConnectionEditUISource",
-            "value": "SqlServer"
-          }
-        ]
-      },
-      {
-        "name": "SqlServer dwitvipusql16 VipunenTK_lisatiedot",
-        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=VipunenTK_lisatiedot;Integrated Security=SSPI;Persist Security Info=false",
         "impersonationMode": "impersonateAccount",
         "account": "dwi\\t_viputk_kuutio",
         "annotations": [
@@ -68,7 +32,6 @@
     "tables": [
       {
         "name": "Sarakeleveys",
-        "isHidden": true,
         "columns": [
           {
             "name": "Sarakeleveys",
@@ -89,7 +52,7 @@
             "dataView": "full",
             "source": {
               "query": " SELECT [dw].[Sarakeleveys].* FROM [dw].[Sarakeleveys] ",
-              "dataSource": "sqlserver dwitvipusql16"
+              "dataSource": "SqlServer dwitvipusql16 ANTERO"
             }
           }
         ],
@@ -625,7 +588,7 @@
             "dataView": "full",
             "source": {
               "query": " SELECT [dw].[v_kk_rahoitusmalli_yo].* FROM [dw].[v_kk_rahoitusmalli_yo] ",
-              "dataSource": "sqlserver dwitvipusql16"
+              "dataSource": "SqlServer dwitvipusql16 ANTERO"
             },
             "annotations": [
               {
@@ -5536,7 +5499,7 @@
             "name": "Org_tilv",
             "dataType": "string",
             "isDataTypeInferred": true,
-            "expression": " 'T3 analyysi'[Koodit organisaatio]&\"_\"&'T3 analyysi'[Tilastovuosi]"
+            "expression": " [Koodit organisaatio]&\"_\"&[Tilastovuosi]"
           }
         ],
         "partitions": [
@@ -5545,7 +5508,7 @@
             "dataView": "full",
             "source": {
               "query": [
-                "select",
+                "select distinct",
                 "",
                 " [Tilastovuosi]",
                 ",[Organisaatio]",
@@ -5555,26 +5518,25 @@
                 "",
                 " from",
                 "(",
-                "select distinct Tilastovuosi, Organisaatio, [Koodit organisaatio]",
+                "select distinct Tilastovuosi, Organisaatio, [Koodit organisaatio] ",
                 "",
-                "from dw.v_kk_rahoitusmalli_yo",
+                "from dw.v_kk_rahoitusmalli_yo ",
                 "",
-                "union all",
+                "union all ",
                 "",
-                "select distinct Tilastovuosi, Organisaatio, [Koodit organisaatio]",
+                "select distinct Tilastovuosi, Organisaatio, [Koodit organisaatio] ",
                 "",
                 "from dw.v_kk_rahoitusmalli_amk",
                 "where [Koodit organisaatio]='02630'",
-                ") f",
-                "order by organisaatio, Tilastovuosi"
+                ") f"
               ],
-              "dataSource": "SqlServer dwitvipusql16 ANTERO 2"
+              "dataSource": "SqlServer dwitvipusql16 ANTERO"
             },
             "annotations": [
               {
                 "name": "QueryEditorSerialization",
                 "value": [
-                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>select",
+                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>select distinct",
                   "",
                   " [Tilastovuosi]",
                   ",[Organisaatio]",
@@ -5584,18 +5546,17 @@
                   "",
                   " from",
                   "(",
-                  "select distinct Tilastovuosi, Organisaatio, [Koodit organisaatio]",
+                  "select distinct Tilastovuosi, Organisaatio, [Koodit organisaatio] ",
                   "",
-                  "from dw.v_kk_rahoitusmalli_yo",
+                  "from dw.v_kk_rahoitusmalli_yo ",
                   "",
-                  "union all",
+                  "union all ",
                   "",
-                  "select distinct Tilastovuosi, Organisaatio, [Koodit organisaatio]",
+                  "select distinct Tilastovuosi, Organisaatio, [Koodit organisaatio] ",
                   "",
                   "from dw.v_kk_rahoitusmalli_amk",
                   "where [Koodit organisaatio]='02630'",
-                  ") f",
-                  "order by organisaatio, Tilastovuosi</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+                  ") f</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
                 ]
               }
             ]
@@ -5959,7 +5920,7 @@
           {
             "name": "_TM_ExtProp_QueryDefinition",
             "value": [
-              "select",
+              "select distinct",
               "",
               " [Tilastovuosi]",
               ",[Organisaatio]",
@@ -5969,18 +5930,17 @@
               "",
               " from",
               "(",
-              "select distinct Tilastovuosi, Organisaatio, [Koodit organisaatio]",
+              "select distinct Tilastovuosi, Organisaatio, [Koodit organisaatio] ",
               "",
-              "from dw.v_kk_rahoitusmalli_yo",
+              "from dw.v_kk_rahoitusmalli_yo ",
               "",
-              "union all",
+              "union all ",
               "",
-              "select distinct Tilastovuosi, Organisaatio, [Koodit organisaatio]",
+              "select distinct Tilastovuosi, Organisaatio, [Koodit organisaatio] ",
               "",
               "from dw.v_kk_rahoitusmalli_amk",
               "where [Koodit organisaatio]='02630'",
-              ") f",
-              "order by organisaatio, Tilastovuosi"
+              ") f"
             ]
           },
           {
@@ -5990,7 +5950,7 @@
           {
             "name": "QueryEditorSerialization",
             "value": [
-              "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>select",
+              "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>select distinct",
               "",
               " [Tilastovuosi]",
               ",[Organisaatio]",
@@ -6000,18 +5960,17 @@
               "",
               " from",
               "(",
-              "select distinct Tilastovuosi, Organisaatio, [Koodit organisaatio]",
+              "select distinct Tilastovuosi, Organisaatio, [Koodit organisaatio] ",
               "",
-              "from dw.v_kk_rahoitusmalli_yo",
+              "from dw.v_kk_rahoitusmalli_yo ",
               "",
-              "union all",
+              "union all ",
               "",
-              "select distinct Tilastovuosi, Organisaatio, [Koodit organisaatio]",
+              "select distinct Tilastovuosi, Organisaatio, [Koodit organisaatio] ",
               "",
               "from dw.v_kk_rahoitusmalli_amk",
               "where [Koodit organisaatio]='02630'",
-              ") f",
-              "order by organisaatio, Tilastovuosi</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+              ") f</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
             ]
           }
         ]
