@@ -18,7 +18,7 @@ GO
 ALTER VIEW [dw].[v_haku_ja_valinta_kk] AS
 
 
-SELECT top 100
+SELECT --top 100
 	   cast(f.loadtime as date) as Päivitysaika
 	  ,Lukumäärä = 1
 	  ,[alpa] = 0
