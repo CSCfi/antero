@@ -2287,7 +2287,8 @@
             "name": "Valintatapajonon tyyppi",
             "dataType": "string",
             "sourceColumn": "Valintatapajonon tyyppi",
-            "sortByColumn": "Valintatapajono järjestys"
+            "sortByColumn": "Valintatapajono järjestys",
+            "displayFolder": "Hakumuuttujat"
           }
         ],
         "partitions": [
@@ -8747,8 +8748,9 @@
               "",
               "var alin = CALCULATE(MIN(Muuttujat[Pisteet]),FILTER(Muuttujat,Muuttujat[Pisteet]>0 && Muuttujat[Valitut2]=1))",
               "var tyhja = \"−\"",
-              "var ehto = AND(ISFILTERED([Hakukohde]),NOT(ISFILTERED(Muuttujat[Valintatapajonon tyyppi])))",
-              "return IF(NOT(ISFILTERED([Hakukohde])),\"\t\",IF(AND(ehto=TRUE(),alin=0),tyhja,alin))"
+              "var ehto = AND(ISFILTERED([Hakukohde]),AND(NOT(ISFILTERED(Muuttujat[Valintatapajonon tyyppi])),NOT(ISFILTERED(Muuttujat[Valintatapajonon nimi]))))",
+              "var valinnat = MAX(Muuttujat[Valitut2])",
+              "return IF(valinnat=0,BLANK(),IF(AND(ehto=TRUE(),alin=0),tyhja,alin))"
             ],
             "formatString": "0.00"
           },
@@ -8758,11 +8760,34 @@
               "",
               "var ylin = CALCULATE(MAX(Muuttujat[Pisteet]),FILTER(Muuttujat,Muuttujat[Pisteet]>0 && Muuttujat[Valitut2]=1))",
               "var tyhja = \"−\"",
+              "var ehto = AND(ISFILTERED([Hakukohde]),AND(NOT(ISFILTERED(Muuttujat[Valintatapajonon tyyppi])),NOT(ISFILTERED(Muuttujat[Valintatapajonon nimi]))))",
+              "var valinnat = MAX(Muuttujat[Valitut2])",
+              "return IF(valinnat=0,BLANK(),IF(AND(ehto=TRUE(),ylin=0),tyhja,ylin))"
+            ],
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "alin",
+            "expression": "CALCULATE(MIN(Muuttujat[Pisteet]),FILTER(Muuttujat,Muuttujat[Pisteet]>0 && Muuttujat[Valitut2]=1))"
+          },
+          {
+            "name": "ehto",
+            "expression": [
+              "MAX(Muuttujat[Valitut2])",
+              ""
+            ]
+          },
+          {
+            "name": "Ylin hyväksytty pistemäärä_vanha",
+            "expression": [
+              "",
+              "var ylin = CALCULATE(MAX(Muuttujat[Pisteet]),FILTER(Muuttujat,Muuttujat[Pisteet]>0 && Muuttujat[Valitut2]=1))",
+              "var tyhja = \"−\"",
               "var ehto = AND(ISFILTERED([Hakukohde]),NOT(ISFILTERED(Muuttujat[Valintatapajonon tyyppi])))",
               "return IF(NOT(ISFILTERED([Hakukohde])),\"\t\",IF(AND(ehto=TRUE(),ylin=0),tyhja,ylin))",
               ""
             ],
-            "formatString": "#,0.00"
+            "isHidden": true
           }
         ],
         "annotations": [
@@ -16696,9 +16721,6 @@
                 "name": "Koulutuksen alkamisvuosi"
               },
               {
-                "name": "Koulutusala (2002)"
-              },
-              {
                 "name": "Koulutusala, taso 1"
               },
               {
@@ -16721,9 +16743,6 @@
               },
               {
                 "name": "OKM ohjauksen ala"
-              },
-              {
-                "name": "Opintoala (2002)"
               },
               {
                 "name": "Sektori"
