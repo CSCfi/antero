@@ -385,7 +385,7 @@ Select
 	 tilv
 	,[tilv_date]
 	,TK_koodi
-	,rahoituslahde_avain = 'ORAHAS'
+	,rahoituslahde_avain = 'OKM_PERUS_ORAHAS'
 	,tutkimusrahoitus = ORAHAS
 	,[tietolahde]
     ,[rivinumero]
@@ -409,7 +409,7 @@ Select
 	 tilv
 	,[tilv_date]
 	,TK_koodi
-	,rahoituslahde_avain = 'BUDJETTI'
+	,rahoituslahde_avain = 'OKM_PERUS'
 	,tutkimusrahoitus = BUDJETTI
 	,[tietolahde]
     ,[rivinumero]
@@ -421,7 +421,7 @@ Select
 	 tilv
 	,[tilv_date]
 	,TK_koodi
-	,rahoituslahde_avain = 'AORAHAS'
+	,rahoituslahde_avain = 'ORAHAS'
 	,tutkimusrahoitus = AORAHAS
 	,[tietolahde]
     ,[rivinumero]
