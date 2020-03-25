@@ -13073,7 +13073,18 @@ ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measure
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Tutkimusrahoitus (1000 euroa)]=SUM([Tutkimusrahoitus 1000 euroa2]);
+CREATE MEASURE 'Muuttujat'[Tutkimusrahoitus (1000 euroa)]= 
+IF(
+	OR(
+		AND(
+			CONTAINS(Muuttujat, [Rahoituslähde], "OKM perusrahoitus ja oma rahoitus"), 
+			CONTAINS(Muuttujat, [Rahoituslähde], "OKM perusrahoitus")),
+		AND(
+			CONTAINS(Muuttujat, [Rahoituslähde], "OKM perusrahoitus ja oma rahoitus"), 
+			CONTAINS(Muuttujat, [Rahoituslähde], "Oma rahoitus"))),
+ 
+	CALCULATE(SUM([Tutkimusrahoitus 1000 euroa2]), Muuttujat[Rahoituslähde] &lt;&gt; "OKM perusrahoitus", Muuttujat[Rahoituslähde] &lt;&gt; "Oma rahoitus"),
+	 SUM([Tutkimusrahoitus 1000 euroa2]));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -13092,8 +13103,7 @@ CREATE MEASURE 'Muuttujat'[Tutkimusrahoitus (1000 euroa)]=SUM([Tutkimusrahoitus 
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Tutkimushenkilökunnan lkm (alueittain)]=
-var lkm = SUM([Tutkimushenkilökunnan lkm alueittain2])
+CREATE MEASURE 'Muuttujat'[Tutkimushenkilökunnan lkm (alueittain)]=var lkm = SUM([Tutkimushenkilökunnan lkm alueittain2])
 return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
@@ -13113,8 +13123,7 @@ return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Tutkimushenkilökunnan lkm (tehtävittäin)]=
-var lkm = SUM([Tutkimushenkilökunnan lkm tehtävittäin2])
+CREATE MEASURE 'Muuttujat'[Tutkimushenkilökunnan lkm (tehtävittäin)]=var lkm = SUM([Tutkimushenkilökunnan lkm tehtävittäin2])
 return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
@@ -13134,8 +13143,7 @@ return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Tutkimushenkilökunnan lkm (tutkintotasoittain)]=
-var lkm = SUM([Tutkimushenkilökunnan lkm tutkintotasoittain2])
+CREATE MEASURE 'Muuttujat'[Tutkimushenkilökunnan lkm (tutkintotasoittain)]=var lkm = SUM([Tutkimushenkilökunnan lkm tutkintotasoittain2])
 return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
@@ -13231,8 +13239,7 @@ CREATE MEASURE 'Muuttujat'[Tutkimusmenot (1000 euroa) (tieteenaloittain)]=SUM([T
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Tutkimustyövuodet (alueittain)]=
-var lkm = SUM([Tutkimustyövuodet alueittain2])
+CREATE MEASURE 'Muuttujat'[Tutkimustyövuodet (alueittain)]=var lkm = SUM([Tutkimustyövuodet alueittain2])
 return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
@@ -13252,8 +13259,7 @@ return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Tutkimustyövuodet (tehtävittäin)]=
-var lkm = SUM([Tutkimustyövuodet tehtävittäin2])
+CREATE MEASURE 'Muuttujat'[Tutkimustyövuodet (tehtävittäin)]=var lkm = SUM([Tutkimustyövuodet tehtävittäin2])
 return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
@@ -13273,8 +13279,7 @@ return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Tutkimustyövuodet (tutkintotasoittain)]=
-var lkm = SUM([Tutkimustyövuodet tutkintotasoittain2])
+CREATE MEASURE 'Muuttujat'[Tutkimustyövuodet (tutkintotasoittain)]=var lkm = SUM([Tutkimustyövuodet tutkintotasoittain2])
 return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
