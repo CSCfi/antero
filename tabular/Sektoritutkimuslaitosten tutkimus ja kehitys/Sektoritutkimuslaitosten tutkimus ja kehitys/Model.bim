@@ -13086,15 +13086,14 @@ ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measure
 CREATE MEASURE 'Muuttujat'[Tutkimusrahoitus (1000 euroa)]=IF(
 	OR(
 		AND(
-			CONTAINS(Muuttujat, [Rahoituslähde], "OKM perusrahoitus ja oma rahoitus"), 
-			CONTAINS(Muuttujat, [Rahoituslähde], "OKM perusrahoitus")),
+			CONTAINS(Muuttujat, [Rahoituslähteen tyyppi], "budjettirahoitus ja oma rahoitus"), 
+			CONTAINS(Muuttujat, [Rahoituslähteen tyyppi], "budjettirahoitus")),
 		AND(
-			CONTAINS(Muuttujat, [Rahoituslähde], "OKM perusrahoitus ja oma rahoitus"), 
-			CONTAINS(Muuttujat, [Rahoituslähde], "Oma rahoitus"))),
+			CONTAINS(Muuttujat, [Rahoituslähteen tyyppi], "budjettirahoitus ja oma rahoitus"), 
+			CONTAINS(Muuttujat, [Rahoituslähteen tyyppi], "oma rahoitus"))),
  
-	CALCULATE(SUM([Tutkimusrahoitus 1000 euroa2]), Muuttujat[Rahoituslähde] &lt;&gt; "OKM perusrahoitus", Muuttujat[Rahoituslähde] &lt;&gt; "Oma rahoitus"),
-	 SUM([Tutkimusrahoitus 1000 euroa2]))
-;
+	CALCULATE(SUM([Tutkimusrahoitus 1000 euroa2]), Muuttujat[Rahoituslähteen tyyppi] &lt;&gt; "budjettirahoitus", Muuttujat[Rahoituslähteen tyyppi] &lt;&gt; "oma rahoitus"),
+	 SUM([Tutkimusrahoitus 1000 euroa2]));
 </Text>
                   <Annotations>
                     <Annotation>
