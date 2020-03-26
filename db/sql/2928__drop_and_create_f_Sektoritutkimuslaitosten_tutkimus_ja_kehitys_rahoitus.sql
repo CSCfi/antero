@@ -7,11 +7,11 @@ GO
 ALTER TABLE [dbo].[f_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_rahoitus] DROP CONSTRAINT [FK_f_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_rahoitus_d_rahoituslahde]
 GO
 
-/****** Object:  Table [dbo].[f_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_rahoitus]    Script Date: 26.3.2020 9:17:27 ******/
+/****** Object:  Table [dbo].[f_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_rahoitus]    Script Date: 26.3.2020 9:52:27 ******/
 DROP TABLE [dbo].[f_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_rahoitus]
 GO
 
-/****** Object:  Table [dbo].[f_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_rahoitus]    Script Date: 26.3.2020 9:17:27 ******/
+/****** Object:  Table [dbo].[f_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_rahoitus]    Script Date: 26.3.2020 9:52:27 ******/
 SET ANSI_NULLS ON
 GO
 
