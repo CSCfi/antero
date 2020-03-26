@@ -14,6 +14,7 @@ GO
 
 ALTER VIEW [dbo].[v_f_tab_sekt_tutkimus_ja_kehitys] AS
 
+
 SELECT 
 --Aikamuuttyjat
 		  'Tilastovuosi' = [tilastovuosi]
