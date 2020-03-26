@@ -1,0 +1,7 @@
+USE ANTERO
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='sa' and TABLE_NAME='sa_suorat_yo_talous_1_tuloslaskelma'
+AND COLUMN_NAME ='HLOKULUTYHT')
+BEGIN
+	ALTER TABLE [sa].[sa_suorat_yo_talous_1_tuloslaskelma]  ADD [HLOKULUTYHT] bigint  NULL
+END
