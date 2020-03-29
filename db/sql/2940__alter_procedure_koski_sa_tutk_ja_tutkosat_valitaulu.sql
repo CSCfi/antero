@@ -116,14 +116,7 @@ SELECT distinct
 		END, 
 		ptkr.kustannusryhma_koodi
 	) AS kustannusryhma_koodi, 
-	/*
-	CASE 
-		WHEN ((tos.usean_tutkinnon_tutkinnonosa = 1 AND ptkr.suorittaa_koko_tutkintoa = 0)
-			OR
-			(tos.yhteinen_tutkinnon_osa = 1 AND ptkr.suorittaa_koko_tutkintoa = 0)) THEN '1' 
-		ELSE ptkr.kustannusryhma_koodi 
-	END AS kustannusryhma_koodi, 
-	*/
+	
 	ptkr.alkup_kustannusryhmakoodi, 
 	tos.usean_tutkinnon_tutkinnonosa,
 	tos.yhteinen_tutkinnon_osa, 
