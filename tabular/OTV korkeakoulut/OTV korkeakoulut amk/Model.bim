@@ -10348,11 +10348,6 @@
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
-            "name": "Students who attained more than 55 credits (polytechnic)",
-            "expression": "[Yli 55 op suorittaneet (amk)]",
-            "formatString": "#,0"
-          },
-          {
             "name": "Polytechnic degree students",
             "expression": "[Amk opiskelijat]",
             "formatString": "#,0"
@@ -10833,6 +10828,11 @@
             "formatString": "#,0"
           },
           {
+            "name": "Students who attained more than 55 credits (polytechnic)",
+            "expression": "[Yli 55 op suorittaneet (amk)]",
+            "formatString": "#,0"
+          },
+          {
             "name": "kytkin",
             "expression": "IF(LEFT(USERNAME(), 4) = \"DWI\\\", 1, 0)",
             "formatString": "0",
@@ -10850,11 +10850,16 @@
             "name": "Opintopisteiden kertymä",
             "expression": [
               " ",
-              "var lkm = sum(Muuttujat[Opisk2])",
-              "",
-              "return",
-              "",
-              "IF(lkm = 0, BLANK(), IF(lkm < 5, BLANK(), [Opintopisteiden kertymä_s]))",
+              "IF(sum(Muuttujat[Opisk2]) < 5, BLANK(), ",
+              "CALCULATE(SUM(Muuttujat[op_kertyma_edel_lkv_loppu])",
+              ", FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"73\")",
+              ", FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"81\")",
+              ", FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"82\")",
+              ", FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"90\")",
+              ", FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"91\")",
+              ", FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"61\")",
+              ", FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"71\")",
+              ", FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"51\")))",
               ""
             ],
             "formatString": "0"
@@ -18260,6 +18265,9 @@
               },
               {
                 "name": "Kirjoillaolo (tammi)"
+              },
+              {
+                "name": "Ammattikorkeakoulu (tilastovuosi)"
               }
             ],
             "measures": [
@@ -18526,6 +18534,9 @@
               },
               {
                 "name": "Kansalaisuus"
+              },
+              {
+                "name": "Ammattikorkeakoulu (tilastovuosi)"
               }
             ],
             "measures": [
@@ -18588,6 +18599,9 @@
               },
               {
                 "name": "Kunta"
+              },
+              {
+                "name": "Ammattikorkeakoulu (tilastovuosi)"
               }
             ],
             "measures": [
@@ -19277,9 +19291,6 @@
                 "name": "New foreign students"
               },
               {
-                "name": "Students who attained more than 55 credits (polytechnic)"
-              },
-              {
                 "name": "90-104 credits"
               },
               {
@@ -19356,6 +19367,9 @@
               },
               {
                 "name": "New students enrollment year in education sector"
+              },
+              {
+                "name": "Students who attained more than 55 credits (polytechnic)"
               }
             ]
           },
@@ -19694,6 +19708,9 @@
               },
               {
                 "name": "Kirjoillaolo (tammi)"
+              },
+              {
+                "name": "Ammattikorkeakoulu (tilastovuosi)"
               }
             ],
             "measures": [
@@ -20234,6 +20251,9 @@
               },
               {
                 "name": "Kirjoillaolo (tammi)"
+              },
+              {
+                "name": "Ammattikorkeakoulu (tilastovuosi)"
               }
             ],
             "measures": [
