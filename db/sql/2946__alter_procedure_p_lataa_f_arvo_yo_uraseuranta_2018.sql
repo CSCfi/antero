@@ -1,4 +1,4 @@
-USE [ANTERO]
+﻿USE [ANTERO]
 GO
 
 /****** Object:  StoredProcedure [dw].[p_lataa_f_arvo_yo_uraseuranta_2018]    Script Date: 31.3.2020 9:18:24 ******/
@@ -309,17 +309,7 @@ and f1.Kysymys_arvo in (
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 GO
+USE [ANTERO]
 
 
