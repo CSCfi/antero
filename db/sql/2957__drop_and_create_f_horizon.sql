@@ -2,9 +2,11 @@ USE [ANTERO]
 
 GO
 
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[f_horizon]') AND type in (N'U'))
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[f_horizon]') AND type in (N'U'))
 
 BEGIN
+
+
 
 DROP TABLE [dw].[f_horizon]
 
