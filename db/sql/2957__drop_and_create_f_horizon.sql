@@ -7,14 +7,14 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[f_h
 BEGIN
 
 DROP TABLE [dw].[f_horizon]
-GO
+
 
 /****** Object:  Table [dw].[f_horizon]    Script Date: 2.4.2020 11:36:49 ******/
 SET ANSI_NULLS ON
-GO
+
 
 SET QUOTED_IDENTIFIER ON
-GO
+
 
 CREATE TABLE [dw].[f_horizon](
 	[projectRcn] [bigint] NULL,
