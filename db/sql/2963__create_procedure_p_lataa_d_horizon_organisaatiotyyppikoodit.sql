@@ -17,7 +17,7 @@ GO
 
 ALTER PROCEDURE [dw].[p_lataa_d_horizon_organisaatiotyyppikoodit] AS
 
-TRUNCATE TABLE dw.f_horizon
+TRUNCATE TABLE dw.d_horizon_organisaatiotyyppikoodit
 INSERT INTO dw.d_horizon_organisaatiotyyppikoodit (	
 	organisaatiotyyppi_koodi,
 	Organisaatiotyyppi
