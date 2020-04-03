@@ -26,6 +26,7 @@ INSERT INTO dw.f_horizon (
 	[name],
 	shortName,
 	[role],
+	activityType,
 	endOfParticipation,
 	country,
 	ecContribution
@@ -38,6 +39,7 @@ Select
 	[name],
 	shortName,
 	[role],
+	activityType,
 	endOfParticipation,
 	country,
 	ecContribution
