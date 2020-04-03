@@ -28,3 +28,4 @@ CREATE TABLE [dw].[f_horizon](
 
 
 
+
