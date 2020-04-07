@@ -1632,7 +1632,7 @@
           },
           {
             "name": "Keräysten ja lahjoitusten tuotot: kotitaloudet",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"kotilahj\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"kotilahj\",[tili_koodi] =\"kotilahj\")))",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\Varainhankinta\\Varainhankinnan tuotot"
           },
@@ -1746,13 +1746,13 @@
           },
           {
             "name": "Arvonalentumisten palautukset",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"arvalpal\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"arvalpal\",[tili_koodi] =\"ARVONALENTUMISETPAL\")))",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\Rahoitustoiminta\\Rahoitustuotot"
           },
           {
             "name": "Arvonalentumiset muiden pysyvien vastaavien sijoituksista",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"arvovastaasijo\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"arvovastaasijo\",[tili_koodi] =\"ARVONALENTUMISETPYSSIJ\")))",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\Rahoitustoiminta\\Rahoituskulut"
           },
@@ -1773,12 +1773,6 @@
             "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"korkrahkulukons\"))",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\Rahoitustoiminta\\Rahoituskulut"
-          },
-          {
-            "name": "Sidottujen rahastojen muutos yhteensä",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"sidottrm\"))",
-            "formatString": "#,0",
-            "displayFolder": "Tuloslaskelma\\Sidottujen rahastojen muutos"
           },
           {
             "name": "Omakatteisten rahastojen muutos yhteensä",
@@ -1883,6 +1877,60 @@
             "name": "Kulut yhteensä (summa)",
             "expression": "CALCULATE([Henkilöstökulut yhteensä]+[Muut kulut yhteensä]+[Palkat ja palkkiot])",
             "displayFolder": "Tuloslaskelma\\Kulut"
+          },
+          {
+            "name": "Sidottujen rahastojen muutos yhteensä",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"sidottrm\"))",
+            "formatString": "#,0",
+            "displayFolder": "Tuloslaskelma\\Sidottujen rahastojen muutos"
+          },
+          {
+            "name": "Maksuasetuksen perusteella perittävät maksut",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"MAKSUASETUS\"))",
+            "formatString": "#,0",
+            "displayFolder": "Tuloslaskelma\\Muut tuotot"
+          },
+          {
+            "name": "Lukukausimaksut",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"LUKUKAUSIMAKSUT\"))",
+            "formatString": "#,0",
+            "displayFolder": "Tuloslaskelma\\Muut tuotot"
+          },
+          {
+            "name": "Pysyväisluontoinen yhteistyö koulutuksen tukitoimintojen järjestämisessä kahden verotonta koulutusta antavan oppilaitoksen välillä",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"PYSYVAISLUONTOINEN\"))",
+            "formatString": "#,0",
+            "displayFolder": "Tuloslaskelma\\Muut tuotot"
+          },
+          {
+            "name": "Muut muut tuotot",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"MUUTMUUTTUOT\"))",
+            "formatString": "#,0",
+            "displayFolder": "Tuloslaskelma\\Muut tuotot"
+          },
+          {
+            "name": "Siirto sidotusta rahastosta",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"SIIRTOSIDOTUSTA\"))",
+            "formatString": "#,0",
+            "displayFolder": "Tuloslaskelma\\Sidottujen rahastojen muutos"
+          },
+          {
+            "name": "Siirto sidottuun rahastoon",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"SIIRTOSIDOTTUUN\"))",
+            "formatString": "#,0",
+            "displayFolder": "Tuloslaskelma\\Sidottujen rahastojen muutos"
+          },
+          {
+            "name": "Siirto rahastosta",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"SIIRTORAHASTOSTA\"))",
+            "formatString": "#,0",
+            "displayFolder": "Tuloslaskelma\\Omakatteisten rahastojen muutos"
+          },
+          {
+            "name": "Siirto rahastoon",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"SIIRTORAHASTOON\"))",
+            "formatString": "#,0",
+            "displayFolder": "Tuloslaskelma\\Omakatteisten rahastojen muutos"
           }
         ],
         "annotations": [
@@ -3458,9 +3506,6 @@
                 "name": "Poistot ja arvonalentumiset"
               },
               {
-                "name": "Sidottujen rahastojen muutos yhteensä"
-              },
-              {
                 "name": "Suomen Akatemia"
               },
               {
@@ -3510,6 +3555,9 @@
               },
               {
                 "name": "Rahoitustuotot yhteensä"
+              },
+              {
+                "name": "Sidottujen rahastojen muutos yhteensä"
               }
             ]
           },
