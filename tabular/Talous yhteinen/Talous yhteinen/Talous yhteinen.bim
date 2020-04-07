@@ -1463,16 +1463,10 @@
             "displayFolder": "Tuloslaskelma\\Liikevaihto"
           },
           {
-            "name": "Liiketoiminnan tuotot (josta ulkomaisen liiketoiminnan osuus oikealla)",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"vtliiket\",[tili_koodi] =\"liiktuotot\")))",
+            "name": "Muut sijoitustoiminnan tuotot",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"srmuutul\"))",
             "formatString": "#,0",
-            "displayFolder": "Tuloslaskelma\\Liikevaihto"
-          },
-          {
-            "name": "Muut tuotot (tarkempi jaottelu oikealla)",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"muuttuot\",[tili_koodi] =\"vtmuutul\")))",
-            "formatString": "#,0",
-            "displayFolder": "Tuloslaskelma\\Liikevaihto"
+            "displayFolder": "Tuloslaskelma\\Sijoitustoiminta\\Varsinaisen sijoitustoiminnan tuotot"
           },
           {
             "name": "Osuus osakkuusyhtiöiden tuloksesta (voitosta/tappiosta, +/-)",
@@ -1494,7 +1488,7 @@
           },
           {
             "name": "Muu OKM",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"muuokm3\",[tili_koodi] =\"muuokm\")))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"muuokm3\",OR([tili_koodi] =\"MUUOKM2\",[tili_koodi] =\"muuokm\"))))",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\Avustustuottojen jaottelu"
           },
@@ -1697,12 +1691,6 @@
             "displayFolder": "Tuloslaskelma\\Sijoitustoiminta\\Varsinaisen sijoitustoiminnan tuotot"
           },
           {
-            "name": "Muut tuotot",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"srmuutul\"))",
-            "formatString": "#,0",
-            "displayFolder": "Tuloslaskelma\\Sijoitustoiminta\\Varsinaisen sijoitustoiminnan tuotot"
-          },
-          {
             "name": "Korkokulut",
             "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"korkok\"))",
             "formatString": "#,0",
@@ -1717,12 +1705,6 @@
           {
             "name": "Myyntitappiot",
             "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"mtappio\"))",
-            "formatString": "#,0",
-            "displayFolder": "Tuloslaskelma\\Sijoitustoiminta\\Varsinaisen sijoitustoiminnan kulut"
-          },
-          {
-            "name": "Muut kulut",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"srmuuk\"))",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\Sijoitustoiminta\\Varsinaisen sijoitustoiminnan kulut"
           },
@@ -1812,8 +1794,8 @@
           },
           {
             "name": "Liikevaihto",
-            "expression": "CALCULATE([Avustustuotot]+[Korkeakoulujen valtionrahoitus]+[Liiketoiminnan tuotot (josta ulkomaisen liiketoiminnan osuus oikealla)]+[Muut tuotot (tarkempi jaottelu oikealla)]+[Osuus osakkuusyhtiöiden tuloksesta (voitosta/tappiosta, +/-)])",
-            "displayFolder": "Tuloslaskelma\\Liikevaihto\\Liikevaihto"
+            "expression": "CALCULATE([Avustustuotot]+[Korkeakoulujen valtionrahoitus]+[Liiketoiminnan tuotot]+[Muut tuotot]+[Osuus osakkuusyhtiöiden tuloksesta (voitosta/tappiosta, +/-)])",
+            "displayFolder": "Tuloslaskelma\\Liikevaihto"
           },
           {
             "name": "Avustustuotot",
@@ -1957,6 +1939,41 @@
             "name": "Käyvän arvon muutos (+/-)",
             "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"KVARVONMUUTOS\"))",
             "displayFolder": "Tuloslaskelma\\Sijoitustoiminta"
+          },
+          {
+            "name": "Liiketoiminnan tuotot",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"vtliiket\",[tili_koodi] =\"liiktuotot\")))",
+            "formatString": "#,0",
+            "displayFolder": "Tuloslaskelma\\Liikevaihto"
+          },
+          {
+            "name": "Muut tuotot",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"muuttuot\",[tili_koodi] =\"vtmuutul\")))",
+            "formatString": "#,0",
+            "displayFolder": "Tuloslaskelma\\Liikevaihto"
+          },
+          {
+            "name": "Muut korko- ja rahoitustuotot",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"MUUTKORKORAHTUOTOT\"))",
+            "formatString": "#,0",
+            "displayFolder": "Tuloslaskelma\\Rahoitustoiminta\\Rahoitustuotot"
+          },
+          {
+            "name": "Muut sijoitustoiminnan kulut",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"srmuuk\"))",
+            "formatString": "#,0",
+            "displayFolder": "Tuloslaskelma\\Sijoitustoiminta\\Varsinaisen sijoitustoiminnan kulut"
+          },
+          {
+            "name": "Liikevaihto (Tehty Liikevaihto2 koodilla)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"Liikevaihto\",[tili_koodi] =\"LIIKEVAIHTO2\")))",
+            "displayFolder": "Tuloslaskelma\\Liikevaihto"
+          },
+          {
+            "name": "TILIKAUDEN VOITTO (TAPPIO)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"TILIKJAAM\"))",
+            "formatString": "#,0",
+            "displayFolder": "Tuloslaskelma\\Tilikauden tulos"
           }
         ],
         "annotations": [
@@ -3445,9 +3462,6 @@
                 "name": "Kunnat ja kuntayhtymät"
               },
               {
-                "name": "Liiketoiminnan tuotot (josta ulkomaisen liiketoiminnan osuus oikealla)"
-              },
-              {
                 "name": "LIIKEVOITTO (TAPPIO)"
               },
               {
@@ -3478,16 +3492,10 @@
                 "name": "Muu valtio (pl. Business Finland, Akatemia, Sosiaaliturvarahastot ja muu OKM)"
               },
               {
-                "name": "Muut kulut"
-              },
-              {
                 "name": "Muut kulut yhteensä"
               },
               {
-                "name": "Muut tuotot"
-              },
-              {
-                "name": "Muut tuotot (tarkempi jaottelu oikealla)"
+                "name": "Muut sijoitustoiminnan tuotot"
               },
               {
                 "name": "Muut ulkomaat, muu rahoitus"
@@ -3584,6 +3592,15 @@
               },
               {
                 "name": "Sidottujen rahastojen muutos yhteensä"
+              },
+              {
+                "name": "Liiketoiminnan tuotot"
+              },
+              {
+                "name": "Muut tuotot"
+              },
+              {
+                "name": "Muut sijoitustoiminnan kulut"
               }
             ]
           },
