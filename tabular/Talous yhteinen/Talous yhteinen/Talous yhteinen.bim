@@ -1458,7 +1458,7 @@
         "measures": [
           {
             "name": "Korkeakoulujen valtionrahoitus",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"yolaki49\",[tili_koodi] =\"okmperus\")) )",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"yolaki49\", OR([tili_koodi] =\"valtio\",[tili_koodi] =\"okmperus\")) ))",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\Liikevaihto"
           },
@@ -1590,7 +1590,7 @@
           },
           {
             "name": "Muut kulut yhteensä",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"muutkulut\"))",
+            "expression": "CALCULATE([Kone- ja laitevuokrat]+[Muut varsinaisen toiminnan kulut]+[Palvelujen ostot]+[Tarvikkeet ja tavarat]+[Tilakustannukset])",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\Kulut"
           },
@@ -1764,13 +1764,13 @@
           },
           {
             "name": "LIIKEVOITTO (TAPPIO)",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"lvoitto\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"lvoitto\",[tili_koodi] =\"vtjaama\")))",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\Tilikauden tulos"
           },
           {
             "name": "VOITTO (TAPPIO) ENNEN TILINPÄÄTÖS-SIIRTOJA JA VEROJA",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"voitenveroja\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"voitenveroja\",[tili_koodi] =\"VOITTOENTILP\")))",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\Tilikauden tulos"
           },
@@ -1795,6 +1795,7 @@
           {
             "name": "Liikevaihto",
             "expression": "CALCULATE([Avustustuotot]+[Korkeakoulujen valtionrahoitus]+[Liiketoiminnan tuotot]+[Muut tuotot]+[Osuus osakkuusyhtiöiden tuloksesta (voitosta/tappiosta, +/-)])",
+            "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\Liikevaihto"
           },
           {
@@ -1856,8 +1857,9 @@
             "displayFolder": "Tuloslaskelma\\Rahoitustoiminta"
           },
           {
-            "name": "Kulut yhteensä (summa)",
-            "expression": "CALCULATE([Henkilöstökulut yhteensä]+[Muut kulut yhteensä]+[Palkat ja palkkiot])",
+            "name": "Kulut yhteensä",
+            "expression": "CALCULATE([Henkilöstökulut yhteensä]+[Muut kulut yhteensä]+[Poistot ja arvonalentumiset])",
+            "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\Kulut"
           },
           {
@@ -1971,22 +1973,27 @@
           },
           {
             "name": "TILIKAUDEN VOITTO (TAPPIO)",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"TILIKJAAM\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"TILIKJAAM\",[tili_koodi] =\"TILVOITTO\")))",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\Tilikauden tulos"
           },
           {
             "name": "Varainhankinnan kulut yhteensä",
             "description": "Tuloslaskelma\\Varainhankinta",
-            "expression": "CALCULATE([Keräysten ja lahjoitusten kulut]+[Muut varainhankinnan kulut]+[Varainhankinnan liiketoiminnan kulut])"
+            "expression": "CALCULATE([Keräysten ja lahjoitusten kulut]+[Muut varainhankinnan kulut]+[Varainhankinnan liiketoiminnan kulut])",
+            "displayFolder": "Tuloslaskelma\\Varainhankinta"
           },
           {
             "name": "Varainhankinnan tuotot yhteensä",
-            "expression": "CALCULATE([Keräysten ja lahjoitusten tuotot: kotitaloudet]+[Keräysten ja lahjoitusten tuotot: muut]+[Keräysten ja lahjoitusten tuotot: yritykset]+[Muut varainhankinnan tuotot]+[Varainhankinnan liiketoiminnan tuotot])"
+            "expression": "CALCULATE([Keräysten ja lahjoitusten tuotot: kotitaloudet]+[Keräysten ja lahjoitusten tuotot: muut]+[Keräysten ja lahjoitusten tuotot: yritykset]+[Muut varainhankinnan tuotot]+[Varainhankinnan liiketoiminnan tuotot])",
+            "formatString": "#,0",
+            "displayFolder": "Tuloslaskelma\\Varainhankinta"
           },
           {
             "name": "Varainhankinnan tuotto",
-            "expression": "CALCULATE([Varainhankinnan tuotot yhteensä]-[Varainhankinnan kulut yhteensä])"
+            "expression": "CALCULATE([Varainhankinnan tuotot yhteensä]-[Varainhankinnan kulut yhteensä])",
+            "formatString": "#,0",
+            "displayFolder": "Tuloslaskelma\\Varainhankinta"
           }
         ],
         "annotations": [
@@ -3598,7 +3605,7 @@
                 "name": "Rahoituskulut yhteensä"
               },
               {
-                "name": "Kulut yhteensä (summa)"
+                "name": "Kulut yhteensä"
               },
               {
                 "name": "Rahoitustuotot yhteensä"
