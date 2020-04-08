@@ -8,6 +8,7 @@ GO
 ALTER PROCEDURE [dbo].[p_lataa_SA_f_2_23] AS
 
 truncate table  [VipunenTK].[dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk]
+go
 
 insert into [VipunenTK].[dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk]
 
@@ -105,6 +106,6 @@ LEFT JOIN VipunenTK..d_opiskelijan_olo    AS d20 ON d20.opiskelijan_olo_koodi   
 LEFT JOIN VipunenTK..d_opetushallinnon_koulutus    AS d21 ON d21.opetushallinnon_koulutus_koodi   = f.opetushallinnon_koulutus2
 LEFT JOIN VipunenTK..d_ika    AS d22 ON d22.ika_avain    = f.ika_1v
 LEFT JOIN VipunenTK..d_ika    AS d23 ON d23.ika_avain   = f.ika_5v
-
+GO
 
 USE [ANTERO]
