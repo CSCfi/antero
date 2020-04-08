@@ -107,5 +107,5 @@ LEFT JOIN VipunenTK..d_ika    AS d22 ON d22.ika_avain    = f.ika_1v
 LEFT JOIN VipunenTK..d_ika    AS d23 ON d23.ika_avain   = f.ika_5v
 
 
-
+GO
 USE [ANTERO]
