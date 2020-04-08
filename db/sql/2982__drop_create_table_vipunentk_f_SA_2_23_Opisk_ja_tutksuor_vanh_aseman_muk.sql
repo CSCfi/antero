@@ -1,82 +1,82 @@
 USE [VipunenTK]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_tulodesiili_isa_d_tulodesiili]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_tulodesiili_isa_d_tulodesiili]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_tulodesiili_aiti_d_tulodesiili]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_tulodesiili_aiti_d_tulodesiili]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_syntymavuosi_d_kausi]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_syntymavuosi_d_kausi]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_sukupuoli_d_sukupuoli]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_sukupuoli_d_sukupuoli]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_sosioekonominen_asema_2_isa_d_sosioekonominen_asema]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_sosioekonominen_asema_2_isa_d_sosioekonominen_asema]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_sosioekonominen_asema_2_aiti_d_sosioekonominen_asema]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_sosioekonominen_asema_2_aiti_d_sosioekonominen_asema]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_sosioekonominen_asema_1_isa_d_sosioekonominen_asema]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_sosioekonominen_asema_1_isa_d_sosioekonominen_asema]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_sosioekonominen_asema_1_aiti_d_sosioekonominen_asema]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_sosioekonominen_asema_1_aiti_d_sosioekonominen_asema]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_opiskelijan_olo_syys_d_opiskelijan_olo]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_opiskelijan_olo_syys_d_opiskelijan_olo]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_opetushallinnon_koulutus2_d_opetushallinnon_koulutus]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_opetushallinnon_koulutus2_d_opetushallinnon_koulutus]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_opetushallinnon_koulutus_d_opetushallinnon_koulutus]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_opetushallinnon_koulutus_d_opetushallinnon_koulutus]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_koulutusluokitus_isa_historia_d_koulutusluokitus_historia]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_koulutusluokitus_isa_historia_d_koulutusluokitus_historia]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_koulutusluokitus_historia_d_koulutusluokitus_historia]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_koulutusluokitus_historia_d_koulutusluokitus_historia]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_koulutusluokitus_aiti_historia_d_koulutusluokitus_historia]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_koulutusluokitus_aiti_historia_d_koulutusluokitus_historia]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_koulutuslaji_d_koulutuslaji]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_koulutuslaji_d_koulutuslaji]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_koulutuksen_maakunta_historia_d_alueluokitus_historia]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_koulutuksen_maakunta_historia_d_alueluokitus_historia]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_koulutuksen_maakunta_d_alueluokitus]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_koulutuksen_maakunta_d_alueluokitus]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_koulutuksen_kieli_d_kieli]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_koulutuksen_kieli_d_kieli]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_kotikunta1x_historia_d_alueluokitus_historia]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_kotikunta1x_historia_d_alueluokitus_historia]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_kotikunta1x_d_alueluokitus]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_kotikunta1x_d_alueluokitus]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_kotikunta_historia_d_alueluokitus_historia]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_kotikunta_historia_d_alueluokitus_historia]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_kotikunta_d_alueluokitus]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_kotikunta_d_alueluokitus]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_kirjoihintulovuosi_d_kausi]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_kirjoihintulovuosi_d_kausi]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_ika_5v_d_ika]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_ika_5v_d_ika]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_ika_1v_d_ika]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_ika_1v_d_ika]
 GO
 
-ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT [FK_2_23_aidinkieli_versio1x_d_aidinkieli_versio1]
+ALTER TABLE [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk] DROP CONSTRAINT IF EXISTS [FK_2_23_aidinkieli_versio1x_d_aidinkieli_versio1]
 GO
 
 /****** Object:  Table [dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk]    Script Date: 8.4.2020 13:42:26 ******/
