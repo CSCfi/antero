@@ -8,7 +8,6 @@ GO
 ALTER PROCEDURE [dbo].[p_lataa_SA_f_2_23] AS
 
 truncate table  [VipunenTK].[dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk]
-go
 
 insert into [VipunenTK].[dbo].[f_SA_2_23_Opisk_ja_tutksuor_vanh_aseman_muk]
 
