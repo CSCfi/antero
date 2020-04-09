@@ -169,6 +169,5 @@ LEFT JOIN dw.d_kieli d16 ON d16.kieli_koodi = MAIN_QUERY.suorituskieli
 LEFT JOIN dw.d_kytkin d17 ON d17.kytkin_koodi = MAIN_QUERY.opetushallinnon_alainen_koulutus
 
 
-USE ANTERO
 
 
