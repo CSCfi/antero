@@ -170,6 +170,5 @@ LEFT JOIN dw.d_kytkin d17 ON d17.kytkin_koodi = MAIN_QUERY.opetushallinnon_alain
 
 
 USE ANTERO
-GO
 
 
