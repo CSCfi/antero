@@ -160,28 +160,37 @@
             "name": "Rahoitusvuosi",
             "dataType": "int64",
             "sourceColumn": "Rahoitusvuosi",
-            "displayFolder": "Aikamuuttujat"
+            "displayFolder": "Rahoitusmuuttujat"
           },
           {
             "name": "Rahoituskausi",
             "dataType": "string",
             "sourceColumn": "Rahoituskausi",
-            "displayFolder": "Aikamuuttujat"
+            "displayFolder": "Rahoitusmuuttujat"
           },
           {
             "name": "Rahoitus, taso 1",
             "dataType": "string",
-            "sourceColumn": "Rahoitus, taso 1"
+            "sourceColumn": "Rahoitus, taso 1",
+            "displayFolder": "Rahoitusmuuttujat"
           },
           {
             "name": "Rahoitus, taso 2",
             "dataType": "string",
-            "sourceColumn": "Rahoitus, taso 2"
+            "sourceColumn": "Rahoitus, taso 2",
+            "displayFolder": "Rahoitusmuuttujat"
           },
           {
             "name": "Indikaattori",
             "dataType": "string",
-            "sourceColumn": "Indikaattori"
+            "sourceColumn": "Indikaattori",
+            "displayFolder": "Rahoitusmuuttujat"
+          },
+          {
+            "name": "rahoitus_osuus",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "rahoitus_osuus"
           }
         ],
         "partitions": [
@@ -397,6 +406,14 @@
                   "        <int>319</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>rahoitus_osuus</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>146</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -591,6 +608,14 @@
                   "        <int>20</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>rahoitus_osuus</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>24</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -634,6 +659,14 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>rahoitus_osuus</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -649,26 +682,110 @@
           {
             "name": "Summa",
             "expression": "CALCULATE(SUM([mittari]))",
-            "formatString": "#,0.00"
+            "formatString": "#,0.00",
+            "isHidden": true
           },
           {
-            "name": "Keskiarvo",
-            "expression": "CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,[Tilastovuosi],[Organisaatio],\"summa\",[Summa]),[summa]))",
-            "formatString": "#,0.00"
-          },
-          {
-            "name": "Osuus",
+            "name": "3 v. keskiarvo",
             "expression": [
               "",
-              "var org = [Keskiarvo]",
+              "var taulu = ",
+              "GROUPBY (",
+              "\tGROUPBY (",
+              "\t\tMuuttujat",
+              "\t\t,[Rahoitusvuosi]",
+              "\t\t,[Tilastovuosi]",
+              "\t\t,[Indikaattori]",
+              "\t\t,\"summa1\",SUMX (CURRENTGROUP(),Muuttujat[mittari] )",
+              "\t),",
+              "\t[Rahoitusvuosi]",
+              "\t,[Indikaattori]",
+              "\t,\"ka1\",AVERAGEX(CURRENTGROUP(),[summa1] )",
+              ")",
+              "var ka = SUMX(taulu,[ka1])",
+              "return ka",
+              ""
+            ],
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "3 v. keskiarvo (%)",
+            "expression": [
+              "",
+              "var org = [3 v. keskiarvo]",
               "var kaikki_org =  CALCULATE(AVERAGEX(SUMMARIZE(Muuttujat,Muuttujat[Tilastovuosi],\"summa\",[Summa]),[summa]), ALL(Muuttujat[Organisaatio]),ALL(Muuttujat[OKM ohjauksen ala]),ALL(Muuttujat[Rahoitusmalliala, amk]))",
               "var osuus = DIVIDE(org,kaikki_org)",
               "var osuus_yht = CALCULATE(SUMX(VALUES(Muuttujat[Organisaatio]),osuus))",
-              "var ehto_ei_summa= HASONEVALUE(Muuttujat[Organisaatio])",
-              "return IF(ehto_ei_summa=TRUE(),osuus,osuus_yht)",
+              "return IF([on_summa]=TRUE(),osuus_yht,osuus)",
               ""
             ],
             "formatString": "0.00 %;-0.00 %;0.00 %"
+          },
+          {
+            "name": "Osuus rahoituksesta",
+            "expression": [
+              "",
+              "var taulu = SUMMARIZE(Muuttujat,[Rahoitusvuosi],[Rahoitus, taso 1],[Rahoitus, taso 2],[Indikaattori],\"pros\",MAX([rahoitus_osuus]))",
+              "return SUMX(taulu,[pros])"
+            ],
+            "formatString": "#,0 %;-#,0 %;#,0 %"
+          },
+          {
+            "name": "Rahoitus (1000 euroa)",
+            "expression": [
+              "",
+              "[3 v. keskiarvo (%)]*[Osuus rahoituksesta]*AVERAGE('Jaettava rahamäärä'[maara])",
+              ""
+            ],
+            "formatString": "#,0 \"€\";-#,0 \"€\";#,0 \"€\"",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\"><Currency LCID=\"1035\" DisplayName=\"€ Finnish (Finland)\" Symbol=\"€\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
+              }
+            ]
+          },
+          {
+            "name": "Rahoitusosuus",
+            "expression": "[Rahoitus (1000 euroa)] / AVERAGE('Jaettava rahamäärä'[maara])",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "on_summa",
+            "expression": "AND(NOT(HASONEFILTER(Muuttujat[Indikaattori])),NOT(HASONEVALUE(Muuttujat[Tilastovuosi])))"
+          },
+          {
+            "name": "3 v. keskiarvo_testi",
+            "expression": [
+              "",
+              "var taulu = ",
+              "ADDCOLUMNS(",
+              "\tSUMMARIZE(",
+              "\t\tMuuttujat",
+              "\t\t,[Rahoitusvuosi]",
+              "\t\t,[Indikaattori]",
+              "\t)",
+              "\t,\"ka1\",CALCULATE(",
+              "\t\tAVERAGEX(",
+              "\t\t\tADDCOLUMNS(",
+              "\t\t\t\tSUMMARIZE(",
+              "\t\t\t\t\tMuuttujat",
+              "\t\t\t\t\t,[Rahoitusvuosi]",
+              "\t\t\t\t\t,[Tilastovuosi]",
+              "\t\t\t\t\t,[Indikaattori]",
+              "\t\t\t\t)",
+              "\t\t\t,\"summa1\"",
+              "\t\t\t,SUM([mittari])",
+              "\t\t\t)",
+              "\t\t,[summa1]",
+              "\t\t)",
+              "\t)\t",
+              ")",
+              "",
+              "var ka = SUMX(taulu,[ka1])",
+              "return ka"
+            ],
+            "formatString": "#,0.00"
           }
         ],
         "annotations": [
@@ -888,6 +1005,14 @@
               "        <int>319</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>rahoitus_osuus</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>146</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -1082,6 +1207,14 @@
               "        <int>20</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>rahoitus_osuus</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>24</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -1120,6 +1253,14 @@
               "    <item>",
               "      <key>",
               "        <string>Rahoitus, taso 1</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>rahoitus_osuus</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -1177,6 +1318,111 @@
             "value": "dw"
           }
         ]
+      },
+      {
+        "name": "Jaettava rahamäärä",
+        "isHidden": true,
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "rahoitusvuosi",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[rahoitusvuosi]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "maara",
+            "dataType": "decimal",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[maara]",
+            "formatString": "#,0.00 \"€\";-#,0.00 \"€\";#,0.00 \"€\"",
+            "annotations": [
+              {
+                "name": "Format",
+                "value": "<Format Format=\"Currency\" Accuracy=\"2\" ThousandSeparator=\"True\"><Currency LCID=\"1035\" DisplayName=\"€ Finnish (Finland)\" Symbol=\"€\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
+              }
+            ]
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": [
+                "DATATABLE(",
+                "\"rahoitusvuosi\",INTEGER,",
+                "\"maara\",CURRENCY,",
+                "{",
+                "{2017,800000},",
+                "{2018,800000},",
+                "{2019,800000},",
+                "{2020,800000},",
+                "{2021,800000}",
+                "}",
+                ")"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "CalculatedTable 1",
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "Organisaatio",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Organisaatio]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Indikaattori",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Indikaattori]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "summa",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[summa]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Rahoitusvuosi",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Rahoitusvuosi]"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": "SUMMARIZE(Muuttujat,[Rahoitusvuosi],[Organisaatio],[Indikaattori],\"summa\",[Summa])"
+            }
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "d672f341-795b-4e3e-b042-6c2c0396c4e2",
+        "fromTable": "Muuttujat",
+        "fromColumn": "Rahoitusvuosi",
+        "toTable": "Jaettava rahamäärä",
+        "toColumn": "rahoitusvuosi"
       }
     ],
     "roles": [
