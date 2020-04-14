@@ -192,20 +192,6 @@
             "sourceColumn": "jarjestys_rahoituskategoria1"
           },
           {
-            "name": "Rahoituskategoria",
-            "dataType": "string",
-            "sourceColumn": "Rahoituskategoria",
-            "sortByColumn": "jarjestys_rahoituskategoria1",
-            "displayFolder": "Rahoitusmallimuuttujat"
-          },
-          {
-            "name": "Rahoitusalakategoria",
-            "dataType": "string",
-            "sourceColumn": "Rahoitusalakategoria",
-            "sortByColumn": "jarjestys_rahoituskategoria2",
-            "displayFolder": "Rahoitusmallimuuttujat"
-          },
-          {
             "name": "jarjestys_rahoituskategoria2",
             "dataType": "int64",
             "isHidden": true,
@@ -222,6 +208,20 @@
             "dataType": "string",
             "sourceColumn": "Rahoitusmalliala",
             "sortByColumn": "jarjestys_rahoitusmalliala",
+            "displayFolder": "Rahoitusmallimuuttujat"
+          },
+          {
+            "name": "Rahoituksen kategoria",
+            "dataType": "string",
+            "sourceColumn": "Rahoituksen kategoria",
+            "sortByColumn": "jarjestys_rahoituskategoria1",
+            "displayFolder": "Rahoitusmallimuuttujat"
+          },
+          {
+            "name": "Rahoituksen alakategoria",
+            "dataType": "string",
+            "sourceColumn": "Rahoituksen alakategoria",
+            "sortByColumn": "jarjestys_rahoituskategoria2",
             "displayFolder": "Rahoitusmallimuuttujat"
           }
         ],
@@ -256,10 +256,10 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Rahoitusalakategoria</string>",
+                  "        <string>Rahoituksen alakategoria</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>185</int>",
+                  "        <int>215</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -464,10 +464,10 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Rahoituskategoria</string>",
+                  "        <string>Rahoituksen kategoria</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>165</int>",
+                  "        <int>195</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -498,10 +498,10 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Rahoitusalakategoria</string>",
+                  "        <string>Rahoituksen alakategoria</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>26</int>",
+                  "        <int>29</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -597,7 +597,7 @@
                   "        <string>Rahoitusmalliala</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>29</int>",
+                  "        <int>27</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -706,10 +706,10 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Rahoituskategoria</string>",
+                  "        <string>Rahoituksen kategoria</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>25</int>",
+                  "        <int>28</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -717,7 +717,7 @@
                   "        <string>jarjestys_rahoituskategoria2</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>27</int>",
+                  "        <int>25</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -725,7 +725,7 @@
                   "        <string>jarjestys_rahoituskategoria3</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>28</int>",
+                  "        <int>26</int>",
                   "      </value>",
                   "    </item>",
                   "  </ColumnDisplayIndex>",
@@ -757,7 +757,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Rahoitusalakategoria</string>",
+                  "        <string>Rahoituksen alakategoria</string>",
                   "      </key>",
                   "      <value>",
                   "        <boolean>true</boolean>",
@@ -837,7 +837,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Rahoituskategoria</string>",
+                  "        <string>Rahoituksen kategoria</string>",
                   "      </key>",
                   "      <value>",
                   "        <boolean>true</boolean>",
@@ -923,8 +923,9 @@
             "name": "indikaattorin_osuus_rahoituksesta",
             "expression": [
               "",
-              "var taulu = SUMMARIZE(Muuttujat,[Rahoitusvuosi],[Rahoituskategoria],[Rahoitusalakategoria],[Indikaattori],\"pros\",MAX([rahoitus_osuus]))",
-              "return SUMX(taulu,[pros])"
+              "var taulu = SUMMARIZE(Muuttujat,[Rahoitusvuosi],[Rahoituksen kategoria],[Rahoituksen alakategoria],[Indikaattori],\"pros\",MAX([rahoitus_osuus]))",
+              "return SUMX(taulu,[pros])",
+              ""
             ],
             "formatString": "#,0 %;-#,0 %;#,0 %",
             "isHidden": true
@@ -959,7 +960,11 @@
           },
           {
             "name": "perusrahoituksen_osuus",
-            "expression": " CALCULATE(SUMX(VALUES(Muuttujat[Rahoitusvuosi]),[indikaattorin_osuus_rahoituksesta]),ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusvuosi]))",
+            "expression": [
+              " ",
+              "var taulu = SUMMARIZE(Muuttujat,[Rahoitusvuosi],\"rahamaara\",SUM('Jaettava rahamäärä'[maara]),\"osuus1\",CALCULATE([indikaattorin_osuus_rahoituksesta],ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusvuosi])))",
+              "return AVERAGEX(taulu,[osuus1]*[rahamaara]) / AVERAGEX(taulu,[rahamaara])--CALCULATE(SUMX(VALUES(Muuttujat[Rahoitusvuosi]);[indikaattorin_osuus_rahoituksesta]);ALLEXCEPT(Muuttujat;Muuttujat[Rahoitusvuosi]))"
+            ],
             "isHidden": true
           },
           {
@@ -1003,10 +1008,10 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Rahoitusalakategoria</string>",
+              "        <string>Rahoituksen alakategoria</string>",
               "      </key>",
               "      <value>",
-              "        <int>185</int>",
+              "        <int>215</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -1211,10 +1216,10 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Rahoituskategoria</string>",
+              "        <string>Rahoituksen kategoria</string>",
               "      </key>",
               "      <value>",
-              "        <int>165</int>",
+              "        <int>195</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -1245,10 +1250,10 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Rahoitusalakategoria</string>",
+              "        <string>Rahoituksen alakategoria</string>",
               "      </key>",
               "      <value>",
-              "        <int>26</int>",
+              "        <int>29</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -1344,7 +1349,7 @@
               "        <string>Rahoitusmalliala</string>",
               "      </key>",
               "      <value>",
-              "        <int>29</int>",
+              "        <int>27</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -1453,10 +1458,10 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Rahoituskategoria</string>",
+              "        <string>Rahoituksen kategoria</string>",
               "      </key>",
               "      <value>",
-              "        <int>25</int>",
+              "        <int>28</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -1464,7 +1469,7 @@
               "        <string>jarjestys_rahoituskategoria2</string>",
               "      </key>",
               "      <value>",
-              "        <int>27</int>",
+              "        <int>25</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -1472,7 +1477,7 @@
               "        <string>jarjestys_rahoituskategoria3</string>",
               "      </key>",
               "      <value>",
-              "        <int>28</int>",
+              "        <int>26</int>",
               "      </value>",
               "    </item>",
               "  </ColumnDisplayIndex>",
@@ -1504,7 +1509,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Rahoitusalakategoria</string>",
+              "        <string>Rahoituksen alakategoria</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -1584,7 +1589,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Rahoituskategoria</string>",
+              "        <string>Rahoituksen kategoria</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -1769,12 +1774,6 @@
                 "name": "Organisaatio"
               },
               {
-                "name": "Rahoitusalakategoria"
-              },
-              {
-                "name": "Rahoituskategoria"
-              },
-              {
                 "name": "Rahoituskausi"
               },
               {
@@ -1785,6 +1784,12 @@
               },
               {
                 "name": "Rahoitusmalliala"
+              },
+              {
+                "name": "Rahoituksen alakategoria"
+              },
+              {
+                "name": "Rahoituksen kategoria"
               }
             ],
             "measures": [
