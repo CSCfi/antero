@@ -2115,8 +2115,7 @@
               "return",
               "AVERAGEX(taulu, [Arvosana, numero])"
             ],
-            "formatString": "0.00",
-            "isHidden": true
+            "formatString": "0.00"
           },
           {
             "name": "20. persentiili (keskiarvo)",
@@ -2193,9 +2192,7 @@
           {
             "name": "*Hakijat",
             "expression": [
-              " var taulu = GROUPBY(Muuttujat, [Aine + laajuus], [Arvosana, numero (0-7)], [Henkilö OID])",
-              "return",
-              "AVERAGEX(taulu, [Arvosana, numero (0-7)])",
+              " [Keskiarvo (0-7)]",
               ""
             ],
             "formatString": "0.00",
@@ -2284,7 +2281,7 @@
               "\t\tMuuttujat[Aine] = \"Matematiikka\"),",
               "\tCALCULATE(",
               "\t\tDISTINCTCOUNT(Muuttujat[Henkilö OID]),",
-              "\t\tALL(Muuttujat[Arvosana, kirjain]),",
+              "\t\tALL(Muuttujat[Arvosana, kirjain]),ALL(Muuttujat[Arvosana, numero]),ALL( Muuttujat[Arvosana, numero (0-7)]),",
               "\t\tMuuttujat[Aine] = \"Matematiikka\"))",
               ""
             ],
@@ -2341,6 +2338,16 @@
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Keskiarvo (0-7)",
+            "expression": [
+              " var taulu = GROUPBY(Muuttujat, [Aine + laajuus], [Arvosana, numero (0-7)], [Henkilö OID])",
+              "return",
+              "AVERAGEX(taulu, [Arvosana, numero (0-7)])",
+              ""
+            ],
+            "formatString": "0.00"
           }
         ],
         "annotations": [
@@ -4551,12 +4558,6 @@
                 "name": "Aineryhmä"
               },
               {
-                "name": "Arvosana, kirjain"
-              },
-              {
-                "name": "Arvosana, numero (0-7)"
-              },
-              {
                 "name": "Koulutuksen alkamiskausi"
               },
               {
@@ -4591,6 +4592,9 @@
               },
               {
                 "name": "Valittu ensisijaiselle koulutusalalle"
+              },
+              {
+                "name": "Korkeakoulu"
               }
             ],
             "measures": [
