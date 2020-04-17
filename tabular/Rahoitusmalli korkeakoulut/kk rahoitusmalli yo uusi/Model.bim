@@ -894,7 +894,7 @@
           },
           {
             "name": "jaettava_maara",
-            "expression": "CALCULATE(SUM('Jaettava kokonaisrahamäärä'[maara]))",
+            "expression": "CALCULATE(SUM('Jaettava kokonaisrahamäärä'[maara]),ALLSELECTED(Muuttujat[Tilastovuosi]))",
             "isHidden": true
           },
           {
@@ -993,41 +993,74 @@
               "",
               "var taulu = ",
               "ADDCOLUMNS(",
-              "\tVALUES(Muuttujat[Rahoitusvuosi])",
+              "\tVALUES(Muuttujat[Indikaattori])",
               "\t,\"summa1\"",
               "\t,CALCULATE(",
               "\t\tSUMX(",
-              "\t\t\tADDCOLUMNS(SUMMARIZE(Muuttujat,[Rahoitusvuosi],[Tilastovuosi],[Indikaattori]),\"summa2\",[3 v. keskiarvo (%)] * [indikaattorin_osuus_rahoituksesta] * AVERAGE('Jaettava kokonaisrahamäärä'[maara]))",
+              "\t\t\tADDCOLUMNS(",
+              "\t\t\t\tSUMMARIZE(Muuttujat,[Rahoitusvuosi],[Tilastovuosi],[Indikaattori])",
+              "\t\t\t\t,\"summa2\"",
+              "\t\t\t\t,[3 v. keskiarvo (%)] * [indikaattorin_osuus_rahoituksesta] * AVERAGE('Jaettava kokonaisrahamäärä'[maara])",
+              "\t\t\t)\t\t\t",
               "\t\t\t,[summa2]",
               "\t\t)",
-              "\t\t,ALL(Muuttujat[Tilastovuosi])",
+              "\t\t,ALLSELECTED(Muuttujat[Tilastovuosi])",
               "\t)",
               ")",
-              "return SUMX(taulu,[summa1])"
+              "return SUMX(taulu,[summa1])",
+              ""
             ],
-            "formatString": "#,0",
-            "isHidden": true
+            "formatString": "#,0"
           },
           {
             "name": "rahoitus_rahv_ka",
             "expression": [
               "",
-              "CALCULATE(",
-              "\tSUMX(",
-              "\t\tVALUES(Muuttujat[Rahoitusvuosi])",
-              "\t\t,[3 v. keskiarvo (%)] * [indikaattorin_osuus_rahoituksesta] * AVERAGE('Jaettava kokonaisrahamäärä'[maara])",
+              "var taulu = ",
+              "ADDCOLUMNS(",
+              "\tSUMMARIZE(Muuttujat,[Rahoitusvuosi],[Indikaattori])",
+              "\t,\"summa1\"",
+              "\t,CALCULATE(",
+              "\t\tAVERAGEX(",
+              "\t\t\tADDCOLUMNS(",
+              "\t\t\t\tSUMMARIZE(Muuttujat,[Rahoitusvuosi],[Tilastovuosi],[Indikaattori])",
+              "\t\t\t\t,\"summa2\"",
+              "\t\t\t\t,[3 v. keskiarvo (%)] * [indikaattorin_osuus_rahoituksesta] * AVERAGE('Jaettava kokonaisrahamäärä'[maara])",
+              "\t\t\t)\t\t\t",
+              "\t\t\t,[summa2]",
+              "\t\t)",
+              "\t\t,ALLSELECTED(Muuttujat[Tilastovuosi])",
               "\t)",
-              ",ALL(Muuttujat[Tilastovuosi]))",
-              ""
+              ")",
+              "return SUMX(taulu,[summa1])"
             ],
-            "formatString": "#,0",
-            "isHidden": true
+            "formatString": "#,0"
           },
           {
             "name": "rahoitus_tilv",
-            "expression": "SUMX(VALUES(Muuttujat[Indikaattori]),[3 v. keskiarvo (%)] * [indikaattorin_osuus_rahoituksesta] * AVERAGE('Jaettava kokonaisrahamäärä'[maara]))",
-            "formatString": "#,0",
-            "isHidden": true
+            "expression": [
+              "",
+              "var taulu = ",
+              "ADDCOLUMNS(",
+              "\tSUMMARIZE(Muuttujat,[Rahoitusvuosi],[Indikaattori])",
+              "\t,\"ka1\"",
+              "\t,AVERAGEX(",
+              "\t\tADDCOLUMNS(",
+              "\t\t\tSUMMARIZE(Muuttujat,[Rahoitusvuosi],[Tilastovuosi])",
+              "\t\t\t,\"summa1\"",
+              "\t\t\t,CALCULATE(",
+              "\t\t\t\tSUMX(",
+              "\t\t\t\t\tADDCOLUMNS(SUMMARIZE(Muuttujat,[Tilastovuosi],[Indikaattori]),\"summa2\",[3 v. keskiarvo (%)] * \t[indikaattorin_osuus_rahoituksesta] * AVERAGE('Jaettava kokonaisrahamäärä'[maara]))",
+              "\t\t\t\t\t,[summa2]",
+              "\t\t\t\t)",
+              "\t\t\t)",
+              "\t\t)",
+              "\t\t,[summa1]",
+              "\t)",
+              ")",
+              "return SUMX(taulu,[ka1])"
+            ],
+            "formatString": "#,0"
           }
         ],
         "annotations": [
