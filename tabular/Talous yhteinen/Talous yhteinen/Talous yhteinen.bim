@@ -1480,7 +1480,7 @@
           },
           {
             "name": "Osuus osakkuusyhtiöiden tuloksesta (voitosta/tappiosta, +/-)",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', or([tili_koodi] =\"OSUUSTULOS\",[tili_koodi] =\"vtosuust\")))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"vtosuust\"))",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\A) Liikevaihto"
           },
@@ -1498,7 +1498,7 @@
           },
           {
             "name": "Muu OKM",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"muuokm3\",OR([tili_koodi] =\"MUUOKM2\",[tili_koodi] =\"muuokm\"))))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"muuokm3\",[tili_koodi] =\"muuokm\")))",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\B) Avustustuottojen jaottelu"
           },
@@ -1540,7 +1540,7 @@
           },
           {
             "name": "Kotitaloudet",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"kotitalous\",[tili_koodi] =\"kotitalt\"  )))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"kotitalous\",OR([tili_koodi] =\"kotitalt\",[tili_koodi] =\"kotilahj\"  ))))",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\B) Avustustuottojen jaottelu"
           },
@@ -1564,19 +1564,19 @@
           },
           {
             "name": "Muut ulkomaat, yritysrahoitus ",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"muuulkyritys\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"muuulkyritys\",[tili_koodi] =\"ulkyrity\")))",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\B) Avustustuottojen jaottelu"
           },
           {
             "name": "Muut ulkomaat, muu rahoitus",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"muuulkmuurah\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"muuulkmuurah\",[tili_koodi] =\"ulkmuu\")))",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\B) Avustustuottojen jaottelu"
           },
           {
             "name": "Ulkomainen liiketoiminta",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"YVARULKOT\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"ULKLIIKTOIM\",[tili_koodi] =\"YVARULKOT\")))",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\C) Ulkomainen liiketoiminta"
           },
@@ -1600,7 +1600,7 @@
           },
           {
             "name": "Muut kulut yhteensä",
-            "expression": "CALCULATE([Kone- ja laitevuokrat]+[Muut varsinaisen toiminnan kulut]+[Palvelujen ostot]+[Tarvikkeet ja tavarat]+[Tilakustannukset])",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat',[tili_koodi] =\"muutkulutyht\"))",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\E) Kulut"
           },
@@ -1810,15 +1810,15 @@
           },
           {
             "name": "Avustustuotot",
-            "expression": "CALCULATE([Business Finland]+[EU-rahoitus]+[Euroopan Unionin maat, muu rahoitus]+[Euroopan Unionin maat, yritysrahoitus]+[Kotimaiset rahoituslaitokset]+[Kotimaiset yritykset]+[Kotitaloudet]+[Kunnat ja kuntayhtymät]+[Muu julkinen hallinto]+[Muu OKM]+[Muu valtio (pl. Business Finland, Akatemia, Sosiaaliturvarahastot ja muu OKM)]+[Muut ulkomaat, muu rahoitus]+[Muut ulkomaat, yritysrahoitus ]+[Suomen Akatemia]+[Voittoa tavoittelemattomat yhteisöt (kirkot, säätiöt, puolueet, rahastot)])",
+            "expression": "CALCULATE([Business Finland]+[EU-rahoitus]+[Euroopan Unionin maat, muu rahoitus]+[Euroopan Unionin maat, yritysrahoitus]+[Kotimaiset rahoituslaitokset]+[Kotimaiset yritykset]+[Kotitaloudet]+[Kunnat ja kuntayhtymät]+[Muu julkinen hallinto]+[Muu OKM]+[Muu valtio (pl. Business Finland, Akatemia, Sosiaaliturvarahastot ja muu OKM)]+[Muut ulkomaat, muu rahoitus]+[Muut ulkomaat, yritysrahoitus ]+[Suomen Akatemia]+[Voittoa tavoittelemattomat yhteisöt (kirkot, säätiöt, puolueet, rahastot)]+[Konserni; Avustustuotot])",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\A) Liikevaihto"
           },
           {
-            "name": "Henkilöstökulut yhteensä",
-            "expression": "CALCULATE([Henkilöstösivukulut: Eläkekulut]+[Henkilöstösivukulut: Muut henkilösivukulut]+[Palkat ja palkkiot])",
+            "name": "Konserni; Henkilöstökulut",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"hlokuluy\",[tili_koodi] =\"HLOKULUYHT\")))",
             "formatString": "#,0",
-            "displayFolder": "Tuloslaskelma\\E) Kulut"
+            "displayFolder": "Tuloslaskelma\\E) Kulut\\Henkilöstökulut"
           },
           {
             "name": "Poistot ja arvonalentumiset",
@@ -1828,31 +1828,31 @@
           },
           {
             "name": "Varsinaisen sijoitustoiminnan tuotot yhteensä",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"srliiket\"))",
+            "expression": "CALCULATE([Korkotuotot]+[Muut sijoitustoiminnan tuotot]+[Myyntituotot]+[Osinkotuotot]+[Vuokratuotot])",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\G) Sijoitustoiminta"
           },
           {
             "name": "Varsinaisen sijoitustoiminnan kulut yhteensä",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"srliikek\"))",
+            "expression": "CALCULATE([Korkokulut]+[Muut sijoitustoiminnan kulut]+[Myyntitappiot]+[Vuokrakulut (vastikkeet)])",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\G) Sijoitustoiminta"
           },
           {
             "name": "Varsinaisen sijoitustoiminnan tuotto",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"vhjaama\",[tili_koodi] =\"vhjaama\")))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"varssijtuot\",[tili_koodi] =\"\")))",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\G) Sijoitustoiminta"
           },
           {
             "name": "Rahoitustuotot ja -kulut (netto)",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"srjaama\"))",
+            "expression": "CALCULATE([Rahoitustuotot yhteensä]-[Rahoituskulut yhteensä])",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\H) Rahoitustoiminta"
           },
           {
             "name": "Rahoitustuotot yhteensä",
-            "expression": "CALCULATE([Arvonalentumisten palautukset]+[Tuotot muista pysyvien vastaavien sijoituksista]+[Tuotot osuuksista omistusyhteysyrityksissä]+[Tuotot osuuksista saman konsernin yrityksissä])",
+            "expression": "CALCULATE([Arvonalentumisten palautukset]+[Tuotot muista pysyvien vastaavien sijoituksista]+[Tuotot osuuksista omistusyhteysyrityksissä]+[Tuotot osuuksista saman konsernin yrityksissä]+[Muut korko- ja rahoitustuotot])",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\H) Rahoitustoiminta"
           },
@@ -1864,7 +1864,7 @@
           },
           {
             "name": "Kulut yhteensä",
-            "expression": "CALCULATE([Henkilöstökulut yhteensä]+[Muut kulut yhteensä]+[Poistot ja arvonalentumiset])",
+            "expression": "CALCULATE([Konserni; Henkilöstökulut]+[Muut kulut yhteensä]+[Poistot ja arvonalentumiset])",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\E) Kulut"
           },
@@ -2002,16 +2002,16 @@
             "displayFolder": "Tuloslaskelma\\F) Varainhankinta"
           },
           {
-            "name": "Varainhankinnan tuotto",
+            "name": "Varainhankinta, nettotuotto",
             "expression": "CALCULATE([Varainhankinnan tuotot yhteensä]-[Varainhankinnan kulut yhteensä])",
             "formatString": "#,0",
-            "displayFolder": "Tuloslaskelma\\F) Varainhankinta"
+            "displayFolder": "Tuloslaskelma\\M) Johdetut mittarit"
           },
           {
             "name": "Käyvän arvon rahasto",
             "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"kayvanar\"))",
             "formatString": "#,0",
-            "displayFolder": "Tuloslaskelma\\G) Sijoitustoiminta"
+            "displayFolder": "Tase\\B) Vastattavaa\\Oma pääoma\\Muut rahastot"
           },
           {
             "name": "Kehittämismenot",
@@ -3136,10 +3136,10 @@
             "displayFolder": "Liiketoiminnan tuloslaskelma"
           },
           {
-            "name": "Tilinpäätössiirrot yhteensä",
-            "expression": "SUMX(FILTER(Muuttujat,[tili_taso1_fi]=\"Tilinpäätössiirrot ja verot\"),[arvo])",
+            "name": "Tilinpäätössiirrot",
+            "expression": "CALCULATE([Poistoeron muutos (+/-)]+[Sidottujen rahastojen muutos yhteensä]+[Omakatteisten rahastojen muutos yhteensä]+[Tuloverot]+[Konserni: Vähemmistöosuudet])",
             "formatString": "#,0",
-            "displayFolder": "Liiketoiminnan tuloslaskelma\\Tilinpäätössiirrot ja verot"
+            "displayFolder": "Tuloslaskelma\\M) Johdetut mittarit"
           },
           {
             "name": "Poistoeron lisäys tai vähennys",
@@ -3176,6 +3176,23 @@
             "expression": "SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Ulkoasiainministeriö\"),[arvo])+SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Oikeusministeriö\"),[arvo])+SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Sisäasiainministeriö\"),[arvo])+SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Puolustusministeriö\"),[arvo])+SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Valtiovarainministeriö \"),[arvo])+SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Maa- ja metsätalousministeriö\"),[arvo])+SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Liikenne- ja viestintäministeriö\"),[arvo])+SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Sosiaali- ja terveysministeriö\"),[arvo])+SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Ympäristöministeriö\"),[arvo])+SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Muu opetus- ja kulttuuriministeriö\"),[arvo])+SUMX(FILTER(Muuttujat,[tili_taso4_fi]=\"Muu työ- ja elinkeinoministeriö\"),[arvo])",
             "formatString": "#,0",
             "displayFolder": "Tutkimusmenot\\Kotimainen ulkopuolinen rahoitus"
+          },
+          {
+            "name": "Henkilöstökulut yhteensä",
+            "expression": "CALCULATE([Henkilöstösivukulut: Eläkekulut]+[Henkilöstösivukulut: Muut henkilösivukulut]+[Palkat ja palkkiot]+[Konserni; Henkilöstökulut])",
+            "formatString": "#,0",
+            "displayFolder": "Tuloslaskelma\\E) Kulut"
+          },
+          {
+            "name": "Konserni; Avustustuotot",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"avustust\"))",
+            "displayFolder": "Tuloslaskelma\\B) Avustustuottojen jaottelu"
+          },
+          {
+            "name": "Sijoitus-ja rahoitustoiminta, nettotuotto",
+            "expression": "CALCULATE([Varsinaisen sijoitustoiminnan tuotot yhteensä]-[Varsinaisen sijoitustoiminnan kulut yhteensä]+[Rahoitustuotot ja -kulut yhteensä])",
+            "formatString": "#,0",
+            "displayFolder": "Tuloslaskelma\\M) Johdetut mittarit"
           }
         ],
         "annotations": [
@@ -4616,7 +4633,7 @@
                 "name": "Euroopan Unionin maat, yritysrahoitus"
               },
               {
-                "name": "Henkilöstökulut yhteensä"
+                "name": "Konserni; Henkilöstökulut"
               },
               {
                 "name": "Henkilöstösivukulut: Eläkekulut"
@@ -4856,7 +4873,7 @@
                 "name": "Varainhankinnan tuotot yhteensä"
               },
               {
-                "name": "Varainhankinnan tuotto"
+                "name": "Varainhankinta, nettotuotto"
               },
               {
                 "name": "Käyvän arvon rahasto"
@@ -4881,6 +4898,18 @@
               },
               {
                 "name": "Korkeakoulun ALV-kulut yhteensä pl liiketoiminta"
+              },
+              {
+                "name": "Henkilöstökulut yhteensä"
+              },
+              {
+                "name": "Konserni; Avustustuotot"
+              },
+              {
+                "name": "Sijoitus-ja rahoitustoiminta, nettotuotto"
+              },
+              {
+                "name": "Tilinpäätössiirrot"
               }
             ]
           },
@@ -5131,7 +5160,7 @@
                 "name": "Harjoittelukoulun liiketoiminnan kulut"
               },
               {
-                "name": "Henkilöstökulut yhteensä"
+                "name": "Konserni; Henkilöstökulut"
               },
               {
                 "name": "Henkilöstösivukulut: Eläkekulut"
@@ -5746,7 +5775,7 @@
                 "name": "Tilikauden voitto tai tappio"
               },
               {
-                "name": "Tilinpäätössiirrot yhteensä"
+                "name": "Tilinpäätössiirrot"
               },
               {
                 "name": "Toimintapääoma"
@@ -5839,7 +5868,7 @@
                 "name": "Varainhankinnan tuotot yhteensä"
               },
               {
-                "name": "Varainhankinnan tuotto"
+                "name": "Varainhankinta, nettotuotto"
               },
               {
                 "name": "Vararahasto"
@@ -5903,6 +5932,9 @@
               },
               {
                 "name": "Ympäristöministeriö"
+              },
+              {
+                "name": "Konserni; Avustustuotot"
               }
             ]
           },
