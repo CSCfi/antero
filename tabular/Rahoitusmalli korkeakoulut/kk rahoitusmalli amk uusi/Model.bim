@@ -932,18 +932,19 @@
             "isHidden": true
           },
           {
-            "name": "Rahoitus (1000 euroa)",
+            "name": "Rahoitus (1000 euroa)_vanha",
             "expression": [
               "",
-              "var tilv = [rahoitus_tilv]",
-              "var rahv_ka = [rahoitus_rahv_ka]",
-              "var rahv_summa = [rahoitus_rahv_summa]",
+              "var tilv = [rahoitus_tilv_vanha]",
+              "var rahv_ka = [rahoitus_rahv_ka_vanha]",
+              "var rahv_summa = [rahoitus_rahv_summa_vanha]",
               "return IF(ISFILTERED(Muuttujat[Tilastovuosi]), rahv_ka * (tilv / rahv_summa), tilv)",
               "",
               "--vanha:SUMX(VALUES(Muuttujat[Indikaattori]);[3 v. keskiarvo (%)] * [indikaattorin_osuus_rahoituksesta] * AVERAGE('Jaettava kokonaisrahamäärä'[maara]))",
               ""
             ],
             "formatString": "#,0 \"€\";-#,0 \"€\";#,0 \"€\"",
+            "isHidden": true,
             "annotations": [
               {
                 "name": "Format",
@@ -955,7 +956,7 @@
             "name": "Osuus perusrahoituksesta",
             "expression": [
               "",
-              "[Rahoitus (1000 euroa)] / ([jaettava_maara] * [perusrahoituksen_osuus])"
+              "[Rahoitus (1000 euroa)_vanha] / ([jaettava_maara] * [perusrahoituksen_osuus])"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
@@ -977,7 +978,7 @@
           },
           {
             "name": "Osuus kokonaisrahoituksesta",
-            "expression": "[Rahoitus (1000 euroa)] / [jaettava_maara]",
+            "expression": "[Rahoitus (1000 euroa)_vanha] / [jaettava_maara]",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
@@ -1015,7 +1016,7 @@
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
-            "name": "rahoitus_rahv_summa",
+            "name": "rahoitus_rahv_summa_vanha",
             "expression": [
               "",
               "var taulu = ",
@@ -1037,7 +1038,7 @@
             "isHidden": true
           },
           {
-            "name": "rahoitus_rahv_ka",
+            "name": "rahoitus_rahv_ka_vanha",
             "expression": [
               "",
               "CALCULATE(",
@@ -1052,9 +1053,103 @@
             "isHidden": true
           },
           {
-            "name": "rahoitus_tilv",
+            "name": "rahoitus_tilv_vanha",
             "expression": "SUMX(VALUES(Muuttujat[Indikaattori]),[3 v. keskiarvo (%)] * [indikaattorin_osuus_rahoituksesta] * AVERAGE('Jaettava kokonaisrahamäärä'[maara]))",
             "formatString": "#,0",
+            "isHidden": true
+          },
+          {
+            "name": "Rahoitus (1000 euroa)",
+            "expression": [
+              "",
+              "var taulu = ",
+              "ADDCOLUMNS(",
+              "\tSUMMARIZE(Muuttujat,[Rahoitusvuosi],[Tilastovuosi])",
+              "\t,\"raha\"",
+              "\t,[rahoitus_rahv_ka]*([rahoitus_tilv]/[rahoitus_rahv_summa])",
+              ")",
+              "return SUMX(taulu,[raha])"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "rahoitus_rahv_ka",
+            "expression": [
+              "",
+              "var taulu = ",
+              "ADDCOLUMNS(",
+              "\tSUMMARIZE(Muuttujat,[Rahoitusvuosi],[Indikaattori])",
+              "\t,\"summa1\"",
+              "\t,CALCULATE(",
+              "\t\tAVERAGEX(",
+              "\t\t\tADDCOLUMNS(",
+              "\t\t\t\tSUMMARIZE(Muuttujat,[Rahoitusvuosi],[Tilastovuosi],[Indikaattori])",
+              "\t\t\t\t,\"summa2\"",
+              "\t\t\t\t,[3 v. keskiarvo (%)] * [indikaattorin_osuus_rahoituksesta] * AVERAGE('Jaettava kokonaisrahamäärä'[maara])",
+              "\t\t\t)\t\t\t",
+              "\t\t\t,[summa2]",
+              "\t\t)",
+              "\t\t,ALL(Muuttujat[Tilastovuosi])",
+              "\t)",
+              ")",
+              "return SUMX(taulu,[summa1])"
+            ],
+            "isHidden": true
+          },
+          {
+            "name": "rahoitus_tilv",
+            "expression": [
+              "",
+              "var taulu = ",
+              "ADDCOLUMNS(",
+              "\tSUMMARIZE(Muuttujat,[Rahoitusvuosi],[Indikaattori])",
+              "\t,\"v_lkm\"",
+              "\t,CALCULATE(DISTINCTCOUNT(Muuttujat[Tilastovuosi]),ALL(Muuttujat[Tilastovuosi]))",
+              "\t,\"ka1\"",
+              "\t,CALCULATE(",
+              "\t\tAVERAGEX(",
+              "\t\t\tADDCOLUMNS(",
+              "\t\t\t\tSUMMARIZE(Muuttujat,[Rahoitusvuosi],[Tilastovuosi],[Indikaattori])",
+              "\t\t\t\t,\"summa1\"",
+              "\t\t\t\t,CALCULATE(",
+              "\t\t\t\t\tSUMX(",
+              "\t\t\t\tADDCOLUMNS(SUMMARIZE(Muuttujat,[Rahoitusvuosi],[Tilastovuosi],[Indikaattori]) ,\"summa2\",[3 v. keskiarvo (%)] * [indikaattorin_osuus_rahoituksesta] * AVERAGE('Jaettava kokonaisrahamäärä'[maara]))",
+              "\t\t\t\t\t\t,[summa2]",
+              "\t\t\t\t\t)",
+              "\t\t\t\t)",
+              "\t\t\t)\t",
+              "\t\t\t,[summa1]",
+              "\t\t)",
+              "\t)",
+              ")",
+              "return SUMX(taulu,[ka1]*(3/[v_lkm]))"
+            ],
+            "isHidden": true
+          },
+          {
+            "name": "rahoitus_rahv_summa",
+            "expression": [
+              "",
+              "var taulu = ",
+              "ADDCOLUMNS(",
+              "\tSUMMARIZE(Muuttujat,[Rahoitusvuosi],[Indikaattori])",
+              "\t,\"v_lkm\"",
+              "\t,CALCULATE(DISTINCTCOUNT(Muuttujat[Tilastovuosi]),ALL(Muuttujat[Tilastovuosi]))",
+              "\t,\"summa1\"",
+              "\t,CALCULATE(",
+              "\t\tSUMX(",
+              "\t\t\tADDCOLUMNS(",
+              "\t\t\t\tSUMMARIZE(Muuttujat,[Rahoitusvuosi],[Tilastovuosi],[Indikaattori])",
+              "\t\t\t\t,\"summa2\"",
+              "\t\t\t\t,[3 v. keskiarvo (%)] * [indikaattorin_osuus_rahoituksesta] * AVERAGE('Jaettava kokonaisrahamäärä'[maara])",
+              "\t\t\t)\t\t\t",
+              "\t\t\t,[summa2]",
+              "\t\t)",
+              "\t\t,ALL(Muuttujat[Tilastovuosi])",
+              "\t)",
+              ")",
+              "return SUMX(taulu,[summa1]*(3/[v_lkm]))"
+            ],
             "isHidden": true
           }
         ],
@@ -1899,13 +1994,13 @@
                 "name": "Osuus perusrahoituksesta"
               },
               {
-                "name": "Rahoitus (1000 euroa)"
-              },
-              {
                 "name": "3 v. keskiarvo, painottamaton"
               },
               {
                 "name": "3 v. keskiarvo, painottamaton (%)"
+              },
+              {
+                "name": "Rahoitus (1000 euroa)"
               }
             ]
           },
