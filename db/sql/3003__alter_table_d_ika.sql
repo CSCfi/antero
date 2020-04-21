@@ -23,5 +23,5 @@ END
 IF NOT EXISTS (
 SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'd_ika' AND COLUMN_NAME = 'jarjestys_ikaryhma5')
 BEGIN
-    ALTER TABLE [dw].[d_maatjavaltiot2] ADD jarjestys_ikaryhma5 nvarchar(5)
+    ALTER TABLE [dw].[d_ika] ADD jarjestys_ikaryhma5 nvarchar(5)
 END
