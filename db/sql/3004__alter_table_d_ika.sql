@@ -1,0 +1,27 @@
+USE ANTERO
+GO
+
+
+IF NOT EXISTS (
+SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'd_ika' AND COLUMN_NAME = 'ikaryhma5_en')
+BEGIN
+    ALTER TABLE [dw].[d_ika] ADD ikaryhma5_en nvarchar(200)
+END
+
+IF NOT EXISTS (
+SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'd_ika' AND COLUMN_NAME = 'ikaryhma5_fi')
+BEGIN
+    ALTER TABLE [dw].[d_ika] ADD ikaryhma5_fi nvarchar(200)
+END
+
+IF NOT EXISTS (
+SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'd_ika' AND COLUMN_NAME = 'ikaryhma5_sv')
+BEGIN
+    ALTER TABLE [dw].[d_ika] ADD ikaryhma5_sv nvarchar(200)
+END
+
+IF NOT EXISTS (
+SELECT 1 FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'd_ika' AND COLUMN_NAME = 'jarjestys_ikaryhma5')
+BEGIN
+    ALTER TABLE [dw].[d_ika] ADD jarjestys_ikaryhma5 nvarchar(5)
+END
