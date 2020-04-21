@@ -2170,14 +2170,14 @@
             "displayFolder": "Tase\\C) Vastaavaa\\Vaihtuvat vastaavat\\Rahoitusarvopaperit"
           },
           {
-            "name": "Rahat ja pankki-saamiset (vaihtuvat)",
+            "name": "Rahat ja pankkisaamiset (vaihtuvat)",
             "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"rahatps\"))",
             "formatString": "#,0",
             "displayFolder": "Tase\\C) Vastaavaa\\Vaihtuvat vastaavat"
           },
           {
             "name": "Vastaavaa yhteensä",
-            "expression": "SUMX(FILTER(Muuttujat,[tili_taso1_fi]=\"Vastattavaa\"),[arvo])",
+            "expression": "SUMX(FILTER(Muuttujat,[tili_taso1_fi]=\"Vastaavaa\"),[arvo])",
             "formatString": "#,0",
             "displayFolder": "Tase\\C) Vastaavaa"
           },
@@ -2200,7 +2200,7 @@
             "displayFolder": "Tase\\B) Vastattavaa\\Oma pääoma"
           },
           {
-            "name": "Arvonkorotus-rahasto",
+            "name": "Arvonkorotusrahasto",
             "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"arvonkr\"))",
             "formatString": "#,0",
             "displayFolder": "Tase\\B) Vastattavaa\\Oma pääoma"
@@ -2249,13 +2249,13 @@
           },
           {
             "name": "Edellisten tilikausien voitto (tappio)",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"edtilvo\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"edtilvo\",[tili_koodi] =\"edjaama\")))",
             "formatString": "#,0",
             "displayFolder": "Tase\\B) Vastattavaa\\Oma pääoma\\Muu oma pääoma"
           },
           {
             "name": "Tilikauden voitto (tai tappio)",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"tkvoitto\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"tkvoitto\",[tili_koodi] =\"tkjaama\")))",
             "formatString": "#,0",
             "displayFolder": "Tase\\B) Vastattavaa\\Oma pääoma\\Muu oma pääoma"
           },
@@ -2266,10 +2266,10 @@
             "displayFolder": "Tase\\B) Vastattavaa\\Oma pääoma"
           },
           {
-            "name": "Vähemmistö- osuudet (konserni)",
+            "name": "Vähemmistöosuudet (konserni)",
             "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"tavahem\"))",
             "formatString": "#,0",
-            "displayFolder": "Tase\\B) Vastattavaa\\Tilinpäätössiirtymät ja pakolliset varaukset\\Muu oma pääoma"
+            "displayFolder": "Tase\\B) Vastattavaa\\Oma pääoma"
           },
           {
             "name": "Poistoero",
@@ -2411,7 +2411,7 @@
           },
           {
             "name": "Lyhytaikaiset muut saamiset",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"lmuuts\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"lmuuts\",[tili_koodi] =\"llveros\")))",
             "formatString": "#,0",
             "displayFolder": "Tase\\C) Vastaavaa\\Vaihtuvat vastaavat\\Lyhytaikaiset saamiset"
           },
@@ -2531,7 +2531,7 @@
           },
           {
             "name": "Pitkäaikaiset muut saamiset",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"pmuuts\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"pmuuts\",[tili_koodi] =\"plveros\")))",
             "formatString": "#,0",
             "displayFolder": "Tase\\C) Vastaavaa\\Vaihtuvat vastaavat\\Pitkäaikaiset saamiset"
           },
@@ -2624,12 +2624,6 @@
             "expression": "(CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso0_fi] = \"Tase\"), FILTER(Muuttujat,[tili_taso3_fi]=\"Lyhytaikaiset saamiset\"))+CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso0_fi] = \"Tase\"), FILTER(Muuttujat,[tili_taso3_fi]=\"Rahoitusarvopaperit\"))+[Rahat ja pankkisaamiset])/(CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso0_fi] = \"Tase\"), FILTER(Muuttujat,[tili_taso3_fi]=\"Lyhytaikainen vieras pääoma\"))-[Lyhytaikaiset saadut ennakot])",
             "formatString": "#,0.00",
             "displayFolder": "Tase\\A) Johdetut mittarit"
-          },
-          {
-            "name": "Rahat ja pankkisaamiset",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso1_fi] = \"Vastaavaa\"), FILTER(Muuttujat,[tili_taso5_fi]=\"Rahat ja pankkisaamiset\"))",
-            "formatString": "#,0",
-            "displayFolder": "Tase\\C) Vastaavaa\\Vaihtuvat vastaavat"
           },
           {
             "name": "Toimintapääoman suhde omaan pääomaan",
@@ -5103,7 +5097,7 @@
                 "name": "Arvonalentumisten palautukset"
               },
               {
-                "name": "Arvonkorotus-rahasto"
+                "name": "Arvonkorotusrahasto"
               },
               {
                 "name": "Arvonlisäverosaatava/-velka"
@@ -5682,13 +5676,10 @@
                 "name": "Rahasto-osuudet"
               },
               {
-                "name": "Rahat ja pankkisaamiset"
-              },
-              {
                 "name": "Rahat ja pankki-saamiset"
               },
               {
-                "name": "Rahat ja pankki-saamiset (vaihtuvat)"
+                "name": "Rahat ja pankkisaamiset (vaihtuvat)"
               },
               {
                 "name": "Rahoituskulut yhteensä"
@@ -5916,7 +5907,7 @@
                 "name": "Vuokratuotot"
               },
               {
-                "name": "Vähemmistö- osuudet (konserni)"
+                "name": "Vähemmistöosuudet (konserni)"
               },
               {
                 "name": "Yhtiöjärjestyksen tai sääntöjen mukaiset rahastot"
@@ -6008,7 +5999,7 @@
                 "name": "Aineettomat oikeudet"
               },
               {
-                "name": "Arvonkorotus-rahasto"
+                "name": "Arvonkorotusrahasto"
               },
               {
                 "name": "Edellisten tilikausien voitto (tappio)"
@@ -6125,7 +6116,7 @@
                 "name": "Rahat ja pankki-saamiset"
               },
               {
-                "name": "Rahat ja pankki-saamiset (vaihtuvat)"
+                "name": "Rahat ja pankkisaamiset (vaihtuvat)"
               },
               {
                 "name": "Rakennukset ja rakennelmat"
@@ -6164,7 +6155,7 @@
                 "name": "Verovaraukset"
               },
               {
-                "name": "Vähemmistö- osuudet (konserni)"
+                "name": "Vähemmistöosuudet (konserni)"
               },
               {
                 "name": "Yhtiöjärjestyksen tai sääntöjen mukaiset rahastot"
@@ -6297,9 +6288,6 @@
               },
               {
                 "name": "Maksuvalmius"
-              },
-              {
-                "name": "Rahat ja pankkisaamiset"
               },
               {
                 "name": "Toimintapääoman suhde omaan pääomaan"
