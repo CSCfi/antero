@@ -1,5 +1,3 @@
-USE [ANTERO]
-
 ALTER PROCEDURE [dw].[p_lataa_d_tili] AS
 
 TRUNCATE TABLE dw.d_tili
