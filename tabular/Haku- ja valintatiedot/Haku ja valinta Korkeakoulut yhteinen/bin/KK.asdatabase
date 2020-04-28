@@ -2341,6 +2341,7 @@
           {
             "name": "ei vastaanottoa kaudella",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "ei vastaanottoa kaudella"
           }
         ],
@@ -9201,6 +9202,29 @@
               "return DIVIDE(ei_vastaanottanut,valitut)"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Ei opintopaikkaa vastaanottaneiden osuus (I sykli)2",
+            "expression": [
+              " --too slow",
+              "var taulu1 = ",
+              "SUMMARIZE(",
+              "\tFILTER(",
+              "\t\tADDCOLUMNS(",
+              "\t\t\tSUMMARIZE(FILTER(Muuttujat,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1 && Muuttujat[Valitut2]=1),[Henkilö OID],[Koulutuksen alkamisvuosi],[Koulutuksen alkamiskausi])",
+              "\t\t\t, \"vastaanotto_kausi\",CALCULATE(MAX(Muuttujat[Paikan vastaanottaneet2]))",
+              "\t\t)",
+              "\t\t,[vastaanotto_kausi]=0",
+              "\t)",
+              "\t,[Henkilö OID]",
+              ")",
+              "var ei_vastaanottanut = CALCULATE(COUNTROWS(taulu1))",
+              "var valitut = CALCULATE([Valitut],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "return DIVIDE(ei_vastaanottanut,valitut)",
+              ""
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
+            "isHidden": true
           }
         ],
         "annotations": [
@@ -16354,6 +16378,9 @@
               },
               {
                 "name": "Ei opintopaikkaa vastaanottaneiden osuus (I sykli)"
+              },
+              {
+                "name": "Ei opintopaikkaa vastaanottaneiden osuus (I sykli)2"
               }
             ]
           },
