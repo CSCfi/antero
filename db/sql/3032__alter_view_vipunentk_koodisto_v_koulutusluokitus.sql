@@ -2654,7 +2654,7 @@ SELECT --DISTINCT
 	  ,[iscfibroad2013selite_FI]
 	  ,[iscfibroad2013selite_SV]
 	  ,[iscfibroad2013selite_EN]
-	  ,[kaste_t2koodi] = '91'
+	  ,[kaste_t2koodi] = '-1'
 	  ,[kaste_t2_FI] = 'Ei perusasteen jälkeistä tutkintoa tai tutkinto tuntematon'
 	  ,[kaste_t2_SV] = 'Ingen examen efter den grundläggande utbildningen eller examen okänd'
 	  ,[kaste_t2_EN] = 'No degree after elementary education or degree unknown'
