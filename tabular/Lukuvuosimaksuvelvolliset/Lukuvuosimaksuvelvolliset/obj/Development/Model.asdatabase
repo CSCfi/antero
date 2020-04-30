@@ -8,7 +8,7 @@
         "name": "SqlServer dwitvipusql16 ANTERO",
         "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
         "impersonationMode": "impersonateAccount",
-        "account": "dwi\\t_viputk_kuutio",
+        "account": "dwi\\T_Viputk_kuutio",
         "annotations": [
           {
             "name": "ConnectionEditUISource",
@@ -55,14 +55,6 @@
             "name": "Kansalaisuus",
             "dataType": "string",
             "sourceColumn": "Kansalaisuus",
-            "sourceProviderType": "WChar",
-            "displayFolder": "Henkilömuuttujat"
-          },
-          {
-            "name": "Kansalaisuus (maanosa)",
-            "dataType": "string",
-            "sourceColumn": "Kansalaisuus (maanosa)",
-            "sortByColumn": "jarj Kansalaisuus maanosa",
             "sourceProviderType": "WChar",
             "displayFolder": "Henkilömuuttujat"
           },
@@ -171,20 +163,6 @@
             "sourceProviderType": "WChar"
           },
           {
-            "name": "jarj Kansalaisuus maanosa",
-            "dataType": "string",
-            "isHidden": true,
-            "sourceColumn": "jarj Kansalaisuus maanosa",
-            "sourceProviderType": "Char"
-          },
-          {
-            "name": "jarj Kansalaisuus maanosa2",
-            "dataType": "string",
-            "isHidden": true,
-            "sourceColumn": "jarj Kansalaisuus maanosa2",
-            "sourceProviderType": "Char"
-          },
-          {
             "name": "jarj Koulutusaste taso 1",
             "dataType": "string",
             "isHidden": true,
@@ -244,13 +222,6 @@
             "dataType": "string",
             "isHidden": true,
             "sourceColumn": "jarj Sukupuoli"
-          },
-          {
-            "name": "Kansalaisuus (maanosa, suuralue)",
-            "dataType": "string",
-            "sourceColumn": "Kansalaisuus (maanosa, suuralue)",
-            "sortByColumn": "jarj Kansalaisuus maanosa2",
-            "displayFolder": "Henkilömuuttujat"
           },
           {
             "name": "Aloitusvuosi",
@@ -866,13 +837,33 @@
         "measures": [
           {
             "name": "Lukuvuosimaksuvelvolliset",
-            "expression": "SUM([lkm])",
+            "expression": "IF(AND(SUM([lkm]) < 5, SUM([lkm]) > 0), \"1-4\", SUM([lkm]))",
             "formatString": "#,0"
           },
           {
             "name": "Uudet lukuvuosimaksuvelvolliset",
-            "expression": "CALCULATE(SUM([lkm]),FILTER(Muuttujat,[Aloitusvuosi]=[Tilastovuosi]))",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([lkm]),FILTER(Muuttujat,[Aloitusvuosi]=[Tilastovuosi]))",
+              "return",
+              "IF(AND(lkm < 5, lkm > 0), \"1-4\", lkm)"
+            ],
             "formatString": "#,0"
+          },
+          {
+            "name": "kytkin",
+            "expression": " IF(LEFT(USERNAME(), 4) = \"DWI\\\", 1, 0) ",
+            "isHidden": true
+          },
+          {
+            "name": "Lukuvuosimaksuvelvolliset_s",
+            "expression": " IF([kytkin] = 0,BLANK(),SUM([lkm]))",
+            "formatString": "0"
+          },
+          {
+            "name": "Uudet lukuvuosimaksuvelvolliset_s",
+            "expression": " IF([kytkin] = 0, BLANK(), CALCULATE(SUM([lkm]),FILTER(Muuttujat,[Aloitusvuosi]=[Tilastovuosi])))",
+            "formatString": "0"
           }
         ],
         "annotations": [
@@ -1541,9 +1532,6 @@
                 "name": "Ikäryhmä"
               },
               {
-                "name": "Kansalaisuus (maanosa)"
-              },
-              {
                 "name": "Koodit Ikä"
               },
               {
@@ -1586,7 +1574,7 @@
                 "name": "Tutkintonimike"
               },
               {
-                "name": "Kansalaisuus (maanosa, suuralue)"
+                "name": "Kansalaisuus"
               }
             ],
             "measures": [
@@ -1628,6 +1616,10 @@
           {
             "memberName": "NT AUTHORITY\\IUSR",
             "memberId": "S-1-5-17"
+          },
+          {
+            "memberName": "DWI\\Z_P_Antero_Full_Read_TAB",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-2272"
           }
         ]
       }
