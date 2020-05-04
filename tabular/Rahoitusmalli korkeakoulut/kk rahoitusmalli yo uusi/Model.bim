@@ -958,7 +958,7 @@
             "isHidden": true
           },
           {
-            "name": "3 v. keskiarvo",
+            "name": "Keskiarvo",
             "expression": [
               "",
               "var taulu = ",
@@ -980,11 +980,11 @@
             "formatString": "#,0.0"
           },
           {
-            "name": "3 v. keskiarvo (%)",
+            "name": "Keskiarvo (%)",
             "expression": [
               "",
-              "var org = [3 v. keskiarvo]",
-              "var kaikki_org =  CALCULATE([3 v. keskiarvo],ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusvuosi],Muuttujat[Indikaattori]))",
+              "var org = [Keskiarvo]",
+              "var kaikki_org =  CALCULATE([Keskiarvo],ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusvuosi],Muuttujat[Indikaattori]))",
               "var on_summa = NOT(HASONEVALUE(Muuttujat[Indikaattori]))",
               "return IF(on_summa=TRUE(),1,DIVIDE(org,kaikki_org))"
             ],
@@ -1004,7 +1004,7 @@
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
-            "name": "3 v. keskiarvo, painottamaton",
+            "name": "Keskiarvo, painottamaton",
             "expression": [
               "",
               "var taulu = ",
@@ -1026,11 +1026,11 @@
             "formatString": "#,0.0"
           },
           {
-            "name": "3 v. keskiarvo, painottamaton (%)",
+            "name": "Keskiarvo, painottamaton (%)",
             "expression": [
               "",
-              "var org = [3 v. keskiarvo, painottamaton]",
-              "var kaikki_org =  CALCULATE([3 v. keskiarvo, painottamaton],ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusvuosi],Muuttujat[Indikaattori]))",
+              "var org = [Keskiarvo, painottamaton]",
+              "var kaikki_org =  CALCULATE([Keskiarvo, painottamaton],ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusvuosi],Muuttujat[Indikaattori]))",
               "var on_summa = NOT(HASONEVALUE(Muuttujat[Indikaattori]))",
               "return IF(on_summa=TRUE(),1,DIVIDE(org,kaikki_org))"
             ],
@@ -1049,7 +1049,7 @@
               "\t\t\tADDCOLUMNS(",
               "\t\t\t\tSUMMARIZE(Muuttujat,[Rahoitusvuosi],[Tilastovuosi],[Indikaattori])",
               "\t\t\t\t,\"summa2\"",
-              "\t\t\t\t,[3 v. keskiarvo (%)] * [indikaattorin_osuus_rahoituksesta] * AVERAGE('Jaettava kokonaisrahamäärä'[maara])",
+              "\t\t\t\t,[Keskiarvo (%)] * [indikaattorin_osuus_rahoituksesta] * AVERAGE('Jaettava kokonaisrahamäärä'[maara])",
               "\t\t\t)\t\t\t",
               "\t\t\t,[summa2]",
               "\t\t)",
@@ -1058,8 +1058,7 @@
               ")",
               "return SUMX(taulu,[summa1])"
             ],
-            "formatString": "#,0",
-            "isHidden": true
+            "formatString": "#,0"
           },
           {
             "name": "rahoitus_rahv_summa",
@@ -1076,7 +1075,7 @@
               "\t\t\tADDCOLUMNS(",
               "\t\t\t\tSUMMARIZE(Muuttujat,[Rahoitusvuosi],[Tilastovuosi],[Indikaattori])",
               "\t\t\t\t,\"summa2\"",
-              "\t\t\t\t,[3 v. keskiarvo (%)] * [indikaattorin_osuus_rahoituksesta] * AVERAGE('Jaettava kokonaisrahamäärä'[maara])",
+              "\t\t\t\t,[Keskiarvo (%)] * [indikaattorin_osuus_rahoituksesta] * AVERAGE('Jaettava kokonaisrahamäärä'[maara])",
               "\t\t\t)\t\t\t",
               "\t\t\t,[summa2]",
               "\t\t)",
@@ -1085,8 +1084,7 @@
               ")",
               "return SUMX(taulu,[summa1]*(3/[v_lkm]))"
             ],
-            "formatString": "#,0",
-            "isHidden": true
+            "formatString": "#,0"
           },
           {
             "name": "rahoitus_tilv",
@@ -1105,7 +1103,7 @@
               "\t\t\t\t,\"summa1\"",
               "\t\t\t\t,CALCULATE(",
               "\t\t\t\t\tSUMX(",
-              "\t\t\t\tADDCOLUMNS(SUMMARIZE(Muuttujat,[Rahoitusvuosi],[Tilastovuosi],[Indikaattori]) ,\"summa2\",[3 v. keskiarvo (%)] * [indikaattorin_osuus_rahoituksesta] * AVERAGE('Jaettava kokonaisrahamäärä'[maara]))",
+              "\t\t\t\tADDCOLUMNS(SUMMARIZE(Muuttujat,[Rahoitusvuosi],[Tilastovuosi],[Indikaattori]) ,\"summa2\",[Keskiarvo (%)] * [indikaattorin_osuus_rahoituksesta] * AVERAGE('Jaettava kokonaisrahamäärä'[maara]))",
               "\t\t\t\t\t\t,[summa2]",
               "\t\t\t\t\t)",
               "\t\t\t\t)",
@@ -1116,8 +1114,7 @@
               ")",
               "return SUMX(taulu,[ka1]*(3/[v_lkm]))"
             ],
-            "formatString": "#,0",
-            "isHidden": true
+            "formatString": "#,0"
           },
           {
             "name": "Rahoitus (1000 euroa)",
@@ -1149,7 +1146,9 @@
               "\t,\"tutk_raja\"",
               "\t,CALCULATE(AVERAGE(Muuttujat[tutkintoraja]))",
               ")",
-              "return SUMX(taulu,[tutk_raja])",
+              "var ehto1 = ISFILTERED(Muuttujat[Rahoitusmalliala])",
+              "var ehto2 = COUNTROWS(FILTER(Muuttujat,[rahoitusmalliala_tutkintotavoite]<>\"\"))=0",
+              "return IF(AND(ehto1=TRUE(),ehto2=TRUE()),BLANK(),SUMX(taulu,[tutk_raja]))",
               ""
             ],
             "formatString": "#,0"
@@ -1160,21 +1159,15 @@
               "",
               "var taulu2 = ",
               "ADDCOLUMNS(",
-              "\tSUMMARIZE(Muuttujat,[Rahoituskausi],[Organisaatio],[Koulutusaste,taso 2])",
-              "\t,\"summa\"",
-              "\t,CALCULATE(SUMX(",
-              "\t\tADDCOLUMNS(",
-              "\t\t\tSUMMARIZE(Muuttujat,[Rahoituskausi],[Organisaatio],[Koulutusaste,taso 2],\"rah_ala\",IF(Muuttujat[Koulutusaste,taso 2]=\"Ylempi \t\t\t\tkorkeakoulututkinto\",VALUES(Muuttujat[Rahoitusmalliala]),\"\"))",
-              "\t\t\t,\"tutk_raja\"",
-              "\t\t\t,CALCULATE(AVERAGE(Muuttujat[tutkintoraja]))",
-              "\t\t)",
-              "\t\t,[tutk_raja]",
-              "\t))",
+              "\tSUMMARIZE(Muuttujat,[Rahoituskausi],[Organisaatio],[Koulutusaste,taso 2],\"rah_ala\",IF(Muuttujat[Koulutusaste,taso 2]=\"Ylempi \t\tkorkeakoulututkinto\",VALUES(Muuttujat[Rahoitusmalliala]),\"\"))",
+              "\t,\"tutk_raja\"",
+              "\t,CALCULATE(AVERAGE(Muuttujat[tutkintoraja]))",
               ")",
-              "return SUMX(taulu2,[summa])",
+              "return SUMX(taulu2,[tutk_raja])",
               ""
             ],
-            "formatString": "#,0"
+            "formatString": "#,0",
+            "isHidden": true
           }
         ],
         "annotations": [
@@ -2036,10 +2029,10 @@
             ],
             "measures": [
               {
-                "name": "3 v. keskiarvo"
+                "name": "Keskiarvo"
               },
               {
-                "name": "3 v. keskiarvo (%)"
+                "name": "Keskiarvo (%)"
               },
               {
                 "name": "Osuus kokonaisrahoituksesta"
@@ -2048,16 +2041,19 @@
                 "name": "Osuus perusrahoituksesta"
               },
               {
-                "name": "3 v. keskiarvo, painottamaton"
+                "name": "Keskiarvo, painottamaton"
               },
               {
-                "name": "3 v. keskiarvo, painottamaton (%)"
+                "name": "Keskiarvo, painottamaton (%)"
               },
               {
                 "name": "Rahoitus (1000 euroa)"
               },
               {
                 "name": "Osuus korkeakoulun perusrahoituksesta"
+              },
+              {
+                "name": "Tutkintotavoite"
               }
             ]
           },
