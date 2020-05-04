@@ -621,7 +621,7 @@
           },
           {
             "type": "calculated",
-            "name": "Avoin saatavuus, rinnakkaistallennettu",
+            "name": "Yhd. avoin saatavuus",
             "dataType": "string",
             "isDataTypeInferred": true,
             "expression": " IF(AND([Avoin saatavuus]=\"Ei vastausta\",[Julkaisu rinnakkaistallennettu]=\"Kyllä\"),\"Rinnakkaistallennettu\",[Avoin saatavuus])",
@@ -638,6 +638,32 @@
             "dataType": "string",
             "sourceColumn": "Taidealan tyyppikategoria",
             "displayFolder": "Taiteenalamuuttujat"
+          },
+          {
+            "name": "Ilmoitusvuosi",
+            "dataType": "int64",
+            "sourceColumn": "Ilmoitusvuosi"
+          },
+          {
+            "type": "calculated",
+            "name": "Avoin saatavuus painotus",
+            "dataType": "double",
+            "isDataTypeInferred": true,
+            "expression": [
+              "IF([Yhd. avoin saatavuus]=\"Hybridijulkaisukanavassa ilmestynyt avoin julkaisu\",1.2,",
+              "IF([Yhd. avoin saatavuus]=\"Open access -julkaisukanavassa ilmestynyt julkaisu\",1.2,",
+              "IF([Yhd. avoin saatavuus]=\"Rinnakkaistallennettu\",1.2,",
+              "IF([Yhd. avoin saatavuus]=\"Ei vastausta\",1,",
+              "IF([Yhd. avoin saatavuus]=\"Tieto puuttuu\",1,",
+              "0)))))"
+            ]
+          },
+          {
+            "type": "calculated",
+            "name": "Rahoitusmallipainotus",
+            "dataType": "double",
+            "isDataTypeInferred": true,
+            "expression": "[Jufo-painotus nykyinen]*[Avoin saatavuus painotus]"
           }
         ],
         "partitions": [
@@ -1301,6 +1327,14 @@
                   "        <int>220</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Ilmoitusvuosi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>134</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -1941,6 +1975,14 @@
                   "      </key>",
                   "      <value>",
                   "        <int>79</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Ilmoitusvuosi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>80</int>",
                   "      </value>",
                   "    </item>",
                   "  </ColumnDisplayIndex>",
@@ -2586,6 +2628,14 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Ilmoitusvuosi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -2655,8 +2705,8 @@
             ]
           },
           {
-            "name": "Julkaisut painotetut",
-            "expression": "if(sum([Jufo-painotus nykyinen])=0,blank(),sum([Jufo-painotus nykyinen]))",
+            "name": "Rahoitusmallipisteet",
+            "expression": "if(sum([Rahoitusmallipainotus])=0,blank(),sum([Rahoitusmallipainotus]))",
             "formatString": "#,0.0"
           },
           {
@@ -3335,6 +3385,14 @@
               "        <int>220</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Ilmoitusvuosi</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>134</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -3975,6 +4033,14 @@
               "      </key>",
               "      <value>",
               "        <int>79</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Ilmoitusvuosi</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>80</int>",
               "      </value>",
               "    </item>",
               "  </ColumnDisplayIndex>",
@@ -4620,6 +4686,14 @@
               "        <boolean>true</boolean>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Ilmoitusvuosi</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
               "  </ColumnChecked>",
               "  <ColumnFilter />",
               "  <SelectionFilter />",
@@ -4855,11 +4929,11 @@
                 "name": "Jufotaso 2011-2014"
               },
               {
-                "name": "Avoin saatavuus, rinnakkaistallennettu"
+                "name": "Yhd. avoin saatavuus"
               },
               {
-                "name": "Taidealan tyyppikategoria"  
-              }  
+                "name": "Taidealan tyyppikategoria"
+              }
             ],
             "measures": [
               {
@@ -4977,11 +5051,11 @@
                 "name": "Jufotaso 2011-2014"
               },
               {
-                "name": "Avoin saatavuus, rinnakkaistallennettu"
+                "name": "Yhd. avoin saatavuus"
               },
               {
-                "name": "Taidealan tyyppikategoria"  
-              }       
+                "name": "Taidealan tyyppikategoria"
+              }
             ],
             "measures": [
               {
@@ -5096,11 +5170,11 @@
                 "name": "Jufotaso 2011-2014"
               },
               {
-                "name": "Avoin saatavuus, rinnakkaistallennettu"
+                "name": "Yhd. avoin saatavuus"
               },
               {
-                "name": "Taidealan tyyppikategoria"  
-              }  
+                "name": "Taidealan tyyppikategoria"
+              }
             ],
             "measures": [
               {
@@ -5209,7 +5283,7 @@
                 "name": "Tieteenalaryhmä"
               },
               {
-                "name": "Avoin saatavuus, rinnakkaistallennettu"
+                "name": "Yhd. avoin saatavuus"
               }
             ],
             "measures": [
@@ -5888,7 +5962,7 @@
                 "name": "Yliopisto"
               },
               {
-                "name": "Avoin saatavuus, rinnakkaistallennettu"
+                "name": "Yhd. avoin saatavuus"
               }
             ],
             "measures": [
@@ -5896,7 +5970,7 @@
                 "name": "Julkaisut"
               },
               {
-                "name": "Julkaisut painotetut"
+                "name": "Rahoitusmallipisteet"
               }
             ]
           },

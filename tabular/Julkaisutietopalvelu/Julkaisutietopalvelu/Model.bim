@@ -643,6 +643,28 @@
             "name": "Ilmoitusvuosi",
             "dataType": "int64",
             "sourceColumn": "Ilmoitusvuosi"
+          },
+          {
+            "type": "calculated",
+            "name": "Avoin saatavuus painotus",
+            "dataType": "double",
+            "isDataTypeInferred": true,
+            "expression": [
+              "IF(AND([Koodit Julkaisun pääluokka]=\"A\",[Yhd. avoin saatavuus]=\"Hybridijulkaisukanavassa ilmestynyt avoin julkaisu\"),1.2,",
+              "IF(AND([Koodit Julkaisun pääluokka]=\"A\",[Yhd. avoin saatavuus]=\"Open access -julkaisukanavassa ilmestynyt julkaisu\"),1.2,",
+              "IF(AND([Koodit Julkaisun pääluokka]=\"A\",[Yhd. avoin saatavuus]=\"Rinnakkaistallennettu\"),1.2,",
+              "IF(AND([Koodit Julkaisun pääluokka]=\"C\",[Yhd. avoin saatavuus]=\"Hybridijulkaisukanavassa ilmestynyt avoin julkaisu\"),1.2,",
+              "IF(AND([Koodit Julkaisun pääluokka]=\"C\",[Yhd. avoin saatavuus]=\"Open access -julkaisukanavassa ilmestynyt julkaisu\"),1.2,",
+              "IF(AND([Koodit Julkaisun pääluokka]=\"C\",[Yhd. avoin saatavuus]=\"Rinnakkaistallennettu\"),1.2,",
+              "1))))))"
+            ]
+          },
+          {
+            "type": "calculated",
+            "name": "Rahoitusmallipainotus",
+            "dataType": "double",
+            "isDataTypeInferred": true,
+            "expression": "[Jufo-painotus nykyinen]*[Avoin saatavuus painotus]"
           }
         ],
         "partitions": [
@@ -2685,7 +2707,7 @@
           },
           {
             "name": "Rahoitusmallipisteet",
-            "expression": "if(sum([Jufo-painotus nykyinen])=0,blank(),sum([Jufo-painotus nykyinen]))",
+            "expression": "if(sum([Rahoitusmallipainotus])=0,blank(),sum([Rahoitusmallipainotus]))",
             "formatString": "#,0.0"
           },
           {
