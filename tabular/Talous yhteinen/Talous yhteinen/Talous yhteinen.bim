@@ -2899,8 +2899,8 @@
             "displayFolder": "Tutkimusmenot"
           },
           {
-            "name": "Liikevaihto(Tiedot liiketoiminnasta)",
-            "expression": "SUMX(FILTER(Muuttujat,[tili_taso1_fi]=\"Liikevaihto\"),[arvo])",
+            "name": "Liikevaihto (Tiedot liiketoiminnasta)",
+            "expression": "SUMX(FILTER(Muuttujat,[tili_koodi]=\"lt_liikevaihto\"),[arvo])",
             "formatString": "#,0",
             "displayFolder": "Liiketoiminnan tuloslaskelma"
           },
@@ -2953,12 +2953,6 @@
             "displayFolder": "Liiketoiminnan tuloslaskelma\\Liikevaihto\\Materiaalit ja palvelut"
           },
           {
-            "name": "Liiketoiminnan henkilöstökulut yhteensä",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso0_fi] = \"Liiketoiminnan tuloslaskelma\"), FILTER(Muuttujat,[tili_taso2_fi]=\"Henkilöstökulut\"))",
-            "formatString": "#,0",
-            "displayFolder": "Liiketoiminnan tuloslaskelma\\Liikevaihto"
-          },
-          {
             "name": "Liiketoiminnan palkat ja palkkiot",
             "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso0_fi] = \"Liiketoiminnan tuloslaskelma\"), FILTER(Muuttujat,[tili_taso5_fi]=\"Palkat ja palkkiot\"))",
             "formatString": "#,0",
@@ -2984,7 +2978,7 @@
           },
           {
             "name": "Poistot ja arvonalentumiset yhteensä",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso0_fi] = \"Liiketoiminnan tuloslaskelma\"), FILTER(Muuttujat,[tili_taso2_fi]=\"Poistot ja arvonalentumiset\"))",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso0_fi] = \"Liiketoiminnan tuloslaskelma\"), FILTER(Muuttujat,[tili_koodi]=\"poistot_ja_arvonalennukset\"))",
             "formatString": "#,0",
             "displayFolder": "Liiketoiminnan tuloslaskelma\\Liikevaihto"
           },
@@ -3020,9 +3014,9 @@
           },
           {
             "name": "Rahoitustuotot ja -kulut yhteensä",
-            "expression": "SUMX(FILTER(Muuttujat,[tili_taso1_fi]=\"Rahoitustuotot ja kulut\"),[arvo])",
+            "expression": "SUMX(FILTER(Muuttujat,Muuttujat[tili_koodi]=\"rahoitustuotot_ja_kulut\"),[arvo])",
             "formatString": "#,0",
-            "displayFolder": "Liiketoiminnan tuloslaskelma\\Rahoitustuotot ja -kulut"
+            "displayFolder": "Liiketoiminnan tuloslaskelma"
           },
           {
             "name": "Tuotot osuuksista saman konsernin yrityksissä ",
@@ -3207,6 +3201,24 @@
             "name": "(Summa) - Lyhytaikaiset saamiset",
             "expression": "1",
             "displayFolder": "Liiketoiminnan tuloslaskelma\\Liikevaihto\\Materiaalit ja palvelut"
+          },
+          {
+            "name": "Liiketoiminnan henkilöstökulut",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso0_fi] = \"Liiketoiminnan tuloslaskelma\"), FILTER(Muuttujat,[tili_koodi]=\"henkilostokulut\"))",
+            "formatString": "#,0",
+            "displayFolder": "Liiketoiminnan tuloslaskelma\\Liikevaihto"
+          },
+          {
+            "name": "Tilinpäätössiirrot (liiketoiminta)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso0_fi] = \"Liiketoiminnan tuloslaskelma\"), FILTER(Muuttujat,[tili_koodi]=\"tilinpaatossiirrot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Liiketoiminnan tuloslaskelma\\Tilinpäätössiirrot ja verot"
+          },
+          {
+            "name": "Tilinpäätössiirrot ja verot",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso0_fi] = \"Liiketoiminnan tuloslaskelma\"), FILTER(Muuttujat,OR([tili_koodi]=\"tilinpaatossiirrot\",OR([tili_koodi]=\"muut_valittomat_verot\",([tili_koodi]=\"tuloverot\")))))",
+            "formatString": "#,0",
+            "displayFolder": "Liiketoiminnan tuloslaskelma"
           }
         ],
         "annotations": [
@@ -4429,69 +4441,6 @@
     ],
     "perspectives": [
       {
-        "name": "Tuloslaskelma _vanha",
-        "tables": [
-          {
-            "name": "Muuttujat",
-            "columns": [
-              {
-                "name": "Tilastovuosi"
-              },
-              {
-                "name": "Suodatus tilastovuosi"
-              },
-              {
-                "name": "Korkeakoulu"
-              }
-            ]
-          },
-          {
-            "name": "Sarakeleveys",
-            "columns": [
-              {
-                "name": "leveys"
-              },
-              {
-                "name": "Sarakeleveys"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "Tuloslaskelma yliopisto 1",
-        "tables": [
-          {
-            "name": "Muuttujat",
-            "columns": [
-              {
-                "name": "Tilastovuosi"
-              },
-              {
-                "name": "Konserni"
-              },
-              {
-                "name": "Suodatus tilastovuosi"
-              },
-              {
-                "name": "Korkeakoulu"
-              }
-            ]
-          },
-          {
-            "name": "Sarakeleveys",
-            "columns": [
-              {
-                "name": "leveys"
-              },
-              {
-                "name": "Sarakeleveys"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "name": "Toimintokohtainen erittely",
         "tables": [
           {
@@ -4636,45 +4585,6 @@
               },
               {
                 "name": "Tutkimusmenot yhteensä"
-              }
-            ]
-          },
-          {
-            "name": "Sarakeleveys",
-            "columns": [
-              {
-                "name": "leveys"
-              },
-              {
-                "name": "Sarakeleveys"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "Varsinaisen toiminnan kustannukset",
-        "tables": [
-          {
-            "name": "Muuttujat",
-            "columns": [
-              {
-                "name": "Tilastovuosi"
-              },
-              {
-                "name": "Koulutusala"
-              },
-              {
-                "name": "Ohjauksen ala"
-              },
-              {
-                "name": "Suodatus tilastovuosi"
-              },
-              {
-                "name": "Koodit_aineisto"
-              },
-              {
-                "name": "Korkeakoulu"
               }
             ]
           },
@@ -5069,39 +4979,6 @@
         ]
       },
       {
-        "name": "Tase yliopisto",
-        "tables": [
-          {
-            "name": "Muuttujat",
-            "columns": [
-              {
-                "name": "Konserni"
-              },
-              {
-                "name": "Suodatus tilastovuosi"
-              },
-              {
-                "name": "Tilastovuosi"
-              },
-              {
-                "name": "Korkeakoulu"
-              }
-            ]
-          },
-          {
-            "name": "Sarakeleveys",
-            "columns": [
-              {
-                "name": "leveys"
-              },
-              {
-                "name": "Sarakeleveys"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "name": "Tase",
         "tables": [
           {
@@ -5420,6 +5297,63 @@
               },
               {
                 "name": "Toimintapääoman suhde omaan pääomaan"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Liiketoiminnan tuloslaskelma",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Korkeakoulu"
+              },
+              {
+                "name": "Sektori"
+              },
+              {
+                "name": "Tilastovuosi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Liiketoiminnan muut kulut"
+              },
+              {
+                "name": "Liiketoiminnan muut tuotot"
+              },
+              {
+                "name": "Liikevaihto (Tiedot liiketoiminnasta)"
+              },
+              {
+                "name": "Liikevoitto tai tappio"
+              },
+              {
+                "name": "Poistot ja arvonalentumiset yhteensä"
+              },
+              {
+                "name": "Rahoitustuotot ja -kulut yhteensä"
+              },
+              {
+                "name": "Tilikauden voitto tai tappio"
+              },
+              {
+                "name": "Valmiiden ja keskeneräisten tuotteiden varastojen lisäys tai vähennys"
+              },
+              {
+                "name": "Valmistus omaan käyttöön"
+              },
+              {
+                "name": "Voitto tai tappio ennen tilinpäätössiirtoja ja veroja"
+              },
+              {
+                "name": "Liiketoiminnan henkilöstökulut"
+              },
+              {
+                "name": "Tilinpäätössiirrot ja verot"
               }
             ]
           }
