@@ -236,6 +236,20 @@
             "dataType": "string",
             "isHidden": true,
             "sourceColumn": "rahoitusmalliala_tutkintotavoite"
+          },
+          {
+            "name": "sektori",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "sektori"
+          },
+          {
+            "type": "calculated",
+            "name": "jaettava_rahamaara_avain",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "expression": "CONCATENATE([sektori],[Rahoitusvuosi])"
           }
         ],
         "partitions": [
@@ -243,7 +257,7 @@
             "name": "v_kk_rahoitusmalli_yo_testi",
             "dataView": "full",
             "source": {
-              "query": " SELECT [dw].[v_kk_rahoitusmalli_yo_uusi].* FROM [dw].[v_kk_rahoitusmalli_yo_uusi] ",
+              "query": " SELECT [dw].[v_kk_rahoitusmalli].* FROM [dw].[v_kk_rahoitusmalli] ",
               "dataSource": "SqlServer dwitvipusql16 ANTERO"
             },
             "annotations": [
@@ -515,6 +529,14 @@
                   "        <int>223</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>sektori</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>75</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -773,6 +795,14 @@
                   "        <int>31</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>sektori</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>32</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -920,6 +950,14 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>sektori</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -936,7 +974,12 @@
             "name": "perusrahoituksen_osuus",
             "expression": [
               " ",
-              "var taulu = SUMMARIZE(Muuttujat,[Rahoitusvuosi],\"rahamaara\",SUM('Jaettava kokonaisrahamäärä'[maara]),\"osuus1\",CALCULATE([indikaattorin_osuus_rahoituksesta],ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusvuosi])))",
+              "var taulu = ",
+              "SUMMARIZE(",
+              "\tMuuttujat,[Rahoitusvuosi],[sektori]",
+              "\t,\"rahamaara\",CALCULATE(SUM('Jaettava rahamaara'[maara]))",
+              "\t,\"osuus1\",CALCULATE([indikaattorin_osuus_rahoituksesta],ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusvuosi],Muuttujat[sektori]))",
+              ")",
               "return AVERAGEX(taulu,[osuus1]*[rahamaara]) / AVERAGEX(taulu,[rahamaara])",
               "--HUOM! Painotettu keskiarvo"
             ],
@@ -946,7 +989,11 @@
             "name": "indikaattorin_osuus_rahoituksesta",
             "expression": [
               "",
-              "var taulu = SUMMARIZE(Muuttujat,[Rahoitusvuosi],[Rahoituksen kategoria],[Rahoituksen alakategoria],[Indikaattori], \"pros\",MAX([rahoitus_osuus]))",
+              "var taulu = ",
+              "SUMMARIZE(",
+              "\tMuuttujat,[Rahoitusvuosi],[Rahoituksen kategoria],[Rahoituksen alakategoria],[Indikaattori],[sektori]",
+              "\t,\"pros\",MAX([rahoitus_osuus])",
+              ")",
               "return SUMX(taulu,[pros])"
             ],
             "formatString": "0.00 %;-0.00 %;0.00 %",
@@ -954,7 +1001,8 @@
           },
           {
             "name": "jaettava_maara",
-            "expression": "CALCULATE(SUM('Jaettava kokonaisrahamäärä'[maara]),ALLSELECTED(Muuttujat[Tilastovuosi]))",
+            "expression": "CALCULATE(SUM('Jaettava rahamaara'[maara]),ALLSELECTED(Muuttujat[Tilastovuosi]))",
+            "formatString": "#,0",
             "isHidden": true
           },
           {
@@ -968,10 +1016,12 @@
               "\t\t,[Rahoitusvuosi]",
               "\t\t,[Tilastovuosi]",
               "\t\t,[Indikaattori]",
+              "\t\t,[sektori]",
               "\t\t,\"summa1\",SUMX(CURRENTGROUP(),Muuttujat[mittari])",
               "\t),",
               "\t[Rahoitusvuosi]",
               "\t,[Indikaattori]",
+              "\t,[sektori]",
               "\t,\"ka1\",AVERAGEX(CURRENTGROUP(),[summa1] )",
               ")",
               "var ka = SUMX(taulu,[ka1])",
@@ -984,7 +1034,7 @@
             "expression": [
               "",
               "var org = [Keskiarvo]",
-              "var kaikki_org =  CALCULATE([Keskiarvo],ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusvuosi],Muuttujat[Indikaattori]))",
+              "var kaikki_org =  CALCULATE([Keskiarvo],ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusvuosi],Muuttujat[Indikaattori],Muuttujat[sektori]))",
               "var on_summa = NOT(HASONEVALUE(Muuttujat[Indikaattori]))",
               "return IF(on_summa=TRUE(),1,DIVIDE(org,kaikki_org))"
             ],
@@ -1014,10 +1064,12 @@
               "\t\t,[Rahoitusvuosi]",
               "\t\t,[Tilastovuosi]",
               "\t\t,[Indikaattori]",
+              "\t\t,[sektori]",
               "\t\t,\"summa1\",SUMX(CURRENTGROUP(),Muuttujat[mittari_painottamaton])",
               "\t),",
               "\t[Rahoitusvuosi]",
               "\t,[Indikaattori]",
+              "\t,[sektori]",
               "\t,\"ka1\",AVERAGEX(CURRENTGROUP(),[summa1])",
               ")",
               "var ka = SUMX(taulu,[ka1])",
@@ -1030,7 +1082,7 @@
             "expression": [
               "",
               "var org = [Keskiarvo, painottamaton]",
-              "var kaikki_org =  CALCULATE([Keskiarvo, painottamaton],ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusvuosi],Muuttujat[Indikaattori]))",
+              "var kaikki_org =  CALCULATE([Keskiarvo, painottamaton],ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusvuosi],Muuttujat[Indikaattori],Muuttujat[sektori]))",
               "var on_summa = NOT(HASONEVALUE(Muuttujat[Indikaattori]))",
               "return IF(on_summa=TRUE(),1,DIVIDE(org,kaikki_org))"
             ],
@@ -1049,7 +1101,7 @@
               "\t\t\tADDCOLUMNS(",
               "\t\t\t\tSUMMARIZE(Muuttujat,[Rahoitusvuosi],[Tilastovuosi],[Indikaattori])",
               "\t\t\t\t,\"summa2\"",
-              "\t\t\t\t,[Keskiarvo (%)] * [indikaattorin_osuus_rahoituksesta] * AVERAGE('Jaettava kokonaisrahamäärä'[maara])",
+              "\t\t\t\t,[Keskiarvo (%)] * [indikaattorin_osuus_rahoituksesta] * AVERAGE('Jaettava rahamaara'[maara])",
               "\t\t\t)\t\t\t",
               "\t\t\t,[summa2]",
               "\t\t)",
@@ -1058,7 +1110,8 @@
               ")",
               "return SUMX(taulu,[summa1])"
             ],
-            "formatString": "#,0"
+            "formatString": "#,0",
+            "isHidden": true
           },
           {
             "name": "rahoitus_rahv_summa",
@@ -1075,7 +1128,7 @@
               "\t\t\tADDCOLUMNS(",
               "\t\t\t\tSUMMARIZE(Muuttujat,[Rahoitusvuosi],[Tilastovuosi],[Indikaattori])",
               "\t\t\t\t,\"summa2\"",
-              "\t\t\t\t,[Keskiarvo (%)] * [indikaattorin_osuus_rahoituksesta] * AVERAGE('Jaettava kokonaisrahamäärä'[maara])",
+              "\t\t\t\t,[Keskiarvo (%)] * [indikaattorin_osuus_rahoituksesta] * AVERAGE('Jaettava rahamaara'[maara])",
               "\t\t\t)\t\t\t",
               "\t\t\t,[summa2]",
               "\t\t)",
@@ -1084,7 +1137,8 @@
               ")",
               "return SUMX(taulu,[summa1]*(3/[v_lkm]))"
             ],
-            "formatString": "#,0"
+            "formatString": "#,0",
+            "isHidden": true
           },
           {
             "name": "rahoitus_tilv",
@@ -1103,7 +1157,10 @@
               "\t\t\t\t,\"summa1\"",
               "\t\t\t\t,CALCULATE(",
               "\t\t\t\t\tSUMX(",
-              "\t\t\t\tADDCOLUMNS(SUMMARIZE(Muuttujat,[Rahoitusvuosi],[Tilastovuosi],[Indikaattori]) ,\"summa2\",[Keskiarvo (%)] * [indikaattorin_osuus_rahoituksesta] * AVERAGE('Jaettava kokonaisrahamäärä'[maara]))",
+              "\t\t\t\t\t\tADDCOLUMNS(",
+              "\t\t\t\t\t\t\tSUMMARIZE(Muuttujat,[Rahoitusvuosi],[Tilastovuosi],[Indikaattori])",
+              "\t\t\t\t\t\t\t,\"summa2\",[Keskiarvo (%)] * [indikaattorin_osuus_rahoituksesta] * AVERAGE('Jaettava rahamaara'[maara])",
+              "\t\t\t\t\t\t)",
               "\t\t\t\t\t\t,[summa2]",
               "\t\t\t\t\t)",
               "\t\t\t\t)",
@@ -1114,7 +1171,8 @@
               ")",
               "return SUMX(taulu,[ka1]*(3/[v_lkm]))"
             ],
-            "formatString": "#,0"
+            "formatString": "#,0",
+            "isHidden": true
           },
           {
             "name": "Rahoitus (1000 euroa)",
@@ -1152,32 +1210,16 @@
               ""
             ],
             "formatString": "#,0"
-          },
-          {
-            "name": "Tutkintotavoite2",
-            "expression": [
-              "",
-              "var taulu2 = ",
-              "ADDCOLUMNS(",
-              "\tSUMMARIZE(Muuttujat,[Rahoituskausi],[Organisaatio],[Koulutusaste,taso 2],\"rah_ala\",IF(Muuttujat[Koulutusaste,taso 2]=\"Ylempi \t\tkorkeakoulututkinto\",VALUES(Muuttujat[Rahoitusmalliala]),\"\"))",
-              "\t,\"tutk_raja\"",
-              "\t,CALCULATE(AVERAGE(Muuttujat[tutkintoraja]))",
-              ")",
-              "return SUMX(taulu2,[tutk_raja])",
-              ""
-            ],
-            "formatString": "#,0",
-            "isHidden": true
           }
         ],
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": " SELECT [dw].[v_kk_rahoitusmalli_yo_uusi].* FROM [dw].[v_kk_rahoitusmalli_yo_uusi] "
+            "value": " SELECT [dw].[v_kk_rahoitusmalli].* FROM [dw].[v_kk_rahoitusmalli] "
           },
           {
             "name": "_TM_ExtProp_DbTableName",
-            "value": "v_kk_rahoitusmalli_yo_uusi"
+            "value": "v_kk_rahoitusmalli"
           },
           {
             "name": "_TM_ExtProp_DbSchemaName",
@@ -1451,6 +1493,14 @@
               "        <int>223</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>sektori</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>75</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -1709,6 +1759,14 @@
               "        <int>31</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>sektori</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>32</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -1856,6 +1914,14 @@
               "        <boolean>true</boolean>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>sektori</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
               "  </ColumnChecked>",
               "  <ColumnFilter />",
               "  <SelectionFilter />",
@@ -1910,17 +1976,9 @@
         ]
       },
       {
-        "name": "Jaettava kokonaisrahamäärä",
+        "name": "Jaettava rahamaara",
         "isHidden": true,
         "columns": [
-          {
-            "type": "calculatedTableColumn",
-            "name": "rahoitusvuosi",
-            "dataType": "int64",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "[rahoitusvuosi]"
-          },
           {
             "type": "calculatedTableColumn",
             "name": "maara",
@@ -1928,13 +1986,21 @@
             "isNameInferred": true,
             "isDataTypeInferred": true,
             "sourceColumn": "[maara]",
-            "formatString": "#,0 \"€\";-#,0 \"€\";#,0 \"€\"",
+            "formatString": "#,0 \"�\";-#,0 \"�\";#,0 \"�\"",
             "annotations": [
               {
                 "name": "Format",
-                "value": "<Format Format=\"Currency\" ThousandSeparator=\"True\"><Currency LCID=\"1035\" DisplayName=\"€ Finnish (Finland)\" Symbol=\"€\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
+                "value": "<Format Format=\"Currency\" ThousandSeparator=\"True\"><Currency LCID=\"1035\" DisplayName=\"� Finnish (Finland)\" Symbol=\"�\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
               }
             ]
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "avain",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[avain]"
           }
         ],
         "partitions": [
@@ -1944,12 +2010,16 @@
               "type": "calculated",
               "expression": [
                 "DATATABLE(",
-                "\"rahoitusvuosi\",INTEGER,",
+                "\"avain\",STRING,",
                 "\"maara\",CURRENCY,",
                 "{",
-                "{2019,1750513},",
-                "{2020,1800000},",
-                "{2021,1717191}",
+                "{\"yo2019\",1750513},",
+                "{\"yo2020\",1800000},",
+                "{\"yo2021\",1717191},",
+                "{\"amk2019\",826464},",
+                "{\"amk2020\",800000},",
+                "{\"amk2021\",800000}",
+                "",
                 "}",
                 ")"
               ]
@@ -1960,11 +2030,11 @@
     ],
     "relationships": [
       {
-        "name": "cbc705eb-c1d5-4915-b004-b51302fec2b8",
+        "name": "382202e1-2e44-47a7-966b-1eabe0504fd4",
         "fromTable": "Muuttujat",
-        "fromColumn": "Rahoitusvuosi",
-        "toTable": "Jaettava kokonaisrahamäärä",
-        "toColumn": "rahoitusvuosi",
+        "fromColumn": "jaettava_rahamaara_avain",
+        "toTable": "Jaettava rahamaara",
+        "toColumn": "avain",
         "crossFilteringBehavior": "bothDirections"
       }
     ],
