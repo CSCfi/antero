@@ -147,9 +147,8 @@
             ]
           },
           {
-            "name": "toiminto_nimi_fi",
+            "name": "Toiminto_nimi_fi",
             "dataType": "string",
-            "isHidden": true,
             "sourceColumn": "toiminto_nimi_fi"
           },
           {
@@ -427,6 +426,23 @@
             "dataType": "string",
             "sourceColumn": "Sektori",
             "displayFolder": "Organisaatiomuuttujat"
+          },
+          {
+            "type": "calculated",
+            "name": "Toiminnon nimi",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": [
+              "",
+              "SWITCH(TRUE(),Muuttujat[Toiminto_nimi_fi]=\"Koulutustoiminta\",\"A) Koulutustoiminta\",",
+              "Muuttujat[Toiminto_nimi_fi]=\"Tutkimustoiminta\",\"B) Tutkimustoiminta\",",
+              "Muuttujat[Toiminto_nimi_fi]=\"Muu yhteiskunnallinen toiminta\",\"C) Muu yhteiskunnallinen toiminta\",",
+              "Muuttujat[Toiminto_nimi_fi]=\"Harjoittelukoulu\",\"D) Harjoittelukoulu\",",
+              "Muuttujat[Toiminto_nimi_fi]=\"Kansalliskirjasto\",\"E) Kansalliskirjasto\",",
+              "Muuttujat[Toiminto_nimi_fi]=\"Toiminnot yhteensä\",\"Toiminnot yhteensä\"",
+              "\t)",
+              ""
+            ]
           }
         ],
         "partitions": [
@@ -3219,6 +3235,450 @@
             "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_taso0_fi] = \"Liiketoiminnan tuloslaskelma\"), FILTER(Muuttujat,OR([tili_koodi]=\"tilinpaatossiirrot\",OR([tili_koodi]=\"muut_valittomat_verot\",([tili_koodi]=\"tuloverot\")))))",
             "formatString": "#,0",
             "displayFolder": "Liiketoiminnan tuloslaskelma"
+          },
+          {
+            "name": "Varsinaisen toiminnan tuotot yhteensä",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Toiminnot yhteensä\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Tuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Toiminnot yhteensä\\Tuotot"
+          },
+          {
+            "name": "Varsinaisen toiminnan tuotot yhteensä (koulutus)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Koulutustoiminta\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Tuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Koulutus\\Tuotot"
+          },
+          {
+            "name": "Varsinaisen toiminnan tuotot yhteensä (tutkimus)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Tutkimustoiminta\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Tuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Tutkimus\\Tuotot"
+          },
+          {
+            "name": "Varsinaisen toiminnan tuotot yhteensä (taiteellinen toiminta)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Taiteellinen toiminta\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Tuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Taiteellinen toiminta\\Tuotot"
+          },
+          {
+            "name": "Varsinaisen toiminnan tuotot yhteensä (muu yhteiskunnallinen toiminta)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Muu yhteiskunnallinen toiminta\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Tuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Muu yhteiskunnallinen toiminta\\Tuotot"
+          },
+          {
+            "name": "Varsinaisen toiminnan tuotot yhteensä (harjoittelukoulut)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Harjoittelukoulu\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Tuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Harjoittelukoulut\\Tuotot"
+          },
+          {
+            "name": "Varsinaisen liiketoiminnan tuotot yhteensä (kansalliskirjasto)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Kansalliskirjasto\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Tuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Kansalliskirjasto\\Tuotot"
+          },
+          {
+            "name": "Avustustuotot (toiminnot yhteensä)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Toiminnot yhteensä\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Avustustuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Toiminnot yhteensä\\Tuotot"
+          },
+          {
+            "name": "Avustustuotot (koulutus)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Koulutustoiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Avustustuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Koulutus\\Tuotot"
+          },
+          {
+            "name": "Avustustuotot (tutkimus)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Tutkimustoiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Avustustuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Tutkimus\\Tuotot"
+          },
+          {
+            "name": "Avustustuotot (taiteellinen toiminta)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Taiteellinen toiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Avustustuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Taiteellinen toiminta\\Tuotot"
+          },
+          {
+            "name": "Avustustuotot (muu yhteiskunnallinen toiminta)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Muu yhteiskunnallinen toiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Avustustuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Muu yhteiskunnallinen toiminta\\Tuotot"
+          },
+          {
+            "name": "Avustustuotot (harjoittelukoulut)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Harjoittelukoulu\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Avustustuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Harjoittelukoulut\\Tuotot"
+          },
+          {
+            "name": "Avustustuotot (kansalliskirjasto)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Kansalliskirjasto\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Avustustuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Kansalliskirjasto\\Tuotot"
+          },
+          {
+            "name": "Liiketoiminnan tuotot (toiminnot yhteensä)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Toiminnot yhteensä\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Liiketoiminnan tuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Toiminnot yhteensä\\Tuotot"
+          },
+          {
+            "name": "Liiketoiminnan tuotot (koulutus)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Koulutustoiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Liiketoiminnan tuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Koulutus\\Tuotot"
+          },
+          {
+            "name": "Liiketoiminnan tuotot (tutkimus)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Tutkimustoiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Liiketoiminnan tuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Tutkimus\\Tuotot"
+          },
+          {
+            "name": "Liiketoiminnan tuotot (taiteellinen toiminta)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Taiteellinen toiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Liiketoiminnan tuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Taiteellinen toiminta\\Tuotot"
+          },
+          {
+            "name": "Liiketoiminnan tuotot (muu yhteiskunnallinen toiminta)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Muu yhteiskunnallinen toiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Liiketoiminnan tuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Muu yhteiskunnallinen toiminta\\Tuotot"
+          },
+          {
+            "name": "Liiketoiminnan tuotot (harjoittelukoulut)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Harjoittelukoulu\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Liiketoiminnan tuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Harjoittelukoulut\\Tuotot"
+          },
+          {
+            "name": "Liiketoiminnan tuotot (kansalliskirjasto)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Kansalliskirjasto\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Liiketoiminnan tuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Kansalliskirjasto\\Tuotot"
+          },
+          {
+            "name": "Muut tuotot (toiminnot yhteensä)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Toiminnot yhteensä\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Muut tuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Toiminnot yhteensä\\Tuotot"
+          },
+          {
+            "name": "Muut tuotot (koulutus)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Koulutustoiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Muut tuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Koulutus\\Tuotot"
+          },
+          {
+            "name": "Muut tuotot (tutkimus)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Tutkimustoiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Muut tuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Tutkimus\\Tuotot"
+          },
+          {
+            "name": "Muut tuotot (taiteellinen toiminta)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Taiteellinen toiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Muut tuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Taiteellinen toiminta\\Tuotot"
+          },
+          {
+            "name": "Muut tuotot (muu yhteiskunnallinen toiminta)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Muu yhteiskunnallinen toiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Muut tuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Muu yhteiskunnallinen toiminta\\Tuotot"
+          },
+          {
+            "name": "Muut tuotot (harjoittelukoulut)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Harjoittelukoulu\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Muut tuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Harjoittelukoulut\\Tuotot"
+          },
+          {
+            "name": "Muut tuotot (kansalliskirjasto)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Kansalliskirjasto\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Muut tuotot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Kansalliskirjasto\\Tuotot"
+          },
+          {
+            "name": "Kulut yhteensä (kaikki toiminnot)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Toiminnot yhteensä\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Kulut\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Toiminnot yhteensä\\Kulut"
+          },
+          {
+            "name": "Kulut yhteensä (koulutus)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Koulutustoiminta\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Kulut\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Koulutus\\Kulut"
+          },
+          {
+            "name": "Kulut yhteensä (tutkimus)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Tutkimustoiminta\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Kulut\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Tutkimus\\Kulut"
+          },
+          {
+            "name": "Kulut yhteensä (taiteellinen toiminta)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Taiteellinen toiminta\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Kulut\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Taiteellinen toiminta\\Kulut"
+          },
+          {
+            "name": "Kulut yhteensä (muu yhteiskunnallinen toiminta)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Muu yhteiskunnallinen toiminta\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Kulut\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Muu yhteiskunnallinen toiminta\\Kulut"
+          },
+          {
+            "name": "Kulut yhteensä (harjoittelukoulut)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Harjoittelukoulu\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Kulut\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Harjoittelukoulut\\Kulut"
+          },
+          {
+            "name": "Kulut yhteensä (kansalliskirjasto)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Kansalliskirjasto\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Kulut\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Kansalliskirjasto\\Kulut"
+          },
+          {
+            "name": "Kulut yhteensä (yhteiskulut)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Yhteiskulut\"), FILTER('Muuttujat', [tili_taso1_fi] = \"Kulut\"),FILTER('Muuttujat',[tili_taso2_fi] = \"Kulut\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Yhteiskulut\\Kulut"
+          },
+          {
+            "name": "Henkilöstökulut (toiminnot yhteensä)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Toiminnot yhteensä\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Henkilöstökulut\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Toiminnot yhteensä\\Kulut"
+          },
+          {
+            "name": "Henkilöstökulut (koulutus)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Koulutustoiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Henkilöstökulut\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Koulutus\\Kulut"
+          },
+          {
+            "name": "Henkilöstökulut (tutkimus)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Tutkimustoiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Henkilöstökulut\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Tutkimus\\Kulut"
+          },
+          {
+            "name": "Henkilöstökulut (taiteellinen toiminta)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Taiteellinen toiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Henkilöstökulut\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Taiteellinen toiminta\\Kulut"
+          },
+          {
+            "name": "Henkilöstökulut (muu yhteiskunnallinen toiminta)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Muu yhteiskunnallinen toiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Henkilöstökulut\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Muu yhteiskunnallinen toiminta\\Kulut"
+          },
+          {
+            "name": "Henkilöstökulut (harjoittelukoulut)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Harjoittelukoulu\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Henkilöstökulut\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Harjoittelukoulut\\Kulut"
+          },
+          {
+            "name": "Henkilöstökulut (kansalliskirjasto)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Kansalliskirjasto\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Henkilöstökulut\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Kansalliskirjasto\\Kulut"
+          },
+          {
+            "name": "Henkilöstökulut (yhteiskulut)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Yhteiskulut\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Henkilöstökulut\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Yhteiskulut\\Kulut"
+          },
+          {
+            "name": "Poistot (toiminnot yhteensä)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Toiminnot yhteensä\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Poistot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Toiminnot yhteensä\\Kulut"
+          },
+          {
+            "name": "Poistot (koulutus)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Koulutustoiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Poistot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Koulutus\\Kulut"
+          },
+          {
+            "name": "Poistot (tutkimus)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Tutkimustoiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Poistot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Tutkimus\\Kulut"
+          },
+          {
+            "name": "Poistot (taiteellinen toiminta)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Taiteellinen toiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Poistot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Taiteellinen toiminta\\Kulut"
+          },
+          {
+            "name": "Poistot (muu yhteiskunnallinen toiminta)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Muu yhteiskunnallinen toiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Poistot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Muu yhteiskunnallinen toiminta\\Kulut"
+          },
+          {
+            "name": "Poistot (harjoittelukoulut)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Harjoittelukoulu\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Poistot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Harjoittelukoulut\\Kulut"
+          },
+          {
+            "name": "Poistot (kansalliskirjasto)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Kansalliskirjasto\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Poistot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Kansalliskirjasto\\Kulut"
+          },
+          {
+            "name": "Poistot (yhteiskulut)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Yhteiskulut\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Poistot\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Yhteiskulut\\Kulut"
+          },
+          {
+            "name": "Muut kulut (toiminnot yhteensä)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Toiminnot yhteensä\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Muut kulut\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Toiminnot yhteensä\\Kulut"
+          },
+          {
+            "name": "Muut kulut (koulutus)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Koulutustoiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Muut kulut\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Koulutus\\Kulut"
+          },
+          {
+            "name": "Muut kulut (tutkimus)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Tutkimustoiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Muut kulut\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Tutkimus\\Kulut"
+          },
+          {
+            "name": "Muut kulut (taiteellinen toiminta)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Taiteellinen toiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Muut kulut\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Taiteellinen toiminta\\Kulut"
+          },
+          {
+            "name": "Muut kulut (muu yhteiskunnallinen toiminta)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Muu yhteiskunnallinen toiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Muut kulut\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Muu yhteiskunnallinen toiminta\\Kulut"
+          },
+          {
+            "name": "Muut kulut (harjoittelukoulut)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Harjoittelukoulu\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Muut kulut\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Harjoittelukoulut\\Kulut"
+          },
+          {
+            "name": "Muut kulut (kansalliskirjasto)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Kansalliskirjasto\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Muut kulut\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Kansalliskirjasto\\Kulut"
+          },
+          {
+            "name": "Muut kulut (yhteiskulut)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Yhteiskulut\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Muut kulut\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Yhteiskulut\\Kulut"
+          },
+          {
+            "name": "Osuus yhteisistä kuluista (koulutus)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Koulutustoiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Osuus yhteisistä kuluista\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Koulutus\\Kulut"
+          },
+          {
+            "name": "Osuus yhteisistä kuluista (tutkimus)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Tutkimustoiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Osuus yhteisistä kuluista\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Tutkimus\\Kulut"
+          },
+          {
+            "name": "Osuus yhteisista kuluista (taiteellinen toiminta)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Taiteellinen toiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Osuus yhteisistä kuluista\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Taiteellinen toiminta\\Kulut"
+          },
+          {
+            "name": "Osuus yhteisistä kuluista (muu yhteiskunnallinen toiminta)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Muu yhteiskunnallinen toiminta\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Osuus yhteisistä kuluista\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Muu yhteiskunnallinen toiminta\\Kulut"
+          },
+          {
+            "name": "Osuus yhteisista kuluista (harjoittelukoulut)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Harjoittelukoulu\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Osuus yhteisistä kuluista\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Harjoittelukoulut\\Kulut"
+          },
+          {
+            "name": "Osuus yhteisista kuluista (kansalliskirjasto)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Kansalliskirjasto\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Osuus yhteisistä kuluista\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Kansalliskirjasto\\Kulut"
+          },
+          {
+            "name": "Osuus yhteisistä kuluista (yhteiskulut)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [Toiminto_nimi_fi] = \"Yhteiskulut\"), FILTER('Muuttujat', [tili_taso5_fi] = \"Osuus yhteisistä kuluista\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely\\Yhteiskulut\\Kulut"
+          },
+          {
+            "name": "Korkeakoulujen valtionrahoitus (toiminnot)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"kkvaltrah\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely"
+          },
+          {
+            "name": "Avustustuotot (toiminnot)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"ttavustu\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely"
+          },
+          {
+            "name": "Liiketoiminnan tuotot (toiminnot)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"liiketuo\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely"
+          },
+          {
+            "name": "Muut tuotot (toiminnot)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"muuttuot2\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely"
+          },
+          {
+            "name": "Varsinaisen toiminnan tuotot yhteensä (toiminnot)",
+            "expression": "CALCULATE([Korkeakoulujen valtionrahoitus (toiminnot)]+[Avustustuotot (toiminnot)]+[Liiketoiminnan tuotot (toiminnot)]+[Muut tuotot (toiminnot)])",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely"
+          },
+          {
+            "name": "Kulut yhteensä (toiminnot)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"kulutyht\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely"
+          },
+          {
+            "name": "Kuluista katettu omakatteisista rahastoista tai sidotuista rahastoista (toiminnot)",
+            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', [tili_koodi] =\"kulkat\"))",
+            "formatString": "#,0",
+            "displayFolder": "Toimintokohtainen erittely"
           }
         ],
         "annotations": [
@@ -4450,21 +4910,30 @@
                 "name": "Tilastovuosi"
               },
               {
-                "name": "Suodatus tilastovuosi"
-              },
-              {
                 "name": "Korkeakoulu"
-              }
-            ]
-          },
-          {
-            "name": "Sarakeleveys",
-            "columns": [
-              {
-                "name": "leveys"
               },
               {
-                "name": "Sarakeleveys"
+                "name": "Sektori"
+              },
+              {
+                "name": "Toiminto_nimi_fi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Avustustuotot (toiminnot)"
+              },
+              {
+                "name": "Kulut yhteensä (toiminnot)"
+              },
+              {
+                "name": "Liiketoiminnan tuotot (toiminnot)"
+              },
+              {
+                "name": "Muut tuotot (toiminnot)"
+              },
+              {
+                "name": "Varsinaisen toiminnan tuotot yhteensä (toiminnot)"
               }
             ]
           }
