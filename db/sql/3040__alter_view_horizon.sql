@@ -15,7 +15,7 @@ SELECT
 
 	-- Organisaatiomuuttujat
 	coalesce([name], 'Missing data') AS 'Organisation',
-	coalesce([shortName], 'Missing data') AS 'Organisation acronym',
+	CASE WHEN [name] is null THEN 'Missing data' WHEN shortName is null THEN [name] ELSE shortName END AS 'Organisation acronym',
 	coalesce(d1.Organisaatiotyyppi, 'Missing data') AS 'Organisation type',
 	[role] AS 'Organisation role',
 	coalesce(d2.Maa, 'Missing data') AS 'Country',
@@ -50,12 +50,12 @@ SELECT
 
 	-- Järjestysmuuttujat
 	CASE WHEN [name] is null THEN 'ÖÖÖ' ELSE [name] END jarjestys_organisation,
-	CASE WHEN shortName is null THEN 'ÖÖÖ' ELSE shortName END jarjestys_organisation_acronym,
+	CASE WHEN [name] is null THEN 'ÖÖÖ' WHEN shortName is null THEN [name] ELSE shortName END AS jarjestys_organisation_acronym,
 	CASE WHEN d1.Organisaatiotyyppi is null THEN 'ÖÖÖ' ELSE d1.Organisaatiotyyppi END jarjestys_organisation_type,
 	CASE WHEN f.country = 'FI' THEN 'AAA' WHEN d2.Maa is null THEN 'ÖÖÖ' ELSE d2.Maa END jarjestys_country,
 	CASE WHEN d4.eu_koodi = 'FI' THEN 'AAA' WHEN d4.Maa is null THEN 'ÖÖÖ' ELSE d4.Maa END jarjestys_coordinator_country,
 	CASE WHEN d3.startDate is null THEN 9999 ELSE 9999 - year(d3.startDate) END AS jarjestys_start_year,
-	CASE WHEN d3.startDate is null THEN 9999 ELSE 9999 - year(d3.endDate) END AS jarjestys_end_year
+	CASE WHEN d3.endDate is null THEN 9999 ELSE 9999 - year(d3.endDate) END AS jarjestys_end_year
 		 
 FROM [dw].[f_horizon] f
 left join [dw].[d_horizon_organisaatiotyyppikoodit] d1 on d1.organisaatiotyyppi_koodi = f.activityType
@@ -64,4 +64,6 @@ left join [dw].[d_horizon_projektit] d3 on d3.id = f.projectID
 left join (
 	SELECT d.coordinatorCountry, d.id, d1.Maa, d1.eu_koodi FROM [dw].[d_horizon_projektit] d
 	left join [dw].[d_horizon_maakoodit] d1 on d1.eu_koodi = d.coordinatorCountry) d4 on f.projectID = d4.id
+
+
 
