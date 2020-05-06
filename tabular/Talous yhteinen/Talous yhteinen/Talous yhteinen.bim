@@ -435,6 +435,8 @@
             "expression": [
               "",
               "SWITCH(TRUE(),Muuttujat[Toiminto_nimi_fi]=\"Koulutustoiminta\",\"A) Koulutustoiminta\",",
+              "",
+              "Muuttujat[Toiminto_nimi_fi]=\"Tutkimus- ja kehitystoiminta\",\"B) Tutkimus- ja kehitystoiminta\",",
               "Muuttujat[Toiminto_nimi_fi]=\"Tutkimustoiminta\",\"B) Tutkimustoiminta\",",
               "Muuttujat[Toiminto_nimi_fi]=\"Muu yhteiskunnallinen toiminta\",\"C) Muu yhteiskunnallinen toiminta\",",
               "Muuttujat[Toiminto_nimi_fi]=\"Harjoittelukoulu\",\"D) Harjoittelukoulu\",",
@@ -442,7 +444,8 @@
               "Muuttujat[Toiminto_nimi_fi]=\"Toiminnot yhteensä\",\"Toiminnot yhteensä\"",
               "\t)",
               ""
-            ]
+            ],
+            "displayFolder": "Toimintolaji"
           }
         ],
         "partitions": [
@@ -1865,7 +1868,7 @@
           },
           {
             "name": "Varsinaisen sijoitustoiminnan tuotto",
-            "expression": "CALCULATE(SUM([arvo]), FILTER('Muuttujat', OR([tili_koodi] =\"varssijtuot\",[tili_koodi] =\"\")))",
+            "expression": "CALCULATE([Varsinaisen sijoitustoiminnan tuotot yhteensä]-[Varsinaisen sijoitustoiminnan kulut yhteensä]+[Käyvän arvon muutos (+/-)])",
             "formatString": "#,0",
             "displayFolder": "Tuloslaskelma\\G) Sijoitustoiminta"
           },
@@ -2024,7 +2027,7 @@
             "name": "Varainhankinta, nettotuotto",
             "expression": "CALCULATE([Varainhankinnan tuotot yhteensä]-[Varainhankinnan kulut yhteensä])",
             "formatString": "#,0",
-            "displayFolder": "Tuloslaskelma\\M) Johdetut mittarit"
+            "displayFolder": "Tuloslaskelma\\F) Varainhankinta"
           },
           {
             "name": "Käyvän arvon rahasto",
@@ -2915,7 +2918,7 @@
             "displayFolder": "Tutkimusmenot"
           },
           {
-            "name": "Liikevaihto (Tiedot liiketoiminnasta)",
+            "name": "Liiketoiminnan liikevaihto",
             "expression": "SUMX(FILTER(Muuttujat,[tili_koodi]=\"lt_liikevaihto\"),[arvo])",
             "formatString": "#,0",
             "displayFolder": "Liiketoiminnan tuloslaskelma"
@@ -3146,7 +3149,7 @@
             "name": "Tilinpäätössiirrot",
             "expression": "CALCULATE([Poistoeron muutos (+/-)]+[Sidottujen rahastojen muutos yhteensä]+[Omakatteisten rahastojen muutos yhteensä]+[Tuloverot]+[Konserni: Vähemmistöosuudet])",
             "formatString": "#,0",
-            "displayFolder": "Tuloslaskelma\\M) Johdetut mittarit"
+            "displayFolder": "Tuloslaskelma\\K) Tilikauden tulos"
           },
           {
             "name": "Poistoeron lisäys tai vähennys",
@@ -3199,7 +3202,7 @@
             "name": "Sijoitus-ja rahoitustoiminta, nettotuotto",
             "expression": "CALCULATE([Varsinaisen sijoitustoiminnan tuotot yhteensä]-[Varsinaisen sijoitustoiminnan kulut yhteensä]+[Rahoitustuotot ja -kulut yhteensä])",
             "formatString": "#,0",
-            "displayFolder": "Tuloslaskelma\\M) Johdetut mittarit"
+            "displayFolder": "Tuloslaskelma\\F) Sijoitustoiminta"
           },
           {
             "name": "Kotimaiset korkeakoulut",
@@ -4916,7 +4919,10 @@
                 "name": "Sektori"
               },
               {
-                "name": "Toiminto_nimi_fi"
+                "name": "Toiminnon nimi"
+              },
+              {
+                "name": "Suodatus tilastovuosi"
               }
             ],
             "measures": [
@@ -4934,6 +4940,12 @@
               },
               {
                 "name": "Varsinaisen toiminnan tuotot yhteensä (toiminnot)"
+              },
+              {
+                "name": "Korkeakoulujen valtionrahoitus (toiminnot)"
+              },
+              {
+                "name": "Kuluista katettu omakatteisista rahastoista tai sidotuista rahastoista (toiminnot)"
               }
             ]
           }
@@ -5437,6 +5449,9 @@
               },
               {
                 "name": "Sektori"
+              },
+              {
+                "name": "Suodatus tilastovuosi"
               }
             ],
             "measures": [
@@ -5464,6 +5479,9 @@
               },
               {
                 "name": "Tilastovuosi"
+              },
+              {
+                "name": "Suodatus tilastovuosi"
               }
             ],
             "measures": [
@@ -5785,6 +5803,9 @@
               },
               {
                 "name": "Tilastovuosi"
+              },
+              {
+                "name": "Suodatus tilastovuosi"
               }
             ],
             "measures": [
@@ -5795,7 +5816,7 @@
                 "name": "Liiketoiminnan muut tuotot"
               },
               {
-                "name": "Liikevaihto (Tiedot liiketoiminnasta)"
+                "name": "Liiketoiminnan liikevaihto"
               },
               {
                 "name": "Liikevoitto tai tappio"
