@@ -317,6 +317,7 @@ LEFT JOIN (
 ' 
 
 
+
 GO
 
 /****** Object:  View [sa].[v_virta_otp_opettajapatevyydet4]    Script Date: 8.5.2020 11:38:32 ******/
