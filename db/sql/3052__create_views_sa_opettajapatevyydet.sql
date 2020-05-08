@@ -5,213 +5,9 @@ SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
 GO
-IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[sa].[v_virta_otp_opettajapatevyydet3]'))
-EXEC dbo.sp_executesql @statement = N'
 
 
 
-
-CREATE VIEW [sa].[v_virta_otp_opettajapatevyydet3] AS
-
---Kelpoisuudet yksittäin ja kaikki yhdessä
-
-
-SELECT 
-	v2.opiskelija_avain
-	,opiskelija
-	,v2.vuosi
-	,sukupuoli_koodi
-	,ika
-	,organisaatio_koodi
-	--kelpoisuudet
-	,varhais --= MAX([Varhaiskasvatuksen tehtäviin ammatillisia valmiuksia antavat opinnot])
-	,perusop --= MAX([Perusopetuksessa opetettavien aineiden ja aihekokonaisuuksien monialaiset opinnot])
-	,aineen_pedag --= MAX([Aineenopettajan pedagogiset opinnot])
-	,erityis --= MAX([Erityisopettajan opinnot])
-	,opo --= MAX([Opinto-ohjaajan opinnot])
-	,erityis_lastentarha --= MAX([Erityislastentarhanopettajan opinnot])
-	,amm --= MAX([Ammatillinen opettajakoulutus])
-	,kelp_lkm = LEN(kelp_avain) / 2
-	,kelp_avain
-	,kelp_avain2 = 
-		CONCAT(
-				 CASE WHEN [Aineenopettajan pedagogiset opinnot] = 1 THEN ''AI'' ELSE '''' END
-				,CASE WHEN [Ammatillinen opettajakoulutus] = 1 THEN ''AM'' ELSE '''' END
-				,CASE WHEN [Erityislastentarhanopettajan opinnot] = 1 THEN ''EL'' ELSE '''' END
-				,CASE WHEN [Erityisopettajan opinnot] = 1 THEN ''ER'' ELSE '''' END
-				,CASE WHEN [Opinto-ohjaajan opinnot] = 1 THEN ''OP'' ELSE '''' END
-				,CASE WHEN [Perusopetuksessa opetettavien aineiden ja aihekokonaisuuksien monialaiset opinnot] = 1 THEN ''PE'' ELSE '''' END
-				,CASE WHEN [Varhaiskasvatuksen tehtäviin ammatillisia valmiuksia antavat opinnot] = 1 THEN ''VA'' ELSE '''' END
-			)
-	--
-	,tutkinto_koodi
-	,tutkinto_vuosi
-	,tutkinto_organisaatio
-	--mittarit
-	,tutkinnon_yhteydessa = tutkinnon_yhteydessa
-	,erillinen_eka = erillinen_eka
-	,erillinen_taydentava = erillinen_tayd
-FROM sa.sa_opettajapatevyys v2
---kaikki kelpoisuudet yhdistettynä
-LEFT JOIN (
-
-	SELECT 
-		opiskelija_avain
-		,vuosi
-		,kelp_avain = 
-			CONCAT(
-				 CASE WHEN MAX([Aineenopettajan pedagogiset opinnot]) = 1 THEN ''AI'' ELSE '''' END
-				,CASE WHEN MAX([Ammatillinen opettajakoulutus]) = 1 THEN ''AM'' ELSE '''' END
-				,CASE WHEN MAX([Erityislastentarhanopettajan opinnot]) = 1 THEN ''EL'' ELSE '''' END
-				,CASE WHEN MAX([Erityisopettajan opinnot]) = 1 THEN ''ER'' ELSE '''' END
-				,CASE WHEN MAX([Opinto-ohjaajan opinnot]) = 1 THEN ''OP'' ELSE '''' END
-				,CASE WHEN MAX([Perusopetuksessa opetettavien aineiden ja aihekokonaisuuksien monialaiset opinnot]) = 1 THEN ''PE'' ELSE '''' END
-				,CASE WHEN MAX([Varhaiskasvatuksen tehtäviin ammatillisia valmiuksia antavat opinnot]) = 1 THEN ''VA'' ELSE '''' END
-			)
-		,varhais = MAX([Varhaiskasvatuksen tehtäviin ammatillisia valmiuksia antavat opinnot])
-		,perusop = MAX([Perusopetuksessa opetettavien aineiden ja aihekokonaisuuksien monialaiset opinnot])
-		,aineen_pedag = MAX([Aineenopettajan pedagogiset opinnot])
-		,erityis = MAX([Erityisopettajan opinnot])
-		,opo = MAX([Opinto-ohjaajan opinnot])
-		,erityis_lastentarha = MAX([Erityislastentarhanopettajan opinnot])
-		,amm = MAX([Ammatillinen opettajakoulutus])
-	FROM sa.sa_opettajapatevyys
-	GROUP BY opiskelija_avain,vuosi
-	
-) ka on ka.opiskelija_avain = v2.opiskelija_avain and ka.vuosi = v2.vuosi
-
---GROUP BY v2.opiskelija_avain
---		,opiskelija
---		,v2.vuosi
---		,sukupuoli_koodi
---		,ika
---		,organisaatio_koodi
---		,kelp_avain
---		,tutkinnon_yhteydessa
---		,erillinen_eka
---		,erillinen_tayd
---		,[Aineenopettajan pedagogiset opinnot] 
---		,[Ammatillinen opettajakoulutus] 
---		,[Erityislastentarhanopettajan opinnot] 
---		,[Erityisopettajan opinnot] 
---		,[Opinto-ohjaajan opinnot] 
---		,[Perusopetuksessa opetettavien aineiden ja aihekokonaisuuksien monialaiset opinnot] 
---		,[Varhaiskasvatuksen tehtäviin ammatillisia valmiuksia antavat opinnot] 
---		,tutkinto_koodi
---		,tutkinto_vuosi
---		,tutkinto_organisaatio
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-' 
-GO
-/****** Object:  View [sa].[v_virta_otp_opettajapatevyydet4]    Script Date: 8.5.2020 11:38:32 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[sa].[v_virta_otp_opettajapatevyydet4]'))
-EXEC dbo.sp_executesql @statement = N'
-
-
-
-
-
-
-
-
-CREATE VIEW [sa].[v_virta_otp_opettajapatevyydet4] AS
-
-
---Suoritustapa yhteen sarakkeeseen
-SELECT distinct
-	[opiskelija_avain]
-	,[opiskelija]
-	,[vuosi]
-	,[sukupuoli_koodi]
-	,[ika]
-	,[organisaatio_koodi]
-	,[varhais]
-	,[perusop]
-	,[aineen_pedag]
-	,[erityis]
-	,[opo]
-	,[erityis_lastentarha]
-	,[amm]
-	,[kelp_lkm]
-	,[kelp_avain]
-	,[kelp_avain2]
-	,[tutkinto_koodi]
-	,[tutkinto_vuosi]
-	,[tutkinto_organisaatio]
-	,[suor_tapa]
-FROM (
-	SELECT 
-		[opiskelija_avain]
-		,[opiskelija]
-		,[vuosi]
-		,[sukupuoli_koodi]
-		,[ika]
-		,[organisaatio_koodi]
-		,[varhais]
-		,[perusop]
-		,[aineen_pedag]
-		,[erityis]
-		,[opo]
-		,[erityis_lastentarha]
-		,[amm]
-		,[kelp_lkm]
-		,[kelp_avain]
-		,[kelp_avain2]
-		,[tutkinto_koodi]
-		,[tutkinto_vuosi]
-		,[tutkinto_organisaatio]
-		,[tutkinnon_yhteydessa]
-		,[erillinen_eka]
-		,[erillinen_taydentava]
-	FROM [ANTERO].[sa].[v_virta_otp_opettajapatevyydet3]
-) q
-
-
-unpivot (
-	arvo for suor_tapa in ([tutkinnon_yhteydessa],[erillinen_eka],[erillinen_taydentava])
-) unpvt
-
-
-WHERE 1=1
-AND arvo = 1
---pois sellaiset pätevyydet (esim. tietyn aineen), joita ei haluta raportille
-AND LEN(kelp_avain2) > 0
-
-
-
-
-
-
-
-
-
-
-' 
-GO
-/****** Object:  View [sa].[v_virta_otp_opettajapatevyydet1]    Script Date: 8.5.2020 11:38:32 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
 IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[sa].[v_virta_otp_opettajapatevyydet1]'))
 EXEC dbo.sp_executesql @statement = N'
 
@@ -330,12 +126,9 @@ AND RIGHT(patevyydet_koodi,1) = RIGHT(patevyydet_vuodet,1)
 AND RIGHT(tutkinnot_koodi,1) = RIGHT(tutkinnot_vuosi,1)
 AND RIGHT(tutkinnot_vuosi,1) = RIGHT(tutkinnot_organisaatio,1)
 
-
-
-
-
-
 ' 
+
+
 GO
 /****** Object:  View [sa].[v_virta_otp_opettajapatevyydet2]    Script Date: 8.5.2020 11:38:32 ******/
 SET ANSI_NULLS ON
@@ -422,13 +215,193 @@ pivot (
 --vain uusin tutkinto
 WHERE rnk_tutkinto_vuosi = 1
 
+'
+
+
+
+
+IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[sa].[v_virta_otp_opettajapatevyydet3]'))
+EXEC dbo.sp_executesql @statement = N'
+
+
+CREATE VIEW [sa].[v_virta_otp_opettajapatevyydet3] AS
+
+--Kelpoisuudet yksittäin ja kaikki yhdessä
+
+
+SELECT 
+	v2.opiskelija_avain
+	,opiskelija
+	,v2.vuosi
+	,sukupuoli_koodi
+	,ika
+	,organisaatio_koodi
+	--kelpoisuudet
+	,varhais --= MAX([Varhaiskasvatuksen tehtäviin ammatillisia valmiuksia antavat opinnot])
+	,perusop --= MAX([Perusopetuksessa opetettavien aineiden ja aihekokonaisuuksien monialaiset opinnot])
+	,aineen_pedag --= MAX([Aineenopettajan pedagogiset opinnot])
+	,erityis --= MAX([Erityisopettajan opinnot])
+	,opo --= MAX([Opinto-ohjaajan opinnot])
+	,erityis_lastentarha --= MAX([Erityislastentarhanopettajan opinnot])
+	,amm --= MAX([Ammatillinen opettajakoulutus])
+	,kelp_lkm = LEN(kelp_avain) / 2
+	,kelp_avain
+	,kelp_avain2 = 
+		CONCAT(
+				 CASE WHEN [Aineenopettajan pedagogiset opinnot] = 1 THEN ''AI'' ELSE '''' END
+				,CASE WHEN [Ammatillinen opettajakoulutus] = 1 THEN ''AM'' ELSE '''' END
+				,CASE WHEN [Erityislastentarhanopettajan opinnot] = 1 THEN ''EL'' ELSE '''' END
+				,CASE WHEN [Erityisopettajan opinnot] = 1 THEN ''ER'' ELSE '''' END
+				,CASE WHEN [Opinto-ohjaajan opinnot] = 1 THEN ''OP'' ELSE '''' END
+				,CASE WHEN [Perusopetuksessa opetettavien aineiden ja aihekokonaisuuksien monialaiset opinnot] = 1 THEN ''PE'' ELSE '''' END
+				,CASE WHEN [Varhaiskasvatuksen tehtäviin ammatillisia valmiuksia antavat opinnot] = 1 THEN ''VA'' ELSE '''' END
+			)
+	--
+	,tutkinto_koodi
+	,tutkinto_vuosi
+	,tutkinto_organisaatio
+	--mittarit
+	,tutkinnon_yhteydessa = tutkinnon_yhteydessa
+	,erillinen_eka = erillinen_eka
+	,erillinen_taydentava = erillinen_tayd
+FROM sa.sa_opettajapatevyys v2
+--kaikki kelpoisuudet yhdistettynä
+LEFT JOIN (
+
+	SELECT 
+		opiskelija_avain
+		,vuosi
+		,kelp_avain = 
+			CONCAT(
+				 CASE WHEN MAX([Aineenopettajan pedagogiset opinnot]) = 1 THEN ''AI'' ELSE '''' END
+				,CASE WHEN MAX([Ammatillinen opettajakoulutus]) = 1 THEN ''AM'' ELSE '''' END
+				,CASE WHEN MAX([Erityislastentarhanopettajan opinnot]) = 1 THEN ''EL'' ELSE '''' END
+				,CASE WHEN MAX([Erityisopettajan opinnot]) = 1 THEN ''ER'' ELSE '''' END
+				,CASE WHEN MAX([Opinto-ohjaajan opinnot]) = 1 THEN ''OP'' ELSE '''' END
+				,CASE WHEN MAX([Perusopetuksessa opetettavien aineiden ja aihekokonaisuuksien monialaiset opinnot]) = 1 THEN ''PE'' ELSE '''' END
+				,CASE WHEN MAX([Varhaiskasvatuksen tehtäviin ammatillisia valmiuksia antavat opinnot]) = 1 THEN ''VA'' ELSE '''' END
+			)
+		,varhais = MAX([Varhaiskasvatuksen tehtäviin ammatillisia valmiuksia antavat opinnot])
+		,perusop = MAX([Perusopetuksessa opetettavien aineiden ja aihekokonaisuuksien monialaiset opinnot])
+		,aineen_pedag = MAX([Aineenopettajan pedagogiset opinnot])
+		,erityis = MAX([Erityisopettajan opinnot])
+		,opo = MAX([Opinto-ohjaajan opinnot])
+		,erityis_lastentarha = MAX([Erityislastentarhanopettajan opinnot])
+		,amm = MAX([Ammatillinen opettajakoulutus])
+	FROM sa.sa_opettajapatevyys
+	GROUP BY opiskelija_avain,vuosi
+	
+) ka on ka.opiskelija_avain = v2.opiskelija_avain and ka.vuosi = v2.vuosi
+
+--GROUP BY v2.opiskelija_avain
+--		,opiskelija
+--		,v2.vuosi
+--		,sukupuoli_koodi
+--		,ika
+--		,organisaatio_koodi
+--		,kelp_avain
+--		,tutkinnon_yhteydessa
+--		,erillinen_eka
+--		,erillinen_tayd
+--		,[Aineenopettajan pedagogiset opinnot] 
+--		,[Ammatillinen opettajakoulutus] 
+--		,[Erityislastentarhanopettajan opinnot] 
+--		,[Erityisopettajan opinnot] 
+--		,[Opinto-ohjaajan opinnot] 
+--		,[Perusopetuksessa opetettavien aineiden ja aihekokonaisuuksien monialaiset opinnot] 
+--		,[Varhaiskasvatuksen tehtäviin ammatillisia valmiuksia antavat opinnot] 
+--		,tutkinto_koodi
+--		,tutkinto_vuosi
+--		,tutkinto_organisaatio
+
+' 
+
+
+GO
+
+/****** Object:  View [sa].[v_virta_otp_opettajapatevyydet4]    Script Date: 8.5.2020 11:38:32 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.views WHERE object_id = OBJECT_ID(N'[sa].[v_virta_otp_opettajapatevyydet4]'))
+EXEC dbo.sp_executesql @statement = N'
 
 
 
 
 
+CREATE VIEW [sa].[v_virta_otp_opettajapatevyydet4] AS
 
+
+--Suoritustapa yhteen sarakkeeseen
+SELECT distinct
+	[opiskelija_avain]
+	,[opiskelija]
+	,[vuosi]
+	,[sukupuoli_koodi]
+	,[ika]
+	,[organisaatio_koodi]
+	,[varhais]
+	,[perusop]
+	,[aineen_pedag]
+	,[erityis]
+	,[opo]
+	,[erityis_lastentarha]
+	,[amm]
+	,[kelp_lkm]
+	,[kelp_avain]
+	,[kelp_avain2]
+	,[tutkinto_koodi]
+	,[tutkinto_vuosi]
+	,[tutkinto_organisaatio]
+	,[suor_tapa]
+FROM (
+	SELECT 
+		[opiskelija_avain]
+		,[opiskelija]
+		,[vuosi]
+		,[sukupuoli_koodi]
+		,[ika]
+		,[organisaatio_koodi]
+		,[varhais]
+		,[perusop]
+		,[aineen_pedag]
+		,[erityis]
+		,[opo]
+		,[erityis_lastentarha]
+		,[amm]
+		,[kelp_lkm]
+		,[kelp_avain]
+		,[kelp_avain2]
+		,[tutkinto_koodi]
+		,[tutkinto_vuosi]
+		,[tutkinto_organisaatio]
+		,[tutkinnon_yhteydessa]
+		,[erillinen_eka]
+		,[erillinen_taydentava]
+	FROM [ANTERO].[sa].[v_virta_otp_opettajapatevyydet3]
+) q
+
+
+unpivot (
+	arvo for suor_tapa in ([tutkinnon_yhteydessa],[erillinen_eka],[erillinen_taydentava])
+) unpvt
+
+
+WHERE 1=1
+AND arvo = 1
+--pois sellaiset pätevyydet (esim. tietyn aineen), joita ei haluta raportille
+AND LEN(kelp_avain2) > 0
 
 
 
 ' 
+
+
+
+
+
+
+
+
