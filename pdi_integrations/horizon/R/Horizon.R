@@ -9,7 +9,7 @@ Alku <- Sys.time() #Tallennetaan aloitusaika
 
 library(httr)
 library(jsonlite)
-library(tidyverse)
+#library(tidyverse)
 library(plyr)
 library(purrr)
 library(dplyr)
