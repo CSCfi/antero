@@ -15,6 +15,18 @@
             "value": "SqlServer"
           }
         ]
+      },
+      {
+        "name": "SqlServer dwitvipuarch ANTERO_31102019",
+        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipuarch;Initial Catalog=ANTERO_31102019;Integrated Security=SSPI;Persist Security Info=false",
+        "impersonationMode": "impersonateAccount",
+        "account": "dwi\\t_viputk_kuutio",
+        "annotations": [
+          {
+            "name": "ConnectionEditUISource",
+            "value": "SqlServer"
+          }
+        ]
       }
     ],
     "tables": [
@@ -842,24 +854,28 @@
         "isHidden": true,
         "columns": [
           {
-            "name": "ov_painottamaton",
-            "dataType": "double",
-            "sourceColumn": "ov_painottamaton"
-          },
-          {
-            "name": "ov_painotettu",
-            "dataType": "double",
-            "sourceColumn": "ov_painotettu"
+            "name": "tilastovuosi",
+            "dataType": "int64",
+            "sourceColumn": "tilastovuosi",
+            "sourceProviderType": "Integer"
           },
           {
             "name": "avain_R12",
             "dataType": "string",
-            "sourceColumn": "avain_R12"
+            "sourceColumn": "avain_R12",
+            "sourceProviderType": "VarChar"
           },
           {
-            "name": "tilastovuosi",
-            "dataType": "int64",
-            "sourceColumn": "tilastovuosi"
+            "name": "ov_painottamaton",
+            "dataType": "double",
+            "sourceColumn": "ov_painottamaton",
+            "sourceProviderType": "Double"
+          },
+          {
+            "name": "ov_painotettu",
+            "dataType": "double",
+            "sourceColumn": "ov_painotettu",
+            "sourceProviderType": "Double"
           }
         ],
         "partitions": [
@@ -881,9 +897,9 @@
                 "\t\t,d5.kytkin_koodi",
                 "\t)",
                 "\t,ov_painottamaton = SUM(f.opiskelijavuodet_painottamaton)",
-                "\t,ov_painotettu = SUM(f.opiskelijavuodet_painotettu_yhteensa)",
+                "\t,ov_painotettu = SUM(f.opiskelijavuodet_painotettu)",
                 "",
-                "FROM dw.f_amos_opiskelijavuodet_painotetut f",
+                "FROM dw.f_amos_opiskelijavuodet_painotetut_kustannuskysely f",
                 "left join dw.d_organisaatioluokitus d1 on d1.id=f.d_organisaatioluokitus_jarj_id",
                 "left join dw.d_ammatillisen_tutkinnon_kustannusryhma d3 on d3.id=f.d_kustannusryhma_id",
                 "left join dw.d_koulutusluokitus d2 on d2.id=f.d_koulutusluokitus_id",
@@ -897,9 +913,10 @@
                 "\t\t,case when d3.koodi='ot' then '-1' else coalesce(sa.uusi_koulutusala_taso1_koodi,d2.koulutusalataso1_koodi) end",
                 "\t\t,coalesce(sa.uusi_kustannusryhma_koodi,d3.koodi)",
                 "\t\t,d4.kytkin_koodi",
-                "\t\t,d5.kytkin_koodi"
+                "\t\t,d5.kytkin_koodi",
+                "HAVING SUM(f.opiskelijavuodet_painottamaton) > 0"
               ],
-              "dataSource": "SqlServer dwitvipusql16 antero"
+              "dataSource": "SqlServer dwitvipuarch ANTERO_31102019"
             },
             "annotations": [
               {
@@ -918,9 +935,9 @@
                   "\t\t,d5.kytkin_koodi",
                   "\t)",
                   "\t,ov_painottamaton = SUM(f.opiskelijavuodet_painottamaton)",
-                  "\t,ov_painotettu = SUM(f.opiskelijavuodet_painotettu_yhteensa)",
+                  "\t,ov_painotettu = SUM(f.opiskelijavuodet_painotettu)",
                   "",
-                  "FROM dw.f_amos_opiskelijavuodet_painotetut f",
+                  "FROM dw.f_amos_opiskelijavuodet_painotetut_kustannuskysely f",
                   "left join dw.d_organisaatioluokitus d1 on d1.id=f.d_organisaatioluokitus_jarj_id",
                   "left join dw.d_ammatillisen_tutkinnon_kustannusryhma d3 on d3.id=f.d_kustannusryhma_id",
                   "left join dw.d_koulutusluokitus d2 on d2.id=f.d_koulutusluokitus_id",
@@ -934,16 +951,11 @@
                   "\t\t,case when d3.koodi='ot' then '-1' else coalesce(sa.uusi_koulutusala_taso1_koodi,d2.koulutusalataso1_koodi) end",
                   "\t\t,coalesce(sa.uusi_kustannusryhma_koodi,d3.koodi)",
                   "\t\t,d4.kytkin_koodi",
-                  "\t\t,d5.kytkin_koodi</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+                  "\t\t,d5.kytkin_koodi",
+                  "HAVING SUM(f.opiskelijavuodet_painottamaton) > 0</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
                 ]
               }
             ]
-          }
-        ],
-        "measures": [
-          {
-            "name": "ov_sum",
-            "expression": "CALCULATE(SUM(Opiskelijavuodet[ov_painotettu]),Opiskelijavuodet[tilastovuosi]=2018)"
           }
         ],
         "annotations": [
@@ -963,9 +975,9 @@
               "\t\t,d5.kytkin_koodi",
               "\t)",
               "\t,ov_painottamaton = SUM(f.opiskelijavuodet_painottamaton)",
-              "\t,ov_painotettu = SUM(f.opiskelijavuodet_painotettu_yhteensa)",
+              "\t,ov_painotettu = SUM(f.opiskelijavuodet_painotettu)",
               "",
-              "FROM dw.f_amos_opiskelijavuodet_painotetut f",
+              "FROM dw.f_amos_opiskelijavuodet_painotetut_kustannuskysely f",
               "left join dw.d_organisaatioluokitus d1 on d1.id=f.d_organisaatioluokitus_jarj_id",
               "left join dw.d_ammatillisen_tutkinnon_kustannusryhma d3 on d3.id=f.d_kustannusryhma_id",
               "left join dw.d_koulutusluokitus d2 on d2.id=f.d_koulutusluokitus_id",
@@ -979,7 +991,8 @@
               "\t\t,case when d3.koodi='ot' then '-1' else coalesce(sa.uusi_koulutusala_taso1_koodi,d2.koulutusalataso1_koodi) end",
               "\t\t,coalesce(sa.uusi_kustannusryhma_koodi,d3.koodi)",
               "\t\t,d4.kytkin_koodi",
-              "\t\t,d5.kytkin_koodi"
+              "\t\t,d5.kytkin_koodi",
+              "HAVING SUM(f.opiskelijavuodet_painottamaton) > 0"
             ]
           },
           {
@@ -1002,9 +1015,9 @@
               "\t\t,d5.kytkin_koodi",
               "\t)",
               "\t,ov_painottamaton = SUM(f.opiskelijavuodet_painottamaton)",
-              "\t,ov_painotettu = SUM(f.opiskelijavuodet_painotettu_yhteensa)",
+              "\t,ov_painotettu = SUM(f.opiskelijavuodet_painotettu)",
               "",
-              "FROM dw.f_amos_opiskelijavuodet_painotetut f",
+              "FROM dw.f_amos_opiskelijavuodet_painotetut_kustannuskysely f",
               "left join dw.d_organisaatioluokitus d1 on d1.id=f.d_organisaatioluokitus_jarj_id",
               "left join dw.d_ammatillisen_tutkinnon_kustannusryhma d3 on d3.id=f.d_kustannusryhma_id",
               "left join dw.d_koulutusluokitus d2 on d2.id=f.d_koulutusluokitus_id",
@@ -1018,7 +1031,8 @@
               "\t\t,case when d3.koodi='ot' then '-1' else coalesce(sa.uusi_koulutusala_taso1_koodi,d2.koulutusalataso1_koodi) end",
               "\t\t,coalesce(sa.uusi_kustannusryhma_koodi,d3.koodi)",
               "\t\t,d4.kytkin_koodi",
-              "\t\t,d5.kytkin_koodi</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+              "\t\t,d5.kytkin_koodi",
+              "HAVING SUM(f.opiskelijavuodet_painottamaton) > 0</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
             ]
           }
         ]
@@ -1028,6 +1042,12 @@
         "isHidden": true,
         "columns": [
           {
+            "name": "tilastovuosi",
+            "dataType": "int64",
+            "sourceColumn": "tilastovuosi",
+            "sourceProviderType": "Integer"
+          },
+          {
             "name": "avain_R12",
             "dataType": "string",
             "sourceColumn": "avain_R12",
@@ -1036,17 +1056,14 @@
           {
             "name": "op_painottamaton",
             "dataType": "double",
-            "sourceColumn": "op_painottamaton"
+            "sourceColumn": "op_painottamaton",
+            "sourceProviderType": "Double"
           },
           {
             "name": "op_painotettu",
             "dataType": "double",
-            "sourceColumn": "op_painotettu"
-          },
-          {
-            "name": "tilastovuosi",
-            "dataType": "int64",
-            "sourceColumn": "tilastovuosi"
+            "sourceColumn": "op_painotettu",
+            "sourceProviderType": "Double"
           }
         ],
         "partitions": [
@@ -1082,7 +1099,7 @@
                 "\t\t,coalesce(sa.uusi_kustannusryhma_koodi,d3.koodi)",
                 "\t\t,d4.kytkin_koodi, d5.kytkin_koodi"
               ],
-              "dataSource": "SqlServer dwitvipusql16 antero"
+              "dataSource": "SqlServer dwitvipuarch ANTERO_31102019"
             },
             "annotations": [
               {
@@ -1117,12 +1134,6 @@
                 ]
               }
             ]
-          }
-        ],
-        "measures": [
-          {
-            "name": "op_sum",
-            "expression": "CALCULATE(SUM(Osaamispisteet[op_painotettu]),Osaamispisteet[tilastovuosi]=2018)"
           }
         ],
         "annotations": [
@@ -1195,24 +1206,6 @@
         ]
       }
     ],
-    "relationships": [
-      {
-        "name": "9e5cb7f4-f6b8-4d72-b064-8604cba948ee",
-        "fromTable": "Muuttujat",
-        "fromColumn": "ov_op_avain",
-        "toTable": "Osaamispisteet",
-        "toColumn": "avain_R12",
-        "crossFilteringBehavior": "bothDirections"
-      },
-      {
-        "name": "462a1132-c187-44d1-b580-5679bdab2dde",
-        "fromTable": "Muuttujat",
-        "fromColumn": "ov_op_avain",
-        "toTable": "Opiskelijavuodet",
-        "toColumn": "avain_R12",
-        "crossFilteringBehavior": "bothDirections"
-      }
-    ],
     "perspectives": [
       {
         "name": "Seuranta",
@@ -1271,12 +1264,6 @@
                 "name": "Määrä per painottamaton opiskelijavuosi"
               },
               {
-                "name": "Painotetut opiskelijavuodet"
-              },
-              {
-                "name": "Painottamattomat opiskelijavuodet"
-              },
-              {
                 "name": "Määrä per painotettu osaamispiste"
               },
               {
@@ -1287,6 +1274,12 @@
               },
               {
                 "name": "Painottamattomat osaamispisteet"
+              },
+              {
+                "name": "Painottamattomat opiskelijavuodet"
+              },
+              {
+                "name": "Painotetut opiskelijavuodet"
               }
             ]
           },
