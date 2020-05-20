@@ -12,7 +12,7 @@ from contextlib import closing
 import dboperator
 
 # =============================================================================
-# @author hpetrell@csc.fi version 1.0
+# @author hpetrell@csc.fi version 1.01
 # Parameters:
 #
 # !!!
