@@ -665,6 +665,19 @@
             "dataType": "double",
             "isDataTypeInferred": true,
             "expression": "[Jufo-painotus nykyinen]*[Avoin saatavuus painotus]"
+          },
+          {
+            "type": "calculated",
+            "name": "Rahoitusmallipainotus_AMK",
+            "dataType": "double",
+            "isDataTypeInferred": true,
+            "expression": [
+              "IF([Yhd. avoin saatavuus]=\"Hybridijulkaisukanavassa ilmestynyt avoin julkaisu\",1.2*[lukumaara],",
+              "IF([Yhd. avoin saatavuus]=\"Open access -julkaisukanavassa ilmestynyt julkaisu\",1.2*[lukumaara],",
+              "IF([Yhd. avoin saatavuus]=\"Rinnakkaistallennettu\",1.2*[lukumaara],",
+              "1*[lukumaara])))",
+              ""
+            ]
           }
         ],
         "partitions": [
@@ -2719,6 +2732,11 @@
             "name": "Jufot (Suhteellinen ilman lkm)",
             "expression": "AVERAGEX(DISTINCT(Muuttujat[JulkaisunTunnus]),CALCULATE(AVERAGE(Muuttujat[Jufotaso uusi int]),FILTER(Muuttujat,OR(OR([Jufotaso uusi int]=1,[Jufotaso uusi int]=2),[Jufotaso uusi int]=3)),FILTER(Muuttujat,OR([Koodit Julkaisun pääluokka]=\"A\",[Koodit Julkaisun pääluokka]=\"C\"))))/CALCULATE([apufunktio],ALL(Muuttujat[Yliopisto]))",
             "formatString": "0.00"
+          },
+          {
+            "name": "Rahoitusmallipisteet_AMK",
+            "expression": "if(sum([Rahoitusmallipainotus_AMK])=0,blank(),sum([Rahoitusmallipainotus_AMK]))",
+            "formatString": "#,0.0"
           }
         ],
         "annotations": [
@@ -5972,6 +5990,125 @@
               },
               {
                 "name": "Rahoitusmallipisteet"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Julkaisut_amk_painotetut",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Avoin saatavuus"
+              },
+              {
+                "name": "Jufotaso"
+              },
+              {
+                "name": "Jufotaso 2015->"
+              },
+              {
+                "name": "Jufotaso 2011-2014"
+              },
+              {
+                "name": "Julkaisu rinnakkaistallennettu"
+              },
+              {
+                "name": "Julkaisun kansainvälisyys"
+              },
+              {
+                "name": "Julkaisun pääluokka"
+              },
+              {
+                "name": "Julkaisutyyppi"
+              },
+              {
+                "name": "Kansainvälinen yhteisjulkaisu"
+              },
+              {
+                "name": "Koodit Julkaisufoorumitaso"
+              },
+              {
+                "name": "Koodit Julkaisun kansainvälisyys"
+              },
+              {
+                "name": "Koodit Julkaisun pääluokka"
+              },
+              {
+                "name": "Koodit Julkaisutyyppi"
+              },
+              {
+                "name": "Koodit Kansainvälinen yhteisjulkaisu"
+              },
+              {
+                "name": "Koodit Koulutusala 95"
+              },
+              {
+                "name": "Koodit OKM ohjauksen ala"
+              },
+              {
+                "name": "Koodit Päätieteenala"
+              },
+              {
+                "name": "Koodit Tieteenala"
+              },
+              {
+                "name": "Koulutusala 95"
+              },
+              {
+                "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Päätieteenala"
+              },
+              {
+                "name": "Taiteenala"
+              },
+              {
+                "name": "Tieteenala"
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Yhteisjulk. muu kotim. tutkimusorganisaatio"
+              },
+              {
+                "name": "Yhteisjulk. valtion sektoritutkimuslaitos"
+              },
+              {
+                "name": "Yhteisjulk. yliop. sairaanhoitopiiri"
+              },
+              {
+                "name": "Yhteisjulkaisu yrityksen kanssa"
+              },
+              {
+                "name": "Ammattikorkeakoulu"
+              },
+              {
+                "name": "Yhd. avoin saatavuus"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Julkaisut"
+              },
+              {
+                "name": "Rahoitusmallipisteet_AMK"
               }
             ]
           },
