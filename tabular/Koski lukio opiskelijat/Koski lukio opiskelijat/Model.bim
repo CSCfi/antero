@@ -14,6 +14,17 @@
             "value": "SqlServer"
           }
         ]
+      },
+      {
+        "name": "SqlServer dwitvipusql16 ANTERO 2",
+        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
+        "impersonationMode": "impersonateServiceAccount",
+        "annotations": [
+          {
+            "name": "ConnectionEditUISource",
+            "value": "SqlServer"
+          }
+        ]
       }
     ],
     "tables": [
@@ -178,6 +189,14 @@
           {
             "name": "Lukumäärä",
             "expression": " IF(COUNTROWS(Mittarit) < 5, \"1 - 4\", COUNTROWS(Mittarit))"
+          },
+          {
+            "name": "Lukumäärä (laskentapäivä)",
+            "expression": "  IF(COUNTROWS(v_koski_lukio_opiskelijat_laskentapaiva) < 5, \"1 - 4\", COUNTROWS(v_koski_lukio_opiskelijat_laskentapaiva))"
+          },
+          {
+            "name": "Lukumäärä (uudet opiskelijat)",
+            "expression": "  IF(COUNTROWS(v_koski_lukio_opiskelijat_uudet) < 5, \"1 - 4\", COUNTROWS(v_koski_lukio_opiskelijat_uudet))"
           }
         ],
         "annotations": [
@@ -188,6 +207,285 @@
           {
             "name": "_TM_ExtProp_DbTableName",
             "value": "v_koski_lukio_opiskelijat_tilastovuosi"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dw"
+          }
+        ]
+      },
+      {
+        "name": "CalculatedTable 1",
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated"
+            }
+          }
+        ]
+      },
+      {
+        "name": "v_koski_lukio_opiskelijat_laskentapaiva",
+        "columns": [
+          {
+            "name": "Laskentapäivä",
+            "dataType": "string",
+            "sourceColumn": "Laskentapäivä",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Oppilaitos",
+            "dataType": "string",
+            "sourceColumn": "Oppilaitos",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Koulutuksenjärjestäjä",
+            "dataType": "string",
+            "sourceColumn": "Koulutuksenjärjestäjä",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Oppimäärä",
+            "dataType": "string",
+            "sourceColumn": "Oppimäärä",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Toimipiste",
+            "dataType": "string",
+            "sourceColumn": "Toimipiste",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Ikä",
+            "dataType": "int64",
+            "sourceColumn": "Ikä",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Äidinkieli",
+            "dataType": "string",
+            "sourceColumn": "Äidinkieli",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Kansalaisuus",
+            "dataType": "string",
+            "sourceColumn": "Kansalaisuus",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Maanosa",
+            "dataType": "string",
+            "sourceColumn": "Maanosa",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Oppilaitoksen kotikunta",
+            "dataType": "string",
+            "sourceColumn": "Oppilaitoksen kotikunta",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Oppilaitoksen maakunta",
+            "dataType": "string",
+            "sourceColumn": "Oppilaitoksen maakunta",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Oppilaitoksen AVI",
+            "dataType": "string",
+            "sourceColumn": "Oppilaitoksen AVI",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Oppilaitoksen ELY",
+            "dataType": "string",
+            "sourceColumn": "Oppilaitoksen ELY",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Sukupuoli",
+            "dataType": "string",
+            "sourceColumn": "Sukupuoli",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Ikäryhmä",
+            "dataType": "string",
+            "sourceColumn": "Ikäryhmä",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Tutkinto",
+            "dataType": "string",
+            "sourceColumn": "Tutkinto",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Koulutus",
+            "dataType": "string",
+            "sourceColumn": "Koulutus",
+            "sourceProviderType": "Char"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "v_koski_lukio_opiskelijat_laskentapaiva",
+            "dataView": "full",
+            "source": {
+              "query": " SELECT [dw].[v_koski_lukio_opiskelijat_laskentapaiva].* FROM [dw].[v_koski_lukio_opiskelijat_laskentapaiva] ",
+              "dataSource": "SqlServer dwitvipusql16 ANTERO 2"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [dw].[v_koski_lukio_opiskelijat_laskentapaiva].* FROM [dw].[v_koski_lukio_opiskelijat_laskentapaiva] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "v_koski_lukio_opiskelijat_laskentapaiva"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dw"
+          }
+        ]
+      },
+      {
+        "name": "v_koski_lukio_opiskelijat_uudet",
+        "columns": [
+          {
+            "name": "Vuosi",
+            "dataType": "int64",
+            "sourceColumn": "Vuosi",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Kuukausi",
+            "dataType": "int64",
+            "sourceColumn": "Kuukausi",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Oppilaitos",
+            "dataType": "string",
+            "sourceColumn": "Oppilaitos",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Koulutuksenjärjestäjä",
+            "dataType": "string",
+            "sourceColumn": "Koulutuksenjärjestäjä",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Oppimäärä",
+            "dataType": "string",
+            "sourceColumn": "Oppimäärä",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Toimipiste",
+            "dataType": "string",
+            "sourceColumn": "Toimipiste",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Ikä",
+            "dataType": "int64",
+            "sourceColumn": "Ikä",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Äidinkieli",
+            "dataType": "string",
+            "sourceColumn": "Äidinkieli",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Kansalaisuus",
+            "dataType": "string",
+            "sourceColumn": "Kansalaisuus",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Maanosa",
+            "dataType": "string",
+            "sourceColumn": "Maanosa",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Oppilaitoksen kotikunta",
+            "dataType": "string",
+            "sourceColumn": "Oppilaitoksen kotikunta",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Oppilaitoksen maakunta",
+            "dataType": "string",
+            "sourceColumn": "Oppilaitoksen maakunta",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Oppilaitoksen AVI",
+            "dataType": "string",
+            "sourceColumn": "Oppilaitoksen AVI",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Oppilaitoksen ELY",
+            "dataType": "string",
+            "sourceColumn": "Oppilaitoksen ELY",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Sukupuoli",
+            "dataType": "string",
+            "sourceColumn": "Sukupuoli",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Ikäryhmä",
+            "dataType": "string",
+            "sourceColumn": "Ikäryhmä",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Tutkinto",
+            "dataType": "string",
+            "sourceColumn": "Tutkinto",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Koulutus",
+            "dataType": "string",
+            "sourceColumn": "Koulutus",
+            "sourceProviderType": "Char"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "v_koski_lukio_opiskelijat_uudet",
+            "dataView": "full",
+            "source": {
+              "query": " SELECT [dw].[v_koski_lukio_opiskelijat_uudet].* FROM [dw].[v_koski_lukio_opiskelijat_uudet] ",
+              "dataSource": "SqlServer dwitvipusql16 ANTERO 2"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [dw].[v_koski_lukio_opiskelijat_uudet].* FROM [dw].[v_koski_lukio_opiskelijat_uudet] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "v_koski_lukio_opiskelijat_uudet"
           },
           {
             "name": "_TM_ExtProp_DbSchemaName",
@@ -258,6 +556,147 @@
             "measures": [
               {
                 "name": "Lukumäärä"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Laskentapaiva",
+        "tables": [
+          {
+            "name": "Mittarit",
+            "measures": [
+              {
+                "name": "Lukumäärä (laskentapäivä)"
+              }
+            ]
+          },
+          {
+            "name": "v_koski_lukio_opiskelijat_laskentapaiva",
+            "columns": [
+              {
+                "name": "Ikä"
+              },
+              {
+                "name": "Ikäryhmä"
+              },
+              {
+                "name": "Kansalaisuus"
+              },
+              {
+                "name": "Koulutuksenjärjestäjä"
+              },
+              {
+                "name": "Koulutus"
+              },
+              {
+                "name": "Laskentapäivä"
+              },
+              {
+                "name": "Maanosa"
+              },
+              {
+                "name": "Oppilaitoksen AVI"
+              },
+              {
+                "name": "Oppilaitoksen ELY"
+              },
+              {
+                "name": "Oppilaitoksen kotikunta"
+              },
+              {
+                "name": "Oppilaitoksen maakunta"
+              },
+              {
+                "name": "Oppilaitos"
+              },
+              {
+                "name": "Oppimäärä"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Toimipiste"
+              },
+              {
+                "name": "Tutkinto"
+              },
+              {
+                "name": "Äidinkieli"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Uudet opiskelijat",
+        "tables": [
+          {
+            "name": "Mittarit",
+            "measures": [
+              {
+                "name": "Lukumäärä (uudet opiskelijat)"
+              }
+            ]
+          },
+          {
+            "name": "v_koski_lukio_opiskelijat_uudet",
+            "columns": [
+              {
+                "name": "Ikä"
+              },
+              {
+                "name": "Ikäryhmä"
+              },
+              {
+                "name": "Kansalaisuus"
+              },
+              {
+                "name": "Koulutuksenjärjestäjä"
+              },
+              {
+                "name": "Koulutus"
+              },
+              {
+                "name": "Kuukausi"
+              },
+              {
+                "name": "Maanosa"
+              },
+              {
+                "name": "Oppilaitoksen AVI"
+              },
+              {
+                "name": "Oppilaitoksen ELY"
+              },
+              {
+                "name": "Oppilaitoksen kotikunta"
+              },
+              {
+                "name": "Oppilaitoksen maakunta"
+              },
+              {
+                "name": "Oppilaitos"
+              },
+              {
+                "name": "Oppimäärä"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Toimipiste"
+              },
+              {
+                "name": "Tutkinto"
+              },
+              {
+                "name": "Vuosi"
+              },
+              {
+                "name": "Äidinkieli"
               }
             ]
           }
