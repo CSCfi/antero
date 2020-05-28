@@ -2563,12 +2563,20 @@
         "measures": [
           {
             "name": "Uudet opiskelijat",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[uusi_opiskelija]=1)",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[uusi_opiskelija]=1)",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Opiskelijat",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[opiskelija]=1)",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[opiskelija]=1)",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
@@ -2580,22 +2588,28 @@
               "\tSUMMARIZE(Muuttujat,[Tilastovuosi],[Tilastokuukausi],[pv_kk]),",
               "\t\"summa\",CALCULATE(SUM([opiskelijat_netto]))",
               ")",
-              "var summa = SUMX(taulu, [summa] * [pv_kk]) / SUMX(taulu, [pv_kk])",
-              "return IF(summa=0,BLANK(),summa)",
+              "var lkm = SUMX(taulu, [summa] * [pv_kk]) / SUMX(taulu, [pv_kk])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
               ""
             ],
             "formatString": "#,0"
           },
           {
             "name": "Tutkinnon suorittaneet",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[tutkinnon_suorittanut]=1)",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[tutkinnon_suorittanut]=1)",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Opiskelijat %",
             "expression": [
               "",
-              "CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[opiskelija]=1) / CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[opiskelija]=1,ALL(Muuttujat[Oppisopimuskoulutus]),ALL(Muuttujat[Koulutussopimus]),ALL(Muuttujat[Oppisopimus/Koulutussopimus]))"
+              "var lkm = [Opiskelijat]",
+              "var lkm_all = CALCULATE([Opiskelijat],ALL(Muuttujat[Oppisopimuskoulutus]),ALL(Muuttujat[Koulutussopimus]),ALL(Muuttujat[Oppisopimus/Koulutussopimus]))",
+              "return DIVIDE(lkm,lkm_all)"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
@@ -2603,7 +2617,10 @@
             "name": "Tutkinnon suorittaneet %",
             "expression": [
               "",
-              "CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[tutkinnon_suorittanut]=1) / CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[tutkinnon_suorittanut]=1,ALL(Muuttujat[Oppisopimuskoulutus]),ALL(Muuttujat[Koulutussopimus]),ALL(Muuttujat[Oppisopimuksen suoritusosuus]),ALL(Muuttujat[Koulutussopimuksen suoritusosuus]),ALL(Muuttujat[Oppisopimus/Koulutussopimus]))"
+              "var lkm = [Tutkinnon suorittaneet]",
+              "var lkm_all = CALCULATE([Tutkinnon suorittaneet],ALL(Muuttujat[Oppisopimuskoulutus]),ALL(Muuttujat[Koulutussopimus]),ALL(Muuttujat[Oppisopimuksen suoritusosuus]),ALL(Muuttujat[Koulutussopimuksen suoritusosuus]),ALL(Muuttujat[Oppisopimus/Koulutussopimus]))",
+              "return DIVIDE(lkm,lkm_all)",
+              ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
@@ -2611,7 +2628,10 @@
             "name": "Oppisopimusopiskelijoiden osuus opiskelijoista",
             "expression": [
               "",
-              "CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[opiskelija]=1,Muuttujat[Koodit Oppisopimuskoulutus]=1) / CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[opiskelija]=1,ALL(Muuttujat[Oppisopimuskoulutus]))"
+              "var lkm = CALCULATE([Opiskelijat],Muuttujat[Koodit Oppisopimuskoulutus]=1)",
+              "var lkm_all = CALCULATE([Opiskelijat],ALL(Muuttujat[Oppisopimuskoulutus]))",
+              "return DIVIDE(lkm,lkm_all)",
+              ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Suhteellinen"
@@ -2620,20 +2640,32 @@
             "name": "Koulutussopimusopiskelijoiden osuus opiskelijoista",
             "expression": [
               "",
-              "CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[opiskelija]=1,Muuttujat[Koodit Koulutussopimus]=1) / CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[opiskelija]=1,ALL(Muuttujat[Koulutussopimus]))"
+              "var lkm = CALCULATE([Opiskelijat],Muuttujat[Koodit Koulutussopimus]=1)",
+              "var lkm_all = CALCULATE([Opiskelijat],ALL(Muuttujat[Koulutussopimus]))",
+              "return DIVIDE(lkm,lkm_all)"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Suhteellinen"
           },
           {
             "name": "Oppisopimusopiskelijoiden osuus uusista opiskelijoista",
-            "expression": " CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[uusi_opiskelija]=1,Muuttujat[Koodit Oppisopimuskoulutus]=1) / CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[uusi_opiskelija]=1,ALL(Muuttujat[Oppisopimuskoulutus]))",
+            "expression": [
+              "",
+              "var lkm = CALCULATE([Uudet opiskelijat],Muuttujat[Koodit Oppisopimuskoulutus]=1)",
+              "var lkm_all = CALCULATE([Uudet opiskelijat],ALL(Muuttujat[Oppisopimuskoulutus]))",
+              "return DIVIDE(lkm,lkm_all)"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Suhteellinen"
           },
           {
             "name": "Koulutussopimusopiskelijoiden osuus uusista opiskelijoista",
-            "expression": " CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[uusi_opiskelija]=1,Muuttujat[Koodit Koulutussopimus]=1) / CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[uusi_opiskelija]=1,ALL(Muuttujat[Koulutussopimus]))",
+            "expression": [
+              " ",
+              "var lkm = CALCULATE([Uudet opiskelijat],Muuttujat[Koodit Koulutussopimus]=1)",
+              "var lkm_all = CALCULATE([Uudet opiskelijat],ALL(Muuttujat[Koulutussopimus]))",
+              "return DIVIDE(lkm,lkm_all)"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Suhteellinen"
           },
@@ -2641,7 +2673,9 @@
             "name": "Oppisopimusopiskelijoiden osuus tutkinnon suorittaneista",
             "expression": [
               "",
-              "CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[tutkinnon_suorittanut]=1,Muuttujat[Koodit Oppisopimuskoulutus]=1) / CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[tutkinnon_suorittanut]=1,ALL(Muuttujat[Oppisopimuskoulutus]))"
+              "var lkm = CALCULATE([Tutkinnon suorittaneet],Muuttujat[Koodit Oppisopimuskoulutus]=1)",
+              "var lkm_all = CALCULATE([Tutkinnon suorittaneet],ALL(Muuttujat[Oppisopimuskoulutus]))",
+              "return DIVIDE(lkm,lkm_all)"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Suhteellinen"
@@ -2650,7 +2684,9 @@
             "name": "Koulutussopimusopiskelijoiden osuus tutkinnon suorittaneista",
             "expression": [
               "",
-              "CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[tutkinnon_suorittanut]=1,Muuttujat[Koodit Koulutussopimus]=1) / CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[tutkinnon_suorittanut]=1,ALL(Muuttujat[Koulutussopimus]))"
+              "var lkm = CALCULATE([Tutkinnon suorittaneet],Muuttujat[Koodit Koulutussopimus]=1)",
+              "var lkm_all = CALCULATE([Tutkinnon suorittaneet],ALL(Muuttujat[Koulutussopimus]))",
+              "return DIVIDE(lkm,lkm_all)"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Suhteellinen"
@@ -2671,9 +2707,9 @@
             "name": "Ei oppisopimusta tai koulutussopimusta osuus uusista opiskelijoista",
             "expression": [
               "",
-              "CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[uusi_opiskelija]=1,Muuttujat[Koodit Oppisopimuskoulutus]=0, Muuttujat[Koodit Koulutussopimus]=0) ",
-              "/ CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[uusi_opiskelija]=1,ALL(Muuttujat[Oppisopimuskoulutus]),ALL(Muuttujat[Koulutussopimus]))",
-              ""
+              "var lkm = CALCULATE([Uudet opiskelijat],Muuttujat[Koodit Oppisopimuskoulutus]=0, Muuttujat[Koodit Koulutussopimus]=0)",
+              "var lkm_all = CALCULATE([Uudet opiskelijat],ALL(Muuttujat[Oppisopimuskoulutus]),ALL(Muuttujat[Koulutussopimus]))",
+              "return DIVIDE(lkm,lkm_all)"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Suhteellinen"
@@ -2682,9 +2718,9 @@
             "name": "Ei oppisopimusta tai koulutussopimusta osuus opiskelijoista",
             "expression": [
               "",
-              "CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[opiskelija]=1,Muuttujat[Koodit Oppisopimuskoulutus]=0, Muuttujat[Koodit Koulutussopimus]=0) ",
-              "/ CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[opiskelija]=1,ALL(Muuttujat[Oppisopimuskoulutus]),ALL(Muuttujat[Koulutussopimus]))",
-              "",
+              "var lkm = CALCULATE([Opiskelijat],Muuttujat[Koodit Oppisopimuskoulutus]=0, Muuttujat[Koodit Koulutussopimus]=0)",
+              "var lkm_all = CALCULATE([Opiskelijat],ALL(Muuttujat[Oppisopimuskoulutus]),ALL(Muuttujat[Koulutussopimus]))",
+              "return DIVIDE(lkm,lkm_all)",
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
@@ -2694,7 +2730,9 @@
             "name": "Uudet opiskelijat %",
             "expression": [
               "",
-              "CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[uusi_opiskelija]=1) / CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[uusi_opiskelija]=1,ALL(Muuttujat[Oppisopimuskoulutus]),ALL(Muuttujat[Koulutussopimus]),ALL(Muuttujat[Oppisopimus/Koulutussopimus]))",
+              "var lkm = [Uudet opiskelijat]",
+              "var lkm_all = CALCULATE([Uudet opiskelijat],ALL(Muuttujat[Oppisopimuskoulutus]),ALL(Muuttujat[Koulutussopimus]),ALL(Muuttujat[Oppisopimus/Koulutussopimus]))",
+              "return DIVIDE(lkm,lkm_all)",
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
@@ -2702,31 +2740,36 @@
           {
             "name": "Uudet opiskelijat (opiskeluoikeus)",
             "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[opiskeluoikeus_oid]),Muuttujat[uusi_opiskelija]=1)",
-            "formatString": "#,0"
+            "formatString": "#,0",
+            "isHidden": true
           },
           {
             "name": "Uudet opiskelijat (oppisopimus)",
-            "expression": " CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[uusi_opiskelija]=1,Muuttujat[Koodit Oppisopimuskoulutus]=1)",
+            "expression": " CALCULATE([Uudet opiskelijat],Muuttujat[Koodit Oppisopimuskoulutus]=1)",
             "formatString": "#,0"
           },
           {
             "name": "Uudet opiskelijat (koulutussopimus)",
-            "expression": " CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[uusi_opiskelija]=1,Muuttujat[Koodit Koulutussopimus]=1)",
+            "expression": " CALCULATE([Uudet opiskelijat],Muuttujat[Koodit Koulutussopimus]=1)",
             "formatString": "#,0"
           },
           {
             "name": "Opiskelijat (oppisopimus)",
-            "expression": " CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[opiskelija]=1,Muuttujat[Koodit Oppisopimuskoulutus]=1)",
+            "expression": " CALCULATE([Opiskelijat],Muuttujat[Koodit Oppisopimuskoulutus]=1)",
             "formatString": "#,0"
           },
           {
             "name": "Opiskelijat (koulutussopimus)",
-            "expression": " CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[opiskelija]=1,Muuttujat[Koodit Koulutussopimus]=1)",
+            "expression": " CALCULATE([Opiskelijat],Muuttujat[Koodit Koulutussopimus]=1)",
             "formatString": "#,0"
           },
           {
             "name": "Uudet opiskelijat (rahoitus)",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[uusi_opiskelija_rahoitus]=1)",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[uusi_opiskelija_rahoitus]=1)",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           }
         ],
