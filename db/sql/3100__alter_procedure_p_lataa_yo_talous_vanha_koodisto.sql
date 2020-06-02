@@ -504,9 +504,9 @@ select d1.id as d_yo_id
 			  ,vararah
 			  ,yjrah
 			  ,veropvara)) as unpvt
-			  where aineistotyyppi_osa_1 = case when (select count(*) from sa.sa_suorat_yo_talous_2_tase where tilik = unpvt.tilik and aineistotyyppi_osa_1 = 'L' and yliop_koodi = unpvt.yliop_koodi) > 0 then 'L' else 'E' end
-			  --rajoittaa uusien talouskoodistojen luvut fakta-taulusta
-			  AND (TILIK < 2018 OR( TILIK =2018 and Aineistotyyppi_osa_1 ='E '))
+        --rajoittaa vanhan talouskoodiston lukuihin
+        WHERE aineistotyyppi_osa_1 = case when (select count(*) frrom sa.sa_suorat_yo_talous_2_tase where tilik < 2018 and tilik = unpvt.tilik and aineistotyyppi_osa_1 = 'L' and amk_koodi = unpvt.amk_koodi) > 0 then 'L' else 'E' end
+        AND TILIK < 2019)
 
 	union all
 

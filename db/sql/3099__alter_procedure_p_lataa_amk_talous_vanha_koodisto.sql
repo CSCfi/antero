@@ -497,9 +497,10 @@ from
 	  ,okrvelat
 
 	  )) as unpvt
-	  where aineistotyyppi_osa_1 = case when (select count(*) from sa.sa_suorat_amk_talous_2_tase where tilik = unpvt.tilik and aineistotyyppi_osa_1 = 'L' and amk_koodi = unpvt.amk_koodi) > 0 then 'L' else 'E' end
-	  --rajoittaa uusien talouskoodistojen luvut fakta-taulusta
-	  AND (TILIK < 2018 OR( TILIK =2018 and Aineistotyyppi_osa_1='E '))
+	  --where aineistotyyppi_osa_1 = case when (select count(*) from sa.sa_suorat_amk_talous_2_tase where tilik = unpvt.tilik and aineistotyyppi_osa_1 = 'L' and amk_koodi = unpvt.amk_koodi) > 0 then 'L' else 'E' end
+    --rajoittaa uusien talouskoodistojen luvut fakta-taulusta
+	   WHERE aineistotyyppi_osa_1 = case when (select count(*) frrom sa.sa_suorat_amk_talous_2_tase where tilik < 2018 and tilik = unpvt.tilik and aineistotyyppi_osa_1 = 'L' and amk_koodi = unpvt.amk_koodi) > 0 then 'L' else 'E' end
+	   AND TILIK < 2019
 union all
 select	tilik
 		,amk_koodi
@@ -835,7 +836,7 @@ from
 	,rahoitustuotot_ja_kulut)) as unpvt
 	--where aineistotyyppi_osa_1 = case when (select count(*) from sa.sa_suorat_amk_talous_1_tuloslaskelma where tilik = unpvt.tilik and aineistotyyppi_osa_1 = 'L' and amk_koodi = unpvt.amk_koodi) > 0 then 'L' else 'E' end
 	  --rajoittaa uusien talouskoodistojen luvut fakta-taulusta
-	   WHERE aineistotyyppi = case when (select count(*) from sa.sa_suorat_amk_talous_6_liiketoiminnan_tuloslaskelma where tilik < 2018 and tilik = unpvt.tilik and aineistotyyppi_osa_1 = 'L' and amk_koodi = unpvt.amk_koodi) > 0 then 'L' else 'E' end
+	   WHERE aineistotyyppi = case when (select count(*) from sa.sa_suorat_amk_talous_6_liiketoiminnan_tuloslaskelma where tilik < 2018 and tilik = unpvt.tilik and aineistotyyppi = 'L' and amk_koodi = unpvt.amk_koodi) > 0 then 'L' else 'E' end
 	   AND TILIK < 2019
 
   ) f
