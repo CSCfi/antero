@@ -1,12 +1,13 @@
 USE [ANTERO]
 GO
 
-/****** Object:  View [dw].[v_arvo_uraseuranta]    Script Date: 5.6.2020 8:49:44 ******/
+/****** Object:  View [dw].[v_arvo_uraseuranta]    Script Date: 5.6.2020 10:45:30 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 
@@ -404,7 +405,10 @@ UNION ALL
 SELECT  --TOP 1
 		null as kysymysid
 	  , [Ikä (valmistuessa)]
-      ,[Ikäryhmä (valmistuessa)]
+      ,CASE 
+			WHEN [Ikäryhmä (valmistuessa)] in ('20','21','22','23','24') Then '20–24-vuotiaat'
+			ELSE [Ikäryhmä (valmistuessa)]
+	   END AS [Ikäryhmä (valmistuessa)]
       ,[Sukupuoli]
       ,CASE 
 			WHEN Äidinkieli = 'suomi' OR Äidinkieli = 'pohjoissaame' THEN 'suomi (sis. saame)'
@@ -459,7 +463,10 @@ SELECT  --TOP 1
      ,[vastaajaid]
      ,[lukumaara]
     ,[Kyselyvuosi] as 'Enkätår'
-	,[Åldersgrupp]
+	,CASE 
+			WHEN [Åldersgrupp] in ('20','21','22','23','24') Then '20–24 år'
+			ELSE [Åldersgrupp]
+	END AS [Åldersgrupp]
 	,[Kön]
 	,CASE 
 			WHEN Äidinkieli = 'suomi' OR Äidinkieli = 'pohjoissaame' THEN 'finska (inkl. samiska)'
@@ -484,7 +491,10 @@ SELECT  --TOP 1
       ,[Utbildningsbenämning]
      --ENGLANTI
 	  ,[Kyselyvuosi] as 'Survey year'
-	  ,[Age group] 
+	  ,CASE 
+			WHEN [Age group] in ('20','21','22','23','24') Then 'Aged 20–24'
+			ELSE [Age group] 
+	  END AS [Age group]
 	  ,[Gender] 
 	  ,CASE 
 			WHEN Äidinkieli = 'suomi' OR Äidinkieli = 'pohjoissaame' THEN 'Finnish (incl. Sámi)'
@@ -561,6 +571,7 @@ SELECT  --TOP 1
 		END  AS [jarjestys_monivalinta]
 FROM [ANTERO].dw.f_arvo_yo_uraseuranta_2018 
 --where Kyselyvuosi=2020 
+
 
 
 
