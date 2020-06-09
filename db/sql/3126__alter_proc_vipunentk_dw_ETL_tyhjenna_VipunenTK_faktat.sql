@@ -142,4 +142,6 @@ truncate table [VipunenTK].[dbo].[f_4_10_Vaestorakenne_aidinkielen_mukaan_maakun
 truncate table [VipunenTK].[dbo].[f_4_11_Vaeston_maassamuutto_asuinmaakunnan_ja_koulutuksen_mukaan]
 
 
+
+
 USE [ANTERO]
