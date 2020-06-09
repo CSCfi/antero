@@ -139,8 +139,7 @@ truncate table [VipunenTK].[dbo].[f_tutkinnon_suorittaneiden_myohempi_koulutus_4
 
 truncate table [VipunenTK].[dbo].[f_4_1_Perusopetuksen_lisaopetuksen_paattaneiden_sijoittuminen]
 truncate table [VipunenTK].[dbo].[f_4_10_Vaestorakenne_aidinkielen_mukaan_maakunnittain]
-truncate table [VipunenTK].[dbo].[f_4_11_Vaeston_maassamuutto_asuinmaakunnan_ja_koulutuksen_mukaan]
-
+truncate table [VipunenTK].[dbo].[f_4_11_Vaeston_maassamuutto_asuinmaakunnan_ja_koulutuksen_mukaan];
 
 
 
