@@ -10,8 +10,6 @@ GO
 
 
 ALTER PROCEDURE [dbo].[ETL_tyhjenna_VipunenTK_faktat] AS
-
---truncate table  [VipunenTK].[dbo].f_4_2_Vaeston_koulutusrakenne_ja_paaasiallinen_toiminta ?
 truncate table  [VipunenTK].[dbo].f_ainevalinnat_lukiossa
 truncate table  [VipunenTK].[dbo].f_ainevalinnat_perusopetuksessa
 truncate table  [VipunenTK].[dbo].f_aloittaneiden_lapaisy
@@ -40,6 +38,7 @@ truncate table  [VipunenTK].[dbo].f_TJ_4_3_Tutkinnon_suorittaneiden_paaasialline
 truncate table  [VipunenTK].[dbo].f_TJK_2_11_tutkintoon_johtamaton_koulutus
 truncate table  [VipunenTK].[dbo].f_tyossakayvat_ammateittain
 truncate table  [VipunenTK].[dbo].f_VKP_4_2_Vaeston_koulutusrakenne_ja_paaasiallinen_toiminta
+--truncate table  [VipunenTK].[dbo].f_4_2_Vaeston_koulutusrakenne_ja_paaasiallinen_toiminta ?
 
 truncate table [VipunenTK].[dbo].f_TOAK_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan
 
@@ -139,7 +138,7 @@ truncate table [VipunenTK].[dbo].[f_tutkinnon_suorittaneiden_myohempi_koulutus_4
 
 truncate table [VipunenTK].[dbo].[f_4_1_Perusopetuksen_lisaopetuksen_paattaneiden_sijoittuminen]
 truncate table [VipunenTK].[dbo].[f_4_10_Vaestorakenne_aidinkielen_mukaan_maakunnittain]
-truncate table [VipunenTK].[dbo].[f_4_11_Vaeston_maassamuutto_asuinmaakunnan_ja_koulutuksen_mukaan];
+truncate table [VipunenTK].[dbo].[f_4_11_Vaeston_maassamuutto_asuinmaakunnan_ja_koulutuksen_mukaan]
 
 
 
