@@ -52,7 +52,7 @@ def main(argv):
     usage()
     sys.exit(2)
   for opt, arg in opts:
-	if opt in ("-d", "--database"): database = arg
+    if opt in ("-d", "--database"): database = arg
     elif opt in ("-e", "--schema"): schema = arg
     elif opt in ("-p", "--procedure"): procedure = arg
     elif opt in ("-v", "--verbose"): verbose = True
