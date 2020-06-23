@@ -4079,7 +4079,11 @@
         "measures": [
           {
             "name": "Kaikki hakijat",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]))",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
@@ -4094,7 +4098,16 @@
           },
           {
             "name": "Aid. ensikertaisten osuus hakijoista",
-            "expression": "[Aidosti ensikertaiset hakijat]/[Kaikki hakijat]",
+            "expression": [
+              "",
+              "var osa = [Aidosti ensikertaiset hakijat]",
+              "var kaikki = [Kaikki hakijat]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
@@ -4114,17 +4127,44 @@
           },
           {
             "name": "Osuus joilla aiempi tutkinto",
-            "expression": "[Hakijat joilla aiempi tutkinto]/[Kaikki hakijat]",
+            "expression": [
+              "",
+              "var osa = [Hakijat joilla aiempi tutkinto]",
+              "var kaikki = [Kaikki hakijat]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Osuus joilla aiempi opiskeluoikeus",
-            "expression": "[Hakijat joilla aiempi opiskeluoikeus]/[Kaikki hakijat]",
+            "expression": [
+              "",
+              "var osa = [Hakijat joilla aiempi opiskeluoikeus]",
+              "var kaikki = [Kaikki hakijat]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Ensikertaisena kohdeltavien osuus hakijoista",
-            "expression": "[Ensikertaisena kohdeltavat hakijat]/[Kaikki hakijat]",
+            "expression": [
+              "",
+              "var osa = [Ensikertaisena kohdeltavat hakijat]",
+              "var kaikki = [Kaikki hakijat]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
@@ -4149,7 +4189,16 @@
           },
           {
             "name": "Aid. ensikertaisten osuus valituista",
-            "expression": "[Valitut (aidosti ensikertaiset hakijat)]/[Valitut (kaikki)]",
+            "expression": [
+              "",
+              "var osa = [Valitut (aidosti ensikertaiset hakijat)]",
+              "var kaikki = [Valitut (kaikki)]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
@@ -4159,7 +4208,16 @@
           },
           {
             "name": "Ensikertaisena kohdeltavien osuus valituista",
-            "expression": "[Valitut (ensikertaisena kohdeltavat)]/[Valitut (kaikki)]",
+            "expression": [
+              "",
+              "var osa = [Valitut (ensikertaisena kohdeltavat)]",
+              "var kaikki = [Valitut (kaikki)]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
@@ -4184,7 +4242,16 @@
           },
           {
             "name": "Aid. ensikertaisten osuus paikan vastaanottaneista",
-            "expression": "[Paikan vastaanottaneet (aidosti ensikertaiset)]/[Paikan vastaanottaneet (kaikki)]",
+            "expression": [
+              "",
+              "var osa = [Paikan vastaanottaneet (aidosti ensikertaiset)]",
+              "var kaikki = [Paikan vastaanottaneet (kaikki)]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
@@ -4209,7 +4276,16 @@
           },
           {
             "name": "Aid. ensikertaisten osuus aloittaneista",
-            "expression": "[Aloittaneet (aidosti ensikertaiset)]/[Aloittaneet (kaikki)]",
+            "expression": [
+              "",
+              "var osa = [Aloittaneet (aidosti ensikertaiset)]",
+              "var kaikki = [Aloittaneet (kaikki)]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
@@ -4224,12 +4300,185 @@
           },
           {
             "name": "Ensikertaisena kohdeltavien osuus paikan vastaanottaneista",
-            "expression": "[Paikan vastaanottaneet (ensikertaisena kohdeltavat)]/[Paikan vastaanottaneet (kaikki)]",
+            "expression": [
+              "",
+              "var osa = [Paikan vastaanottaneet (ensikertaisena kohdeltavat)]",
+              "var kaikki = [Paikan vastaanottaneet (kaikki)]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Ensikertaisena kohdeltavien osuus aloittaneista",
-            "expression": "[Aloittaneet (ensikertaisena kohdeltavat)]/[Aloittaneet (kaikki)]",
+            "expression": [
+              "",
+              "var osa = [Aloittaneet (ensikertaisena kohdeltavat)]",
+              "var kaikki = [Aloittaneet (kaikki)]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Ensisijaiset hakijat_s",
+            "expression": "CALCULATE([Kaikki hakijat_s],Muuttujat[Hakutoive]=\"1\")",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Aidosti ensikertaiset hakijat_s",
+            "expression": "CALCULATE([Kaikki hakijat_s],Muuttujat[aidosti_ensikertainen]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Aid. ensikertaisten osuus hakijoista_s",
+            "expression": "[Aidosti ensikertaiset hakijat_s]/[Kaikki hakijat_s]",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Ensikertaisena kohdeltavat hakijat_s",
+            "expression": "CALCULATE([Kaikki hakijat_s],Muuttujat[ensikertaisena_kohdeltava]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ensikertaisena kohdeltavien osuus hakijoista_s",
+            "expression": "[Ensikertaisena kohdeltavat hakijat_s]/[Kaikki hakijat_s]",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Hakijat joilla aiempi tutkinto_s",
+            "expression": "CALCULATE([Kaikki hakijat_s],Muuttujat[Aiemman tutkinnon suoritusvuosi]<>\"Ei aiempaa tutkintoa\")",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Hakijat joilla aiempi opiskeluoikeus_s",
+            "expression": "CALCULATE([Kaikki hakijat_s],Muuttujat[Muun opiskeluoikeuden aloitusvuosi]<>\"Ei aiempaa opiskeluoikeutta\")",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Kaikki hakijat_s",
+            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Valitut (aidosti ensikertaiset hakijat)_s",
+            "expression": "CALCULATE([Aidosti ensikertaiset hakijat_s],Muuttujat[Valitut2]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Aid. ensikertaisten osuus valituista_s",
+            "expression": "[Valitut (aidosti ensikertaiset hakijat)_s]/[Valitut (kaikki)_s]",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Valitut (ensikertaisena kohdeltavat)_s",
+            "expression": "CALCULATE([Ensikertaisena kohdeltavat hakijat_s],Muuttujat[Valitut2]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ensikertaisena kohdeltavien osuus valituista_s",
+            "expression": "[Valitut (ensikertaisena kohdeltavat)_s]/[Valitut (kaikki)_s]",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Valitut (kaikki)_s",
+            "expression": "CALCULATE([Kaikki hakijat_s],Muuttujat[Valitut2]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Valitut (aiempi opiskeluoikeus)_s",
+            "expression": "CALCULATE([Hakijat joilla aiempi opiskeluoikeus_s],Muuttujat[Valitut2]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Valitut (aiempi tutkinto)_s",
+            "expression": "CALCULATE([Hakijat joilla aiempi tutkinto_s],Muuttujat[Valitut2]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Paikan vastaanottaneet (aidosti ensikertaiset)_s",
+            "expression": "CALCULATE([Aidosti ensikertaiset hakijat_s],Muuttujat[Paikan vastaanottaneet2]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Aid. ensikertaisten osuus paikan vastaanottaneista_s",
+            "expression": "[Paikan vastaanottaneet (aidosti ensikertaiset)_s]/[Paikan vastaanottaneet (kaikki)_s]",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Paikan vastaanottaneet (ensikertaisena kohdeltavat)_s",
+            "expression": "CALCULATE([Ensikertaisena kohdeltavat hakijat_s],Muuttujat[Paikan vastaanottaneet2]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ensikertaisena kohdeltavien osuus paikan vastaanottaneista_s",
+            "expression": "[Paikan vastaanottaneet (ensikertaisena kohdeltavat)_s]/[Paikan vastaanottaneet (kaikki)_s]",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Paikan vastaanottaneet (aiempi tutkinto)_s",
+            "expression": "CALCULATE([Hakijat joilla aiempi tutkinto_s],Muuttujat[Paikan vastaanottaneet2]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Paikan vastaanottaneet (aiempi opiskeluoikeus)_s",
+            "expression": "CALCULATE([Hakijat joilla aiempi opiskeluoikeus_s],Muuttujat[Paikan vastaanottaneet2]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Paikan vastaanottaneet (kaikki)_s",
+            "expression": "CALCULATE([Kaikki hakijat_s],Muuttujat[Paikan vastaanottaneet2]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Aloittaneet (aidosti ensikertaiset)_s",
+            "expression": "CALCULATE([Aidosti ensikertaiset hakijat_s],Muuttujat[Aloittaneet2]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Aid. ensikertaisten osuus aloittaneista_s",
+            "expression": "[Aloittaneet (aidosti ensikertaiset)_s]/[Aloittaneet (kaikki)_s]",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Aloittaneet (ensikertaisena kohdeltavat)_s",
+            "expression": "CALCULATE([Ensikertaisena kohdeltavat hakijat_s],Muuttujat[Aloittaneet2]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ensikertaisena kohdeltavien osuus aloittaneista_s",
+            "expression": "[Aloittaneet (ensikertaisena kohdeltavat)_s]/[Aloittaneet (kaikki)_s]",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Aloittaneet (aiempi tutkinto)_s",
+            "expression": "CALCULATE([Hakijat joilla aiempi tutkinto_s],Muuttujat[Aloittaneet2]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Aloittaneet (aiempi opiskeluoikeus)_s",
+            "expression": "CALCULATE([Hakijat joilla aiempi opiskeluoikeus_s],Muuttujat[Aloittaneet2]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Aloittaneet (kaikki)_s",
+            "expression": "CALCULATE([Kaikki hakijat_s],Muuttujat[Aloittaneet2]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Osuus joilla aiempi tutkinto_s",
+            "expression": "[Hakijat joilla aiempi tutkinto_s]/[Kaikki hakijat_s]",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Osuus joilla aiempi opiskeluoikeus_s",
+            "expression": "[Hakijat joilla aiempi opiskeluoikeus_s]/[Kaikki hakijat_s]",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           }
         ],

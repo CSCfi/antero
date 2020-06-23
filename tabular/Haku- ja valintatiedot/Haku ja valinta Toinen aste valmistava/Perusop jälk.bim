@@ -12004,12 +12004,6 @@
                       <AttributeID>År då grundutbildning avslutades</AttributeID>
                     </Attribute>
                     <Attribute>
-                      <AttributeID>Hemkommun sökande</AttributeID>
-                    </Attribute>
-                    <Attribute>
-                      <AttributeID>Landskap sökobjekt</AttributeID>
-                    </Attribute>
-                    <Attribute>
                       <AttributeID>Avslutningsklass</AttributeID>
                     </Attribute>
                     <Attribute>
@@ -12056,6 +12050,12 @@
                     </Attribute>
                     <Attribute>
                       <AttributeID>Läroanstalt sökobjekt</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Hemkommun sökande</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Landskap sökobjekt</AttributeID>
                     </Attribute>
                   </Attributes>
                 </Dimension>
@@ -12126,21 +12126,6 @@
                       <AttributeID>Region study programme</AttributeID>
                     </Attribute>
                     <Attribute>
-                      <AttributeID>Graduation year prior education</AttributeID>
-                    </Attribute>
-                    <Attribute>
-                      <AttributeID>Municipality of prior education</AttributeID>
-                    </Attribute>
-                    <Attribute>
-                      <AttributeID>Prior education</AttributeID>
-                    </Attribute>
-                    <Attribute>
-                      <AttributeID>Region of prior education</AttributeID>
-                    </Attribute>
-                    <Attribute>
-                      <AttributeID>Year start of studies</AttributeID>
-                    </Attribute>
-                    <Attribute>
                       <AttributeID>Ed institution study programme</AttributeID>
                     </Attribute>
                     <Attribute>
@@ -12169,6 +12154,21 @@
                     </Attribute>
                     <Attribute>
                       <AttributeID>Education provider study programme</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Graduation year prior education</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Municipality of prior education</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Prior education</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Region of prior education</AttributeID>
+                    </Attribute>
+                    <Attribute>
+                      <AttributeID>Year start of studies</AttributeID>
                     </Attribute>
                   </Attributes>
                 </Dimension>
@@ -19312,7 +19312,7 @@
               <Commands>
                 <Command>
                   <Text>CALCULATE; 
-CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1; 
+CREATE MEMBER CURRENTCUBE.Measures.[__No measures defined] AS 1, VISIBLE = 0; 
 ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measures defined]; </Text>
                 </Command>
                 <Command>
@@ -19340,7 +19340,9 @@ CREATE MEASURE 'Muuttujat'[Ensisijaiset hakijat]=CALCULATE([Kaikki hakijat],Muut
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Kaikki hakijat]=CALCULATE(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Lukumäärä]=1);
+CREATE MEASURE 'Muuttujat'[Kaikki hakijat]=
+var lkm = CALCULATE(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Lukumäärä]=1)
+return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -19359,7 +19361,8 @@ CREATE MEASURE 'Muuttujat'[Kaikki hakijat]=CALCULATE(DISTINCTCOUNT([Henkilö OID
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Aloituspaikat]=sum(Muuttujat[Aloituspaikat2]);
+CREATE MEASURE 'Muuttujat'[Aloituspaikat]=var summa = sum(Muuttujat[Aloituspaikat2])
+return IF(summa=0,BLANK(),summa);
 </Text>
                   <Annotations>
                     <Annotation>
@@ -19416,7 +19419,9 @@ CREATE MEASURE 'Muuttujat'[Paikan vastaanottaneet]=CALCULATE([Kaikki hakijat],Mu
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Aloittaneet]=calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet3]);
+CREATE MEASURE 'Muuttujat'[Aloittaneet]=
+var lkm = calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet3]=1)
+return IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -19435,7 +19440,7 @@ CREATE MEASURE 'Muuttujat'[Aloittaneet]=calculate(DISTINCTCOUNT([Henkilö OID]),
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Nybörjarplatser]=sum(Muuttujat[Aloituspaikat2]);
+CREATE MEASURE 'Muuttujat'[Nybörjarplatser]=[Aloituspaikat];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -19454,7 +19459,7 @@ CREATE MEASURE 'Muuttujat'[Nybörjarplatser]=sum(Muuttujat[Aloituspaikat2]);
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Intake]=sum(Muuttujat[Aloituspaikat2]);
+CREATE MEASURE 'Muuttujat'[Intake]=[Aloituspaikat];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -19473,7 +19478,7 @@ CREATE MEASURE 'Muuttujat'[Intake]=sum(Muuttujat[Aloituspaikat2]);
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Försthandssökande]=CALCULATE([Kaikki hakijat],Muuttujat[Hakutoive]="1");
+CREATE MEASURE 'Muuttujat'[Försthandssökande]=[Ensisijaiset hakijat];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -19492,7 +19497,7 @@ CREATE MEASURE 'Muuttujat'[Försthandssökande]=CALCULATE([Kaikki hakijat],Muutt
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Applicants expressing first preference]=CALCULATE([Kaikki hakijat],Muuttujat[Hakutoive]="1");
+CREATE MEASURE 'Muuttujat'[Applicants expressing first preference]=[Ensisijaiset hakijat];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -19511,7 +19516,7 @@ CREATE MEASURE 'Muuttujat'[Applicants expressing first preference]=CALCULATE([Ka
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Samtliga sökande]=CALCULATE(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Lukumäärä]=1);
+CREATE MEASURE 'Muuttujat'[Samtliga sökande]=[Kaikki hakijat];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -19530,7 +19535,7 @@ CREATE MEASURE 'Muuttujat'[Samtliga sökande]=CALCULATE(DISTINCTCOUNT([Henkilö 
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[All applicants]=CALCULATE(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Lukumäärä]=1);
+CREATE MEASURE 'Muuttujat'[All applicants]=[Kaikki hakijat];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -19549,7 +19554,7 @@ CREATE MEASURE 'Muuttujat'[All applicants]=CALCULATE(DISTINCTCOUNT([Henkilö OID
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Antagna]=CALCULATE([Kaikki hakijat],Muuttujat[Valitut3]=1);
+CREATE MEASURE 'Muuttujat'[Antagna]=[Valitut];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -19568,7 +19573,7 @@ CREATE MEASURE 'Muuttujat'[Antagna]=CALCULATE([Kaikki hakijat],Muuttujat[Valitut
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Selected]=CALCULATE([Kaikki hakijat],Muuttujat[Valitut3]=1);
+CREATE MEASURE 'Muuttujat'[Selected]=[Valitut];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -19587,7 +19592,7 @@ CREATE MEASURE 'Muuttujat'[Selected]=CALCULATE([Kaikki hakijat],Muuttujat[Valitu
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Antal som mottagit en plats]=CALCULATE([Kaikki hakijat],Muuttujat[Paikan vastaanottaneet3]=1);
+CREATE MEASURE 'Muuttujat'[Antal som mottagit en plats]=[Paikan vastaanottaneet];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -19606,7 +19611,7 @@ CREATE MEASURE 'Muuttujat'[Antal som mottagit en plats]=CALCULATE([Kaikki hakija
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Accepted a study place]=CALCULATE([Kaikki hakijat],Muuttujat[Paikan vastaanottaneet3]=1);
+CREATE MEASURE 'Muuttujat'[Accepted a study place]=[Paikan vastaanottaneet];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -19625,7 +19630,7 @@ CREATE MEASURE 'Muuttujat'[Accepted a study place]=CALCULATE([Kaikki hakijat],Mu
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Nybörjare]=calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet3]);
+CREATE MEASURE 'Muuttujat'[Nybörjare]=[Aloittaneet];
 </Text>
                   <Annotations>
                     <Annotation>
@@ -19644,12 +19649,107 @@ CREATE MEASURE 'Muuttujat'[Nybörjare]=calculate(DISTINCTCOUNT([Henkilö OID]),M
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Admitted]=calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet3]);
+CREATE MEASURE 'Muuttujat'[Admitted]=[Aloittaneet];
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
                       <Value>Admitted</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Kaikki hakijat_s]=CALCULATE(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Lukumäärä]=1);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Kaikki hakijat_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Ensisijaiset hakijat_s]=CALCULATE([Kaikki hakijat_s],Muuttujat[Hakutoive]="1");
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Ensisijaiset hakijat_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Valitut_s]=CALCULATE([Kaikki hakijat_s],Muuttujat[Valitut3]=1);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Valitut_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Paikan vastaanottaneet_s]=CALCULATE([Kaikki hakijat_s],Muuttujat[Paikan vastaanottaneet3]=1);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Paikan vastaanottaneet_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Aloittaneet_s]=calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet3]=1);
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Aloittaneet_s</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -20034,6 +20134,111 @@ CREATE MEASURE 'Muuttujat'[Admitted]=calculate(DISTINCTCOUNT([Henkilö OID]),Muu
                     </Annotation>
                   </Annotations>
                   <CalculationReference>[Admitted]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Kaikki hakijat_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Ensisijaiset hakijat_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Valitut_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Paikan vastaanottaneet_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Aloittaneet_s]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>

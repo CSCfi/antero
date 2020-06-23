@@ -2041,15 +2041,19 @@
         "measures": [
           {
             "name": "Valitut",
-            "expression": "CALCULATE(DISTINCTCOUNT([Henkilö OID]),Muuttujat[valittu]=1)",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT([Henkilö OID]),Muuttujat[valittu]=1)",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Osuus valituista",
             "expression": [
               "",
-              "var num =[Valitut]",
-              "var den = IF([ehto]=TRUE(),",
+              "var osa = [Valitut]",
+              "var kaikki = IF([ehto]=TRUE(),",
               "CALCULATE([Valitut],ALL(",
               "\tMuuttujat[Arvosanojen lkm L]",
               "\t,Muuttujat[Arvosanojen lkm E/L]",
@@ -2072,9 +2076,12 @@
               "\t,Muuttujat[Sukupuoli]",
               "\t,Muuttujat[Tutkinnon aloitussykli (hakukohde)]",
               "\t)",
-              ")",
-              ")",
-              "return num/den",
+              "))",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
@@ -2083,12 +2090,18 @@
             "name": "Osuus ylioppilastutkinnon suorittaneista",
             "expression": [
               "",
-              "var num1 =1-- SUM('Ylioppilastutkinnon suorittaneet'[lkm])",
-              "var den1 = 1--AVERAGE('Ylioppilastutkinnon suorittaneet'[lkm_vuosi_yht])",
+              "var osa = [Ylioppilastutkinnon suorittaneet] ",
+              "var kaikki = CALCULATE([Ylioppilastutkinnon suorittaneet],ALLEXCEPT(Muuttujat,Muuttujat[Koulutuksen alkamisvuosi]))",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
+              "--var num1 =1-- SUM('Ylioppilastutkinnon suorittaneet'[lkm])",
+              "--var den1 = 1--AVERAGE('Ylioppilastutkinnon suorittaneet'[lkm_vuosi_yht])",
               "--var num2 = SUM('Valintojen maara matikka'[lkm])",
               "--var den2 = AVERAGE('Valintojen maara matikka'[lkm_vuosi_yht])",
-              "--return IF(ISFILTERED([Kirjoitettu matematiikka]); num2 / den2; num1 / den1)",
-              "return [Ylioppilastutkinnon suorittaneet] / CALCULATE([Ylioppilastutkinnon suorittaneet],ALLEXCEPT(Muuttujat,Muuttujat[Koulutuksen alkamisvuosi]))"
+              "--return IF(ISFILTERED([Kirjoitettu matematiikka]); num2 / den2; num1 / den1)"
             ],
             "formatString": "0 %;-0 %;0 %"
           },
@@ -2110,18 +2123,17 @@
             "name": "Ylioppilastutkinnon suorittaneet",
             "expression": [
               "",
-              "var summa1 =DISTINCTCOUNT('Ylioppilastutkinnon suorittaneet'[OpiskelijaID])",
-              "--var summa2 = SUM('Valintojen maara matikka'[lkm])",
-              "return IF(ISFILTERED([Kirjoitettu matematiikka]),summa1,summa1)"
+              "var lkm = DISTINCTCOUNT('Ylioppilastutkinnon suorittaneet'[OpiskelijaID])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
             ],
             "formatString": "#,0"
           },
           {
             "name": "Keskiarvo (1-10)",
             "expression": [
-              " var taulu = GROUPBY(Muuttujat, [Aine + laajuus], [Arvosana, numero], [Henkilö OID])",
-              "return",
-              "AVERAGEX(taulu, [Arvosana, numero])"
+              " ",
+              "var taulu = GROUPBY(Muuttujat, [Aine + laajuus], [Arvosana, numero], [Henkilö OID])",
+              "return IF([hlöiden lkm] < 5, BLANK(), AVERAGEX(taulu, [Arvosana, numero]))"
             ],
             "formatString": "0.00"
           },
@@ -2129,13 +2141,8 @@
             "name": "20. persentiili (keskiarvo)",
             "expression": [
               " ",
-              "",
               "var taulu = CALCULATETABLE(SUMMARIZE(Muuttujat, Muuttujat[Henkilö OID], \"Keskiarvo\", AVERAGE([Arvosana, numero (0-7)])))",
-              "",
-              "return",
-              "",
-              "",
-              "PERCENTILEX.INC(taulu, [Keskiarvo], 0.2)"
+              "return IF([hlöiden lkm] < 5, BLANK(), PERCENTILEX.INC(taulu, [Keskiarvo], 0.2))"
             ],
             "formatString": "0.00"
           },
@@ -2143,32 +2150,25 @@
             "name": "80. persentiili (keskiarvo)",
             "expression": [
               " ",
-              "",
               "var taulu = CALCULATETABLE(SUMMARIZE(Muuttujat, Muuttujat[Henkilö OID], \"Keskiarvo\", AVERAGE([Arvosana, numero (0-7)])))",
-              "",
-              "return",
-              "",
-              "",
-              "PERCENTILEX.INC(taulu, [Keskiarvo], 0.8)",
-              ""
+              "return IF([hlöiden lkm] < 5, BLANK(), PERCENTILEX.INC(taulu, [Keskiarvo], 0.8))"
             ],
             "formatString": "0.00"
           },
           {
             "name": "Paikan vastaanottaneet",
-            "expression": " CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]), Muuttujat[vastaanottanut paikan] = 1)"
+            "expression": [
+              " ",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]), Muuttujat[vastaanottanut paikan] = 1)",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ]
           },
           {
             "name": "Mediaani (keskiarvo)",
             "expression": [
               " ",
-              "",
               "var taulu = CALCULATETABLE(SUMMARIZE(Muuttujat, Muuttujat[Henkilö OID], \"Keskiarvo\", AVERAGE([Arvosana, numero (0-7)])))",
-              "",
-              "return",
-              "",
-              "PERCENTILEX.INC(taulu, [Keskiarvo], 0.5)",
-              ""
+              "return IF([hlöiden lkm] < 5, BLANK(), PERCENTILEX.INC(taulu, [Keskiarvo], 0.5))"
             ],
             "formatString": "0.00"
           },
@@ -2176,16 +2176,22 @@
             "name": "Aineen kirjoittaneiden osuus",
             "expression": [
               " ",
-              "DIVIDE(",
-              "\tCALCULATE(",
+              "var lkm1 = CALCULATE(",
               "\t\tDISTINCTCOUNT(Muuttujat[Henkilö OID]), ",
               "\t\tVALUES(Muuttujat[Aine + laajuus]), \t\t\t\t",
               "\t\tVALUES(Muuttujat[Kirjoitettu matematiikka]), ",
-              "\t\tVALUES(Muuttujat[Aineryhmä])),",
-              "\tCALCULATE(",
+              "\t\tVALUES(Muuttujat[Aineryhmä]))",
+              "var lkm2 = CALCULATE(",
               "\t\tDISTINCTCOUNT(Muuttujat[Henkilö OID]),",
               "\t\tALL(Muuttujat[Aine + laajuus]), ",
-              "\t\tALL(Muuttujat[Kirjoitettu matematiikka])))"
+              "\t\tALL(Muuttujat[Kirjoitettu matematiikka]))",
+              "var osa = IF(lkm1 = 0, BLANK(), IF(lkm1 < 5, \"1-4\", MROUND(lkm1, 3)))",
+              "var kaikki = IF(lkm2 = 0, BLANK(), IF(lkm2 < 5, \"1-4\", MROUND(lkm2, 3)))",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
@@ -2286,6 +2292,254 @@
             "name": "Matematiikan arvosanan osuus (hakijat)",
             "expression": [
               "",
+              "var lkm1 = CALCULATE(",
+              "\t\tDISTINCTCOUNT(Muuttujat[Henkilö OID]),",
+              "\t\tVALUES(Muuttujat[Arvosana, kirjain]),",
+              "\t\tMuuttujat[Aine] = \"Matematiikka\")",
+              "var lkm2 = CALCULATE(",
+              "\t\tDISTINCTCOUNT(Muuttujat[Henkilö OID]),",
+              "\t\tALL(Muuttujat[Arvosana, kirjain]),ALL(Muuttujat[Arvosana, numero]),ALL( Muuttujat[Arvosana, numero (0-7)]),",
+              "\t\tMuuttujat[Aine] = \"Matematiikka\")",
+              "var osa = IF(lkm1 = 0, BLANK(), IF(lkm1 < 5, \"1-4\", MROUND(lkm1, 3)))",
+              "var kaikki = IF(lkm2 = 0, BLANK(), IF(lkm2 < 5, \"1-4\", MROUND(lkm2, 3)))",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
+              ""
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Matematiikan arvosanan osuus (valitut)",
+            "expression": "CALCULATE([Matematiikan arvosanan osuus (hakijat)], Muuttujat[valittu] = 1)",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Matematiikan arvosanan osuus (paikan vastaanottaneet)",
+            "expression": "CALCULATE([Matematiikan arvosanan osuus (hakijat)], Muuttujat[vastaanottanut paikan] = 1)",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Osuus paikan vastaanottaneista",
+            "expression": [
+              " ",
+              "var osa = [Paikan vastaanottaneet]",
+              "var kaikki = CALCULATE([Paikan vastaanottaneet],ALL(",
+              "\tMuuttujat[Arvosanojen lkm L]",
+              "\t,Muuttujat[Arvosanojen lkm E/L]",
+              "\t,Muuttujat[Arvosanojen lkm M/E/L]",
+              "\t,Muuttujat[Aine]",
+              "\t,Muuttujat[Kirjoitettujen reaaliaineiden lkm]",
+              "\t,Muuttujat[Kirjoitettujen kielten lkm]",
+              "\t,Muuttujat[Arvosanojen L lkm]",
+              "\t,Muuttujat[Arvosanojen M/E/L lkm]",
+              "\t, Muuttujat[Arvosanojen E/L lkm]",
+              "))",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
+              ""
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Keskiarvo (0-7)",
+            "expression": [
+              " ",
+              "var taulu = GROUPBY(Muuttujat, [Aine + laajuus], [Arvosana, numero (0-7)], [Henkilö OID])",
+              "return IF([hlöiden lkm] < 5, BLANK(), AVERAGEX(taulu, [Arvosana, numero (0-7)]))"
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "Valitut_s",
+            "expression": "CALCULATE(DISTINCTCOUNT([Henkilö OID]),Muuttujat[valittu]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "*Hakijat_s",
+            "expression": " [Keskiarvo (0-7)_s]",
+            "formatString": "0.00"
+          },
+          {
+            "name": "Osuus valituista_s",
+            "expression": [
+              "",
+              "var num =[Valitut_s]",
+              "var den = IF([ehto]=TRUE(),",
+              "CALCULATE([Valitut_s],ALL(",
+              "\tMuuttujat[Arvosanojen lkm L]",
+              "\t,Muuttujat[Arvosanojen lkm E/L]",
+              "\t,Muuttujat[Arvosanojen lkm M/E/L]",
+              "\t,Muuttujat[Aine]",
+              "\t,Muuttujat[Kirjoitettujen reaaliaineiden lkm]",
+              "\t,Muuttujat[Kirjoitettujen kielten lkm]",
+              "\t,Muuttujat[Arvosanojen L lkm]",
+              "\t,Muuttujat[Arvosanojen M/E/L lkm]",
+              "\t, Muuttujat[Arvosanojen E/L lkm]",
+              ")),",
+              "CALCULATE([Valitut_s],ALLEXCEPT(Muuttujat,",
+              "\tMuuttujat[Koulutuksen alkamisvuosi]",
+              "\t,Muuttujat[Koulutuksen alkamiskausi]",
+              "\t,Muuttujat[Koulutusala, taso 1 (hakukohde)]",
+              "\t,Muuttujat[Koulutusala, taso 2 (hakukohde)]\t\t",
+              "\t,Muuttujat[Koulutusala, taso 3 (hakukohde)]",
+              "\t,Muuttujat[OKM ohjauksen ala (hakukohde)]",
+              "\t,Muuttujat[Sektori]",
+              "\t,Muuttujat[Sukupuoli]",
+              "\t,Muuttujat[Tutkinnon aloitussykli (hakukohde)]",
+              "\t)",
+              ")",
+              ")",
+              "return num/den",
+              ""
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "*20. persentiili (paikan vastaanottaneet)_s",
+            "expression": " CALCULATE([20. persentiili (keskiarvo)_s], Muuttujat[vastaanottanut paikan] = 1)",
+            "formatString": "0.00"
+          },
+          {
+            "name": "Ylioppilastutkinnon suorittaneet_s",
+            "expression": [
+              "DISTINCTCOUNT('Ylioppilastutkinnon suorittaneet'[OpiskelijaID])",
+              "--SUM('Valintojen maara matikka'[lkm])",
+              "--return IF(ISFILTERED([Kirjoitettu matematiikka]);summa1;summa2)"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "*80. persentiili (paikan vastaanottaneet)_s",
+            "expression": " CALCULATE([80. persentiili (keskiarvo)_s], Muuttujat[vastaanottanut paikan] = 1)",
+            "formatString": "0.00"
+          },
+          {
+            "name": "Osuus ylioppilastutkinnon suorittaneista_s",
+            "expression": [
+              "",
+              "[Ylioppilastutkinnon suorittaneet_s] / CALCULATE([Ylioppilastutkinnon suorittaneet_s],ALLEXCEPT(Muuttujat,Muuttujat[Koulutuksen alkamisvuosi]))",
+              "--var num1 = SUM('Ylioppilastutkinnon suorittaneet'[lkm])",
+              "--var den1 = AVERAGE('Ylioppilastutkinnon suorittaneet'[lkm_vuosi_yht])",
+              "--var num2 = SUM('Valintojen maara matikka'[lkm])",
+              "--var den2 = AVERAGE('Valintojen maara matikka'[lkm_vuosi_yht])",
+              "--return IF(ISFILTERED([Kirjoitettu matematiikka]); num2 / den2; num1 / den1)"
+            ],
+            "formatString": "0 %;-0 %;0 %"
+          },
+          {
+            "name": "AMK, kaikki hakijat_s",
+            "expression": " CALCULATE([*Hakijat_s], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi], Muuttujat[valittu], Muuttujat[vastaanottanut paikan], Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[Sektori] = \"Ammattikorkeakoulukoulutus\")",
+            "formatString": "0.00"
+          },
+          {
+            "name": "Keskiarvo (1-10)_s",
+            "expression": [
+              " ",
+              "var taulu = GROUPBY(Muuttujat, [Aine + laajuus], [Arvosana, numero], [Henkilö OID])",
+              "return AVERAGEX(taulu, [Arvosana, numero])"
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "YO, kaikki hakijat_s",
+            "expression": " CALCULATE([*Hakijat_s], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi], Muuttujat[valittu], Muuttujat[vastaanottanut paikan], Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[Sektori] = \"Yliopistokoulutus\")",
+            "formatString": "0.00"
+          },
+          {
+            "name": "20. persentiili (keskiarvo)_s",
+            "expression": [
+              " ",
+              "var taulu = CALCULATETABLE(SUMMARIZE(Muuttujat, Muuttujat[Henkilö OID], \"Keskiarvo\", AVERAGE([Arvosana, numero (0-7)])))",
+              "return PERCENTILEX.INC(taulu, [Keskiarvo], 0.2)"
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "*Paikan vastaanottaneet_s",
+            "expression": " CALCULATE([*Hakijat_s], Muuttujat[vastaanottanut paikan] = 1)",
+            "formatString": "0.00"
+          },
+          {
+            "name": "*Valitut_s",
+            "expression": " CALCULATE([*Hakijat_s], Muuttujat[valittu] = 1)",
+            "formatString": "0.00"
+          },
+          {
+            "name": "Paikan vastaanottaneet_s",
+            "expression": " CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]), Muuttujat[vastaanottanut paikan] = 1)"
+          },
+          {
+            "name": "YO, kaikki paikan vastaanottaneet_s",
+            "expression": " CALCULATE([*Hakijat_s], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi], Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[vastaanottanut paikan] = 1, Muuttujat[Sektori] = \"Yliopistokoulutus\")",
+            "formatString": "0.00"
+          },
+          {
+            "name": "Aineen kirjoittaneiden osuus_s",
+            "expression": [
+              " ",
+              "DIVIDE(",
+              "\tCALCULATE(",
+              "\t\tDISTINCTCOUNT(Muuttujat[Henkilö OID]), ",
+              "\t\tVALUES(Muuttujat[Aine + laajuus]), \t\t\t\t",
+              "\t\tVALUES(Muuttujat[Kirjoitettu matematiikka]), ",
+              "\t\tVALUES(Muuttujat[Aineryhmä])),",
+              "\tCALCULATE(",
+              "\t\tDISTINCTCOUNT(Muuttujat[Henkilö OID]),",
+              "\t\tALL(Muuttujat[Aine + laajuus]), ",
+              "\t\tALL(Muuttujat[Kirjoitettu matematiikka])))"
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "AMK, kaikki paikan vastaanottaneet_s",
+            "expression": " CALCULATE([*Hakijat_s], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi], Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[vastaanottanut paikan] = 1, Muuttujat[Sektori] = \"Ammattikorkeakoulukoulutus\")",
+            "formatString": "0.00"
+          },
+          {
+            "name": "Keskiarvo (0-7)_s",
+            "expression": [
+              " ",
+              "var taulu = GROUPBY(Muuttujat, [Aine + laajuus], [Arvosana, numero (0-7)], [Henkilö OID])",
+              "return AVERAGEX(taulu, [Arvosana, numero (0-7)])",
+              ""
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "YO, kaikki valitut_s",
+            "expression": " CALCULATE([*Hakijat_s], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi], Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[valittu] = 1, Muuttujat[Sektori] = \"Yliopistokoulutus\")",
+            "formatString": "0.00"
+          },
+          {
+            "name": "80. persentiili (keskiarvo)_s",
+            "expression": [
+              " ",
+              "var taulu = CALCULATETABLE(SUMMARIZE(Muuttujat, Muuttujat[Henkilö OID], \"Keskiarvo\", AVERAGE([Arvosana, numero (0-7)])))",
+              "return PERCENTILEX.INC(taulu, [Keskiarvo], 0.8)",
+              ""
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "Mediaani (keskiarvo)_s",
+            "expression": [
+              " ",
+              "var taulu = CALCULATETABLE(SUMMARIZE(Muuttujat, Muuttujat[Henkilö OID], \"Keskiarvo\", AVERAGE([Arvosana, numero (0-7)])))",
+              "return PERCENTILEX.INC(taulu, [Keskiarvo], 0.5)",
+              ""
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "Matematiikan arvosanan osuus (hakijat)_s",
+            "expression": [
+              "",
               "DIVIDE(",
               "\tCALCULATE(",
               "\t\tDISTINCTCOUNT(Muuttujat[Henkilö OID]),",
@@ -2300,28 +2554,21 @@
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
-            "name": "Matematiikan arvosanan osuus (valitut)",
-            "expression": [
-              "",
-              "CALCULATE([Matematiikan arvosanan osuus (hakijat)], Muuttujat[valittu] = 1)"
-            ],
+            "name": "Matematiikan arvosanan osuus (valitut)_s",
+            "expression": "CALCULATE([Matematiikan arvosanan osuus (hakijat)_s], Muuttujat[valittu] = 1)",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
-            "name": "Matematiikan arvosanan osuus (paikan vastaanottaneet)",
-            "expression": [
-              "",
-              "CALCULATE([Matematiikan arvosanan osuus (hakijat)], Muuttujat[vastaanottanut paikan] = 1)",
-              ""
-            ],
+            "name": "Matematiikan arvosanan osuus (paikan vastaanottaneet)_s",
+            "expression": "CALCULATE([Matematiikan arvosanan osuus (hakijat)_s], Muuttujat[vastaanottanut paikan] = 1)",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
-            "name": "Osuus paikan vastaanottaneista",
+            "name": "Osuus paikan vastaanottaneista_s",
             "expression": [
               " ",
-              "var num =[Paikan vastaanottaneet]",
-              "var den = CALCULATE([Paikan vastaanottaneet],ALL(",
+              "var num =[Paikan vastaanottaneet_s]",
+              "var den = CALCULATE([Paikan vastaanottaneet_s],ALL(",
               "\tMuuttujat[Arvosanojen lkm L]",
               "\t,Muuttujat[Arvosanojen lkm E/L]",
               "\t,Muuttujat[Arvosanojen lkm M/E/L]",
@@ -2332,20 +2579,40 @@
               "\t,Muuttujat[Arvosanojen M/E/L lkm]",
               "\t, Muuttujat[Arvosanojen E/L lkm]",
               "))",
-              "return num/den",
-              ""
+              "return num/den"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
-            "name": "Keskiarvo (0-7)",
-            "expression": [
-              " var taulu = GROUPBY(Muuttujat, [Aine + laajuus], [Arvosana, numero (0-7)], [Henkilö OID])",
-              "return",
-              "AVERAGEX(taulu, [Arvosana, numero (0-7)])",
-              ""
-            ],
+            "name": "AMK, kaikki valitut_s",
+            "expression": " CALCULATE([*Hakijat_s], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi],Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[valittu] = 1, Muuttujat[Sektori] = \"Ammattikorkeakoulukoulutus\")",
             "formatString": "0.00"
+          },
+          {
+            "name": "Kaikki paikan vastaanottaneet_s",
+            "expression": " CALCULATE([*Hakijat_s], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi],Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[vastaanottanut paikan] = 1)",
+            "formatString": "0.00"
+          },
+          {
+            "name": "Kaikki valitut_s",
+            "expression": " CALCULATE([*Hakijat_s], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi], Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[valittu]= 1)",
+            "formatString": "0.00"
+          },
+          {
+            "name": "Kaikki hakeneet_s",
+            "expression": " CALCULATE([*Hakijat_s], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi], Muuttujat[Tutkinnon aloitussykli (hakukohde)]))",
+            "formatString": "0.00"
+          },
+          {
+            "name": "*Mediaani (paikan vastaanottaneet)_s",
+            "expression": " CALCULATE([Mediaani (keskiarvo)_s], Muuttujat[vastaanottanut paikan] = 1)",
+            "formatString": "0.00"
+          },
+          {
+            "name": "hlöiden lkm",
+            "expression": "CALCULATE(DISTINCTCOUNT([Henkilö OID]))",
+            "formatString": "0",
+            "isHidden": true
           }
         ],
         "annotations": [

@@ -2309,12 +2309,6 @@
             "displayFolder": "Ansökningsvariabler"
           },
           {
-            "name": "uusi ylioppilas2",
-            "dataType": "int64",
-            "isHidden": true,
-            "sourceColumn": "uusi ylioppilas"
-          },
-          {
             "name": "aidosti ensikertainen",
             "dataType": "int64",
             "isHidden": true,
@@ -2343,6 +2337,12 @@
             "dataType": "int64",
             "isHidden": true,
             "sourceColumn": "ei vastaanottoa kaudella"
+          },
+          {
+            "name": "uusi ylioppilas2",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "uusi ylioppilas"
           },
           {
             "type": "calculated",
@@ -8872,47 +8872,87 @@
         "measures": [
           {
             "name": "Kaikki hakijat",
-            "expression": "calculate(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Hakijat2]=1)",
+            "expression": [
+              "",
+              "var lkm = calculate(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Hakijat2]=1)",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Valitut",
-            "expression": "CALCULATE(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Valitut2]=1)",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Valitut2]=1)",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Paikan vastaanottaneet",
-            "expression": "calculate(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Paikan vastaanottaneet2]=1)",
+            "expression": [
+              "",
+              "var lkm = calculate(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Paikan vastaanottaneet2]=1)",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Ensisijaiset hakijat",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Ensisijaiset hakijat2]=1)",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Ensisijaiset hakijat2]=1)",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Läsnäolevaksi ilmoittautuneet",
-            "expression": "calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet2]=1)",
+            "expression": [
+              "",
+              "var lkm = calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet2]=1)",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
+              ""
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Ensisijaiset hakijat (ammattikorkeakouluihin)",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Hakutoive]=\"1\")",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Hakutoive]=\"1\")",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Ensisijaiset hakijat (yliopistoihin)",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Hakutoive]=\"1\")",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Hakutoive]=\"1\")",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Kaikki hakijat (nettouttamaton)",
-            "expression": "if(ISFILTERED(Muuttujat[Pohjakoulutus]),sum(Muuttujat[Hakijat2]),calculate(sum(Muuttujat[Hakijat2]),Muuttujat[yksi_pk_per_hakija]=1))",
+            "expression": [
+              "",
+              "var lkm1_s = sum(Muuttujat[Hakijat2])",
+              "var lkm2_s = calculate(sum(Muuttujat[Hakijat2]),Muuttujat[yksi_pk_per_hakija]=1)",
+              "var lkm1 = IF(lkm1_s = 0, BLANK(), IF(lkm1_s < 5, \"1-4\", MROUND(lkm1_s, 3)))",
+              "var lkm2 = IF(lkm2_s = 0, BLANK(), IF(lkm2_s < 5, \"1-4\", MROUND(lkm2_s, 3)))",
+              "return IF(ISFILTERED(Muuttujat[Pohjakoulutus]), lkm1, lkm2)"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Aloittaneet",
-            "expression": "calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet2]=1)",
+            "expression": [
+              "",
+              "var lkm = calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet2]=1)",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
@@ -8942,12 +8982,28 @@
           },
           {
             "name": "Samtliga sökande (utan nettning)",
-            "expression": "if(ISFILTERED(Muuttujat[Grundutbildning]),sum(Muuttujat[Hakijat2]),calculate(sum(Muuttujat[Hakijat2]),Muuttujat[yksi_pk_per_hakija]=1))",
+            "expression": [
+              "",
+              "var lkm1_s = sum(Muuttujat[Hakijat2])",
+              "var lkm2_s = calculate(sum(Muuttujat[Hakijat2]),Muuttujat[yksi_pk_per_hakija]=1)",
+              "var lkm1 = IF(lkm1_s = 0, BLANK(), IF(lkm1_s < 5, \"1-4\", MROUND(lkm1_s, 3)))",
+              "var lkm2 = IF(lkm2_s = 0, BLANK(), IF(lkm2_s < 5, \"1-4\", MROUND(lkm2_s, 3)))",
+              "return IF(ISFILTERED(Muuttujat[Grundutbildning]), lkm1, lkm2)",
+              ""
+            ],
             "formatString": "#,0"
           },
           {
             "name": "All applicants (no netting)",
-            "expression": "if(ISFILTERED(Muuttujat[Prior education]),sum(Muuttujat[Hakijat2]),calculate(sum(Muuttujat[Hakijat2]),Muuttujat[yksi_pk_per_hakija]=1))",
+            "expression": [
+              "",
+              "var lkm1_s = sum(Muuttujat[Hakijat2])",
+              "var lkm2_s = calculate(sum(Muuttujat[Hakijat2]),Muuttujat[yksi_pk_per_hakija]=1)",
+              "var lkm1 = IF(lkm1_s = 0, BLANK(), IF(lkm1_s < 5, \"1-4\", MROUND(lkm1_s, 3)))",
+              "var lkm2 = IF(lkm2_s = 0, BLANK(), IF(lkm2_s < 5, \"1-4\", MROUND(lkm2_s, 3)))",
+              "return IF(ISFILTERED(Muuttujat[Prior education]), lkm1, lkm2)",
+              ""
+            ],
             "formatString": "#,0"
           },
           {
@@ -8957,7 +9013,7 @@
           },
           {
             "name": "Applicants expressing first preference",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Ensisijaiset hakijat2]=1)",
+            "expression": "[Ensisijaiset hakijat]",
             "formatString": "#,0"
           },
           {
@@ -9105,9 +9161,13 @@
             "name": "Uusien ylioppilaiden osuus, valitut (I sykli)",
             "expression": [
               "",
-              "var uusi_yo = CALCULATE([Valitut],Muuttujat[uusi ylioppilas2]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "var osa = CALCULATE([Valitut],Muuttujat[uusi ylioppilas2]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
               "var kaikki = CALCULATE([Valitut],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
-              "return DIVIDE(uusi_yo,kaikki)"
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Uudet ylioppilaat"
@@ -9116,9 +9176,13 @@
             "name": "Uusien ylioppilaiden osuus, paikan vastaanottaneet (I sykli)",
             "expression": [
               "",
-              "var uusi_yo = CALCULATE([Paikan vastaanottaneet],Muuttujat[uusi ylioppilas2]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "var osa = CALCULATE([Paikan vastaanottaneet],Muuttujat[uusi ylioppilas2]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
               "var kaikki = CALCULATE([Paikan vastaanottaneet],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
-              "return DIVIDE(uusi_yo,kaikki)"
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Uudet ylioppilaat"
@@ -9127,9 +9191,13 @@
             "name": "Ensikertaisten osuus, hakijat",
             "expression": [
               "",
-              "var uusi_yo = CALCULATE([Kaikki hakijat],Muuttujat[aidosti ensikertainen]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "var osa = CALCULATE([Kaikki hakijat],Muuttujat[aidosti ensikertainen]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
               "var kaikki = CALCULATE([Kaikki hakijat],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
-              "return DIVIDE(uusi_yo,kaikki)"
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Ensikertaiset (I hakusykli)"
@@ -9138,9 +9206,13 @@
             "name": "Ensikertaisten osuus, valitut",
             "expression": [
               "",
-              "var uusi_yo = CALCULATE([Valitut],Muuttujat[aidosti ensikertainen]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "var osa = CALCULATE([Valitut],Muuttujat[aidosti ensikertainen]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
               "var kaikki = CALCULATE([Valitut],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
-              "return DIVIDE(uusi_yo,kaikki)"
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Ensikertaiset (I hakusykli)"
@@ -9149,9 +9221,13 @@
             "name": "Ensikertaisten osuus, paikan vastaanottaneet",
             "expression": [
               "",
-              "var uusi_yo = CALCULATE([Paikan vastaanottaneet],Muuttujat[aidosti ensikertainen]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "var osa = CALCULATE([Paikan vastaanottaneet],Muuttujat[aidosti ensikertainen]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
               "var kaikki = CALCULATE([Paikan vastaanottaneet],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
-              "return DIVIDE(uusi_yo,kaikki)"
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Ensikertaiset (I hakusykli)"
@@ -9160,10 +9236,13 @@
             "name": "I hakutoiveen paikan vastaanottaneet",
             "expression": [
               "",
-              "DIVIDE(",
-              "\tCALCULATE([Paikan vastaanottaneet],Muuttujat[Hakutoive]=\"1\",Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1,Muuttujat[Hakutapa järjestys]=1)",
-              "\t,CALCULATE([Paikan vastaanottaneet],Muuttujat[Hakutapa järjestys]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
-              ")"
+              "var osa = CALCULATE([Paikan vastaanottaneet],Muuttujat[Hakutoive]=\"1\",Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1,Muuttujat[Hakutapa järjestys]=1)",
+              "var kaikki = CALCULATE([Paikan vastaanottaneet],Muuttujat[Hakutapa järjestys]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Vastaanotettu paikka suhteessa hakijan I hakutoiveeseen (I hakusykli)"
@@ -9172,14 +9251,17 @@
             "name": "Sama korkeakoulu, sama ala; paikan vastaanottaneet",
             "expression": [
               "",
-              "DIVIDE(",
-              "\tCALCULATE([Paikan vastaanottaneet],Muuttujat[Hakutoive]<>\"1\",",
+              "var osa = CALCULATE([Paikan vastaanottaneet],Muuttujat[Hakutoive]<>\"1\",",
               "\tMuuttujat[sama kuin 1 hakukohteen sektori]=1,",
               "\tMuuttujat[sama kuin 1 hakukohteen kk]=1,",
               "\tMuuttujat[sama kuin 1 hakukohteen koulutusala1]=1,",
               "\tMuuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1,Muuttujat[Hakutapa järjestys]=1)",
-              "\t,CALCULATE([Paikan vastaanottaneet],Muuttujat[Hakutapa järjestys]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
-              ")"
+              "var kaikki = CALCULATE([Paikan vastaanottaneet],Muuttujat[Hakutapa järjestys]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Vastaanotettu paikka suhteessa hakijan I hakutoiveeseen (I hakusykli)"
@@ -9188,14 +9270,17 @@
             "name": "Sama sektori, eri korkeakoulu, sama ala; paikan vastaanottaneet",
             "expression": [
               "",
-              "DIVIDE(",
-              "\tCALCULATE([Paikan vastaanottaneet],Muuttujat[Hakutoive]<>\"1\",",
+              "var osa = CALCULATE([Paikan vastaanottaneet],Muuttujat[Hakutoive]<>\"1\",",
               "\tMuuttujat[sama kuin 1 hakukohteen sektori]=1,",
               "\tMuuttujat[sama kuin 1 hakukohteen kk]=0,",
               "\tMuuttujat[sama kuin 1 hakukohteen koulutusala1]=1,",
               "\tMuuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1,Muuttujat[Hakutapa järjestys]=1)",
-              "\t,CALCULATE([Paikan vastaanottaneet],Muuttujat[Hakutapa järjestys]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
-              ")"
+              "var kaikki = CALCULATE([Paikan vastaanottaneet],Muuttujat[Hakutapa järjestys]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Vastaanotettu paikka suhteessa hakijan I hakutoiveeseen (I hakusykli)"
@@ -9204,14 +9289,17 @@
             "name": "Sama korkeakoulu, eri ala; paikan vastaanottaneet",
             "expression": [
               "",
-              "DIVIDE(",
-              "\tCALCULATE([Paikan vastaanottaneet],",
+              "var osa = CALCULATE([Paikan vastaanottaneet],",
               "\tMuuttujat[sama kuin 1 hakukohteen sektori]=1,",
               "\tMuuttujat[sama kuin 1 hakukohteen kk]=1,",
               "\tMuuttujat[sama kuin 1 hakukohteen koulutusala1]=0,",
               "\tMuuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1,Muuttujat[Hakutapa järjestys]=1)",
-              "\t,CALCULATE([Paikan vastaanottaneet],Muuttujat[Hakutapa järjestys]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
-              ")",
+              "var kaikki = CALCULATE([Paikan vastaanottaneet],Muuttujat[Hakutapa järjestys]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
               ""
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
@@ -9221,13 +9309,16 @@
             "name": "Eri sektori, sama ala; paikan vastaanottaneet",
             "expression": [
               "",
-              "DIVIDE(",
-              "\tCALCULATE([Paikan vastaanottaneet],",
+              "var osa = CALCULATE([Paikan vastaanottaneet],",
               "\tMuuttujat[sama kuin 1 hakukohteen sektori]=0,",
               "\tMuuttujat[sama kuin 1 hakukohteen koulutusala1]=1,",
               "\tMuuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1,Muuttujat[Hakutapa järjestys]=1)",
-              "\t,CALCULATE([Paikan vastaanottaneet],Muuttujat[Hakutapa järjestys]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
-              ")",
+              "var kaikki = CALCULATE([Paikan vastaanottaneet],Muuttujat[Hakutapa järjestys]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
               ""
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
@@ -9237,13 +9328,16 @@
             "name": "Eri sektori, eri ala; paikan vastaanottaneet",
             "expression": [
               "",
-              "DIVIDE(",
-              "\tCALCULATE([Paikan vastaanottaneet],",
+              "var osa = CALCULATE([Paikan vastaanottaneet],",
               "\tMuuttujat[sama kuin 1 hakukohteen sektori]=0,",
               "\tMuuttujat[sama kuin 1 hakukohteen koulutusala1]=0,",
               "\tMuuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1,Muuttujat[Hakutapa järjestys]=1)",
-              "\t,CALCULATE([Paikan vastaanottaneet],Muuttujat[Hakutapa järjestys]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
-              ")",
+              "var kaikki = CALCULATE([Paikan vastaanottaneet],Muuttujat[Hakutapa järjestys]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
               ""
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
@@ -9253,9 +9347,13 @@
             "name": "Valituista paikan vastaanottamatta jättäneiden osuus",
             "expression": [
               "",
-              "var ei_vastaanottanut = CALCULATE([Valitut],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1,Muuttujat[ei vastaanottoa kaudella]=1)",
-              "var valitut = CALCULATE([Valitut],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
-              "return DIVIDE(ei_vastaanottanut,valitut)"
+              "var osa = CALCULATE([Valitut],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1,Muuttujat[ei vastaanottoa kaudella]=1)",
+              "var kaikki = CALCULATE([Valitut],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Ei opintopaikan vastaanottoa (I hakusykli)"
@@ -9263,7 +9361,7 @@
           {
             "name": "Ei opintopaikkaa vastaanottaneiden osuus (I sykli)2",
             "expression": [
-              " --too slow",
+              " --too slow --added still protection just in case / jsyrjala2",
               "var taulu1 = ",
               "SUMMARIZE(",
               "\tFILTER(",
@@ -9275,10 +9373,15 @@
               "\t)",
               "\t,[Henkilö OID]",
               ")",
-              "var ei_vastaanottanut = CALCULATE(COUNTROWS(taulu1))",
-              "var valitut = CALCULATE([Valitut],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
-              "return DIVIDE(ei_vastaanottanut,valitut)",
-              ""
+              "var lkm = CALCULATE(COUNTROWS(taulu1))",
+              "var osa = IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
+              "var kaikki = CALCULATE([Valitut],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "isHidden": true
@@ -9287,15 +9390,248 @@
             "name": "Sama sektori, eri korkeakoulu, eri ala; paikan vastaanottaneet",
             "expression": [
               "",
-              "DIVIDE(",
-              "\tCALCULATE([Paikan vastaanottaneet],",
+              "var osa = CALCULATE([Paikan vastaanottaneet],",
               "\tMuuttujat[sama kuin 1 hakukohteen sektori]=1,",
               "\tMuuttujat[sama kuin 1 hakukohteen kk]=0,",
               "\tMuuttujat[sama kuin 1 hakukohteen koulutusala1]=0,",
               "\tMuuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1,Muuttujat[Hakutapa järjestys]=1)",
-              "\t,CALCULATE([Paikan vastaanottaneet],Muuttujat[Hakutapa järjestys]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "var kaikki = CALCULATE([Paikan vastaanottaneet],Muuttujat[Hakutapa järjestys]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
+              ""
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %",
+            "displayFolder": "Vastaanotettu paikka suhteessa hakijan I hakutoiveeseen (I hakusykli)"
+          },
+          {
+            "name": "Ensisijaiset hakijat_s",
+            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Ensisijaiset hakijat2]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Kaikki hakijat_s",
+            "expression": "calculate(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Hakijat2]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Paikan vastaanottaneet_s",
+            "expression": "calculate(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Paikan vastaanottaneet2]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ensisijaiset hakijat (yliopistoihin)_s",
+            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Hakutoive]=\"1\")",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ensisijaiset hakijat (ammattikorkeakouluihin)_s",
+            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Hakutoive]=\"1\")",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Kaikki hakijat (nettouttamaton)_s",
+            "expression": "if(ISFILTERED(Muuttujat[Pohjakoulutus]),sum(Muuttujat[Hakijat2]),calculate(sum(Muuttujat[Hakijat2]),Muuttujat[yksi_pk_per_hakija]=1))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Valitut_s",
+            "expression": "CALCULATE(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Valitut2]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Aloittaneet_s",
+            "expression": "calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet2]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Läsnäolevaksi ilmoittautuneet_s",
+            "expression": "calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet2]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Uusien ylioppilaiden osuus, paikan vastaanottaneet (I sykli)_s",
+            "expression": [
+              "",
+              "var uusi_yo = CALCULATE([Paikan vastaanottaneet_s],Muuttujat[uusi ylioppilas2]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "var kaikki = CALCULATE([Paikan vastaanottaneet_s],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "return DIVIDE(uusi_yo,kaikki)"
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Uusien ylioppilaiden osuus, ensisijaiset hakijat (I sykli)_s",
+            "expression": [
+              "",
+              "var uusi_yo = CALCULATE([Ensisijaiset hakijat_s],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1,Muuttujat[uusi ylioppilas2]=1)",
+              "var kaikki = CALCULATE([Ensisijaiset hakijat_s],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "return DIVIDE(uusi_yo,kaikki)"
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Uusien ylioppilaiden osuus, hakijat (I sykli)_s",
+            "expression": [
+              "",
+              "var uusi_yo = CALCULATE([Kaikki hakijat_s],Muuttujat[uusi ylioppilas2]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "var kaikki = CALCULATE([Kaikki hakijat_s],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "return DIVIDE(uusi_yo,kaikki)",
+              ""
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Uusien ylioppilaiden osuus, valitut (I sykli)_s",
+            "expression": [
+              "",
+              "var uusi_yo = CALCULATE([Valitut_s],Muuttujat[uusi ylioppilas2]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "var kaikki = CALCULATE([Valitut_s],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "return DIVIDE(uusi_yo,kaikki)"
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Ensikertaisten osuus, hakijat_s",
+            "expression": [
+              "",
+              "var uusi_yo = CALCULATE([Kaikki hakijat_s],Muuttujat[aidosti ensikertainen]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "var kaikki = CALCULATE([Kaikki hakijat_s],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "return DIVIDE(uusi_yo,kaikki)"
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Ensikertaisten osuus, valitut_s",
+            "expression": [
+              "",
+              "var uusi_yo = CALCULATE([Valitut_s],Muuttujat[aidosti ensikertainen]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "var kaikki = CALCULATE([Valitut_s],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "return DIVIDE(uusi_yo,kaikki)"
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Ensikertaisten osuus, paikan vastaanottaneet_s",
+            "expression": [
+              "",
+              "var uusi_yo = CALCULATE([Paikan vastaanottaneet_s],Muuttujat[aidosti ensikertainen]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "var kaikki = CALCULATE([Paikan vastaanottaneet_s],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "return DIVIDE(uusi_yo,kaikki)"
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "I hakutoiveen paikan vastaanottaneet_s",
+            "expression": [
+              "",
+              "DIVIDE(",
+              "\tCALCULATE([Paikan vastaanottaneet_s],Muuttujat[Hakutoive]=\"1\",Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1,Muuttujat[Hakutapa järjestys]=1)",
+              "\t,CALCULATE([Paikan vastaanottaneet_s],Muuttujat[Hakutapa järjestys]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              ")"
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Sama korkeakoulu, sama ala; paikan vastaanottaneet_s",
+            "expression": [
+              "",
+              "DIVIDE(",
+              "\tCALCULATE([Paikan vastaanottaneet_s],Muuttujat[Hakutoive]<>\"1\",",
+              "\tMuuttujat[sama kuin 1 hakukohteen sektori]=1,",
+              "\tMuuttujat[sama kuin 1 hakukohteen kk]=1,",
+              "\tMuuttujat[sama kuin 1 hakukohteen koulutusala1]=1,",
+              "\tMuuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1,Muuttujat[Hakutapa järjestys]=1)",
+              "\t,CALCULATE([Paikan vastaanottaneet_s],Muuttujat[Hakutapa järjestys]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              ")"
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Sama sektori, eri korkeakoulu, sama ala; paikan vastaanottaneet_s",
+            "expression": [
+              "",
+              "DIVIDE(",
+              "\tCALCULATE([Paikan vastaanottaneet_s],Muuttujat[Hakutoive]<>\"1\",",
+              "\tMuuttujat[sama kuin 1 hakukohteen sektori]=1,",
+              "\tMuuttujat[sama kuin 1 hakukohteen kk]=0,",
+              "\tMuuttujat[sama kuin 1 hakukohteen koulutusala1]=1,",
+              "\tMuuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1,Muuttujat[Hakutapa järjestys]=1)",
+              "\t,CALCULATE([Paikan vastaanottaneet_s],Muuttujat[Hakutapa järjestys]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              ")"
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Sama korkeakoulu, eri ala; paikan vastaanottaneet_s",
+            "expression": [
+              "",
+              "DIVIDE(",
+              "\tCALCULATE([Paikan vastaanottaneet_s],",
+              "\tMuuttujat[sama kuin 1 hakukohteen sektori]=1,",
+              "\tMuuttujat[sama kuin 1 hakukohteen kk]=1,",
+              "\tMuuttujat[sama kuin 1 hakukohteen koulutusala1]=0,",
+              "\tMuuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1,Muuttujat[Hakutapa järjestys]=1)",
+              "\t,CALCULATE([Paikan vastaanottaneet_s],Muuttujat[Hakutapa järjestys]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
               ")",
               ""
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Sama sektori, eri korkeakoulu, eri ala; paikan vastaanottaneet_s",
+            "expression": [
+              "",
+              "DIVIDE(",
+              "\tCALCULATE([Paikan vastaanottaneet_s],",
+              "\tMuuttujat[sama kuin 1 hakukohteen sektori]=1,",
+              "\tMuuttujat[sama kuin 1 hakukohteen kk]=0,",
+              "\tMuuttujat[sama kuin 1 hakukohteen koulutusala1]=0,",
+              "\tMuuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1,Muuttujat[Hakutapa järjestys]=1)",
+              "\t,CALCULATE([Paikan vastaanottaneet_s],Muuttujat[Hakutapa järjestys]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              ")",
+              ""
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Eri sektori, sama ala; paikan vastaanottaneet_s",
+            "expression": [
+              "",
+              "DIVIDE(",
+              "\tCALCULATE([Paikan vastaanottaneet_s],",
+              "\tMuuttujat[sama kuin 1 hakukohteen sektori]=0,",
+              "\tMuuttujat[sama kuin 1 hakukohteen koulutusala1]=1,",
+              "\tMuuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1,Muuttujat[Hakutapa järjestys]=1)",
+              "\t,CALCULATE([Paikan vastaanottaneet_s],Muuttujat[Hakutapa järjestys]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              ")",
+              ""
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Eri sektori, eri ala; paikan vastaanottaneet_s",
+            "expression": [
+              "",
+              "DIVIDE(",
+              "\tCALCULATE([Paikan vastaanottaneet_s],",
+              "\tMuuttujat[sama kuin 1 hakukohteen sektori]=0,",
+              "\tMuuttujat[sama kuin 1 hakukohteen koulutusala1]=0,",
+              "\tMuuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1,Muuttujat[Hakutapa järjestys]=1)",
+              "\t,CALCULATE([Paikan vastaanottaneet_s],Muuttujat[Hakutapa järjestys]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              ")",
+              ""
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Valituista paikan vastaanottamatta jättäneiden osuus_s",
+            "expression": [
+              "",
+              "var ei_vastaanottanut = CALCULATE([Valitut_s],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1,Muuttujat[ei vastaanottoa kaudella]=1)",
+              "var valitut = CALCULATE([Valitut_s],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "return DIVIDE(ei_vastaanottanut,valitut)"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           }
@@ -17706,6 +18042,101 @@
               {
                 "name": "leveys"
               },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Yhteinen perus_s",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Hakukohde"
+              },
+              {
+                "name": "Hakutapa"
+              },
+              {
+                "name": "Hakutyyppi"
+              },
+              {
+                "name": "Korkeakoulu"
+              },
+              {
+                "name": "Koulutuksen alkamiskausi"
+              },
+              {
+                "name": "Koulutuksen alkamisvuosi"
+              },
+              {
+                "name": "Koulutusala (2002)"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "Kunta (hakukohde)"
+              },
+              {
+                "name": "Maakunta (hakukohde)"
+              },
+              {
+                "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Opintoala (2002)"
+              },
+              {
+                "name": "Sektori"
+              },
+              {
+                "name": "Toimipiste"
+              },
+              {
+                "name": "Tutkinnon aloitussykli (hakukohde)"
+              },
+              {
+                "name": "Tutkinto (hakukohde)"
+              },
+              {
+                "name": "Valintatapajonon tyyppi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Paikan vastaanottaneet_s"
+              },
+              {
+                "name": "Ensisijaiset hakijat_s"
+              },
+              {
+                "name": "Kaikki hakijat_s"
+              },
+              {
+                "name": "Aloituspaikat"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
               {
                 "name": "Sarakeleveys"
               }
