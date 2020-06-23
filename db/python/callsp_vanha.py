@@ -15,10 +15,10 @@ import dboperator
 def show(message):
   print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message)
 
-def load(database,schema,procedure,verbose=False):
-  show("begin with "+database+" "+schema+" "+procedure)
+def load(schema,procedure,verbose=False):
+  show("begin with "+schema+" "+procedure)
 
-  sql = "execute "+database+"."+schema+"."+procedure
+  sql = "execute "+schema+"."+procedure
   try:
     dboperator.execute(sql)
   except:
@@ -40,27 +40,25 @@ procedure is mandatory argument. Name of the procedure to execute.
 
 def main(argv):
   # variables that are given as arguments with possible default values
-  database = os.getenv("DATABASE_NAME")
   schema = os.getenv("SCHEMA") or ""
   procedure = ""
   verbose = False
 
   try:
-    opts, args = getopt.getopt(argv,"d:e:p:v",["database=","schema=","procedure=","verbose"])
+    opts, args = getopt.getopt(argv,"e:p:v",["schema=","procedure=","verbose"])
   except getopt.GetoptError as err:
     print(err)
     usage()
     sys.exit(2)
   for opt, arg in opts:
-    if opt in ("-d", "--database"): database = arg
-    elif opt in ("-e", "--schema"): schema = arg
+    if opt in ("-e", "--schema"): schema = arg
     elif opt in ("-p", "--procedure"): procedure = arg
     elif opt in ("-v", "--verbose"): verbose = True
   if not schema or not procedure:
     usage()
     sys.exit(2)
 
-  load(database,schema,procedure,verbose)
+  load(schema,procedure,verbose)
 
 if __name__ == "__main__":
   main(sys.argv[1:])
