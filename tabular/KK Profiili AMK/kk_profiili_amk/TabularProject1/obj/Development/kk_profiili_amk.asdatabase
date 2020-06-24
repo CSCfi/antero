@@ -10374,6 +10374,7 @@
           {
             "name": "Henkilo_koodi",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "Henkilo_koodi",
             "sourceProviderType": "Char"
           },
@@ -10463,8 +10464,9 @@
           },
           {
             "name": "suorituspvm",
-            "dataType": "string",
+            "dataType": "dateTime",
             "sourceColumn": "suorituspvm",
+            "formatString": "General Date",
             "sourceProviderType": "Char"
           },
           {
@@ -10572,6 +10574,20 @@
               "query": " SELECT [dw].[v_virta_otp_tavoiteajassa_tutkinnon_suorittaneet].* FROM [dw].[v_virta_otp_tavoiteajassa_tutkinnon_suorittaneet] ",
               "dataSource": "DWItvipusql16"
             }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Tavoiteajassa suorittaneet / Tutkintomäärä (AMK)",
+            "expression": " DIVIDE([Tavoiteajassa tutkinnon (AMK) suorittaneet],[Tutkintomäärä (AMK)])"
+          },
+          {
+            "name": "Tavoiteajassa tutkinnon (AMK) suorittaneet",
+            "expression": " CALCULATE([Tutkintomäärä (AMK)], v_virta_otp_tavoite_ajassa_tutkinnon_suorittaneet[Tutkinto suoritettu määräajassa] = \"Kyllä\")"
+          },
+          {
+            "name": "Tutkintomäärä (AMK)",
+            "expression": " DISTINCTCOUNT(v_virta_otp_tavoite_ajassa_tutkinnon_suorittaneet[Henkilo_koodi])"
           }
         ],
         "annotations": [
@@ -19075,6 +19091,21 @@
         "fromColumn": "55op_id",
         "toTable": "Linkkitaulu",
         "toColumn": "id",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "dbc7c009-0404-4e49-a622-525d04ed3d4f",
+        "fromTable": "v_virta_otp_tavoite_ajassa_tutkinnon_suorittaneet",
+        "fromColumn": "OKM ohjauksen ala",
+        "toTable": "Ohjauksenala",
+        "toColumn": "OKM Ohjauksenala"
+      },
+      {
+        "name": "c611918f-d02e-4e95-9144-7dbd28d3ba29",
+        "fromTable": "v_virta_otp_tavoite_ajassa_tutkinnon_suorittaneet",
+        "fromColumn": "suorituspvm",
+        "toTable": "d_kalenteri",
+        "toColumn": "paivays",
         "crossFilteringBehavior": "bothDirections"
       }
     ],
