@@ -4365,7 +4365,11 @@
         "measures": [
           {
             "name": "Kaikki hakijat",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Lukumäärä]=1)",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Lukumäärä]=1)",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
@@ -4390,12 +4394,50 @@
           },
           {
             "name": "Kaikki hakijat (nettouttamaton)",
-            "expression": "IF(ISFILTERED(Muuttujat[Pohjakoulutus]),sum(Muuttujat[Lukumäärä]),calculate(sum(Muuttujat[Lukumäärä]),Muuttujat[yksi_pk_per_hakija]=1))",
+            "expression": [
+              "",
+              "var lkm1_s = sum(Muuttujat[Lukumäärä])",
+              "var lkm2_s = calculate(sum(Muuttujat[Lukumäärä]),Muuttujat[yksi_pk_per_hakija]=1)",
+              "var lkm1 = IF(lkm1_s = 0, BLANK(), IF(lkm1_s < 5, \"1-4\", MROUND(lkm1_s, 3)))",
+              "var lkm2 = IF(lkm2_s = 0, BLANK(), IF(lkm2_s < 5, \"1-4\", MROUND(lkm2_s, 3)))",
+              "return IF(ISFILTERED(Muuttujat[Pohjakoulutus]), lkm1, lkm2)",
+              ""
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Aloituspaikat",
             "expression": "if(sum([alpa])=0,blank(),sum([alpa]))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Kaikki hakijat_s",
+            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Lukumäärä]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Kaikki hakijat (nettouttamaton)_s",
+            "expression": "IF(ISFILTERED(Muuttujat[Pohjakoulutus]),sum(Muuttujat[Lukumäärä]),calculate(sum(Muuttujat[Lukumäärä]),Muuttujat[yksi_pk_per_hakija]=1))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ensisijaiset hakijat_s",
+            "expression": "CALCULATE([Kaikki hakijat_s],Muuttujat[Ensisijaiset hakijat2]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Valitut_s",
+            "expression": "CALCULATE([Kaikki hakijat_s],Muuttujat[Valitut2]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Paikan vastaanottaneet_s",
+            "expression": "calculate([Kaikki hakijat_s],Muuttujat[Paikan vastaanottaneet2]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Läsnäolevaksi ilmoittautuneet_s",
+            "expression": "calculate([Kaikki hakijat_s],Muuttujat[Aloittaneet2])",
             "formatString": "#,0"
           }
         ],

@@ -4238,7 +4238,11 @@
           },
           {
             "name": "Kaikki hakijat",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Hakijat3]=1)",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Hakijat3]=1)",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
@@ -4258,67 +4262,96 @@
           },
           {
             "name": "Aloittaneet",
-            "expression": "calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet3])",
+            "expression": [
+              "",
+              "var lkm = calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet3]=1)",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Nybörjarplatser",
-            "expression": "sum(Muuttujat[Aloituspaikat2])",
+            "expression": "[Aloituspaikat]",
             "formatString": "#,0"
           },
           {
             "name": "Intake",
-            "expression": "sum(Muuttujat[Aloituspaikat2])",
+            "expression": "[Aloituspaikat]",
             "formatString": "#,0"
           },
           {
             "name": "Försthandssökande",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Hakutoive]=\"1\")",
+            "expression": "[Ensisijaiset hakijat]",
             "formatString": "#,0"
           },
           {
             "name": "Applicants expressing first preference",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Hakutoive]=\"1\")",
+            "expression": "[Ensisijaiset hakijat]",
             "formatString": "#,0"
           },
           {
             "name": "Samtliga sökande",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Hakijat3]=1)",
+            "expression": "[Kaikki hakijat]",
             "formatString": "#,0"
           },
           {
             "name": "All applicants",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Hakijat3]=1)",
+            "expression": "[Kaikki hakijat]",
             "formatString": "#,0"
           },
           {
             "name": "Antagna",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Valitut3]=1)",
+            "expression": "[Valitut]",
             "formatString": "#,0"
           },
           {
             "name": "Selected",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Valitut3]=1)",
+            "expression": "[Valitut]",
             "formatString": "#,0"
           },
           {
             "name": "Antal som mottagit en plats",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Paikan vastaanottaneet3]=1)",
+            "expression": "[Paikan vastaanottaneet]",
             "formatString": "#,0"
           },
           {
             "name": "Accepted a study place",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Paikan vastaanottaneet3]=1)",
+            "expression": "[Paikan vastaanottaneet]",
             "formatString": "#,0"
           },
           {
             "name": "Nybörjare",
-            "expression": "calculate([Kaikki hakijat],Muuttujat[Aloittaneet3])",
+            "expression": "[Aloittaneet]",
             "formatString": "#,0"
           },
           {
             "name": "Admitted",
-            "expression": "calculate([Kaikki hakijat],Muuttujat[Aloittaneet3])",
+            "expression": "[Aloittaneet]",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Kaikki hakijat_s",
+            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Hakijat3]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ensisijaiset hakijat_s",
+            "expression": "CALCULATE([Kaikki hakijat_s],Muuttujat[Hakutoive]=\"1\")",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Valitut_s",
+            "expression": "CALCULATE([Kaikki hakijat_s],Muuttujat[Valitut3]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Paikan vastaanottaneet_s",
+            "expression": "CALCULATE([Kaikki hakijat_s],Muuttujat[Paikan vastaanottaneet3]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Aloittaneet_s",
+            "expression": "calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet3])",
             "formatString": "#,0"
           }
         ],

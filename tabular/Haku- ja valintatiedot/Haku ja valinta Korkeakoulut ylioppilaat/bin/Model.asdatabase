@@ -336,7 +336,8 @@
             "expression": [
               "",
               "var taulu = ADDCOLUMNS(SUMMARIZE(Muuttujat,[Suoritusvuosi (ylioppilastutkinto)],[Suorituskausi (ylioppilastutkinto)],[Sukupuoli]),\"lkm\",CALCULATE(AVERAGE([yo])))",
-              "return SUMX(taulu,[lkm])"
+              "var lkm =  ROUND(SUMX(taulu,[lkm]), 0)",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
             ],
             "formatString": "#,0"
           },
@@ -344,7 +345,15 @@
             "name": "Välittömästi lukiosta korkeakouluihin jatkavien osuus, ensisijaiset hakijat",
             "expression": [
               "",
-              "DIVIDE(CALCULATE(DISTINCTCOUNT(Muuttujat[henkilo_oid]),Muuttujat[ensisijainen_hakija]=1),[Ylioppilaat])"
+              "var lkm1 = CALCULATE(DISTINCTCOUNT(Muuttujat[henkilo_oid]),Muuttujat[ensisijainen_hakija]=1)",
+              "var osa = IF(lkm1 = 0, BLANK(), IF(lkm1 < 5, \"1-4\", MROUND(lkm1, 3)))",
+              "var kaikki = [Ylioppilaat]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
+              ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
@@ -352,7 +361,15 @@
             "name": "Välittömästi lukiosta korkeakouluihin jatkavien osuus, hakijat",
             "expression": [
               "",
-              "DIVIDE(CALCULATE(DISTINCTCOUNT(Muuttujat[henkilo_oid])),[Ylioppilaat])"
+              "var lkm1 = CALCULATE(DISTINCTCOUNT(Muuttujat[henkilo_oid]))",
+              "var osa = IF(lkm1 = 0, BLANK(), IF(lkm1 < 5, \"1-4\", MROUND(lkm1, 3)))",
+              "var kaikki = [Ylioppilaat]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
+              ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
@@ -360,7 +377,14 @@
             "name": "Välittömästi lukiosta korkeakouluihin jatkavien osuus, valitut",
             "expression": [
               "",
-              "DIVIDE(CALCULATE(DISTINCTCOUNT(Muuttujat[henkilo_oid]),Muuttujat[valittu]=1),[Ylioppilaat])"
+              "var lkm1 = CALCULATE(DISTINCTCOUNT(Muuttujat[henkilo_oid]),Muuttujat[valittu]=1)",
+              "var osa = IF(lkm1 = 0, BLANK(), IF(lkm1 < 5, \"1-4\", MROUND(lkm1, 3)))",
+              "var kaikki = [Ylioppilaat]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
@@ -368,7 +392,55 @@
             "name": "Välittömästi lukiosta korkeakouluihin jatkavien osuus, paikan vastaanottaneet",
             "expression": [
               "",
-              "DIVIDE(CALCULATE(DISTINCTCOUNT(Muuttujat[henkilo_oid]),Muuttujat[vastaanottanut]=1),[Ylioppilaat])"
+              "var lkm1 = CALCULATE(DISTINCTCOUNT(Muuttujat[henkilo_oid]),Muuttujat[vastaanottanut]=1)",
+              "var osa = IF(lkm1 = 0, BLANK(), IF(lkm1 < 5, \"1-4\", MROUND(lkm1, 3)))",
+              "var kaikki = [Ylioppilaat]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Ylioppilaat_s",
+            "expression": [
+              "",
+              "var taulu = ADDCOLUMNS(SUMMARIZE(Muuttujat,[Suoritusvuosi (ylioppilastutkinto)],[Suorituskausi (ylioppilastutkinto)],[Sukupuoli]),\"lkm\",CALCULATE(AVERAGE([yo])))",
+              "return SUMX(taulu,[lkm])"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Välittömästi lukiosta korkeakouluihin jatkavien osuus, ensisijaiset hakijat_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE(DISTINCTCOUNT(Muuttujat[henkilo_oid]),Muuttujat[ensisijainen_hakija]=1),[Ylioppilaat_s])"
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Välittömästi lukiosta korkeakouluihin jatkavien osuus, hakijat_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE(DISTINCTCOUNT(Muuttujat[henkilo_oid])),[Ylioppilaat_s])"
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Välittömästi lukiosta korkeakouluihin jatkavien osuus, valitut_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE(DISTINCTCOUNT(Muuttujat[henkilo_oid]),Muuttujat[valittu]=1),[Ylioppilaat_s])"
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Välittömästi lukiosta korkeakouluihin jatkavien osuus, paikan vastaanottaneet_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE(DISTINCTCOUNT(Muuttujat[henkilo_oid]),Muuttujat[vastaanottanut]=1),[Ylioppilaat_s])"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           }

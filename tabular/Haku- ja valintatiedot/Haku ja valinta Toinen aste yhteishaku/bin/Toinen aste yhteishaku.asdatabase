@@ -4911,7 +4911,11 @@
           },
           {
             "name": "Kaikki hakijat",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Hakijat3]=1)",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Hakijat3]=1)",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
@@ -4921,15 +4925,16 @@
           },
           {
             "name": "Aloituspaikat",
-            "expression": "sum(Muuttujat[Aloituspaikat2])",
+            "expression": [
+              "",
+              "var summa = sum(Muuttujat[Aloituspaikat2])",
+              "return IF(summa=0,BLANK(),summa)"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Alin hyväksytty pistemäärä",
-            "expression": [
-              "",
-              "CALCULATE(MIN(Muuttujat[Pisterajat]))"
-            ],
+            "expression": "CALCULATE(MIN(Muuttujat[Pisterajat]))",
             "formatString": "#,0.00"
           },
           {
@@ -4954,107 +4959,128 @@
           },
           {
             "name": "Paikan vastaanottaneiden osuus hakijoista",
-            "expression": "[Paikan vastaanottaneita]/[Perusopetuksen päättävät hakijat]",
+            "expression": [
+              "",
+              "var osa = [Paikan vastaanottaneita]",
+              "var kaikki = [Perusopetuksen päättävät hakijat]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Aloittaneet",
-            "expression": "calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet3])",
+            "expression": [
+              "",
+              "var lkm = calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet3]=1)",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Ensisijaiset hakijat suhteessa aloituspaikkoihin",
-            "expression": "[Ensisijaiset hakijat]/[Aloituspaikat]",
+            "expression": [
+              "",
+              "var osa = [Ensisijaiset hakijat]",
+              "var kaikki = [Aloituspaikat] --suojaamaton",
+              "return IF(osa = BLANK(), BLANK(), ",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki))"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Nybörjarplatser",
-            "expression": "sum(Muuttujat[Aloituspaikat2])",
+            "expression": "[Aloituspaikat]",
             "formatString": "#,0"
           },
           {
             "name": "Intake",
-            "expression": "sum(Muuttujat[Aloituspaikat2])",
+            "expression": "[Aloituspaikat]",
             "formatString": "#,0"
           },
           {
             "name": "Försthandssökande",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Hakutoive]=\"1\")",
+            "expression": "[Ensisijaiset hakijat]",
             "formatString": "#,0"
           },
           {
             "name": "Applicants expressing first preference",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Hakutoive]=\"1\")",
+            "expression": "[Ensisijaiset hakijat]",
             "formatString": "#,0"
           },
           {
             "name": "Samtliga sökande",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Hakijat3]=1)",
+            "expression": "[Kaikki hakijat]",
             "formatString": "#,0"
           },
           {
             "name": "All applicants",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Hakijat3]=1)",
+            "expression": "[Kaikki hakijat]",
             "formatString": "#,0"
           },
           {
             "name": "Sökande som avslutar den grundläggande utbildningen",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Hakijat3 perusopetuksen päättävät]=1)",
+            "expression": "[Perusopetuksen päättävät hakijat]",
             "formatString": "#,0"
           },
           {
             "name": "Applicants completing basic education",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Hakijat3 perusopetuksen päättävät]=1)",
+            "expression": "[Perusopetuksen päättävät hakijat]",
             "formatString": "#,0"
           },
           {
             "name": "Antagna",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Valitut3]=1)",
+            "expression": "[Valitut]",
             "formatString": "#,0"
           },
           {
             "name": "Selected",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Valitut3]=1)",
+            "expression": "[Valitut]",
             "formatString": "#,0"
           },
           {
             "name": "Antagna (avslutare)",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Valitut3 perusopetuksen päättävät]=1)",
+            "expression": "[Valittuja]",
             "formatString": "#,0"
           },
           {
             "name": "Selected (basic education completers)",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Valitut3 perusopetuksen päättävät]=1)",
+            "expression": "[Valittuja]",
             "formatString": "#,0"
           },
           {
             "name": "Antal som mottagit en plats",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Paikan vastaanottaneet3]=1)",
+            "expression": "[Paikan vastaanottaneet]",
             "formatString": "#,0"
           },
           {
             "name": "Accepted a study place",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Paikan vastaanottaneet3]=1)",
+            "expression": "[Paikan vastaanottaneet]",
             "formatString": "#,0"
           },
           {
             "name": "Antal som mottagit en plats (avslutare)",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Paikan vastaanottaneet3 perusopetuksen päättävät]=1)",
+            "expression": "[Paikan vastaanottaneita]",
             "formatString": "#,0"
           },
           {
             "name": "Accepted a study place (basic education completers)",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Paikan vastaanottaneet3 perusopetuksen päättävät]=1)",
+            "expression": "[Paikan vastaanottaneita]",
             "formatString": "#,0"
           },
           {
             "name": "Nybörjare",
-            "expression": "calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet3])",
+            "expression": "[Aloittaneet]",
             "formatString": "#,0"
           },
           {
             "name": "Admitted",
-            "expression": "calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet3])",
+            "expression": "[Aloittaneet]",
             "formatString": "#,0"
           },
           {
@@ -5069,22 +5095,72 @@
           },
           {
             "name": "Förstahandssökande i proportion till nybörjarplatserna",
-            "expression": "[Ensisijaiset hakijat]/[Aloituspaikat]",
+            "expression": "[Ensisijaiset hakijat suhteessa aloituspaikkoihin]",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Applicants expressing first preference in comparison to the intake",
-            "expression": "[Ensisijaiset hakijat]/[Aloituspaikat]",
+            "expression": "[Ensisijaiset hakijat suhteessa aloituspaikkoihin]",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Antagna som tagit mot en plats i proportion till samtliga sökande",
-            "expression": "[Paikan vastaanottaneita]/[Perusopetuksen päättävät hakijat]",
+            "expression": "[Paikan vastaanottaneiden osuus hakijoista]",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Accepted a place in comparison to all applicants",
-            "expression": "[Paikan vastaanottaneita]/[Perusopetuksen päättävät hakijat]",
+            "expression": "[Paikan vastaanottaneiden osuus hakijoista]",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Kaikki hakijat_s",
+            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Hakijat3]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Perusopetuksen päättävät hakijat_s",
+            "expression": "CALCULATE([Kaikki hakijat_s],Muuttujat[Hakijat3 perusopetuksen päättävät]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ensisijaiset hakijat_s",
+            "expression": "CALCULATE([Kaikki hakijat_s],Muuttujat[Hakutoive]=\"1\")",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Valitut_s",
+            "expression": "CALCULATE([Kaikki hakijat_s],Muuttujat[Valitut3]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Valittuja_s",
+            "expression": "CALCULATE([Kaikki hakijat_s],Muuttujat[Valitut3 perusopetuksen päättävät]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Paikan vastaanottaneet_s",
+            "expression": "CALCULATE([Kaikki hakijat_s],Muuttujat[Paikan vastaanottaneet3]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Paikan vastaanottaneita_s",
+            "expression": "CALCULATE([Kaikki hakijat_s],Muuttujat[Paikan vastaanottaneet3 perusopetuksen päättävät]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Aloittaneet_s",
+            "expression": "calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet3]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ensisijaiset hakijat suhteessa aloituspaikkoihin_s",
+            "expression": "[Ensisijaiset hakijat_s]/[Aloituspaikat]",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Paikan vastaanottaneiden osuus hakijoista_s",
+            "expression": "[Paikan vastaanottaneita_s]/[Perusopetuksen päättävät hakijat_s]",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           }
         ],

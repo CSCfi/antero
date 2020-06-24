@@ -4103,12 +4103,20 @@
         "measures": [
           {
             "name": "Ensisijaiset hakijat",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Ensisijaiset hakijat3]=1)",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Ensisijaiset hakijat3]=1)",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Kaikki hakijat",
-            "expression": "calculate(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Lukumäärä]=1)",
+            "expression": [
+              "",
+              "var lkm = calculate(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Lukumäärä]=1)",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
@@ -4137,97 +4145,112 @@
           },
           {
             "name": "Aloittaneet",
-            "expression": "calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet3]=1)",
+            "expression": [
+              "",
+              "var lkm = calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet3]=1)",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Ensisijaiset hakijat suhteessa aloituspaikkoihin",
-            "expression": "[Ensisijaiset hakijat]/[Aloituspaikat]",
+            "expression": [
+              "",
+              "var osa = [Ensisijaiset hakijat]",
+              "var kaikki = [Aloituspaikat] --ei suojattu",
+              "return IF(osa = BLANK(), BLANK(), ",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki))"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Nybörjarplatser",
-            "expression": "sum(Muuttujat[Aloituspaikat2])",
+            "expression": "[Aloituspaikat]",
             "formatString": "#,0"
           },
           {
             "name": "Intake",
-            "expression": "sum(Muuttujat[Aloituspaikat2])",
+            "expression": "[Aloituspaikat]",
             "formatString": "#,0"
           },
           {
             "name": "Försthandssökande",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Ensisijaiset hakijat3]=1)",
+            "expression": "[Ensisijaiset hakijat]",
             "formatString": "#,0"
           },
           {
             "name": "Applicants expressing first preference",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Ensisijaiset hakijat3]=1)",
+            "expression": "[Ensisijaiset hakijat]",
             "formatString": "#,0"
           },
           {
             "name": "Samtliga sökande",
-            "expression": "calculate(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Lukumäärä]=1)",
+            "expression": "[Kaikki hakijat]",
             "formatString": "#,0"
           },
           {
             "name": "All applicants",
-            "expression": "calculate(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Lukumäärä]=1)",
+            "expression": "[Kaikki hakijat]",
             "formatString": "#,0"
           },
           {
             "name": "Antagna",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Valitut3]=1)",
+            "expression": "[Valitut]",
             "formatString": "#,0"
           },
           {
             "name": "Selected",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Valitut3]=1)",
+            "expression": "[Valitut]",
             "formatString": "#,0"
           },
           {
             "name": "Antal som mottagit en plats",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Paikan vastaanottaneet3]=1)",
+            "expression": "[Paikan vastaanottaneet]",
             "formatString": "#,0"
           },
           {
             "name": "Accepted a study place",
-            "expression": "CALCULATE([Kaikki hakijat],Muuttujat[Paikan vastaanottaneet3]=1)",
+            "expression": "[Paikan vastaanottaneet]",
             "formatString": "#,0"
           },
           {
             "name": "Nybörjare",
-            "expression": "calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet3])",
+            "expression": "[Aloittaneet]",
             "formatString": "#,0"
           },
           {
             "name": "Admitted",
-            "expression": "calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet3])",
+            "expression": "[Aloittaneet]",
             "formatString": "#,0"
           },
           {
             "name": "Lowest accepted score",
-            "expression": "AVERAGE(Muuttujat[Pisterajat])",
+            "expression": "[Alin hyväksytty pistemäärä]",
             "formatString": "0.00"
           },
           {
             "name": "Lägsta inträdespoäng för godkända",
-            "expression": "AVERAGE(Muuttujat[Pisterajat])",
+            "expression": "[Alin hyväksytty pistemäärä]",
             "formatString": "0.00"
           },
           {
             "name": "Förstahandssökande i proportion till nybörjarplatser",
-            "expression": "[Ensisijaiset hakijat]/[Aloituspaikat]",
+            "expression": "[Ensisijaiset hakijat suhteessa aloituspaikkoihin]",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Applicants expressing first preference in comparison to the intake",
-            "expression": "[Ensisijaiset hakijat]/[Aloituspaikat]",
+            "expression": "[Ensisijaiset hakijat suhteessa aloituspaikkoihin]",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Ei valittu tai ei vastaanottanut",
-            "expression": "[Ei valittu]+[Ei vastaanottanut]",
+            "expression": [
+              "calculate([Kaikki hakijat], Muuttujat[Paikan vastaanotto]=\"Ei valittu\" || Muuttujat[Paikan vastaanotto]=\"Valittiin mutta ei vastaanottanut\")",
+              ""
+            ],
             "formatString": "#,0"
           },
           {
@@ -4242,92 +4265,193 @@
           },
           {
             "name": "Was not selected or did not accept a study place",
-            "expression": "[Ei valittu]+[Ei vastaanottanut]",
+            "expression": "[Ei valittu tai ei vastaanottanut]",
             "formatString": "#,0"
           },
           {
             "name": "Ej antagen eller tagit emot",
-            "expression": "[Ei valittu]+[Ei vastaanottanut]",
+            "expression": "[Ei valittu tai ei vastaanottanut]",
             "formatString": "#,0"
           },
           {
             "name": "Ej antagen",
-            "expression": "calculate([Kaikki hakijat],Muuttujat[Paikan vastaanotto]=\"Ei valittu\")",
+            "expression": "[Ei valittu]",
             "formatString": "#,0"
           },
           {
             "name": "Was not selected",
-            "expression": "calculate([Kaikki hakijat],Muuttujat[Paikan vastaanotto]=\"Ei valittu\")",
+            "expression": "[Ei valittu]",
             "formatString": "#,0"
           },
           {
             "name": "Ej tagit emot",
-            "expression": "calculate([Kaikki hakijat],Muuttujat[Paikan vastaanotto]=\"Valittiin mutta ei vastaanottanut\")",
+            "expression": "[Ei vastaanottanut]",
             "formatString": "#,0"
           },
           {
             "name": "Did not accept a study place",
-            "expression": "calculate([Kaikki hakijat],Muuttujat[Paikan vastaanotto]=\"Valittiin mutta ei vastaanottanut\")",
+            "expression": "[Ei vastaanottanut]",
             "formatString": "#,0"
           },
           {
             "name": "Ei valittujen ja ei vastaanottaneiden osuus hakijoista",
-            "expression": "[Ei valittu tai ei vastaanottanut]/[Kaikki hakijat]",
+            "expression": [
+              "",
+              "var osa = [Ei valittu tai ei vastaanottanut]",
+              "var kaikki = [Kaikki hakijat]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Andel ansökanden som ej antagits eller tagit emot",
-            "expression": "[Ei valittu tai ei vastaanottanut]/[Kaikki hakijat]",
+            "expression": "[Ei valittujen ja ei vastaanottaneiden osuus hakijoista]",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Percentage of non-selected and non-accepted (of all applicants)",
-            "expression": "[Ei valittu tai ei vastaanottanut]/[Kaikki hakijat]",
+            "expression": "[Ei valittujen ja ei vastaanottaneiden osuus hakijoista]",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Paikan vastaanottaneet suhteessa hakijoihin",
-            "expression": "[Paikan vastaanottaneet]/[Kaikki hakijat]",
+            "expression": [
+              "",
+              "var osa = [Paikan vastaanottaneet]",
+              "var kaikki = [Kaikki hakijat]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Andel sökande som tagit emot studieplats",
-            "expression": "[Paikan vastaanottaneet]/[Kaikki hakijat]",
+            "expression": "[Paikan vastaanottaneet suhteessa hakijoihin]",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Percentage of persons who accepted a study place (of all applicants)",
-            "expression": "[Paikan vastaanottaneet]/[Kaikki hakijat]",
+            "expression": "[Paikan vastaanottaneet suhteessa hakijoihin]",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Paikan vastaanottaneet suhteessa valittuihin",
-            "expression": "[Paikan vastaanottaneet]/[Valitut]",
+            "expression": [
+              "",
+              "var osa = [Paikan vastaanottaneet]",
+              "var kaikki = [Valitut]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Andel antagna som tagit emot studieplats",
-            "expression": "[Paikan vastaanottaneet]/[Valitut]",
+            "expression": "[Paikan vastaanottaneet suhteessa valittuihin]",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Percentage of persons who accepted a study place (of seleceted)",
-            "expression": "[Paikan vastaanottaneet]/[Valitut]",
+            "expression": "[Paikan vastaanottaneet suhteessa valittuihin]",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Valittujen osuus hakijoista",
-            "expression": "[Valitut]/[Kaikki hakijat]",
+            "expression": [
+              "",
+              "var osa = [Valitut]",
+              "var kaikki = [Kaikki hakijat]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Andel antagna",
-            "expression": "[Valitut]/[Kaikki hakijat]",
+            "expression": "[Valittujen osuus hakijoista]",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Percentage of selected (of all applicants)",
-            "expression": "[Valitut]/[Kaikki hakijat]",
+            "expression": "[Valittujen osuus hakijoista]",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Kaikki hakijat_s",
+            "expression": "calculate(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Lukumäärä]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ensisijaiset hakijat_s",
+            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]),Muuttujat[Ensisijaiset hakijat3]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Valitut_s",
+            "expression": "CALCULATE([Kaikki hakijat_s],Muuttujat[Valitut3]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Paikan vastaanottaneet_s",
+            "expression": "CALCULATE([Kaikki hakijat_s],Muuttujat[Paikan vastaanottaneet3]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Aloittaneet_s",
+            "expression": "calculate(DISTINCTCOUNT([Henkilö OID]),Muuttujat[Aloittaneet3]=1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ensisijaiset hakijat suhteessa aloituspaikkoihin_s",
+            "expression": "[Ensisijaiset hakijat_s]/[Aloituspaikat]",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Ei valittu tai ei vastaanottanut_s",
+            "expression": "[Ei valittu_s]+[Ei vastaanottanut_s]",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ei valittu_s",
+            "expression": "calculate([Kaikki hakijat_s],Muuttujat[Paikan vastaanotto]=\"Ei valittu\")",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ei vastaanottanut_s",
+            "expression": "calculate([Kaikki hakijat_s],Muuttujat[Paikan vastaanotto]=\"Valittiin mutta ei vastaanottanut\")",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ei valittujen ja ei vastaanottaneiden osuus hakijoista_s",
+            "expression": "[Ei valittu tai ei vastaanottanut_s]/[Kaikki hakijat_s]",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Paikan vastaanottaneet suhteessa hakijoihin_s",
+            "expression": "[Paikan vastaanottaneet_s]/[Kaikki hakijat_s]",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Paikan vastaanottaneet suhteessa valittuihin_s",
+            "expression": "[Paikan vastaanottaneet_s]/[Valitut_s]",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Valittujen osuus hakijoista_s",
+            "expression": "[Valitut_s]/[Kaikki hakijat_s]",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           }
         ],
