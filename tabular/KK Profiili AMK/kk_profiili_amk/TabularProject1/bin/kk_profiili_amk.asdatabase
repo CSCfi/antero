@@ -50,6 +50,17 @@
             "value": "SqlServer"
           }
         ]
+      },
+      {
+        "name": "SqlServer dwitvipusql16 ANTERO",
+        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Integrated Security=SSPI;Persist Security Info=false;Initial Catalog=ANTERO",
+        "impersonationMode": "impersonateServiceAccount",
+        "annotations": [
+          {
+            "name": "ConnectionEditUISource",
+            "value": "SqlServer"
+          }
+        ]
       }
     ],
     "tables": [
@@ -10051,7 +10062,7 @@
         ]
       },
       {
-        "name": "d_organisaatio",
+        "name": "d_organisaatio_2",
         "columns": [
           {
             "name": "id",
@@ -19050,6 +19061,79 @@
             "value": "dw"
           }
         ]
+      },
+      {
+        "name": "d_organisaatio",
+        "columns": [
+          {
+            "name": "Organisaatio",
+            "dataType": "string",
+            "sourceColumn": "Organisaatio",
+            "sourceProviderType": "VarChar"
+          },
+          {
+            "name": "organisaatio_koodi",
+            "dataType": "string",
+            "sourceColumn": "organisaatio_koodi",
+            "sourceProviderType": "VarChar"
+          },
+          {
+            "name": "oppilaitostyyppi_fi",
+            "dataType": "string",
+            "sourceColumn": "oppilaitostyyppi_fi",
+            "sourceProviderType": "VarChar"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Query",
+            "dataView": "full",
+            "source": {
+              "query": [
+                "SELECT ",
+                "DISTINCT organisaatio_fi as 'Organisaatio', organisaatio_koodi, oppilaitostyyppi_fi",
+                "  FROM [ANTERO].[dw].[d_organisaatio]",
+                " where organisaatio_koodi <> '02557' and oppilaitostyyppi_fi = 'Ammattikorkeakoulut'"
+              ],
+              "dataSource": "SqlServer dwitvipusql16 ANTERO"
+            },
+            "annotations": [
+              {
+                "name": "QueryEditorSerialization",
+                "value": [
+                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT ",
+                  "DISTINCT organisaatio_fi as 'Organisaatio', organisaatio_koodi, oppilaitostyyppi_fi",
+                  "  FROM [ANTERO].[dw].[d_organisaatio]",
+                  " where organisaatio_koodi <> '02557' and oppilaitostyyppi_fi = 'Ammattikorkeakoulut'</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+                ]
+              }
+            ]
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": [
+              "SELECT ",
+              "DISTINCT organisaatio_fi as 'Organisaatio', organisaatio_koodi, oppilaitostyyppi_fi",
+              "  FROM [ANTERO].[dw].[d_organisaatio]",
+              " where organisaatio_koodi <> '02557' and oppilaitostyyppi_fi = 'Ammattikorkeakoulut'"
+            ]
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "Query"
+          },
+          {
+            "name": "QueryEditorSerialization",
+            "value": [
+              "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT ",
+              "DISTINCT organisaatio_fi as 'Organisaatio', organisaatio_koodi, oppilaitostyyppi_fi",
+              "  FROM [ANTERO].[dw].[d_organisaatio]",
+              " where organisaatio_koodi <> '02557' and oppilaitostyyppi_fi = 'Ammattikorkeakoulut'</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+            ]
+          }
+        ]
       }
     ],
     "relationships": [
@@ -19107,6 +19191,13 @@
         "toTable": "d_kalenteri",
         "toColumn": "paivays",
         "crossFilteringBehavior": "bothDirections"
+      },
+      {
+        "name": "31601f15-edf1-40b0-a343-7fc2a8dc2dfd",
+        "fromTable": "v_virta_otp_tavoite_ajassa_tutkinnon_suorittaneet",
+        "fromColumn": "Korkeakoulu",
+        "toTable": "d_organisaatio",
+        "toColumn": "Organisaatio"
       }
     ],
     "roles": [
