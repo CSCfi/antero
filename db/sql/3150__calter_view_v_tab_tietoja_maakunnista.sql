@@ -2575,6 +2575,6 @@ select
 
 GO
 
-[USE ANTERO]
+USE [ANTERO]
 
 
