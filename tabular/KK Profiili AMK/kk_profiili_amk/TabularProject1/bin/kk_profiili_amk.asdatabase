@@ -9484,6 +9484,14 @@
             "dataType": "string",
             "sourceColumn": "jarj Tieteenala",
             "sourceProviderType": "Char"
+          },
+          {
+            "type": "calculated",
+            "name": "Calculated Column 1",
+            "dataType": "dateTime",
+            "isDataTypeInferred": false,
+            "expression": " [Tilastovuosi] & \"-01-01\"",
+            "formatString": "General Date"
           }
         ],
         "partitions": [
@@ -9494,6 +9502,20 @@
               "query": " SELECT [dw].[v_st_henkilosto].* FROM [dw].[v_st_henkilosto] ",
               "dataSource": "DWItvipusql16"
             }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Henkilötyövuodet Osuus",
+            "expression": [
+              "",
+              "DIVIDE(",
+              "\tSUM(v_st_henkilosto[henkilotyovuosi]),",
+              "\tCALCULATE(",
+              "\t\tSUM(v_st_henkilosto[henkilotyovuosi]),",
+              "\t\tALL(d_organisaatio[Organisaatio])))"
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %"
           }
         ],
         "annotations": [
@@ -9669,6 +9691,21 @@
             "dataType": "int64",
             "sourceColumn": "Koodit Tehtäväjaottelu",
             "sourceProviderType": "Integer"
+          },
+          {
+            "type": "calculated",
+            "name": "Calculated Column 1",
+            "dataType": "dateTime",
+            "isDataTypeInferred": false,
+            "expression": " [Tilastovuosi] & \"-01-01\"",
+            "formatString": "General Date"
+          },
+          {
+            "type": "calculated",
+            "name": "Korkeakoulu",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": " IF([Ammattikorkeakoulu] = BLANK(), [Yliopisto], [Ammattikorkeakoulu])"
           }
         ],
         "partitions": [
@@ -9679,6 +9716,19 @@
               "query": " SELECT [dw].[v_st_liikkuvuus].* FROM [dw].[v_st_liikkuvuus] ",
               "dataSource": "DWItvipusql16"
             }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Henkilökunnan Liikkuvuuden kesto Osuus",
+            "expression": [
+              "",
+              "DIVIDE(",
+              "\tSUM([liikkuvuuden_kesto_ulkomaille]),",
+              "\tCALCULATE(",
+              "\t\tSUM([liikkuvuuden_kesto_ulkomaille]),",
+              "\t\tALL(d_organisaatio[Organisaatio])))"
+            ]
           }
         ],
         "annotations": [
@@ -10034,6 +10084,14 @@
             "dataType": "string",
             "sourceColumn": "Koodit Yliopisto",
             "sourceProviderType": "Char"
+          },
+          {
+            "type": "calculated",
+            "name": "Calculated Column 1",
+            "dataType": "dateTime",
+            "isDataTypeInferred": false,
+            "expression": " [Tilastovuosi] & \"-01-01\"",
+            "formatString": "General Date"
           }
         ],
         "partitions": [
@@ -10044,6 +10102,33 @@
               "query": " SELECT [dw].[v_st_opintopisteet].* FROM [dw].[v_st_opintopisteet] ",
               "dataSource": "DWItvipusql16"
             }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Muut opintopisteet Osuus",
+            "expression": [
+              "",
+              "DIVIDE(",
+              "\tCALCULATE(",
+              "\t\tSUM(v_st_opintopisteet[tki_muu_pisteet_lkm])),",
+              "\tCALCULATE(",
+              "\t\tSUM(v_st_opintopisteet[tki_muu_pisteet_lkm]),",
+              "\t\tALL(d_organisaatio[Organisaatio])))"
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %"
+          },
+          {
+            "name": "Kansainväliset opintopisteet osuus",
+            "expression": [
+              " ",
+              "DIVIDE(",
+              "\tCALCULATE(",
+              "\t\tSUM(v_st_opintopisteet[ulkom_harj_op_lkm])+SUM(Asemointi[ulkom_hyv_luetut_op_lkm])),",
+              "\tCALCULATE(",
+              "\t\tSUM(v_st_opintopisteet[ulkom_harj_op_lkm])+SUM(Asemointi[ulkom_hyv_luetut_op_lkm]),",
+              "\t\tALL(d_organisaatio[Organisaatio])))"
+            ]
           }
         ],
         "annotations": [
@@ -10590,15 +10675,63 @@
         "measures": [
           {
             "name": "Tavoiteajassa suorittaneet / Tutkintomäärä (AMK)",
-            "expression": " DIVIDE([Tavoiteajassa tutkinnon (AMK) suorittaneet],[Tutkintomäärä (AMK)])"
+            "expression": " DIVIDE([Tavoiteajassa tutkinnon (AMK) suorittaneet],[Tutkintomäärä (AMK)])",
+            "formatString": "0.00 %;-0.00 %;0.00 %"
           },
           {
             "name": "Tavoiteajassa tutkinnon (AMK) suorittaneet",
-            "expression": " CALCULATE([Tutkintomäärä (AMK)], v_virta_otp_tavoite_ajassa_tutkinnon_suorittaneet[Tutkinto suoritettu määräajassa] = \"Kyllä\")"
+            "expression": " CALCULATE([Tutkintomäärä (AMK)], v_virta_otp_tavoite_ajassa_tutkinnon_suorittaneet[Tutkinto suoritettu määräajassa] = \"Kyllä\",v_virta_otp_tavoite_ajassa_tutkinnon_suorittaneet[Koulutusaste, taso 2] = \"Ammattikorkeakoulututkinto\")"
           },
           {
             "name": "Tutkintomäärä (AMK)",
-            "expression": " DISTINCTCOUNT(v_virta_otp_tavoite_ajassa_tutkinnon_suorittaneet[Henkilo_koodi])"
+            "expression": " CALCULATE(DISTINCTCOUNT(v_virta_otp_tavoite_ajassa_tutkinnon_suorittaneet[Henkilo_koodi]), v_virta_otp_tavoite_ajassa_tutkinnon_suorittaneet[Koulutusaste, taso 2] = \"Ammattikorkeakoulututkinto\")"
+          },
+          {
+            "name": "Tavoiteajassa suorittaneet / Tutkintomäärä (AMK) Paras",
+            "expression": [
+              " ",
+              "",
+              "var taulu = SUMMARIZE(v_virta_otp_tavoite_ajassa_tutkinnon_suorittaneet, [Korkeakoulu], \"Paras\", DIVIDE(CALCULATE(DISTINCTCOUNT(v_virta_otp_tavoite_ajassa_tutkinnon_suorittaneet[Henkilo_koodi]), v_virta_otp_tavoite_ajassa_tutkinnon_suorittaneet[Tutkinto suoritettu määräajassa] = \"Kyllä\", v_virta_otp_tavoite_ajassa_tutkinnon_suorittaneet[Koulutusaste, taso 2] = \"Ammattikorkeakoulututkinto\"), CALCULATE(DISTINCTCOUNT(v_virta_otp_tavoite_ajassa_tutkinnon_suorittaneet[Henkilo_koodi]),v_virta_otp_tavoite_ajassa_tutkinnon_suorittaneet[Koulutusaste, taso 2] = \"Ammattikorkeakoulututkinto\")))",
+              "",
+              "return",
+              "",
+              "MAXX(taulu, MAX([Paras]))",
+              ""
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %"
+          },
+          {
+            "name": "Tavoiteajassa suorittaneet / Tutkintomäärä (AMK) Kaikki",
+            "expression": [
+              "",
+              "",
+              "CALCULATE([Tavoiteajassa suorittaneet / Tutkintomäärä (AMK)], ALL(d_organisaatio[Organisaatio])) ",
+              "",
+              ""
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %"
+          },
+          {
+            "name": "Tutkintomäärä (AMK) Kaikki",
+            "expression": " CALCULATE([Tutkintomäärä (AMK)], ALL(d_organisaatio[Organisaatio]))"
+          },
+          {
+            "name": "Tavoiteajassa tutkinnon (AMK) suorittaneet Kaikki",
+            "expression": " CALCULATE([Tavoiteajassa tutkinnon (AMK) suorittaneet], ALL(d_organisaatio[Organisaatio]),v_virta_otp_tavoite_ajassa_tutkinnon_suorittaneet[Koulutusaste, taso 2] = \"Ammattikorkeakoulututkinto\")"
+          },
+          {
+            "name": "Tutkintomäärä (AMK) Osuus",
+            "expression": " DIVIDE([Tutkintomäärä (AMK)],[Tutkintomäärä (AMK) Kaikki])",
+            "formatString": "0.00 %;-0.00 %;0.00 %"
+          },
+          {
+            "name": "Tutkintomäärä (YAMK)",
+            "expression": " CALCULATE(DISTINCTCOUNT(v_virta_otp_tavoite_ajassa_tutkinnon_suorittaneet[Henkilo_koodi]), v_virta_otp_tavoite_ajassa_tutkinnon_suorittaneet[Koulutusaste, taso 2] = \"Ylempi ammattikorkeakoulututkinto\")"
+          },
+          {
+            "name": "Tutkintomäärä (YAMK) Osuus",
+            "expression": " DIVIDE([Tutkintomäärä (YAMK)], CALCULATE([Tutkintomäärä (YAMK)], ALL(d_organisaatio[Organisaatio])))",
+            "formatString": "0.00 %;-0.00 %;0.00 %"
           }
         ],
         "annotations": [
@@ -10834,6 +10967,14 @@
             "dataType": "string",
             "sourceColumn": "tili_koodi",
             "sourceProviderType": "Char"
+          },
+          {
+            "type": "calculated",
+            "name": "Calculated Column 1",
+            "dataType": "dateTime",
+            "isDataTypeInferred": false,
+            "expression": " [Tilikausi] & \"-01-01\"",
+            "formatString": "General Date"
           }
         ],
         "partitions": [
@@ -10844,6 +10985,41 @@
               "query": " SELECT [dw].[v_amk_talous].* FROM [dw].[v_amk_talous] ",
               "dataSource": "DWItvipusql16"
             }
+          }
+        ],
+        "measures": [
+          {
+            "name": "TK-rahoitus Osuus",
+            "expression": [
+              " ",
+              "DIVIDE(",
+              "\tCALCULATE(",
+              "\t\tSUM(v_amk_talous[arvo]),",
+              "\t\tv_amk_talous[tili_taso0_fi] = \"Tutkimusmenot\"),",
+              "\tCALCULATE(",
+              "\t\tSUM(v_amk_talous[arvo]),",
+              "\t\tv_amk_talous[tili_taso0_fi] = \"Tutkimusmenot\",",
+              "\t\tALL(d_organisaatio[Organisaatio])))",
+              ""
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %"
+          },
+          {
+            "name": "Liikevaihto",
+            "expression": " CALCULATE(SUM(v_amk_talous[arvo]), v_amk_talous[tili_koodi] = \"liikevaihto\")",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Liikevaihto Osuus",
+            "expression": [
+              " ",
+              "DIVIDE(",
+              "\t[Liikevaihto],",
+              "\tCALCULATE(",
+              "\t\t[Liikevaihto],",
+              "\t\tALL(d_organisaatio[Organisaatio])))"
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %"
           }
         ],
         "annotations": [
@@ -13270,6 +13446,14 @@
             "dataType": "int64",
             "sourceColumn": "6 Koulutusala, taso 3 järjestys",
             "sourceProviderType": "Integer"
+          },
+          {
+            "type": "calculated",
+            "name": "Calculated Column 1",
+            "dataType": "dateTime",
+            "isDataTypeInferred": false,
+            "expression": " [Koulutuksen alkamisvuosi] & \"-01-01\"",
+            "formatString": "General Date"
           }
         ],
         "partitions": [
@@ -13280,6 +13464,21 @@
               "query": " SELECT [dw].[v_haku_ja_valinta_kk_amk].* FROM [dw].[v_haku_ja_valinta_kk_amk] ",
               "dataSource": "DWItvipusql16"
             }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Aloituspaikat osuus",
+            "expression": [
+              "",
+              "DIVIDE(",
+              "\tSUM(v_haku_ja_valinta_kk_amk[alpa]),",
+              "\tCALCULATE(",
+              "\t\tSUM(v_haku_ja_valinta_kk_amk[alpa]),",
+              "\t\tALL(d_organisaatio[Organisaatio])))",
+              "\t"
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %"
           }
         ],
         "annotations": [
@@ -13785,6 +13984,14 @@
             "dataType": "string",
             "sourceColumn": "Julkaisufoorumitaso uusi luokitus",
             "sourceProviderType": "WChar"
+          },
+          {
+            "type": "calculated",
+            "name": "Calculated Column 1",
+            "dataType": "dateTime",
+            "isDataTypeInferred": false,
+            "expression": "[Tilastovuosi] & \"-01-01\"",
+            "formatString": "General Date"
           }
         ],
         "partitions": [
@@ -13795,6 +14002,24 @@
               "query": " SELECT [dw].[v_virta_jtp_tilasto].* FROM [dw].[v_virta_jtp_tilasto] ",
               "dataSource": "DWItvipusql16"
             }
+          }
+        ],
+        "measures": [
+          {
+            "name": "AMK-Julkaisut",
+            "expression": " CALCULATE(SUM(v_virta_jtp_tilasto[lukumaara]), v_virta_jtp_tilasto[Koodit Sektori] = \"2\")"
+          },
+          {
+            "name": "AMK-Julkaisut Osuus",
+            "expression": [
+              "",
+              "DIVIDE(",
+              "\t[AMK-Julkaisut],",
+              "\tCALCULATE(",
+              "\t\t[AMK-Julkaisut],",
+              "\t\tALL(d_organisaatio[Organisaatio])))"
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %"
           }
         ],
         "annotations": [
@@ -13836,6 +14061,7 @@
           {
             "name": "Henkilo_koodi",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "Henkilo_koodi",
             "sourceProviderType": "Char"
           },
@@ -14222,6 +14448,14 @@
             "dataType": "string",
             "sourceColumn": "Koulutusala, taso 3 jarj",
             "sourceProviderType": "Char"
+          },
+          {
+            "type": "calculated",
+            "name": "Calculated Column 1",
+            "dataType": "dateTime",
+            "isDataTypeInferred": false,
+            "expression": " [Tilastovuosi] & \"-01-01\"",
+            "formatString": "General Date"
           }
         ],
         "partitions": [
@@ -14232,6 +14466,73 @@
               "query": " SELECT [dw].[v_virta_otp_55_tilasto].* FROM [dw].[v_virta_otp_55_tilasto] ",
               "dataSource": "DWItvipusql16"
             }
+          }
+        ],
+        "measures": [
+          {
+            "name": "55op Suorittaneet / Läsnäolleet",
+            "expression": [
+              " ",
+              "DIVIDE(",
+              "\tCALCULATE(",
+              "\t\tDISTINCTCOUNT(v_virta_otp_55_tilasto[Henkilo_koodi]),",
+              "\t\tv_virta_otp_55_tilasto[Suorittanut55] = 1),",
+              "\tCALCULATE(",
+              "\t\tDISTINCTCOUNT(v_virta_otp_55_tilasto[Henkilo_koodi]),",
+              "\t\tv_virta_otp_55_tilasto[Lasna] = 1))"
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %"
+          },
+          {
+            "name": "55op Suorittaneet / Läsnäolleet Kaikki",
+            "expression": [
+              " ",
+              "CALCULATE([55op Suorittaneet / Läsnäolleet], ALL(d_organisaatio[Organisaatio]))",
+              ""
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %"
+          },
+          {
+            "name": "55op Suorittaneet / Läsnäolleet Paras",
+            "expression": [
+              "",
+              "",
+              "var taulu = SUMMARIZE(v_virta_otp_55_tilasto, v_virta_otp_55_tilasto[Korkeakoulu], \"Paras\",",
+              "DIVIDE(",
+              "\tCALCULATE(",
+              "\t\tDISTINCTCOUNT(v_virta_otp_55_tilasto[Henkilo_koodi]),",
+              "\t\tv_virta_otp_55_tilasto[Suorittanut55] = 1),",
+              "\tCALCULATE(",
+              "\t\tDISTINCTCOUNT(v_virta_otp_55_tilasto[Henkilo_koodi]),",
+              "\t\tv_virta_otp_55_tilasto[Lasna] = 1)))",
+              "\t\t",
+              "return",
+              "",
+              "MAXX(taulu, MAX([Paras]))",
+              ""
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %"
+          },
+          {
+            "name": "55op Suorittaneet Kaikki",
+            "expression": " CALCULATE(DISTINCTCOUNT(v_virta_otp_55_tilasto[Henkilo_koodi]), v_virta_otp_55_tilasto[Suorittanut55] = 1, ALL(d_organisaatio[Organisaatio]))"
+          },
+          {
+            "name": "Läsnäolleet Kaikki",
+            "expression": " CALCULATE(DISTINCTCOUNT(v_virta_otp_55_tilasto[Henkilo_koodi]), v_virta_otp_55_tilasto[Lasna] = 1, ALL(d_organisaatio[Organisaatio]))"
+          },
+          {
+            "name": "Läsnäolleet_",
+            "expression": " CALCULATE(DISTINCTCOUNT(v_virta_otp_55_tilasto[Henkilo_koodi]), v_virta_otp_55_tilasto[Lasna] = 1)"
+          },
+          {
+            "name": "55op Suorittaneet_",
+            "expression": " CALCULATE(DISTINCTCOUNT(v_virta_otp_55_tilasto[Henkilo_koodi]), v_virta_otp_55_tilasto[Suorittanut55] = 1)"
+          },
+          {
+            "name": "55op Suorittaneet Osuus",
+            "expression": " [55op Suorittaneet_]/[55op Suorittaneet Kaikki]",
+            "formatString": "0.00 %;-0.00 %;0.00 %"
           }
         ],
         "annotations": [
@@ -17367,6 +17668,14 @@
             "dataType": "int64",
             "sourceColumn": "Perusraportti",
             "sourceProviderType": "Integer"
+          },
+          {
+            "type": "calculated",
+            "name": "Calculated Column 1",
+            "dataType": "dateTime",
+            "isDataTypeInferred": false,
+            "expression": "[Tilastovuosi] & \"-01-01\"",
+            "formatString": "General Date"
           }
         ],
         "partitions": [
@@ -17377,6 +17686,22 @@
               "query": " SELECT [dbo].[v_f_tab_otv_korkeakoulut_amk].* FROM [dbo].[v_f_tab_otv_korkeakoulut_amk] ",
               "dataSource": "VipunenTK"
             }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Ammatillisesta opettajakoulutuksesta valmistuneet Osuus",
+            "expression": [
+              "",
+              "DIVIDE(",
+              "\tCALCULATE(",
+              "\t\tSUM(v_f_tab_otv_korkeakoulut_amk[Tutk2]),",
+              "\t\tOR(OR(v_f_tab_otv_korkeakoulut_amk[Koodit Koulutusohjelma] = \"E190\", v_f_tab_otv_korkeakoulut_amk[Koodit Koulutusohjelma] = \"E191\"), v_f_tab_otv_korkeakoulut_amk[Koodit Koulutusohjelma] = \"E192\")),",
+              "\tCALCULATE(",
+              "\t\tSUM(v_f_tab_otv_korkeakoulut_amk[Tutk2]),",
+              "\t\tOR(OR(v_f_tab_otv_korkeakoulut_amk[Koodit Koulutusohjelma] = \"E190\", v_f_tab_otv_korkeakoulut_amk[Koodit Koulutusohjelma] = \"E191\"), v_f_tab_otv_korkeakoulut_amk[Koodit Koulutusohjelma] = \"E192\"), ALL(d_organisaatio[Organisaatio])))"
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %"
           }
         ],
         "annotations": [
@@ -19185,19 +19510,137 @@
         "toColumn": "OKM Ohjauksenala"
       },
       {
-        "name": "c611918f-d02e-4e95-9144-7dbd28d3ba29",
-        "fromTable": "v_virta_otp_tavoite_ajassa_tutkinnon_suorittaneet",
-        "fromColumn": "suorituspvm",
-        "toTable": "d_kalenteri",
-        "toColumn": "paivays",
-        "crossFilteringBehavior": "bothDirections"
-      },
-      {
         "name": "31601f15-edf1-40b0-a343-7fc2a8dc2dfd",
         "fromTable": "v_virta_otp_tavoite_ajassa_tutkinnon_suorittaneet",
         "fromColumn": "Korkeakoulu",
         "toTable": "d_organisaatio",
         "toColumn": "Organisaatio"
+      },
+      {
+        "name": "d1fe400e-fc9c-46f6-b439-52e67fffbec7",
+        "fromTable": "v_virta_otp_55_tilasto",
+        "fromColumn": "OKM ohjauksen ala",
+        "toTable": "Ohjauksenala",
+        "toColumn": "OKM Ohjauksenala"
+      },
+      {
+        "name": "2e94eb2b-920f-4aba-bd06-3189225824dd",
+        "fromTable": "v_virta_otp_55_tilasto",
+        "fromColumn": "Korkeakoulu",
+        "toTable": "d_organisaatio",
+        "toColumn": "Organisaatio"
+      },
+      {
+        "name": "020897ca-63c0-4cc1-8de4-970ef111a79f",
+        "fromTable": "v_virta_otp_tavoite_ajassa_tutkinnon_suorittaneet",
+        "fromColumn": "suorituspvm",
+        "toTable": "d_kalenteri",
+        "toColumn": "paivays"
+      },
+      {
+        "name": "70c0ead3-e1e4-4e3b-8e7f-a67833ca7185",
+        "fromTable": "v_virta_otp_55_tilasto",
+        "fromColumn": "Calculated Column 1",
+        "toTable": "d_kalenteri",
+        "toColumn": "paivays"
+      },
+      {
+        "name": "0de26b9f-8fc5-4fd1-9693-0360a84398d6",
+        "fromTable": "v_amk_talous",
+        "fromColumn": "Ammattikorkeakoulu",
+        "toTable": "d_organisaatio",
+        "toColumn": "Organisaatio"
+      },
+      {
+        "name": "5d4f7d06-a9ab-4301-81e7-a6cd1ceb9eae",
+        "fromTable": "v_amk_talous",
+        "fromColumn": "Calculated Column 1",
+        "toTable": "d_kalenteri",
+        "toColumn": "paivays"
+      },
+      {
+        "name": "22bc1661-eba1-4f09-bb21-c01db3e8c278",
+        "fromTable": "v_st_opintopisteet",
+        "fromColumn": "Ammattikorkeakoulu",
+        "toTable": "d_organisaatio",
+        "toColumn": "Organisaatio"
+      },
+      {
+        "name": "1f9ae5a0-5d28-439a-988c-0554b5e3de24",
+        "fromTable": "v_st_opintopisteet",
+        "fromColumn": "Calculated Column 1",
+        "toTable": "d_kalenteri",
+        "toColumn": "paivays"
+      },
+      {
+        "name": "8e4f582f-b193-42f8-a0bb-bb4638e29b06",
+        "fromTable": "v_haku_ja_valinta_kk_amk",
+        "fromColumn": "Korkeakoulu",
+        "toTable": "d_organisaatio",
+        "toColumn": "Organisaatio"
+      },
+      {
+        "name": "e4564bfa-b791-4b54-ae22-6a20d79ffb0e",
+        "fromTable": "v_haku_ja_valinta_kk_amk",
+        "fromColumn": "Calculated Column 1",
+        "toTable": "d_kalenteri",
+        "toColumn": "paivays"
+      },
+      {
+        "name": "56b22d72-031d-4cf6-a0d8-43ebc727bc91",
+        "fromTable": "v_st_henkilosto",
+        "fromColumn": "Korkeakoulu",
+        "toTable": "d_organisaatio",
+        "toColumn": "Organisaatio"
+      },
+      {
+        "name": "c4161b15-4999-4c2e-8649-535d2b25b51a",
+        "fromTable": "v_st_henkilosto",
+        "fromColumn": "Calculated Column 1",
+        "toTable": "d_kalenteri",
+        "toColumn": "paivays"
+      },
+      {
+        "name": "3ac215dc-36fb-4818-aa84-a7b1342e12ec",
+        "fromTable": "v_virta_jtp_tilasto",
+        "fromColumn": "Organisaatio",
+        "toTable": "d_organisaatio",
+        "toColumn": "Organisaatio"
+      },
+      {
+        "name": "33b33d73-5ce2-470f-ba1b-0f9922c1c83f",
+        "fromTable": "v_virta_jtp_tilasto",
+        "fromColumn": "Calculated Column 1",
+        "toTable": "d_kalenteri",
+        "toColumn": "paivays"
+      },
+      {
+        "name": "d1ccd3d4-5ae1-4865-9870-ec7cec0a4131",
+        "fromTable": "v_st_liikkuvuus",
+        "fromColumn": "Calculated Column 1",
+        "toTable": "d_kalenteri",
+        "toColumn": "paivays"
+      },
+      {
+        "name": "7cb19168-7104-4fd5-b0b9-256c6a279523",
+        "fromTable": "v_st_liikkuvuus",
+        "fromColumn": "Korkeakoulu",
+        "toTable": "d_organisaatio",
+        "toColumn": "Organisaatio"
+      },
+      {
+        "name": "f2909f3c-6489-4dfa-b3b7-056f30154db2",
+        "fromTable": "v_f_tab_otv_korkeakoulut_amk",
+        "fromColumn": "Ammattikorkeakoulu",
+        "toTable": "d_organisaatio",
+        "toColumn": "Organisaatio"
+      },
+      {
+        "name": "d5714622-4b35-4c2b-abac-8f66b4458735",
+        "fromTable": "v_f_tab_otv_korkeakoulut_amk",
+        "fromColumn": "Calculated Column 1",
+        "toTable": "d_kalenteri",
+        "toColumn": "paivays"
       }
     ],
     "roles": [
