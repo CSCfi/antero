@@ -4930,7 +4930,7 @@
             "expression": "IF([vast-avop-amk-yamk-tilasto]<6,BLANK(),[kh-avop-amk-yamk-tilasto])"
           },
           {
-            "name": "Pisteet",
+            "name": "Pisteet_asemointi",
             "expression": "IF([vast-tilasto]<5,BLANK(),[pisteet-all-tilasto])"
           },
           {
@@ -10124,11 +10124,12 @@
               " ",
               "DIVIDE(",
               "\tCALCULATE(",
-              "\t\tSUM(v_st_opintopisteet[ulkom_harj_op_lkm])+SUM(Asemointi[ulkom_hyv_luetut_op_lkm])),",
+              "\t\tSUM(v_st_opintopisteet[ulkom_harj_op_lkm])+SUM(v_st_opintopisteet[ulkom_hyv_op_lkm])),",
               "\tCALCULATE(",
-              "\t\tSUM(v_st_opintopisteet[ulkom_harj_op_lkm])+SUM(Asemointi[ulkom_hyv_luetut_op_lkm]),",
+              "\t\tSUM(v_st_opintopisteet[ulkom_harj_op_lkm])+SUM(v_st_opintopisteet[ulkom_hyv_op_lkm]),",
               "\t\tALL(d_organisaatio[Organisaatio])))"
-            ]
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %"
           }
         ],
         "annotations": [
@@ -11020,6 +11021,86 @@
               "\t\tALL(d_organisaatio[Organisaatio])))"
             ],
             "formatString": "0.00 %;-0.00 %;0.00 %"
+          },
+          {
+            "name": "TK-rahoitus / Liikevaihto Kaikki",
+            "expression": [
+              "",
+              "DIVIDE(",
+              "\tCALCULATE(",
+              "\t\tSUM(v_amk_talous[arvo]),",
+              "\t\tv_amk_talous[tili_taso0_fi] = \"Tutkimusmenot\",",
+              "\t\tALL(d_organisaatio[Organisaatio])),",
+              "\tCALCULATE(",
+              "\t\t[Liikevaihto],",
+              "\t\tALL(d_organisaatio[Organisaatio])))"
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %"
+          },
+          {
+            "name": "Liikevaihto Kaikki",
+            "expression": [
+              "",
+              "CALCULATE([Liikevaihto], ALL(d_organisaatio[Organisaatio]))"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "TK-rahoitus Kaikki",
+            "expression": [
+              "",
+              "CALCULATE(",
+              "\tSUM(v_amk_talous[arvo]),",
+              "\tv_amk_talous[tili_taso0_fi] = \"Tutkimusmenot\",",
+              "\tALL(d_organisaatio[Organisaatio]))",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "TK-rahoitus / Liikevaihto Paras",
+            "expression": [
+              "",
+              "",
+              "var taulu = SUMMARIZE(v_amk_talous, v_amk_talous [Ammattikorkeakoulu], \"Paras\",",
+              "DIVIDE(",
+              "\tCALCULATE(",
+              "\t\tSUM(v_amk_talous[arvo]),",
+              "\t\tv_amk_talous[tili_taso0_fi] = \"Tutkimusmenot\"),",
+              "\tCALCULATE(\t",
+              "\t\tSUM(v_amk_talous[arvo]), ",
+              "\t\tv_amk_talous[tili_koodi] = \"liikevaihto\")))",
+              "",
+              "return",
+              "",
+              "MAXX(taulu, MAX([Paras]))",
+              ""
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %"
+          },
+          {
+            "name": "TK-rahoitus / Liikevaihto",
+            "expression": [
+              "",
+              "DIVIDE(",
+              "\tCALCULATE(",
+              "\t\tSUM(v_amk_talous[arvo]),",
+              "\t\tv_amk_talous[tili_taso0_fi] = \"Tutkimusmenot\"),",
+              "\tCALCULATE(\t",
+              "\t\tSUM(v_amk_talous[arvo]), ",
+              "\t\tv_amk_talous[tili_koodi] = \"liikevaihto\"))"
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %"
+          },
+          {
+            "name": "TK-rahoitus",
+            "expression": [
+              "",
+              "CALCULATE(",
+              "\t\tSUM(v_amk_talous[arvo]),",
+              "\t\tv_amk_talous[tili_taso0_fi] = \"Tutkimusmenot\")"
+            ],
+            "formatString": "#,0"
           }
         ],
         "annotations": [
@@ -11541,8 +11622,9 @@
           },
           {
             "name": "Koodit Kalenteri",
-            "dataType": "string",
+            "dataType": "dateTime",
             "sourceColumn": "Koodit Kalenteri",
+            "formatString": "General Date",
             "sourceProviderType": "Char"
           },
           {
@@ -11740,6 +11822,30 @@
               "query": " SELECT [dw].[v_arvo].* FROM [dw].[v_arvo] ",
               "dataSource": "DWItvipusql16"
             }
+          }
+        ],
+        "measures": [
+          {
+            "name": "vast-tilasto_arvo",
+            "expression": "CALCULATE(DISTINCTCOUNT(v_arvo[vastaajaid]))",
+            "isHidden": true
+          },
+          {
+            "name": "pisteet-all-tilasto_arvo",
+            "expression": "calculate(sum(v_arvo[numerovalinta]),FILTER(v_arvo,[vuosi_tilasto]=1))",
+            "isHidden": true
+          },
+          {
+            "name": "Opiskelijapalautteen pisteet Osuus",
+            "expression": [
+              "",
+              "DIVIDE(",
+              "\tIF([vast-tilasto_arvo]<5,BLANK(),[pisteet-all-tilasto_arvo]),",
+              "\tCALCULATE(",
+              "\t\tIF([vast-tilasto_arvo]<5,BLANK(),[pisteet-all-tilasto_arvo]),",
+              "\t\tALL(d_organisaatio[Organisaatio])))"
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %"
           }
         ],
         "annotations": [
@@ -17372,294 +17478,343 @@
           {
             "name": "Opisk2",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "Opisk2",
             "sourceProviderType": "Integer"
           },
           {
             "name": "Aloit2",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "Aloit2",
             "sourceProviderType": "Integer"
           },
           {
             "name": "lkm_op55",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "lkm_op55",
             "sourceProviderType": "Integer"
           },
           {
             "name": "lkm_op0",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "lkm_op0",
             "sourceProviderType": "Integer"
           },
           {
             "name": "lkm_op1_14",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "lkm_op1_14",
             "sourceProviderType": "Integer"
           },
           {
             "name": "lkm_op15_29",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "lkm_op15_29",
             "sourceProviderType": "Integer"
           },
           {
             "name": "lkm_op30_44",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "lkm_op30_44",
             "sourceProviderType": "Integer"
           },
           {
             "name": "lkm_op45_59",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "lkm_op45_59",
             "sourceProviderType": "Integer"
           },
           {
             "name": "lkm_op60_74",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "lkm_op60_74",
             "sourceProviderType": "Integer"
           },
           {
             "name": "lkm_op75_89",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "lkm_op75_89",
             "sourceProviderType": "Integer"
           },
           {
             "name": "lkm_op90_104",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "lkm_op90_104",
             "sourceProviderType": "Integer"
           },
           {
             "name": "lkm_op105_119",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "lkm_op105_119",
             "sourceProviderType": "Integer"
           },
           {
             "name": "lkm_op120_",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "lkm_op120_",
             "sourceProviderType": "Integer"
           },
           {
             "name": "aloittaneet_kirjoihintulovuosi",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "aloittaneet_kirjoihintulovuosi",
             "sourceProviderType": "Integer"
           },
           {
             "name": "aloittaneet_korkeakoulusektori",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "aloittaneet_korkeakoulusektori",
             "sourceProviderType": "Integer"
           },
           {
             "name": "aloittaneet_korkeakoulusektori_lasnaoleva",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "aloittaneet_korkeakoulusektori_lasnaoleva",
             "sourceProviderType": "Integer"
           },
           {
             "name": "aloittaneet_sektori",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "aloittaneet_sektori",
             "sourceProviderType": "Integer"
           },
           {
             "name": "aloittaneet_sektori_lasnaoleva",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "aloittaneet_sektori_lasnaoleva",
             "sourceProviderType": "Integer"
           },
           {
             "name": "aloittaneet_korkeakoulu",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "aloittaneet_korkeakoulu",
             "sourceProviderType": "Integer"
           },
           {
             "name": "aloittaneet_korkeakoulu_lasnaoleva",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "aloittaneet_korkeakoulu_lasnaoleva",
             "sourceProviderType": "Integer"
           },
           {
             "name": "aloittaneet_opintoala",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "aloittaneet_opintoala",
             "sourceProviderType": "Integer"
           },
           {
             "name": "aloittaneet_opintoala_lasnaoleva",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "aloittaneet_opintoala_lasnaoleva",
             "sourceProviderType": "Integer"
           },
           {
             "name": "opiskelijat_lasna",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "opiskelijat_lasna",
             "sourceProviderType": "Integer"
           },
           {
             "name": "opiskelijat_fte",
             "dataType": "double",
+            "isHidden": true,
             "sourceColumn": "opiskelijat_fte",
             "sourceProviderType": "Numeric"
           },
           {
             "name": "lkm_lasnalk",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "lkm_lasnalk",
             "sourceProviderType": "Integer"
           },
           {
             "name": "lkm_poissalk",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "lkm_poissalk",
             "sourceProviderType": "Integer"
           },
           {
             "name": "op_suoritettavien_laajuus",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "op_suoritettavien_laajuus",
             "sourceProviderType": "Integer"
           },
           {
             "name": "op_edellinen_syksy",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "op_edellinen_syksy",
             "sourceProviderType": "Integer"
           },
           {
             "name": "op_edellinen_kevat",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "op_edellinen_kevat",
             "sourceProviderType": "Integer"
           },
           {
             "name": "op_kertyma_edel_lkv_loppu",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "op_kertyma_edel_lkv_loppu",
             "sourceProviderType": "Integer"
           },
           {
             "name": "Tutk2",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "Tutk2",
             "sourceProviderType": "Integer"
           },
           {
             "name": "op_amk_yhteensa",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "op_amk_yhteensa",
             "sourceProviderType": "Integer"
           },
           {
             "name": "op_amk_yleissiv_amm_opplait",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "op_amk_yleissiv_amm_opplait",
             "sourceProviderType": "Integer"
           },
           {
             "name": "op_amk_muualla",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "op_amk_muualla",
             "sourceProviderType": "Integer"
           },
           {
             "name": "op_amk_oma_amk",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "op_amk_oma_amk",
             "sourceProviderType": "Integer"
           },
           {
             "name": "op_amk_muu_amk",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "op_amk_muu_amk",
             "sourceProviderType": "Integer"
           },
           {
             "name": "op_amk_yliopistoissa",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "op_amk_yliopistoissa",
             "sourceProviderType": "Integer"
           },
           {
             "name": "op_amk_ulkomailla",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "op_amk_ulkomailla",
             "sourceProviderType": "Integer"
           },
           {
             "name": "op_yo_yhteensa",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "op_yo_yhteensa",
             "sourceProviderType": "Integer"
           },
           {
             "name": "op_yo_ulkomailla",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "op_yo_ulkomailla",
             "sourceProviderType": "Integer"
           },
           {
             "name": "op_yo_muualla",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "op_yo_muualla",
             "sourceProviderType": "Integer"
           },
           {
             "name": "op_yo_oma_yo",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "op_yo_oma_yo",
             "sourceProviderType": "Integer"
           },
           {
             "name": "op_yo_avoimessa",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "op_yo_avoimessa",
             "sourceProviderType": "Integer"
           },
           {
             "name": "op_yo_muu_yo",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "op_yo_muu_yo",
             "sourceProviderType": "Integer"
           },
           {
             "name": "op_yo_ammattikorkeakouluissa",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "op_yo_ammattikorkeakouluissa",
             "sourceProviderType": "Integer"
           },
           {
             "name": "ika19_21_lkm",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "ika19_21_lkm",
             "sourceProviderType": "Integer"
           },
           {
             "name": "ika20_24_lkm",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "ika20_24_lkm",
             "sourceProviderType": "Integer"
           },
           {
             "name": "ika25_34_lkm",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "ika25_34_lkm",
             "sourceProviderType": "Integer"
           },
           {
             "name": "ika25_64_lkm",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "ika25_64_lkm",
             "sourceProviderType": "Integer"
           },
@@ -17690,7 +17845,7 @@
         ],
         "measures": [
           {
-            "name": "Ammatillisesta opettajakoulutuksesta valmistuneet Osuus",
+            "name": "Ammatillisesta opettajakoulutuksesta valmistuneet osuus",
             "expression": [
               "",
               "DIVIDE(",
@@ -17725,18 +17880,21 @@
           {
             "name": "lkm_1vr2",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "lkm_1vr2",
             "sourceProviderType": "Integer"
           },
           {
             "name": "lkm_3vr2",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "lkm_3vr2",
             "sourceProviderType": "Integer"
           },
           {
             "name": "lkm_5vr2",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "lkm_5vr2",
             "sourceProviderType": "Integer"
           },
@@ -18637,20 +18795,31 @@
           {
             "name": "Työlliset 1v tutkinnon jälkeen",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "Työlliset 1v tutkinnon jälkeen",
             "sourceProviderType": "Integer"
           },
           {
             "name": "Sijoittuminen 3v tutkinnon jälkeen",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "Sijoittuminen 3v tutkinnon jälkeen",
             "sourceProviderType": "Integer"
           },
           {
             "name": "Työlliset 3v tutkinnon jälkeen",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "Työlliset 3v tutkinnon jälkeen",
             "sourceProviderType": "Integer"
+          },
+          {
+            "type": "calculated",
+            "name": "Calculated Column 1",
+            "dataType": "dateTime",
+            "isDataTypeInferred": false,
+            "expression": " [Tilastovuosi] & \"-01-01\"",
+            "formatString": "General Date"
           }
         ],
         "partitions": [
@@ -18661,6 +18830,20 @@
               "query": " SELECT [dbo].[v_f_tab_tyollistyminen_amk].* FROM [dbo].[v_f_tab_tyollistyminen_amk] ",
               "dataSource": "VipunenTK"
             }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Työllistyminen Osuus",
+            "expression": [
+              "",
+              "DIVIDE(",
+              "\tSUM(v_f_tab_tyollistyminen_amk[Työlliset 1v tutkinnon jälkeen]),",
+              "\tCALCULATE(",
+              "\t\tSUM(v_f_tab_tyollistyminen_amk[Työlliset 1v tutkinnon jälkeen]),",
+              "\t\tALL(d_organisaatio[Organisaatio])))"
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %"
           }
         ],
         "annotations": [
@@ -19459,6 +19642,173 @@
             ]
           }
         ]
+      },
+      {
+        "name": "d_tutkimuksen_rahoituslahde",
+        "columns": [
+          {
+            "name": "id",
+            "dataType": "int64",
+            "sourceColumn": "id",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "rahoituslahde_avain",
+            "dataType": "string",
+            "sourceColumn": "rahoituslahde_avain",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "rahoituslahdetarkennus",
+            "dataType": "string",
+            "sourceColumn": "rahoituslahdetarkennus",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "rahoituslahdetarkennus_SV",
+            "dataType": "string",
+            "sourceColumn": "rahoituslahdetarkennus_SV",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "rahoituslahdetarkennus_EN",
+            "dataType": "string",
+            "sourceColumn": "rahoituslahdetarkennus_EN",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "jarjestys_rahoituslahdetarkennus",
+            "dataType": "string",
+            "sourceColumn": "jarjestys_rahoituslahdetarkennus",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "rahoituslahde",
+            "dataType": "string",
+            "sourceColumn": "rahoituslahde",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "rahoituslahde_SV",
+            "dataType": "string",
+            "sourceColumn": "rahoituslahde_SV",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "rahoituslahde_EN",
+            "dataType": "string",
+            "sourceColumn": "rahoituslahde_EN",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "jarjestys_rahoituslahde",
+            "dataType": "string",
+            "sourceColumn": "jarjestys_rahoituslahde",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "ulkopuolisen_rahoituksen_kansainvalisyys",
+            "dataType": "string",
+            "sourceColumn": "ulkopuolisen_rahoituksen_kansainvalisyys",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "ulkopuolisen_rahoituksen_kansainvalisyys_SV",
+            "dataType": "string",
+            "sourceColumn": "ulkopuolisen_rahoituksen_kansainvalisyys_SV",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "ulkopuolisen_rahoituksen_kansainvalisyys_EN",
+            "dataType": "string",
+            "sourceColumn": "ulkopuolisen_rahoituksen_kansainvalisyys_EN",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "jarjestys_ulkopuolisen_rahoituksen_kansainvalisyys",
+            "dataType": "string",
+            "sourceColumn": "jarjestys_ulkopuolisen_rahoituksen_kansainvalisyys",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "rahoituslahteen_tyyppi",
+            "dataType": "string",
+            "sourceColumn": "rahoituslahteen_tyyppi",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "rahoituslahteen_tyyppi_SV",
+            "dataType": "string",
+            "sourceColumn": "rahoituslahteen_tyyppi_SV",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "rahoituslahteen_tyyppi_EN",
+            "dataType": "string",
+            "sourceColumn": "rahoituslahteen_tyyppi_EN",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "jarjestys_rahoituslahteen_tyyppi",
+            "dataType": "string",
+            "sourceColumn": "jarjestys_rahoituslahteen_tyyppi",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "rahoituksen_laatu",
+            "dataType": "string",
+            "sourceColumn": "rahoituksen_laatu",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "rahoituksen_laatu_SV",
+            "dataType": "string",
+            "sourceColumn": "rahoituksen_laatu_SV",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "rahoituksen_laatu_EN",
+            "dataType": "string",
+            "sourceColumn": "rahoituksen_laatu_EN",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "jarjestys_rahoituksen_laatu",
+            "dataType": "string",
+            "sourceColumn": "jarjestys_rahoituksen_laatu",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "tietolahde",
+            "dataType": "string",
+            "sourceColumn": "tietolahde",
+            "sourceProviderType": "WChar"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "d_tutkimuksen_rahoituslahde",
+            "dataView": "full",
+            "source": {
+              "query": " SELECT [dbo].[d_tutkimuksen_rahoituslahde].* FROM [dbo].[d_tutkimuksen_rahoituslahde] ",
+              "dataSource": "VipunenTK"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [dbo].[d_tutkimuksen_rahoituslahde].* FROM [dbo].[d_tutkimuksen_rahoituslahde] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "d_tutkimuksen_rahoituslahde"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dbo"
+          }
+        ]
       }
     ],
     "relationships": [
@@ -19641,6 +19991,41 @@
         "fromColumn": "Calculated Column 1",
         "toTable": "d_kalenteri",
         "toColumn": "paivays"
+      },
+      {
+        "name": "05d8601a-f95c-4097-b685-3c82e4c388fc",
+        "fromTable": "v_arvo",
+        "fromColumn": "Koodit Kalenteri",
+        "toTable": "d_kalenteri",
+        "toColumn": "paivays"
+      },
+      {
+        "name": "15852a67-83aa-4f70-98cc-d872759a0c3a",
+        "fromTable": "v_arvo",
+        "fromColumn": "Organisaatio",
+        "toTable": "d_organisaatio",
+        "toColumn": "Organisaatio"
+      },
+      {
+        "name": "bcd6abf0-84ae-455c-8f4d-a8842ba4e55c",
+        "fromTable": "v_f_tab_tyollistyminen_amk",
+        "fromColumn": "Calculated Column 1",
+        "toTable": "d_kalenteri",
+        "toColumn": "paivays"
+      },
+      {
+        "name": "3cb8c3a4-e758-4c13-ac5b-2fa28cbe9443",
+        "fromTable": "v_f_tab_tyollistyminen_amk",
+        "fromColumn": "Ammattikorkeakoulu",
+        "toTable": "d_organisaatio",
+        "toColumn": "Organisaatio"
+      },
+      {
+        "name": "b5b02c31-124a-4f3e-9404-2d8b4a3da78f",
+        "fromTable": "v_amk_talous",
+        "fromColumn": "tili_taso5_fi",
+        "toTable": "d_tutkimuksen_rahoituslahde",
+        "toColumn": "rahoituslahdetarkennus"
       }
     ],
     "roles": [
