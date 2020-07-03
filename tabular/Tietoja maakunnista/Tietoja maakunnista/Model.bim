@@ -4377,13 +4377,29 @@
           },
           {
             "name": "Perusopetuksen suorittaneet lkm",
-            "expression": " CALCULATE(SUM(Muuttujat[Perusopetuksen suorittaneet]))",
+            "expression": [
+              " ",
+              "var lasku = CALCULATE(SUM(Muuttujat[Perusopetuksen suorittaneet]))",
+              "return\tSWITCH(TRUE(),",
+              "\t\tlasku=0,blank(),",
+              "\t\tlasku<5,\"1-4\",",
+              "\t\tMROUND(lasku,3))",
+              ""
+            ],
             "formatString": "#,0",
             "displayFolder": "Esi- ja perusopetus"
           },
           {
             "name": "Oppilaat (sis. esi- ja lisäopetus) lkm",
-            "expression": " CALCULATE( [1.-9. luokkien oppilaat lkm]+[Lisäopetuksen oppilaat lkm]+[Esiopetuksen oppilaat lkm])",
+            "expression": [
+              " ",
+              "var lasku = CALCULATE(SUM(Muuttujat[1.-6. luokkien oppilaat])+SUM(Muuttujat[7.-9. luokkien oppilaat])+SUM(Muuttujat[Lisäopetuksen oppilaat])+SUM(Muuttujat[Esiopetuksen oppilaat]))",
+              "return\tSWITCH(TRUE(),",
+              "\t\tlasku=0,blank(),",
+              "\t\tlasku<5,\"1-4\",",
+              "\t\tMROUND(lasku,3))",
+              ""
+            ],
             "formatString": "#,0"
           },
           {
@@ -4400,7 +4416,7 @@
           },
           {
             "name": "Ylioppilastutkinnon suorittaneet",
-            "expression": " CALCULATE(SUM(Muuttujat[Tutkinto]),FILTER(Muuttujat,OR(Muuttujat[Koulutusaste, taso 2 koodi]=\"31\",Muuttujat[Koulutusaste 2002 koodi]=\"31\")))",
+            "expression": " CALCULATE([Tutkinnot lkm],FILTER(Muuttujat,OR(Muuttujat[Koulutusaste, taso 2 koodi]=\"31\",Muuttujat[Koulutusaste 2002 koodi]=\"31\")))",
             "formatString": "#,0",
             "displayFolder": "Toinen aste"
           },
@@ -4467,7 +4483,11 @@
             "expression": [
               " ",
               "var lasku = CALCULATE(SUM(Muuttujat[Tutkinto]))",
-              "return SWITCH(TRUE(),lasku=0,BLANK(),lasku)"
+              "return\tSWITCH(TRUE(),",
+              "\t\tlasku=0,blank(),",
+              "\t\tlasku<5,\"1-4\",",
+              "\t\tMROUND(lasku,3))",
+              ""
             ],
             "formatString": "#,0"
           },
@@ -4486,7 +4506,15 @@
           },
           {
             "name": "Väestö, 15 täyttäneet",
-            "expression": " CALCULATE(SUM(Muuttujat[15v täyttäneet, koulutusrakenne]))",
+            "expression": [
+              " ",
+              "var lasku = CALCULATE(SUM(Muuttujat[15v täyttäneet, koulutusrakenne]))",
+              "return\tSWITCH(TRUE(),",
+              "\t\tlasku=0,blank(),",
+              "\t\tlasku<5,\"1-4\",",
+              "\t\tMROUND(lasku,3))",
+              ""
+            ],
             "formatString": "#,0",
             "displayFolder": "Väestön koulutusrakenne, työllistyminen, ennuste"
           },
@@ -4504,7 +4532,15 @@
           },
           {
             "name": "Väestö",
-            "expression": " CALCULATE(SUM(Muuttujat[Väestö lkm]))",
+            "expression": [
+              " ",
+              "var lasku = CALCULATE(SUM(Muuttujat[Väestö lkm]))",
+              "return\tSWITCH(TRUE(),",
+              "\t\tlasku=0,blank(),",
+              "\t\tlasku<5,\"1-4\",",
+              "\t\tMROUND(lasku,3))",
+              ""
+            ],
             "formatString": "#,0",
             "displayFolder": "Väestön koulutusrakenne, työllistyminen, ennuste"
           },
@@ -4568,7 +4604,11 @@
               "\t\tMuuttujat[Oppilaitoksen maakunta historia])",
               "\t\t)",
               "",
-              "return SWITCH(TRUE(),lasku=0,BLANK(),lasku)"
+              "return\tSWITCH(TRUE(),",
+              "\t\tlasku=0,blank(),",
+              "\t\tlasku<5,\"1-4\",",
+              "\t\tMROUND(lasku,3))",
+              ""
             ],
             "formatString": "#,0"
           },
@@ -4655,19 +4695,28 @@
           },
           {
             "name": "Väestö, 15 täyttäneet (koko maa)",
-            "expression": " CALCULATE(SUM(Muuttujat[15v täyttäneet, koulutusrakenne]),ALL(Muuttujat[Koulutuksen maakunta],Muuttujat[Oppilaitoksen maakunta],Muuttujat[Koulutuksen kunta],Muuttujat[Oppilaitoksen kunta],Muuttujat[Koulutuksen kunta historia],Muuttujat[Oppilaitoksen kunta historia],Muuttujat[Koulutuksen maakunta historia],Muuttujat[Oppilaitoksen maakunta historia],Muuttujat[Tutkinnon suoritusmaakunta],Muuttujat[Tutkinnon suorituskunta],Muuttujat[Asuinkunta],Muuttujat[Asuinmaakunta]))",
+            "expression": " CALCULATE([Väestö, 15 täyttäneet],ALL(Muuttujat[Koulutuksen maakunta],Muuttujat[Oppilaitoksen maakunta],Muuttujat[Koulutuksen kunta],Muuttujat[Oppilaitoksen kunta],Muuttujat[Koulutuksen kunta historia],Muuttujat[Oppilaitoksen kunta historia],Muuttujat[Koulutuksen maakunta historia],Muuttujat[Oppilaitoksen maakunta historia],Muuttujat[Tutkinnon suoritusmaakunta],Muuttujat[Tutkinnon suorituskunta],Muuttujat[Asuinkunta],Muuttujat[Asuinmaakunta]))",
             "formatString": "#,0",
             "displayFolder": "Väestön koulutusrakenne, työllistyminen, ennuste"
           },
           {
             "name": "Väestö, 15 täyttäneet osuus koko maasta",
-            "expression": " DIVIDE([Väestö, 15 täyttäneet],[Väestö, 15 täyttäneet (koko maa)])",
+            "expression": [
+              " ",
+              "var osa = [Väestö, 15 täyttäneet]",
+              "var kaikki = [Väestö, 15 täyttäneet (koko maa)]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Väestön koulutusrakenne, työllistyminen, ennuste"
           },
           {
             "name": "Väestö (koko maa)",
-            "expression": " CALCULATE(SUM(Muuttujat[Väestö lkm]),ALL(Muuttujat[Asuinkunta],Muuttujat[Asuinmaakunta]))",
+            "expression": " CALCULATE([Väestö],ALL(Muuttujat[Asuinkunta],Muuttujat[Asuinmaakunta]))",
             "formatString": "#,0",
             "displayFolder": "Väestön koulutusrakenne, työllistyminen, ennuste"
           },
@@ -4716,6 +4765,272 @@
             ],
             "formatString": "#,0",
             "displayFolder": "Väestön koulutusrakenne, työllistyminen, ennuste"
+          },
+          {
+            "name": "1. luokan oppilaat lkm_s",
+            "expression": "IF([kytkin] = 0, BLANK(),CALCULATE(SUM(Muuttujat[1. luokan oppilaat])))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Esiopetuksen oppilaat lkm_s",
+            "expression": [
+              "IF([kytkin] = 0, BLANK(), ",
+              "CALCULATE(SUM(Muuttujat[Esiopetuksen oppilaat])))"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "1.-9. luokkien oppilaat lkm_s",
+            "expression": [
+              "IF([kytkin] = 0, BLANK(), ",
+              "CALCULATE(SUM(Muuttujat[1.-6. luokkien oppilaat])+SUM(Muuttujat[7.-9. luokkien oppilaat]))",
+              ")"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Oppilaat (sis. esi- ja lisäopetus) lkm_s",
+            "expression": [
+              " IF([kytkin] = 0, BLANK(),",
+              "CALCULATE(SUM(Muuttujat[1.-6. luokkien oppilaat])+SUM(Muuttujat[7.-9. luokkien oppilaat])+SUM(Muuttujat[Lisäopetuksen oppilaat])+SUM(Muuttujat[Esiopetuksen oppilaat])))"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Opiskelijat lkm_s",
+            "expression": [
+              " IF([kytkin] = 0, BLANK(),",
+              "CALCULATE(SUM(Muuttujat[Opiskelijat])))"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnot lkm_s",
+            "expression": [
+              " IF([kytkin] = 0, BLANK(),",
+              "CALCULATE(SUM(Muuttujat[Tutkinto]))",
+              ")"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Uudet opiskelijat lkm_s",
+            "expression": [
+              " IF([kytkin] = 0, BLANK(),",
+              "CALCULATE(SUM(Muuttujat[Aloittaneet]))",
+              ")"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Opiskelijat lkm (koko maa)_s",
+            "expression": [
+              " IF([kytkin] = 0, BLANK(),",
+              "CALCULATE(SUM(Muuttujat[Opiskelijat]),",
+              "\t\t\tALL(Muuttujat[Koulutuksen maakunta],",
+              "\t\t\tMuuttujat[Oppilaitoksen maakunta],",
+              "\t\t\tMuuttujat[Koulutuksen kunta],",
+              "\t\t\tMuuttujat[Oppilaitoksen kunta],",
+              "\t\t\tMuuttujat[Koulutuksen kunta historia],",
+              "\t\t\tMuuttujat[Oppilaitoksen kunta historia],",
+              "\t\t\tMuuttujat[Koulutuksen maakunta historia],",
+              "\t\t\tMuuttujat[Oppilaitoksen maakunta historia])",
+              "\t\t\t)",
+              ")"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnot lkm (koko maa)_s",
+            "expression": [
+              " IF([kytkin] = 0, BLANK(),",
+              "CALCULATE(SUM(Muuttujat[Tutkinto]),\t\t\t",
+              "\t\tALL(Muuttujat[Koulutuksen maakunta],",
+              "\t\tMuuttujat[Oppilaitoksen maakunta],",
+              "\t\tMuuttujat[Koulutuksen kunta],",
+              "\t\tMuuttujat[Oppilaitoksen kunta],",
+              "\t\tMuuttujat[Koulutuksen kunta historia],",
+              "\t\tMuuttujat[Oppilaitoksen kunta historia],",
+              "\t\tMuuttujat[Koulutuksen maakunta historia],",
+              "\t\tMuuttujat[Oppilaitoksen maakunta historia])",
+              "\t\t)",
+              ")"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Uudet opiskelijat lkm (koko maa)_s",
+            "expression": [
+              " IF([kytkin] = 0, BLANK(),",
+              "CALCULATE(SUM(Muuttujat[Aloittaneet]),ALL(Muuttujat[Koulutuksen maakunta],",
+              "\t\t\tMuuttujat[Oppilaitoksen maakunta],",
+              "\t\t\tMuuttujat[Koulutuksen kunta],",
+              "\t\t\tMuuttujat[Oppilaitoksen kunta],",
+              "\t\t\tMuuttujat[Koulutuksen kunta historia],",
+              "\t\t\tMuuttujat[Oppilaitoksen kunta historia],",
+              "\t\t\tMuuttujat[Koulutuksen maakunta historia],",
+              "\t\t\tMuuttujat[Oppilaitoksen maakunta historia])))"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Hakeneet ja sijoittuneet_s",
+            "expression": [
+              "IF([kytkin] = 0, BLANK(),",
+              "CALCULATE(SUM(Muuttujat[haku_sij_henkilö lkm]))",
+              ")"
+            ]
+          },
+          {
+            "name": "Hakeneet ja sijoittuneet (koko maa)_s",
+            "expression": [
+              "IF([kytkin] = 0, BLANK(),",
+              "CALCULATE(SUM(Muuttujat[haku_sij_henkilö lkm]),ALL(Muuttujat[Koulutuksen maakunta],Muuttujat[Oppilaitoksen maakunta],Muuttujat[Koulutuksen kunta],Muuttujat[Oppilaitoksen kunta],Muuttujat[Koulutuksen kunta historia],Muuttujat[Oppilaitoksen kunta historia],Muuttujat[Koulutuksen maakunta historia],Muuttujat[Oppilaitoksen maakunta historia],Muuttujat[Tutkinnon suoritusmaakunta],Muuttujat[Tutkinnon suorituskunta]))",
+              ")"
+            ]
+          },
+          {
+            "name": "Perusopetuksen suorittaneet lkm_s",
+            "expression": [
+              " IF([kytkin] = 0, BLANK(),",
+              "CALCULATE(SUM(Muuttujat[Perusopetuksen suorittaneet]))",
+              ")"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Uudet 2. asteen opiskelijat_s",
+            "expression": " IF([kytkin] = 0, BLANK(),CALCULATE([Uudet opiskelijat lkm_s],FILTER(Muuttujat,AND(VALUE(Muuttujat[Koulutusaste, taso 2 koodi])>30,VALUE(Muuttujat[Koulutusaste, taso 2 koodi])<62))))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "2. asteen opiskelijat_s",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE([Opiskelijat lkm_s],FILTER(Muuttujat,AND(VALUE(Muuttujat[Koulutusaste, taso 2 koodi])>30,VALUE(Muuttujat[Koulutusaste, taso 2 koodi])<62))))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ylioppilastutkinnon suorittaneet_s",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE([Tutkinnot lkm_s],FILTER(Muuttujat,OR(Muuttujat[Koulutusaste, taso 2 koodi]=\"31\",Muuttujat[Koulutusaste 2002 koodi]=\"31\"))))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Korkeakoulujen uudet opiskelijat_s",
+            "expression": [
+              " IF([kytkin] = 0, BLANK(),",
+              "CALCULATE([Uudet opiskelijat lkm_s],",
+              "\tMuuttujat[Koulutusaste 2002 koodi]=\"62\"||",
+              "\tMuuttujat[Koulutusaste 2002 koodi]=\"63\"||",
+              "\tMuuttujat[Koulutusaste 2002 koodi]=\"71\"||",
+              "\tMuuttujat[Koulutusaste 2002 koodi]=\"72\"))"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Korkeakoulujen opiskelijat_s",
+            "expression": [
+              " IF([kytkin] = 0, BLANK(),",
+              "CALCULATE([Opiskelijat lkm_s],",
+              "\tMuuttujat[Koulutusaste 2002 koodi]=\"62\"||",
+              "\tMuuttujat[Koulutusaste 2002 koodi]=\"63\"||",
+              "\tMuuttujat[Koulutusaste 2002 koodi]=\"71\"||",
+              "\tMuuttujat[Koulutusaste 2002 koodi]=\"72\"))"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Alempi korkeakoulututkinto_s",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE([Tutkinnot lkm_s],FILTER(Muuttujat,Muuttujat[Koulutusaste, taso 2]=\"Alempi korkeakoulututkinto\")))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ylempi korkeakoulututkinto_s",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE([Tutkinnot lkm_s],FILTER(Muuttujat,Muuttujat[Koulutusaste, taso 2]=\"Ylempi korkeakoulututkinto\")))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tohtorin tutkinto_s",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE([Tutkinnot lkm_s],FILTER(Muuttujat,Muuttujat[Koulutusaste, taso 2]=\"Tohtorintutkinto\")))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ammattikorkeakoulututkinto_s",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE([Tutkinnot lkm_s],FILTER(Muuttujat,Muuttujat[Koulutusaste, taso 2]=\"Ammattikorkeakoulututkinto\")))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ylempi ammattikorkeakoulututkinto_s",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE([Tutkinnot lkm_s],FILTER(Muuttujat,Muuttujat[Koulutusaste, taso 2]=\"Ylempi ammattikorkeakoulututkinto\")))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Väestö, 15 täyttäneet_s",
+            "expression": [
+              " IF([kytkin] = 0, BLANK(),",
+              "CALCULATE(SUM(Muuttujat[15v täyttäneet, koulutusrakenne])))"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Väestö_s",
+            "expression": [
+              " IF([kytkin] = 0, BLANK(),",
+              "CALCULATE(SUM(Muuttujat[Väestö lkm])))"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Väestö, 15 täyttäneet (koko maa)_s",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE([Väestö, 15 täyttäneet_s],ALL(Muuttujat[Koulutuksen maakunta],Muuttujat[Oppilaitoksen maakunta],Muuttujat[Koulutuksen kunta],Muuttujat[Oppilaitoksen kunta],Muuttujat[Koulutuksen kunta historia],Muuttujat[Oppilaitoksen kunta historia],Muuttujat[Koulutuksen maakunta historia],Muuttujat[Oppilaitoksen maakunta historia],Muuttujat[Tutkinnon suoritusmaakunta],Muuttujat[Tutkinnon suorituskunta],Muuttujat[Asuinkunta],Muuttujat[Asuinmaakunta])))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Väestö, 15 täyttäneet osuus koko maasta_s",
+            "expression": [
+              " IF([kytkin] = 0, BLANK(),",
+              "DIVIDE([Väestö, 15 täyttäneet_s], [Väestö, 15 täyttäneet (koko maa)_s]))"
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Väestö (koko maa)_s",
+            "expression": " IF([kytkin] = 0, BLANK(),CALCULATE([Väestö_s],ALL(Muuttujat[Asuinkunta],Muuttujat[Asuinmaakunta])))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tieteen ja tutkimuksen htv_s",
+            "expression": [
+              " IF([kytkin] = 0, BLANK(),",
+              "CALCULATE(SUM(Muuttujat[TT_htv])))"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tieteen ja tutkimuksen htv (koko maa)_s",
+            "expression": " IF([kytkin] = 0, BLANK(),CALCULATE([Tieteen ja tutkimuksen htv_s],ALL(Muuttujat[Asuinkunta],Muuttujat[Asuinmaakunta],Muuttujat[Tiede ja teknologia - työpaikan maakunta])))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Koulutuksen suorittaneiden sijoittuminen 1v_s",
+            "expression": [
+              "IF([kytkin] = 0, BLANK(), ",
+              "CALCULATE(SUM(Muuttujat[1v tutkinnon jälkeen]))",
+              ")"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Koulutuksen suorittaneiden sijoittuminen 1v (koko maa)_s",
+            "expression": [
+              " IF([kytkin] = 0, BLANK(),",
+              "CALCULATE(SUM(Muuttujat[1v tutkinnon jälkeen]),ALL(Muuttujat[Asuinkunta],Muuttujat[Asuinmaakunta])))"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "kytkin",
+            "expression": "IF(LEFT(USERNAME(), 4) = \"DWI\\\", 1, 0)",
+            "formatString": "0",
+            "isHidden": true
           }
         ],
         "annotations": [
@@ -8073,6 +8388,10 @@
           {
             "memberName": "NT AUTHORITY\\IUSR",
             "memberId": "S-1-5-17"
+          },
+          {
+            "memberName": "DWI\\Z_P_Antero_Full_Read_TAB",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-2272"
           }
         ]
       }
