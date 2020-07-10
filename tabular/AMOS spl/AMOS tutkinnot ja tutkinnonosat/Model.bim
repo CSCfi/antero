@@ -544,6 +544,25 @@
             "dataType": "int64",
             "isHidden": true,
             "sourceColumn": "hyvaksytaan_rahoitukseen"
+          },
+          {
+            "name": "painotettu_tutkinnot_erityistuki_hyv",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "painotettu_tutkinnot_erityistuki_hyv"
+          },
+          {
+            "name": "painotettu_tutkinnon_osien_osaamispisteet_erityistuki_hyv",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "painotettu_tutkinnon_osien_osaamispisteet_erityistuki_hyv"
+          },
+          {
+            "type": "calculated",
+            "name": "korotustekija_avain",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": "Muuttujat[Tilastovuosi]&Muuttujat[Koodit Koulutuksen järjestäjä]&Muuttujat[jarj_luvaton_korotustekija]"
           }
         ],
         "partitions": [
@@ -1199,6 +1218,22 @@
                   "        <int>200</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>painotettu_tutkinnot_erityistuki_hyv</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>259</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>painotettu_tutkinnon_osien_osaamispisteet_erityistuki_hyv</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>397</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -1833,6 +1868,22 @@
                   "        <int>78</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>painotettu_tutkinnot_erityistuki_hyv</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>79</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>painotettu_tutkinnon_osien_osaamispisteet_erityistuki_hyv</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>80</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -2268,6 +2319,22 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>painotettu_tutkinnot_erityistuki_hyv</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>painotettu_tutkinnon_osien_osaamispisteet_erityistuki_hyv</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -2354,8 +2421,14 @@
             "name": "Erityisen tuen mukaan painotetut tutkintojen pisteet",
             "expression": [
               "",
-              "var summa=SUM([painotettu_tutkinnot_erityistuki])",
-              "return IF(summa=0,BLANK(),summa)"
+              "var summa_perus=CALCULATE(SUM(Muuttujat[painotettu_tutkinnot_erityistuki]),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "var summa_hyv=CALCULATE(SUM(Muuttujat[painotettu_tutkinnot_erityistuki_hyv]),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "var erotus=summa_perus-summa_hyv",
+              "var luvaton=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])<>\"1\",1,0),0)",
+              "var siirretaan_hyvaksytyksi=IF(ISFILTERED(Muuttujat[Luvaton korotustekijä]),CALCULATE(SUM([painotettu_tutkinnot_erityistuki_hyv]),Muuttujat[jarj_luvaton_korotustekija]<>\"1\",ALL(Muuttujat[Luvaton korotustekijä])),0)",
+              "var korotusehto=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"1\",1,0),1)",
+              "",
+              "return IF(summa_perus=0 || korotusehto=0,BLANK(),IF(luvaton=1,erotus,summa_perus+siirretaan_hyvaksytyksi))"
             ],
             "formatString": "#,0.00",
             "displayFolder": "Painotetut"
@@ -2384,8 +2457,14 @@
             "name": "Erityisen tuen mukaan painotetut tutkinnon osien osaamispisteet",
             "expression": [
               "",
-              "var summa=SUM([painotettu_tutkinnon_osien_osaamispisteet_erityistuki])",
-              "return IF(summa=0,BLANK(),summa)"
+              "var summa_perus=CALCULATE(SUM(Muuttujat[painotettu_tutkinnon_osien_osaamispisteet_erityistuki]),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "var summa_hyv=CALCULATE(SUM(Muuttujat[painotettu_tutkinnon_osien_osaamispisteet_erityistuki_hyv]),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "var erotus=summa_perus-summa_hyv",
+              "var luvaton=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])<>\"1\",1,0),0)",
+              "var siirretaan_hyvaksytyksi=IF(ISFILTERED(Muuttujat[Luvaton korotustekijä]),CALCULATE(SUM([painotettu_tutkinnon_osien_osaamispisteet_erityistuki_hyv]),Muuttujat[jarj_luvaton_korotustekija]<>\"1\",ALL(Muuttujat[Luvaton korotustekijä])),0)",
+              "var korotusehto=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"1\",1,0),1)",
+              "",
+              "return IF(summa_perus=0 || korotusehto=0,BLANK(),IF(luvaton=1,erotus,summa_perus+siirretaan_hyvaksytyksi))"
             ],
             "formatString": "#,0.00",
             "displayFolder": "Painotetut"
@@ -2666,6 +2745,34 @@
             ],
             "formatString": "0.00 %;-0.00 %;0.00 %",
             "isHidden": true
+          },
+          {
+            "name": "Erityisen tuen mukaan painotetut tutkintojen pisteet_vanha",
+            "expression": [
+              "",
+              "var summa=SUM([painotettu_tutkinnot_erityistuki])",
+              "return IF(summa=0,BLANK(),summa)"
+            ],
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Erityisen tuen mukaan painotetut tutkinnon osien osaamispisteet_vanha",
+            "expression": [
+              "",
+              "var summa=SUM([painotettu_tutkinnon_osien_osaamispisteet_erityistuki])",
+              "return IF(summa=0,BLANK(),summa)"
+            ],
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Erityisen tuen mukaan painotetut tutkintojen pisteet testi",
+            "expression": [
+              "",
+              "--var taulu=ADDCOLUMNS(CROSSJOIN(Jarj;Korotustekija);\"summa\";1)",
+              "var taulu=CALCULATETABLE(CROSSJOIN(VALUES(Muuttujat[Koulutuksen järjestäjä]),VALUES(korotustekija[Luvaton korotustekijä])))",
+              "var mittari=SUMX(taulu,COUNTROWS(korotustekija))",
+              "return mittari"
+            ]
           }
         ],
         "annotations": [
@@ -3325,6 +3432,22 @@
               "        <int>200</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>painotettu_tutkinnot_erityistuki_hyv</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>259</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>painotettu_tutkinnon_osien_osaamispisteet_erityistuki_hyv</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>397</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -3959,6 +4082,22 @@
               "        <int>78</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>painotettu_tutkinnot_erityistuki_hyv</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>79</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>painotettu_tutkinnon_osien_osaamispisteet_erityistuki_hyv</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>80</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -4394,6 +4533,22 @@
               "        <boolean>true</boolean>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>painotettu_tutkinnot_erityistuki_hyv</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>painotettu_tutkinnon_osien_osaamispisteet_erityistuki_hyv</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
               "  </ColumnChecked>",
               "  <ColumnFilter />",
               "  <SelectionFilter />",
@@ -4446,6 +4601,90 @@
             "value": "dw"
           }
         ]
+      },
+      {
+        "name": "korotustekija",
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "Koulutuksen järjestäjä",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Koulutuksen järjestäjä]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Luvaton korotustekijä",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Luvaton korotustekijä]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Tilastovuosi",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Tilastovuosi]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "painotettu",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[painotettu]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Koodit Koulutuksen järjestäjä",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Koodit Koulutuksen järjestäjä]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "jarj_luvaton_korotustekija",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[jarj_luvaton_korotustekija]"
+          },
+          {
+            "type": "calculated",
+            "name": "avain",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": "'korotustekija'[Tilastovuosi]&'korotustekija'[Koodit Koulutuksen järjestäjä]&'korotustekija'[jarj_luvaton_korotustekija]"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": "CALCULATETABLE(ADDCOLUMNS(CROSSJOIN(SUMMARIZE(Muuttujat,[Tilastovuosi],[Koodit Koulutuksen järjestäjä],[Koulutuksen järjestäjä]),SUMMARIZE(Muuttujat,[jarj_luvaton_korotustekija],[Luvaton korotustekijä])),\"painotettu\",0))"
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Measure 1",
+            "expression": "SUM(korotustekija[painotettu])+1"
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "66e26422-5efc-48bf-a88c-7d4f1d099535",
+        "fromTable": "Muuttujat",
+        "fromColumn": "korotustekija_avain",
+        "toTable": "korotustekija",
+        "toColumn": "avain"
       }
     ],
     "perspectives": [
