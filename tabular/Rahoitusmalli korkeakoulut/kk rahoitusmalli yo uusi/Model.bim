@@ -994,13 +994,13 @@
             "name": "Osuus perusrahoituksesta",
             "expression": [
               "",
-              "[Rahoitus (1000 euroa)] / ([jaettava_maara] * [perusrahoituksen_osuus])"
+              "[Rahoitus] / ([jaettava_maara] * [perusrahoituksen_osuus])"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Osuus kokonaisrahoituksesta",
-            "expression": "[Rahoitus (1000 euroa)] / [jaettava_maara]",
+            "expression": "[Rahoitus] / [jaettava_maara]",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
@@ -1058,7 +1058,8 @@
               ")",
               "return SUMX(taulu,[summa1])"
             ],
-            "formatString": "#,0"
+            "formatString": "#,0",
+            "isHidden": true
           },
           {
             "name": "rahoitus_rahv_summa",
@@ -1084,7 +1085,8 @@
               ")",
               "return SUMX(taulu,[summa1]*(3/[v_lkm]))"
             ],
-            "formatString": "#,0"
+            "formatString": "#,0",
+            "isHidden": true
           },
           {
             "name": "rahoitus_tilv",
@@ -1114,10 +1116,11 @@
               ")",
               "return SUMX(taulu,[ka1]*(3/[v_lkm]))"
             ],
-            "formatString": "#,0"
+            "formatString": "#,0",
+            "isHidden": true
           },
           {
-            "name": "Rahoitus (1000 euroa)",
+            "name": "Rahoitus",
             "expression": [
               "",
               "var taulu = ",
@@ -1126,14 +1129,14 @@
               "\t,\"raha\"",
               "\t,[rahoitus_rahv_ka]*([rahoitus_tilv]/[rahoitus_rahv_summa])",
               ")",
-              "return SUMX(taulu,[raha])",
+              "return SUMX(taulu,[raha]) * 1000",
               ""
             ],
             "formatString": "#,0"
           },
           {
             "name": "Osuus korkeakoulun perusrahoituksesta",
-            "expression": "DIVIDE([Rahoitus (1000 euroa)],CALCULATE([Rahoitus (1000 euroa)],ALL(Muuttujat[Indikaattori])))",
+            "expression": "DIVIDE([Rahoitus],CALCULATE([Rahoitus],ALL(Muuttujat[Indikaattori])))",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
@@ -2047,7 +2050,7 @@
                 "name": "Keskiarvo, painottamaton (%)"
               },
               {
-                "name": "Rahoitus (1000 euroa)"
+                "name": "Rahoitus"
               },
               {
                 "name": "Osuus korkeakoulun perusrahoituksesta"
