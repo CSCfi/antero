@@ -11,7 +11,7 @@ import ijson.backends.yajl2_cffi as ijson
 import json
 from time import localtime, strftime
 
-import debug_dboperator as dboperator
+import  dboperator
 
 def show(message):
   print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message)
