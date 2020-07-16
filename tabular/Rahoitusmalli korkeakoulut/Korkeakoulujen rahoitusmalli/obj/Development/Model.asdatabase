@@ -1044,13 +1044,13 @@
             "name": "Osuus perusrahoituksesta",
             "expression": [
               "",
-              "[Rahoitus (1000 euroa)] / ([jaettava_maara] * [perusrahoituksen_osuus])"
+              "[Rahoitus] / ([jaettava_maara] * [perusrahoituksen_osuus])"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Osuus kokonaisrahoituksesta",
-            "expression": "[Rahoitus (1000 euroa)] / [jaettava_maara]",
+            "expression": "[Rahoitus] / [jaettava_maara]",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
@@ -1065,7 +1065,7 @@
               "\t\t,[Tilastovuosi]",
               "\t\t,[Indikaattori]",
               "\t\t,[sektori]",
-              "\t\t,\"summa1\",SUMX(CURRENTGROUP(),Muuttujat[mittari_painottamaton])",
+              "\t\t,\"summa1\",SUMX(CURRENTGROUP(),[mittari_painottamaton])",
               "\t),",
               "\t[Rahoitusvuosi]",
               "\t,[Indikaattori]",
@@ -1175,7 +1175,7 @@
             "isHidden": true
           },
           {
-            "name": "Rahoitus (1000 euroa)",
+            "name": "Rahoitus",
             "expression": [
               "",
               "var taulu = ",
@@ -1191,7 +1191,7 @@
           },
           {
             "name": "Osuus korkeakoulun perusrahoituksesta",
-            "expression": "DIVIDE([Rahoitus (1000 euroa)],CALCULATE([Rahoitus (1000 euroa)],ALL(Muuttujat[Indikaattori])))",
+            "expression": "DIVIDE([Rahoitus],CALCULATE([Rahoitus],ALL(Muuttujat[Indikaattori])))",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
@@ -1200,7 +1200,7 @@
               "",
               "var taulu = ",
               "ADDCOLUMNS(",
-              "\tSUMMARIZE(Muuttujat,[Rahoituskausi],[Organisaatio],[Koulutusaste,taso 2],Muuttujat[rahoitusmalliala_tutkintotavoite])",
+              "\tSUMMARIZE(Muuttujat,[Rahoituskausi],[Organisaatio],[Koulutusaste,taso 2],[rahoitusmalliala_tutkintotavoite])",
               "\t,\"tutk_raja\"",
               "\t,CALCULATE(AVERAGE(Muuttujat[tutkintoraja]))",
               ")",
@@ -2013,12 +2013,12 @@
                 "\"avain\",STRING,",
                 "\"maara\",CURRENCY,",
                 "{",
-                "{\"yo2019\",1750513},",
-                "{\"yo2020\",1800000},",
-                "{\"yo2021\",1717191},",
-                "{\"amk2019\",826464},",
-                "{\"amk2020\",800000},",
-                "{\"amk2021\",800000}",
+                "{\"yo2019\",1750513000},",
+                "{\"yo2020\",1800000000},",
+                "{\"yo2021\",1717191000},",
+                "{\"amk2019\",826464000},",
+                "{\"amk2020\",800000000},",
+                "{\"amk2021\",800000000}",
                 "",
                 "}",
                 ")"
@@ -2105,25 +2105,99 @@
                 "name": "Keskiarvo (%)"
               },
               {
-                "name": "Osuus kokonaisrahoituksesta"
-              },
-              {
-                "name": "Osuus perusrahoituksesta"
-              },
-              {
                 "name": "Keskiarvo, painottamaton"
               },
               {
                 "name": "Keskiarvo, painottamaton (%)"
               },
               {
-                "name": "Rahoitus (1000 euroa)"
+                "name": "Tutkintotavoite"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Rahoitus",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Indikaattori"
+              },
+              {
+                "name": "Koodit Koulutusnimike"
+              },
+              {
+                "name": "Koodit OKM ohjauksen ala"
+              },
+              {
+                "name": "Koodit Organisaatio"
+              },
+              {
+                "name": "Koulutusala,taso 1"
+              },
+              {
+                "name": "Koulutusala,taso 2"
+              },
+              {
+                "name": "Koulutusala,taso 3"
+              },
+              {
+                "name": "Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koulutusaste,taso 2"
+              },
+              {
+                "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Organisaatio"
+              },
+              {
+                "name": "Rahoituksen alakategoria"
+              },
+              {
+                "name": "Rahoituksen kategoria"
+              },
+              {
+                "name": "Rahoituskausi"
+              },
+              {
+                "name": "Rahoitusmalliala"
+              },
+              {
+                "name": "Rahoitusvuosi"
+              },
+              {
+                "name": "Tilastovuosi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Osuus kokonaisrahoituksesta"
               },
               {
                 "name": "Osuus korkeakoulun perusrahoituksesta"
               },
               {
-                "name": "Tutkintotavoite"
+                "name": "Osuus perusrahoituksesta"
+              },
+              {
+                "name": "Rahoitus"
               }
             ]
           },

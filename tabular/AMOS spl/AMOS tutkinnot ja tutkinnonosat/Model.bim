@@ -556,13 +556,6 @@
             "dataType": "double",
             "isHidden": true,
             "sourceColumn": "painotettu_tutkinnon_osien_osaamispisteet_erityistuki_hyv"
-          },
-          {
-            "type": "calculated",
-            "name": "korotustekija_avain",
-            "dataType": "string",
-            "isDataTypeInferred": true,
-            "expression": "Muuttujat[Tilastovuosi]&Muuttujat[Koodit Koulutuksen järjestäjä]&Muuttujat[jarj_luvaton_korotustekija]"
           }
         ],
         "partitions": [
@@ -570,7 +563,7 @@
             "name": "v_amos_tutkinnot_osaamispisteet",
             "dataView": "full",
             "source": {
-              "query": " SELECT [dw].[v_amos_tutkinnot_ja_tutkinnonosat].* FROM [dw].[v_amos_tutkinnot_ja_tutkinnonosat] ",
+              "query": " SELECT [dw].[v_amos_tutkinnot_ja_tutkinnonosat_test].* FROM [dw].[v_amos_tutkinnot_ja_tutkinnonosat_test] ",
               "dataSource": "SqlServer dwitvipusql16 antero"
             },
             "annotations": [
@@ -2401,8 +2394,8 @@
             "name": "Perustutkintojen kustannusryhmän ja pohjakoulutuksen mukaan painotetut pisteet",
             "expression": [
               "",
-              "var summa=SUM([painotettu_tutkinnot_pt_kr_pk])",
-              "return IF(summa=0,BLANK(),summa)"
+              "var summa=CALCULATE(SUM([painotettu_tutkinnot_pt_kr_pk]),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)"
             ],
             "formatString": "#,0.00",
             "displayFolder": "Painotetut"
@@ -2411,8 +2404,8 @@
             "name": "Ammatti- ja erikoisammattitutkintojen kustannusryhmän ja pohjakoulutuksen mukaan painotetut pisteet",
             "expression": [
               "",
-              "var summa=SUM([painotettu_tutkinnot_at_eat_kr_pk])",
-              "return IF(summa=0,BLANK(),summa)"
+              "var summa=CALCULATE(SUM([painotettu_tutkinnot_at_eat_kr_pk]),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)"
             ],
             "formatString": "#,0.00",
             "displayFolder": "Painotetut"
@@ -2427,8 +2420,9 @@
               "var luvaton=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])<>\"1\",1,0),0)",
               "var siirretaan_hyvaksytyksi=IF(ISFILTERED(Muuttujat[Luvaton korotustekijä]),CALCULATE(SUM([painotettu_tutkinnot_erityistuki_hyv]),Muuttujat[jarj_luvaton_korotustekija]<>\"1\",ALL(Muuttujat[Luvaton korotustekijä])),0)",
               "var korotusehto=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"1\",1,0),1)",
-              "",
-              "return IF(summa_perus=0 || korotusehto=0,BLANK(),IF(luvaton=1,erotus,summa_perus+siirretaan_hyvaksytyksi))"
+              "var summa=SUM(Muuttujat[painotettu_tutkinnot_erityistuki])",
+              "--return IF(summa_perus=0 || korotusehto=0;BLANK();IF(luvaton=1;erotus;summa_perus+siirretaan_hyvaksytyksi))",
+              "return IF(summa=0,BLANK(),summa)"
             ],
             "formatString": "#,0.00",
             "displayFolder": "Painotetut"
@@ -2437,8 +2431,8 @@
             "name": "Perustutkintojen osien kustannusryhmän mukaan painotetut osaamispisteet",
             "expression": [
               "",
-              "var summa=SUM([painotettu_tutkinnon_osien_osaamispisteet_pt_kr])",
-              "return IF(summa=0,BLANK(),summa)"
+              "var summa=CALCULATE(SUM([painotettu_tutkinnon_osien_osaamispisteet_pt_kr]),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)"
             ],
             "formatString": "#,0.00",
             "displayFolder": "Painotetut"
@@ -2447,8 +2441,8 @@
             "name": "Ammatti- ja erikoisammattitutkintojen osien kustannusryhmän mukaan painotetut osaamispisteet",
             "expression": [
               "",
-              "var summa=SUM([painotettu_tutkinnon_osien_osaamispisteet_at_eat_kr])",
-              "return IF(summa=0,BLANK(),summa)"
+              "var summa=CALCULATE(SUM([painotettu_tutkinnon_osien_osaamispisteet_at_eat_kr]),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)"
             ],
             "formatString": "#,0.00",
             "displayFolder": "Painotetut"
@@ -2463,8 +2457,9 @@
               "var luvaton=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])<>\"1\",1,0),0)",
               "var siirretaan_hyvaksytyksi=IF(ISFILTERED(Muuttujat[Luvaton korotustekijä]),CALCULATE(SUM([painotettu_tutkinnon_osien_osaamispisteet_erityistuki_hyv]),Muuttujat[jarj_luvaton_korotustekija]<>\"1\",ALL(Muuttujat[Luvaton korotustekijä])),0)",
               "var korotusehto=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"1\",1,0),1)",
-              "",
-              "return IF(summa_perus=0 || korotusehto=0,BLANK(),IF(luvaton=1,erotus,summa_perus+siirretaan_hyvaksytyksi))"
+              "var summa=SUM([painotettu_tutkinnon_osien_osaamispisteet_erityistuki])",
+              "--return IF(summa_perus=0 || korotusehto=0;BLANK();IF(luvaton=1;erotus;summa_perus+siirretaan_hyvaksytyksi))",
+              "return IF(summa=0,BLANK(),summa)"
             ],
             "formatString": "#,0.00",
             "displayFolder": "Painotetut"
@@ -2657,10 +2652,11 @@
             "name": "Laskentaan hyväksytyt painotetut osaamispisteet",
             "expression": [
               "",
-              "var summa1 = SUMX(Muuttujat,[painotettu_tutkinnon_osien_osaamispisteet_pt_kr] * IF(Muuttujat[rahoitusmuoto_maksetaan]=1 && [hyvaksytaan_rahoitukseen]=1,[leikkauskerroin2],0))",
-              "var summa2 = SUMX(Muuttujat,[painotettu_tutkinnon_osien_osaamispisteet_at_eat_kr] * IF(Muuttujat[rahoitusmuoto_maksetaan]=1 && [hyvaksytaan_rahoitukseen]=1,[leikkauskerroin2],0))",
-              "var summa3 = SUMX(Muuttujat,[painotettu_tutkinnon_osien_osaamispisteet_erityistuki] * IF(Muuttujat[rahoitusmuoto_maksetaan]=1 && [hyvaksytaan_rahoitukseen]=1,[leikkauskerroin2],0))",
-              "return summa1 + summa2 + summa3"
+              "var summa1 = CALCULATE(SUMX(Muuttujat,[painotettu_tutkinnon_osien_osaamispisteet_pt_kr] * IF(Muuttujat[rahoitusmuoto_maksetaan]=1 && [hyvaksytaan_rahoitukseen]=1,[leikkauskerroin2],0)),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "var summa2 = CALCULATE(SUMX(Muuttujat,[painotettu_tutkinnon_osien_osaamispisteet_at_eat_kr] * IF(Muuttujat[rahoitusmuoto_maksetaan]=1 && [hyvaksytaan_rahoitukseen]=1,[leikkauskerroin2],0)),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "var summa3 = CALCULATE(SUMX(Muuttujat,[painotettu_tutkinnon_osien_osaamispisteet_erityistuki] * IF(Muuttujat[rahoitusmuoto_maksetaan]=1 && [hyvaksytaan_rahoitukseen]=1,[leikkauskerroin2],0)),Muuttujat[jarj_luvaton_korotustekija]=\"1\")",
+              "var summa = summa1+summa2+summa3",
+              "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)"
             ],
             "formatString": "#,0.00",
             "displayFolder": "Painotetut"
@@ -2765,24 +2761,33 @@
             "formatString": "#,0.00"
           },
           {
-            "name": "Erityisen tuen mukaan painotetut tutkintojen pisteet testi",
+            "name": "korotusehto",
+            "expression": [
+              "IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"1\",1,0),1)",
+              ""
+            ],
+            "isHidden": true
+          },
+          {
+            "name": "Laskentaan hyväksytyt painotetut osaamispisteet_vanha",
             "expression": [
               "",
-              "--var taulu=ADDCOLUMNS(CROSSJOIN(Jarj;Korotustekija);\"summa\";1)",
-              "var taulu=CALCULATETABLE(CROSSJOIN(VALUES(Muuttujat[Koulutuksen järjestäjä]),VALUES(korotustekija[Luvaton korotustekijä])))",
-              "var mittari=SUMX(taulu,COUNTROWS(korotustekija))",
-              "return mittari"
+              "var summa1 = SUMX(Muuttujat,[painotettu_tutkinnon_osien_osaamispisteet_pt_kr] * IF(Muuttujat[rahoitusmuoto_maksetaan]=1 && [hyvaksytaan_rahoitukseen]=1,[leikkauskerroin2],0))",
+              "var summa2 = SUMX(Muuttujat,[painotettu_tutkinnon_osien_osaamispisteet_at_eat_kr] * IF(Muuttujat[rahoitusmuoto_maksetaan]=1 && [hyvaksytaan_rahoitukseen]=1,[leikkauskerroin2],0))",
+              "var summa3 = SUMX(Muuttujat,[painotettu_tutkinnon_osien_osaamispisteet_erityistuki] * IF(Muuttujat[rahoitusmuoto_maksetaan]=1 && [hyvaksytaan_rahoitukseen]=1,[leikkauskerroin2],0))",
+              "return summa1 + summa2 + summa3",
+              ""
             ]
           }
         ],
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": " SELECT [dw].[v_amos_tutkinnot_ja_tutkinnonosat].* FROM [dw].[v_amos_tutkinnot_ja_tutkinnonosat] "
+            "value": " SELECT [dw].[v_amos_tutkinnot_ja_tutkinnonosat_test].* FROM [dw].[v_amos_tutkinnot_ja_tutkinnonosat_test] "
           },
           {
             "name": "_TM_ExtProp_DbTableName",
-            "value": "v_amos_tutkinnot_ja_tutkinnonosat"
+            "value": "v_amos_tutkinnot_ja_tutkinnonosat_test"
           },
           {
             "name": "_TM_ExtProp_DbSchemaName",
@@ -4601,90 +4606,6 @@
             "value": "dw"
           }
         ]
-      },
-      {
-        "name": "korotustekija",
-        "columns": [
-          {
-            "type": "calculatedTableColumn",
-            "name": "Koulutuksen järjestäjä",
-            "dataType": "string",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "Muuttujat[Koulutuksen järjestäjä]"
-          },
-          {
-            "type": "calculatedTableColumn",
-            "name": "Luvaton korotustekijä",
-            "dataType": "string",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "Muuttujat[Luvaton korotustekijä]"
-          },
-          {
-            "type": "calculatedTableColumn",
-            "name": "Tilastovuosi",
-            "dataType": "int64",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "Muuttujat[Tilastovuosi]"
-          },
-          {
-            "type": "calculatedTableColumn",
-            "name": "painotettu",
-            "dataType": "int64",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "[painotettu]"
-          },
-          {
-            "type": "calculatedTableColumn",
-            "name": "Koodit Koulutuksen järjestäjä",
-            "dataType": "string",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "Muuttujat[Koodit Koulutuksen järjestäjä]"
-          },
-          {
-            "type": "calculatedTableColumn",
-            "name": "jarj_luvaton_korotustekija",
-            "dataType": "string",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "Muuttujat[jarj_luvaton_korotustekija]"
-          },
-          {
-            "type": "calculated",
-            "name": "avain",
-            "dataType": "string",
-            "isDataTypeInferred": true,
-            "expression": "'korotustekija'[Tilastovuosi]&'korotustekija'[Koodit Koulutuksen järjestäjä]&'korotustekija'[jarj_luvaton_korotustekija]"
-          }
-        ],
-        "partitions": [
-          {
-            "name": "CalculatedTable 1",
-            "source": {
-              "type": "calculated",
-              "expression": "CALCULATETABLE(ADDCOLUMNS(CROSSJOIN(SUMMARIZE(Muuttujat,[Tilastovuosi],[Koodit Koulutuksen järjestäjä],[Koulutuksen järjestäjä]),SUMMARIZE(Muuttujat,[jarj_luvaton_korotustekija],[Luvaton korotustekijä])),\"painotettu\",0))"
-            }
-          }
-        ],
-        "measures": [
-          {
-            "name": "Measure 1",
-            "expression": "SUM(korotustekija[painotettu])+1"
-          }
-        ]
-      }
-    ],
-    "relationships": [
-      {
-        "name": "66e26422-5efc-48bf-a88c-7d4f1d099535",
-        "fromTable": "Muuttujat",
-        "fromColumn": "korotustekija_avain",
-        "toTable": "korotustekija",
-        "toColumn": "avain"
       }
     ],
     "perspectives": [
@@ -4919,16 +4840,16 @@
         "modelPermission": "read",
         "members": [
           {
-            "memberName": "DWI\\T_SP_Excel_S_Read",
-            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1732"
-          },
-          {
             "memberName": "DWI\\P_SP_Excel_S_Read",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1733"
           },
           {
             "memberName": "NT AUTHORITY\\IUSR",
             "memberId": "S-1-5-17"
+          },
+          {
+            "memberName": "DWI\\T_SP_Excel_S_Read",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1732"
           }
         ]
       }

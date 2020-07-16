@@ -548,11 +548,13 @@
           {
             "name": "painotettu_tutkinnot_erityistuki_hyv",
             "dataType": "double",
+            "isHidden": true,
             "sourceColumn": "painotettu_tutkinnot_erityistuki_hyv"
           },
           {
             "name": "painotettu_tutkinnon_osien_osaamispisteet_erityistuki_hyv",
             "dataType": "double",
+            "isHidden": true,
             "sourceColumn": "painotettu_tutkinnon_osien_osaamispisteet_erityistuki_hyv"
           }
         ],
@@ -2743,7 +2745,8 @@
               "",
               "var summa=SUM([painotettu_tutkinnot_erityistuki])",
               "return IF(summa=0,BLANK(),summa)"
-            ]
+            ],
+            "formatString": "#,0.00"
           },
           {
             "name": "Erityisen tuen mukaan painotetut tutkinnon osien osaamispisteet_vanha",
@@ -2751,6 +2754,17 @@
               "",
               "var summa=SUM([painotettu_tutkinnon_osien_osaamispisteet_erityistuki])",
               "return IF(summa=0,BLANK(),summa)"
+            ],
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Erityisen tuen mukaan painotetut tutkintojen pisteet testi",
+            "expression": [
+              "",
+              "--var taulu=ADDCOLUMNS(CROSSJOIN(Jarj;Korotustekija);\"summa\";1)",
+              "var taulu=CALCULATETABLE(CROSSJOIN(VALUES(Muuttujat[Koulutuksen järjestäjä]),VALUES(korotustekija[Luvaton korotustekijä])))",
+              "var mittari=SUMX(taulu,COUNTROWS(korotustekija))",
+              "return mittari"
             ]
           }
         ],
@@ -4814,16 +4828,16 @@
         "modelPermission": "read",
         "members": [
           {
-            "memberName": "DWI\\T_SP_Excel_S_Read",
-            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1732"
-          },
-          {
             "memberName": "DWI\\P_SP_Excel_S_Read",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1733"
           },
           {
             "memberName": "NT AUTHORITY\\IUSR",
             "memberId": "S-1-5-17"
+          },
+          {
+            "memberName": "DWI\\T_SP_Excel_S_Read",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1732"
           }
         ]
       }
