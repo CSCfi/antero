@@ -4097,6 +4097,90 @@
               ", FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"71\")",
               ", FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"51\")))"
             ]
+          },
+          {
+            "name": "Uudet opiskelijat lkm_s",
+            "expression": [
+              " --suojaamattomaan raporttiin, saa suodattua vain muuttujilla jotka api-taulussa opiskelijat_ja_tutkinnot",
+              "var lkm =  CALCULATE(SUM([Aloit2])",
+              "\t, ALLEXCEPT(Muuttujat",
+              "\t\t, Muuttujat[Tilastovuosi]",
+              "\t\t, Muuttujat[Aineisto]",
+              "\t\t, Muuttujat[Koulutussektori]",
+              "\t\t, Muuttujat[Oppilaitos], Muuttujat[Koodit Oppilaitos]",
+              "\t\t, Muuttujat[Oppilaitos (tilastovuosi)]",
+              "\t\t, Muuttujat[Koulutusnimike], Muuttujat[Koodit Koulutusnimike]",
+              "\t\t, Muuttujat[Sukupuoli]",
+              "\t\t, Muuttujat[Koulutusaste, taso 1], Muuttujat[Koodit Koulutusaste taso 1]",
+              "\t\t, Muuttujat[Koulutusaste, taso 2], Muuttujat[Koodit Koulutusaste taso 2]",
+              "\t\t, Muuttujat[Koulutusala, taso 1], Muuttujat[Koodit Koulutusala taso 1]",
+              "\t\t, Muuttujat[Koulutusala, taso 2], Muuttujat[Koodit Koulutusala taso 2]",
+              "\t\t, Muuttujat[Koulutusala, taso 3], Muuttujat[Koodit Koulutusala taso 3]",
+              "\t\t, Muuttujat[OKM ohjauksen ala korkeak.], Muuttujat[Koodit OKM ohjauksen ala korkeak]",
+              "\t\t, Muuttujat[Rahoitusmallialat amk 2017-2020], Muuttujat[Rahoitusmallialat amk 2021-2024]",
+              "\t\t, Muuttujat[Rahoitusmallialat yo 2017-2020], Muuttujat[Rahoitusmallialat yo 2021-2024])",
+              "\t--poistetaan lääkärit ja erikoistumiset (koultyp <> 1, 2, 6)",
+              "\t, 'Muuttujat'[Koodit Koulutusaste taso 2] <> \"73\" && Muuttujat[Koodit Koulutusaste taso 2] <> \"91\")",
+              "\t",
+              "return IF(lkm = 0, BLANK(), lkm)"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Opiskelijat lkm_s",
+            "expression": [
+              " --suojaamattomaan raporttiin, saa suodattua vain muuttujilla jotka api-taulussa opiskelijat_ja_tutkinnot",
+              "var lkm =  CALCULATE(SUM([Opisk2])",
+              "\t, ALLEXCEPT(Muuttujat",
+              "\t\t, Muuttujat[Tilastovuosi]",
+              "\t\t, Muuttujat[Aineisto]",
+              "\t\t, Muuttujat[Koulutussektori]",
+              "\t\t, Muuttujat[Oppilaitos], Muuttujat[Koodit Oppilaitos]",
+              "\t\t, Muuttujat[Oppilaitos (tilastovuosi)]",
+              "\t\t, Muuttujat[Koulutusnimike], Muuttujat[Koodit Koulutusnimike]",
+              "\t\t, Muuttujat[Sukupuoli]",
+              "\t\t, Muuttujat[Koulutusaste, taso 1], Muuttujat[Koodit Koulutusaste taso 1]",
+              "\t\t, Muuttujat[Koulutusaste, taso 2], Muuttujat[Koodit Koulutusaste taso 2]",
+              "\t\t, Muuttujat[Koulutusala, taso 1], Muuttujat[Koodit Koulutusala taso 1]",
+              "\t\t, Muuttujat[Koulutusala, taso 2], Muuttujat[Koodit Koulutusala taso 2]",
+              "\t\t, Muuttujat[Koulutusala, taso 3], Muuttujat[Koodit Koulutusala taso 3]",
+              "\t\t, Muuttujat[OKM ohjauksen ala korkeak.], Muuttujat[Koodit OKM ohjauksen ala korkeak]",
+              "\t\t, Muuttujat[Rahoitusmallialat amk 2017-2020], Muuttujat[Rahoitusmallialat amk 2021-2024]",
+              "\t\t, Muuttujat[Rahoitusmallialat yo 2017-2020], Muuttujat[Rahoitusmallialat yo 2021-2024])",
+              "\t--poistetaan lääkärit ja erikoistumiset (koultyp <> 1, 2, 6)",
+              "\t, 'Muuttujat'[Koodit Koulutusaste taso 2] <> \"73\" && Muuttujat[Koodit Koulutusaste taso 2] <> \"91\")",
+              "",
+              "return IF(lkm = 0, BLANK(), lkm)"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnot lkm_s",
+            "expression": [
+              " --suojaamattomaan raporttiin, saa suodattua vain muuttujilla jotka api-taulussa opiskelijat_ja_tutkinnot",
+              "var lkm =  CALCULATE(SUM([Tutk2])",
+              "\t, ALLEXCEPT(Muuttujat",
+              "\t\t, Muuttujat[Tilastovuosi]",
+              "\t\t, Muuttujat[Aineisto]",
+              "\t\t, Muuttujat[Koulutussektori]",
+              "\t\t, Muuttujat[Oppilaitos], Muuttujat[Koodit Oppilaitos]",
+              "\t\t, Muuttujat[Oppilaitos (tilastovuosi)]",
+              "\t\t, Muuttujat[Koulutusnimike], Muuttujat[Koodit Koulutusnimike]",
+              "\t\t, Muuttujat[Sukupuoli]",
+              "\t\t, Muuttujat[Koulutusaste, taso 1], Muuttujat[Koodit Koulutusaste taso 1]",
+              "\t\t, Muuttujat[Koulutusaste, taso 2], Muuttujat[Koodit Koulutusaste taso 2]",
+              "\t\t, Muuttujat[Koulutusala, taso 1], Muuttujat[Koodit Koulutusala taso 1]",
+              "\t\t, Muuttujat[Koulutusala, taso 2], Muuttujat[Koodit Koulutusala taso 2]",
+              "\t\t, Muuttujat[Koulutusala, taso 3], Muuttujat[Koodit Koulutusala taso 3]",
+              "\t\t, Muuttujat[OKM ohjauksen ala korkeak.], Muuttujat[Koodit OKM ohjauksen ala korkeak]",
+              "\t\t, Muuttujat[Rahoitusmallialat amk 2017-2020], Muuttujat[Rahoitusmallialat amk 2021-2024]",
+              "\t\t, Muuttujat[Rahoitusmallialat yo 2017-2020], Muuttujat[Rahoitusmallialat yo 2021-2024])",
+              "\t--poistetaan lääkärit ja erikoistumiset (koultyp <> 1, 2, 6)",
+              "\t, 'Muuttujat'[Koodit Koulutusaste taso 2] <> \"73\" && Muuttujat[Koodit Koulutusaste taso 2] <> \"91\")",
+              "\t",
+              "return IF(lkm = 0, BLANK(), lkm)"
+            ],
+            "formatString": "#,0"
           }
         ],
         "annotations": [
@@ -13659,6 +13743,102 @@
               },
               {
                 "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Opiskelijat_ja_tutkinnot",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Aineisto"
+              },
+              {
+                "name": "Koodit Koulutusala taso 1"
+              },
+              {
+                "name": "Koodit Koulutusala taso 2"
+              },
+              {
+                "name": "Koodit Koulutusala taso 3"
+              },
+              {
+                "name": "Koodit Koulutusaste taso 1"
+              },
+              {
+                "name": "Koodit Koulutusaste taso 2"
+              },
+              {
+                "name": "Koodit Koulutusnimike"
+              },
+              {
+                "name": "Koodit OKM ohjauksen ala korkeak"
+              },
+              {
+                "name": "Koodit Oppilaitos"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "Koulutusnimike"
+              },
+              {
+                "name": "Koulutussektori"
+              },
+              {
+                "name": "OKM ohjauksen ala korkeak."
+              },
+              {
+                "name": "Oppilaitos"
+              },
+              {
+                "name": "Rahoitusmallialat amk 2017-2020"
+              },
+              {
+                "name": "Rahoitusmallialat amk 2021-2024"
+              },
+              {
+                "name": "Rahoitusmallialat yo 2017-2020"
+              },
+              {
+                "name": "Rahoitusmallialat yo 2021-2024"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Oppilaitos (tilastovuosi)"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Opiskelijat lkm_s"
+              },
+              {
+                "name": "Tutkinnot lkm_s"
+              },
+              {
+                "name": "Uudet opiskelijat lkm_s"
               }
             ]
           }
