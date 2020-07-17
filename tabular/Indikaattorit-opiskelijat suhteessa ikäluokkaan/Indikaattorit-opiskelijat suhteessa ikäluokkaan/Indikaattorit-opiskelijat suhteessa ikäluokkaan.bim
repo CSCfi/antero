@@ -5256,8 +5256,15 @@ CREATE MEASURE 'Muuttujat'[kytkin]=IF(LEFT(USERNAME(), 4) = "DWI\", 1, 0);
 
 CREATE MEASURE 'Muuttujat'[Ammatillinen peruskoulutus, oppilaitosm. / 16-18-vuotiaiden keskim. ikäluokka]=
 var lkm = CALCULATE(sum(Muuttujat[Aloittaneet]),Muuttujat[Koulutuslaji]="ammatillinen perustutkinto",Muuttujat[Järjestämismuoto]="Oppilaitosmuotoinen koulutus")
+var uudet = IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)))
+var vuosia = 3
 var ka = [Keskiarvo 16-18]
-return IF(lkm &lt; 5, BLANK(), DIVIDE(MROUND(lkm, 3), ka));
+return IF(OR(uudet = BLANK(), ka = BLANK()), BLANK(),
+IF(FIND("–", ka, 1, 0) &gt; 0, IF(uudet = "1-4", CONCATENATE(FORMAT(1 / (4 / vuosia), "0.00 – "), FORMAT(4 / (1 / vuosia), "0.00")),
+CONCATENATE(FORMAT(uudet / (4 / vuosia), "0.00 – "), FORMAT(uudet / (1 / vuosia), "0.00"))),
+IF(uudet = "1-4", CONCATENATE(FORMAT(1 / ka, "0.00 – "), FORMAT(4 / ka, "0.00")),
+uudet / ka)))
+;
 </Text>
                   <Annotations>
                     <Annotation>
@@ -5300,9 +5307,14 @@ return DIVIDE(lkm, ka));
 
 CREATE MEASURE 'Muuttujat'[Ammatillinen peruskoulutus, oppis. / 25-64-vuotiaiden keskim. ikäluokka]=
 var lkm = CALCULATE(sum(Muuttujat[Aloittaneet]),Muuttujat[Koulutuslaji]="ammatillinen perustutkinto",Muuttujat[Järjestämismuoto]="Oppisopimuskoulutus")
+var uudet = IF(lkm = 0, BLANK(), IF(lkm &lt; 5, "1-4", MROUND(lkm, 3)))
+var vuosia = 40
 var ka = [Keskiarvo 25-64]
-return IF(lkm &lt; 5, BLANK(), DIVIDE(MROUND(lkm, 3), ka))
-;
+return IF(OR(uudet = BLANK(), ka = BLANK()), BLANK(),
+IF(FIND("–", ka, 1, 0) &gt; 0, IF(uudet = "1-4", CONCATENATE(FORMAT(1 / (4 / vuosia), "0.00 – "), FORMAT(4 / (1 / vuosia), "0.00")),
+CONCATENATE(FORMAT(uudet / (4 / vuosia), "0.00 – "), FORMAT(uudet / (1 / vuosia), "0.00"))),
+IF(uudet = "1-4", CONCATENATE(FORMAT(1 / ka, "0.00 – "), FORMAT(4 / ka, "0.00")),
+uudet / ka)));
 </Text>
                   <Annotations>
                     <Annotation>
