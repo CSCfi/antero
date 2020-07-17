@@ -1973,6 +1973,10 @@
               </MeasureGroups>
               <Calculations>
                 <Calculation>
+                  <Name>[Measures].[Ammatillinen peruskoulutus, oppilaitosm. / 16-18-vuotiaiden keskim. ikäluokka]</Name>
+                  <Type>Member</Type>
+                </Calculation>
+                <Calculation>
                   <Name>[Measures].[Ops-perusteinen oppilaitosmuotoinen amm. pk / 16-18-vuotiaiden keskim. ikäluokka]</Name>
                   <Type>Member</Type>
                 </Calculation>
@@ -2009,6 +2013,10 @@
                 </MeasureGroup>
               </MeasureGroups>
               <Calculations>
+                <Calculation>
+                  <Name>[Measures].[Ammatillinen peruskoulutus, oppilaitosm. / 16-18-vuotiaiden keskim. ikäluokka]</Name>
+                  <Type>Member</Type>
+                </Calculation>
                 <Calculation>
                   <Name>[Measures].[Näyttötutkintoon valmistava amm. pk, oppilaitosm. / 25-64-vuotiaiden keskim. ikäluokka]</Name>
                   <Type>Member</Type>
@@ -2048,6 +2056,10 @@
               <Calculations>
                 <Calculation>
                   <Name>[Measures].[Näyttötutkintoon valmistava amm. pk, oppis. / 25-64-vuotiaiden keskim. ikäluokka]</Name>
+                  <Type>Member</Type>
+                </Calculation>
+                <Calculation>
+                  <Name>[Measures].[Ammatillinen peruskoulutus, oppis. / 25-64-vuotiaiden keskim. ikäluokka]</Name>
                   <Type>Member</Type>
                 </Calculation>
               </Calculations>
@@ -2196,6 +2208,10 @@
                   <Type>Member</Type>
                 </Calculation>
                 <Calculation>
+                  <Name>[Measures].[Ammatillinen peruskoulutus, oppilaitosm. / 16-18-vuotiaiden keskim. ikäluokka]</Name>
+                  <Type>Member</Type>
+                </Calculation>
+                <Calculation>
                   <Name>[Measures].[Perusopetuksen 1. luokka / 7-vuotiaiden ikäluokka]</Name>
                   <Type>Member</Type>
                 </Calculation>
@@ -2233,6 +2249,10 @@
                 </Calculation>
                 <Calculation>
                   <Name>[Measures].[Lukiokoulutus, nuorten opetussuunnitelma / 16-18-vuotiaiden keskim. ikäluokka]</Name>
+                  <Type>Member</Type>
+                </Calculation>
+                <Calculation>
+                  <Name>[Measures].[Ammatillinen peruskoulutus, oppis. / 25-64-vuotiaiden keskim. ikäluokka]</Name>
                   <Type>Member</Type>
                 </Calculation>
               </Calculations>
@@ -2306,6 +2326,14 @@
                   <Name>[Measures].[Yrkes- och specialyrkesexamen., förberedande (institututb.) / Medeltal för åldersgrupperna 25–64 år]</Name>
                   <Type>Member</Type>
                 </Calculation>
+                <Calculation>
+                  <Name>[Measures].[Grundläggande yrkesutbildning, institututb. / Medeltal för åldersgrupperna 16–18 år]</Name>
+                  <Type>Member</Type>
+                </Calculation>
+                <Calculation>
+                  <Name>[Measures].[Grundläggande yrkesutbildning, läroavtalsutb. / Medeltal för åldersgrupperna 25–64 år]</Name>
+                  <Type>Member</Type>
+                </Calculation>
               </Calculations>
             </Perspective>
             <Perspective>
@@ -2359,6 +2387,14 @@
                 </Calculation>
                 <Calculation>
                   <Name>[Measures].[Pre-primary education / 6-year-olds]</Name>
+                  <Type>Member</Type>
+                </Calculation>
+                <Calculation>
+                  <Name>[Measures].[Vocational upper secondary ed., apprenticeship / Average for the age groups 25−64]</Name>
+                  <Type>Member</Type>
+                </Calculation>
+                <Calculation>
+                  <Name>[Measures].[Vocational upper secondary ed., institute-based / Average for the age groups 16−18]</Name>
                   <Type>Member</Type>
                 </Calculation>
                 <Calculation>
@@ -3553,8 +3589,7 @@ return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Lukiokoulutus, nuorten opetussuunnitelma / 16-18-vuotiaiden keskim. ikäluokka]=
-var uudet = [Lukion aloittaneet (nuoret)]
+CREATE MEASURE 'Muuttujat'[Lukiokoulutus, nuorten opetussuunnitelma / 16-18-vuotiaiden keskim. ikäluokka]=var uudet = [Lukion aloittaneet (nuoret)]
 var vuosia = 3
 var ka = [Keskiarvo 16-18]
 return IF(OR(uudet = BLANK(), ka = BLANK()), BLANK(),
@@ -3580,8 +3615,7 @@ uudet / ka)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Keskiarvo 16-18]=
-var vuosia = 3
+CREATE MEASURE 'Muuttujat'[Keskiarvo 16-18]=var vuosia = 3
 var lkm = SUMX('Muuttujat', ROUND(vuosia * [Väestö 16-18], 0))
 return IF(lkm = 0, BLANK(),
 IF(lkm &lt; 5,  CONCATENATE(FORMAT(1 / vuosia, "0.00 – "), FORMAT(4 / vuosia, "0.00")),
@@ -3624,8 +3658,7 @@ return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Keskiarvo 19-21]=
-var vuosia = 3
+CREATE MEASURE 'Muuttujat'[Keskiarvo 19-21]=var vuosia = 3
 var lkm = SUMX('Muuttujat', ROUND(vuosia * [Väestö 19-21], 0))
 return IF(lkm = 0, BLANK(),
 IF(lkm &lt; 5,  CONCATENATE(FORMAT(1 / vuosia, "0.00 – "), FORMAT(4 / vuosia, "0.00")),
@@ -3648,8 +3681,7 @@ MROUND(lkm, 3) / vuosia));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Keskiarvo 25-64]=
-var vuosia = 40 
+CREATE MEASURE 'Muuttujat'[Keskiarvo 25-64]=var vuosia = 40 
 var lkm = SUMX('Muuttujat', ROUND(vuosia * [Väestö 25-64], 0))
 return IF(lkm = 0, BLANK(),
 IF(lkm &lt; 5,  CONCATENATE(FORMAT(1 / vuosia, "0.00 – "), FORMAT(4 / vuosia, "0.00")),
@@ -3672,8 +3704,7 @@ MROUND(lkm, 3) / vuosia));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Ops-perusteinen oppilaitosmuotoinen amm. pk / 16-18-vuotiaiden keskim. ikäluokka]=
-var uudet =  [Ammtillisen peruskoulutuksen aloittaneet (nuoret)]
+CREATE MEASURE 'Muuttujat'[Ops-perusteinen oppilaitosmuotoinen amm. pk / 16-18-vuotiaiden keskim. ikäluokka]=var uudet =  [Ammtillisen peruskoulutuksen aloittaneet (nuoret)]
 var vuosia = 3
 var ka = [Keskiarvo 16-18]
 return IF(OR(uudet = BLANK(), ka = BLANK()), BLANK(),
@@ -3699,7 +3730,7 @@ uudet / ka)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Näyttötutkintoon valmistavan peruskoulutuksen uudet opiskelijat (oppilaitosmuotoinen)]=var summa = CALCULATE(sum([Aloittaneet]),Muuttujat[Järjestämistapa]="näyttötutkintoon valmistava koulutus/tutkinto",Muuttujat[Järjestämismuoto]="Oppilaitosmuotoinen koulutus")
+CREATE MEASURE 'Muuttujat'[Näyttötutkintoon valmistavan peruskoulutuksen uudet opiskelijat (oppilaitosmuotoinen)]=var summa = CALCULATE(sum([Aloittaneet]),Muuttujat[Koulutuslaji]="ammatillinen perustutkinto",Muuttujat[Järjestämistapa]="näyttötutkintoon valmistava koulutus/tutkinto",Muuttujat[Järjestämismuoto]="Oppilaitosmuotoinen koulutus")
 return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 </Text>
                   <Annotations>
@@ -3719,8 +3750,7 @@ return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Näyttötutkintoon valmistava amm. pk, oppilaitosm. / 25-64-vuotiaiden keskim. ikäluokka]=
-var uudet =  [Näyttötutkintoon valmistavan peruskoulutuksen uudet opiskelijat (oppilaitosmuotoinen)]
+CREATE MEASURE 'Muuttujat'[Näyttötutkintoon valmistava amm. pk, oppilaitosm. / 25-64-vuotiaiden keskim. ikäluokka]=var uudet =  [Näyttötutkintoon valmistavan peruskoulutuksen uudet opiskelijat (oppilaitosmuotoinen)]
 var vuosia = 40
 var ka = [Keskiarvo 25-64]
 return IF(OR(uudet = BLANK(), ka = BLANK()), BLANK(),
@@ -3746,7 +3776,7 @@ uudet / ka)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Näyttötutkintoon valmistavan peruskoulutuksen uudet opiskelijat (oppisopimus)]=var summa = CALCULATE(sum([Aloittaneet]),Muuttujat[Järjestämistapa]="näyttötutkintoon valmistava koulutus/tutkinto",Muuttujat[Järjestämismuoto]="Oppisopimuskoulutus")
+CREATE MEASURE 'Muuttujat'[Näyttötutkintoon valmistavan peruskoulutuksen uudet opiskelijat (oppisopimus)]=var summa = CALCULATE(sum([Aloittaneet]),Muuttujat[Koulutuslaji]="ammatillinen perustutkinto",Muuttujat[Järjestämistapa]="näyttötutkintoon valmistava koulutus/tutkinto",Muuttujat[Järjestämismuoto]="Oppisopimuskoulutus")
 return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 </Text>
                   <Annotations>
@@ -3766,8 +3796,7 @@ return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Näyttötutkintoon valmistava amm. pk, oppis. / 25-64-vuotiaiden keskim. ikäluokka]=
-var uudet =  [Näyttötutkintoon valmistavan peruskoulutuksen uudet opiskelijat (oppisopimus)]
+CREATE MEASURE 'Muuttujat'[Näyttötutkintoon valmistava amm. pk, oppis. / 25-64-vuotiaiden keskim. ikäluokka]=var uudet =  [Näyttötutkintoon valmistavan peruskoulutuksen uudet opiskelijat (oppisopimus)]
 var vuosia = 40
 var ka = [Keskiarvo 25-64]
 return IF(OR(uudet = BLANK(), ka = BLANK()), BLANK(),
@@ -3833,8 +3862,7 @@ return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Amm. ja erikoisamm. tutkintoihin valmistava, oppilaitosm. / 25-64-vuotiaiden keskim. ikäluokka]=
-var uudet =  [Ammatti- ja erikoisammattitutkinnon uudet opiskelijat (oppilaitosmuotoinen)]
+CREATE MEASURE 'Muuttujat'[Amm. ja erikoisamm. tutkintoihin valmistava, oppilaitosm. / 25-64-vuotiaiden keskim. ikäluokka]=var uudet =  [Ammatti- ja erikoisammattitutkinnon uudet opiskelijat (oppilaitosmuotoinen)]
 var vuosia = 40
 var ka = [Keskiarvo 25-64]
 return IF(OR(uudet = BLANK(), ka = BLANK()), BLANK(),
@@ -3860,8 +3888,7 @@ uudet / ka)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Amm. ja erikoisamm. tutkintoihin valmistava, oppis. / 25-64-vuotiaiden keskim. ikäluokka]=
-var uudet =  [Ammatti- ja erikoisammattitutkinnon uudet opiskelijat (oppisopimus)]
+CREATE MEASURE 'Muuttujat'[Amm. ja erikoisamm. tutkintoihin valmistava, oppis. / 25-64-vuotiaiden keskim. ikäluokka]=var uudet =  [Ammatti- ja erikoisammattitutkinnon uudet opiskelijat (oppisopimus)]
 var vuosia = 40
 var ka = [Keskiarvo 25-64]
 return IF(OR(uudet = BLANK(), ka = BLANK()), BLANK(),
@@ -3927,8 +3954,7 @@ return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Amk-tutkinto / 19-21-vuotiaiden keskim. ikäluokka]=
-var uudet =  calculate(sum([Aloittaneet]), OR(Muuttujat[Koulutuslaji]="Ammattikorkeakoulututkinto (päivätoteutus)", Muuttujat[Koulutuslaji]="Ammattikorkeakoulututkinto (monimuotototeutus)"))
+CREATE MEASURE 'Muuttujat'[Amk-tutkinto / 19-21-vuotiaiden keskim. ikäluokka]=var uudet =  calculate(sum([Aloittaneet]), OR(Muuttujat[Koulutuslaji]="Ammattikorkeakoulututkinto (päivätoteutus)", Muuttujat[Koulutuslaji]="Ammattikorkeakoulututkinto (monimuotototeutus)"))
 var vuosia = 3
 var ka = [Keskiarvo 19-21]
 return IF(OR(uudet = 0, ka = BLANK()), BLANK(),
@@ -3954,8 +3980,7 @@ MROUND(uudet, 3) / ka)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Amk-tutkinto, aikuisten koulutus (pl. vieraskielinen koulutus) / 25-64-vuotiaiden keskim. ikäluokka]=
-var uudet =  [Ammattikorkeakoulutuksen uudet opiskelijat (aikuiset)]
+CREATE MEASURE 'Muuttujat'[Amk-tutkinto, aikuisten koulutus (pl. vieraskielinen koulutus) / 25-64-vuotiaiden keskim. ikäluokka]=var uudet =  [Ammattikorkeakoulutuksen uudet opiskelijat (aikuiset)]
 var vuosia = 40
 var ka = [Keskiarvo 25-64]
 return IF(OR(uudet = BLANK(), ka = BLANK()), BLANK(),
@@ -4001,8 +4026,7 @@ return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Ylempi amk-tutkinto / 25-64-vuotiaiden keskim. ikäluokka]=
-var uudet = [Ylemmän ammattikorkeakoulutuksen uudet opiskelijat]
+CREATE MEASURE 'Muuttujat'[Ylempi amk-tutkinto / 25-64-vuotiaiden keskim. ikäluokka]=var uudet = [Ylemmän ammattikorkeakoulutuksen uudet opiskelijat]
 var vuosia = 40
 var ka = [Keskiarvo 25-64]
 return IF(OR(uudet = BLANK(), ka = BLANK()), BLANK(),
@@ -4048,8 +4072,7 @@ return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Alempi tai ylempi kk-tutkinto / 19-21-vuotiaiden keskim. ikäluokka]=
-var uudet =  [Alemman ja ylemmän korkeakoulututkinnon uudet opiskelijat]
+CREATE MEASURE 'Muuttujat'[Alempi tai ylempi kk-tutkinto / 19-21-vuotiaiden keskim. ikäluokka]=var uudet =  [Alemman ja ylemmän korkeakoulututkinnon uudet opiskelijat]
 var vuosia = 3
 var ka = [Keskiarvo 19-21]
 return IF(OR(uudet = BLANK(), ka = BLANK()), BLANK(),
@@ -4115,8 +4138,7 @@ return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Esiopetus / 6-vuotiaiden ikäluokka]=
-var uudet = [Esiopetuksen oppilaat]
+CREATE MEASURE 'Muuttujat'[Esiopetus / 6-vuotiaiden ikäluokka]=var uudet = [Esiopetuksen oppilaat]
 var lkm = [Määrä 6]
 return IF(OR(uudet = BLANK(), lkm = BLANK()), BLANK(),
 IF(uudet = "1-4", IF(lkm = "1-4", CONCATENATE(FORMAT(1 / 4, "0.00 – "), FORMAT(4 / 1, "0.00")),
@@ -4181,15 +4203,13 @@ return IF(summa = 0, BLANK(), IF(summa &lt; 5, "1-4", MROUND(summa, 3)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Perusopetuksen 1. luokka / 7-vuotiaiden ikäluokka]=
-var uudet = [Perusopetuksen 1. luokan oppilaat]
+CREATE MEASURE 'Muuttujat'[Perusopetuksen 1. luokka / 7-vuotiaiden ikäluokka]=var uudet = [Perusopetuksen 1. luokan oppilaat]
 var lkm = [Määrä 7]
 return IF(OR(uudet = BLANK(), lkm = BLANK()), BLANK(),
 IF(uudet = "1-4", IF(lkm = "1-4", CONCATENATE(FORMAT(1 / 4, "0.00 – "), FORMAT(4 / 1, "0.00")),
 CONCATENATE(FORMAT(1 / lkm, "0.00 – "), FORMAT(4 / lkm, "0.00"))),
 IF(lkm = "1-4", CONCATENATE(FORMAT(uudet / 4, "0.00 – "), FORMAT(uudet / 1, "0.00")),
-uudet / lkm)))
-;
+uudet / lkm)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -4702,7 +4722,7 @@ CREATE MEASURE 'Muuttujat'[Ammtillisen peruskoulutuksen aloittaneet (nuoret)_s]=
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Näyttötutkintoon valmistavan peruskoulutuksen uudet opiskelijat (oppilaitosmuotoinen)_s]=IF([kytkin]=0, BLANK(), CALCULATE(sum([Aloittaneet]),Muuttujat[Järjestämistapa]="näyttötutkintoon valmistava koulutus/tutkinto",Muuttujat[Järjestämismuoto]="Oppilaitosmuotoinen koulutus"));
+CREATE MEASURE 'Muuttujat'[Näyttötutkintoon valmistavan peruskoulutuksen uudet opiskelijat (oppilaitosmuotoinen)_s]=IF([kytkin]=0, BLANK(), CALCULATE(sum([Aloittaneet]),Muuttujat[Koulutuslaji]="ammatillinen perustutkinto",Muuttujat[Järjestämistapa]="näyttötutkintoon valmistava koulutus/tutkinto",Muuttujat[Järjestämismuoto]="Oppilaitosmuotoinen koulutus"));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -4721,7 +4741,7 @@ CREATE MEASURE 'Muuttujat'[Näyttötutkintoon valmistavan peruskoulutuksen uudet
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Näyttötutkintoon valmistavan peruskoulutuksen uudet opiskelijat (oppisopimus)_s]=IF([kytkin]=0, BLANK(), CALCULATE(sum([Aloittaneet]),Muuttujat[Järjestämistapa]="näyttötutkintoon valmistava koulutus/tutkinto",Muuttujat[Järjestämismuoto]="Oppisopimuskoulutus"));
+CREATE MEASURE 'Muuttujat'[Näyttötutkintoon valmistavan peruskoulutuksen uudet opiskelijat (oppisopimus)_s]=IF([kytkin]=0, BLANK(), CALCULATE(sum([Aloittaneet]),Muuttujat[Koulutuslaji]="ammatillinen perustutkinto",Muuttujat[Järjestämistapa]="näyttötutkintoon valmistava koulutus/tutkinto",Muuttujat[Järjestämismuoto]="Oppisopimuskoulutus"));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -5221,6 +5241,171 @@ CREATE MEASURE 'Muuttujat'[kytkin]=IF(LEFT(USERNAME(), 4) = "DWI\", 1, 0);
                     <Annotation>
                       <Name>FullName</Name>
                       <Value>kytkin</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Ammatillinen peruskoulutus, oppilaitosm. / 16-18-vuotiaiden keskim. ikäluokka]=
+var lkm = CALCULATE(sum(Muuttujat[Aloittaneet]),Muuttujat[Koulutuslaji]="ammatillinen perustutkinto",Muuttujat[Järjestämismuoto]="Oppilaitosmuotoinen koulutus")
+var ka = [Keskiarvo 16-18]
+return IF(lkm &lt; 5, BLANK(), DIVIDE(MROUND(lkm, 3), ka));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Ammatillinen peruskoulutus, oppilaitosm. / 16-18-vuotiaiden keskim. ikäluokka</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Ammatillinen peruskoulutus, oppilaitosm. / 16-18-vuotiaiden keskim. ikäluokka_s]=IF([kytkin]=0, BLANK(), 
+var lkm = CALCULATE(sum(Muuttujat[Aloittaneet]),Muuttujat[Koulutuslaji]="ammatillinen perustutkinto",Muuttujat[Järjestämismuoto]="Oppilaitosmuotoinen koulutus")
+var ka = [Keskiarvo 16-18_s]
+return DIVIDE(lkm, ka));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Ammatillinen peruskoulutus, oppilaitosm. / 16-18-vuotiaiden keskim. ikäluokka_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Ammatillinen peruskoulutus, oppis. / 25-64-vuotiaiden keskim. ikäluokka]=
+var lkm = CALCULATE(sum(Muuttujat[Aloittaneet]),Muuttujat[Koulutuslaji]="ammatillinen perustutkinto",Muuttujat[Järjestämismuoto]="Oppisopimuskoulutus")
+var ka = [Keskiarvo 25-64]
+return IF(lkm &lt; 5, BLANK(), DIVIDE(MROUND(lkm, 3), ka))
+;
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Ammatillinen peruskoulutus, oppis. / 25-64-vuotiaiden keskim. ikäluokka</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Ammatillinen peruskoulutus, oppis. / 25-64-vuotiaiden keskim. ikäluokka_s]=IF([kytkin]=0, BLANK(), 
+var lkm = CALCULATE(sum(Muuttujat[Aloittaneet]),Muuttujat[Koulutuslaji]="ammatillinen perustutkinto",Muuttujat[Järjestämismuoto]="Oppisopimuskoulutus")
+var ka = [Keskiarvo 25-64_s]
+return DIVIDE(lkm, ka));
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Ammatillinen peruskoulutus, oppis. / 25-64-vuotiaiden keskim. ikäluokka_s</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Grundläggande yrkesutbildning, institututb. / Medeltal för åldersgrupperna 16–18 år]=[Ammatillinen peruskoulutus, oppilaitosm. / 16-18-vuotiaiden keskim. ikäluokka];
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Grundläggande yrkesutbildning, institututb. / Medeltal för åldersgrupperna 16–18 år</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Vocational upper secondary ed., institute-based / Average for the age groups 16−18]=[Ammatillinen peruskoulutus, oppilaitosm. / 16-18-vuotiaiden keskim. ikäluokka];
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Vocational upper secondary ed., institute-based / Average for the age groups 16−18</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Grundläggande yrkesutbildning, läroavtalsutb. / Medeltal för åldersgrupperna 25–64 år]=[Ammatillinen peruskoulutus, oppis. / 25-64-vuotiaiden keskim. ikäluokka];
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Grundläggande yrkesutbildning, läroavtalsutb. / Medeltal för åldersgrupperna 25–64 år</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Vocational upper secondary ed., apprenticeship / Average for the age groups 25−64]=[Ammatillinen peruskoulutus, oppis. / 25-64-vuotiaiden keskim. ikäluokka];
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Vocational upper secondary ed., apprenticeship / Average for the age groups 25−64</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -6973,6 +7158,174 @@ CREATE MEASURE 'Muuttujat'[kytkin]=IF(LEFT(USERNAME(), 4) = "DWI\", 1, 0);
                   <CalculationType>Member</CalculationType>
                   <Visible>false</Visible>
                   <FormatString>'0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberDecimal" Accuracy="2" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Ammatillinen peruskoulutus, oppilaitosm. / 16-18-vuotiaiden keskim. ikäluokka]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'0.00'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberDecimal" Accuracy="2" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Ammatillinen peruskoulutus, oppilaitosm. / 16-18-vuotiaiden keskim. ikäluokka_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'0.00'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberDecimal" Accuracy="2" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Ammatillinen peruskoulutus, oppis. / 25-64-vuotiaiden keskim. ikäluokka]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'0.00'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberDecimal" Accuracy="2" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Ammatillinen peruskoulutus, oppis. / 25-64-vuotiaiden keskim. ikäluokka_s]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'0.00'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberDecimal" Accuracy="2" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Grundläggande yrkesutbildning, institututb. / Medeltal för åldersgrupperna 16–18 år]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'0.00'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberDecimal" Accuracy="2" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Vocational upper secondary ed., institute-based / Average for the age groups 16−18]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'0.00'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberDecimal" Accuracy="2" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Grundläggande yrkesutbildning, läroavtalsutb. / Medeltal för åldersgrupperna 25–64 år]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'0.00'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberDecimal" Accuracy="2" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Vocational upper secondary ed., apprenticeship / Average for the age groups 25−64]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'0.00'</FormatString>
                 </CalculationProperty>
                 <CalculationProperty>
                   <CalculationReference>Measures.[__No measures defined]</CalculationReference>
