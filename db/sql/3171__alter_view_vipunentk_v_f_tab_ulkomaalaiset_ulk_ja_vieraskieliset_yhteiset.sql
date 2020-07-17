@@ -134,7 +134,7 @@ END AS jarj_aidinkieli
 ,d53c.jarjestys_maanosa as jarj_syntmaa_aiti_maanosa
 ,d53d.jarjestys as jarj_syntmaa_isa
 ,d53d.jarjestys_maanosa as jarj_syntmaa_isa_maanosa
-,d55.jarjestys end as jarj_koulutusryhma
+,d55.jarjestys as jarj_koulutusryhma
 ,jarjestys_suoritusaika 
 ,jarjestys_syntymavuosi
 ,[jarjestys_suomeen_muuttamisvuosi]
