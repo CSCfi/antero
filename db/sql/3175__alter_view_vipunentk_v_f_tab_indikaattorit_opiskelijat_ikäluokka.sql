@@ -346,13 +346,13 @@ Select
 	  ,[Väestö 25-64] = null
 
 	  ,[Maakunta järjestys] = d1.jarjestys_maakunta
-	  ,[Sukupuoli järjestys] = d4.jarjestys
+	  ,[Sukupuoli järjestys] = 99
 	  ,[Äidinkieli järjestys] = case d5.aidinkieli_versio2 when 'saame' then 1 when 'suomi' then 1 when 'ruotsi' then 2 when 'muut kielet ja tuntematon' then 3 else 99998 end
 
       
 FROM [dbo].[f_OTV_4_9_Vaestorakenne_kunnittain] f
 LEFT JOIN dbo.d_alueluokitus d1 on d1.id=f.kotikunta_id
-LEFT JOIN dbo.d_sukupuoli d4 on d4.id=f.sukupuoli_id
+--LEFT JOIN dbo.d_sukupuoli d4 on d4.id=f.sukupuoli_id
 LEFT JOIN dbo.d_aidinkieli_versio2 d5 on d5.id=f.aidinkieli_versio2_id
 where f.ika6_lkm<>0 and 
 d1.maakunta<>'Tuntematon'
