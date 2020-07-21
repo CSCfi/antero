@@ -170,4 +170,5 @@ LEFT JOIN VipunenTK..d_koulutusluokitus AS d55 ON d55.koulutusluokitus_avain   =
 LEFT JOIN VipunenTK..d_koulutusluokitus AS d56 ON d56.koulutusluokitus_avain   = 'ISCFINARROW'+f.aikasemman_ylemman_kk_koulutusala_taso2
 LEFT JOIN VipunenTK..d_koulutusluokitus AS d57 ON d57.koulutusluokitus_avain   = 'KASTET2'+f.aikasemman_ylemman_kk_koulutusaste_taso2
 
+GO
 USE [ANTERO]
