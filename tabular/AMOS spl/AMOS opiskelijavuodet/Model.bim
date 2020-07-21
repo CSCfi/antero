@@ -2521,7 +2521,7 @@
             "displayFolder": "Opiskelijavuodet"
           },
           {
-            "name": "Erityistuen mukaan painotetut opiskelijavuodet vanha",
+            "name": "Erityistuen mukaan painotetut opiskelijavuodet testi",
             "expression": [
               "",
               "var summa=SUM(Muuttujat[opiskelijavuodet_painotettu_erityistuki])",
@@ -2548,33 +2548,26 @@
             "displayFolder": "Opiskelijavuodet"
           },
           {
-            "name": "Henkilöstökoulutuksen mukaan painotetut opiskelijavuodet vanha",
-            "expression": [
-              "",
-              "var summa=SUM(Muuttujat[opiskelijavuodet_painotettu_henkilostokoulutus])",
-              "return IF(summa=0,BLANK(),summa)"
-            ],
-            "formatString": "#,0.00",
-            "isHidden": true,
-            "displayFolder": "Opiskelijavuodet"
-          },
-          {
-            "name": "Työvoimakoulutuksen mukaan painotetut opiskelijavuodet vanha",
+            "name": "Työvoimakoulutuksen mukaan painotetut opiskelijavuodet testi",
             "expression": [
               "",
               "var summa=SUM(Muuttujat[opiskelijavuodet_painotettu_tyovoimakoulutus])",
-              "return IF(summa=0,BLANK(),summa)"
+              "var tyovoimakorotus = IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"2\",1,0),1)",
+              "return IF([korotusehto]=1 || tyovoimakorotus=1,summa,BLANK())",
+              ""
             ],
             "formatString": "#,0.00",
             "isHidden": true,
             "displayFolder": "Opiskelijavuodet"
           },
           {
-            "name": "Vankilakoulutuksen mukaan painotetut opiskelijavuodet vanha",
+            "name": "Vankilakoulutuksen mukaan painotetut opiskelijavuodet testi",
             "expression": [
               "",
               "var summa=SUM(Muuttujat[opiskelijavuodet_painotettu_vankilaopetus])",
-              "return IF(summa=0,BLANK(),summa)"
+              "var vankilakorotus = IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"3\",1,0),1)",
+              "return IF([korotusehto]=1 || vankilakorotus=1,summa,BLANK())",
+              ""
             ],
             "formatString": "#,0.00",
             "isHidden": true,
@@ -2606,67 +2599,67 @@
           },
           {
             "name": "Kustannusryhmän mukaan painotetut perustutkinnon opiskelijavuodet %",
-            "expression": "[Kustannusryhmän mukaan painotetut perustutkinnon opiskelijavuodet vanha]/CALCULATE([Kustannusryhmän mukaan painotetut perustutkinnon opiskelijavuodet vanha],ALL(Muuttujat[Koulutuksen järjestäjä]))",
+            "expression": "DIVIDE([Kustannusryhmän mukaan painotetut perustutkinnon opiskelijavuodet],CALCULATE([Kustannusryhmän mukaan painotetut perustutkinnon opiskelijavuodet],ALL(Muuttujat[Koulutuksen järjestäjä])))",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Prosenttiosuudet"
           },
           {
             "name": "Kustannusryhmän mukaan painotetut at- ja eat-tutkinnon opiskelijavuodet %",
-            "expression": "[Kustannusryhmän mukaan painotetut at- ja eat-tutkinnon opiskelijavuodet vanha]/CALCULATE([Kustannusryhmän mukaan painotetut at- ja eat-tutkinnon opiskelijavuodet vanha],ALL(Muuttujat[Koulutuksen järjestäjä]))",
+            "expression": "DIVIDE([Kustannusryhmän mukaan painotetut at- ja eat-tutkinnon opiskelijavuodet],CALCULATE([Kustannusryhmän mukaan painotetut at- ja eat-tutkinnon opiskelijavuodet],ALL(Muuttujat[Koulutuksen järjestäjä])))",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Prosenttiosuudet"
           },
           {
             "name": "Kustannusryhmän mukaan painotetut VALMA&TELMA opiskelijavuodet %",
-            "expression": "[Kustannusryhmän mukaan painotetut VALMA&TELMA opiskelijavuodet vanha]/CALCULATE([Kustannusryhmän mukaan painotetut VALMA&TELMA opiskelijavuodet vanha],ALL(Muuttujat[Koulutuksen järjestäjä]))",
+            "expression": "DIVIDE([Kustannusryhmän mukaan painotetut VALMA&TELMA opiskelijavuodet],CALCULATE([Kustannusryhmän mukaan painotetut VALMA&TELMA opiskelijavuodet],ALL(Muuttujat[Koulutuksen järjestäjä])))",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Prosenttiosuudet"
           },
           {
             "name": "Kustannusryhmän mukaan painotetut opiskelijavalmiuksia tukevat opiskelijavuodet %",
-            "expression": "[Kustannusryhmän mukaan painotetut opiskelijavalmiuksia tukevat opiskelijavuodet vanha]/CALCULATE([Kustannusryhmän mukaan painotetut opiskelijavalmiuksia tukevat opiskelijavuodet vanha],ALL(Muuttujat[Koulutuksen järjestäjä]))",
+            "expression": "DIVIDE([Kustannusryhmän mukaan painotetut opiskelijavalmiuksia tukevat opiskelijavuodet],CALCULATE([Kustannusryhmän mukaan painotetut opiskelijavalmiuksia tukevat opiskelijavuodet],ALL(Muuttujat[Koulutuksen järjestäjä])))",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Prosenttiosuudet"
           },
           {
             "name": "Kustannusryhmän mukaan painotetut muun koulutuksen opiskelijavuodet %",
-            "expression": "[Kustannusryhmän mukaan painotetut muun koulutuksen opiskelijavuodet vanha]/CALCULATE([Kustannusryhmän mukaan painotetut muun koulutuksen opiskelijavuodet vanha],ALL(Muuttujat[Koulutuksen järjestäjä]))",
+            "expression": "DIVIDE([Kustannusryhmän mukaan painotetut muun koulutuksen opiskelijavuodet],CALCULATE([Kustannusryhmän mukaan painotetut muun koulutuksen opiskelijavuodet],ALL(Muuttujat[Koulutuksen järjestäjä])))",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Prosenttiosuudet"
           },
           {
             "name": "Erityistuen mukaan painotetut opiskelijavuodet %",
-            "expression": "[Erityistuen mukaan painotetut opiskelijavuodet vanha]/CALCULATE([Erityistuen mukaan painotetut opiskelijavuodet vanha],ALL(Muuttujat[Koulutuksen järjestäjä]))",
+            "expression": "DIVIDE([Erityistuen mukaan painotetut opiskelijavuodet],CALCULATE([Erityistuen mukaan painotetut opiskelijavuodet],ALL(Muuttujat[Koulutuksen järjestäjä])))",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Prosenttiosuudet"
           },
           {
             "name": "Majoituksen mukaan painotetut opiskelijavuodet %",
-            "expression": "[Majoituksen mukaan painotetut opiskelijavuodet]/CALCULATE([Majoituksen mukaan painotetut opiskelijavuodet],ALL(Muuttujat[Koulutuksen järjestäjä]))",
+            "expression": "DIVIDE([Majoituksen mukaan painotetut opiskelijavuodet],CALCULATE([Majoituksen mukaan painotetut opiskelijavuodet],ALL(Muuttujat[Koulutuksen järjestäjä])))",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Prosenttiosuudet"
           },
           {
             "name": "Henkilöstökoulutuksen mukaan painotetut opiskelijavuodet %",
-            "expression": "[Henkilöstökoulutuksen mukaan painotetut opiskelijavuodet vanha]/CALCULATE([Henkilöstökoulutuksen mukaan painotetut opiskelijavuodet vanha],ALL(Muuttujat[Koulutuksen järjestäjä]))",
+            "expression": "DIVIDE([Henkilöstökoulutuksen mukaan painotetut opiskelijavuodet],CALCULATE([Henkilöstökoulutuksen mukaan painotetut opiskelijavuodet],ALL(Muuttujat[Koulutuksen järjestäjä])))",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Prosenttiosuudet"
           },
           {
             "name": "Työvoimakoulutuksen mukaan painotetut opiskelijavuodet %",
-            "expression": "[Työvoimakoulutuksen mukaan painotetut opiskelijavuodet vanha]/CALCULATE([Työvoimakoulutuksen mukaan painotetut opiskelijavuodet vanha],ALL(Muuttujat[Koulutuksen järjestäjä]))",
+            "expression": "DIVIDE([Työvoimakoulutuksen mukaan painotetut opiskelijavuodet],CALCULATE([Työvoimakoulutuksen mukaan painotetut opiskelijavuodet],ALL(Muuttujat[Koulutuksen järjestäjä])))",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Prosenttiosuudet"
           },
           {
             "name": "Vankilakoulutuksen mukaan painotetut opiskelijavuodet %",
-            "expression": "[Vankilakoulutuksen mukaan painotetut opiskelijavuodet vanha]/CALCULATE([Vankilakoulutuksen mukaan painotetut opiskelijavuodet vanha],ALL(Muuttujat[Koulutuksen järjestäjä]))",
+            "expression": "DIVIDE([Vankilakoulutuksen mukaan painotetut opiskelijavuodet],CALCULATE([Vankilakoulutuksen mukaan painotetut opiskelijavuodet],ALL(Muuttujat[Koulutuksen järjestäjä])))",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Prosenttiosuudet"
           },
           {
             "name": "Painotetut opiskelijavuodet yhteensä %",
-            "expression": "[Painotetut opiskelijavuodet yhteensä]/CALCULATE([Painotetut opiskelijavuodet yhteensä],ALL(Muuttujat[Koulutuksen järjestäjä]))",
+            "expression": "DIVIDE([Painotetut opiskelijavuodet yhteensä],CALCULATE([Painotetut opiskelijavuodet yhteensä],ALL(Muuttujat[Koulutuksen järjestäjä])))",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Prosenttiosuudet"
           },
@@ -2745,15 +2738,6 @@
             "displayFolder": "Opiskelijavuodet"
           },
           {
-            "name": "Painottamattomat opiskelijavuodet yhteensä testi",
-            "expression": [
-              "",
-              "var summa = CALCULATE(CALCULATE(SUM([opiskelijavuodet_painottamaton])+[Hylätyt opiskelijavuodet],ALL(Muuttujat[Luvaton korotustekijä])),ALL(Muuttujat[Luvaton majoitus]))",
-              "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)"
-            ],
-            "formatString": "#,0.00"
-          },
-          {
             "name": "korotusehto",
             "expression": [
               " ",
@@ -2777,29 +2761,10 @@
             "displayFolder": "Opiskelijavuodet"
           },
           {
-            "name": "Painotetut opiskelijavuodet yhteensä testi",
-            "expression": [
-              "",
-              "[Kustannusryhmän mukaan painotetut perustutkinnon opiskelijavuodet]+",
-              "[Kustannusryhmän mukaan painotetut at- ja eat-tutkinnon opiskelijavuodet]+",
-              "[Kustannusryhmän mukaan painotetut VALMA&TELMA opiskelijavuodet]+",
-              "[Kustannusryhmän mukaan painotetut opiskelijavalmiuksia tukevat opiskelijavuodet]+",
-              "[Kustannusryhmän mukaan painotetut muun koulutuksen opiskelijavuodet]+",
-              "[Majoituksen mukaan painotetut opiskelijavuodet]+",
-              "[Erityistuen mukaan painotetut opiskelijavuodet]+",
-              "[Työvoimakoulutuksen mukaan painotetut opiskelijavuodet]+",
-              "[Vankilakoulutuksen mukaan painotetut opiskelijavuodet]+",
-              "[Henkilöstökoulutuksen mukaan painotetut opiskelijavuodet]"
-            ],
-            "formatString": "#,0.00"
-          },
-          {
             "name": "Työvoimakoulutuksen mukaan painotetut opiskelijavuodet",
             "expression": [
               "",
               "var summa=SUM(Muuttujat[opiskelijavuodet_painotettu_tyovoimakoulutus])",
-              "var tyovoimakorotus = IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"2\",1,0),1)",
-              "--return IF([korotusehto]=1 || tyovoimakorotus=1;summa;BLANK())",
               "return IF(summa=0,BLANK(),summa)",
               ""
             ],
@@ -2810,9 +2775,7 @@
             "name": "Erityistuen mukaan painotetut opiskelijavuodet",
             "expression": [
               "",
-              "var korotustekija = IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"4\",1,0),0)",
               "var summa=SUM(Muuttujat[opiskelijavuodet_painotettu_erityistuki])",
-              "",
               "return IF(summa=0,BLANK(),summa)"
             ],
             "formatString": "#,0.00",
@@ -2880,8 +2843,6 @@
             "expression": [
               "",
               "var summa=SUM(Muuttujat[opiskelijavuodet_painotettu_vankilaopetus])",
-              "var vankilakorotus = IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"3\",1,0),1)",
-              "--return IF([korotusehto]=1 || vankilakorotus=1;summa;BLANK())",
               "return IF(summa=0,BLANK(),summa)"
             ],
             "formatString": "#,0.00",

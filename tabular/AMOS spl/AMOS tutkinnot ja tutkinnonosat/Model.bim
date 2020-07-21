@@ -563,7 +563,7 @@
             "name": "v_amos_tutkinnot_osaamispisteet",
             "dataView": "full",
             "source": {
-              "query": " SELECT [dw].[v_amos_tutkinnot_ja_tutkinnonosat_test].* FROM [dw].[v_amos_tutkinnot_ja_tutkinnonosat_test] ",
+              "query": " SELECT [dw].[v_amos_tutkinnot_ja_tutkinnonosat].* FROM [dw].[v_amos_tutkinnot_ja_tutkinnonosat] ",
               "dataSource": "SqlServer dwitvipusql16 antero"
             },
             "annotations": [
@@ -2344,8 +2344,8 @@
             "name": "Tutkintojen määrä",
             "expression": [
               "",
-              "var summa = CALCULATE(SUM([painottamaton_tutkinnot]),FILTER(Muuttujat,[Suorituksen tyyppi]=\"Koko tutkinto\"))",
-              "return IF(summa=0,BLANK(),summa)"
+              "var summa = CALCULATE(CALCULATE(SUM([painottamaton_tutkinnot]),FILTER(Muuttujat,[Suorituksen tyyppi]=\"Koko tutkinto\")),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)"
             ],
             "formatString": "#,0",
             "displayFolder": "Painottamattomat"
@@ -2354,8 +2354,8 @@
             "name": "Tutkinnon osien määrä (suorittaa koko tutkintoa)",
             "expression": [
               "",
-              "var summa = CALCULATE(SUM([painottamaton_osatutkinnot]),FILTER(Muuttujat,[Suorituksen tyyppi]=\"Koko tutkinto\"))",
-              "return IF(summa=0,BLANK(),summa)"
+              "var summa = CALCULATE(CALCULATE(SUM([painottamaton_osatutkinnot]),FILTER(Muuttujat,[Suorituksen tyyppi]=\"Koko tutkinto\")),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)"
             ],
             "formatString": "#,0",
             "displayFolder": "Painottamattomat"
@@ -2364,8 +2364,8 @@
             "name": "Osaamispisteiden määrä (suorittaa koko tutkintoa)",
             "expression": [
               "",
-              "var summa = CALCULATE(SUM([painottamaton_osaamispisteet]),FILTER(Muuttujat,[Suorituksen tyyppi]=\"Koko tutkinto\"))",
-              "return IF(summa=0,BLANK(),summa)"
+              "var summa = CALCULATE(CALCULATE(SUM([painottamaton_osaamispisteet]),FILTER(Muuttujat,[Suorituksen tyyppi]=\"Koko tutkinto\")),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)"
             ],
             "formatString": "#,0.0",
             "displayFolder": "Painottamattomat"
@@ -2374,8 +2374,8 @@
             "name": "Tutkinnon osien määrä (ei suorita koko tutkintoa)",
             "expression": [
               "",
-              "var summa = CALCULATE(SUM(Muuttujat[painottamaton_osatutkinnot]),FILTER(Muuttujat,[Suorituksen tyyppi]=\"Tutkinnon osa/osia\"))",
-              "return IF(summa=0,BLANK(),summa)"
+              "var summa = CALCULATE(CALCULATE(SUM(Muuttujat[painottamaton_osatutkinnot]),FILTER(Muuttujat,[Suorituksen tyyppi]=\"Tutkinnon osa/osia\")),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)"
             ],
             "formatString": "#,0",
             "displayFolder": "Painottamattomat"
@@ -2384,8 +2384,8 @@
             "name": "Osaamispisteiden määrä (ei suorita koko tutkintoa)",
             "expression": [
               "",
-              "var summa = CALCULATE(SUM([painottamaton_osaamispisteet]),FILTER(Muuttujat,[Suorituksen tyyppi]=\"Tutkinnon osa/osia\"))",
-              "return IF(summa=0,BLANK(),summa)"
+              "var summa = CALCULATE(CALCULATE(SUM([painottamaton_osaamispisteet]),FILTER(Muuttujat,[Suorituksen tyyppi]=\"Tutkinnon osa/osia\")),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)"
             ],
             "formatString": "#,0.0",
             "displayFolder": "Painottamattomat"
@@ -2414,14 +2414,7 @@
             "name": "Erityisen tuen mukaan painotetut tutkintojen pisteet",
             "expression": [
               "",
-              "var summa_perus=CALCULATE(SUM(Muuttujat[painotettu_tutkinnot_erityistuki]),ALL(Muuttujat[Luvaton korotustekijä]))",
-              "var summa_hyv=CALCULATE(SUM(Muuttujat[painotettu_tutkinnot_erityistuki_hyv]),ALL(Muuttujat[Luvaton korotustekijä]))",
-              "var erotus=summa_perus-summa_hyv",
-              "var luvaton=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])<>\"1\",1,0),0)",
-              "var siirretaan_hyvaksytyksi=IF(ISFILTERED(Muuttujat[Luvaton korotustekijä]),CALCULATE(SUM([painotettu_tutkinnot_erityistuki_hyv]),Muuttujat[jarj_luvaton_korotustekija]<>\"1\",ALL(Muuttujat[Luvaton korotustekijä])),0)",
-              "var korotusehto=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"1\",1,0),1)",
               "var summa=SUM(Muuttujat[painotettu_tutkinnot_erityistuki])",
-              "--return IF(summa_perus=0 || korotusehto=0;BLANK();IF(luvaton=1;erotus;summa_perus+siirretaan_hyvaksytyksi))",
               "return IF(summa=0,BLANK(),summa)"
             ],
             "formatString": "#,0.00",
@@ -2451,14 +2444,7 @@
             "name": "Erityisen tuen mukaan painotetut tutkinnon osien osaamispisteet",
             "expression": [
               "",
-              "var summa_perus=CALCULATE(SUM(Muuttujat[painotettu_tutkinnon_osien_osaamispisteet_erityistuki]),ALL(Muuttujat[Luvaton korotustekijä]))",
-              "var summa_hyv=CALCULATE(SUM(Muuttujat[painotettu_tutkinnon_osien_osaamispisteet_erityistuki_hyv]),ALL(Muuttujat[Luvaton korotustekijä]))",
-              "var erotus=summa_perus-summa_hyv",
-              "var luvaton=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])<>\"1\",1,0),0)",
-              "var siirretaan_hyvaksytyksi=IF(ISFILTERED(Muuttujat[Luvaton korotustekijä]),CALCULATE(SUM([painotettu_tutkinnon_osien_osaamispisteet_erityistuki_hyv]),Muuttujat[jarj_luvaton_korotustekija]<>\"1\",ALL(Muuttujat[Luvaton korotustekijä])),0)",
-              "var korotusehto=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"1\",1,0),1)",
               "var summa=SUM([painotettu_tutkinnon_osien_osaamispisteet_erityistuki])",
-              "--return IF(summa_perus=0 || korotusehto=0;BLANK();IF(luvaton=1;erotus;summa_perus+siirretaan_hyvaksytyksi))",
               "return IF(summa=0,BLANK(),summa)"
             ],
             "formatString": "#,0.00",
@@ -2491,8 +2477,7 @@
             "expression": [
               "",
               "[Tutkintojen painotetut pisteet yhteensä]",
-              "+[Laskentaan hyväksytyt painotetut osaamispisteet]",
-              "--+[Tutkinnon osien painotetut osaamispisteet yhteensä]"
+              "+[Laskentaan hyväksytyt painotetut osaamispisteet]"
             ],
             "formatString": "#,0.00",
             "displayFolder": "Painotetut"
@@ -2501,9 +2486,8 @@
             "name": "Perustutkintojen määrä",
             "expression": [
               "",
-              "var summa = CALCULATE(SUM([painottamaton_tutkinnot]),Muuttujat[Suorituksen tyyppi]=\"Koko tutkinto\",Muuttujat[Koodit Tutkintotyyppi]=\"02\")",
-              "return IF(summa=0,BLANK(),summa)",
-              ""
+              "var summa = CALCULATE(CALCULATE(SUM([painottamaton_tutkinnot]),Muuttujat[Suorituksen tyyppi]=\"Koko tutkinto\",Muuttujat[Koodit Tutkintotyyppi]=\"02\"),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)"
             ],
             "formatString": "#,0",
             "displayFolder": "Painottamattomat"
@@ -2512,8 +2496,8 @@
             "name": "Ammatti- ja erikoisammattitutkintojen määrä",
             "expression": [
               "",
-              "var summa = CALCULATE(SUM([painottamaton_tutkinnot]),Muuttujat[Suorituksen tyyppi]=\"Koko tutkinto\",Muuttujat[Koodit Tutkintotyyppi]=\"19\" || Muuttujat[Koodit Tutkintotyyppi]=\"20\")",
-              "return IF(summa=0,BLANK(),summa)",
+              "var summa = CALCULATE(CALCULATE(SUM([painottamaton_tutkinnot]),Muuttujat[Suorituksen tyyppi]=\"Koko tutkinto\",Muuttujat[Koodit Tutkintotyyppi]=\"19\" || Muuttujat[Koodit Tutkintotyyppi]=\"20\"),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)",
               ""
             ],
             "formatString": "#,0",
@@ -2523,8 +2507,8 @@
             "name": "Perustutkintojen tutkinnon osien määrä",
             "expression": [
               "",
-              "var summa = CALCULATE(SUM(Muuttujat[painottamaton_osatutkinnot]),Muuttujat[Koodit Tutkintotyyppi]=\"02\")",
-              "return IF(summa=0,BLANK(),summa)",
+              "var summa = CALCULATE(CALCULATE(SUM(Muuttujat[painottamaton_osatutkinnot]),Muuttujat[Koodit Tutkintotyyppi]=\"02\"),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)",
               ""
             ],
             "formatString": "#,0",
@@ -2534,8 +2518,8 @@
             "name": "Ammatti- ja erikoisammattitutkintojen tutkinnon osien määrä",
             "expression": [
               "",
-              "var summa = CALCULATE(SUM(Muuttujat[painottamaton_osatutkinnot]),Muuttujat[Koodit Tutkintotyyppi]=\"19\" || Muuttujat[Koodit Tutkintotyyppi]=\"20\")",
-              "return IF(summa=0,BLANK(),summa)",
+              "var summa = CALCULATE(CALCULATE(SUM(Muuttujat[painottamaton_osatutkinnot]),Muuttujat[Koodit Tutkintotyyppi]=\"19\" || Muuttujat[Koodit Tutkintotyyppi]=\"20\"),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)",
               ""
             ],
             "formatString": "#,0",
@@ -2543,37 +2527,37 @@
           },
           {
             "name": "Perustutkintojen kustannusryhmän ja pohjakoulutuksen mukaan painotetut pisteet %",
-            "expression": "SUM([painotettu_tutkinnot_pt_kr_pk]) / CALCULATE(SUM(Muuttujat[painotettu_tutkinnot_pt_kr_pk]),ALL(Muuttujat[Koulutuksen järjestäjä]))",
+            "expression": "DIVIDE([Perustutkintojen kustannusryhmän ja pohjakoulutuksen mukaan painotetut pisteet], CALCULATE([Perustutkintojen kustannusryhmän ja pohjakoulutuksen mukaan painotetut pisteet],ALL(Muuttujat[Koulutuksen järjestäjä])))",
             "formatString": "0.00 %;-0.00 %;0.00 %",
             "displayFolder": "Prosenttiosuudet"
           },
           {
             "name": "Ammatti- ja erikoisammattitutkintojen kustannusryhmän ja pohjakoulutuksen mukaan painotetut pist %",
-            "expression": "SUM([painotettu_tutkinnot_at_eat_kr_pk]) / CALCULATE(SUM(Muuttujat[painotettu_tutkinnot_at_eat_kr_pk]),ALL(Muuttujat[Koulutuksen järjestäjä]))",
+            "expression": "DIVIDE([Ammatti- ja erikoisammattitutkintojen kustannusryhmän ja pohjakoulutuksen mukaan painotetut pisteet],CALCULATE([Ammatti- ja erikoisammattitutkintojen kustannusryhmän ja pohjakoulutuksen mukaan painotetut pisteet],ALL(Muuttujat[Koulutuksen järjestäjä])))",
             "formatString": "0.00 %;-0.00 %;0.00 %",
             "displayFolder": "Prosenttiosuudet"
           },
           {
             "name": "Erityisen tuen mukaan painotetut tutkintojen pisteet %",
-            "expression": "SUM([painotettu_tutkinnot_erityistuki]) / CALCULATE(SUM([painotettu_tutkinnot_erityistuki]),ALL(Muuttujat[Koulutuksen järjestäjä]))",
+            "expression": "DIVIDE([Erityisen tuen mukaan painotetut tutkintojen pisteet],CALCULATE([Erityisen tuen mukaan painotetut tutkintojen pisteet],ALL(Muuttujat[Koulutuksen järjestäjä])))",
             "formatString": "0.00 %;-0.00 %;0.00 %",
             "displayFolder": "Prosenttiosuudet"
           },
           {
             "name": "Perustutkintojen osien kustannusryhmän mukaan painotetut osaamispisteet %",
-            "expression": "SUM([painotettu_tutkinnon_osien_osaamispisteet_pt_kr]) / CALCULATE(SUM([painotettu_tutkinnon_osien_osaamispisteet_pt_kr]),ALL(Muuttujat[Koulutuksen järjestäjä]))",
+            "expression": "DIVIDE([Perustutkintojen osien kustannusryhmän mukaan painotetut osaamispisteet],CALCULATE([Perustutkintojen osien kustannusryhmän mukaan painotetut osaamispisteet],ALL(Muuttujat[Koulutuksen järjestäjä])))",
             "formatString": "0.00 %;-0.00 %;0.00 %",
             "displayFolder": "Prosenttiosuudet"
           },
           {
             "name": "Ammatti- ja erikoisammattitutkintojen osien kustannusryhmän mukaan painotetut osaamispisteet %",
-            "expression": "SUM([painotettu_tutkinnon_osien_osaamispisteet_at_eat_kr]) / CALCULATE(SUM([painotettu_tutkinnon_osien_osaamispisteet_at_eat_kr]),ALL(Muuttujat[Koulutuksen järjestäjä]))",
+            "expression": "DIVIDE([Ammatti- ja erikoisammattitutkintojen osien kustannusryhmän mukaan painotetut osaamispisteet],CALCULATE([Ammatti- ja erikoisammattitutkintojen osien kustannusryhmän mukaan painotetut osaamispisteet],ALL(Muuttujat[Koulutuksen järjestäjä])))",
             "formatString": "0.00 %;-0.00 %;0.00 %",
             "displayFolder": "Prosenttiosuudet"
           },
           {
             "name": "Erityisen tuen mukaan painotetut tutkinnon osien osaamispisteet %",
-            "expression": "SUM([painotettu_tutkinnon_osien_osaamispisteet_erityistuki]) / CALCULATE(SUM([painotettu_tutkinnon_osien_osaamispisteet_erityistuki]),ALL(Muuttujat[Koulutuksen järjestäjä]))",
+            "expression": "DIVIDE([Erityisen tuen mukaan painotetut tutkinnon osien osaamispisteet],CALCULATE([Erityisen tuen mukaan painotetut tutkinnon osien osaamispisteet],ALL(Muuttujat[Koulutuksen järjestäjä])))",
             "formatString": "0.00 %;-0.00 %;0.00 %",
             "displayFolder": "Prosenttiosuudet"
           },
@@ -2581,15 +2565,10 @@
             "name": "Tutkintojen painotetut pisteet yhteensä %",
             "expression": [
               "",
-              "(CALCULATE(",
-              "[Perustutkintojen kustannusryhmän ja pohjakoulutuksen mukaan painotetut pisteet]",
-              "+[Ammatti- ja erikoisammattitutkintojen kustannusryhmän ja pohjakoulutuksen mukaan painotetut pisteet]",
-              "+[Erityisen tuen mukaan painotetut tutkintojen pisteet])) ",
-              "/",
-              "(CALCULATE(",
-              "[Perustutkintojen kustannusryhmän ja pohjakoulutuksen mukaan painotetut pisteet]",
-              "+[Ammatti- ja erikoisammattitutkintojen kustannusryhmän ja pohjakoulutuksen mukaan painotetut pisteet]",
-              "+[Erityisen tuen mukaan painotetut tutkintojen pisteet],ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusmuoto])))"
+              "DIVIDE(",
+              "\t[Tutkintojen painotetut pisteet yhteensä],",
+              "\tCALCULATE([Tutkintojen painotetut pisteet yhteensä],ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusmuoto]),Muuttujat[Tilastovuosi])",
+              ")"
             ],
             "formatString": "0.00 %;-0.00 %;0.00 %",
             "displayFolder": "Prosenttiosuudet"
@@ -2598,8 +2577,10 @@
             "name": "Tutkintojen ja tutkinnon osien painotetut pisteet, järj. %-osuus",
             "expression": [
               "",
-              "[Tutkintojen ja tutkinnon osien painotetut pisteet yhteensä] /",
-              "CALCULATE([Tutkintojen ja tutkinnon osien painotetut pisteet yhteensä],ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusmuoto],Muuttujat[Tilastovuosi]))",
+              "DIVIDE(",
+              "\t[Tutkintojen ja tutkinnon osien painotetut pisteet yhteensä],",
+              "\tCALCULATE([Tutkintojen ja tutkinnon osien painotetut pisteet yhteensä],ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusmuoto],Muuttujat[Tilastovuosi]))",
+              ")",
               ""
             ],
             "formatString": "0.00 %;-0.00 %;0.00 %",
@@ -2609,14 +2590,10 @@
             "name": "Tutkinnon osien painotetut osaamispisteet yhteensä %",
             "expression": [
               "",
-              "CALCULATE(",
-              "[Perustutkintojen osien kustannusryhmän mukaan painotetut osaamispisteet]",
-              "+[Ammatti- ja erikoisammattitutkintojen osien kustannusryhmän mukaan painotetut osaamispisteet]",
-              "+[Erityisen tuen mukaan painotetut tutkinnon osien osaamispisteet]) /",
-              "CALCULATE(",
-              "[Perustutkintojen osien kustannusryhmän mukaan painotetut osaamispisteet]",
-              "+[Ammatti- ja erikoisammattitutkintojen osien kustannusryhmän mukaan painotetut osaamispisteet]",
-              "+[Erityisen tuen mukaan painotetut tutkinnon osien osaamispisteet],ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusmuoto]))",
+              "DIVIDE(",
+              "\t[Tutkinnon osien painotetut osaamispisteet yhteensä],",
+              "\tCALCULATE([Tutkinnon osien painotetut osaamispisteet yhteensä],ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusmuoto]),Muuttujat[Tilastovuosi])",
+              ")",
               ""
             ],
             "formatString": "0.00 %;-0.00 %;0.00 %",
@@ -2665,9 +2642,8 @@
             "name": "Laskentaan hyväksytyt painottamattomat osaamispisteet",
             "expression": [
               "",
-              "var summa = SUMX(Muuttujat, [painottamaton_osaamispisteet] * IF(Muuttujat[rahoitusmuoto_maksetaan]=1,Muuttujat[leikkauskerroin2],0))",
-              "",
-              "return IF(summa=0,BLANK(),summa)",
+              "var summa = CALCULATE(SUMX(Muuttujat, [painottamaton_osaamispisteet] * IF(Muuttujat[rahoitusmuoto_maksetaan]=1,Muuttujat[leikkauskerroin2],0)),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)",
               ""
             ],
             "formatString": "#,0.0",
@@ -2743,20 +2719,33 @@
             "isHidden": true
           },
           {
-            "name": "Erityisen tuen mukaan painotetut tutkintojen pisteet_vanha",
+            "name": "Erityisen tuen mukaan painotetut tutkintojen pisteet_testi",
             "expression": [
               "",
-              "var summa=SUM([painotettu_tutkinnot_erityistuki])",
-              "return IF(summa=0,BLANK(),summa)"
+              "var summa_perus=CALCULATE(SUM(Muuttujat[painotettu_tutkinnot_erityistuki]),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "var summa_hyv=CALCULATE(SUM(Muuttujat[painotettu_tutkinnot_erityistuki_hyv]),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "var erotus=summa_perus-summa_hyv",
+              "var luvaton=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])<>\"1\",1,0),0)",
+              "var siirretaan_hyvaksytyksi=IF(ISFILTERED(Muuttujat[Luvaton korotustekijä]),CALCULATE(SUM([painotettu_tutkinnot_erityistuki_hyv]),Muuttujat[jarj_luvaton_korotustekija]<>\"1\",ALL(Muuttujat[Luvaton korotustekijä])),0)",
+              "var korotusehto=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"1\",1,0),1)",
+              "",
+              "return IF(summa_perus=0 || korotusehto=0,BLANK(),IF(luvaton=1,erotus,summa_perus+siirretaan_hyvaksytyksi))"
             ],
             "formatString": "#,0.00"
           },
           {
-            "name": "Erityisen tuen mukaan painotetut tutkinnon osien osaamispisteet_vanha",
+            "name": "Erityisen tuen mukaan painotetut tutkinnon osien osaamispisteet_testi",
             "expression": [
               "",
+              "var summa_perus=CALCULATE(SUM(Muuttujat[painotettu_tutkinnon_osien_osaamispisteet_erityistuki]),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "var summa_hyv=CALCULATE(SUM(Muuttujat[painotettu_tutkinnon_osien_osaamispisteet_erityistuki_hyv]),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "var erotus=summa_perus-summa_hyv",
+              "var luvaton=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])<>\"1\",1,0),0)",
+              "var siirretaan_hyvaksytyksi=IF(ISFILTERED(Muuttujat[Luvaton korotustekijä]),CALCULATE(SUM([painotettu_tutkinnon_osien_osaamispisteet_erityistuki_hyv]),Muuttujat[jarj_luvaton_korotustekija]<>\"1\",ALL(Muuttujat[Luvaton korotustekijä])),0)",
+              "var korotusehto=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"1\",1,0),1)",
               "var summa=SUM([painotettu_tutkinnon_osien_osaamispisteet_erityistuki])",
-              "return IF(summa=0,BLANK(),summa)"
+              "return IF(summa_perus=0 || korotusehto=0,BLANK(),IF(luvaton=1,erotus,summa_perus+siirretaan_hyvaksytyksi))",
+              ""
             ],
             "formatString": "#,0.00"
           },
@@ -2769,25 +2758,25 @@
             "isHidden": true
           },
           {
-            "name": "Laskentaan hyväksytyt painotetut osaamispisteet_vanha",
+            "name": "Laskentaan hyväksytyt painotetut osaamispisteet %",
             "expression": [
               "",
-              "var summa1 = SUMX(Muuttujat,[painotettu_tutkinnon_osien_osaamispisteet_pt_kr] * IF(Muuttujat[rahoitusmuoto_maksetaan]=1 && [hyvaksytaan_rahoitukseen]=1,[leikkauskerroin2],0))",
-              "var summa2 = SUMX(Muuttujat,[painotettu_tutkinnon_osien_osaamispisteet_at_eat_kr] * IF(Muuttujat[rahoitusmuoto_maksetaan]=1 && [hyvaksytaan_rahoitukseen]=1,[leikkauskerroin2],0))",
-              "var summa3 = SUMX(Muuttujat,[painotettu_tutkinnon_osien_osaamispisteet_erityistuki] * IF(Muuttujat[rahoitusmuoto_maksetaan]=1 && [hyvaksytaan_rahoitukseen]=1,[leikkauskerroin2],0))",
-              "return summa1 + summa2 + summa3",
-              ""
-            ]
+              "DIVIDE(",
+              "\t[Laskentaan hyväksytyt painotetut osaamispisteet]",
+              "\t,CALCULATE([Laskentaan hyväksytyt painotetut osaamispisteet],ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusmuoto]),Muuttujat[Tilastovuosi])",
+              ")"
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %"
           }
         ],
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": " SELECT [dw].[v_amos_tutkinnot_ja_tutkinnonosat_test].* FROM [dw].[v_amos_tutkinnot_ja_tutkinnonosat_test] "
+            "value": " SELECT [dw].[v_amos_tutkinnot_ja_tutkinnonosat].* FROM [dw].[v_amos_tutkinnot_ja_tutkinnonosat] "
           },
           {
             "name": "_TM_ExtProp_DbTableName",
-            "value": "v_amos_tutkinnot_ja_tutkinnonosat_test"
+            "value": "v_amos_tutkinnot_ja_tutkinnonosat"
           },
           {
             "name": "_TM_ExtProp_DbSchemaName",
