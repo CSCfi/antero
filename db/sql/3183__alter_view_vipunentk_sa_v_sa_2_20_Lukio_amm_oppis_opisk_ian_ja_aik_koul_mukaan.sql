@@ -33,7 +33,7 @@ SELECT
       ,[tutklaja]= CAST(kaikkivuodet.tutklaja as nvarchar (1))
       ,[ophal]= CAST(kaikkivuodet.ophal as nvarchar (1))
       ,[kkun]= CAST(kaikkivuodet.kkun as nvarchar (3))
-      ,[rahoitus]= CAST(cast(kaikkivuodet.rahoitus as int) as nvarchar (2)))
+      ,[rahoitus]= CAST(cast(kaikkivuodet.rahoitus as int) as nvarchar (2))
       ,[sp]= CAST(kaikkivuodet.sp as nvarchar (1))
       ,[aikielir1]= CAST(kaikkivuodet.aikielir1 as nvarchar (2))
       ,[alvv]= CAST(kaikkivuodet.alvv as nvarchar (4))
