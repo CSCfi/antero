@@ -67,7 +67,7 @@ SELECT
 	,paataso = 1
 
 FROM [sa].[temp_tutkinnot_ja_tutkinnonosat_paatason_suoritukset] as ptkr  
-INNER JOIN [sa].[temp_tutkinnot_ja_tutkinnonosat_aikajaksot] op ON ptkr.paatason_suoritus_id = op.paatason_suoritus_id			AND ptkr.vahvistus_paiva_muokattu between op.alku and op.loppu--AP 20.6.2019 n. 400 oidia tulee tuplana, koska kaksi päätason suoritus (kokotutkinto x2 tai koko+osittainen)
+INNER JOIN [sa].[temp_tutkinnot_ja_tutkinnonosat_aikajaksot] op ON ptkr.paatason_suoritus_id = op.paatason_suoritus_id		AND ptkr.vahvistus_paiva_muokattu between op.alku and op.loppu--AP 20.6.2019 n. 400 oidia tulee tuplana, koska kaksi päätason suoritus (kokotutkinto x2 tai koko+osittainen)
 LEFT JOIN [sa].[temp_tutkinnot_ja_tutkinnonosat_aikajaksot] op2 ON op2.opiskeluoikeus_oid = ptkr.ylempi_opiskeluoikeus_oid	AND ptkr.vahvistus_paiva_muokattu between op2.alku and op2.loppu
 
 WHERE 1=1
@@ -145,13 +145,14 @@ SELECT distinct
 	,paataso = 0
 
 FROM [sa].[temp_tutkinnot_ja_tutkinnonosat_tutkinnon_osien_suoritukset] tos
-INNER JOIN [sa].[temp_tutkinnot_ja_tutkinnonosat_aikajaksot] op ON op.opiskeluoikeus_oid = tos.opiskeluoikeus_oid			AND (tos.arviointi_paiva_muokattu between op.alku and op.loppu) AND tos.paatason_suoritus_id = op.paatason_suoritus_id
+INNER JOIN [sa].[temp_tutkinnot_ja_tutkinnonosat_aikajaksot] op ON op.paatason_suoritus_id = tos.paatason_suoritus_id		AND (tos.arviointi_paiva_muokattu between op.alku and op.loppu)
 LEFT JOIN [sa].[temp_tutkinnot_ja_tutkinnonosat_aikajaksot] op2 ON op2.opiskeluoikeus_oid = tos.ylempi_opiskeluoikeus_oid	AND tos.arviointi_paiva_muokattu between op2.alku and op2.loppu
 INNER JOIN [sa].[temp_tutkinnot_ja_tutkinnonosat_paatason_suoritukset] ptkr ON ptkr.paatason_suoritus_id = tos.paatason_suoritus_id
 LEFT JOIN [dbo].[vanhat_tutkinnot_laajuus_diaarinumerokohdistus] vtl on vtl.diaarinumero = op.diaarinumero
 LEFT JOIN ANTERO.sa.sa_amos_osaamisala_kustannusryhma okr on okr.osaamisala_koodi = coalesce(tos.osaamisala_johon_tutkinnonosa_kuuluu,'')
 LEFT JOIN ANTERO.dw.d_koulutusluokitus kl on kl.koulutusluokitus_koodi = tos.tutkinto_johon_tutkinnonosa_kuuluu
 LEFT JOIN ANTERO.sa.sa_amos_tutkinto_kustannusryhma tkr on tkr.tutkinto_koodi = coalesce(kl.uusi_eat_koodi, kl.koulutusluokitus_koodi)
+
 
 GO
 USE [ANTERO]
