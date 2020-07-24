@@ -68,6 +68,13 @@ for (i in 1:length(ind_shortName)){
 
 write.csv2(data2,"D:/pdi_integrations/data/horizon/horizon_organisations.csv",row.names = FALSE, na="", fileEncoding ="UTF-8")
 
+##### Varmuuskopioidaan datat #####
+
+write.csv2(data,paste("D:/pdi_integrations/data/horizon/Varmuuskopiot/horizon_projects_", Sys.Date(),".csv", sep=""),row.names = FALSE, na="", fileEncoding = "UTF-8")
+
+write.csv2(data2,paste("D:/pdi_integrations/data/horizon/Varmuuskopiot/horizon_organisations_", Sys.Date(),".csv", sep=""),row.names = FALSE, na="", fileEncoding = "UTF-8")
+
+
 ##### Kesto #####
 
 Loppu <- Sys.time() #Tallennetaan aikaa varten lopetusaika
