@@ -32,7 +32,7 @@ select
 ,[Ammattikorkeakoulu] = d6.amk_nimi_fi
 ,[Yliopisto] = null
 
-,[Sektor] = 'AMK'
+,[Sektorn] = 'AMK'
 
 --sv
 
@@ -56,7 +56,7 @@ select
 ,[Yrkeshögskola] = d6.amk_nimi_sv
 ,[Universitet] = null
 
-,[Sektori] = 'Yrkeshögskoleutbildning'
+,[Sektor] = 'Yrkeshögskoleutbildning'
 
 --mittarit
 ,f.vierailut_ulkomaille_lkm
