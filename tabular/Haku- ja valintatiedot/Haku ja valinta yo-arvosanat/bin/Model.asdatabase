@@ -2052,7 +2052,8 @@
             "expression": [
               "",
               "var lkm = CALCULATE(DISTINCTCOUNT([Henkilö OID]),Muuttujat[valittu]=1)",
-              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+              "return ",
+              "IF(AND(HASONEVALUE(Muuttujat[Koulutuksen alkamisvuosi]), MAX([Koulutuksen alkamisvuosi]) = 2020), BLANK(), IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3))))"
             ],
             "formatString": "#,0"
           },
@@ -2141,7 +2142,8 @@
             "expression": [
               " ",
               "var taulu = GROUPBY(Muuttujat, [Aine + laajuus], [Arvosana, numero], [Henkilö OID])",
-              "return IF([hlöiden lkm] < 5, BLANK(), AVERAGEX(taulu, [Arvosana, numero]))"
+              "return ",
+              "IF(AND(HASONEVALUE(Muuttujat[Koulutuksen alkamisvuosi]), MAX([Koulutuksen alkamisvuosi]) = 2020), BLANK(), IF([hlöiden lkm] < 5, BLANK(), AVERAGEX(taulu, [Arvosana, numero])))"
             ],
             "formatString": "0.00"
           },
@@ -2168,7 +2170,8 @@
             "expression": [
               " ",
               "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[Henkilö OID]), Muuttujat[vastaanottanut paikan] = 1)",
-              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+              "return ",
+              "IF(AND(HASONEVALUE(Muuttujat[Koulutuksen alkamisvuosi]), MAX([Koulutuksen alkamisvuosi]) = 2020), BLANK(), IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3))))"
             ]
           },
           {
@@ -2195,11 +2198,12 @@
               "\t\tALL(Muuttujat[Kirjoitettu matematiikka]))",
               "var osa = IF(lkm1 = 0, BLANK(), IF(lkm1 < 5, \"1-4\", MROUND(lkm1, 3)))",
               "var kaikki = IF(lkm2 = 0, BLANK(), IF(lkm2 < 5, \"1-4\", MROUND(lkm2, 3)))",
-              "return IF(osa = BLANK(), BLANK(),",
+              "return ",
+              "IF(AND(HASONEVALUE(Muuttujat[Koulutuksen alkamisvuosi]), MAX([Koulutuksen alkamisvuosi]) = 2020), BLANK(), IF(osa = BLANK(), BLANK(),",
               "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
               "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
               "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
-              "osa / kaikki)))"
+              "osa / kaikki))))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
@@ -2226,49 +2230,52 @@
           },
           {
             "name": "*Paikan vastaanottaneet",
-            "expression": " CALCULATE([*Hakijat], Muuttujat[vastaanottanut paikan] = 1)",
+            "expression": [
+              " ",
+              "IF(AND(HASONEVALUE(Muuttujat[Koulutuksen alkamisvuosi]), MAX([Koulutuksen alkamisvuosi]) = 2020), BLANK(), CALCULATE([*Hakijat], Muuttujat[vastaanottanut paikan] = 1))"
+            ],
             "formatString": "0.00",
             "displayFolder": "Keskiarvomuuttujat"
           },
           {
             "name": "*Valitut",
-            "expression": " CALCULATE([*Hakijat], Muuttujat[valittu] = 1)",
+            "expression": " IF(AND(HASONEVALUE(Muuttujat[Koulutuksen alkamisvuosi]), MAX([Koulutuksen alkamisvuosi]) = 2020), BLANK(), CALCULATE([*Hakijat], Muuttujat[valittu] = 1))",
             "formatString": "0.00",
             "displayFolder": "Keskiarvomuuttujat"
           },
           {
             "name": "YO, kaikki paikan vastaanottaneet",
-            "expression": " CALCULATE([*Hakijat], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi], Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[vastaanottanut paikan] = 1, Muuttujat[Sektori] = \"Yliopistokoulutus\")",
+            "expression": " IF(AND(HASONEVALUE(Muuttujat[Koulutuksen alkamisvuosi]), MAX([Koulutuksen alkamisvuosi]) = 2020), BLANK(), CALCULATE([*Hakijat], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi], Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[vastaanottanut paikan] = 1, Muuttujat[Sektori] = \"Yliopistokoulutus\"))",
             "formatString": "0.00",
             "displayFolder": "Kiinteät keskiarvomuuttujat"
           },
           {
             "name": "AMK, kaikki paikan vastaanottaneet",
-            "expression": " CALCULATE([*Hakijat], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi], Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[vastaanottanut paikan] = 1, Muuttujat[Sektori] = \"Ammattikorkeakoulukoulutus\")",
+            "expression": " IF(AND(HASONEVALUE(Muuttujat[Koulutuksen alkamisvuosi]), MAX([Koulutuksen alkamisvuosi]) = 2020), BLANK(), CALCULATE([*Hakijat], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi], Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[vastaanottanut paikan] = 1, Muuttujat[Sektori] = \"Ammattikorkeakoulukoulutus\"))",
             "formatString": "0.00",
             "displayFolder": "Kiinteät keskiarvomuuttujat"
           },
           {
             "name": "YO, kaikki valitut",
-            "expression": " CALCULATE([*Hakijat], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi], Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[valittu] = 1, Muuttujat[Sektori] = \"Yliopistokoulutus\")",
+            "expression": " IF(AND(HASONEVALUE(Muuttujat[Koulutuksen alkamisvuosi]), MAX([Koulutuksen alkamisvuosi]) = 2020), BLANK(), CALCULATE([*Hakijat], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi], Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[valittu] = 1, Muuttujat[Sektori] = \"Yliopistokoulutus\"))",
             "formatString": "0.00",
             "displayFolder": "Kiinteät keskiarvomuuttujat"
           },
           {
             "name": "AMK, kaikki valitut",
-            "expression": " CALCULATE([*Hakijat], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi],Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[valittu] = 1, Muuttujat[Sektori] = \"Ammattikorkeakoulukoulutus\")",
+            "expression": " IF(AND(HASONEVALUE(Muuttujat[Koulutuksen alkamisvuosi]), MAX([Koulutuksen alkamisvuosi]) = 2020), BLANK(), CALCULATE([*Hakijat], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi],Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[valittu] = 1, Muuttujat[Sektori] = \"Ammattikorkeakoulukoulutus\"))",
             "formatString": "0.00",
             "displayFolder": "Kiinteät keskiarvomuuttujat"
           },
           {
             "name": "Kaikki paikan vastaanottaneet",
-            "expression": " CALCULATE([*Hakijat], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi],Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[vastaanottanut paikan] = 1)",
+            "expression": " IF(AND(HASONEVALUE(Muuttujat[Koulutuksen alkamisvuosi]), MAX([Koulutuksen alkamisvuosi]) = 2020), BLANK(), CALCULATE([*Hakijat], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi],Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[vastaanottanut paikan] = 1))",
             "formatString": "0.00",
             "displayFolder": "Kiinteät keskiarvomuuttujat"
           },
           {
             "name": "Kaikki valitut",
-            "expression": " CALCULATE([*Hakijat], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi], Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[valittu]= 1)",
+            "expression": " IF(AND(HASONEVALUE(Muuttujat[Koulutuksen alkamisvuosi]), MAX([Koulutuksen alkamisvuosi]) = 2020), BLANK(), CALCULATE([*Hakijat], ALLEXCEPT(Muuttujat, Muuttujat[Koulutuksen alkamisvuosi], Muuttujat[Koulutuksen alkamiskausi], Muuttujat[Tutkinnon aloitussykli (hakukohde)]), Muuttujat[valittu]= 1))",
             "formatString": "0.00",
             "displayFolder": "Kiinteät keskiarvomuuttujat"
           },
@@ -2310,7 +2317,8 @@
               "\t\tMuuttujat[Aine] = \"Matematiikka\")",
               "var osa = IF(lkm1 = 0, BLANK(), IF(lkm1 < 5, \"1-4\", MROUND(lkm1, 3)))",
               "var kaikki = IF(lkm2 = 0, BLANK(), IF(lkm2 < 5, \"1-4\", MROUND(lkm2, 3)))",
-              "return IF(osa = BLANK(), BLANK(),",
+              "return ",
+              "IF(osa = BLANK(), BLANK(),",
               "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
               "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
               "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
@@ -2321,12 +2329,18 @@
           },
           {
             "name": "Matematiikan arvosanan osuus (valitut)",
-            "expression": "CALCULATE([Matematiikan arvosanan osuus (hakijat)], Muuttujat[valittu] = 1)",
+            "expression": [
+              "",
+              "IF(AND(HASONEVALUE(Muuttujat[Koulutuksen alkamisvuosi]), MAX([Koulutuksen alkamisvuosi]) = 2020), BLANK(), CALCULATE([Matematiikan arvosanan osuus (hakijat)], Muuttujat[valittu] = 1))"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Matematiikan arvosanan osuus (paikan vastaanottaneet)",
-            "expression": "CALCULATE([Matematiikan arvosanan osuus (hakijat)], Muuttujat[vastaanottanut paikan] = 1)",
+            "expression": [
+              "",
+              "IF(AND(HASONEVALUE(Muuttujat[Koulutuksen alkamisvuosi]), MAX([Koulutuksen alkamisvuosi]) = 2020), BLANK(), CALCULATE([Matematiikan arvosanan osuus (hakijat)], Muuttujat[vastaanottanut paikan] = 1))"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
@@ -2345,11 +2359,12 @@
               "\t,Muuttujat[Arvosanojen M/E/L lkm]",
               "\t, Muuttujat[Arvosanojen E/L lkm]",
               "))",
-              "return IF(osa = BLANK(), BLANK(),",
+              "return ",
+              "IF(AND(HASONEVALUE(Muuttujat[Koulutuksen alkamisvuosi]), MAX([Koulutuksen alkamisvuosi]) = 2020), BLANK(), IF(osa = BLANK(), BLANK(),",
               "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
               "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
               "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
-              "osa / kaikki)))",
+              "osa / kaikki))))",
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
@@ -2359,7 +2374,8 @@
             "expression": [
               " ",
               "var taulu = GROUPBY(Muuttujat, [Aine + laajuus], [Arvosana, numero (0-7)], [Henkilö OID])",
-              "return IF([hlöiden lkm] < 5, BLANK(), AVERAGEX(taulu, [Arvosana, numero (0-7)]))"
+              "return ",
+              "IF(AND(HASONEVALUE(Muuttujat[Koulutuksen alkamisvuosi]), MAX([Koulutuksen alkamisvuosi]) = 2020), BLANK(), IF([hlöiden lkm] < 5, BLANK(), AVERAGEX(taulu, [Arvosana, numero (0-7)])))"
             ],
             "formatString": "0.00"
           },
@@ -2450,7 +2466,8 @@
             "expression": [
               " ",
               "var taulu = GROUPBY(Muuttujat, [Aine + laajuus], [Arvosana, numero], [Henkilö OID])",
-              "return AVERAGEX(taulu, [Arvosana, numero])"
+              "return ",
+              "AVERAGEX(taulu, [Arvosana, numero])"
             ],
             "formatString": "0.00"
           },
