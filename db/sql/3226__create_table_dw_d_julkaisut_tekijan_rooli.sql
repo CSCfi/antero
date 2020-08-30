@@ -4,6 +4,7 @@ GO
 ALTER TABLE [dw].[d_julkaisun_tekijan_rooli] DROP CONSTRAINT [DF__d_rooli__loadtime]
 GO
 
+
 /****** Object:  Table [dw].[d_julkaisun_tekijan_rooli]    Script Date: 31.8.2020 1:02:33 ******/
 DROP TABLE [dw].[d_julkaisun_tekijan_rooli]
 GO
