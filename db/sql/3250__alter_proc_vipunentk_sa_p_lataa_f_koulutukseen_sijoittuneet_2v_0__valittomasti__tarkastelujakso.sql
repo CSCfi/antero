@@ -698,10 +698,9 @@ FROM
 	select * from [VipunenTK_SA].[dbo].[v_K3_12_Perusk_paattaneet_amm_tutk_suorittaneet]
 	where suorlk = '1' 
 	and tutkryh <> '3' 
-	/* HUOM!
-	Ammatillista tutkintokoodia ei ennen sopv20 rajattu suoritusvuoden opiskelusta pois, mikä vaikuttaa myös ptoim-päättelyihin, jälkimmäinen tilanne myös sopv20.
-	Kumulatiivisista muuttujista toimii vain ne, jotka eivät koske välitöntä ammatillista opiskelua tai opiskelemattomuutta. / jsyrjala 4.9.2020
-	*/
+	-- HUOM!
+	--Ammatillista tutkintokoodia ei ennen sopv20 rajattu suoritusvuoden opiskelusta pois, mikä vaikuttaa myös ptoim-päättelyihin, jälkimmäinen tilanne myös sopv20.
+	--Kumulatiivisista muuttujista toimii vain ne, jotka eivät koske välitöntä ammatillista opiskelua tai opiskelemattomuutta. / jsyrjala 4.9.2020
 ) as l
 
 INNER JOIN VipunenTK.dbo.d_koulutusluokitus d1a on d1a.koulutusluokitus_avain=COALESCE(NULLIF(l.amkopiskkoulk_1,''),'-1')
@@ -734,7 +733,7 @@ INNER JOIN VipunenTK.dbo.d_koulutusluokitus d6c on d6c.koulutusluokitus_avain=CO
 INNER JOIN VipunenTK.dbo.d_koulutusluokitus d7c on d7c.koulutusluokitus_avain=COALESCE(NULLIF(l.ammopiskkoulk2014,''),'-1')	
 INNER JOIN VipunenTK.dbo.d_koulutusluokitus d8c on d8c.koulutusluokitus_avain=COALESCE(NULLIF(l.ammopiskkoulk2015,''),'-1')	*/
 
-	WHERE 1=1
+	WHERE 1=1;
 
 --end;
 
@@ -751,5 +750,5 @@ if @debug_what_to_run>0 PRINT 'all done.';*/
 
 
 --GO
-GO
+
 USE [ANTERO]
