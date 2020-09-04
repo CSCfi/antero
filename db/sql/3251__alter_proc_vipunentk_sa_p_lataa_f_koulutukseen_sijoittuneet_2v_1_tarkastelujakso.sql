@@ -1132,20 +1132,7 @@ CROSS APPLY (SELECT MIN(d) MinValue, MAX(d) MaxValue FROM (VALUES (d7a.iscfibroa
 CROSS APPLY (SELECT MIN(d) MinValue, MAX(d) MaxValue FROM (VALUES (d8a.iscfibroad2013_koodi),(d8b.iscfibroad2013_koodi), (d9a.iscfibroad2013_koodi),(d9b.iscfibroad2013_koodi)) AS a(d)) m8*/
 
 	WHERE 1=1
---end;
-
---
--- TULOS
--- 
-/*if @debug_what_to_run>=3 begin
-	if @debug_what_to_run>0 print 'querying result';
-	select * from [VipunenTK_DW].[dbo].[_koulutukseen_sijoittuneet_2v]
 	
-end;
-
-if @debug_what_to_run>0 PRINT 'all done.';*/
-
-
---GO
+GO
 
 USE [ANTERO]

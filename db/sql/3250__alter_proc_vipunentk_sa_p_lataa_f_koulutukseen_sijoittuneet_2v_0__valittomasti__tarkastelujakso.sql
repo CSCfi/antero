@@ -674,8 +674,39 @@ FROM
 ) as l
 
 INNER JOIN VipunenTK.dbo.d_koulutusluokitus d1a on d1a.koulutusluokitus_avain=COALESCE(NULLIF(l.amkopiskkoulk_1,''),'-1')
+--INNER JOIN VipunenTK.dbo.d_koulutusluokitus d2a on d2a.koulutusluokitus_avain=COALESCE(NULLIF(l.amkopiskkoulk_2,''),'-1')
+/*INNER JOIN VipunenTK.dbo.d_koulutusluokitus d2a on d2a.koulutusluokitus_avain=COALESCE(NULLIF(l.amkopiskkoulk2009,''),'-1')
+INNER JOIN VipunenTK.dbo.d_koulutusluokitus d3a on d3a.koulutusluokitus_avain=COALESCE(NULLIF(l.amkopiskkoulk2010,''),'-1')
+INNER JOIN VipunenTK.dbo.d_koulutusluokitus d4a on d4a.koulutusluokitus_avain=COALESCE(NULLIF(l.amkopiskkoulk2011,''),'-1')
+INNER JOIN VipunenTK.dbo.d_koulutusluokitus d5a on d5a.koulutusluokitus_avain=COALESCE(NULLIF(l.amkopiskkoulk2012,''),'-1')
+INNER JOIN VipunenTK.dbo.d_koulutusluokitus d6a on d6a.koulutusluokitus_avain=COALESCE(NULLIF(l.amkopiskkoulk2013,''),'-1')
+INNER JOIN VipunenTK.dbo.d_koulutusluokitus d7a on d7a.koulutusluokitus_avain=COALESCE(NULLIF(l.amkopiskkoulk2014,''),'-1')
+INNER JOIN VipunenTK.dbo.d_koulutusluokitus d8a on d8a.koulutusluokitus_avain=COALESCE(NULLIF(l.amkopiskkoulk2015,''),'-1')*/
+
 INNER JOIN VipunenTK.dbo.d_koulutusluokitus d1b on d1b.koulutusluokitus_avain=COALESCE(NULLIF(l.yoopiskkoulk_1,''),'-1')
+--INNER JOIN VipunenTK.dbo.d_koulutusluokitus d2b on d2b.koulutusluokitus_avain=COALESCE(NULLIF(l.yoopiskkoulk_2,''),'-1')
+/*INNER JOIN VipunenTK.dbo.d_koulutusluokitus d2b on d2b.koulutusluokitus_avain=COALESCE(NULLIF(l.yoopiskkoulk2009,''),'-1')
+INNER JOIN VipunenTK.dbo.d_koulutusluokitus d3b on d3b.koulutusluokitus_avain=COALESCE(NULLIF(l.yoopiskkoulk2010,''),'-1')
+INNER JOIN VipunenTK.dbo.d_koulutusluokitus d4b on d4b.koulutusluokitus_avain=COALESCE(NULLIF(l.yoopiskkoulk2011,''),'-1')
+INNER JOIN VipunenTK.dbo.d_koulutusluokitus d5b on d5b.koulutusluokitus_avain=COALESCE(NULLIF(l.yoopiskkoulk2012,''),'-1')
+INNER JOIN VipunenTK.dbo.d_koulutusluokitus d6b on d6b.koulutusluokitus_avain=COALESCE(NULLIF(l.yoopiskkoulk2013,''),'-1')
+INNER JOIN VipunenTK.dbo.d_koulutusluokitus d7b on d7b.koulutusluokitus_avain=COALESCE(NULLIF(l.yoopiskkoulk2014,''),'-1')
+INNER JOIN VipunenTK.dbo.d_koulutusluokitus d8b on d8b.koulutusluokitus_avain=COALESCE(NULLIF(l.yoopiskkoulk2015,''),'-1')*/
+
 INNER JOIN VipunenTK.dbo.d_koulutusluokitus d1c on d1c.koulutusluokitus_avain=COALESCE(NULLIF(l.ammopiskkoulk_1,''),'-1')
+--INNER JOIN VipunenTK.dbo.d_koulutusluokitus d2c on d2c.koulutusluokitus_avain=COALESCE(NULLIF(l.ammopiskkoulk_2,''),'-1')
+/*INNER JOIN VipunenTK.dbo.d_koulutusluokitus d2c on d2c.koulutusluokitus_avain=COALESCE(NULLIF(l.ammopiskkoulk2009,''),'-1')
+INNER JOIN VipunenTK.dbo.d_koulutusluokitus d3c on d3c.koulutusluokitus_avain=COALESCE(NULLIF(l.ammopiskkoulk2010,''),'-1')
+INNER JOIN VipunenTK.dbo.d_koulutusluokitus d4c on d4c.koulutusluokitus_avain=COALESCE(NULLIF(l.ammopiskkoulk2011,''),'-1')
+INNER JOIN VipunenTK.dbo.d_koulutusluokitus d5c on d5c.koulutusluokitus_avain=COALESCE(NULLIF(l.ammopiskkoulk2012,''),'-1')
+INNER JOIN VipunenTK.dbo.d_koulutusluokitus d6c on d6c.koulutusluokitus_avain=COALESCE(NULLIF(l.ammopiskkoulk2013,''),'-1')
+INNER JOIN VipunenTK.dbo.d_koulutusluokitus d7c on d7c.koulutusluokitus_avain=COALESCE(NULLIF(l.ammopiskkoulk2014,''),'-1')	
+INNER JOIN VipunenTK.dbo.d_koulutusluokitus d8c on d8c.koulutusluokitus_avain=COALESCE(NULLIF(l.ammopiskkoulk2015,''),'-1')	*/
+
+	WHERE 1=1
+
 
 GO
+
+
 USE [ANTERO]

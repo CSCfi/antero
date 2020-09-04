@@ -804,18 +804,5 @@ LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d7c on d7c.koulutusluokitus_avain=l.a
 
 	WHERE 1=1
 
---end;
-
---
--- TULOS
--- 
-/*
-if @debug_what_to_run>=3 begin
-	if @debug_what_to_run>0 print 'querying result';
-	select * from [VipunenTK_DW].[dbo].[_koulutukseen_sijoittuneet_6v]
-	--select COUNT(*) from vipunen_tk.f_tyol_ja_jatko_opin_ where aineisto=(select id from vipunen_tk.d_aineisto where aineistokoodi='4.3' and @toinen_suoritusvuosi between alkaa and paattyy)
-end;
-
-if @debug_what_to_run>0 PRINT 'all done.';
-*/
+GO
 USE [ANTERO]
