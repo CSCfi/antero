@@ -1,13 +1,15 @@
 USE [VipunenTK_SA]
 GO
-/****** Object:  StoredProcedure [dbo].[p_lataa_f_koulutukseen_sijoittuneet_2v_0__valittomasti__tarkastelujakso]    Script Date: 4.9.2020 19:36:03 ******/
+
+/****** Object:  StoredProcedure [dbo].[p_lataa_f_koulutukseen_sijoittuneet_2v_0__valittomasti__tarkastelujakso]    Script Date: 4.9.2020 21:14:25 ******/
 SET ANSI_NULLS ON
 GO
+
 SET QUOTED_IDENTIFIER ON
 GO
 
-ALTER PROCEDURE [dbo].[p_lataa_f_koulutukseen_sijoittuneet_2v_0__valittomasti__tarkastelujakso] AS
 
+ALTER PROCEDURE [dbo].[p_lataa_f_koulutukseen_sijoittuneet_2v_0__valittomasti__tarkastelujakso] AS
 
 /*declare @debug_what_to_run tinyint; set @debug_what_to_run=2; -- käytä arvoa 3 vain kun teet yhden vuoden
 print '$'+convert(varchar,sysdatetime(),20)+'$ '+'DEBUG (what to run)='+cast(@debug_what_to_run as varchar)+
@@ -733,7 +735,7 @@ INNER JOIN VipunenTK.dbo.d_koulutusluokitus d6c on d6c.koulutusluokitus_avain=CO
 INNER JOIN VipunenTK.dbo.d_koulutusluokitus d7c on d7c.koulutusluokitus_avain=COALESCE(NULLIF(l.ammopiskkoulk2014,''),'-1')	
 INNER JOIN VipunenTK.dbo.d_koulutusluokitus d8c on d8c.koulutusluokitus_avain=COALESCE(NULLIF(l.ammopiskkoulk2015,''),'-1')	*/
 
-	WHERE 1=1;
+	WHERE 1=1
 
 --end;
 
@@ -750,5 +752,8 @@ if @debug_what_to_run>0 PRINT 'all done.';*/
 
 
 --GO
+
+GO
+
 
 USE [ANTERO]
