@@ -2,7 +2,7 @@ USE [ANTERO]
 GO
 
 /****** Object:  StoredProcedure [dw].[p_lataa_api_yamk_tutkinnot]    Script Date: 3.9.2020 16:59:19 ******/
-DROP PROCEDURE [dw].[p_lataa_api_yamk_tutkinnot]
+DROP PROCEDURE IF EXISTS [dw].[p_lataa_api_yamk_tutkinnot]
 GO
 
 /****** Object:  StoredProcedure [dw].[p_lataa_api_yamk_tutkinnot]    Script Date: 3.9.2020 16:59:19 ******/
