@@ -11,38 +11,6 @@ GO
 
 ALTER PROCEDURE [dbo].[p_lataa_f_koulutukseen_sijoittuneet_2v_0__valittomasti__tarkastelujakso] AS
 
-/*declare @debug_what_to_run tinyint; set @debug_what_to_run=2; -- käytä arvoa 3 vain kun teet yhden vuoden
-print '$'+convert(varchar,sysdatetime(),20)+'$ '+'DEBUG (what to run)='+cast(@debug_what_to_run as varchar)+
-': 0=luo vain taulut, älä tulosta mitään; 1=luo taulut ja tulosta joitakin merkittävimpiä välivaiheita; 2=luo taulut ja tulosta välivaiheet; 3=luo taulut, tulosta välivaiheet ja tulosta myös tulokset, 4=tulosta välivaiheet, mutta älä tee mitään';
-
-
-
--- lisätään data
-if @debug_what_to_run not in (4) begin
-if @debug_what_to_run>0 print 'inserting data';
-
--- parametrimuuttujien arvot
--- parametrimuuttujat
-DECLARE @ensimmainen_suoritusvuosi int;
-DECLARE @toinen_suoritusvuosi int;
-DECLARE @kolmas_suoritusvuosi int;
-DECLARE @neljas_suoritusvuosi int;
-DECLARE @viides_suoritusvuosi int;
-DECLARE @kuudes_suoritusvuosi int;
-DECLARE @seitsemas_suoritusvuosi int;
-DECLARE @kahdeksas_suoritusvuosi int;
-
-set @ensimmainen_suoritusvuosi = 2008;
-set @toinen_suoritusvuosi = 2009;
-set @kolmas_suoritusvuosi = 2010;
-set @neljas_suoritusvuosi = 2011;
-set @viides_suoritusvuosi = 2012;
-set @kuudes_suoritusvuosi = 2013;
-set @seitsemas_suoritusvuosi = 2014;
-set @kahdeksas_suoritusvuosi = 2015;
-
-*/
-
 INSERT INTO [VipunenTK_DW].[dbo].[_koulutukseen_sijoittuneet_2v_tarkastelu]
 (
 rivinumero
@@ -737,23 +705,5 @@ INNER JOIN VipunenTK.dbo.d_koulutusluokitus d8c on d8c.koulutusluokitus_avain=CO
 
 	WHERE 1=1
 
---end;
-
---
--- TULOS
--- 
-/*if @debug_what_to_run>=3 begin
-	if @debug_what_to_run>0 print 'querying result';
-	select * from [VipunenTK_DW].[dbo].[_koulutukseen_sijoittuneet_2v]
-	
-end;
-
-if @debug_what_to_run>0 PRINT 'all done.';*/
-
-
---GO
-
 GO
-
-
 USE [ANTERO]
