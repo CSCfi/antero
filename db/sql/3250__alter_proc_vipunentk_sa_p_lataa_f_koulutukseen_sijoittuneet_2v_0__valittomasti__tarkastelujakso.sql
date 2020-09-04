@@ -751,4 +751,5 @@ if @debug_what_to_run>0 PRINT 'all done.';*/
 
 
 --GO
+GO
 USE [ANTERO]
