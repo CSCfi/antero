@@ -4941,7 +4941,8 @@
               "",
               "--var kato = SUMX(taulu; IF([osuus] >= 0,8; DIVIDE(1; [osuus]); 1 + (15/16) * [osuus] - (25/32) * [osuus] * [osuus]))",
               "--return kato",
-              "IF([Vastanneet (Rahoitus)]=BLANK(),BLANK(),IF(not(isfiltered('Muuttujat'[Koulutuksen järjestäjä])), blank(), CALCULATE(IF([Vastausosuus (Rahoitus)]  >=  0.8, DIVIDE(1,[Vastausosuus (Rahoitus)]),1 + (15/16) * [Vastausosuus (Rahoitus)] - (25/32) * [Vastausosuus (Rahoitus)] * [Vastausosuus (Rahoitus)]),Muuttujat[Koodit Rahoitusmallikysymys]=1)))"
+              "IF([Vastanneet (Rahoitus)]=BLANK(),BLANK(),IF(not(isfiltered('Muuttujat'[Koulutuksen järjestäjä])), blank(), CALCULATE(IF([Vastausosuus (Rahoitus)]  >=  0.8, DIVIDE(1,[Vastausosuus (Rahoitus)]),1 + (15/16) * [Vastausosuus (Rahoitus)] - (25/32) * [Vastausosuus (Rahoitus)] * [Vastausosuus (Rahoitus)]),Muuttujat[Koodit Rahoitusmallikysymys]=1)))",
+              ""
             ],
             "formatString": "0.00"
           },
@@ -5162,6 +5163,47 @@
               "CALCULATE(",
               "DIVIDE([Painotetut pisteet rinnakkais (Arvo)],",
               "CALCULATE([Painotetut pisteet rinnakkais (Arvo)],ALLEXCEPT(Muuttujat,Muuttujat[Kyselyn kohderyhmä],Muuttujat[Rahoituskausi]))))",
+              ""
+            ]
+          },
+          {
+            "name": "Korjauskerroin (uudet kertoimet)",
+            "expression": [
+              " ",
+              "IF([Vastanneet (Rahoitus)]=BLANK(),BLANK(),IF(not(isfiltered('Muuttujat'[Koulutuksen järjestäjä])), blank(), CALCULATE(IF([Vastausosuus (Rahoitus)]  >=  0.7, DIVIDE(1,[Vastausosuus (Rahoitus)]),IF([Vastausosuus (Rahoitus)] <= 0.2, (857/350), 1/0.7 + 2.04 * (0.7 - [Vastausosuus (Rahoitus)]))) ,Muuttujat[Koodit Rahoitusmallikysymys]=1)))",
+              "",
+              ""
+            ]
+          },
+          {
+            "name": "Painotetut pisteet (uudet kertoimet)",
+            "expression": [
+              " ",
+              "",
+              "var taulu = ADDCOLUMNS(",
+              "\t\tSUMMARIZE(Muuttujat,[Koodit Koulutuksen järjestäjä]) \t",
+              "\t\t,\"pisteet1\", CALCULATE(IF([Vastanneet_s]>[Vastanneet (OPH)],SUM([numerovalinta])*(DIVIDE([Vastanneet (OPH)],[Vastanneet_s])),SUM([numerovalinta])),Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
+              "\t\t,\"pisteet2\", 3 * CALCULATE(IF([Vastanneet_s]>[Vastanneet (OPH)],SUM([numerovalinta])*(DIVIDE([Vastanneet (OPH)],[Vastanneet_s])),SUM([numerovalinta])),Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
+              "\t\t,\"pisteet3\" ,CALCULATE(IF([Vastanneet_s]>[Vastanneet (OPH)],SUM([numerovalinta])*(DIVIDE([Vastanneet (OPH)],[Vastanneet_s])),SUM([numerovalinta])),Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
+              "\t\t,\"kato1\",CALCULATE(IF([Vastausosuus (Rahoitus)]<= 0.2, (857/350), IF([Vastausosuus_nohide]  >=  0.7, DIVIDE(1,[Vastausosuus (Rahoitus)]),1/0.7 + 2.04 * (0.7 - [Vastausosuus (Rahoitus)]))), Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1)\t\t",
+              "\t\t,\"kato2\",CALCULATE(IF([Vastausosuus (Rahoitus)]<= 0.2, (857/350), IF([Vastausosuus_nohide]  >=  0.7, DIVIDE(1,[Vastausosuus (Rahoitus)]),1/0.7 + 2.04 * (0.7 - [Vastausosuus (Rahoitus)]))), Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1)\t\t\t",
+              "\t\t,\"kato3\",CALCULATE(IF([Vastausosuus (Rahoitus)]<= 0.2, (857/350), IF([Vastausosuus_nohide]  >=  0.7, DIVIDE(1,[Vastausosuus (Rahoitus)]),1/0.7 + 2.04 * (0.7 - [Vastausosuus (Rahoitus)]))), Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1)\t\t\t",
+              "\t )",
+              "var painotettu1 = SUMX(taulu, [kato1]* [pisteet1])",
+              "var painotettu2 = SUMX(taulu, [kato2] * [pisteet2])",
+              "var painotettu3 = SUMX(taulu, [kato3] * [pisteet3])",
+              "var painotettu = painotettu1 + painotettu2 + painotettu3",
+              "return painotettu",
+              ""
+            ]
+          },
+          {
+            "name": "Painotetut pisteet % (uudet kertoimet)",
+            "expression": [
+              "",
+              "CALCULATE(",
+              "DIVIDE([Painotetut pisteet (uudet kertoimet)],",
+              "CALCULATE([Painotetut pisteet (uudet kertoimet)],ALLEXCEPT(Muuttujat,Muuttujat[Kyselyn kohderyhmä],Muuttujat[Rahoituskausi],Muuttujat[Kysely]))))",
               ""
             ]
           }
@@ -10541,12 +10583,6 @@
                 "name": "NPS"
               },
               {
-                "name": "Painotetut pisteet % (Arvo)"
-              },
-              {
-                "name": "Painotetut pisteet % (Rahoitus)"
-              },
-              {
                 "name": "Painotetut pisteet (Arvo)"
               },
               {
@@ -10587,6 +10623,15 @@
               },
               {
                 "name": "Vastausosuus (Rahoitus)"
+              },
+              {
+                "name": "Korjauskerroin (uudet kertoimet)"
+              },
+              {
+                "name": "Painotetut pisteet (uudet kertoimet)"
+              },
+              {
+                "name": "Painotetut pisteet % (uudet kertoimet)"
               }
             ]
           },
