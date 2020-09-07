@@ -8,7 +8,7 @@
         "name": "SqlServer dwitvipusql16 ANTERO",
         "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
         "impersonationMode": "impersonateAccount",
-        "account": "dwi\\T_VIPUTK_KUUTIO",
+        "account": "dwi\\klehtosa",
         "annotations": [
           {
             "name": "ConnectionEditUISource",
@@ -97,7 +97,7 @@
             "dataType": "int64",
             "sourceColumn": "Tutkintokoodi",
             "sourceProviderType": "Integer",
-            "displayFolder": "Koulutusmuuttujat"
+            "displayFolder": "Koodimuuttujat"
           },
           {
             "name": "Tutkinto",
@@ -140,12 +140,14 @@
           {
             "name": "Organisaatio",
             "dataType": "string",
-            "sourceColumn": "Organisaatio"
+            "sourceColumn": "Organisaatio",
+            "displayFolder": "Organisaatiomuuttujat"
           },
           {
             "name": "Aloitusvuosi",
             "dataType": "int64",
-            "sourceColumn": "Aloitusvuosi"
+            "sourceColumn": "Aloitusvuosi",
+            "displayFolder": "Aikamuuttujat"
           },
           {
             "name": "Tilastovuosi",
@@ -155,42 +157,50 @@
           {
             "name": "Tutkinnon aloitusvuosi",
             "dataType": "int64",
-            "sourceColumn": "Tutkinnon aloitusvuosi"
+            "sourceColumn": "Tutkinnon aloitusvuosi",
+            "displayFolder": "Aikamuuttujat"
           },
           {
             "name": "Tutkinnon sektori",
             "dataType": "string",
-            "sourceColumn": "Tutkinnon sektori"
+            "sourceColumn": "Tutkinnon sektori",
+            "displayFolder": "Koulutusmuuttujat"
           },
           {
             "name": "Tutkinnon korkeakoulu",
             "dataType": "string",
-            "sourceColumn": "Tutkinnon korkeakoulu"
+            "sourceColumn": "Tutkinnon korkeakoulu",
+            "displayFolder": "Organisaatiomuuttujat"
           },
           {
             "name": "Tutkinnon koulutusaste, taso 1",
             "dataType": "string",
-            "sourceColumn": "Tutkinnon koulutusaste, taso 1"
+            "sourceColumn": "Tutkinnon koulutusaste, taso 1",
+            "displayFolder": "Koulutusmuuttujat"
           },
           {
             "name": "Tutkinnon koulutusaste, taso 2",
             "dataType": "string",
-            "sourceColumn": "Tutkinnon koulutusaste, taso 2"
+            "sourceColumn": "Tutkinnon koulutusaste, taso 2",
+            "displayFolder": "Koulutusmuuttujat"
           },
           {
             "name": "Tutkinnon koulutusala, taso 1",
             "dataType": "string",
-            "sourceColumn": "Tutkinnon koulutusala, taso 1"
+            "sourceColumn": "Tutkinnon koulutusala, taso 1",
+            "displayFolder": "Koulutusmuuttujat"
           },
           {
             "name": "Tutkinnon koulutusala, taso 2",
             "dataType": "string",
-            "sourceColumn": "Tutkinnon koulutusala, taso 2"
+            "sourceColumn": "Tutkinnon koulutusala, taso 2",
+            "displayFolder": "Koulutusmuuttujat"
           },
           {
             "name": "Tutkinnon koulutusala, taso 3",
             "dataType": "string",
-            "sourceColumn": "Tutkinnon koulutusala, taso 3"
+            "sourceColumn": "Tutkinnon koulutusala, taso 3",
+            "displayFolder": "Koulutusmuuttujat"
           },
           {
             "name": "Tutkinnon koulutusaste, taso 1 jarj",
@@ -220,7 +230,8 @@
           {
             "name": "Aiempi/myöhempi tutkinto",
             "dataType": "string",
-            "sourceColumn": "Aiempi/myöhempi tutkinto"
+            "sourceColumn": "Aiempi/myöhempi tutkinto",
+            "displayFolder": "Koulutusmuuttujat"
           },
           {
             "name": "Aiempi/myöhempi tutkinto jarj",
@@ -230,7 +241,8 @@
           {
             "name": "Tutkinnon suoritusvuosi",
             "dataType": "int64",
-            "sourceColumn": "Tutkinnon suoritusvuosi"
+            "sourceColumn": "Tutkinnon suoritusvuosi",
+            "displayFolder": "Aikamuuttujat"
           },
           {
             "name": "Valmentava oikeus paattymisvuosi",
@@ -917,7 +929,7 @@
         ],
         "measures": [
           {
-            "name": "Valmentavaan osallistuneet",
+            "name": "Valmentavan koulutuksen aloittaneet",
             "expression": "CALCULATE(DISTINCTCOUNT([Henkilo_koodi]))",
             "formatString": "#,0"
           },
@@ -931,12 +943,12 @@
           },
           {
             "name": "Tutkinnon suorittaneiden osuus",
-            "expression": "DIVIDE([Aiempi tai myöhempi tutkinto],[Valmentavaan osallistuneet])",
+            "expression": "DIVIDE([Aiempi tai myöhempi tutkinto],[Valmentavan koulutuksen aloittaneet])",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Tutkinto-opiskeluoikeuksien osuus",
-            "expression": "DIVIDE([Aiempi tai myöhempi opiskeluoikeus],[Valmentavaan osallistuneet])",
+            "expression": "DIVIDE([Aiempi tai myöhempi opiskeluoikeus],[Valmentavan koulutuksen aloittaneet])",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           }
         ],
@@ -1838,9 +1850,6 @@
             "name": "Muuttujat",
             "columns": [
               {
-                "name": "Ikä"
-              },
-              {
                 "name": "Ikäryhmä"
               },
               {
@@ -1856,12 +1865,57 @@
                 "name": "Tutkintokoodi"
               },
               {
+                "name": "Aiempi/myöhempi tutkinto"
+              },
+              {
+                "name": "Aloitusvuosi"
+              },
+              {
                 "name": "Organisaatio"
+              },
+              {
+                "name": "Tutkinnon aloitusvuosi"
+              },
+              {
+                "name": "Tutkinnon korkeakoulu"
+              },
+              {
+                "name": "Tutkinnon koulutusala, taso 1"
+              },
+              {
+                "name": "Tutkinnon koulutusala, taso 2"
+              },
+              {
+                "name": "Tutkinnon koulutusala, taso 3"
+              },
+              {
+                "name": "Tutkinnon koulutusaste, taso 1"
+              },
+              {
+                "name": "Tutkinnon koulutusaste, taso 2"
+              },
+              {
+                "name": "Tutkinnon sektori"
+              },
+              {
+                "name": "Tutkinnon suoritusvuosi"
               }
             ],
             "measures": [
               {
-                "name": "Valmentavaan osallistuneet"
+                "name": "Valmentavan koulutuksen aloittaneet"
+              },
+              {
+                "name": "Aiempi tai myöhempi opiskeluoikeus"
+              },
+              {
+                "name": "Aiempi tai myöhempi tutkinto"
+              },
+              {
+                "name": "Tutkinnon suorittaneiden osuus"
+              },
+              {
+                "name": "Tutkinto-opiskeluoikeuksien osuus"
               }
             ]
           },
@@ -1893,12 +1947,12 @@
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1732"
           },
           {
-            "memberName": "NT AUTHORITY\\IUSR",
-            "memberId": "S-1-5-17"
-          },
-          {
             "memberName": "DWI\\ffinnber",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1355"
+          },
+          {
+            "memberName": "NT AUTHORITY\\IUSR",
+            "memberId": "S-1-5-17"
           }
         ]
       }
