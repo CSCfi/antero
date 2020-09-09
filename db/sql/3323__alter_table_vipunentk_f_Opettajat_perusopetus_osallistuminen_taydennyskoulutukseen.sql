@@ -1,16 +1,16 @@
 USE [VipunenTK]
 GO
 
-ALTER TABLE [dbo].[f_Opettajat_perusopetus_osallistuminen_taydennyskoulutukseen] DROP CONSTRAINT [FK_f_Opettajat_perusopetus_osallistuminen_taydennyskoulutukseen_d_sukupuoli]
+ALTER TABLE [dbo].[f_Opettajat_perusopetus_osallistuminen_taydennyskoulutukseen] DROP CONSTRAINT IF EXISTS [FK_f_Opettajat_perusopetus_osallistuminen_taydennyskoulutukseen_d_sukupuoli]
 GO
 
-ALTER TABLE [dbo].[f_Opettajat_perusopetus_osallistuminen_taydennyskoulutukseen] DROP CONSTRAINT [FK_f_Opettajat_perusopetus_osallistuminen_taydennyskoulutukseen_d_opetuskieli]
+ALTER TABLE [dbo].[f_Opettajat_perusopetus_osallistuminen_taydennyskoulutukseen] DROP CONSTRAINT IF EXISTS [FK_f_Opettajat_perusopetus_osallistuminen_taydennyskoulutukseen_d_opetuskieli]
 GO
 
-ALTER TABLE [dbo].[f_Opettajat_perusopetus_osallistuminen_taydennyskoulutukseen] DROP CONSTRAINT [FK_f_Opettajat_perusopetus_osallistuminen_taydennyskoulutukseen_d_opettajan_tehtavatyyppi_perusopetuksessa]
+ALTER TABLE [dbo].[f_Opettajat_perusopetus_osallistuminen_taydennyskoulutukseen] DROP CONSTRAINT IF EXISTS [FK_f_Opettajat_perusopetus_osallistuminen_taydennyskoulutukseen_d_opettajan_tehtavatyyppi_perusopetuksessa]
 GO
 
-ALTER TABLE [dbo].[f_Opettajat_perusopetus_osallistuminen_taydennyskoulutukseen] DROP CONSTRAINT [FK_f_Opettajat_perusopetus_osallistuminen_taydennyskoulutukseen_d_ika]
+ALTER TABLE [dbo].[f_Opettajat_perusopetus_osallistuminen_taydennyskoulutukseen] DROP CONSTRAINT IF EXISTS [FK_f_Opettajat_perusopetus_osallistuminen_taydennyskoulutukseen_d_ika]
 GO
 
 /****** Object:  Table [dbo].[f_Opettajat_perusopetus_osallistuminen_taydennyskoulutukseen]    Script Date: 4.2.2020 14:41:40 ******/
