@@ -2,7 +2,7 @@ USE [VipunenTK]
 GO
 
 /****** Object:  Table [dbo].[f_Opettajat_ammatillinen_koulutus_kelpoisuus_koulutus]    Script Date: 21.2.2020 18:52:05 ******/
-DROP TABLE [dbo].[f_Opettajat_ammatillinen_koulutus_kelpoisuus_koulutus]
+DROP TABLE IF EXISTS [dbo].[f_Opettajat_ammatillinen_koulutus_kelpoisuus_koulutus]
 GO
 
 /****** Object:  Table [dbo].[f_Opettajat_ammatillinen_koulutus_kelpoisuus_koulutus]    Script Date: 21.2.2020 18:52:05 ******/
