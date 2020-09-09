@@ -1,7 +1,7 @@
 USE [VipunenTK_lisatiedot]
 GO
 /****** Object:  Table [dbo].[opettajan_tehtavatyyppi_taiteen_perusopetuksessa]    Script Date: 25.2.2020 20:35:28 ******/
-DROP TABLE [dbo].[opettajan_tehtavatyyppi_taiteen_perusopetuksessa]
+DROP TABLE IF EXISTS [dbo].[opettajan_tehtavatyyppi_taiteen_perusopetuksessa]
 GO
 /****** Object:  Table [dbo].[opettajan_tehtavatyyppi_taiteen_perusopetuksessa]    Script Date: 25.2.2020 20:35:28 ******/
 SET ANSI_NULLS ON
