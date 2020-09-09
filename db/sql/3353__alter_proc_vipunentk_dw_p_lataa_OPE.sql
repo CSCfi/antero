@@ -11,7 +11,7 @@ ALTER PROCEDURE [dbo].[p_lataa_OPE] AS
 
 --7.1
 
-truncate table vipunentk.[dbo].[f_Opettajat_perusopetus_kelpoisuus_opetusryhmakoot];
+truncate table vipunentk.[dbo].[f_Opettajat_perusopetus_kelpoisuus_opetusryhmakoot]
 
 insert into vipunentk.[dbo].[f_Opettajat_perusopetus_kelpoisuus_opetusryhmakoot]
  
@@ -67,7 +67,7 @@ SELECT tilastointivuosi = f.tilv
   LEFT JOIN VipunenTK..d_opettajat_tyosuhteen_luonne d26 on d26.tyosuhteen_luonne_koodi=p_tyos
   LEFT JOIN VipunenTK..d_opettajat_koko_osa_aikainen d27 on d27.koko_osa_aikainen_koodi=p_osa1
   LEFT JOIN VipunenTK..d_opettajat_osa_aikaisuuden_syy d28 on d28.syy_koodi=p_osa2
-  LEFT JOIN VipunenTK..d_kylla_ei d29 on d29.kylla_ei_koodi=cast(f.p_resu1 as varchar)
+  LEFT JOIN VipunenTK..d_kylla_ei d29 on d29.kylla_ei_koodi=cast(f.p_resu1 as varchar);
 
 
 
@@ -94,7 +94,7 @@ SELECT tilastointivuosi = f.tilv
   LEFT JOIN VipunenTK..d_opettajat_luokka_aste d2 on d2.luokka_aste_koodi=p_olaste
   LEFT JOIN VipunenTK..d_koulutuksen_jarjestajan_koko d3 on d3.koko_koodi=p_yopp19
   LEFT JOIN VipunenTK..d_kieli2 d4 on d4.kieli_koodi=p_ykieli
-  LEFT JOIN VipunenTK..d_kuntaryhma d5 on d5.kuntaryhma_koodi=f.p_ykunryh
+  LEFT JOIN VipunenTK..d_kuntaryhma d5 on d5.kuntaryhma_koodi=f.p_ykunryh;
 
 
 
@@ -804,5 +804,7 @@ SELECT tilastointivuosi = [tilv]
   LEFT JOIN VipunenTK..d_kylla_ei d23 on d23.kylla_ei_koodi=f.a_h11
   LEFT JOIN VipunenTK..d_sukupuoli d30 on d30.sukupuoli_koodi=f.a_sp
   LEFT JOIN VipunenTK..d_ika d31 on d31.ika_avain=f.a_ika
-
+;
+ 
+GO
 USE [ANTERO]
