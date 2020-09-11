@@ -853,7 +853,8 @@
           },
           {
             "name": "Tutkinnon osien painottamattomat osaamispisteet yhteensä",
-            "expression": "[Osaamispisteiden määrä (ei suorita koko tutkintoa)]+[Osaamispisteiden määrä (suorittaa koko tutkintoa)]"
+            "expression": "[Osaamispisteiden määrä (ei suorita koko tutkintoa)]+[Osaamispisteiden määrä (suorittaa koko tutkintoa)]",
+            "formatString": "#,0.00"
           },
           {
             "name": "Laskentaan hyväksytyt painotetut osaamispisteet",
@@ -864,7 +865,9 @@
               "var summa3 = CALCULATE(SUMX(Muuttujat,[painotettu_tutkinnon_osien_osaamispisteet_erityistuki] * IF(Muuttujat[rahoitusmuoto_maksetaan]=1 && [hyvaksytaan_rahoitukseen]=1,[leikkauskerroin2],0)),Muuttujat[jarj_luvaton_korotustekija]=\"1\")",
               "var summa = summa1+summa2+summa3",
               "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)"
-            ]
+            ],
+            "formatString": "#,0.00",
+            "displayFolder": "Painotetut"
           },
           {
             "name": "Laskentaan hyväksytyt painottamattomat osaamispisteet",
@@ -872,7 +875,9 @@
               "",
               "var summa = CALCULATE(SUMX(Muuttujat, [painottamaton_osaamispisteet] * IF(Muuttujat[rahoitusmuoto_maksetaan]=1,Muuttujat[leikkauskerroin2],0)),ALL(Muuttujat[Luvaton korotustekijä]))",
               "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)"
-            ]
+            ],
+            "formatString": "#,0.00",
+            "displayFolder": "Painottamattomat"
           },
           {
             "name": "Laskentaan hyväksytyt painotetut osaamispisteet %",
@@ -882,7 +887,9 @@
               "\t[Laskentaan hyväksytyt painotetut osaamispisteet]",
               "\t,CALCULATE([Laskentaan hyväksytyt painotetut osaamispisteet],ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusmuoto]),Muuttujat[Tilastovuosi])",
               ")"
-            ]
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "Prosenttiosuudet"
           },
           {
             "name": "Leikkauskerroin",
@@ -891,6 +898,46 @@
           {
             "name": "korotusehto",
             "expression": "IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"1\",1,0),1)"
+          },
+          {
+            "name": "Perustutkintojen määrä",
+            "expression": [
+              "",
+              "var summa = CALCULATE(CALCULATE(SUM([painottamaton_tutkinnot]),Muuttujat[Suorituksen tyyppi]=\"Koko tutkinto\",Muuttujat[Koodit Tutkintotyyppi]=\"02\"),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)"
+            ],
+            "formatString": "#,0",
+            "displayFolder": "Painottamattomat"
+          },
+          {
+            "name": "Ammatti- ja erikoisammattitutkintojen määrä",
+            "expression": [
+              "",
+              "var summa = CALCULATE(CALCULATE(SUM([painottamaton_tutkinnot]),Muuttujat[Suorituksen tyyppi]=\"Koko tutkinto\",Muuttujat[Koodit Tutkintotyyppi]=\"19\" || Muuttujat[Koodit Tutkintotyyppi]=\"20\"),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)"
+            ],
+            "formatString": "#,0",
+            "displayFolder": "Painottamattomat"
+          },
+          {
+            "name": "Perustutkintojen tutkinnon osien määrä",
+            "expression": [
+              "",
+              "var summa = CALCULATE(CALCULATE(SUM(Muuttujat[painottamaton_osatutkinnot]),Muuttujat[Koodit Tutkintotyyppi]=\"02\"),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)"
+            ],
+            "formatString": "#,0",
+            "displayFolder": "Painottamattomat"
+          },
+          {
+            "name": "Ammatti- ja erikoisammattitutkintojen tutkinnon osien määrä",
+            "expression": [
+              "",
+              "var summa = CALCULATE(CALCULATE(SUM(Muuttujat[painottamaton_osatutkinnot]),Muuttujat[Koodit Tutkintotyyppi]=\"19\" || Muuttujat[Koodit Tutkintotyyppi]=\"20\"),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)"
+            ],
+            "formatString": "#,0",
+            "displayFolder": "Painottamattomat"
           }
         ],
         "annotations": [
