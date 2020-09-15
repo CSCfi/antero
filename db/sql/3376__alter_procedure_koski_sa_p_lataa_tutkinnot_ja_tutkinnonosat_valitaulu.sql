@@ -174,4 +174,4 @@ LEFT JOIN ANTERO.sa.sa_amos_tutkinto_kustannusryhma_uusi tkr_u on tkr_u.tutkinto
 
 GO
 
-
+USE ANTERO

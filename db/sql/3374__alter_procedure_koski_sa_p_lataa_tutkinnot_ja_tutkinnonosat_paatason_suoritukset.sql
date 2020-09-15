@@ -152,4 +152,4 @@ LEFT JOIN ANTERO.sa.sa_amos_tutkinto_kustannusryhma_uusi sa3 on sa3.tutkinto_koo
 
 GO
 
-
+USE ANTERO

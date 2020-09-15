@@ -13,8 +13,6 @@ GO
 
 
 
-
-
 ALTER procedure [sa].[p_lataa_opiskelijavuodet_osatutkinnot_kustannusryhma] as
 
 DROP TABLE sa.temp_opiskelijavuodet_osatutkinnot_kustannusryhma
@@ -83,4 +81,4 @@ left join ANTERO.sa.sa_amos_tutkinto_kustannusryhma_uusi tkr_u ON tkr_u.tutkinto
 
 GO
 
-
+USE ANTERO
