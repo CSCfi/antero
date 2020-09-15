@@ -1,9 +1,12 @@
 USE [ANTERO]
 GO
 
+DROP PROCEDURE IF EXISTS [dw].[p_lataa_f_amos_opiskelijavuodet_uusi]
+GO
 /****** Object:  StoredProcedure [dw].[p_lataa_f_amos_opiskelijavuodet_uusi]    Script Date: 15.9.2020 8:32:32 ******/
 SET ANSI_NULLS ON
 GO
+
 
 SET QUOTED_IDENTIFIER ON
 GO
