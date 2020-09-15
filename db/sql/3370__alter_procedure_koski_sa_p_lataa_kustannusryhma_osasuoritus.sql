@@ -1,6 +1,7 @@
 USE [Koski_SA]
 GO
 
+
 /****** Object:  StoredProcedure [dbo].[p_lataa_kustannusryhma_osasuoritus]    Script Date: 15.9.2020 10:37:32 ******/
 SET ANSI_NULLS ON
 GO

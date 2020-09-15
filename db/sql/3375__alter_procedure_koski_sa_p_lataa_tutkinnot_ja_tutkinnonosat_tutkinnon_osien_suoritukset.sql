@@ -1,6 +1,7 @@
 USE [Koski_SA]
 GO
 
+
 /****** Object:  StoredProcedure [sa].[p_lataa_tutkinnot_ja_tutkinnonosat_tutkinnon_osien_suoritukset]    Script Date: 15.9.2020 8:36:56 ******/
 SET ANSI_NULLS ON
 GO

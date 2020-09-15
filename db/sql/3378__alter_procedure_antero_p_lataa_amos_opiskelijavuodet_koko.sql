@@ -1,6 +1,7 @@
 USE [ANTERO]
 GO
 
+
 /****** Object:  StoredProcedure [dw].[p_lataa_amos_opiskelijavuodet_koko]    Script Date: 15.9.2020 9:07:00 ******/
 SET ANSI_NULLS ON
 GO

@@ -1,6 +1,7 @@
 USE [Koski_SA]
 GO
 
+
 /****** Object:  StoredProcedure [dbo].[p_lataa_opiskelijavuodet_valitaulu]    Script Date: 15.9.2020 8:15:30 ******/
 SET ANSI_NULLS ON
 GO

@@ -1,6 +1,7 @@
 USE [ANTERO]
 GO
 
+
 /****** Object:  Table [dw].[f_amos_tutkinnot_ja_tutkinnonosat_painotetut]    Script Date: 15.9.2020 11:22:00 ******/
 SET ANSI_NULLS ON
 GO
