@@ -2030,8 +2030,12 @@
           },
           {
             "name": "Keskimääräinen opetusryhmäkoko",
-            "expression": "CALCULATE(AVERAGE(Muuttujat[Oman luokan oppilasmäärä]),AND(Muuttujat[Oman luokan oppilasmäärä]>0,Muuttujat[Oman luokan oppilasmäärä]<37))",
-            "formatString": "0.0"
+            "expression": [
+              "",
+              "var ka = CALCULATE(AVERAGE(Muuttujat[Oman luokan oppilasmäärä]), FILTER(Muuttujat, [Oman luokan oppilasmäärä]>0 && [Oman luokan oppilasmäärä]<37 && [Tilastovuosi] <> \"2019\"))",
+              "return IF(ka = 0, BLANK(), ka)"
+            ],
+            "formatString": "0"
           },
           {
             "name": "Muodollisesti kelpoiset",
@@ -2040,7 +2044,12 @@
           },
           {
             "name": "Opettajien omat luokat",
-            "expression": "COUNTROWS(Muuttujat)",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(COUNTROWS(Muuttujat), FILTER(Muuttujat, [Tilastovuosi] <> \"2019\"))",
+              "return IF(lkm = 0, BLANK(), lkm)",
+              ""
+            ],
             "formatString": "#,0"
           },
           {
@@ -2085,7 +2094,7 @@
           },
           {
             "name": "Average size of teaching group",
-            "expression": "CALCULATE(AVERAGE(Muuttujat[Oman luokan oppilasmäärä]),AND(Muuttujat[Oman luokan oppilasmäärä]>0,Muuttujat[Oman luokan oppilasmäärä]<37))",
+            "expression": "[Keskimääräinen opetusryhmäkoko]",
             "formatString": "0.0"
           },
           {
@@ -2100,17 +2109,17 @@
           },
           {
             "name": "Undervisningsgruppens genomsnittliga storlek",
-            "expression": "CALCULATE(AVERAGE(Muuttujat[Oman luokan oppilasmäärä]),AND(Muuttujat[Oman luokan oppilasmäärä]>0,Muuttujat[Oman luokan oppilasmäärä]<37))",
+            "expression": "[Keskimääräinen opetusryhmäkoko]",
             "formatString": "0.0"
           },
           {
             "name": "Lärarnas egna klasser",
-            "expression": "COUNTROWS(Muuttujat)",
+            "expression": "[Opettajien omat luokat]",
             "formatString": "#,0"
           },
           {
             "name": "Teachers’ own classes",
-            "expression": "COUNTROWS(Muuttujat)",
+            "expression": "[Opettajien omat luokat]",
             "formatString": "#,0"
           },
           {
