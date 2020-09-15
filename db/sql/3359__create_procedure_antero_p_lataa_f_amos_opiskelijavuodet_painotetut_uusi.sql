@@ -1,6 +1,7 @@
 USE [ANTERO]
 GO
 
+
 DROP PROCEDURE IF EXISTS [dw].[p_lataa_f_amos_opiskelijavuodet_painotetut_uusi]
 GO
 
