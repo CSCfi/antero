@@ -852,115 +852,6 @@ var vanha_koulutustoimija_nimi = '';</jsScript_script>
     </GUI>
   </step>
   <step>
-    <name>get values from JSON</name>
-    <type>ScriptValueMod</type>
-    <description/>
-    <distribute>Y</distribute>
-    <custom_distribution/>
-    <copies>1</copies>
-    <partitioning>
-      <method>none</method>
-      <schema_name/>
-    </partitioning>
-    <compatible>N</compatible>
-    <optimizationLevel>9</optimizationLevel>
-    <jsScripts>
-      <jsScript>
-        <jsScript_type>0</jsScript_type>
-        <jsScript_name>Script 1</jsScript_name>
-        <jsScript_script>//Script here
-trans_Status = SKIP_TRANSFORMATION; // Poista ohjelman laukaiseva rivi. Ohjelma generoi uusia rivejä datan mukaan 
-try {
-	var koulutustoimija = (JSON.parse(data))['organisaatiohistoria'];
-	var vanha_koulutustoimija_oid;
-	var vanha_koulutustoimija_nimi;
-	var j = -1;
-	var i = 0;
-	var maxpvm = new Date('1900', '01', '01');
-	for(i in koulutustoimija){
-		try {
-		var d1 =  koulutustoimija[i]['muutospäivä'];
-		var d2 = d1.split('-');
-		var d3 = new Date(d2[0], d2[1], d2[2]);
-		if (maxpvm.getTime() &lt; d3.getTime()) {
-			j = i;
-			maxpvm = d3;
-		}
-		else if(maxpvm.getTime() == d3.getTime()){
-			j = i;
-			maxpvm = d3;
-		}
-		else {
-			continue;
-		}
-		
-		}
-		catch(e) {
-		// Alert(e);
-		}
-	}
-	if(j != -1){
-		try {
-		vanha_koulutustoimija_oid = koulutustoimija[j]['koulutustoimija']['oid'];
-		}
-		catch(e) { // jos arvoa ei saa luettua tai se on tyhjä
-		vanha_koulutustoimija_oid = '';
-		}
-		try {
-		vanha_koulutustoimija_nimi = koulutustoimija[j]['koulutustoimija']['nimi']['fi'];
-		}
-		catch(e) {
-		vanha_koulutustoimija_nimi = '';
-		}
-
-	// Kopioi rivin ja asettaa siihen uudet arvot ja lopuksi luo uuden rivin.
-	var row = createRowCopy(getOutputRowMeta().size());
-	var idx = getInputRowMeta().size();
-	row[idx++] = vanha_koulutustoimija_oid ;
-	row[idx++] = vanha_koulutustoimija_nimi;
-	putRow(row);
-	}
-}
-catch (e){
-//Alert(e);
-}
-
-</jsScript_script>
-      </jsScript>
-    </jsScripts>
-    <fields>
-      <field>
-        <name>vanha_koulutustoimija_oid</name>
-        <rename>vanha_koulutustoimija_oid</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-      <field>
-        <name>vanha_koulutustoimija_nimi</name>
-        <rename>vanha_koulutustoimija_nimi</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
-      </field>
-    </fields>
-    <attributes/>
-    <cluster_schema/>
-    <remotesteps>
-      <input>
-      </input>
-      <output>
-      </output>
-    </remotesteps>
-    <GUI>
-      <xloc>640</xloc>
-      <yloc>192</yloc>
-      <draw>Y</draw>
-    </GUI>
-  </step>
-  <step>
     <name>is organisaatiohistoria present?</name>
     <type>Dummy</type>
     <description/>
@@ -1941,6 +1832,133 @@ if (historia == null) {trans_Status = SKIP_TRANSFORMATION;} // jos dataa ei ole 
     <GUI>
       <xloc>640</xloc>
       <yloc>112</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>get values from JSON</name>
+    <type>ScriptValueMod</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compatible>N</compatible>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script 1</jsScript_name>
+        <jsScript_script>//Script here
+trans_Status = SKIP_TRANSFORMATION; // Poista ohjelman laukaiseva rivi. Ohjelma generoi uusia rivejä datan mukaan 
+try {
+	var koulutustoimija = (JSON.parse(data))['organisaatiohistoria'];
+	var vanha_koulutustoimija_oid;
+	var vanha_koulutustoimija_nimi;
+	var j = -1;
+	var i = 0;
+	var k = 0;
+	var maxpvm = new Date('1900', '01', '01');
+	for (var i = 0; i &lt; koulutustoimija.length;i++ ){
+		k++;
+		try {
+		var d1 =  koulutustoimija[i]['muutospäivä'];
+		var d2 = d1.split('-');
+		var d3 = new Date(d2[0], d2[1], d2[2]);
+
+			if (maxpvm.getTime() &lt; d3.getTime() &amp;&amp; koulutustoimija_oid != koulutustoimija[i]['koulutustoimija']['oid']) {
+				j = i;
+				maxpvm = d3;
+			}
+			else if(maxpvm.getTime() == d3.getTime() &amp;&amp; koulutustoimija_oid != koulutustoimija[i]['koulutustoimija']['oid']){
+				j = i;
+				maxpvm = d3;
+			}
+			else {
+				continue;
+			}
+		}
+		catch(e) {
+		//Alert(e);
+		}
+	}
+	if ( j != -1 || k != 0 ){ // asetetaan uusin ei duplikaattiarvo
+		if ( j != -1 ) {
+			try {
+			vanha_koulutustoimija_oid = koulutustoimija[j]['koulutustoimija']['oid'];
+			}
+			catch(e) { // jos arvoa ei saa luettua tai se on tyhjä
+			vanha_koulutustoimija_oid = '';
+			}
+			try {
+			vanha_koulutustoimija_nimi = koulutustoimija[j]['koulutustoimija']['nimi']['fi'];
+			}
+			catch(e) {
+			vanha_koulutustoimija_nimi = '';
+			}
+		}
+		else if ( k != 0 &amp;&amp; j == -1) { // hakee duplikaateista uusimman
+			try {
+			vanha_koulutustoimija_oid = koulutustoimija[k-1]['koulutustoimija']['oid'];
+			}
+			catch(e) { // jos arvoa ei saa luettua tai se on tyhjä
+			vanha_koulutustoimija_oid = '';
+			}
+			try {
+			vanha_koulutustoimija_nimi = koulutustoimija[k-1]['koulutustoimija']['nimi']['fi'];
+			}
+			catch(e) {
+			vanha_koulutustoimija_nimi = '';
+			}
+		}
+	// Kopioi rivin ja asettaa siihen uudet arvot ja lopuksi luo uuden rivin.
+	var row = createRowCopy(getOutputRowMeta().size());
+	var idx = getInputRowMeta().size();
+	row[idx++] = vanha_koulutustoimija_oid ;
+	row[idx++] = vanha_koulutustoimija_nimi;
+	putRow(row);
+	}//Alert(k);
+
+}
+catch (e){
+//Alert(e);
+}
+
+</jsScript_script>
+      </jsScript>
+    </jsScripts>
+    <fields>
+      <field>
+        <name>vanha_koulutustoimija_oid</name>
+        <rename>vanha_koulutustoimija_oid</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>vanha_koulutustoimija_nimi</name>
+        <rename>vanha_koulutustoimija_nimi</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>640</xloc>
+      <yloc>192</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
