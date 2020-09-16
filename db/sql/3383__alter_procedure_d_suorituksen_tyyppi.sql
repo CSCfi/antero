@@ -1,9 +1,17 @@
 USE [ANTERO]
 GO
-/****** Object:  StoredProcedure [dw].[p_lataa_d_suorituksen_tyyppi]    Script Date: 15.9.2020 16:43:15 ******/
+/****** Object:  StoredProcedure [dw].[p_lataa_d_suorituksen_tyyppi]    Script Date: 16.9.2020 17:30:49 ******/
+DROP PROCEDURE IF EXISTS [dw].[p_lataa_d_suorituksen_tyyppi]
+GO
+/****** Object:  StoredProcedure [dw].[p_lataa_d_suorituksen_tyyppi]    Script Date: 16.9.2020 17:30:49 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[p_lataa_d_suorituksen_tyyppi]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dw].[p_lataa_d_suorituksen_tyyppi] AS' 
+END
 GO
 
 
