@@ -64,5 +64,5 @@ LEFT JOIN sa.sa_koski_henkilo h ON h.oppija_oid = f.oppija_oid
 
 
 GO
-
+USE ANTERO
 

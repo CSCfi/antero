@@ -75,4 +75,4 @@ INCLUDE ( 	[suorituksen_tyyppi]) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE =
 
 GO
 
-
+USE ANTERO

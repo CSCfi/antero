@@ -112,3 +112,5 @@ ORDER BY tutkinnonosa_koodi
 GO
 
 
+
+USE ANTERO

@@ -31,3 +31,4 @@ EXEC ANTERO.dw.p_lataa_f_amos_opiskelijavuodet_painotetut_uusi
 GO
 
 
+USE ANTERO

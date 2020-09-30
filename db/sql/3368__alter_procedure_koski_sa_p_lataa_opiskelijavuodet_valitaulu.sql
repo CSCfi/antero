@@ -220,6 +220,7 @@ BEGIN
 	SET @endDate = EOMONTH(@startDate)
 
 END
+
 GO
 
 USE ANTERO
