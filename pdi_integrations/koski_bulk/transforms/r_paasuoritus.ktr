@@ -620,6 +620,31 @@ Jos ei ole, niin ohjelma ei jatka eteenpäin</note>
       <enabled>Y</enabled>
     </hop>
     <hop>
+      <from>Lisää imp_created</from>
+      <to>Lisää id = 0</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>sopimusjaksot insert</from>
+      <to>Dummy (do nothing) 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Blocking step</from>
+      <to>sopimusjaksot insert</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>JSON suorituksen_alkamispaiva</from>
+      <to>oppisopimusjaksot V2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>JSON suorituskieli_koodiarvo</from>
+      <to>JSON oppimäärä</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
       <from>Is järjestämismuodot present</from>
       <to>Oppisopimukset</to>
       <enabled>Y</enabled>
@@ -637,36 +662,6 @@ Jos ei ole, niin ohjelma ei jatka eteenpäin</note>
     <hop>
       <from>Koulutussopimukset</from>
       <to>undefined to null 3</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Lisää id = 0</from>
-      <to>Is järjestämismuodot present</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Lisää id = 0</from>
-      <to>Is koulutussopimukset present</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>Lisää id = 0</from>
-      <to>Is osaamisenHankkimistavat present </to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>undefined to null</from>
-      <to>Select values</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>undefined to null 2</from>
-      <to>Select values 2</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>undefined to null 3</from>
-      <to>Select values 3</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -695,13 +690,33 @@ Jos ei ole, niin ohjelma ei jatka eteenpäin</note>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Lisää imp_created</from>
-      <to>Lisää id = 0</to>
+      <from>undefined to null</from>
+      <to>Select values</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>sopimusjaksot insert</from>
-      <to>Dummy (do nothing) 2</to>
+      <from>undefined to null 2</from>
+      <to>Select values 2</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>undefined to null 3</from>
+      <to>Select values 3</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Lisää id = 0</from>
+      <to>Is osaamisenHankkimistavat present </to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Lisää id = 0</from>
+      <to>Is järjestämismuodot present</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Lisää id = 0</from>
+      <to>Is koulutussopimukset present</to>
       <enabled>Y</enabled>
     </hop>
     <hop>
@@ -710,18 +725,13 @@ Jos ei ole, niin ohjelma ei jatka eteenpäin</note>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Blocking step</from>
-      <to>sopimusjaksot insert</to>
+      <from>JSON oppimäärä</from>
+      <to>JSON perusteenDiaarinumero </to>
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>JSON suorituskieli_koodiarvo</from>
+      <from>JSON perusteenDiaarinumero </from>
       <to>JSON suorituksen_alkamispaiva</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
-      <from>JSON suorituksen_alkamispaiva</from>
-      <to>oppisopimusjaksot V2</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -775,8 +785,8 @@ Jos ei ole, niin ohjelma ei jatka eteenpäin</note>
       </output>
     </remotesteps>
     <GUI>
-      <xloc>288</xloc>
-      <yloc>416</yloc>
+      <xloc>96</xloc>
+      <yloc>512</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -915,7 +925,8 @@ if (muoto == null) {trans_Status = SKIP_TRANSFORMATION;} // jos dataa ei ole mä
       <jsScript>
         <jsScript_type>0</jsScript_type>
         <jsScript_name>Script 1</jsScript_name>
-        <jsScript_script>var muoto = null;
+        <jsScript_script>trans_Status = CONTINUE_TRANSFORMATION;
+var muoto = null;
 try{ // Kokeile onnistuuko käännös
 muoto = (JSON.parse(data))['koulutussopimukset'];
 }
@@ -1051,6 +1062,76 @@ if (tavat == null) {trans_Status = SKIP_TRANSFORMATION;} // jos dataa ei ole mä
     </GUI>
   </step>
   <step>
+    <name>JSON oppimäärä</name>
+    <type>JsonInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <include>N</include>
+    <include_field/>
+    <rownum>N</rownum>
+    <addresultfile>N</addresultfile>
+    <readurl>N</readurl>
+    <removeSourceField>N</removeSourceField>
+    <IsIgnoreEmptyFile>Y</IsIgnoreEmptyFile>
+    <doNotFailIfNoFile>Y</doNotFailIfNoFile>
+    <ignoreMissingPath>Y</ignoreMissingPath>
+    <defaultPathLeafToNull>N</defaultPathLeafToNull>
+    <rownum_field/>
+    <file>
+      <name/>
+      <filemask/>
+      <exclude_filemask/>
+      <file_required>N</file_required>
+      <include_subfolders>N</include_subfolders>
+    </file>
+    <fields>
+      <field>
+        <name>oppimaara</name>
+        <path>$..oppimäärä.koodiarvo</path>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+    </fields>
+    <limit>0</limit>
+    <IsInFields>Y</IsInFields>
+    <IsAFile>N</IsAFile>
+    <valueField>data</valueField>
+    <shortFileFieldName/>
+    <pathFieldName/>
+    <hiddenFieldName/>
+    <lastModificationTimeFieldName/>
+    <uriNameFieldName/>
+    <rootUriNameFieldName/>
+    <extensionFieldName/>
+    <sizeFieldName/>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>304</xloc>
+      <yloc>224</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
     <name>JSON osaamisala_koodiarvo</name>
     <type>JsonInput</type>
     <description/>
@@ -1117,6 +1198,76 @@ if (tavat == null) {trans_Status = SKIP_TRANSFORMATION;} // jos dataa ei ole mä
     <GUI>
       <xloc>96</xloc>
       <yloc>112</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>JSON suorituksen_alkamispaiva</name>
+    <type>JsonInput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <include>N</include>
+    <include_field/>
+    <rownum>N</rownum>
+    <addresultfile>N</addresultfile>
+    <readurl>N</readurl>
+    <removeSourceField>N</removeSourceField>
+    <IsIgnoreEmptyFile>Y</IsIgnoreEmptyFile>
+    <doNotFailIfNoFile>Y</doNotFailIfNoFile>
+    <ignoreMissingPath>Y</ignoreMissingPath>
+    <defaultPathLeafToNull>Y</defaultPathLeafToNull>
+    <rownum_field/>
+    <file>
+      <name/>
+      <filemask/>
+      <exclude_filemask/>
+      <file_required>N</file_required>
+      <include_subfolders>N</include_subfolders>
+    </file>
+    <fields>
+      <field>
+        <name>suorituksen_alkamispaiva</name>
+        <path>$.alkamispäivä</path>
+        <type>Date</type>
+        <format>yyyy-MM-dd</format>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+    </fields>
+    <limit>0</limit>
+    <IsInFields>Y</IsInFields>
+    <IsAFile>N</IsAFile>
+    <valueField>data</valueField>
+    <shortFileFieldName/>
+    <pathFieldName/>
+    <hiddenFieldName/>
+    <lastModificationTimeFieldName/>
+    <uriNameFieldName/>
+    <rootUriNameFieldName/>
+    <extensionFieldName/>
+    <sizeFieldName/>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>528</xloc>
+      <yloc>320</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1317,11 +1468,12 @@ try {
 	var loppu;
 	var sijainti = null;
 	var ytunnus = null;
-	var sopimusmuoto = 'koulutussopimus';
+	var sopimusmuoto = 'Koulutussopimus';
 	var tunnistekoodiarvo = '';
 	var maakoodiarvo = '';
 	var paikkakuntakoodiarvo = '';
 	var paikkakuntanimi = '';
+	var poimintatapa = 'koulutussopimukset'
 	var i;
 	for(i in sopimus){
 		try {
@@ -1377,6 +1529,7 @@ try {
 	row[idx++] = maakoodiarvo;
 	row[idx++] = paikkakuntakoodiarvo;
 	row[idx++] = paikkakuntanimi;
+	row[idx++] = poimintatapa;
 	putRow(row);
 	}
 }
@@ -1453,6 +1606,14 @@ catch (e){}
       <field>
         <name>paikkakuntanimi</name>
         <rename>paikkakuntanimi</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>poimintatapa</name>
+        <rename>poimintatapa</rename>
         <type>String</type>
         <length>-1</length>
         <precision>-1</precision>
@@ -1573,6 +1734,7 @@ try {
 	var maakoodiarvo = '';
 	var paikkakuntakoodiarvo = '';
 	var paikkakuntanimi = '';
+	var poimintatapa  = 'järjestämismuodot'
 	var i;
 	for(i in muoto){
 		try {
@@ -1622,6 +1784,7 @@ try {
 	row[idx++] = maakoodiarvo;
 	row[idx++] = paikkakuntakoodiarvo;
 	row[idx++] = paikkakuntanimi;
+	row[idx++] = poimintatapa;
 	putRow(row);
 	}
 }
@@ -1703,6 +1866,14 @@ catch (e){}
         <precision>-1</precision>
         <replace>N</replace>
       </field>
+      <field>
+        <name>poimintatapa</name>
+        <rename>poimintatapa</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
     </fields>
     <attributes/>
     <cluster_schema/>
@@ -1765,6 +1936,9 @@ catch (e){}
       </field>
       <field>
         <name>paikkakuntanimi</name>
+      </field>
+      <field>
+        <name>poimintatapa</name>
       </field>
       <field>
         <name>imp_created</name>
@@ -1840,6 +2014,9 @@ catch (e){}
         <name>paikkakuntanimi</name>
       </field>
       <field>
+        <name>poimintatapa</name>
+      </field>
+      <field>
         <name>imp_created</name>
       </field>
       <field>
@@ -1911,6 +2088,9 @@ catch (e){}
       </field>
       <field>
         <name>paikkakuntanimi</name>
+      </field>
+      <field>
+        <name>poimintatapa</name>
       </field>
       <field>
         <name>imp_created</name>
@@ -2009,8 +2189,8 @@ catch (e){}
       </output>
     </remotesteps>
     <GUI>
-      <xloc>480</xloc>
-      <yloc>320</yloc>
+      <xloc>320</xloc>
+      <yloc>416</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2140,8 +2320,8 @@ for (var i in pvmt) {
       </output>
     </remotesteps>
     <GUI>
-      <xloc>480</xloc>
-      <yloc>224</yloc>
+      <xloc>528</xloc>
+      <yloc>416</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -2175,6 +2355,7 @@ try {
 	var maakoodiarvo = '';
 	var paikkakuntakoodiarvo = '';
 	var paikkakuntanimi = '';
+	var poimintatapa = 'osaamisenHankkimistavat'
 	var i;
 	for(i in muoto){
 		try {
@@ -2226,6 +2407,7 @@ try {
 	row[idx++] = maakoodiarvo;
 	row[idx++] = paikkakuntakoodiarvo;
 	row[idx++] = paikkakuntanimi;
+	row[idx++] = poimintatapa;
 	putRow(row);
 	}
 }
@@ -2307,6 +2489,14 @@ catch (e){}
         <precision>-1</precision>
         <replace>N</replace>
       </field>
+      <field>
+        <name>poimintatapa</name>
+        <rename>poimintatapa</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
     </fields>
     <attributes/>
     <cluster_schema/>
@@ -2340,6 +2530,400 @@ catch (e){}
     <execute_each_row>N</execute_each_row>
     <variables_active>N</variables_active>
     <lazy_conversion_active>N</lazy_conversion_active>
+    <cached_row_meta_active>N</cached_row_meta_active>
+    <row-meta>
+      <value-meta>
+        <type>Integer</type>
+        <storagetype>normal</storagetype>
+        <name>paatason_suoritus_id</name>
+        <length>15</length>
+        <precision>0</precision>
+        <origin>r_paatason_suoritus</origin>
+        <comments>paatason_suoritus_id</comments>
+        <conversion_Mask>####0;-####0</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Helsinki</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>opiskeluoikeus_oid</name>
+        <length>2147483647</length>
+        <precision>-1</precision>
+        <origin>r_paatason_suoritus</origin>
+        <comments>opiskeluoikeus_oid</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Helsinki</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>suorituksen_tyyppi</name>
+        <length>2147483647</length>
+        <precision>-1</precision>
+        <origin>r_paatason_suoritus</origin>
+        <comments>suorituksen_tyyppi</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Helsinki</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>koulutusmoduuli_koodisto</name>
+        <length>2147483647</length>
+        <precision>-1</precision>
+        <origin>r_paatason_suoritus</origin>
+        <comments>koulutusmoduuli_koodisto</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Helsinki</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>koulutusmoduuli_koodiarvo</name>
+        <length>2147483647</length>
+        <precision>-1</precision>
+        <origin>r_paatason_suoritus</origin>
+        <comments>koulutusmoduuli_koodiarvo</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Helsinki</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>koulutusmoduuli_koulutustyyppi</name>
+        <length>2147483647</length>
+        <precision>-1</precision>
+        <origin>r_paatason_suoritus</origin>
+        <comments>koulutusmoduuli_koulutustyyppi</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Helsinki</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>BigNumber</type>
+        <storagetype>normal</storagetype>
+        <name>koulutusmoduuli_laajuus_arvo</name>
+        <length>-1</length>
+        <precision>-1</precision>
+        <origin>r_paatason_suoritus</origin>
+        <comments>koulutusmoduuli_laajuus_arvo</comments>
+        <conversion_Mask>######0.0###################;-######0.0###################</conversion_Mask>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Helsinki</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>koulutusmoduuli_laajuus_yksikko</name>
+        <length>2147483647</length>
+        <precision>-1</precision>
+        <origin>r_paatason_suoritus</origin>
+        <comments>koulutusmoduuli_laajuus_yksikko</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Helsinki</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>koulutusmoduuli_nimi</name>
+        <length>2147483647</length>
+        <precision>-1</precision>
+        <origin>r_paatason_suoritus</origin>
+        <comments>koulutusmoduuli_nimi</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Helsinki</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Date</type>
+        <storagetype>normal</storagetype>
+        <name>vahvistus_paiva</name>
+        <length>-1</length>
+        <precision>-1</precision>
+        <origin>r_paatason_suoritus</origin>
+        <comments>vahvistus_paiva</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Helsinki</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>arviointi_arvosana_koodiarvo</name>
+        <length>2147483647</length>
+        <precision>-1</precision>
+        <origin>r_paatason_suoritus</origin>
+        <comments>arviointi_arvosana_koodiarvo</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Helsinki</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>arviointi_arvosana_koodisto</name>
+        <length>2147483647</length>
+        <precision>-1</precision>
+        <origin>r_paatason_suoritus</origin>
+        <comments>arviointi_arvosana_koodisto</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Helsinki</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Boolean</type>
+        <storagetype>normal</storagetype>
+        <name>arviointi_hyvaksytty</name>
+        <length>-1</length>
+        <precision>-1</precision>
+        <origin>r_paatason_suoritus</origin>
+        <comments>arviointi_hyvaksytty</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Helsinki</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>Date</type>
+        <storagetype>normal</storagetype>
+        <name>arviointi_paiva</name>
+        <length>-1</length>
+        <precision>-1</precision>
+        <origin>r_paatason_suoritus</origin>
+        <comments>arviointi_paiva</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Helsinki</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>toimipiste_oid</name>
+        <length>2147483647</length>
+        <precision>-1</precision>
+        <origin>r_paatason_suoritus</origin>
+        <comments>toimipiste_oid</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Helsinki</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>toimipiste_nimi</name>
+        <length>2147483647</length>
+        <precision>-1</precision>
+        <origin>r_paatason_suoritus</origin>
+        <comments>toimipiste_nimi</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Helsinki</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+      <value-meta>
+        <type>String</type>
+        <storagetype>normal</storagetype>
+        <name>data</name>
+        <length>-1</length>
+        <precision>-1</precision>
+        <origin>r_paatason_suoritus</origin>
+        <comments>data</comments>
+        <conversion_Mask/>
+        <decimal_symbol>.</decimal_symbol>
+        <grouping_symbol>,</grouping_symbol>
+        <currency_symbol/>
+        <trim_type>none</trim_type>
+        <case_insensitive>N</case_insensitive>
+        <collator_disabled>Y</collator_disabled>
+        <collator_strength>0</collator_strength>
+        <sort_descending>N</sort_descending>
+        <output_padding>N</output_padding>
+        <date_format_lenient>N</date_format_lenient>
+        <date_format_locale>en_US</date_format_locale>
+        <date_format_timezone>Europe/Helsinki</date_format_timezone>
+        <lenient_string_to_number>N</lenient_string_to_number>
+      </value-meta>
+    </row-meta>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -2530,6 +3114,18 @@ catch (e){}
       </field>
       <field>
         <name>paikkakuntanimi</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+      <field>
+        <name>poimintatapa</name>
         <type>String</type>
         <format/>
         <currency/>
@@ -2898,6 +3494,30 @@ catch (e){}
         <precision>-1</precision>
       </field>
       <field>
+        <name>oppimaara</name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+      <field>
+        <name>perusteenDiaarinumero </name>
+        <type>String</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+      <field>
         <name>imp_created</name>
         <type>Date</type>
         <format/>
@@ -2943,7 +3563,7 @@ catch (e){}
       </output>
     </remotesteps>
     <GUI>
-      <xloc>480</xloc>
+      <xloc>96</xloc>
       <yloc>416</yloc>
       <draw>Y</draw>
     </GUI>
@@ -3120,7 +3740,7 @@ catch (e){}
     </GUI>
   </step>
   <step>
-    <name>JSON suorituksen_alkamispaiva</name>
+    <name>JSON perusteenDiaarinumero </name>
     <type>JsonInput</type>
     <description/>
     <distribute>Y</distribute>
@@ -3136,7 +3756,7 @@ catch (e){}
     <addresultfile>N</addresultfile>
     <readurl>N</readurl>
     <removeSourceField>N</removeSourceField>
-    <IsIgnoreEmptyFile>Y</IsIgnoreEmptyFile>
+    <IsIgnoreEmptyFile>N</IsIgnoreEmptyFile>
     <doNotFailIfNoFile>Y</doNotFailIfNoFile>
     <ignoreMissingPath>Y</ignoreMissingPath>
     <defaultPathLeafToNull>Y</defaultPathLeafToNull>
@@ -3150,10 +3770,10 @@ catch (e){}
     </file>
     <fields>
       <field>
-        <name>suorituksen_alkamispaiva</name>
-        <path>$.alkamispäivä</path>
-        <type>Date</type>
-        <format>yyyy-MM-dd</format>
+        <name>perusteenDiaarinumero </name>
+        <path>$.koulutusmoduuli.perusteenDiaarinumero</path>
+        <type>String</type>
+        <format/>
         <currency/>
         <decimal/>
         <group/>
@@ -3184,7 +3804,7 @@ catch (e){}
       </output>
     </remotesteps>
     <GUI>
-      <xloc>288</xloc>
+      <xloc>528</xloc>
       <yloc>224</yloc>
       <draw>Y</draw>
     </GUI>
