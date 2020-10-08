@@ -749,7 +749,7 @@ Select distinct --top 0
 	  ,[Tutkinnon taso (hakukohde) järjestys] = d45.jarjestys_koodi
 	  ,[Tutkinnon aloitussykli (hakukohde) järjestys] = d44.jarjestys_koodi
 	  ,[Äidinkieli versio1 järjestys] = 999999
-	  ,[Valintatapajonon tyyppi järjestys] = 'ööö'
+	  ,[Valintatapajonon tyyppi järjestys] = 'öööö'
       ,[1 Koulutusala, taso 1 järjestys] = 999 
 	  ,[1 Koulutusala, taso 2 järjestys] = 999
 	  ,[1 Koulutusala, taso 3 järjestys] = 999
