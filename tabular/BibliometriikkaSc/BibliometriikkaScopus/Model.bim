@@ -62,6 +62,29 @@
             "value": "SqlServer"
           }
         ]
+      },
+      {
+        "name": "SqlServer dwitvipusql16 Bibliometriikka 6",
+        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=Bibliometriikka;Integrated Security=SSPI;Persist Security Info=false",
+        "impersonationMode": "impersonateServiceAccount",
+        "annotations": [
+          {
+            "name": "ConnectionEditUISource",
+            "value": "SqlServer"
+          }
+        ]
+      },
+      {
+        "name": "SqlServer dwitvipusql16 Bibliometriikka 7",
+        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=Bibliometriikka;Integrated Security=SSPI;Persist Security Info=false",
+        "impersonationMode": "impersonateAccount",
+        "account": "dwi\\oeskola",
+        "annotations": [
+          {
+            "name": "ConnectionEditUISource",
+            "value": "SqlServer"
+          }
+        ]
       }
     ],
     "tables": [
@@ -7857,7 +7880,7 @@
         ]
       },
       {
-        "name": "Bibliometriikka",
+        "name": "Bibliometriikka 2019",
         "columns": [
           {
             "name": "Vuosikoodi",
@@ -8305,73 +8328,73 @@
         ],
         "measures": [
           {
-            "name": "Julkaisut (Maailma 4v Ositettu)",
-            "expression": "SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Julkaisut Maailma 4 vuotta]),[Julkaisut Maailma 4 vuotta])",
+            "name": "Julkaisut (Maailma 4v Ositettu) 2019",
+            "expression": "SUMX(SUMMARIZE('Bibliometriikka 2019',[IDkoodi],[Julkaisut Maailma 4 vuotta]),[Julkaisut Maailma 4 vuotta])",
             "formatString": "#,0"
           },
           {
-            "name": "Top10-indeksi (maailma 4v)",
-            "expression": "IF(AND([Julkaisut (Maailma 4v Ositettu)]>=50,[Sisäinen kattavuus (maailma 4v) 2018]>=0.4),CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 10 Indeksi Maailma 4 vuotta]),[TOP 10 Indeksi Maailma 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 10 Julkaisut Maailma 4 vuotta]),[TOP 10 Julkaisut Maailma 4 vuotta]),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<15)),BLANK())",
+            "name": "Top10-indeksi (maailma 4v) 2019",
+            "expression": "IF(AND([Julkaisut (Maailma 4v Ositettu) 2019]>=50,[Sisäinen kattavuus (maailma 4v) 2019]>=0.4),CALCULATE(SUMX(SUMMARIZE('Bibliometriikka 2019',[IDkoodi],[TOP 10 Indeksi Maailma 4 vuotta]),[TOP 10 Indeksi Maailma 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka 2019',[IDkoodi],[TOP 10 Julkaisut Maailma 4 vuotta]),[TOP 10 Julkaisut Maailma 4 vuotta]),FILTER('Bibliometriikka 2019','Bibliometriikka 2019'[Vuosikoodi]<15)),BLANK())",
             "formatString": "0.00"
           },
           {
-            "name": "Sisäinen kattavuus (maailma 4v)",
-            "expression": "SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Sisäinen kattavuus Maailma 4 vuotta]),[Sisäinen kattavuus Maailma 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Julkaisut Maailma 4 vuotta]),[Julkaisut Maailma 4 vuotta])",
+            "name": "Sisäinen kattavuus (maailma 4v) 2019",
+            "expression": "SUMX(SUMMARIZE('Bibliometriikka 2019',[IDkoodi],[Sisäinen kattavuus Maailma 4 vuotta]),[Sisäinen kattavuus Maailma 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka 2019',[IDkoodi],[Julkaisut Maailma 4 vuotta]),[Julkaisut Maailma 4 vuotta])",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
-            "name": "Julkaisut (Suomi 4v Ositettu)",
-            "expression": "SUM('Bibliometriikka'[Julkaisut Suomi 4 vuotta])",
+            "name": "Julkaisut (Suomi 4v Ositettu) 2019",
+            "expression": "SUM('Bibliometriikka 2019'[Julkaisut Suomi 4 vuotta])",
             "formatString": "#,0"
           },
           {
-            "name": "Top10-indeksi(Suomi 4v)",
-            "expression": "IF(AND([Julkaisut (Suomi 4v Ositettu)]>=50,[Sisäinen kattavuus (suomi 4v)]>=0.4),CALCULATE(DIVIDE((SUM('Bibliometriikka'[TOP 10 Indeksi Suomi 4 vuotta])/SUM('Bibliometriikka'[TOP 10 Julkaisut Suomi 4 vuotta])),1),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<15)),BLANK())",
+            "name": "Top10-indeksi(Suomi 4v) 2019",
+            "expression": "IF(AND([Julkaisut (Suomi 4v Ositettu) 2019]>=50,[Sisäinen kattavuus (suomi 4v) 2019]>=0.4),CALCULATE(DIVIDE((SUM('Bibliometriikka 2019'[TOP 10 Indeksi Suomi 4 vuotta])/SUM('Bibliometriikka 2019'[TOP 10 Julkaisut Suomi 4 vuotta])),1),FILTER('Bibliometriikka 2019','Bibliometriikka 2019'[Vuosikoodi]<15)),BLANK())",
             "formatString": "0.00"
           },
           {
-            "name": "Sisäinen kattavuus (suomi 4v)",
-            "expression": "SUM('Bibliometriikka'[Sisäinen kattavuus Suomi 4 vuotta])/SUM('Bibliometriikka'[Julkaisut Suomi 4 vuotta])",
+            "name": "Sisäinen kattavuus (suomi 4v) 2019",
+            "expression": "SUM('Bibliometriikka 2019'[Sisäinen kattavuus Suomi 4 vuotta])/SUM('Bibliometriikka 2019'[Julkaisut Suomi 4 vuotta])",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
-            "name": "Julkaisut (suomi 1v)",
-            "expression": "DISTINCTCOUNT('Bibliometriikka'[PID])",
+            "name": "Julkaisut (suomi 1v) 2019",
+            "expression": "DISTINCTCOUNT('Bibliometriikka 2019'[PID])",
             "formatString": "#,0"
           },
           {
-            "name": "Viittausindeksi (Maailma 4v)",
+            "name": "Viittausindeksi (Maailma 4v) 2019",
             "expression": [
-              "IF(AND([Julkaisut (Maailma 4v Ositettu)]>=50,[Sisäinen kattavuus (maailma 4v)]>=0.4),CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],",
-              "[Sitaatiot Maailma 4 vuotta]),[Sitaatiot Maailma 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Analyysijulkaisut Maailma 4 vuotta]),[Analyysijulkaisut Maailma 4 vuotta]),",
-              "FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<15)),BLANK())",
+              "IF(AND([Julkaisut (Maailma 4v Ositettu) 2019]>=50,[Sisäinen kattavuus (maailma 4v) 2019]>=0.4),CALCULATE(SUMX(SUMMARIZE('Bibliometriikka 2019',[IDkoodi],",
+              "[Sitaatiot Maailma 4 vuotta]),[Sitaatiot Maailma 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka 2019',[IDkoodi],[Analyysijulkaisut Maailma 4 vuotta]),[Analyysijulkaisut Maailma 4 vuotta]),",
+              "FILTER('Bibliometriikka 2019','Bibliometriikka 2019'[Vuosikoodi]<15)),BLANK())",
               ""
             ],
             "formatString": "0.00"
           },
           {
-            "name": "Top1-indeksi(maailma 4v)",
-            "expression": "IF(AND([Julkaisut (Maailma 4v Ositettu)]>=50,[Sisäinen kattavuus (maailma 4v)]>=0.4),CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 1 Indeksi Maailma 4 vuotta]),[TOP 1 Indeksi Maailma 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 1 Julkaisut Maailma 4 vuotta]),[TOP 1 Julkaisut Maailma 4 vuotta]),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<15)),BLANK())",
+            "name": "Top1-indeksi(maailma 4v) 2019",
+            "expression": "IF(AND([Julkaisut (Maailma 4v Ositettu) 2019]>=50,[Sisäinen kattavuus (maailma 4v) 2019]>=0.4),CALCULATE(SUMX(SUMMARIZE('Bibliometriikka 2019',[IDkoodi],[TOP 1 Indeksi Maailma 4 vuotta]),[TOP 1 Indeksi Maailma 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka 2019',[IDkoodi],[TOP 1 Julkaisut Maailma 4 vuotta]),[TOP 1 Julkaisut Maailma 4 vuotta]),FILTER('Bibliometriikka 2019','Bibliometriikka 2019'[Vuosikoodi]<15)),BLANK())",
             "formatString": "0.00"
           },
           {
-            "name": "Top1-indeksi(Suomi 4v)",
-            "expression": "IF(AND([Julkaisut (Suomi 4v Ositettu)]>=50,[Sisäinen kattavuus (suomi 4v)]>=0.4),CALCULATE(DIVIDE((SUM('Bibliometriikka'[TOP 1 Indeksi Suomi 4 vuotta])/SUM('Bibliometriikka'[TOP 1 Julkaisut Suomi 4 vuotta])),1),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<15)),BLANK())",
+            "name": "Top1-indeksi(Suomi 4v) 2019",
+            "expression": "IF(AND([Julkaisut (Suomi 4v Ositettu) 2019]>=50,[Sisäinen kattavuus (suomi 4v) 2019]>=0.4),CALCULATE(DIVIDE((SUM('Bibliometriikka 2019'[TOP 1 Indeksi Suomi 4 vuotta])/SUM('Bibliometriikka 2019'[TOP 1 Julkaisut Suomi 4 vuotta])),1),FILTER('Bibliometriikka 2019','Bibliometriikka 2019'[Vuosikoodi]<15)),BLANK())",
             "formatString": "0.00"
           },
           {
-            "name": "Viittausindeksi (Suomi 4v)",
-            "expression": "if([Julkaisut (Suomi 4v Ositettu)]<50,BLANK(),CALCULATE(SUM('Bibliometriikka'[Sitaatiot Suomi 4 vuotta])/SUM('Bibliometriikka'[Analyysijulkaisut Suomi 4 vuotta])/1,FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<15)))",
+            "name": "Viittausindeksi (Suomi 4v) 2019",
+            "expression": "if([Julkaisut (Suomi 4v Ositettu) 2019]<50,BLANK(),CALCULATE(SUM('Bibliometriikka 2019'[Sitaatiot Suomi 4 vuotta])/SUM('Bibliometriikka 2019'[Analyysijulkaisut Suomi 4 vuotta])/1,FILTER('Bibliometriikka 2019','Bibliometriikka 2019'[Vuosikoodi]<15)))",
             "formatString": "0.00"
           },
           {
             "name": "Top 10 Julkaisut (Maailma 4v Ositettu) 2019",
-            "expression": "CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Top10 Julkaisut (Maailma 4v Ositettu)]),[Top10 Julkaisut (Maailma 4v Ositettu)]),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<15))",
+            "expression": "CALCULATE(SUMX(SUMMARIZE('Bibliometriikka 2019',[IDkoodi],[Top10 Julkaisut (Maailma 4v Ositettu)]),[Top10 Julkaisut (Maailma 4v Ositettu)]),FILTER('Bibliometriikka 2019','Bibliometriikka 2019'[Vuosikoodi]<15))",
             "formatString": "#,0"
           },
           {
             "name": "Testimittari",
-            "expression": "SUM('Bibliometriikka'[Sisäinen kattavuus Suomi 4 vuotta])/SUM('Bibliometriikka'[Analyysijulkaisut Suomi 4 vuotta])",
+            "expression": "SUM('Bibliometriikka 2019'[Sisäinen kattavuus Suomi 4 vuotta])/SUM('Bibliometriikka 2019'[Analyysijulkaisut Suomi 4 vuotta])",
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           }
         ],
@@ -8383,6 +8406,516 @@
           {
             "name": "_TM_ExtProp_DbTableName",
             "value": "v_f_tab_sc_maailma_4v_2019"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dbo"
+          }
+        ]
+      },
+      {
+        "name": "Bibliometriikka",
+        "columns": [
+          {
+            "name": "Vuosikoodi",
+            "dataType": "int64",
+            "sourceColumn": "Vuosikoodi",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Nelivuotiskausi",
+            "dataType": "string",
+            "sourceColumn": "Nelivuotiskausi",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Vuosi",
+            "dataType": "int64",
+            "sourceColumn": "Vuosi",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Maajärjestys",
+            "dataType": "int64",
+            "sourceColumn": "Maajärjestys",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "IDkoodi",
+            "dataType": "int64",
+            "sourceColumn": "IDkoodi",
+            "sourceProviderType": "BigInt"
+          },
+          {
+            "name": "Maa",
+            "dataType": "string",
+            "sourceColumn": "Maa",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Manner",
+            "dataType": "string",
+            "sourceColumn": "Manner",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Mannerkoodi",
+            "dataType": "int64",
+            "sourceColumn": "Mannerkoodi",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "EU15-maat",
+            "dataType": "string",
+            "sourceColumn": "EU15-maat",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "EU15-maat jarjestys",
+            "dataType": "int64",
+            "sourceColumn": "EU15-maat jarjestys",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "EU-maat",
+            "dataType": "string",
+            "sourceColumn": "EU-maat",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "EU-maat jarjestys",
+            "dataType": "int64",
+            "sourceColumn": "EU-maat jarjestys",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "IC-maat",
+            "dataType": "string",
+            "sourceColumn": "IC-maat",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "OECD-maat",
+            "dataType": "string",
+            "sourceColumn": "OECD-maat",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "OECD-maat jarjestys",
+            "dataType": "int64",
+            "sourceColumn": "OECD-maat jarjestys",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Pohjoismaat",
+            "dataType": "string",
+            "sourceColumn": "Pohjoismaat",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Pohjoismaat jarjestys",
+            "dataType": "int64",
+            "sourceColumn": "Pohjoismaat jarjestys",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Maaryhmä",
+            "dataType": "string",
+            "sourceColumn": "Maaryhmä",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Maaryhmä Järjestys",
+            "dataType": "int64",
+            "sourceColumn": "Maaryhmä Järjestys",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Yhteistyö",
+            "dataType": "string",
+            "sourceColumn": "Yhteistyö",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Päätieteenala koodi",
+            "dataType": "int64",
+            "sourceColumn": "Päätieteenala koodi",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Päätieteenala",
+            "dataType": "string",
+            "sourceColumn": "Päätieteenala",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Tieteenala koodi",
+            "dataType": "int64",
+            "sourceColumn": "Tieteenala koodi",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Tieteenala",
+            "dataType": "string",
+            "sourceColumn": "Tieteenala",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Scopus tieteenala koodi",
+            "dataType": "int64",
+            "sourceColumn": "Scopus tieteenala koodi",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Scopus tieteenala",
+            "dataType": "string",
+            "sourceColumn": "Scopus tieteenala",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Organisaatio",
+            "dataType": "string",
+            "sourceColumn": "Organisaatio",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Organisaatio jarjestys",
+            "dataType": "int64",
+            "sourceColumn": "Organisaatio jarjestys",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Organisaatiotyyppi",
+            "dataType": "string",
+            "sourceColumn": "Organisaatiotyyppi",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Organisaatiotyyppi koodi",
+            "dataType": "int64",
+            "sourceColumn": "Organisaatiotyyppi koodi",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Kansainvälinen yhteistyö",
+            "dataType": "string",
+            "sourceColumn": "Kansainvälinen yhteistyö",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Kansainvälinen yhteistyö jarjestys",
+            "dataType": "int64",
+            "sourceColumn": "Kansainvälinen yhteistyö jarjestys",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Kansallinen Yhteistyö",
+            "dataType": "string",
+            "sourceColumn": "Kansallinen Yhteistyö",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Kansallinen Yhteistyö jarjestys",
+            "dataType": "int64",
+            "sourceColumn": "Kansallinen Yhteistyö jarjestys",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Kansallinen Yliopistoyhteistyö",
+            "dataType": "string",
+            "sourceColumn": "Kansallinen Yliopistoyhteistyö",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Kansallinen Yliopistoyhteistyö jarjestys",
+            "dataType": "int64",
+            "sourceColumn": "Kansallinen Yliopistoyhteistyö jarjestys",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Kansallinen Yritysyhteistyö",
+            "dataType": "string",
+            "sourceColumn": "Kansallinen Yritysyhteistyö",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Kansallinen Yritysyhteistyö jarjestys",
+            "dataType": "int64",
+            "sourceColumn": "Kansallinen Yritysyhteistyö jarjestys",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Julkaisut Maailma 4 vuotta",
+            "dataType": "double",
+            "sourceColumn": "Julkaisut Maailma 4 vuotta",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "Top10 Julkaisut (Maailma 4v Ositettu)",
+            "dataType": "double",
+            "sourceColumn": "Top10 Julkaisut (Maailma 4v Ositettu)",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "Analyysijulkaisut Maailma 4 vuotta",
+            "dataType": "double",
+            "sourceColumn": "Analyysijulkaisut Maailma 4 vuotta",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "TOP 10 Julkaisut Maailma 4 vuotta",
+            "dataType": "double",
+            "sourceColumn": "TOP 10 Julkaisut Maailma 4 vuotta",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "TOP 5 Julkaisut Maailma 4 vuotta",
+            "dataType": "double",
+            "sourceColumn": "TOP 5 Julkaisut Maailma 4 vuotta",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "TOP 1 Julkaisut Maailma 4 vuotta",
+            "dataType": "double",
+            "sourceColumn": "TOP 1 Julkaisut Maailma 4 vuotta",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "Sisäinen kattavuus Maailma 4 vuotta",
+            "dataType": "double",
+            "sourceColumn": "Sisäinen kattavuus Maailma 4 vuotta",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "Sitaatiot Maailma 4 vuotta",
+            "dataType": "double",
+            "sourceColumn": "Sitaatiot Maailma 4 vuotta",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "TOP 10 Indeksi Maailma 4 vuotta",
+            "dataType": "double",
+            "sourceColumn": "TOP 10 Indeksi Maailma 4 vuotta",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "TOP 5 Indeksi Maailma 4 vuotta",
+            "dataType": "double",
+            "sourceColumn": "TOP 5 Indeksi Maailma 4 vuotta",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "TOP 1 Indeksi Maailma 4 vuotta",
+            "dataType": "double",
+            "sourceColumn": "TOP 1 Indeksi Maailma 4 vuotta",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "Julkaisut Suomi 4 vuotta",
+            "dataType": "double",
+            "sourceColumn": "Julkaisut Suomi 4 vuotta",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "Analyysijulkaisut Suomi 4 vuotta",
+            "dataType": "double",
+            "sourceColumn": "Analyysijulkaisut Suomi 4 vuotta",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "Julkaisut Suomi 1 vuotta",
+            "dataType": "int64",
+            "sourceColumn": "Julkaisut Suomi 1 vuotta",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "TOP 10 Julkaisut Suomi 4 vuotta",
+            "dataType": "double",
+            "sourceColumn": "TOP 10 Julkaisut Suomi 4 vuotta",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "TOP 5 Julkaisut Suomi 4 vuotta",
+            "dataType": "double",
+            "sourceColumn": "TOP 5 Julkaisut Suomi 4 vuotta",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "TOP 1 Julkaisut Suomi 4 vuotta",
+            "dataType": "double",
+            "sourceColumn": "TOP 1 Julkaisut Suomi 4 vuotta",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "Sisäinen kattavuus Suomi 4 vuotta",
+            "dataType": "double",
+            "sourceColumn": "Sisäinen kattavuus Suomi 4 vuotta",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "Sitaatiot Suomi 4 vuotta",
+            "dataType": "double",
+            "sourceColumn": "Sitaatiot Suomi 4 vuotta",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "TOP 10 Indeksi Suomi 4 vuotta",
+            "dataType": "double",
+            "sourceColumn": "TOP 10 Indeksi Suomi 4 vuotta",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "TOP 5 Indeksi Suomi 4 vuotta",
+            "dataType": "double",
+            "sourceColumn": "TOP 5 Indeksi Suomi 4 vuotta",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "TOP 1 Indeksi Suomi 4 vuotta",
+            "dataType": "double",
+            "sourceColumn": "TOP 1 Indeksi Suomi 4 vuotta",
+            "sourceProviderType": "Numeric"
+          },
+          {
+            "name": "TOP 10 Julkaisut Suomi 1 vuosi",
+            "dataType": "int64",
+            "sourceColumn": "TOP 10 Julkaisut Suomi 1 vuosi",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "TOP 5 Julkaisut Suomi 1 vuosi",
+            "dataType": "int64",
+            "sourceColumn": "TOP 5 Julkaisut Suomi 1 vuosi",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "TOP 1 Julkaisut Suomi 1 vuosi",
+            "dataType": "int64",
+            "sourceColumn": "TOP 1 Julkaisut Suomi 1 vuosi",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Sisäinen kattavuus Suomi 1 vuosi",
+            "dataType": "int64",
+            "sourceColumn": "Sisäinen kattavuus Suomi 1 vuosi",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Sitaatiot Suomi 1 vuosi",
+            "dataType": "int64",
+            "sourceColumn": "Sitaatiot Suomi 1 vuosi",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "TOP 10 Indeksi Suomi 1 vuosi",
+            "dataType": "int64",
+            "sourceColumn": "TOP 10 Indeksi Suomi 1 vuosi",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "TOP 5 Indeksi Suomi 1 vuosi",
+            "dataType": "int64",
+            "sourceColumn": "TOP 5 Indeksi Suomi 1 vuosi",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "TOP 1 Indeksi Suomi 1 vuosi",
+            "dataType": "int64",
+            "sourceColumn": "TOP 1 Indeksi Suomi 1 vuosi",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "PID",
+            "dataType": "int64",
+            "sourceColumn": "PID",
+            "sourceProviderType": "Integer"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "v_f_tab_sc_maailma_4v",
+            "dataView": "full",
+            "source": {
+              "query": " SELECT [dbo].[v_f_tab_sc_maailma_4v].* FROM [dbo].[v_f_tab_sc_maailma_4v] ",
+              "dataSource": "SqlServer dwitvipusql16 Bibliometriikka 7"
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Top1-indeksi(maailma 4v)",
+            "expression": "IF(AND([Julkaisut (Maailma 4v Ositettu)]>=50,[Sisäinen kattavuus (maailma 4v)]>=0.4),CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 1 Indeksi Maailma 4 vuotta]),[TOP 1 Indeksi Maailma 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 1 Julkaisut Maailma 4 vuotta]),[TOP 1 Julkaisut Maailma 4 vuotta]),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<16)),BLANK())",
+            "formatString": "0.00"
+          },
+          {
+            "name": "Julkaisut (Maailma 4v Ositettu)",
+            "expression": "SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Julkaisut Maailma 4 vuotta]),[Julkaisut Maailma 4 vuotta])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Sisäinen kattavuus (maailma 4v)",
+            "expression": "SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Sisäinen kattavuus Maailma 4 vuotta]),[Sisäinen kattavuus Maailma 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Julkaisut Maailma 4 vuotta]),[Julkaisut Maailma 4 vuotta])",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Top10-indeksi (maailma 4v)",
+            "expression": "IF(AND([Julkaisut (Maailma 4v Ositettu)]>=50,[Sisäinen kattavuus (maailma 4v)]>=0.4),CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 10 Indeksi Maailma 4 vuotta]),[TOP 10 Indeksi Maailma 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 10 Julkaisut Maailma 4 vuotta]),[TOP 10 Julkaisut Maailma 4 vuotta]),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<16)),BLANK())",
+            "formatString": "0.00"
+          },
+          {
+            "name": "Sisäinen kattavuus (suomi 4v)",
+            "expression": "SUM('Bibliometriikka'[Sisäinen kattavuus Suomi 4 vuotta])/SUM('Bibliometriikka'[Julkaisut Suomi 4 vuotta])",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Julkaisut (Suomi 4v Ositettu)",
+            "expression": "SUM('Bibliometriikka'[Julkaisut Suomi 4 vuotta])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Top10-indeksi(Suomi 4v)",
+            "expression": "IF(AND([Julkaisut (Suomi 4v Ositettu)]>=50,[Sisäinen kattavuus (suomi 4v)]>=0.4),CALCULATE(DIVIDE((SUM('Bibliometriikka'[TOP 10 Indeksi Suomi 4 vuotta])/SUM('Bibliometriikka'[TOP 10 Julkaisut Suomi 4 vuotta])),1),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<16)),BLANK())",
+            "formatString": "0.00"
+          },
+          {
+            "name": "Top1-indeksi(Suomi 4v)",
+            "expression": "IF(AND([Julkaisut (Suomi 4v Ositettu)]>=50,[Sisäinen kattavuus (suomi 4v)]>=0.4),CALCULATE(DIVIDE((SUM('Bibliometriikka'[TOP 1 Indeksi Suomi 4 vuotta])/SUM('Bibliometriikka'[TOP 1 Julkaisut Suomi 4 vuotta])),1),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<16)),BLANK())",
+            "formatString": "0.00"
+          },
+          {
+            "name": "Top 10 Julkaisut (Maailma 4v Ositettu)",
+            "expression": "CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Top10 Julkaisut (Maailma 4v Ositettu)]),[Top10 Julkaisut (Maailma 4v Ositettu)]),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<16))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Julkaisut (suomi 1v)",
+            "expression": "DISTINCTCOUNT('Bibliometriikka'[PID])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Viittausindeksi (Maailma 4v)",
+            "expression": [
+              "IF(AND([Julkaisut (Maailma 4v Ositettu)]>=50,[Sisäinen kattavuus (maailma 4v)]>=0.4),CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],",
+              "[Sitaatiot Maailma 4 vuotta]),[Sitaatiot Maailma 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Analyysijulkaisut Maailma 4 vuotta]),[Analyysijulkaisut Maailma 4 vuotta]),",
+              "FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<16)),BLANK())",
+              ""
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "Viittausindeksi (Suomi 4v)",
+            "expression": "if([Julkaisut (Suomi 4v Ositettu)]<50,BLANK(),CALCULATE(SUM('Bibliometriikka'[Sitaatiot Suomi 4 vuotta])/SUM('Bibliometriikka'[Analyysijulkaisut Suomi 4 vuotta])/1,FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<16)))",
+            "formatString": "0.00"
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [dbo].[v_f_tab_sc_maailma_4v].* FROM [dbo].[v_f_tab_sc_maailma_4v] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "v_f_tab_sc_maailma_4v"
           },
           {
             "name": "_TM_ExtProp_DbSchemaName",
@@ -8535,165 +9068,6 @@
               },
               {
                 "name": "Sarakeleveys"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "KV Vipunen",
-        "tables": [
-          {
-            "name": "Sarakeleveys",
-            "columns": [
-              {
-                "name": "leveys"
-              },
-              {
-                "name": "Sarakeleveys"
-              }
-            ]
-          },
-          {
-            "name": "Bibliometriikka",
-            "columns": [
-              {
-                "name": "EU-maat"
-              },
-              {
-                "name": "EU15-maat"
-              },
-              {
-                "name": "Vuosi"
-              },
-              {
-                "name": "Tieteenala"
-              },
-              {
-                "name": "Päätieteenala"
-              },
-              {
-                "name": "Pohjoismaat"
-              },
-              {
-                "name": "OECD-maat"
-              },
-              {
-                "name": "Nelivuotiskausi"
-              },
-              {
-                "name": "Manner"
-              },
-              {
-                "name": "Maaryhmä"
-              },
-              {
-                "name": "Kansainvälinen yhteistyö"
-              },
-              {
-                "name": "IC-maat"
-              },
-              {
-                "name": "Maa"
-              }
-            ],
-            "measures": [
-              {
-                "name": "Top10-indeksi (maailma 4v)"
-              },
-              {
-                "name": "Julkaisut (Maailma 4v Ositettu)"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "Suomi 4v Vipunen",
-        "tables": [
-          {
-            "name": "Sarakeleveys",
-            "columns": [
-              {
-                "name": "leveys"
-              },
-              {
-                "name": "Sarakeleveys"
-              }
-            ]
-          },
-          {
-            "name": "Bibliometriikka",
-            "columns": [
-              {
-                "name": "Organisaatio"
-              },
-              {
-                "name": "Nelivuotiskausi"
-              },
-              {
-                "name": "Päätieteenala"
-              },
-              {
-                "name": "Organisaatiotyyppi"
-              },
-              {
-                "name": "Tieteenala"
-              },
-              {
-                "name": "Yhteistyö"
-              }
-            ],
-            "measures": [
-              {
-                "name": "Top10-indeksi(Suomi 4v)"
-              },
-              {
-                "name": "Julkaisut (Suomi 4v Ositettu)"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "Suomi 1v Vipunen",
-        "tables": [
-          {
-            "name": "Sarakeleveys",
-            "columns": [
-              {
-                "name": "leveys"
-              },
-              {
-                "name": "Sarakeleveys"
-              }
-            ]
-          },
-          {
-            "name": "Bibliometriikka",
-            "columns": [
-              {
-                "name": "Organisaatio"
-              },
-              {
-                "name": "Yhteistyö"
-              },
-              {
-                "name": "Tieteenala"
-              },
-              {
-                "name": "Päätieteenala"
-              },
-              {
-                "name": "Organisaatiotyyppi"
-              },
-              {
-                "name": "Vuosi"
-              }
-            ],
-            "measures": [
-              {
-                "name": "Julkaisut (suomi 1v)"
               }
             ]
           }
@@ -8910,6 +9284,227 @@
         ]
       },
       {
+        "name": "Top 10 julk 2019",
+        "tables": [
+          {
+            "name": "Bibliometriikka 2019",
+            "columns": [
+              {
+                "name": "EU15-maat"
+              },
+              {
+                "name": "EU-maat"
+              },
+              {
+                "name": "IC-maat"
+              },
+              {
+                "name": "Kansainvälinen yhteistyö"
+              },
+              {
+                "name": "Maa"
+              },
+              {
+                "name": "Maaryhmä"
+              },
+              {
+                "name": "Manner"
+              },
+              {
+                "name": "Nelivuotiskausi"
+              },
+              {
+                "name": "OECD-maat"
+              },
+              {
+                "name": "Pohjoismaat"
+              },
+              {
+                "name": "Päätieteenala"
+              },
+              {
+                "name": "Tieteenala"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Top 10 Julkaisut (Maailma 4v Ositettu) 2019"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "KV Vipunen",
+        "tables": [
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          },
+          {
+            "name": "Bibliometriikka",
+            "columns": [
+              {
+                "name": "EU-maat"
+              },
+              {
+                "name": "EU15-maat"
+              },
+              {
+                "name": "Vuosi"
+              },
+              {
+                "name": "Tieteenala"
+              },
+              {
+                "name": "Päätieteenala"
+              },
+              {
+                "name": "Pohjoismaat"
+              },
+              {
+                "name": "OECD-maat"
+              },
+              {
+                "name": "Nelivuotiskausi"
+              },
+              {
+                "name": "Manner"
+              },
+              {
+                "name": "Maaryhmä"
+              },
+              {
+                "name": "Kansainvälinen yhteistyö"
+              },
+              {
+                "name": "IC-maat"
+              },
+              {
+                "name": "Maa"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Top10-indeksi (maailma 4v)"
+              },
+              {
+                "name": "Julkaisut (Maailma 4v Ositettu)"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Suomi 4v Vipunen",
+        "tables": [
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          },
+          {
+            "name": "Bibliometriikka",
+            "columns": [
+              {
+                "name": "Organisaatio"
+              },
+              {
+                "name": "Nelivuotiskausi"
+              },
+              {
+                "name": "Päätieteenala"
+              },
+              {
+                "name": "Organisaatiotyyppi"
+              },
+              {
+                "name": "Tieteenala"
+              },
+              {
+                "name": "Yhteistyö"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Top10-indeksi(Suomi 4v)"
+              },
+              {
+                "name": "Julkaisut (Suomi 4v Ositettu)"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Suomi 1v Vipunen",
+        "tables": [
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          },
+          {
+            "name": "Bibliometriikka",
+            "columns": [
+              {
+                "name": "Organisaatio"
+              },
+              {
+                "name": "Yhteistyö"
+              },
+              {
+                "name": "Tieteenala"
+              },
+              {
+                "name": "Päätieteenala"
+              },
+              {
+                "name": "Organisaatiotyyppi"
+              },
+              {
+                "name": "Vuosi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Julkaisut (suomi 1v)"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "AR KV",
         "tables": [
           {
@@ -9058,10 +9653,10 @@
         ]
       },
       {
-        "name": "Top 10 julk 2019",
+        "name": "Analyysiraportti KV 2019",
         "tables": [
           {
-            "name": "Bibliometriikka",
+            "name": "Bibliometriikka 2019",
             "columns": [
               {
                 "name": "EU15-maat"
@@ -9094,15 +9689,101 @@
                 "name": "Pohjoismaat"
               },
               {
-                "name": "Päätieteenala"
+                "name": "Tieteenala"
               },
               {
-                "name": "Tieteenala"
+                "name": "Päätieteenala"
               }
             ],
             "measures": [
               {
-                "name": "Top 10 Julkaisut (Maailma 4v Ositettu) 2019"
+                "name": "Julkaisut (Maailma 4v Ositettu) 2019"
+              },
+              {
+                "name": "Sisäinen kattavuus (maailma 4v) 2019"
+              },
+              {
+                "name": "Top10-indeksi (maailma 4v) 2019"
+              },
+              {
+                "name": "Top1-indeksi(maailma 4v) 2019"
+              },
+              {
+                "name": "Viittausindeksi (Maailma 4v) 2019"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Analyysiraportti Suomi 2019",
+        "tables": [
+          {
+            "name": "Bibliometriikka 2019",
+            "columns": [
+              {
+                "name": "Kansainvälinen yhteistyö"
+              },
+              {
+                "name": "Kansallinen Yhteistyö"
+              },
+              {
+                "name": "Kansallinen Yliopistoyhteistyö"
+              },
+              {
+                "name": "Kansallinen Yritysyhteistyö"
+              },
+              {
+                "name": "Nelivuotiskausi"
+              },
+              {
+                "name": "Organisaatio"
+              },
+              {
+                "name": "Organisaatiotyyppi"
+              },
+              {
+                "name": "Tieteenala"
+              },
+              {
+                "name": "Vuosi"
+              },
+              {
+                "name": "Yhteistyö"
+              },
+              {
+                "name": "Päätieteenala"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Julkaisut (suomi 1v) 2019"
+              },
+              {
+                "name": "Julkaisut (Suomi 4v Ositettu) 2019"
+              },
+              {
+                "name": "Sisäinen kattavuus (suomi 4v) 2019"
+              },
+              {
+                "name": "Top10-indeksi(Suomi 4v) 2019"
+              },
+              {
+                "name": "Top1-indeksi(Suomi 4v) 2019"
+              },
+              {
+                "name": "Viittausindeksi (Suomi 4v) 2019"
               }
             ]
           },
