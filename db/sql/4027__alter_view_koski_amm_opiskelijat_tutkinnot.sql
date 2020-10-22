@@ -367,19 +367,3 @@ LEFT JOIN dw.d_kytkin d24 ON d24.id = f.d_kytkin_muu_ammatillinen_id
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-GO
-
-
