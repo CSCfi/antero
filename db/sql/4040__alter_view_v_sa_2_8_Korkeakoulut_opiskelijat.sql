@@ -1600,4 +1600,6 @@ FROM Antero.sa.[sa_virta_otp_tk_opisk_ennakko]
 
 GO
 
+USE [ANTERO]
+
 
