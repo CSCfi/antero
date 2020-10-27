@@ -1,9 +1,14 @@
 USE [Koski_SA]
 GO
-/****** Object:  StoredProcedure [sa].[p_lataa_opiskelijavuodet_tutkinnon_osaa_pienemmat]    Script Date: 27.10.2020 16:52:57 ******/
+/****** Object:  StoredProcedure [sa].[p_lataa_opiskelijavuodet_tutkinnon_osaa_pienemmat]    Script Date: 27.10.2020 16:58:34 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
+GO
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[p_lataa_opiskelijavuodet_tutkinnon_osaa_pienemmat]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [sa].[p_lataa_opiskelijavuodet_tutkinnon_osaa_pienemmat] AS' 
+END
 GO
 
 
@@ -61,16 +66,12 @@ FROM (
 		where 1=1
 		and ps.suorituksen_tyyppi = 'tutkinnonosaapienemmistäkokonaisuuksistakoostuvasuoritus'
 		and year(ooa.loppu) >= 2018 
-		--and ooa.tila in ('loma','lasna','valmistunut')
 		
 
 	) q
 
 
 ) q2
-
-
-
 
 
 
