@@ -16,17 +16,17 @@ CREATE PROCEDURE [dw].[p_lataa_f_amos_spl_vaikuttavuus] AS
 
 /*
 
-Ladataan kolme v‰liaikaista taulua 
+Ladataan kolme v√§liaikaista taulua 
 ANTERO.sa.z_tmp_TK_K1_13_sopv
 ANTERO.sa.z_tmp_TK_K1_K13_sopv_jarjkerroin
 ANTERO.sa.z_tmp_TK_K1_K13_sopv_jarjkerroin_fuusiot
 
-Faktalatauksessa hyˆdynnet‰‰n viel‰ maakuntakertoimien taulua
+Faktalatauksessa hy√∂dynnet√§√§n viel√§ maakuntakertoimien taulua
 
 */
 
--- VƒLIAIKAINEN TAULU
--- Ladataan TK K1.13 aineisto ja tehd‰‰n muutostˆit‰ seuraavaa vaihetta varten
+-- V√ÑLIAIKAINEN TAULU
+-- Ladataan TK K1.13 aineisto ja tehd√§√§n muutost√∂it√§ seuraavaa vaihetta varten
 
 DROP TABLE IF EXISTS ANTERO.sa.z_tmp_TK_K1_13_sopv
 
@@ -90,9 +90,9 @@ tutk_osia_suor_8*lkm as tutk_osia_suor_8,
 
 /* Kertoimet
  Karin speksi 2019-04-05
-Tyˆllistyminen ja jatko-opiskelu raporttimalli 2019 04 05.xlsx
- .. v‰lilehti: Painotettujen laskentas‰‰nnˆt
-Tyˆlliset ja opiskelijat
+Ty√∂llistyminen ja jatko-opiskelu raporttimalli 2019 04 05.xlsx
+ .. v√§lilehti: Painotettujen laskentas√§√§nn√∂t
+Ty√∂lliset ja opiskelijat
 */
 CASE
 WHEN tutk_suor_1=1 THEN lkm
@@ -105,7 +105,7 @@ WHEN tutk_osia_suor_5=1 THEN lkm
 WHEN tutk_osia_suor_6=1 THEN lkm else 0 END
  as tyolliset_ja_opiskelijat													
 
- --Tyˆlliset
+ --Ty√∂lliset
 ,CASE
 WHEN tutk_suor_1=1 THEN lkm
 WHEN tutk_osia_suor_1=1 THEN lkm
@@ -122,7 +122,7 @@ WHEN tutk_osia_suor_6=1 THEN lkm else 0 END
  as opiskelijat
 
  
---Tyˆlliset, opiskelijat ja tyˆttˆm‰t
+--Ty√∂lliset, opiskelijat ja ty√∂tt√∂m√§t
 ,CASE
 WHEN tutk_suor_1=1 THEN lkm
 WHEN tutk_suor_2=1 THEN lkm
@@ -150,29 +150,29 @@ WHEN tutk_osia_suor_5=1 THEN 1
 WHEN tutk_osia_suor_6=1 THEN 1 ELSE 0 END
 as statuskerroin
 
--- # V‰lilehti: Suoriteraportti 2
--- Tyˆllistyneet, ei tyˆllisen‰ ennen koulutusta
+-- # V√§lilehti: Suoriteraportti 2
+-- Ty√∂llistyneet, ei ty√∂llisen√§ ennen koulutusta
 ,CASE
 WHEN tutk_suor_1=1 THEN lkm
 WHEN tutk_osia_suor_1=1 THEN lkm
 else 0 END
  as tyollistyneet_ei_tyollisena_ennen_koulutusta
 
- -- Tyˆllistyneet, tyˆllisen‰ ennen koulutusta
+ -- Ty√∂llistyneet, ty√∂llisen√§ ennen koulutusta
 ,CASE
 WHEN tutk_suor_5=1 THEN lkm
 WHEN tutk_osia_suor_5=1 THEN lkm
 else 0 END
  as tyollistyneet_tyollisena_ennen_koulutusta
 
- --Jatko-opiskelijat, ei tyˆllisen‰ ennen koulutusta
+ --Jatko-opiskelijat, ei ty√∂llisen√§ ennen koulutusta
 ,CASE
 WHEN tutk_suor_2=1 THEN lkm
 WHEN tutk_osia_suor_2=1 THEN lkm
 else 0 END
  as jatko_opiskelijat_ei_tyollisena_ennen_koulutusta
 
- --Jatko-opiskelijat, tyˆllisen‰ ennen koulutusta
+ --Jatko-opiskelijat, ty√∂llisen√§ ennen koulutusta
 ,CASE
 WHEN tutk_suor_6=1 THEN lkm
 WHEN tutk_osia_suor_6=1 THEN lkm
@@ -180,9 +180,9 @@ else 0 END
  as jatko_opiskelijat_tyollisena_ennen_koulutusta
 
 
---Tyˆttˆm‰t ja muussa toiminnassa
+--Ty√∂tt√∂m√§t ja muussa toiminnassa
 -- Karin speksi 2019-07-02, lisatty 2019-08-08 jhe
--- Tyˆll+jatko-opisk.lis‰raportti2
+-- Ty√∂ll+jatko-opisk.lis√§raportti2
 
 ,CASE 
 WHEN tutk_suor_3 = 1 THEN lkm
@@ -193,7 +193,7 @@ WHEN tutk_osia_suor_7 = 1 THEN lkm ELSE 0 END
 
  --,CASE WHEN ptoim1r2e_kytkin='ptoim_99' THEN lkm ELSE 0 END 
 -- jhe 2.9.2019
-/*Kari 13.8.2019: îMuussa toiminnassaî sis‰lt‰‰ kaikki loput tutkinnon suorittaneet, jotka eiv‰t ole tyˆllistyneet tai jatko-opiskelijat sarakkeissa. Ei siis pelk‰st‰‰n 99:t.*/
+/*Kari 13.8.2019: ‚ÄùMuussa toiminnassa‚Äù sis√§lt√§√§ kaikki loput tutkinnon suorittaneet, jotka eiv√§t ole ty√∂llistyneet tai jatko-opiskelijat sarakkeissa. Ei siis pelk√§st√§√§n 99:t.*/
  ,CASE 
  WHEN tutk_suor_4 = 1 THEN lkm
 WHEN tutk_osia_suor_4 = 1 THEN lkm
@@ -223,8 +223,8 @@ INTO ANTERO.sa.z_tmp_TK_K1_13_sopv
 			UNION
 		SELECT * FROM [TK_H9098_CSC].dbo.TK_K1_13_sopv_20) q
 
--- VƒLIAIKAINEN TAULU
--- Lasketaan j‰rjest‰j‰kohtainen kerroin
+-- V√ÑLIAIKAINEN TAULU
+-- Lasketaan j√§rjest√§j√§kohtainen kerroin
 
 DROP TABLE IF EXISTS ANTERO.sa.z_tmp_TK_K1_K13_sopv_jarjkerroin
 
@@ -239,7 +239,7 @@ FROM
   (
     SELECT 
       DISTINCT  
-	  -- J‰rjest‰j‰kertoimen tekij‰t 
+	  -- J√§rjest√§j√§kertoimen tekij√§t 
 	  tilv,
       jarj_opisk, 
       Sum([suor_koko_tutk]) AS suor_koko_tutk_yhteensa, 
@@ -252,8 +252,8 @@ FROM
   ) t
  
 
--- VƒLIAIKAINEN TAULU
--- Lasketaan j‰rjest‰j‰kohtainen kerroin ja huomioidaan fuusiot
+-- V√ÑLIAIKAINEN TAULU
+-- Lasketaan j√§rjest√§j√§kohtainen kerroin ja huomioidaan fuusiot
 
 DROP TABLE IF EXISTS ANTERO.sa.z_tmp_TK_K1_K13_sopv_jarjkerroin_fuusiot
 
@@ -283,7 +283,7 @@ DROP TABLE IF EXISTS ANTERO.dw.f_amos_spl_vaikuttavuus
 SELECT DISTINCT k13.[tilv] AS [Tutkinnon suoritusvuosi]
 ,k13.tilv + 1 AS Tilastovuosi
 ,COALESCE(spl.nimi_amos_spl, k13.jarjnimi_opisk) AS nimi_amos_spl
-,CASE WHEN spl.nimi_amos_spl IS NOT NULL THEN 'Kyll‰' ELSE 'Ei' END AS Suoritep‰‰tˆs
+,CASE WHEN spl.nimi_amos_spl IS NOT NULL THEN 'Kyll√§' ELSE 'Ei' END AS Suoritep√§√§t√∂s
 ,okm8.paa_asiallinen_toiminta_maakunta_koodi
  	  ,CASE
 		WHEN toteuma_tutk = '1' THEN 'Koko tutkinto'
@@ -293,24 +293,24 @@ SELECT DISTINCT k13.[tilv] AS [Tutkinnon suoritusvuosi]
 		AS [Koulutuksen tavoite]
       ,[tyov]
 	  ,CASE
-		WHEN tyov = '1' THEN 'Kyll‰'
+		WHEN tyov = '1' THEN 'Kyll√§'
 		WHEN tyov = '2' THEN 'Ei'
 		ELSE 'Tieto puuttuu'
 		END
-		AS [Tyˆvoimapoliittinen koulutus]
+		AS [Ty√∂voimapoliittinen koulutus]
       ,[jarj_opisk]
       ,CASE
 		WHEN spl.nimi_amos_spl IS NULL THEN k13.jarjnimi_opisk
 		ELSE spl.nimi_amos_spl 
 		END
-		AS [Koulutuksen j‰rjest‰j‰ (opiskelun aikainen)]
+		AS [Koulutuksen j√§rjest√§j√§ (opiskelun aikainen)]
 	  ,spl.kunta_koodi AS [Kuntakoodi_opiskelunaikainen]
       ,[jarj_tutk]
       ,CASE
 		WHEN spl2.nimi_amos_spl IS NULL THEN k13.jarjnimi_tutk
 		ELSE spl2.nimi_amos_spl 
 		END
-		AS [Koulutuksen j‰rjest‰j‰ (tutkinnon)]
+		AS [Koulutuksen j√§rjest√§j√§ (tutkinnon)]
 	  ,spl2.kunta_koodi AS [Kuntakoodi_tutkinnon]
       ,[kaste_t2]
       ,[kaste_t2ni] AS [Koulutusaste, taso 2]
@@ -318,7 +318,7 @@ SELECT DISTINCT k13.[tilv] AS [Tutkinnon suoritusvuosi]
       ,[kala_t1ni] AS [Koulutusala, taso 1]
       ,[oppis]
 	  ,CASE
-		WHEN oppis = '1' THEN 'Kyll‰'
+		WHEN oppis = '1' THEN 'Kyll√§'
 		WHEN oppis = '2' THEN 'Ei'
 		ELSE 'Tieto puuttuu'
 		END
@@ -326,8 +326,8 @@ SELECT DISTINCT k13.[tilv] AS [Tutkinnon suoritusvuosi]
       ,[tutklaja]
 	  ,CASE 
 		WHEN [tutklaja] = '1' THEN 'Ammatillinen peruskoulutus'
-		WHEN [tutklaja] = '2' THEN 'Ammatillinen lis‰koulutus, ammattitutkinto'
-		WHEN [tutklaja] = '3' THEN 'Ammatillinen lis‰koulutus, erikoisammattitutkinto'
+		WHEN [tutklaja] = '2' THEN 'Ammatillinen lis√§koulutus, ammattitutkinto'
+		WHEN [tutklaja] = '3' THEN 'Ammatillinen lis√§koulutus, erikoisammattitutkinto'
 		WHEN [tutklaja] = '9' THEN 'Muu kuin ammatillinen koulutus'
 		ELSE 'Tieto puuttuu'
 		END
@@ -338,7 +338,7 @@ SELECT DISTINCT k13.[tilv] AS [Tutkinnon suoritusvuosi]
 		END
 		AS [Tutkinnon aloitusvuosi]
       ,CASE 
-		WHEN [allk] = '1' THEN 'Kev‰t (1.1. - 31.7.)'
+		WHEN [allk] = '1' THEN 'Kev√§t (1.1. - 31.7.)'
 		WHEN [allk] = '2' THEN 'Syksy (1.8. - 31.12.)'
 		ELSE 'Tieto puuttuu'
 		END
@@ -353,15 +353,15 @@ SELECT DISTINCT k13.[tilv] AS [Tutkinnon suoritusvuosi]
 	  ,[ptoim1r2e]
 	  ,CASE	
 		WHEN ptoim1r2e IS NULL THEN 'Tieto puuttuu'
-		WHEN ptoim1r2e = '10' THEN 'P‰‰toiminen tyˆllinen'
-		WHEN ptoim1r2e = '12' THEN 'Tyˆtˆn'
-		WHEN ptoim1r2e = '13' THEN 'Tyˆllinen opiskelija'
-		WHEN ptoim1r2e = '22' THEN 'P‰‰toiminen opiskelija, koululainen'
+		WHEN ptoim1r2e = '10' THEN 'P√§√§toiminen ty√∂llinen'
+		WHEN ptoim1r2e = '12' THEN 'Ty√∂t√∂n'
+		WHEN ptoim1r2e = '13' THEN 'Ty√∂llinen opiskelija'
+		WHEN ptoim1r2e = '22' THEN 'P√§√§toiminen opiskelija, koululainen'
 		WHEN ptoim1r2e = '25' THEN 'Varusmies, siviilipalvelusmies'
-		WHEN ptoim1r2e = '26' THEN 'El‰kel‰inen, sis tyˆkyvyttˆmyysel‰kel‰set'
+		WHEN ptoim1r2e = '26' THEN 'El√§kel√§inen, sis ty√∂kyvytt√∂myysel√§kel√§set'
 		WHEN ptoim1r2e = '99' THEN 'Muu tai tuntematon'
 		END 
-		AS [P‰‰asiallinen toiminta, ennen koulutusta, vuoden lopussa]
+		AS [P√§√§asiallinen toiminta, ennen koulutusta, vuoden lopussa]
       ,[kaste_t2_evj]
       ,CASE
 		WHEN [kaste_t2ni_evj] IS NULL THEN 'Tieto puuttuu'
@@ -373,21 +373,21 @@ SELECT DISTINCT k13.[tilv] AS [Tutkinnon suoritusvuosi]
 	  ,CASE
 		WHEN amase IS NULL THEN 'Tieto puuttuu'
 		WHEN amase = '1' THEN 'Palkansaaja'
-		WHEN amase = '2' THEN 'Yritt‰j‰'
+		WHEN amase = '2' THEN 'Yritt√§j√§'
 		ELSE 'Tieto puuttuu'
 		END
 		AS [Ammattiasema, ennen koulutusta, vuoden lopussa]
       ,[ptoim1r2h]
 	  ,CASE	
 		WHEN ptoim1r2h IS NULL THEN 'Tieto puuttuu'
-		WHEN ptoim1r2h = '10' THEN 'P‰‰toiminen tyˆllinen'
-		WHEN ptoim1r2h = '12' THEN 'Tyˆtˆn'
-		WHEN ptoim1r2h = '13' THEN 'Tyˆllinen opiskelija'
-		WHEN ptoim1r2h = '22' THEN 'P‰‰toiminen opiskelija, koululainen'
+		WHEN ptoim1r2h = '10' THEN 'P√§√§toiminen ty√∂llinen'
+		WHEN ptoim1r2h = '12' THEN 'Ty√∂t√∂n'
+		WHEN ptoim1r2h = '13' THEN 'Ty√∂llinen opiskelija'
+		WHEN ptoim1r2h = '22' THEN 'P√§√§toiminen opiskelija, koululainen'
 		WHEN ptoim1r2h = '25' THEN 'Varusmies, siviilipalvelusmies'
-		WHEN ptoim1r2h = '26' THEN 'El‰kel‰inen, sis tyˆkyvyttˆmyysel‰kel‰set'
+		WHEN ptoim1r2h = '26' THEN 'El√§kel√§inen, sis ty√∂kyvytt√∂myysel√§kel√§set'
 		WHEN ptoim1r2h = '99' THEN 'Muu tai tuntematon'
-		END AS [P‰‰asiallinen toiminta, ennen koulutusta, hein‰kuun lopussa]
+		END AS [P√§√§asiallinen toiminta, ennen koulutusta, hein√§kuun lopussa]
       ,[kaste_t2_avh]
       ,[kaste_t2ni_avh]
 	  ,CASE
@@ -395,24 +395,24 @@ SELECT DISTINCT k13.[tilv] AS [Tutkinnon suoritusvuosi]
 		WHEN [kaste_t2ni_avh] = 'P' THEN 'Tieto puuttuu'
 		ELSE [kaste_t2ni_avh]
 		END
-		AS [Koulutusaste, taso 2, ennen koulutusta, hein‰kuun lopussa]
+		AS [Koulutusaste, taso 2, ennen koulutusta, hein√§kuun lopussa]
       ,[amash]
 	  ,CASE
 		WHEN amash IS NULL THEN 'Tieto puuttuu'
 		WHEN amash = '1' THEN 'Palkansaaja'
-		WHEN amash = '2' THEN 'Yritt‰j‰'
+		WHEN amash = '2' THEN 'Yritt√§j√§'
 		ELSE 'Tieto puuttuu'
 		END
-		AS [Ammattiasema, ennen koulutusta, hein‰kuun lopussa]
+		AS [Ammattiasema, ennen koulutusta, hein√§kuun lopussa]
       ,[ptoim1r2_tilvseur]
 	  ,CASE	
 		WHEN ptoim1r2_tilvseur IS NULL THEN 'Tieto puuttuu'
-		WHEN ptoim1r2_tilvseur = '10' THEN 'P‰‰toiminen tyˆllinen'
-		WHEN ptoim1r2_tilvseur = '12' THEN 'Tyˆtˆn'
-		WHEN ptoim1r2_tilvseur = '13' THEN 'Tyˆllinen opiskelija'
-		WHEN ptoim1r2_tilvseur = '22' THEN 'P‰‰toiminen opiskelija, koululainen'
+		WHEN ptoim1r2_tilvseur = '10' THEN 'P√§√§toiminen ty√∂llinen'
+		WHEN ptoim1r2_tilvseur = '12' THEN 'Ty√∂t√∂n'
+		WHEN ptoim1r2_tilvseur = '13' THEN 'Ty√∂llinen opiskelija'
+		WHEN ptoim1r2_tilvseur = '22' THEN 'P√§√§toiminen opiskelija, koululainen'
 		WHEN ptoim1r2_tilvseur = '25' THEN 'Varusmies, siviilipalvelusmies'
-		WHEN ptoim1r2_tilvseur = '26' THEN 'El‰kel‰inen, sis tyˆkyvyttˆmyysel‰kel‰set'
+		WHEN ptoim1r2_tilvseur = '26' THEN 'El√§kel√§inen, sis ty√∂kyvytt√∂myysel√§kel√§set'
 		WHEN ptoim1r2_tilvseur = '99' THEN 'Muu tai tuntematon'
 		END
 		AS [Sijoittuminen]
@@ -423,14 +423,14 @@ SELECT DISTINCT k13.[tilv] AS [Tutkinnon suoritusvuosi]
 		WHEN [maassaolo_tilvseur] = '1' THEN 'Maassa asuva'
 		WHEN [maassaolo_tilvseur] = '2' THEN 'Muuttanut maasta'
 		END
-		AS [Maassaolo, koulutuksen j‰lkeen]
+		AS [Maassaolo, koulutuksen j√§lkeen]
       ,[amas_tilvseur]
 	  ,CASE
 		WHEN amas_tilvseur = '1' THEN 'Palkansaaja'
-		WHEN amas_tilvseur = '2' THEN 'Yritt‰j‰'
+		WHEN amas_tilvseur = '2' THEN 'Yritt√§j√§'
 		ELSE 'Tieto puuttuu'
 		END
-		AS [Ammattiasema, koulutuksen j‰lkeen]
+		AS [Ammattiasema, koulutuksen j√§lkeen]
       ,[kaste_t2_tilvseur]
       ,[kaste_t2ni_tilvseur]
 	  ,CASE
@@ -438,7 +438,7 @@ SELECT DISTINCT k13.[tilv] AS [Tutkinnon suoritusvuosi]
 		WHEN kaste_t2ni_tilvseur = 'P' THEN 'Tieto puuttuu'
 		ELSE kaste_t2ni_tilvseur
 		END
-		AS [Koulutusaste, taso 2, koulutuksen j‰lkeen]
+		AS [Koulutusaste, taso 2, koulutuksen j√§lkeen]
       ,[iscfibroad2013_tilvseur]
       ,[kala_t1ni_tilvseur]
 	  ,CASE
@@ -446,39 +446,39 @@ SELECT DISTINCT k13.[tilv] AS [Tutkinnon suoritusvuosi]
 		WHEN [kala_t1ni_tilvseur] = 'P' THEN 'Tieto puuttuu'
 		ELSE [kala_t1ni_tilvseur]
 		END
-		AS [Koulutusala, taso 1, koulutuksen j‰lkeen]
+		AS [Koulutusala, taso 1, koulutuksen j√§lkeen]
       ,[suor_koko_tutk] AS [v Suoritetut tutkinnot]
       ,[suor_tutk_osia] AS [v Suoritetut tutkinnon osat]
-      ,[tutk_suor_1]  AS [v Tyˆllinen, koko tutkinnon suorittanut, ennen koulutusta ei-tyˆllinen]
-      ,[tutk_suor_2]  AS [v Jatko-opiskelija, koko tutkinnon suorittanut, ennen koulutusta ei-tyˆllinen]
-      ,[tutk_suor_3]  AS [v Tyˆtˆn, koko tutkinnon suorittanut, ennen koulutusta ei-tyˆllinen]
-      ,[tutk_suor_4]  AS [v Muu (kuin jatko-opiskelija, tyˆllinen tai tyˆtˆn), koko tutkinnon suorittanut, ennen koulutusta ei-tyˆllinen]
-      ,[tutk_osia_suor_1]  AS [v Tyˆllinen, tutkinnon osia suorittanut, ennen koulutusta ei-tyˆllinen]
-      ,[tutk_osia_suor_2]  AS [v Jatko-opiskelija, tutkinnon osia suorittanut, ennen koulutusta ei-tyˆllinen]
-      ,[tutk_osia_suor_3]  AS [v Tyˆtˆn, tutkinnon osia suorittanut, ennen koulutusta ei-tyˆllinen]
-      ,[tutk_osia_suor_4]  AS [v Muu (kuin jatko-opiskelija, tyˆllinen tai tyˆtˆn), tutkinnon osia suorittanut, ennen koulutusta ei-tyˆllinen]
-      ,[tutk_suor_5]  AS [v Tyˆllinen, koko tutkinnon suorittanut, ennen koulutusta tyˆllinen]
-      ,[tutk_suor_6]  AS [v Jatko-opiskelija, koko tutkinnon suorittanut, ennen koulutusta tyˆllinen]
-      ,[tutk_suor_7]  AS [v Tyˆtˆn, koko tutkinnon suorittanut, ennen koulutusta tyˆllinen]
-      ,[tutk_suor_8]  AS [v Muu (kuin jatko-opiskelija, tyˆllinen tai tyˆtˆn), koko tutkinnon suorittanut, ennen koulutusta tyˆllinen]
-      ,[tutk_osia_suor_5]  AS [v Tyˆllinen, tutkinnon osia suorittanut, ennen koulutusta tyˆllinen]
-      ,[tutk_osia_suor_6]  AS [v Jatko-opiskelija, tutkinnon osia suorittanut, ennen koulutusta tyˆllinen]
-      ,[tutk_osia_suor_7]  AS [v Tyˆtˆn, tutkinnon osia suorittanut, ennen koulutusta tyˆllinen]
-      ,[tutk_osia_suor_8]  AS [v Muu (kuin jatko-opiskelija, tyˆllinen tai tyˆtˆn), tutkinnon osia suorittanut, ennen koulutusta tyˆllinen]
-      ,k13.[tyolliset_ja_opiskelijat] AS [v Tyˆlliset ja opiskelijat]
-      ,k13.[tyolliset] AS [v Tyˆlliset]
+      ,[tutk_suor_1]  AS [v Ty√∂llinen, koko tutkinnon suorittanut, ennen koulutusta ei-ty√∂llinen]
+      ,[tutk_suor_2]  AS [v Jatko-opiskelija, koko tutkinnon suorittanut, ennen koulutusta ei-ty√∂llinen]
+      ,[tutk_suor_3]  AS [v Ty√∂t√∂n, koko tutkinnon suorittanut, ennen koulutusta ei-ty√∂llinen]
+      ,[tutk_suor_4]  AS [v Muu (kuin jatko-opiskelija, ty√∂llinen tai ty√∂t√∂n), koko tutkinnon suorittanut, ennen koulutusta ei-ty√∂llinen]
+      ,[tutk_osia_suor_1]  AS [v Ty√∂llinen, tutkinnon osia suorittanut, ennen koulutusta ei-ty√∂llinen]
+      ,[tutk_osia_suor_2]  AS [v Jatko-opiskelija, tutkinnon osia suorittanut, ennen koulutusta ei-ty√∂llinen]
+      ,[tutk_osia_suor_3]  AS [v Ty√∂t√∂n, tutkinnon osia suorittanut, ennen koulutusta ei-ty√∂llinen]
+      ,[tutk_osia_suor_4]  AS [v Muu (kuin jatko-opiskelija, ty√∂llinen tai ty√∂t√∂n), tutkinnon osia suorittanut, ennen koulutusta ei-ty√∂llinen]
+      ,[tutk_suor_5]  AS [v Ty√∂llinen, koko tutkinnon suorittanut, ennen koulutusta ty√∂llinen]
+      ,[tutk_suor_6]  AS [v Jatko-opiskelija, koko tutkinnon suorittanut, ennen koulutusta ty√∂llinen]
+      ,[tutk_suor_7]  AS [v Ty√∂t√∂n, koko tutkinnon suorittanut, ennen koulutusta ty√∂llinen]
+      ,[tutk_suor_8]  AS [v Muu (kuin jatko-opiskelija, ty√∂llinen tai ty√∂t√∂n), koko tutkinnon suorittanut, ennen koulutusta ty√∂llinen]
+      ,[tutk_osia_suor_5]  AS [v Ty√∂llinen, tutkinnon osia suorittanut, ennen koulutusta ty√∂llinen]
+      ,[tutk_osia_suor_6]  AS [v Jatko-opiskelija, tutkinnon osia suorittanut, ennen koulutusta ty√∂llinen]
+      ,[tutk_osia_suor_7]  AS [v Ty√∂t√∂n, tutkinnon osia suorittanut, ennen koulutusta ty√∂llinen]
+      ,[tutk_osia_suor_8]  AS [v Muu (kuin jatko-opiskelija, ty√∂llinen tai ty√∂t√∂n), tutkinnon osia suorittanut, ennen koulutusta ty√∂llinen]
+      ,k13.[tyolliset_ja_opiskelijat] AS [v Ty√∂lliset ja opiskelijat]
+      ,k13.[tyolliset] AS [v Ty√∂lliset]
       ,k13.[opiskelijat] AS [v Opiskelijat]
-      ,[tyolliset_opiskelijat_ja_tyottomat] AS [v Tyˆlliset, opiskelijat ja tyˆttˆm‰t]
+      ,[tyolliset_opiskelijat_ja_tyottomat] AS [v Ty√∂lliset, opiskelijat ja ty√∂tt√∂m√§t]
       ,[statuskerroin] AS [v statuskerroin]
-      ,[tyollistyneet_ei_tyollisena_ennen_koulutusta] AS [v Tyˆllistyneet, ei tyˆllisen‰ ennen koul.]
-      ,[tyollistyneet_tyollisena_ennen_koulutusta] AS [v Tyˆllistyneet, tyˆllisen‰ ennen koul.]
-      ,[jatko_opiskelijat_ei_tyollisena_ennen_koulutusta] AS [v Jatko-opiskelijat, ei tyˆllisen‰ ennen koul.]
-      ,[jatko_opiskelijat_tyollisena_ennen_koulutusta] AS [v Jatko-opiskelijat, tyˆllisen‰ ennen koul.]
-      ,k13.[tyoton] AS [v Tyˆtˆn]
+      ,[tyollistyneet_ei_tyollisena_ennen_koulutusta] AS [v Ty√∂llistyneet, ei ty√∂llisen√§ ennen koul.]
+      ,[tyollistyneet_tyollisena_ennen_koulutusta] AS [v Ty√∂llistyneet, ty√∂llisen√§ ennen koul.]
+      ,[jatko_opiskelijat_ei_tyollisena_ennen_koulutusta] AS [v Jatko-opiskelijat, ei ty√∂llisen√§ ennen koul.]
+      ,[jatko_opiskelijat_tyollisena_ennen_koulutusta] AS [v Jatko-opiskelijat, ty√∂llisen√§ ennen koul.]
+      ,k13.[tyoton] AS [v Ty√∂t√∂n]
       ,k13.[muu_tai_tuntematon] AS [v Muu tai tuntematon]
 	  ,maak.aluekerroin AS [v Aluekerroin]
-	  ,jk.jarjestajakerroin AS [v J‰rjest‰j‰kerroin]
-	  ,statuskerroin * maak.aluekerroin * jk.jarjestajakerroin * k13.tyolliset AS [v Tyˆllisten painotetut pisteet]
+	  ,jk.jarjestajakerroin AS [v J√§rjest√§j√§kerroin]
+	  ,statuskerroin * maak.aluekerroin * jk.jarjestajakerroin * k13.tyolliset AS [v Ty√∂llisten painotetut pisteet]
 	  ,statuskerroin * jk.jarjestajakerroin * k13.opiskelijat AS [v Opiskelijoiden painotetut pisteet] 
       ,[lkm] AS [v lkm]
 INTO ANTERO.dw.f_amos_spl_vaikuttavuus
@@ -493,7 +493,7 @@ INTO ANTERO.dw.f_amos_spl_vaikuttavuus
 	ON okm8.paa_asiallinen_toiminta_maakunta_koodi = maak.tilvasmaak
 	AND maak.tilv = k13.tilv
 
--- POISTETAAN VƒLIAIKAISET TAULUT
+-- POISTETAAN V√ÑLIAIKAISET TAULUT
 
 DROP TABLE IF EXISTS ANTERO.sa.z_tmp_TK_K1_13_sopv
 DROP TABLE IF EXISTS ANTERO.sa.z_tmp_TK_K1_K13_sopv_jarjkerroin
