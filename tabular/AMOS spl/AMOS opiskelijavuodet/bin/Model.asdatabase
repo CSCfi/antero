@@ -597,7 +597,7 @@
             "name": "v_koski_opiskelijavuodet",
             "dataView": "full",
             "source": {
-              "query": " SELECT [dw].[v_amos_opiskelijavuodet].* FROM [dw].[v_amos_opiskelijavuodet] ",
+              "query": " SELECT [dw].[v_amos_opiskelijavuodet_testi].* FROM [dw].[v_amos_opiskelijavuodet_testi] ",
               "dataSource": "SqlServer dwitvipusql16 ANTERO"
             },
             "annotations": [
@@ -2520,7 +2520,7 @@
             "name": "Painottamattomat opiskelijavuodet yhteensä",
             "expression": [
               "",
-              "var summa = CALCULATE(CALCULATE(SUM([opiskelijavuodet_painottamaton])+[Hylätyt opiskelijavuodet],ALL(Muuttujat[Luvaton korotustekijä])),ALL(Muuttujat[Luvaton majoitus]))",
+              "var summa = CALCULATE(CALCULATE(SUM([opiskelijavuodet_painottamaton])+[Hylätyt opiskelijavuodet]),ALL(Muuttujat[Luvaton korotustekijä],Muuttujat[Luvaton majoitus]))",
               "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)"
             ],
             "formatString": "#,0.00",
@@ -2601,9 +2601,11 @@
               "var erotus=summa_perus-summa_hyv",
               "var luvaton=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_majoitus]))=1,IF(VALUES(Muuttujat[jarj_luvaton_majoitus])<>\"1\",1,0),0)",
               "var siirretaan_hyvaksytyksi=IF(ISFILTERED(Muuttujat[Luvaton majoitus]),CALCULATE(SUM([opiskelijavuodet_painotettu_majoitus_hyv]),Muuttujat[jarj_luvaton_majoitus]<>\"1\",ALL(Muuttujat[Luvaton majoitus])),0)",
-              "var korotusehto=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"1\",1,0),1)",
+              "var taulu_kor = VALUES(Muuttujat[jarj_luvaton_korotustekija])",
+              "var korotusehto=IF(COUNTROWS(taulu_kor)=1,IF(taulu_kor=\"1\",1,0),1)",
               "",
-              "return IF(summa_perus=0 || korotusehto=0,BLANK(),IF(luvaton=1,erotus,summa_perus+siirretaan_hyvaksytyksi))"
+              "return IF(summa_perus=0 || korotusehto=0,BLANK(),IF(luvaton=1,erotus,summa_perus+siirretaan_hyvaksytyksi))",
+              ""
             ],
             "formatString": "#,0.00",
             "displayFolder": "Painotetut opiskelijavuodet"
@@ -2654,7 +2656,7 @@
           },
           {
             "name": "Profiilikerroin",
-            "expression": "[Painotetut opiskelijavuodet yhteensä] / [Painottamattomat opiskelijavuodet yhteensä]",
+            "expression": "DIVIDE([Painotetut opiskelijavuodet yhteensä],[Painottamattomat opiskelijavuodet yhteensä])",
             "formatString": "0.0000"
           },
           {
@@ -2733,8 +2735,9 @@
             "name": "Muun koulutuksen painottamattomat opiskelijavuodet",
             "expression": [
               "",
-              "var summa=CALCULATE(SUM([opiskelijavuodet_painottamaton]),FILTER(Muuttujat,[Koodit Kustannusryhmä]=\"muu\"))",
-              "return IF(summa=0,BLANK(),summa)"
+              "var summa=CALCULATE(SUM([opiskelijavuodet_painottamaton]),Muuttujat[Koodit Kustannusryhmä]=\"muu\")",
+              "return IF(summa=0,BLANK(),summa)",
+              ""
             ],
             "formatString": "#,0.00",
             "displayFolder": "Painottamattomat opiskelijavuodet"
@@ -2784,7 +2787,6 @@
               "var painotettu=[Majoituksen mukaan painotetut opiskelijavuodet]",
               "var ylittyy=MAX(Muuttujat[sisaopp_ylittyy])",
               "var hylatty_ylitys=CALCULATE(SUM(Muuttujat[opiskelijavuodet_painotettu_majoitus])-SUM(Muuttujat[opiskelijavuodet_painotettu_majoitus_hyv]),Muuttujat[sisaopp_ylittyy]=1, ALL(Muuttujat[Luvaton majoitus]))",
-              "",
               "return IF(ylittyy=1,painotettu-hylatty_ylitys,painotettu)"
             ],
             "formatString": "#,0.00",
@@ -2804,10 +2806,15 @@
             "name": "korotusehto",
             "expression": [
               " ",
-              "IF(AND(",
-              "\tIF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"1\",1,0),1)",
-              "\t,IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_majoitus]))=1,IF(VALUES(Muuttujat[jarj_luvaton_majoitus])=\"1\",1,0),1)",
-              "),1,0)"
+              "var taulu_kor=VALUES(Muuttujat[jarj_luvaton_korotustekija])",
+              "var taulu_maj=VALUES(Muuttujat[jarj_luvaton_majoitus])",
+              "return ",
+              "IF(",
+              "AND(",
+              "\tIF(COUNTROWS(taulu_kor)=1,IF(taulu_kor=\"1\",1,0),1)",
+              "\t,IF(COUNTROWS(taulu_maj)=1,IF(taulu_maj=\"1\",1,0),1)",
+              ")",
+              ",1,0)"
             ],
             "isHidden": true
           },
@@ -2815,7 +2822,7 @@
             "name": "Kustannusryhmän mukaan painotetut at- ja eat-tutkinnon opiskelijavuodet",
             "expression": [
               "",
-              "var summa=CALCULATE(SUM(Muuttujat[opiskelijavuodet_painotettu_at_eat]),ALL(Muuttujat[Luvaton korotustekijä]),ALL(Muuttujat[Luvaton majoitus]))",
+              "var summa=CALCULATE(SUM(Muuttujat[opiskelijavuodet_painotettu_at_eat]),ALL(Muuttujat[Luvaton korotustekijä],Muuttujat[Luvaton majoitus]))",
               "",
               "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)",
               ""
@@ -2848,7 +2855,7 @@
             "name": "Kustannusryhmän mukaan painotetut perustutkinnon opiskelijavuodet",
             "expression": [
               "",
-              "var summa=CALCULATE(SUM(Muuttujat[opiskelijavuodet_painotettu_pt]),ALL(Muuttujat[Luvaton korotustekijä]),ALL(Muuttujat[Luvaton majoitus]))",
+              "var summa=CALCULATE(SUM(Muuttujat[opiskelijavuodet_painotettu_pt]),ALL(Muuttujat[Luvaton korotustekijä],Muuttujat[Luvaton majoitus]))",
               "",
               "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)"
             ],
@@ -2859,7 +2866,7 @@
             "name": "Kustannusryhmän mukaan painotetut VALMA&TELMA opiskelijavuodet",
             "expression": [
               "",
-              "var summa=CALCULATE(SUM(Muuttujat[opiskelijavuodet_painotettu_valma_telma]),ALL(Muuttujat[Luvaton korotustekijä]),ALL(Muuttujat[Luvaton majoitus]))",
+              "var summa=CALCULATE(SUM(Muuttujat[opiskelijavuodet_painotettu_valma_telma]),ALL(Muuttujat[Luvaton korotustekijä],Muuttujat[Luvaton majoitus]))",
               "",
               "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)",
               ""
@@ -2871,7 +2878,7 @@
             "name": "Kustannusryhmän mukaan painotetut opiskelijavalmiuksia tukevat opiskelijavuodet",
             "expression": [
               "",
-              "var summa=CALCULATE(SUM(Muuttujat[opiskelijavuodet_painotettu_opisk_valm_tukevat]),ALL(Muuttujat[Luvaton korotustekijä]),ALL(Muuttujat[Luvaton majoitus]))",
+              "var summa=CALCULATE(SUM(Muuttujat[opiskelijavuodet_painotettu_opisk_valm_tukevat]),ALL(Muuttujat[Luvaton korotustekijä],Muuttujat[Luvaton majoitus]))",
               "",
               "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)",
               ""
@@ -2883,7 +2890,7 @@
             "name": "Kustannusryhmän mukaan painotetut muun koulutuksen opiskelijavuodet",
             "expression": [
               "",
-              "var summa=CALCULATE(SUM(Muuttujat[opiskelijavuodet_painotettu_muu]),ALL(Muuttujat[Luvaton korotustekijä]),ALL(Muuttujat[Luvaton majoitus]))",
+              "var summa=CALCULATE(SUM(Muuttujat[opiskelijavuodet_painotettu_muu]),ALL(Muuttujat[Luvaton korotustekijä],Muuttujat[Luvaton majoitus]))",
               "",
               "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)",
               ""
@@ -2926,11 +2933,11 @@
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": " SELECT [dw].[v_amos_opiskelijavuodet].* FROM [dw].[v_amos_opiskelijavuodet] "
+            "value": " SELECT [dw].[v_amos_opiskelijavuodet_testi].* FROM [dw].[v_amos_opiskelijavuodet_testi] "
           },
           {
             "name": "_TM_ExtProp_DbTableName",
-            "value": "v_amos_opiskelijavuodet"
+            "value": "v_amos_opiskelijavuodet_testi"
           },
           {
             "name": "_TM_ExtProp_DbSchemaName",
