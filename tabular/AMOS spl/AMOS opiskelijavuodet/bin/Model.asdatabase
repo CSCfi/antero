@@ -597,7 +597,7 @@
             "name": "v_koski_opiskelijavuodet",
             "dataView": "full",
             "source": {
-              "query": " SELECT [dw].[v_amos_opiskelijavuodet_testi].* FROM [dw].[v_amos_opiskelijavuodet_testi] ",
+              "query": " SELECT [dw].[v_amos_opiskelijavuodet].* FROM [dw].[v_amos_opiskelijavuodet] ",
               "dataSource": "SqlServer dwitvipusql16 ANTERO"
             },
             "annotations": [
@@ -2520,7 +2520,7 @@
             "name": "Painottamattomat opiskelijavuodet yhteensä",
             "expression": [
               "",
-              "var summa = CALCULATE(CALCULATE(SUM([opiskelijavuodet_painottamaton])+[Hylätyt opiskelijavuodet]),ALL(Muuttujat[Luvaton korotustekijä],Muuttujat[Luvaton majoitus]))",
+              "var summa =CALCULATE(SUM([opiskelijavuodet_painottamaton])+[Hylätyt opiskelijavuodet],ALL(Muuttujat[Luvaton korotustekijä],Muuttujat[Luvaton majoitus]))",
               "return IF(summa=0 || [korotusehto]=0,BLANK(),summa)"
             ],
             "formatString": "#,0.00",
@@ -2756,7 +2756,7 @@
             "name": "Hylätyt opiskelijavuodet",
             "expression": [
               "",
-              "var summa=SUM(Muuttujat[opiskelijavuodet_hylatyt])",
+              "var summa=CALCULATE(SUM(Muuttujat[opiskelijavuodet_hylatyt]))",
               "return IF(summa=0,BLANK(),summa)"
             ],
             "formatString": "#,0.00",
@@ -2933,11 +2933,11 @@
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": " SELECT [dw].[v_amos_opiskelijavuodet_testi].* FROM [dw].[v_amos_opiskelijavuodet_testi] "
+            "value": " SELECT [dw].[v_amos_opiskelijavuodet].* FROM [dw].[v_amos_opiskelijavuodet] "
           },
           {
             "name": "_TM_ExtProp_DbTableName",
-            "value": "v_amos_opiskelijavuodet_testi"
+            "value": "v_amos_opiskelijavuodet"
           },
           {
             "name": "_TM_ExtProp_DbSchemaName",
