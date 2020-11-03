@@ -1,6 +1,6 @@
 USE [ANTERO]
 GO
-/****** Object:  StoredProcedure [dw].[p_lataa_api_tavoiteajassa_tutkinnon_suorittaneet_esilataus]    Script Date: 2.11.2020 20:38:22 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -11,11 +11,11 @@ GO
 
 ALTER PROCEDURE [dw].[p_lataa_api_tavoiteajassa_tutkinnon_suorittaneet_esilataus] AS
 
-TRUNCATE TABLE [dw].[api_tavoiteajassa_tutkinnon_suorittaneet]
+TRUNCATE TABLE [dw].[api_tavoiteajassa_tutkinnon_suorittaneet];
 
 INSERT INTO [dw].[api_tavoiteajassa_tutkinnon_suorittaneet]
 
-SELECT	[Tilastovuosi]	=	t.tutkintovuosi
+  SELECT [Tilastovuosi]	=	t.tutkintovuosi
 		, [Sektori]		=	case d1.oppilaitostyyppi_koodi --COALESCE(d2.koulutussektori_fi, 'Tuntematon')
 								when '41' then 'Ammattikorkeakoulukoulutus'
 								when '42' then 'Yliopistokoulutus'
@@ -71,47 +71,47 @@ SELECT	[Tilastovuosi]	=	t.tutkintovuosi
 	  --oletusjärjestys
 		, defaultorder
 
-FROM
+	FROM
 
-(
-  --mukaillen v_virta_otp_tavoiteajassa_tutkinnon_suorittaneet
-	SELECT	tutkintovuosi
+	(
+	  --mukaillen v_virta_otp_tavoiteajassa_tutkinnon_suorittaneet
+		SELECT	tutkintovuosi
+				, oppilaitosnro
+				, tutkintokoodi
+
+				, [Tutkinnot]								=	count(*)
+				, [Tavoiteajassa]							=	sum(tavoiteajassavalmistunut)
+				, [Tavoiteaika ylitetty korkeintaan 12 kk]	=	sum(xonenintaan12kk)
+				, [Tavoiteaika ylitetty yli 12 kk]			=	sum(xonyli12kk)
+				, [On aiempi korkeakoulututkinto]			=	sum(onaiempitutkinto)
+				, [Tutkintopisteet]							=	sum(cast(tutkintokerroin as decimal(12,4)))
+				, [Tutkintopisteluokka]						=	cast(tutkintokerroin as decimal(12,4))
+
+				, ROW_NUMBER() OVER(ORDER BY tutkintovuosi
+										, oppilaitosnro
+										, tutkintokoodi
+										, tavoiteajassavalmistunut
+										, xonenintaan12kk
+										, xonyli12kk
+										, onaiempitutkinto
+										, tutkintokerroin) as defaultorder
+
+		FROM 	ANTERO.sa.sa_virta_otp_tavoiteajassa_tutkinnon_suorittaneet f
+
+		GROUP BY tutkintovuosi
 			, oppilaitosnro
 			, tutkintokoodi
-
-			, [Tutkinnot]								=	count(*)
-			, [Tavoiteajassa]							=	sum(tavoiteajassavalmistunut)
-			, [Tavoiteaika ylitetty korkeintaan 12 kk]	=	sum(xonenintaan12kk)
-			, [Tavoiteaika ylitetty yli 12 kk]			=	sum(xonyli12kk)
-			, [On aiempi korkeakoulututkinto]			=	sum(onaiempitutkinto)
-			, [Tutkintopisteet]							=	sum(cast(tutkintokerroin as decimal(12,4)))
-			, [Tutkintopisteluokka]						=	cast(tutkintokerroin as decimal(12,4))
-
-			, ROW_NUMBER() OVER(ORDER BY tutkintovuosi
-									, oppilaitosnro
-									, tutkintokoodi
-									, tavoiteajassavalmistunut
-									, xonenintaan12kk
-									, xonyli12kk
-									, onaiempitutkinto
-									, tutkintokerroin) as defaultorder
-
-	FROM 	ANTERO.sa.sa_virta_otp_tavoiteajassa_tutkinnon_suorittaneet f
-
-	GROUP BY tutkintovuosi
-		, oppilaitosnro
-		, tutkintokoodi
-		, tavoiteajassavalmistunut
-		, xonenintaan12kk
-		, xonyli12kk
-		, onaiempitutkinto
-		, tutkintokerroin
+			, tavoiteajassavalmistunut
+			, xonenintaan12kk
+			, xonyli12kk
+			, onaiempitutkinto
+			, tutkintokerroin		
+	) t 
 			
-) t 
-		
-LEFT JOIN ANTERO.dw.d_organisaatioluokitus d1 on d1.organisaatio_koodi = t.oppilaitosnro
-LEFT JOIN ANTERO.dw.d_koulutusluokitus d2 on d2.koulutusluokitus_koodi = t.tutkintokoodi
-LEFT JOIN VipunenTK_lisatiedot.dbo.isced_suomi_ohjauksenala d3 on d3.iscfi2013_koodi = d2.koulutusalataso3_koodi
-WHERE d1.oppilaitostyyppi_koodi in ('41','42') --WHERE d2.koulutussektori_koodi in ('4','5')
+	LEFT JOIN ANTERO.dw.d_organisaatioluokitus d1 on d1.organisaatio_koodi = t.oppilaitosnro
+	LEFT JOIN ANTERO.dw.d_koulutusluokitus d2 on d2.koulutusluokitus_koodi = t.tutkintokoodi
+	LEFT JOIN VipunenTK_lisatiedot.dbo.isced_suomi_ohjauksenala d3 on d3.iscfi2013_koodi = d2.koulutusalataso3_koodi
+	--WHERE d2.koulutussektori_koodi in ('4','5')
+	WHERE d1.oppilaitostyyppi_koodi in ('41','42') 
 
-
+GO
