@@ -97,5 +97,3 @@ SELECT * INTO [dw].[api_yamk_tutkinnot] FROM
 	WHERE d2.koulutusastetaso2_koodi = '71' --vain yamk
 
 ) ff
-
-GO

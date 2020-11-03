@@ -39,5 +39,3 @@ SELECT * INTO [api].[yamk_tutkinnot] FROM
 	FROM [ANTERO].[dw].[api_yamk_tutkinnot]
 
 ) f
-
-GO
