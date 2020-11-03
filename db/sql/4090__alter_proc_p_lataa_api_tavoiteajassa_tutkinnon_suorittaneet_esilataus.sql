@@ -111,5 +111,6 @@ INSERT INTO [dw].[api_tavoiteajassa_tutkinnon_suorittaneet]
 	LEFT JOIN ANTERO.dw.d_organisaatioluokitus d1 on d1.organisaatio_koodi = t.oppilaitosnro
 	LEFT JOIN ANTERO.dw.d_koulutusluokitus d2 on d2.koulutusluokitus_koodi = t.tutkintokoodi
 	LEFT JOIN VipunenTK_lisatiedot.dbo.isced_suomi_ohjauksenala d3 on d3.iscfi2013_koodi = d2.koulutusalataso3_koodi
+	--WHERE d2.koulutussektori_koodi in ('4','5')
 	WHERE d1.oppilaitostyyppi_koodi in ('41','42') 
 
