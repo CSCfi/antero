@@ -54,3 +54,5 @@ INTO [dbo].[tutkinnot_ja_tutkinnonosat_valitaulu_tasot_yhdistetty]
 FROM [dbo].[tutkinnot_ja_tutkinnonosat_valitaulu] f
 LEFT JOIN sa.sa_koski_henkilo h ON h.oppija_oid = f.oppija_oid
 
+go 
+USE ANTERO
