@@ -4149,7 +4149,7 @@
               "",
               "var summa = SUMX(",
               "\tADDCOLUMNS(",
-              "\t\tSUMMARIZE(Muuttujat,Muuttujat[Koodit Koulutuksen järjestäjä]),",
+              "\t\tSUMMARIZE(Muuttujat,[Koodit Koulutuksen järjestäjä]),",
               "\t\t\"lkm\",CALCULATE(SUM('Luodut vastaajatunnukset'[vastaajatunnukset_lkm]))",
               "\t),",
               "[lkm])",
@@ -4215,8 +4215,8 @@
             "name": "Vastanneet",
             "expression": [
               "",
-              "var vastanneet_ei_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[Kiusaamiskysymys]=0,Muuttujat[vastaajaid] <> BLANK())",
-              "var vastanneet_kius = CALCULATE([Vastanneet_kius],Muuttujat[Kiusaamiskysymys]=1,Muuttujat[vastaajaid] <> BLANK())",
+              "var vastanneet_ei_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),FILTER(VALUES(Muuttujat[Kiusaamiskysymys]),[Kiusaamiskysymys]=0),Muuttujat[vastaajaid] <> BLANK())",
+              "var vastanneet_kius = CALCULATE([Vastanneet_kius],FILTER(VALUES(Muuttujat[Kiusaamiskysymys]),[Kiusaamiskysymys]=1),Muuttujat[vastaajaid] <> BLANK())",
               "var summa = CALCULATE(vastanneet_ei_kius+vastanneet_kius)",
               "",
               "return IF(AND(summa<5,summa>0),\"<5\",summa)",
@@ -4746,7 +4746,7 @@
               ",BLANK()",
               ",CALCULATE(AVERAGE('Muuttujat'[numerovalinta])",
               "--;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
-              ",Muuttujat[vastaustyyppi_keskiarvo]=1)",
+              ",FILTER(VALUES(Muuttujat[vastaustyyppi_keskiarvo]),[vastaustyyppi_keskiarvo]=1))",
               ")"
             ],
             "formatString": "0.0"
@@ -4759,7 +4759,7 @@
               ",BLANK()",
               ",CALCULATE(STDEV.P('Muuttujat'[numerovalinta])",
               "--;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
-              ",Muuttujat[vastaustyyppi_keskiarvo]=1)",
+              ",FILTER(VALUES(Muuttujat[vastaustyyppi_keskiarvo]),[vastaustyyppi_keskiarvo]=1))",
               ")"
             ],
             "formatString": "0.0"
