@@ -59,4 +59,5 @@ THEN
   );
 
   
+GO
 USE [ANTERO]

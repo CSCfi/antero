@@ -12,7 +12,6 @@ ALTER PROCEDURE [dbo].[lataa_muuttuneet_tiedot_Vipunen_automaattipaivitys_kuutio
 
 --Lukee VipunenTK_lisatiedot.dbo.Vipunen_automaattipaivitys_fakta taulusta proseduurit, joiden faktalataus_suoritettu -arvo on nolla, ja ajaa proseduurit sekä muuttaa ajon jälkeen arvon ykköseksi, jos ajo menee läpi ilman virheitä.
 
-
 MERGE dbo.Vipunen_automaattipaivitys_kuutio AS target
 USING (
 	SELECT distinct 
@@ -53,4 +52,6 @@ WHEN NOT MATCHED THEN
 	,0
   );
   
+  
+GO
 USE [ANTERO]
