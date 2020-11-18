@@ -24,7 +24,7 @@ USING
 ON target.Ajopvm = src.Ajopvm and target.Taulu = src.Taulu
 
 WHEN NOT MATCHED 
-AND /*varmistetaan että aineistoa käyttävän faktan proseduuri ei ole asetettu nulliksi*/ 
+AND
 src.Taulu IN
 (
 	SELECT distinct tk.Taulu
@@ -56,6 +56,7 @@ THEN
     Ajopvm
 	,Taulu
 	,0   
-  )
+  );
 
+  
 USE [ANTERO]

@@ -51,6 +51,6 @@ WHEN NOT MATCHED THEN
 	,Taulu
 	,kuutio_nimi
 	,0
-  )
+  );
   
 USE [ANTERO]
