@@ -56,7 +56,6 @@ THEN
     Ajopvm
 	,Taulu
 	,0   
-  );
+  )
 
-  GO
 USE [ANTERO]
