@@ -1,70 +1,70 @@
 USE [VipunenTK]
 GO
 
-ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT [FK_4_3_tutkinnon_suoritusvuosi__d_kausi]
+ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT IF EXISTS [FK_4_3_tutkinnon_suoritusvuosi__d_kausi]
 GO
 
-ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT [FK_4_3_tutkinnon_suorittamismaakunta_historia_d_alueluokitus_historia]
+ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT IF EXISTS [FK_4_3_tutkinnon_suorittamismaakunta_historia_d_alueluokitus_historia]
 GO
 
-ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT [FK_4_3_tutkinnon_suorittamismaakunta_d_alueluokitus]
+ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT IF EXISTS [FK_4_3_tutkinnon_suorittamismaakunta_d_alueluokitus]
 GO
 
-ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT [FK_4_3_oppilaitos__d_oppilaitoksen_taustatiedot_historia]
+ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT IF EXISTS [FK_4_3_oppilaitos__d_oppilaitoksen_taustatiedot_historia]
 GO
 
-ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT [FK_4_3_oppilaitos__d_oppilaitoksen_taustatiedot]
+ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT IF EXISTS [FK_4_3_oppilaitos__d_oppilaitoksen_taustatiedot]
 GO
 
-ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT [FK_4_3_koulutusluokitus_historia_d_koulutusluokitus_historia]
+ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT IF EXISTS [FK_4_3_koulutusluokitus_historia_d_koulutusluokitus_historia]
 GO
 
-ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT [FK_4_3_koulutuksen_jarjestaja__d_oppilaitoksen_taustatiedot_historia]
+ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT IF EXISTS [FK_4_3_koulutuksen_jarjestaja__d_oppilaitoksen_taustatiedot_historia]
 GO
 
-ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT [FK_4_3_koulutuksen_jarjestaja__d_oppilaitoksen_taustatiedot]
+ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT IF EXISTS [FK_4_3_koulutuksen_jarjestaja__d_oppilaitoksen_taustatiedot]
 GO
 
-ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT [FK_4_3_d_valiaikainen_amk]
+ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT IF EXISTS [FK_4_3_d_valiaikainen_amk]
 GO
 
-ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT [FK_4_3_d_tutkintolaji_tyollistymiseen]
+ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT IF EXISTS [FK_4_3_d_tutkintolaji_tyollistymiseen]
 GO
 
-ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT [FK_4_3_d_paaasiallinen_toiminta_versio2]
+ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT IF EXISTS [FK_4_3_d_paaasiallinen_toiminta_versio2]
 GO
 
-ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT [FK_4_3_d_paaasiallinen_toiminta_okm]
+ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT IF EXISTS [FK_4_3_d_paaasiallinen_toiminta_okm]
 GO
 
-ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT [FK_4_3_d_paaasiallinen_toiminta_ja_maasta_muuttaneet]
+ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT IF EXISTS [FK_4_3_d_paaasiallinen_toiminta_ja_maasta_muuttaneet]
 GO
 
-ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT [FK_4_3_d_oppisopimuskoulutus]
+ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT IF EXISTS [FK_4_3_d_oppisopimuskoulutus]
 GO
 
-ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT [FK_4_3_d_maassaolo]
+ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT IF EXISTS [FK_4_3_d_maassaolo]
 GO
 
-ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT [FK_4_3_d_koulutusmuoto]
+ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT IF EXISTS [FK_4_3_d_koulutusmuoto]
 GO
 
-ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT [FK_4_3_d_ammattiluokitus_2010]
+ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT IF EXISTS [FK_4_3_d_ammattiluokitus_2010]
 GO
 
-ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT [FK_4_3_d_ammattiasema]
+ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT IF EXISTS [FK_4_3_d_ammattiasema]
 GO
 
-ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT [FK_4_3_d_aineisto]
+ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT IF EXISTS [FK_4_3_d_aineisto]
 GO
 
-ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT [FK_4_3_d_aikuisopiskelija]
+ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT IF EXISTS [FK_4_3_d_aikuisopiskelija]
 GO
 
-ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT [FK_4_3_asuinmaakunta_historia_d_alueluokitus_historia]
+ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT IF EXISTS [FK_4_3_asuinmaakunta_historia_d_alueluokitus_historia]
 GO
 
-ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT [FK_4_3_asuinmaakunta_d_alueluokitus]
+ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta] DROP CONSTRAINT IF EXISTS [FK_4_3_asuinmaakunta_d_alueluokitus]
 GO
 
 /****** Object:  Table [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta]    Script Date: 20.11.2020 9:17:41 ******/
@@ -138,7 +138,7 @@ CREATE TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta](
 
 GO
 
-ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta]  WITH CHECK ADD  CONSTRAINT [FK_4_3_asuinmaakunta_d_alueluokitus] FOREIGN KEY([asuinmaakunta_id])
+ALTER TABLE [dbo].[f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta]  WITH CHECK ADD CONSTRAINT [FK_4_3_asuinmaakunta_d_alueluokitus] FOREIGN KEY([asuinmaakunta_id])
 REFERENCES [dbo].[d_alueluokitus] ([id])
 GO
 
