@@ -1251,9 +1251,11 @@
             "expression": [
               " ",
               "",
-              "var taulu = SUMMARIZECOLUMNS(Muuttujat[oppija_oid], \"ka\", AVERAGE([keskiarvo_lukuaineet]))",
+              "var taulu = CALCULATETABLE(GROUPBY(Muuttujat, Muuttujat[oppija_oid], \"ka\", AVERAGEX(CURRENTGROUP(), Muuttujat[keskiarvo_lukuaineet])), Muuttujat[keskiarvo_lukuaineet] <> BLANK())",
+              "",
               "return",
-              "IF([lkm] > 4, AVERAGEX(taulu,[ka]), BLANK())"
+              "",
+              "IF([lkm] > 4, AVERAGEX(taulu,AVERAGE([ka])), BLANK())"
             ],
             "formatString": "0.00"
           },
@@ -1275,9 +1277,11 @@
             "name": "Lukuaineiden keskiarvojen keskiarvo_s",
             "expression": [
               " ",
-              "var taulu = SUMMARIZECOLUMNS(Muuttujat[oppija_oid], \"ka\", AVERAGE([keskiarvo_lukuaineet]))",
+              "var taulu = CALCULATETABLE(GROUPBY(Muuttujat, Muuttujat[oppija_oid], \"ka\", AVERAGEX(CURRENTGROUP(), Muuttujat[keskiarvo_lukuaineet])), Muuttujat[keskiarvo_lukuaineet] <> BLANK())",
+              "",
               "return",
-              "AVERAGEX(taulu,[ka])",
+              "",
+              "AVERAGEX(taulu,AVERAGE([ka]))",
               ""
             ]
           },
