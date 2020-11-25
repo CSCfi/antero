@@ -2527,72 +2527,6 @@
             "displayFolder": "Painottamattomat opiskelijavuodet"
           },
           {
-            "name": "Kustannusryhmän mukaan painotetut perustutkinnon opiskelijavuodet vanha",
-            "expression": [
-              "",
-              "var summa=SUM(Muuttujat[opiskelijavuodet_painotettu_pt])",
-              "return IF(summa=0,BLANK(),summa)"
-            ],
-            "formatString": "#,0.00",
-            "isHidden": true,
-            "displayFolder": "Opiskelijavuodet"
-          },
-          {
-            "name": "Kustannusryhmän mukaan painotetut at- ja eat-tutkinnon opiskelijavuodet vanha",
-            "expression": [
-              "",
-              "var summa=SUM(Muuttujat[opiskelijavuodet_painotettu_at_eat])",
-              "return IF(summa=0,BLANK(),summa)"
-            ],
-            "formatString": "#,0.00",
-            "isHidden": true,
-            "displayFolder": "Opiskelijavuodet"
-          },
-          {
-            "name": "Kustannusryhmän mukaan painotetut VALMA&TELMA opiskelijavuodet vanha",
-            "expression": [
-              "",
-              "var summa=SUM(Muuttujat[opiskelijavuodet_painotettu_valma_telma])",
-              "return IF(summa=0,BLANK(),summa)"
-            ],
-            "formatString": "#,0.00",
-            "isHidden": true,
-            "displayFolder": "Opiskelijavuodet"
-          },
-          {
-            "name": "Kustannusryhmän mukaan painotetut opiskelijavalmiuksia tukevat opiskelijavuodet vanha",
-            "expression": [
-              "",
-              "var summa=SUM(Muuttujat[opiskelijavuodet_painotettu_opisk_valm_tukevat])",
-              "return IF(summa=0,BLANK(),summa)"
-            ],
-            "formatString": "#,0.00",
-            "isHidden": true,
-            "displayFolder": "Opiskelijavuodet"
-          },
-          {
-            "name": "Kustannusryhmän mukaan painotetut muun koulutuksen opiskelijavuodet vanha",
-            "expression": [
-              "",
-              "var summa=SUM(Muuttujat[opiskelijavuodet_painotettu_muu])",
-              "return IF(summa=0,BLANK(),summa)"
-            ],
-            "formatString": "#,0.00",
-            "isHidden": true,
-            "displayFolder": "Opiskelijavuodet"
-          },
-          {
-            "name": "Erityistuen mukaan painotetut opiskelijavuodet testi",
-            "expression": [
-              "",
-              "var summa=SUM(Muuttujat[opiskelijavuodet_painotettu_erityistuki])",
-              "return IF(summa=0,BLANK(),summa)"
-            ],
-            "formatString": "#,0.00",
-            "isHidden": true,
-            "displayFolder": "Opiskelijavuodet"
-          },
-          {
             "name": "Majoituksen mukaan painotetut opiskelijavuodet",
             "expression": [
               "",
@@ -2609,32 +2543,6 @@
             ],
             "formatString": "#,0.00",
             "displayFolder": "Painotetut opiskelijavuodet"
-          },
-          {
-            "name": "Työvoimakoulutuksen mukaan painotetut opiskelijavuodet testi",
-            "expression": [
-              "",
-              "var summa=SUM(Muuttujat[opiskelijavuodet_painotettu_tyovoimakoulutus])",
-              "var tyovoimakorotus = IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"2\",1,0),1)",
-              "return IF([korotusehto]=1 || tyovoimakorotus=1,summa,BLANK())",
-              ""
-            ],
-            "formatString": "#,0.00",
-            "isHidden": true,
-            "displayFolder": "Opiskelijavuodet"
-          },
-          {
-            "name": "Vankilakoulutuksen mukaan painotetut opiskelijavuodet testi",
-            "expression": [
-              "",
-              "var summa=SUM(Muuttujat[opiskelijavuodet_painotettu_vankilaopetus])",
-              "var vankilakorotus = IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"3\",1,0),1)",
-              "return IF([korotusehto]=1 || vankilakorotus=1,summa,BLANK())",
-              ""
-            ],
-            "formatString": "#,0.00",
-            "isHidden": true,
-            "displayFolder": "Opiskelijavuodet"
           },
           {
             "name": "Painotetut opiskelijavuodet yhteensä",
@@ -2735,7 +2643,7 @@
             "name": "Muun koulutuksen painottamattomat opiskelijavuodet",
             "expression": [
               "",
-              "var summa=CALCULATE(SUM([opiskelijavuodet_painottamaton]),Muuttujat[Koodit Kustannusryhmä]=\"muu\")",
+              "var summa=CALCULATE(SUM([opiskelijavuodet_painottamaton]),FILTER(VALUES(Muuttujat[Koodit Kustannusryhmä]),[Koodit Kustannusryhmä]=\"muu\"))",
               "return IF(summa=0,BLANK(),summa)",
               ""
             ],
@@ -2779,44 +2687,6 @@
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Painottamattomat opiskelijavuodet"
-          },
-          {
-            "name": "Majoituksen hyväksytyt painotetut opiskelijavuodet",
-            "expression": [
-              "",
-              "var painotettu=[Majoituksen mukaan painotetut opiskelijavuodet]",
-              "var ylittyy=MAX(Muuttujat[sisaopp_ylittyy])",
-              "var hylatty_ylitys=CALCULATE(SUM(Muuttujat[opiskelijavuodet_painotettu_majoitus])-SUM(Muuttujat[opiskelijavuodet_painotettu_majoitus_hyv]),Muuttujat[sisaopp_ylittyy]=1, ALL(Muuttujat[Luvaton majoitus]))",
-              "return IF(ylittyy=1,painotettu-hylatty_ylitys,painotettu)"
-            ],
-            "formatString": "#,0.00",
-            "displayFolder": "Painotetut opiskelijavuodet"
-          },
-          {
-            "name": "Erityistuen hyväksytyt painotetut opiskelijavuodet",
-            "expression": [
-              "",
-              "var summa=SUM(Muuttujat[opiskelijavuodet_painotettu_erityistuki_hyv])",
-              "return IF(summa=0,BLANK(),summa)"
-            ],
-            "formatString": "#,0.00",
-            "displayFolder": "Painotetut opiskelijavuodet"
-          },
-          {
-            "name": "korotusehto",
-            "expression": [
-              " ",
-              "var taulu_kor=VALUES(Muuttujat[jarj_luvaton_korotustekija])",
-              "var taulu_maj=VALUES(Muuttujat[jarj_luvaton_majoitus])",
-              "return ",
-              "IF(",
-              "AND(",
-              "\tIF(COUNTROWS(taulu_kor)=1,IF(taulu_kor=\"1\",1,0),1)",
-              "\t,IF(COUNTROWS(taulu_maj)=1,IF(taulu_maj=\"1\",1,0),1)",
-              ")",
-              ",1,0)"
-            ],
-            "isHidden": true
           },
           {
             "name": "Kustannusryhmän mukaan painotetut at- ja eat-tutkinnon opiskelijavuodet",
@@ -2917,6 +2787,136 @@
             ],
             "formatString": "#,0.00",
             "displayFolder": "Painotetut opiskelijavuodet"
+          },
+          {
+            "name": "Kustannusryhmän mukaan painotetut perustutkinnon opiskelijavuodet vanha",
+            "expression": [
+              "",
+              "var summa=SUM(Muuttujat[opiskelijavuodet_painotettu_pt])",
+              "return IF(summa=0,BLANK(),summa)"
+            ],
+            "formatString": "#,0.00",
+            "isHidden": true,
+            "displayFolder": "Opiskelijavuodet"
+          },
+          {
+            "name": "Kustannusryhmän mukaan painotetut at- ja eat-tutkinnon opiskelijavuodet vanha",
+            "expression": [
+              "",
+              "var summa=SUM(Muuttujat[opiskelijavuodet_painotettu_at_eat])",
+              "return IF(summa=0,BLANK(),summa)"
+            ],
+            "formatString": "#,0.00",
+            "isHidden": true,
+            "displayFolder": "Opiskelijavuodet"
+          },
+          {
+            "name": "Kustannusryhmän mukaan painotetut VALMA&TELMA opiskelijavuodet vanha",
+            "expression": [
+              "",
+              "var summa=SUM(Muuttujat[opiskelijavuodet_painotettu_valma_telma])",
+              "return IF(summa=0,BLANK(),summa)"
+            ],
+            "formatString": "#,0.00",
+            "isHidden": true,
+            "displayFolder": "Opiskelijavuodet"
+          },
+          {
+            "name": "Kustannusryhmän mukaan painotetut opiskelijavalmiuksia tukevat opiskelijavuodet vanha",
+            "expression": [
+              "",
+              "var summa=SUM(Muuttujat[opiskelijavuodet_painotettu_opisk_valm_tukevat])",
+              "return IF(summa=0,BLANK(),summa)"
+            ],
+            "formatString": "#,0.00",
+            "isHidden": true,
+            "displayFolder": "Opiskelijavuodet"
+          },
+          {
+            "name": "Kustannusryhmän mukaan painotetut muun koulutuksen opiskelijavuodet vanha",
+            "expression": [
+              "",
+              "var summa=SUM(Muuttujat[opiskelijavuodet_painotettu_muu])",
+              "return IF(summa=0,BLANK(),summa)"
+            ],
+            "formatString": "#,0.00",
+            "isHidden": true,
+            "displayFolder": "Opiskelijavuodet"
+          },
+          {
+            "name": "Erityistuen mukaan painotetut opiskelijavuodet testi",
+            "expression": [
+              "",
+              "var summa=SUM(Muuttujat[opiskelijavuodet_painotettu_erityistuki])",
+              "return IF(summa=0,BLANK(),summa)"
+            ],
+            "formatString": "#,0.00",
+            "isHidden": true,
+            "displayFolder": "Opiskelijavuodet"
+          },
+          {
+            "name": "Työvoimakoulutuksen mukaan painotetut opiskelijavuodet testi",
+            "expression": [
+              "",
+              "var summa=SUM(Muuttujat[opiskelijavuodet_painotettu_tyovoimakoulutus])",
+              "var tyovoimakorotus = IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"2\",1,0),1)",
+              "return IF([korotusehto]=1 || tyovoimakorotus=1,summa,BLANK())",
+              ""
+            ],
+            "formatString": "#,0.00",
+            "isHidden": true,
+            "displayFolder": "Opiskelijavuodet"
+          },
+          {
+            "name": "Vankilakoulutuksen mukaan painotetut opiskelijavuodet testi",
+            "expression": [
+              "",
+              "var summa=SUM(Muuttujat[opiskelijavuodet_painotettu_vankilaopetus])",
+              "var vankilakorotus = IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"3\",1,0),1)",
+              "return IF([korotusehto]=1 || vankilakorotus=1,summa,BLANK())",
+              ""
+            ],
+            "formatString": "#,0.00",
+            "isHidden": true,
+            "displayFolder": "Opiskelijavuodet"
+          },
+          {
+            "name": "Majoituksen hyväksytyt painotetut opiskelijavuodet",
+            "expression": [
+              "",
+              "var painotettu=[Majoituksen mukaan painotetut opiskelijavuodet]",
+              "var ylittyy=MAX(Muuttujat[sisaopp_ylittyy])",
+              "var hylatty_ylitys=CALCULATE(SUM(Muuttujat[opiskelijavuodet_painotettu_majoitus])-SUM(Muuttujat[opiskelijavuodet_painotettu_majoitus_hyv]),Muuttujat[sisaopp_ylittyy]=1, ALL(Muuttujat[Luvaton majoitus]))",
+              "return IF(ylittyy=1,painotettu-hylatty_ylitys,painotettu)"
+            ],
+            "formatString": "#,0.00",
+            "displayFolder": "Painotetut opiskelijavuodet"
+          },
+          {
+            "name": "Erityistuen hyväksytyt painotetut opiskelijavuodet",
+            "expression": [
+              "",
+              "var summa=SUM(Muuttujat[opiskelijavuodet_painotettu_erityistuki_hyv])",
+              "return IF(summa=0,BLANK(),summa)"
+            ],
+            "formatString": "#,0.00",
+            "displayFolder": "Painotetut opiskelijavuodet"
+          },
+          {
+            "name": "korotusehto",
+            "expression": [
+              " ",
+              "var taulu_kor=VALUES(Muuttujat[jarj_luvaton_korotustekija])",
+              "var taulu_maj=VALUES(Muuttujat[jarj_luvaton_majoitus])",
+              "return ",
+              "IF(",
+              "AND(",
+              "\tIF(COUNTROWS(taulu_kor)=1,IF(taulu_kor=\"1\",1,0),1)",
+              "\t,IF(COUNTROWS(taulu_maj)=1,IF(taulu_maj=\"1\",1,0),1)",
+              ")",
+              ",1,0)"
+            ],
+            "isHidden": true
           },
           {
             "name": "Oppivelvollisuuden mukaan painotetut opiskelijavuodet",
@@ -5096,12 +5096,6 @@
                 "name": "Painottamattomat opiskelijavuodet (pl. muu koulutus)"
               },
               {
-                "name": "Erityistuen hyväksytyt painotetut opiskelijavuodet"
-              },
-              {
-                "name": "Majoituksen hyväksytyt painotetut opiskelijavuodet"
-              },
-              {
                 "name": "Henkilöstökoulutuksen mukaan painotetut opiskelijavuodet"
               },
               {
@@ -5127,6 +5121,12 @@
               },
               {
                 "name": "Erityistuen mukaan painotetut opiskelijavuodet"
+              },
+              {
+                "name": "Erityistuen hyväksytyt painotetut opiskelijavuodet"
+              },
+              {
+                "name": "Majoituksen hyväksytyt painotetut opiskelijavuodet"
               },
               {
                 "name": "Oppivelvollisuuden mukaan painotetut opiskelijavuodet"
