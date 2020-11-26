@@ -397,6 +397,20 @@
             "dataType": "string",
             "sourceColumn": "Henkilön korkein tutkinto",
             "displayFolder": "Koulutusmuuttujat"
+          },
+          {
+            "name": "Tiedonkeruuvuosi",
+            "dataType": "int64",
+            "sourceColumn": "Tiedonkeruuvuosi",
+            "displayFolder": "Aikamuuttujat"
+          },
+          {
+            "type": "calculated",
+            "name": "uusi_kelp",
+            "dataType": "boolean",
+            "isDataTypeInferred": true,
+            "expression": "[Tilastovuosi]=[Tiedonkeruuvuosi]",
+            "formatString": "\"TRUE\";\"TRUE\";\"FALSE\""
           }
         ],
         "partitions": [
@@ -884,6 +898,14 @@
                   "        <int>266</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Tiedonkeruuvuosi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>143</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -1350,6 +1372,14 @@
                   "        <int>56</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Tiedonkeruuvuosi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>58</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -1721,6 +1751,14 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Tiedonkeruuvuosi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -1737,7 +1775,7 @@
             "name": "Kelpoisuus tutkinnon yhteydessä",
             "expression": [
               "",
-              "var summa=CALCULATE(DISTINCTCOUNT(Muuttujat[opiskelija_avain]),Muuttujat[tutkinnon_yhteydessa]=1)",
+              "var summa=CALCULATE(DISTINCTCOUNT(Muuttujat[opiskelija_avain]),Muuttujat[tutkinnon_yhteydessa]=1,Muuttujat[uusi_kelp]=TRUE())",
               "return IF(summa=0,BLANK(),summa)"
             ],
             "formatString": "#,0"
@@ -1746,7 +1784,7 @@
             "name": "Kelpoisuus suoritettu erillisinä opintoina: Henkilön ensimmäinen opettajakelpoisuus",
             "expression": [
               "",
-              "var summa = CALCULATE(DISTINCTCOUNT([opiskelija_avain]),Muuttujat[erillinen_eka]=1)",
+              "var summa = CALCULATE(DISTINCTCOUNT([opiskelija_avain]),Muuttujat[erillinen_eka]=1,Muuttujat[uusi_kelp]=TRUE())",
               "return IF(summa=0,BLANK(),summa)"
             ],
             "formatString": "#,0"
@@ -1755,19 +1793,24 @@
             "name": "Kelpoisuus suoritettu erillisinä opintoina: Kelpoisuus täydentää aiempia opettajakelpoisuuksia",
             "expression": [
               "",
-              "var summa = CALCULATE(DISTINCTCOUNT(Muuttujat[opiskelija_avain]),Muuttujat[erillinen_taydentava]=1)",
+              "var summa = CALCULATE(DISTINCTCOUNT(Muuttujat[opiskelija_avain]),Muuttujat[erillinen_taydentava]=1,Muuttujat[uusi_kelp]=TRUE())",
               "return IF(summa=0,BLANK(),summa)"
             ],
             "formatString": "#,0"
           },
           {
             "name": "Henkilöt yhteensä",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[opiskelija_avain]),Muuttujat[jarjestys Opettajakelpoisuus]<>\"99\")",
+            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[opiskelija_avain]),Muuttujat[jarjestys Opettajakelpoisuus]<>\"99\",Muuttujat[uusi_kelp]=TRUE())",
             "formatString": "#,0"
           },
           {
             "name": "Virheellinen kelpoisuus",
             "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[opiskelija_avain]),FILTER(Muuttujat,Muuttujat[Opettajakelpoisuudet] <> Muuttujat[Opettajakelpoisuudet (virheelliset)]))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Henkilöitä yhteensä",
+            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[opiskelija_avain]),Muuttujat[jarjestys Opettajakelpoisuus]<>\"99\")",
             "formatString": "#,0"
           }
         ],
@@ -2260,6 +2303,14 @@
               "        <int>266</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Tiedonkeruuvuosi</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>143</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -2726,6 +2777,14 @@
               "        <int>56</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Tiedonkeruuvuosi</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>58</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -3092,6 +3151,14 @@
               "    <item>",
               "      <key>",
               "        <string>Koodit Tutkinnon suorituskorkeakoulu</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Tiedonkeruuvuosi</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -4499,6 +4566,9 @@
               },
               {
                 "name": "Henkilön korkein tutkinto"
+              },
+              {
+                "name": "Tiedonkeruuvuosi"
               }
             ],
             "measures": [
@@ -4630,11 +4700,14 @@
               },
               {
                 "name": "Henkilön korkein tutkinto"
+              },
+              {
+                "name": "Tiedonkeruuvuosi"
               }
             ],
             "measures": [
               {
-                "name": "Henkilöt yhteensä"
+                "name": "Henkilöitä yhteensä"
               }
             ]
           },
@@ -4838,6 +4911,9 @@
               },
               {
                 "name": "Henkilön korkein tutkinto"
+              },
+              {
+                "name": "Tiedonkeruuvuosi"
               }
             ],
             "measures": [
