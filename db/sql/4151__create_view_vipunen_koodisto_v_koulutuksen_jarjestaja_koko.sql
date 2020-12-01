@@ -13,13 +13,11 @@ GO
 
 CREATE VIEW [dbo].[v_koulutuksen_jarjestaja_koko] AS
 
-/*
-truncate table [ANTERO].[dw].[d_jarjestajankoko]
-go
-insert into [ANTERO].[dw].[d_jarjestajankoko]
-select * from dbo.v_koulutuksen_jarjestaja_koko
-go
-*/
+--truncate table [ANTERO].[dw].[d_jarjestajankoko]
+--go
+--insert into [ANTERO].[dw].[d_jarjestajankoko]
+--select from dbo.v_koulutuksen_jarjestaja_koko
+--go
 
 SELECT [tilv] = cast(tilv as varchar(4))
 	  ,[jarj] = cast(jarj as varchar(10))
