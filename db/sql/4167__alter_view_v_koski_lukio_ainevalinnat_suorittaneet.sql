@@ -96,11 +96,11 @@ SELECT
 
 FROM 
 (
-	SELECT * FROM DWIVIPUARCH.ANTERO_01112020.dw.f_koski_lukio_ainevalinnat_suorittaneet_01112020 --ANTERO_jäädytyspvm1
+	SELECT * FROM ANTERO.dw.f_koski_lukio_ainevalinnat_suorittaneet --_jäädytyspvm1
 
 	--UNION ALL
 
-	--SELECT * FROM DWIVIPUARCH.ANTERO.dw.f_koski_lukio_ainevalinnat_suorittaneet --ANTERO_jäädytyspvm2
+	--SELECT * FROM DWIVIPUARCH.ANTERO.dw.f_koski_lukio_ainevalinnat_suorittaneet --_jäädytyspvm2
 
 ) f
 
