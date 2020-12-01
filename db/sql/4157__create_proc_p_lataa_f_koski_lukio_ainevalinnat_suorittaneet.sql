@@ -53,7 +53,7 @@ SET @loppuPvm = dateadd(year, 1, dateadd(day, -1, @alkuPvm))
 SET @maxPvm = case year(@alkuPvm) when 2018 then '2020-07-31' else @loppuPvm end --ekalla kerralla 2 v, jatkossa 1 v
 
 --DROP TABLE IF EXISTS dw.f_koski_lukio_ainevalinnat_suorittaneet--_jäädytyspvm
---SELECT TOP 0 *
+--SELECT TOP 0
 --INTO dw.f_koski_lukio_ainevalinnat_suorittaneet--_jäädytyspvm
 --FROM dw.f_koski_lukio_ainevalinnat_suorittaneet
 
