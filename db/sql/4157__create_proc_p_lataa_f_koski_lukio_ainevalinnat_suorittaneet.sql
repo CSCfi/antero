@@ -52,12 +52,10 @@ SET @alkuPvm = '2018-08-01' --huom. _jäädytyspvm
 SET @loppuPvm = dateadd(year, 1, dateadd(day, -1, @alkuPvm))
 SET @maxPvm = case year(@alkuPvm) when 2018 then '2020-07-31' else @loppuPvm end --ekalla kerralla 2 v, jatkossa 1 v
 
-/*
-DROP TABLE IF EXISTS dw.f_koski_lukio_ainevalinnat_suorittaneet--_jäädytyspvm
-SELECT TOP 0 * 
-INTO dw.f_koski_lukio_ainevalinnat_suorittaneet--_jäädytyspvm
-FROM dw.f_koski_lukio_ainevalinnat_suorittaneet
-*/
+--DROP TABLE IF EXISTS dw.f_koski_lukio_ainevalinnat_suorittaneet--_jäädytyspvm
+--SELECT TOP 0 *
+--INTO dw.f_koski_lukio_ainevalinnat_suorittaneet--_jäädytyspvm
+--FROM dw.f_koski_lukio_ainevalinnat_suorittaneet
 
 TRUNCATE TABLE dw.f_koski_lukio_ainevalinnat_suorittaneet --saa tyhjentyä jäädytyspalvelimella
 
