@@ -16,35 +16,33 @@ GO
 CREATE PROCEDURE [dw].[p_lataa_f_koski_lukio_ainevalinnat_suorittaneet] 
 AS
 
-/* 
-  Huom. vuosipäivityksessä (erit. lops2021):
-  - yhdenmukaistetaanko näkymässä kurssi vs. opintopiste -laajuus
-  - nimetäänkö muuttujia uusiksi näkymässä tai kuutiossa
-  - "suorituksen_tyyppi" uudet arvot rajauksissa
-  - "kurssin_tyyppi_koodiarvo" / "koulutusmoduuli_paikallinen" uudet arvot
-  - päivitä näkymän käyttämät dimensiot, huomioi tarvittaessa tässä latauksessa
-*/ 
+--  Huom. vuosipäivityksessä (erit. lops2021):
+--  - yhdenmukaistetaanko näkymässä kurssi vs. opintopiste -laajuus
+--  - nimetäänkö muuttujia uusiksi näkymässä tai kuutiossa
+--  - "suorituksen_tyyppi" uudet arvot rajauksissa
+--  - "kurssin_tyyppi_koodiarvo" / "koulutusmoduuli_paikallinen" uudet arvot
+--  - päivitä näkymän käyttämät dimensiot, huomioi tarvittaessa tässä latauksessa 
 
 -- Jäädytys:
 -- 1) Huomioi kohdat _jäädytyspvm, vapauta kommentit declare/set:n ympäriltä ja aja alle muodostuva proseduurin luontiskripti arkistointipalvelimella
 -- 2) Aja luotu proseduuri arkistointipalvelimella
 -- 3) Päivitä normipalvelimen näkymä ja prosessoi kuutio
 
-/*
-USE ANTERO--_jäädytyspvm
-GO
+----
+--USE ANTERO--_jäädytyspvm
+--GO
 
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
+--SET ANSI_NULLS ON
+--GO
+--SET QUOTED_IDENTIFIER ON
+--GO
 
-DROP PROCEDURE IF EXISTS dw.p_lataa_f_koski_lukio_ainevalinnat_suorittaneet--_jäädytyspvm
-GO
+--DROP PROCEDURE IF EXISTS dw.p_lataa_f_koski_lukio_ainevalinnat_suorittaneet--_jäädytyspvm
+--GO
 
-CREATE PROCEDURE dw.p_lataa_f_koski_lukio_ainevalinnat_suorittaneet--_jäädytyspvm
-AS
-*/
+--CREATE PROCEDURE dw.p_lataa_f_koski_lukio_ainevalinnat_suorittaneet--_jäädytyspvm
+--AS
+----
 
 DECLARE @alkuPvm as date, @loppuPvm as date, @maxPvm as date
 
@@ -52,10 +50,12 @@ SET @alkuPvm = '2018-08-01' --huom. _jäädytyspvm
 SET @loppuPvm = dateadd(year, 1, dateadd(day, -1, @alkuPvm))
 SET @maxPvm = case year(@alkuPvm) when 2018 then '2020-07-31' else @loppuPvm end --ekalla kerralla 2 v, jatkossa 1 v
 
---DROP TABLE IF EXISTS dw.f_koski_lukio_ainevalinnat_suorittaneet--_jäädytyspvm
+----
+--DROP TABLE IF EXISTS dw.f_koski_lukio_ainevalinnat_suorittaneet_jäädytyspvm
 --SELECT TOP 0
---INTO dw.f_koski_lukio_ainevalinnat_suorittaneet--_jäädytyspvm
+--INTO dw.f_koski_lukio_ainevalinnat_suorittaneet_jäädytyspvm
 --FROM dw.f_koski_lukio_ainevalinnat_suorittaneet
+----
 
 TRUNCATE TABLE dw.f_koski_lukio_ainevalinnat_suorittaneet --saa tyhjentyä jäädytyspalvelimella
 
@@ -99,13 +99,17 @@ BEGIN
 		,[aine] = os.koulutusmoduuli_koodiarvo
 		,[aineenoppimaara_koodisto] =	
 			case 
-				when os.matematiikan_oppimaara_koodiarvo is not null /*AND os.koulutusmoduuli_koodiarvo = 'MA'*/ then 'oppiainematematiikka'		
-				--when os.uskonnon_oppimaara_koodiarvo is not null /*AND os.koulutusmoduuli_koodiarvo in ('KT','ET')*/ then 'uskonnonoppimaara' --in the future
-				when os.kieli_koodiarvo is not null AND os.koulutusmoduuli_koodiarvo = 'AI' then 'oppiaineaidinkielijakirjallisuus'
-				when os.kieli_koodiarvo is not null /*AND os.koulutusmoduuli_koodiarvo <> 'AI'*/ then 'kielivalikoima'
+				when os.matematiikan_oppimaara_koodiarvo is not null --AND os.koulutusmoduuli_koodiarvo = 'MA'
+				then 'oppiainematematiikka'		
+				--when os.uskonnon_oppimaara_koodiarvo is not null --AND os.koulutusmoduuli_koodiarvo in ('KT','ET') 
+				--then 'uskonnonoppimaara' --in the future
+				when os.kieli_koodiarvo is not null AND os.koulutusmoduuli_koodiarvo = 'AI' 
+				then 'oppiaineaidinkielijakirjallisuus'
+				when os.kieli_koodiarvo is not null --AND os.koulutusmoduuli_koodiarvo <> 'AI' 
+				then 'kielivalikoima'
 				else os.koulutusmoduuli_koodisto
 			end
-		,[aineenoppimaara] = coalesce(os.matematiikan_oppimaara_koodiarvo, /*os.uskonnon_oppimaara_koodiarvo,*/ os.kieli_koodiarvo, os.koulutusmoduuli_koodiarvo)	
+		,[aineenoppimaara] = coalesce(os.matematiikan_oppimaara_koodiarvo, os.kieli_koodiarvo, os.koulutusmoduuli_koodiarvo) --os.uskonnon_oppimaara_koodiarvo,
 		,[aine_suorituskieli] = os.suorituskieli_koodiarvo
 		,[aine_laajuus] = os.koulutusmoduuli_laajuus_arvo
 		,[aine_laajuus_yksikko] = coalesce(os.koulutusmoduuli_laajuus_yksikko, '4') --null estetty lops2021-?
