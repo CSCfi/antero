@@ -4570,12 +4570,10 @@
               "            ,\"vast\", CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),NOT(ISBLANK(Muuttujat[vastaajaid])))",
               "            ,\"vast_oph\", CALCULATE(AVERAGE([Vahvistetut vastanneet]))",
               "            ,\"kohteet\", CALCULATE(AVERAGE([Vahvistetut kyselyn kohteena olleet]))",
-              "            ,\"sum_nro\", CALCULATE(SUM([numerovalinta]))",
               "            ,\"katokytkin\", CALCULATE(MAX(Muuttujat[kytkin_katokorjaus]))",
               "        )        ",
-              "        , VALUES(Muuttujat[Kyselyn kohderyhmä])",
-              "        , Muuttujat[Koodit Rahoitusmallikysymys] = 1",
-              "",
+              "        ,VALUES(Muuttujat[Kyselyn kohderyhmä])",
+              "\t,Muuttujat[Koodit Rahoitusmallikysymys]=1",
               " )",
               "return ",
               "AVERAGEX(taulu, ",
@@ -4794,8 +4792,8 @@
             "name": "Vastanneet",
             "expression": [
               "",
-              "var vastanneet_ei_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[Kiusaamiskysymys]=0,Muuttujat[vastaajaid] <> BLANK())",
-              "var vastanneet_kius = CALCULATE([Vastanneet_kius],Muuttujat[Kiusaamiskysymys]=1,Muuttujat[vastaajaid] <> BLANK())",
+              "var vastanneet_ei_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[Kiusaamiskysymys]=0,NOT(ISBLANK(Muuttujat[vastaajaid])))",
+              "var vastanneet_kius = CALCULATE([Vastanneet_kius],Muuttujat[Kiusaamiskysymys]=1,NOT(ISBLANK(Muuttujat[vastaajaid])))",
               "var summa = CALCULATE(vastanneet_ei_kius+vastanneet_kius)",
               "",
               "return IF(AND(summa<5,summa>0),\"<5\",summa)",
@@ -8637,6 +8635,79 @@
               "LEFT JOIN dw.d_arvokyselykerta d on d.kyselykertaid=f.kyselykertaid",
               "WHERE d.kyselypohja='amispalaute' and d.kyselypohja_tarkenne_amis_fi not like '%pilotti%'</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
             ]
+          }
+        ]
+      },
+      {
+        "name": "CalculatedTable 1",
+        "columns": [
+          {
+            "type": "calculatedTableColumn",
+            "name": "Kyselyn kohderyhmä",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Kyselyn kohderyhmä]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Rahoituskausi",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Rahoituskausi]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Vahvistetut vastanneet nimi",
+            "dataType": "double",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Vahvistetut vastanneet nimi]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Vastanneet_arvo",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Vastanneet_arvo]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Numerosumma",
+            "dataType": "int64",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "[Numerosumma]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "Koulutuksen järjestäjä",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[Koulutuksen järjestäjä]"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculatedTable 1",
+            "source": {
+              "type": "calculated",
+              "expression": [
+                "ADDCOLUMNS(SUMMARIZE(FILTER(Muuttujat,[Koodit Rahoitusmallikysymys]=1),",
+                "                        [Kyselyn kohderyhmä],",
+                "                        [Koulutuksen järjestäjä],",
+                "                        [Rahoituskausi]",
+                "                        ),",
+                "                        \"Vahvistetut vastanneet nimi\", CALCULATE(AVERAGE(Muuttujat[Vahvistetut vastanneet])),",
+                "                        \"Vastanneet_arvo\", CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),NOT(ISBLANK(Muuttujat[vastaajaid]))),",
+                "                        \"Numerosumma\", CALCULATE(SUM(muuttujat[numerovalinta]))",
+                "                    )",
+                ""
+              ]
+            }
           }
         ]
       }
