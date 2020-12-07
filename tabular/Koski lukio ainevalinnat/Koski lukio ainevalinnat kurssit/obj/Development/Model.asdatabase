@@ -230,6 +230,12 @@
             "sourceColumn": "jarj_kurssin_ops"
           },
           {
+            "name": "paatason_suoritus_id",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "paatason_suoritus_id"
+          },
+          {
             "name": "Kurssin koodisto",
             "dataType": "string",
             "sourceColumn": "Kurssin koodisto",
@@ -507,6 +513,14 @@
                   "        <int>138</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>paatason_suoritus_id</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>165</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -739,6 +753,14 @@
                   "      </key>",
                   "      <value>",
                   "        <int>28</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>paatason_suoritus_id</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>29</int>",
                   "      </value>",
                   "    </item>",
                   "  </ColumnDisplayIndex>",
@@ -976,6 +998,14 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>paatason_suoritus_id</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -988,6 +1018,22 @@
           }
         ],
         "measures": [
+          {
+            "name": "Oppimäärän suorittaneet",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[paatason_suoritus_id])",
+              ", ALL(Muuttujat[Oppiaineryhmä])",
+              ", ALL(Muuttujat[Oppiaine])",
+              ", ALL(Muuttujat[Oppimäärä tai kieli])",
+              ", ALL(Muuttujat[Kurssin OPS])",
+              ", ALL(Muuttujat[Kurssin tyyppi])",
+              ", ALL(Muuttujat[Kurssin suorituskieli]))",
+              "",
+              "return IF(lkm = 0,  BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
+            "formatString": "#,0"
+          },
           {
             "name": "Kurssisuoritukset",
             "expression": [
@@ -1042,6 +1088,22 @@
               "osa / kaikki)))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Kurssisuoritukset / Oppimäärän suorittaneet",
+            "expression": [
+              "",
+              "var osa = [Kurssisuoritukset]",
+              "var kaikki = [Oppimäärän suorittaneet]",
+              "return IF(osa = BLANK() || kaikki = BLANK(), BLANK(),",
+              "IF(osa = \"1-4\" && kaikki = \"1-4\", CONCATENATE(FORMAT(1 / 4, \"0.0 – \"), FORMAT(4 / 1, \"0.0\")),",
+              "IF(osa = \"1-4\", IF(kaikki > 80, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 – \"), FORMAT(4 / kaikki, \"0.0\"))),",
+              "IF(kaikki = \"1-4\", CONCATENATE(FORMAT(osa / 4, \"0.0 – \"), FORMAT(osa / 1, \"0.0\")),",
+              "osa / kaikki))))",
+              ""
+            ],
+            "formatString": "0.0"
           }
         ],
         "annotations": [
@@ -1301,6 +1363,14 @@
               "        <int>138</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>paatason_suoritus_id</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>165</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -1533,6 +1603,14 @@
               "      </key>",
               "      <value>",
               "        <int>28</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>paatason_suoritus_id</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>29</int>",
               "      </value>",
               "    </item>",
               "  </ColumnDisplayIndex>",
@@ -1770,12 +1848,126 @@
               "        <boolean>true</boolean>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>paatason_suoritus_id</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
               "  </ColumnChecked>",
               "  <ColumnFilter />",
               "  <SelectionFilter />",
               "  <FilterParameters />",
               "  <IsSortDescending>false</IsSortDescending>",
               "</TableWidgetGridSerialization>]]></AnnotationContent></Gemini>"
+            ]
+          }
+        ]
+      }
+    ],
+    "perspectives": [
+      {
+        "name": "Kurssit",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Koulutuksen järjestäjä"
+              },
+              {
+                "name": "Koulutuksen järjestäjän opiskelijamäärä"
+              },
+              {
+                "name": "Kurssi"
+              },
+              {
+                "name": "Kurssin koodisto"
+              },
+              {
+                "name": "Kurssin OPS"
+              },
+              {
+                "name": "Kurssin suorituskieli"
+              },
+              {
+                "name": "Kurssin tyyppi"
+              },
+              {
+                "name": "Lukion oppimäärä"
+              },
+              {
+                "name": "Lukion oppimäärän suorituskieli"
+              },
+              {
+                "name": "Oppiaine"
+              },
+              {
+                "name": "Oppiaineryhmä"
+              },
+              {
+                "name": "Oppilaitoksen kunta"
+              },
+              {
+                "name": "Oppilaitoksen kuntaryhmä"
+              },
+              {
+                "name": "Oppilaitoksen maakunta"
+              },
+              {
+                "name": "Oppilaitoksen opetuskieli"
+              },
+              {
+                "name": "Oppilaitos"
+              },
+              {
+                "name": "Oppilaitosnumero"
+              },
+              {
+                "name": "Oppimäärä tai kieli"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Tilastovuosi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Hylätyt kurssisuoritukset"
+              },
+              {
+                "name": "Hylätyt kurssisuoritukset (%)"
+              },
+              {
+                "name": "Kurssisuoritukset"
+              },
+              {
+                "name": "Kurssisuoritukset / Oppimäärän suorittaneet"
+              },
+              {
+                "name": "Oppimäärän suorittaneet"
+              },
+              {
+                "name": "S-merkinnät"
+              },
+              {
+                "name": "S-merkinnät (%)"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
             ]
           }
         ]

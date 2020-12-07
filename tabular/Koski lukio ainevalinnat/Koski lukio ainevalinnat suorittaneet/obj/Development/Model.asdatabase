@@ -1543,7 +1543,7 @@
             "name": "Oppimäärän suorittaneet",
             "expression": [
               "",
-              "var lkm = CALCULATE(DISTINCTCOUNT('Muuttujat'[paatason_suoritus_id])",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[paatason_suoritus_id])",
               ", ALL(Muuttujat[Oppiaineryhmä])",
               ", ALL(Muuttujat[Oppiaine])",
               ", ALL(Muuttujat[Oppimäärä tai kieli])",
@@ -1591,16 +1591,6 @@
               ""
             ],
             "formatString": "#,0"
-          },
-          {
-            "name": "Oppiaineen laajuus ilmoitettu",
-            "expression": [
-              "",
-              "var lkm = CALCULATE(DISTINCTCOUNT([osasuoritus_id]), Muuttujat[aine_laajuus_puuttuu_0_1] = 0)",
-              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
-            ],
-            "formatString": "#,0",
-            "isHidden": true
           },
           {
             "name": "Kurssit",
@@ -1674,22 +1664,6 @@
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Oppiaineen laajuus ilmoitettu / Ainevalinnat",
-            "expression": [
-              "",
-              "var osa = [Oppiaineen laajuus ilmoitettu]",
-              "var kaikki = [Ainevalinnat]",
-              "return IF(osa = BLANK(), BLANK(),",
-              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
-              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
-              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
-              "osa / kaikki)))",
-              ""
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %",
-            "isHidden": true
           },
           {
             "name": "Kurssit / Oppimäärän suorittaneet",
