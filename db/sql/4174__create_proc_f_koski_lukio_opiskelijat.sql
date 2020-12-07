@@ -1,6 +1,8 @@
 USE [ANTERO]
 GO
 
+DROP PROCEDURE IF EXISTS [dw].[p_lataa_f_koski_lukio_opiskelijat_kuukausittain]
+GO
 /****** Object:  StoredProcedure [dw].[p_lataa_f_koski_lukio_opiskelijat_kuukausittain]    Script Date: 7.12.2020 7:47:20 ******/
 SET ANSI_NULLS ON
 GO
@@ -13,7 +15,6 @@ GO
 
 
 
-DROP PROCEDURE IF EXISTS [dw].[p_lataa_f_koski_lukio_opiskelijat_kuukausittain]
 
 CREATE PROCEDURE [dw].[p_lataa_f_koski_lukio_opiskelijat_kuukausittain] AS
 
