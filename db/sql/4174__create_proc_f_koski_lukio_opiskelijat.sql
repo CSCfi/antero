@@ -22,6 +22,7 @@ DROP TABLE IF EXISTS Koski_SA.sa.temp_lukio_uudet
 DROP TABLE IF EXISTS Koski_SA.sa.temp_amm_opisk_alkamispaivat
 
 
+
 SELECT DISTINCT [opiskeluoikeus_oid]
 		  ,koulutustoimija_oid
 		  ,temp_cal.vuosi AS vuosi
