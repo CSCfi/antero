@@ -15,6 +15,7 @@ GO
 
 
 
+
 CREATE VIEW [dw].[v_koski_lukio_opiskelijat_kuukausittain] AS
 
 SELECT
