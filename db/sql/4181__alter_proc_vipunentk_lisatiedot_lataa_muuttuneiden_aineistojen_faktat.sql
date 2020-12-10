@@ -77,3 +77,7 @@ BEGIN
 END 
 CLOSE procedure_cursor;
 DEALLOCATE procedure_cursor;
+
+
+GO
+USE [ANTERO]
