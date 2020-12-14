@@ -2355,17 +2355,17 @@
         "measures": [
           {
             "name": "Opiskelijamäärä",
-            "expression": " DISTINCTCOUNT(Muuttujat[oppija_oid])",
+            "expression": " IF(DISTINCTCOUNT(Muuttujat[oppija_oid]) < 5, \"1 - 4\", MROUND(DISTINCTCOUNT(Muuttujat[oppija_oid]), 3))",
             "formatString": "#,0"
           },
           {
             "name": "Jaksojen lukumäärä",
-            "expression": " SUM(Muuttujat[lkm])",
+            "expression": " IF(SUM(Muuttujat[lkm]) < 5, \"1 - 4\", MROUND(SUM(Muuttujat[lkm]), 3))",
             "formatString": "#,0"
           },
           {
             "name": "Jaksot per opiskelija",
-            "expression": " SUM(Muuttujat[lkm]) / DISTINCTCOUNT(Muuttujat[oppija_oid])",
+            "expression": " SUM(Muuttujat[lkm]) / MROUND(DISTINCTCOUNT(Muuttujat[oppija_oid]), 3)",
             "formatString": "0.0"
           },
           {
@@ -2390,7 +2390,7 @@
           },
           {
             "name": "Jaksot per yritys",
-            "expression": " SUM(Muuttujat[lkm]) / DISTINCTCOUNT(Muuttujat[Koodi Yrityksen Y-tunnus])",
+            "expression": " MROUND(SUM(Muuttujat[lkm]), 3) / DISTINCTCOUNT(Muuttujat[Koodi Yrityksen Y-tunnus])",
             "formatString": "0.0"
           },
           {
@@ -4095,9 +4095,6 @@
                 "name": "Ikäryhmä"
               },
               {
-                "name": "KJ:n kirjaama toiminimi"
-              },
-              {
                 "name": "Koodi Päätoimiala"
               },
               {
@@ -4299,9 +4296,6 @@
               },
               {
                 "name": "Ikäryhmä"
-              },
-              {
-                "name": "KJ:n kirjaama toiminimi"
               },
               {
                 "name": "Koodi Päätoimiala"
@@ -4517,9 +4511,6 @@
               },
               {
                 "name": "Ikäryhmä"
-              },
-              {
-                "name": "KJ:n kirjaama toiminimi"
               },
               {
                 "name": "Koodi Päätoimiala"
