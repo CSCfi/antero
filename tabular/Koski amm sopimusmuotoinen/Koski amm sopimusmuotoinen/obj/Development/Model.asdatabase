@@ -2355,17 +2355,17 @@
         "measures": [
           {
             "name": "Opiskelijamäärä",
-            "expression": " DISTINCTCOUNT(Muuttujat[oppija_oid])",
+            "expression": " IF(DISTINCTCOUNT(Muuttujat[oppija_oid]) < 5, \"1 - 4\", MROUND(DISTINCTCOUNT(Muuttujat[oppija_oid]), 3))",
             "formatString": "#,0"
           },
           {
             "name": "Jaksojen lukumäärä",
-            "expression": " SUM(Muuttujat[lkm])",
+            "expression": " IF(SUM(Muuttujat[lkm]) < 5, \"1 - 4\", MROUND(SUM(Muuttujat[lkm]), 3))",
             "formatString": "#,0"
           },
           {
             "name": "Jaksot per opiskelija",
-            "expression": " SUM(Muuttujat[lkm]) / DISTINCTCOUNT(Muuttujat[oppija_oid])",
+            "expression": " SUM(Muuttujat[lkm]) / MROUND(DISTINCTCOUNT(Muuttujat[oppija_oid]), 3)",
             "formatString": "0.0"
           },
           {
@@ -2390,37 +2390,37 @@
           },
           {
             "name": "Jaksot per yritys",
-            "expression": " SUM(Muuttujat[lkm]) / DISTINCTCOUNT(Muuttujat[Koodi Yrityksen Y-tunnus])",
+            "expression": " MROUND(SUM(Muuttujat[lkm]), 3) / DISTINCTCOUNT(Muuttujat[Koodi Yrityksen Y-tunnus])",
             "formatString": "0.0"
           },
           {
-            "name": "Jaksojen määrä (pl. 1. sopimus)",
-            "expression": " CALCULATE(SUM(Muuttujat[lkm]), Muuttujat[Ensimmäinen sopimus] = \"Ei\")",
+            "name": "Jaksojen määrä (pl. 1. jakso)",
+            "expression": " MROUND(CALCULATE(SUM(Muuttujat[lkm]), Muuttujat[Ensimmäinen sopimus] = \"Ei\"),3)",
             "formatString": "#,0"
           },
           {
-            "name": "Jaksojen määrä (pl. 1. sopimus yrityksessä)",
-            "expression": " CALCULATE(SUM(Muuttujat[lkm]), Muuttujat[Ensimmäinen sopimus yrityksessä] = \"Ei\")",
+            "name": "Jaksojen määrä (pl. 1. jakso yrityksessä)",
+            "expression": " MROUND(CALCULATE(SUM(Muuttujat[lkm]), Muuttujat[Ensimmäinen sopimus yrityksessä] = \"Ei\"), 3)",
             "formatString": "#,0"
           },
           {
             "name": "Ed. jakso KOSO",
-            "expression": " CALCULATE(SUM(Muuttujat[lkm]), Muuttujat[edellinen_sopimus_koso] = 1)",
+            "expression": " MROUND(CALCULATE(SUM(Muuttujat[lkm]), Muuttujat[edellinen_sopimus_koso] = 1), 3)",
             "formatString": "#,0"
           },
           {
             "name": "Ed. jakso OPSO",
-            "expression": " CALCULATE(SUM(Muuttujat[lkm]), Muuttujat[edellinen_sopimus_opso] = 1)",
+            "expression": " MROUND(CALCULATE(SUM(Muuttujat[lkm]), Muuttujat[edellinen_sopimus_opso] = 1), 3)",
             "formatString": "#,0"
           },
           {
             "name": "Ed. jakso KOSO samassa yrityksessä",
-            "expression": " CALCULATE(SUM(Muuttujat[lkm]), Muuttujat[edellinen_sopimus_koso_yritys] = 1)",
+            "expression": " MROUND(CALCULATE(SUM(Muuttujat[lkm]), Muuttujat[edellinen_sopimus_koso_yritys] = 1),3)",
             "formatString": "#,0"
           },
           {
             "name": "Ed. jakso OPSO samassa yrityksessä",
-            "expression": " CALCULATE(SUM(Muuttujat[lkm]), Muuttujat[edellinen_sopimus_opso_yritys] = 1)",
+            "expression": " MROUND(CALCULATE(SUM(Muuttujat[lkm]), Muuttujat[edellinen_sopimus_opso_yritys] = 1), 3)",
             "formatString": "#,0"
           }
         ],
@@ -4095,9 +4095,6 @@
                 "name": "Ikäryhmä"
               },
               {
-                "name": "KJ:n kirjaama toiminimi"
-              },
-              {
                 "name": "Koodi Päätoimiala"
               },
               {
@@ -4271,17 +4268,6 @@
                 "name": "Jaksojen lukumäärä"
               }
             ]
-          },
-          {
-            "name": "Sarakeleveys",
-            "columns": [
-              {
-                "name": "leveys"
-              },
-              {
-                "name": "Sarakeleveys"
-              }
-            ]
           }
         ]
       },
@@ -4299,9 +4285,6 @@
               },
               {
                 "name": "Ikäryhmä"
-              },
-              {
-                "name": "KJ:n kirjaama toiminimi"
               },
               {
                 "name": "Koodi Päätoimiala"
@@ -4486,18 +4469,7 @@
                 "name": "Jaksojen lukumäärä"
               },
               {
-                "name": "Jaksojen määrä (pl. 1. sopimus)"
-              }
-            ]
-          },
-          {
-            "name": "Sarakeleveys",
-            "columns": [
-              {
-                "name": "leveys"
-              },
-              {
-                "name": "Sarakeleveys"
+                "name": "Jaksojen määrä (pl. 1. jakso)"
               }
             ]
           }
@@ -4517,9 +4489,6 @@
               },
               {
                 "name": "Ikäryhmä"
-              },
-              {
-                "name": "KJ:n kirjaama toiminimi"
               },
               {
                 "name": "Koodi Päätoimiala"
@@ -4704,18 +4673,7 @@
                 "name": "Jaksojen lukumäärä"
               },
               {
-                "name": "Jaksojen määrä (pl. 1. sopimus yrityksessä)"
-              }
-            ]
-          },
-          {
-            "name": "Sarakeleveys",
-            "columns": [
-              {
-                "name": "leveys"
-              },
-              {
-                "name": "Sarakeleveys"
+                "name": "Jaksojen määrä (pl. 1. jakso yrityksessä)"
               }
             ]
           }
