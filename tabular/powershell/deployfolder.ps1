@@ -41,38 +41,41 @@ $files = get-childitem $tabularsdir"*.bim" -recurse
 forEach ($file in $files)
 {
     Write-Host "Processing file:" $file.FullName
-    $projectfile = get-childitem $file.DirectoryName"*.smproj"
-    $xml = [xml](Get-Content $projectfile.FullName)
-    if ($xml.Project.PropertyGroup[1].DeploymentServerDatabase)
-    {
-        $projectname = $xml.Project.PropertyGroup[1].DeploymentServerDatabase
-    }
-    elseif ($xml.Project.PropertyGroup[0].DeploymentServerDatabase)
-    {
-        $projectname = $xml.Project.PropertyGroup[0].DeploymentServerDatabase
-    }
-    else
-    {
-        $projectname = $xml.Project.PropertyGroup[2].DeploymentServerDatabase
-    }
-	
-    $xml = [xml](Get-Content ($workdir + "Model.deploymenttargets"))
-    $xml.DeploymentTarget.Database = $projectname
-    $xml.Save($workdir + "Model.deploymenttargets")
-    $destfile = $workdir + "Model.bim"
-    Remove-Item $destfile
-	
-    if([bool]((Get-Content $file) -as [xml]))
-    {
-        $asdatabase = $file.DirectoryName + "\bin\" + $file.BaseName + ".asdatabase"
-        Copy-Item $asdatabase $destfile
-    }
-    else
-    {
-        Copy-Item $file $destfile
-    }
-    
-    & "$ScriptPath\tabulardeploy.ps1" $workdir"Model.bim" $workdir $prodtabserver $prodsqlserver $proddatabase $exe
+	$projectfile = get-childitem $file.DirectoryName"*.smproj"
+	if ($projectfile)
+	{
+		$xml = [xml](Get-Content $projectfile.FullName)
+		if ($xml.Project.PropertyGroup[1].DeploymentServerDatabase)
+		{
+			$projectname = $xml.Project.PropertyGroup[1].DeploymentServerDatabase
+		}
+		elseif ($xml.Project.PropertyGroup[0].DeploymentServerDatabase)
+		{
+			$projectname = $xml.Project.PropertyGroup[0].DeploymentServerDatabase
+		}
+		else
+		{
+			$projectname = $xml.Project.PropertyGroup[2].DeploymentServerDatabase
+		}
+		
+		$xml = [xml](Get-Content ($workdir + "Model.deploymenttargets"))
+		$xml.DeploymentTarget.Database = $projectname
+		$xml.Save($workdir + "Model.deploymenttargets")
+		$destfile = $workdir + "Model.bim"
+		Remove-Item $destfile
+		
+		if([bool]((Get-Content $file) -as [xml]))
+		{
+			$asdatabase = $file.DirectoryName + "\bin\" + $file.BaseName + ".asdatabase"
+			Copy-Item $asdatabase $destfile
+		}
+		else
+		{
+			Copy-Item $file $destfile
+		}
+		
+		& "$ScriptPath\tabulardeploy.ps1" $workdir"Model.bim" $workdir $prodtabserver $prodsqlserver $proddatabase $exe
+	}
 }
 
 Remove-Item $tabularsdir* -recurse -exclude powershell,*.ps1
