@@ -399,18 +399,18 @@
             "displayFolder": "Koulutusmuuttujat"
           },
           {
-            "name": "Tiedonkeruuvuosi",
-            "dataType": "int64",
-            "sourceColumn": "Tiedonkeruuvuosi",
-            "displayFolder": "Aikamuuttujat"
-          },
-          {
             "type": "calculated",
             "name": "uusi_kelp",
             "dataType": "boolean",
             "isDataTypeInferred": true,
-            "expression": "[Tilastovuosi]=[Tiedonkeruuvuosi]",
+            "expression": "[Tilastovuosi]=[Kelpoisuuden suoritusvuosi]",
             "formatString": "\"TRUE\";\"TRUE\";\"FALSE\""
+          },
+          {
+            "name": "Kelpoisuuden suoritusvuosi",
+            "dataType": "int64",
+            "sourceColumn": "Kelpoisuuden suoritusvuosi",
+            "displayFolder": "Aikamuuttujat"
           }
         ],
         "partitions": [
@@ -900,10 +900,10 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Tiedonkeruuvuosi</string>",
+                  "        <string>Kelpoisuuden suoritusvuosi</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>143</int>",
+                  "        <int>199</int>",
                   "      </value>",
                   "    </item>",
                   "  </ColumnWidths>",
@@ -1374,7 +1374,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Tiedonkeruuvuosi</string>",
+                  "        <string>Kelpoisuuden suoritusvuosi</string>",
                   "      </key>",
                   "      <value>",
                   "        <int>58</int>",
@@ -1753,7 +1753,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>Tiedonkeruuvuosi</string>",
+                  "        <string>Kelpoisuuden suoritusvuosi</string>",
                   "      </key>",
                   "      <value>",
                   "        <boolean>true</boolean>",
@@ -1811,6 +1811,16 @@
           {
             "name": "Henkilöitä yhteensä",
             "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[opiskelija_avain]),Muuttujat[jarjestys Opettajakelpoisuus]<>\"99\")",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Uudet kelpoisuudet",
+            "expression": "CALCULATE(COUNTROWS(Muuttujat),Muuttujat[jarjestys Opettajakelpoisuus]<>\"99\",Muuttujat[uusi_kelp]=TRUE())",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Uudet kelpoisuudet (nettoutettu)",
+            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[opiskelija_avain]),Muuttujat[jarjestys Opettajakelpoisuus]<>\"99\",Muuttujat[uusi_kelp]=TRUE())",
             "formatString": "#,0"
           }
         ],
@@ -2305,10 +2315,10 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Tiedonkeruuvuosi</string>",
+              "        <string>Kelpoisuuden suoritusvuosi</string>",
               "      </key>",
               "      <value>",
-              "        <int>143</int>",
+              "        <int>199</int>",
               "      </value>",
               "    </item>",
               "  </ColumnWidths>",
@@ -2779,7 +2789,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Tiedonkeruuvuosi</string>",
+              "        <string>Kelpoisuuden suoritusvuosi</string>",
               "      </key>",
               "      <value>",
               "        <int>58</int>",
@@ -3158,7 +3168,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>Tiedonkeruuvuosi</string>",
+              "        <string>Kelpoisuuden suoritusvuosi</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -4568,7 +4578,7 @@
                 "name": "Henkilön korkein tutkinto"
               },
               {
-                "name": "Tiedonkeruuvuosi"
+                "name": "Kelpoisuuden suoritusvuosi"
               }
             ],
             "measures": [
@@ -4702,7 +4712,7 @@
                 "name": "Henkilön korkein tutkinto"
               },
               {
-                "name": "Tiedonkeruuvuosi"
+                "name": "Kelpoisuuden suoritusvuosi"
               }
             ],
             "measures": [
@@ -4913,12 +4923,140 @@
                 "name": "Henkilön korkein tutkinto"
               },
               {
-                "name": "Tiedonkeruuvuosi"
+                "name": "Kelpoisuuden suoritusvuosi"
               }
             ],
             "measures": [
               {
                 "name": "Virheellinen kelpoisuus"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Uudet",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "1 kelpoisuus"
+              },
+              {
+                "name": "2 kelpoisuutta"
+              },
+              {
+                "name": "3 kelpoisuutta"
+              },
+              {
+                "name": "4 kelpoisuutta"
+              },
+              {
+                "name": "5 kelpoisuutta"
+              },
+              {
+                "name": "Aineenopettajan pedagogiset opinnot"
+              },
+              {
+                "name": "Ammatillinen opettajakoulutus"
+              },
+              {
+                "name": "Erityislastentarhanopettajan opinnot"
+              },
+              {
+                "name": "Erityisopettajan opinnot"
+              },
+              {
+                "name": "Henkilön korkein tutkinto"
+              },
+              {
+                "name": "Ikä"
+              },
+              {
+                "name": "Ikäryhmä"
+              },
+              {
+                "name": "Kelpoisuuden suoritustapa"
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Koodit Korkeakoulu"
+              },
+              {
+                "name": "Koodit Tutkinnon suorituskorkeakoulu"
+              },
+              {
+                "name": "Koodit Tutkinto"
+              },
+              {
+                "name": "Korkeakoulu"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Opettajakelpoisuuksien määrä"
+              },
+              {
+                "name": "Opettajakelpoisuus"
+              },
+              {
+                "name": "Opinto-ohjaajan opinnot"
+              },
+              {
+                "name": "Perusopetuksessa opetettavien aineiden ja aihekokonaisuuksien monialaiset opinnot"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Tutkinnon suorituskorkeakoulu"
+              },
+              {
+                "name": "Tutkinnon suoritusvuosi"
+              },
+              {
+                "name": "Varhaiskasvatuksen tehtäviin ammatillisia valmiuksia antavat opinnot"
+              },
+              {
+                "name": "Kelpoisuuden suoritusvuosi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Uudet kelpoisuudet"
+              },
+              {
+                "name": "Uudet kelpoisuudet (nettoutettu)"
               }
             ]
           },
