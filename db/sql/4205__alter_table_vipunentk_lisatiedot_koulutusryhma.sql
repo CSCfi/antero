@@ -1,13 +1,12 @@
 USE [VipunenTK_lisatiedot]
 GO
 
-BEGIN
 --set up targets first
 alter table [VipunenTK_DW].[dbo].[d_koulutusryhma] add jarjestys2 [int] null
-update [VipunenTK_DW].[dbo].[d_koulutusryhma] set jarjestys2 = jarjestys;
+update [VipunenTK_DW].[dbo].[d_koulutusryhma] set jarjestys2 = jarjestys
 
 alter table [VipunenTK].[dbo].[d_koulutusryhma] add jarjestys2 [int] null
-update [VipunenTK].[dbo].[d_koulutusryhma] set jarjestys2 = jarjestys;
+update [VipunenTK].[dbo].[d_koulutusryhma] set jarjestys2 = jarjestys
 
 /****** Object:  Table [dbo].[koulutusryhma]    Script Date: 31.12.2020 13:41:57 ******/
 DROP TABLE [dbo].[koulutusryhma]
@@ -88,7 +87,4 @@ GO
 INSERT [dbo].[koulutusryhma] ([id], [luotu], [koulutusryhma_koodi], [koulutusryhma], [koulutusryhma_SV], [koulutusryhma_EN], [koulutusryhma2], [koulutusryhma2_SV], [koulutusryhma2_EN], [jarjestys], [virhetilanne], [poistettu], [tietolahde], [kommentti], [jarjestys2]) VALUES (36, CAST(N'2020-07-16' AS Date), N'66', N'Erikoisammattitutkinnot (oppisopimuskoulutus)', N'Specialyrkesexamina (läroavtalsutbildning)', N'Specialist vocational qualifications (apprenticeship training)', N'Oppisopimuskoulutus', N'Läroavtalsutbildning', N'Apprenticeship training', N'1063', N'E         ', N' ', N'Manuaalinen', N'CSC Juha', 1070)
 GO
 
-END
-
-go
 use antero
