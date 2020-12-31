@@ -3,10 +3,8 @@ GO
 
 --set up targets first
 alter table [VipunenTK_DW].[dbo].[d_koulutusryhma] add jarjestys2 [int] null
-update [VipunenTK_DW].[dbo].[d_koulutusryhma] set jarjestys2 = jarjestys
 
 alter table [VipunenTK].[dbo].[d_koulutusryhma] add jarjestys2 [int] null
-update [VipunenTK].[dbo].[d_koulutusryhma] set jarjestys2 = jarjestys
 
 /****** Object:  Table [dbo].[koulutusryhma]    Script Date: 31.12.2020 13:41:57 ******/
 DROP TABLE [dbo].[koulutusryhma]
