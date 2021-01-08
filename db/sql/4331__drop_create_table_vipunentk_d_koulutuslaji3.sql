@@ -50,6 +50,8 @@ CREATE TABLE [dbo].[d_koulutuslaji3](
 
 GO
 
+truncate table [dbo].[f_ulkomaalaiset_maan_kansalaisuuden_aidinkielen_mukaan_2_13_14_15]
+go
 
 ALTER TABLE [dbo].[f_ulkomaalaiset_maan_kansalaisuuden_aidinkielen_mukaan_2_13_14_15]  WITH CHECK ADD  CONSTRAINT [FK_f_ulkomaalaiset_d_koulutuslaji3] FOREIGN KEY([koulutusryhma_koulutuslaji3_id])
 REFERENCES [dbo].[d_koulutuslaji3] ([id])
