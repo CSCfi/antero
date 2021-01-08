@@ -1,7 +1,7 @@
 USE [VipunenTK]
 GO
 
-ALTER TABLE [dbo].[f_ulkomaalaiset_maan_kansalaisuuden_aidinkielen_mukaan_2_13_14_15] DROP CONSTRAINT [FK_f_ulkomaalaiset_d_koulutuslaji3]
+ALTER TABLE [dbo].[f_ulkomaalaiset_maan_kansalaisuuden_aidinkielen_mukaan_2_13_14_15] DROP CONSTRAINT IF EXISTS [FK_f_ulkomaalaiset_d_koulutuslaji3]
 GO
 
 /****** Object:  Table [dbo].[d_koulutuslaji3]    Script Date: 7.1.2021 22:05:46 ******/
