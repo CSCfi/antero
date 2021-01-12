@@ -2,7 +2,7 @@ USE [VipunenTK_SA]
 GO
 
 /****** Object:  StoredProcedure [dbo].[p_lataa_TK_Koski_lukio_ainevalinnat_kurssit]    Script Date: 12.1.2021 6:38:00 ******/
-DROP PROCEDURE IF EXSISTS [dbo].[p_lataa_TK_Koski_lukio_ainevalinnat_kurssit]
+DROP PROCEDURE IF EXISTS [dbo].[p_lataa_TK_Koski_lukio_ainevalinnat_kurssit]
 GO
 
 /****** Object:  StoredProcedure [dbo].[p_lataa_TK_Koski_lukio_ainevalinnat_kurssit]    Script Date: 12.1.2021 6:38:00 ******/
