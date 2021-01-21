@@ -4250,7 +4250,7 @@
             "name": "Opiskelijat yhteensä",
             "expression": [
               "",
-              "var lkm = CALCULATE(SUM([lkm]), ALL(Muuttujat[erityisopetus]), Muuttujat[Perusjoukko] = \"Opiskelijat\")",
+              "var lkm = CALCULATE(SUM([lkm]), Muuttujat[erityisopetus]=0, Muuttujat[Perusjoukko] = \"Opiskelijat\")",
               "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
             ],
             "formatString": "#,0"
@@ -4351,7 +4351,7 @@
             "name": "Uudet opiskelijat yhteensä",
             "expression": [
               "",
-              "var lkm = CALCULATE(SUM([lkm]), ALL(Muuttujat[erityisopetus]), FILTER(Muuttujat, [Tilastovuosi] = [Aloituslukuvuosi]),FILTER(Muuttujat, [Perusjoukko] = \"Opiskelijat\"))",
+              "var lkm = CALCULATE(SUM([lkm]), Muuttujat[erityisopetus]=0, FILTER(Muuttujat, [Tilastovuosi] = [Aloituslukuvuosi]),FILTER(Muuttujat, [Perusjoukko] = \"Opiskelijat\"))",
               "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
               ""
             ],
@@ -4361,7 +4361,7 @@
             "name": "Tutkinnon suorittaneet yhteensä",
             "expression": [
               "",
-              "var lkm = CALCULATE(SUM([lkm]), ALL(Muuttujat[erityisopetus]),FILTER(Muuttujat, [Perusjoukko] = \"Tutkinnon suorittaneet (ei sisällä osatutkintoja)\"))",
+              "var lkm = CALCULATE(SUM([lkm]), Muuttujat[erityisopetus]=0,FILTER(Muuttujat, [Perusjoukko] = \"Tutkinnon suorittaneet (ei sisällä osatutkintoja)\"))",
               "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
             ],
             "formatString": "#,0"
@@ -4484,7 +4484,7 @@
             "name": "Opiskelijat perustutkinto",
             "expression": [
               "",
-              "var lkm = CALCULATE(SUM([lkm]), ALL(Muuttujat[erityisopetus]),FILTER(Muuttujat, [Perusjoukko] = \"Opiskelijat\"),Muuttujat[Tutkintotyyppi]=\"ammatillinen perustutkinto\")",
+              "var lkm = CALCULATE(SUM([lkm]), Muuttujat[erityisopetus]=0,FILTER(Muuttujat, [Perusjoukko] = \"Opiskelijat\"),Muuttujat[Tutkintotyyppi]=\"ammatillinen perustutkinto\")",
               "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
               ""
             ],
@@ -4502,7 +4502,7 @@
           },
           {
             "name": "Opiskelijat yhteensä_s",
-            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([lkm]), ALL(Muuttujat[erityisopetus]),FILTER(Muuttujat, [Perusjoukko] = \"Opiskelijat\")))",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([lkm]), Muuttujat[erityisopetus]=0,FILTER(Muuttujat, [Perusjoukko] = \"Opiskelijat\")))",
             "formatString": "#,0"
           },
           {
@@ -4532,27 +4532,27 @@
           },
           {
             "name": "Osuus kaikista tutkinnon suorittaneista_s",
-            "expression": "IF([kytkin] = 0, BLANK(), [Erityisopetuksen tutkinnon suorittaneet_s]/CALCULATE(SUM([lkm]), Muuttujat[Perusjoukko] = \"Tutkinnon suorittaneet (ei sisällä osatutkintoja)\",ALL(Muuttujat[Opetusryhmä]), ALL(Muuttujat[Undervisningsgruppen]), ALL(Muuttujat[Teaching group])))",
+            "expression": "IF([kytkin] = 0, BLANK(), [Erityisopetuksen tutkinnon suorittaneet_s]/CALCULATE(SUM([lkm]), Muuttujat[erityisopetus]=0, Muuttujat[Perusjoukko] = \"Tutkinnon suorittaneet (ei sisällä osatutkintoja)\",ALL(Muuttujat[Opetusryhmä]), ALL(Muuttujat[Undervisningsgruppen]), ALL(Muuttujat[Teaching group])))",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Osuus kaikista opiskelijoista_s",
-            "expression": "IF([kytkin] = 0, BLANK(), [Erityisopetuksen opiskelijat_s]/CALCULATE(SUM([lkm]),Muuttujat[Perusjoukko] = \"Opiskelijat\",ALL(Muuttujat[Opetusryhmä]), ALL(Muuttujat[Undervisningsgruppen]), ALL(Muuttujat[Teaching group])))",
+            "expression": "IF([kytkin] = 0, BLANK(), [Erityisopetuksen opiskelijat_s]/CALCULATE(SUM([lkm]), Muuttujat[erityisopetus]=0,Muuttujat[Perusjoukko] = \"Opiskelijat\", ALL(Muuttujat[Opetusryhmä]), ALL(Muuttujat[Undervisningsgruppen]), ALL(Muuttujat[Teaching group])))",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Osuus kaikista uusista opiskelijoista_s",
-            "expression": "IF([kytkin] = 0, BLANK(), [Erityisopetuksen uudet opiskelijat_s]/CALCULATE(SUM([Aloittaneet]),Muuttujat[Perusjoukko]=\"Opiskelijat\",ALL(Muuttujat[Opetusryhmä]), ALL(Muuttujat[Undervisningsgruppen]), ALL(Muuttujat[Teaching group])))",
+            "expression": "IF([kytkin] = 0, BLANK(), [Erityisopetuksen uudet opiskelijat_s]/CALCULATE(SUM([Aloittaneet]), Muuttujat[erityisopetus]=0, Muuttujat[Perusjoukko]=\"Opiskelijat\",ALL(Muuttujat[Opetusryhmä]), ALL(Muuttujat[Undervisningsgruppen]), ALL(Muuttujat[Teaching group])))",
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Uudet opiskelijat yhteensä_s",
-            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([lkm]), ALL(Muuttujat[erityisopetus]), FILTER(Muuttujat, [Tilastovuosi] = [Aloituslukuvuosi]),FILTER(Muuttujat, [Perusjoukko] = \"Opiskelijat\")))",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([lkm]), Muuttujat[erityisopetus]=0, FILTER(Muuttujat, [Tilastovuosi] = [Aloituslukuvuosi]),FILTER(Muuttujat, [Perusjoukko] = \"Opiskelijat\")))",
             "formatString": "#,0"
           },
           {
             "name": "Tutkinnon suorittaneet yhteensä_s",
-            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([lkm]), ALL(Muuttujat[erityisopetus]),FILTER(Muuttujat, [Perusjoukko] = \"Tutkinnon suorittaneet (ei sisällä osatutkintoja)\")))",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([lkm]), Muuttujat[erityisopetus]=0,FILTER(Muuttujat, [Perusjoukko] = \"Tutkinnon suorittaneet (ei sisällä osatutkintoja)\")))",
             "formatString": "#,0"
           },
           {
@@ -4567,7 +4567,7 @@
           },
           {
             "name": "Opiskelijat perustutkinto_s",
-            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([lkm]), ALL(Muuttujat[erityisopetus]),FILTER(Muuttujat, [Perusjoukko] = \"Opiskelijat\"),Muuttujat[Tutkintotyyppi]=\"ammatillinen perustutkinto\"))",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([lkm]), Muuttujat[erityisopetus]=0,FILTER(Muuttujat, [Perusjoukko] = \"Opiskelijat\"),Muuttujat[Tutkintotyyppi]=\"ammatillinen perustutkinto\"))",
             "formatString": "#,0"
           },
           {

@@ -83,7 +83,7 @@
             "name": "Kysymys",
             "dataType": "string",
             "sourceColumn": "Kysymys",
-            "sortByColumn": "Järjestys kysymys",
+            "sortByColumn": "Järjestys kysymys_2",
             "sourceProviderType": "WChar",
             "displayFolder": "Kyselymuuttujat"
           },
@@ -272,7 +272,7 @@
             "name": "Fråga",
             "dataType": "string",
             "sourceColumn": "Fråga",
-            "sortByColumn": "Järjestys kysymys",
+            "sortByColumn": "Järjestys kysymys_2",
             "sourceProviderType": "WChar",
             "displayFolder": "Frågevariabler"
           },
@@ -410,7 +410,7 @@
             "name": "Question",
             "dataType": "string",
             "sourceColumn": "Question",
-            "sortByColumn": "Järjestys kysymys",
+            "sortByColumn": "Järjestys kysymys_2",
             "sourceProviderType": "WChar",
             "displayFolder": "Survey variables"
           },
@@ -647,6 +647,24 @@
             "name": "vuosi_tilasto",
             "dataType": "int64",
             "sourceColumn": "vuosi_tilasto"
+          },
+          {
+            "type": "calculated",
+            "name": "Järjestys kysymys_2",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "expression": [
+              " ",
+              "",
+              "var kysymys = IF(LEN([Järjestys kysymys]) = 1, CONCATENATE(\"0\", [Järjestys kysymys]), [Järjestys kysymys])",
+              "",
+              "var kysymysryhma = IF(LEN([Järjestys kysymysryhma]) = 1, CONCATENATE(\"0\", [Järjestys kysymysryhma]), [Järjestys kysymysryhma])",
+              "",
+              "return",
+              "",
+              "CONCATENATE(CONCATENATE(kysymysryhma,kysymys),[Kyselyvuosi])"
+            ]
           }
         ],
         "partitions": [

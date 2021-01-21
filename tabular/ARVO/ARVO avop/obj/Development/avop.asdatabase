@@ -82,7 +82,7 @@
             "name": "Kysymys",
             "dataType": "string",
             "sourceColumn": "Kysymys",
-            "sortByColumn": "Järjestys kysymys",
+            "sortByColumn": "Järjestys kysymys_2",
             "sourceProviderType": "WChar",
             "displayFolder": "Kyselymuuttujat"
           },
@@ -272,6 +272,7 @@
             "name": "Fråga",
             "dataType": "string",
             "sourceColumn": "Fråga",
+            "sortByColumn": "Järjestys kysymys_2",
             "sourceProviderType": "WChar",
             "displayFolder": "Frågevariabler"
           },
@@ -398,6 +399,7 @@
             "name": "Question",
             "dataType": "string",
             "sourceColumn": "Question",
+            "sortByColumn": "Järjestys kysymys_2",
             "sourceProviderType": "WChar",
             "displayFolder": "Survey variables"
           },
@@ -668,22 +670,28 @@
             "dataType": "int64",
             "isHidden": true,
             "sourceColumn": "partitioid"
+          },
+          {
+            "type": "calculated",
+            "name": "Järjestys kysymys_2",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "expression": [
+              "",
+              "",
+              "var kysymys = IF(LEN([Järjestys kysymys]) = 1, CONCATENATE(\"0\", [Järjestys kysymys]), [Järjestys kysymys])",
+              "",
+              "var kysymysryhma = IF(LEN([Järjestys kysymysryhma]) = 1, CONCATENATE(\"0\", [Järjestys kysymysryhma]), [Järjestys kysymysryhma])",
+              "",
+              "return",
+              "",
+              "CONCATENATE(CONCATENATE(kysymysryhma,kysymys),[Kyselyvuosi])",
+              ""
+            ]
           }
         ],
         "partitions": [
-          {
-            "name": "Partitio_1",
-            "source": {
-              "query": "SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE partitioid = 1",
-              "dataSource": "SqlServer dwitvipusql16 antero"
-            },
-            "annotations": [
-              {
-                "name": "QueryEditorSerialization",
-                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE partitioid = 1</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-              }
-            ]
-          },
           {
             "name": "Partitio_0",
             "mode": "import",
@@ -695,6 +703,19 @@
               {
                 "name": "QueryEditorSerialization",
                 "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE partitioid = 0</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+              }
+            ]
+          },
+          {
+            "name": "Partitio_1",
+            "source": {
+              "query": "SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE partitioid = 1",
+              "dataSource": "SqlServer dwitvipusql16 antero"
+            },
+            "annotations": [
+              {
+                "name": "QueryEditorSerialization",
+                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE partitioid = 1</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
               }
             ]
           }
