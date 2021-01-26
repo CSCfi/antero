@@ -3245,6 +3245,23 @@
               "DIVIDE(DISTINCTCOUNT([vastaajaid]), SUMX(taulu, [lkm]))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "NPS",
+            "expression": [
+              " ",
+              "",
+              "var kaikki = CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]), Muuttujat[vastaustyyppi] = \"NPS\")",
+              "",
+              "var pro = CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]), Muuttujat[vastaustyyppi] = \"NPS\", Muuttujat[numerovalinta] > 8)",
+              "",
+              "var dec = CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]), Muuttujat[vastaustyyppi] = \"NPS\", Muuttujat[numerovalinta] < 7)",
+              "",
+              "return",
+              "",
+              "IF([ehtoFI] = TRUE, BLANK(), (DIVIDE(pro,kaikki) - DIVIDE(dec,kaikki))*100)"
+            ],
+            "formatString": "0.00"
           }
         ],
         "annotations": [
