@@ -601,13 +601,14 @@
           },
           {
             "name": "jarj_ika",
-            "dataType": "string",
+            "dataType": "int64",
             "isHidden": true,
             "sourceColumn": "jarj_ika"
           },
           {
             "name": "uusi_opiskelija_rahoitus",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "uusi_opiskelija_rahoitus"
           }
         ],
@@ -2585,8 +2586,9 @@
               "",
               "var taulu = ",
               "ADDCOLUMNS(",
-              "\tSUMMARIZE(Muuttujat,[Tilastovuosi],[Tilastokuukausi],[pv_kk]),",
-              "\t\"summa\",CALCULATE(SUM([opiskelijat_netto]))",
+              "\tSUMMARIZE(Muuttujat,[Tilastovuosi],[Tilastokuukausi],[pv_kk])",
+              "\t,\"summa\"",
+              "\t,CALCULATE(SUM([opiskelijat_netto]))",
               ")",
               "var lkm = SUMX(taulu, [summa] * [pv_kk]) / SUMX(taulu, [pv_kk])",
               "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
@@ -2768,7 +2770,7 @@
             "expression": [
               "",
               "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[uusi_opiskelija_rahoitus]=1)",
-              "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
+              "return if(lkm=0,BLANK(),lkm)"
             ],
             "formatString": "#,0"
           }
