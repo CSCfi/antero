@@ -3,6 +3,7 @@ USE [ANTERO]
 GO
 
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[sa_arvo_hul]') AND type in (N'U'))
+
 BEGIN
 
 CREATE TABLE [sa].[sa_arvo_hul](
@@ -15,5 +16,3 @@ CREATE TABLE [sa].[sa_arvo_hul](
 
 
 END
-
-GO
