@@ -2,7 +2,7 @@ USE [ANTERO]
 GO
 
 /****** Object:  View [dw].[v_koski_lukio_opiskelijat_kuukausittain]    Script Date: 1.2.2021 14:01:39 ******/
-DROP VIEW [dw].[v_koski_lukio_opiskelijat_kuukausittain]
+DROP VIEW IF EXISTS [dw].[v_koski_lukio_opiskelijat_kuukausittain]
 GO
 
 /****** Object:  View [dw].[v_koski_lukio_opiskelijat_kuukausittain]    Script Date: 1.2.2021 14:01:39 ******/
