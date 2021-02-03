@@ -1634,8 +1634,7 @@
           {
             "name": "Oppimäärän suorittaneet",
             "expression": [
-              "",
-              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[paatason_suoritus_id])",
+              "CALCULATE([Ainevalinnat (netto)]",
               ", ALL(Muuttujat[Oppiaineryhmä])",
               ", ALL(Muuttujat[Oppiaine])",
               ", ALL(Muuttujat[Oppimäärä tai kieli])",
@@ -1644,9 +1643,8 @@
               ", ALL(Muuttujat[Kurssin OPS])",
               ", ALL(Muuttujat[Kurssin tyyppi])",
               ", ALL(Muuttujat[Kurssin suorituskieli])",
-              ", ALL(Muuttujat[Kurssit per OPS ja tyyppi]))",
-              " ",
-              "return IF(lkm = 0,  BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+              ", ALL(Muuttujat[Kurssit per OPS ja tyyppi])",
+              ")"
             ],
             "formatString": "#,0"
           },
@@ -1702,7 +1700,7 @@
             "expression": [
               "",
               "--var lkm = DISTINCTCOUNT([osasuoritus_id])",
-              "var tbl = SUMMARIZE(Muuttujat, Muuttujat[osasuoritus_id], \"laajuus\", CALCULATE(AVERAGE(Muuttujat[aine_laajuus]), Muuttujat[aine_laajuus_yksikko] = \"4\"))",
+              "var tbl = SUMMARIZE(Muuttujat, Muuttujat[osasuoritus_id], \"laajuus\", CALCULATE(MAX(Muuttujat[aine_laajuus]), Muuttujat[aine_laajuus_yksikko]=\"4\"))",
               "var ka = AVERAGEX(tbl, [laajuus])",
               "return IF(COUNTROWS(tbl) < 5, BLANK(), ka)"
             ],
@@ -1724,7 +1722,7 @@
             "formatString": "0.0"
           },
           {
-            "name": "Kurssien S-merkinnät / Kurssit",
+            "name": "Kurssien S-merkinnät %",
             "expression": [
               "",
               "var osa = [Kurssien S-merkinnät]",
@@ -1738,7 +1736,7 @@
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
-            "name": "Oppiaineen S-merkinnät / Ainevalinnat",
+            "name": "Oppiaineen S-merkinnät %",
             "expression": [
               "",
               "var osa = [Oppiaineen S-merkinnät]",
@@ -1765,7 +1763,32 @@
               "IF(kaikki = \"1-4\", CONCATENATE(FORMAT(osa / 4, \"0.0 – \"), FORMAT(osa / 1, \"0.0\")),",
               "osa / kaikki))))"
             ],
-            "formatString": "0.00"
+            "formatString": "0.0"
+          },
+          {
+            "name": "Ainevalinnat (netto)",
+            "expression": [
+              "",
+              "var lkm = DISTINCTCOUNT(Muuttujat[paatason_suoritus_id])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ainevalinnat (netto) %",
+            "expression": [
+              "",
+              "var osa = [Ainevalinnat (netto)]",
+              "var kaikki = [Oppimäärän suorittaneet]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
+              ""
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           }
         ],
         "annotations": [
@@ -3103,7 +3126,7 @@
                 "name": "Kurssien S-merkinnät"
               },
               {
-                "name": "Kurssien S-merkinnät / Kurssit"
+                "name": "Kurssien S-merkinnät %"
               },
               {
                 "name": "Kurssit"
@@ -3121,10 +3144,16 @@
                 "name": "Oppiaineen S-merkinnät"
               },
               {
-                "name": "Oppiaineen S-merkinnät / Ainevalinnat"
+                "name": "Oppiaineen S-merkinnät %"
               },
               {
                 "name": "Oppimäärän suorittaneet"
+              },
+              {
+                "name": "Ainevalinnat (netto)"
+              },
+              {
+                "name": "Ainevalinnat (netto) %"
               }
             ]
           }
