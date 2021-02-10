@@ -7,8 +7,7 @@
       {
         "name": "SqlServer dwitvipusql16 ANTERO",
         "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
-        "impersonationMode": "impersonateAccount",
-        "account": "DWI\\T_VIPUTK_KUUTIO",
+        "impersonationMode": "impersonateServiceAccount",
         "annotations": [
           {
             "name": "ConnectionEditUISource",
@@ -610,6 +609,11 @@
             "dataType": "int64",
             "isHidden": true,
             "sourceColumn": "uusi_opiskelija_rahoitus"
+          },
+          {
+            "name": "eronnut_opiskelija",
+            "dataType": "int64",
+            "sourceColumn": "eronnut_opiskelija"
           }
         ],
         "partitions": [
@@ -1337,6 +1341,14 @@
                   "        <int>209</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>eronnut_opiskelija</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>117</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -2043,6 +2055,14 @@
                   "        <int>87</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>eronnut_opiskelija</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>88</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -2550,6 +2570,14 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>eronnut_opiskelija</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -2773,6 +2801,27 @@
               "return if(lkm=0,BLANK(),lkm)"
             ],
             "formatString": "#,0"
+          },
+          {
+            "name": "Eronneet opiskelijat",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[eronnut_opiskelija]=1)",
+              "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Eronneet opiskelijat %",
+            "expression": [
+              "",
+              "var lkm = [Eronneet opiskelijat]",
+              "var lkm_all = CALCULATE([Eronneet opiskelijat],ALL(Muuttujat[Oppisopimuskoulutus]),ALL(Muuttujat[Koulutussopimus]),ALL(Muuttujat[Oppisopimus/Koulutussopimus]))",
+              "return DIVIDE(lkm,lkm_all)",
+              ""
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
           }
         ],
         "annotations": [
@@ -3504,6 +3553,14 @@
               "        <int>209</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>eronnut_opiskelija</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>117</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -4210,6 +4267,14 @@
               "        <int>87</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>eronnut_opiskelija</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>88</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -4712,6 +4777,14 @@
               "    <item>",
               "      <key>",
               "        <string>uusi_opiskelija_rahoitus</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>eronnut_opiskelija</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -7370,6 +7443,12 @@
               },
               {
                 "name": "Uudet opiskelijat %"
+              },
+              {
+                "name": "Eronneet opiskelijat"
+              },
+              {
+                "name": "Eronneet opiskelijat %"
               }
             ]
           },
