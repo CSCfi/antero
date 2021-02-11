@@ -7,8 +7,7 @@
       {
         "name": "SqlServer dwitvipusql16 ANTERO",
         "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
-        "impersonationMode": "impersonateAccount",
-        "account": "DWI\\T_VIPUTK_KUUTIO",
+        "impersonationMode": "impersonateServiceAccount",
         "annotations": [
           {
             "name": "ConnectionEditUISource",
@@ -601,14 +600,20 @@
           },
           {
             "name": "jarj_ika",
-            "dataType": "string",
+            "dataType": "int64",
             "isHidden": true,
             "sourceColumn": "jarj_ika"
           },
           {
             "name": "uusi_opiskelija_rahoitus",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "uusi_opiskelija_rahoitus"
+          },
+          {
+            "name": "eronnut_opiskelija",
+            "dataType": "int64",
+            "sourceColumn": "eronnut_opiskelija"
           }
         ],
         "partitions": [
@@ -1336,6 +1341,14 @@
                   "        <int>209</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>eronnut_opiskelija</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>117</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -2042,6 +2055,14 @@
                   "        <int>87</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>eronnut_opiskelija</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>88</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -2549,6 +2570,14 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>eronnut_opiskelija</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -2585,8 +2614,9 @@
               "",
               "var taulu = ",
               "ADDCOLUMNS(",
-              "\tSUMMARIZE(Muuttujat,[Tilastovuosi],[Tilastokuukausi],[pv_kk]),",
-              "\t\"summa\",CALCULATE(SUM([opiskelijat_netto]))",
+              "\tSUMMARIZE(Muuttujat,[Tilastovuosi],[Tilastokuukausi],[pv_kk])",
+              "\t,\"summa\"",
+              "\t,CALCULATE(SUM([opiskelijat_netto]))",
               ")",
               "var lkm = SUMX(taulu, [summa] * [pv_kk]) / SUMX(taulu, [pv_kk])",
               "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
@@ -2768,9 +2798,28 @@
             "expression": [
               "",
               "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[uusi_opiskelija_rahoitus]=1)",
-              "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
+              "return if(lkm=0,BLANK(),lkm)"
             ],
             "formatString": "#,0"
+          },
+          {
+            "name": "Eronneet opiskelijat",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[eronnut_opiskelija]=1)",
+              "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Eronneet opiskelijat %",
+            "expression": [
+              "",
+              "DIVIDE([Eronneet opiskelijat], [Opiskelijat])",
+              ""
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
           }
         ],
         "annotations": [
@@ -3502,6 +3551,14 @@
               "        <int>209</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>eronnut_opiskelija</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>117</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -4208,6 +4265,14 @@
               "        <int>87</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>eronnut_opiskelija</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>88</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -4710,6 +4775,14 @@
               "    <item>",
               "      <key>",
               "        <string>uusi_opiskelija_rahoitus</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>eronnut_opiskelija</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -8030,6 +8103,182 @@
             "measures": [
               {
                 "name": "Uudet opiskelijat (rahoitus)"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Eronneet",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Erityisopetus"
+              },
+              {
+                "name": "Ikä"
+              },
+              {
+                "name": "Ikäryhmä"
+              },
+              {
+                "name": "Kansalaisuus"
+              },
+              {
+                "name": "Kansalaisuus (maanosa)"
+              },
+              {
+                "name": "Koodit Koulutuksen järjestäjä"
+              },
+              {
+                "name": "Koodit Oppilaitos"
+              },
+              {
+                "name": "Koodit Osaamisala"
+              },
+              {
+                "name": "Koodit Tutkinto"
+              },
+              {
+                "name": "Koul. järjestäjän AVI"
+              },
+              {
+                "name": "Koul. järjestäjän ELY"
+              },
+              {
+                "name": "Koul. järjestäjän kunta"
+              },
+              {
+                "name": "Koul. järjestäjän maakunta"
+              },
+              {
+                "name": "Koulutuksen järjestäjä"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutussopimuksen suoritusosuus"
+              },
+              {
+                "name": "Koulutussopimus"
+              },
+              {
+                "name": "Majoitus"
+              },
+              {
+                "name": "Oppilaitoksen AVI"
+              },
+              {
+                "name": "Oppilaitoksen ELY"
+              },
+              {
+                "name": "Oppilaitoksen kunta"
+              },
+              {
+                "name": "Oppilaitoksen maakunta"
+              },
+              {
+                "name": "Oppilaitoksen opetuskieli"
+              },
+              {
+                "name": "Oppilaitos"
+              },
+              {
+                "name": "Oppilaitostyyppi"
+              },
+              {
+                "name": "Oppisopimuksen suoritusosuus"
+              },
+              {
+                "name": "Oppisopimus/Koulutussopimus"
+              },
+              {
+                "name": "Oppisopimuskoulutus"
+              },
+              {
+                "name": "Osa-aikaisuus"
+              },
+              {
+                "name": "Osaamisala"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Suorituksen tyyppi"
+              },
+              {
+                "name": "Suorituskieli"
+              },
+              {
+                "name": "Tilastokuukausi"
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Toimipiste"
+              },
+              {
+                "name": "Tutkinto"
+              },
+              {
+                "name": "Tutkintotyypin ryhmä"
+              },
+              {
+                "name": "Tutkintotyyppi"
+              },
+              {
+                "name": "Työvoimakoulutus"
+              },
+              {
+                "name": "Äidinkieli"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Eronneet opiskelijat"
+              },
+              {
+                "name": "Eronneet opiskelijat %"
+              },
+              {
+                "name": "Opiskelijat"
+              },
+              {
+                "name": "Opiskelijat %"
+              },
+              {
+                "name": "Tutkinnon suorittaneet"
+              },
+              {
+                "name": "Tutkinnon suorittaneet %"
+              },
+              {
+                "name": "Uudet opiskelijat"
+              },
+              {
+                "name": "Uudet opiskelijat %"
               }
             ]
           },
