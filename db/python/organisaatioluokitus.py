@@ -40,12 +40,12 @@ def makerow():
 
 # get value from json
 def jv(jsondata, key):
-if key in jsondata:
-  if jsondata[key]==''
-      return None
-  else
-      return jsondata[key]
-return None
+    if key in jsondata:
+      if jsondata[key]=='':
+          return None
+      else:
+          return jsondata[key]
+    return None
 ###  if key in jsondata:
 ###    return jsondata[key]
 ###  return None
