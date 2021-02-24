@@ -408,7 +408,7 @@
             "name": "Lasten lukumäärä",
             "expression": [
               "",
-              "var lkm = DISTINCTCOUNT([henkilo_id])",
+              "var lkm = calculate(DISTINCTCOUNT(Muuttujat[henkilo_id]),Muuttujat[henkilo_id]<>BLANK())",
               "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
             ],
             "formatString": "#,0"
@@ -449,7 +449,8 @@
             "name": "Väestö summa",
             "expression": [
               "",
-              "var lkm = SUM(Muuttujat[Väestö])",
+              "var lkm = if([Lasten lukumäärä]=BLANK(),BLANK(),CALCULATE(SUM(Muuttujat[Väestö]),ALLEXCEPT(Muuttujat,",
+              "Muuttujat[tilastovuosi],Muuttujat[kotikunta_fi],Muuttujat[kotikunta_en],Muuttujat[kotikunta_sv],Muuttujat[kotikunta_koodi],Muuttujat[ikä],Muuttujat[ikäryhmä],Muuttujat[sukupuoli_fi],Muuttujat[sukupuoli_en],Muuttujat[sukupuoli_sv])))",
               "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
             ],
             "formatString": "#,0",
