@@ -4190,6 +4190,37 @@
               "return IF(lkm = 0, BLANK(), lkm)"
             ],
             "formatString": "#,0"
+          },
+          {
+            "name": "Opiskelijat FTE lkm_s",
+            "expression": [
+              " --suojaamattomaan raporttiin, saa suodattua vain muuttujilla jotka api-taulussa opiskelijat_ja_tutkinnot",
+              "var lkm =  CALCULATE(SUM([opiskelijat_fte])",
+              "\t, ALLEXCEPT(Muuttujat",
+              "\t\t, Muuttujat[Tilastovuosi]",
+              "\t\t, Muuttujat[Aineisto]",
+              "\t\t, Muuttujat[Koulutussektori]",
+              "\t\t, Muuttujat[Oppilaitos], Muuttujat[Koodit Oppilaitos]",
+              "\t\t, Muuttujat[Oppilaitos (tilastovuosi)]",
+              "\t\t, Muuttujat[Koulutusnimike], Muuttujat[Koodit Koulutusnimike]",
+              "\t\t, Muuttujat[Sukupuoli]",
+              "\t\t, Muuttujat[Koulutusaste, taso 1], Muuttujat[Koodit Koulutusaste taso 1]",
+              "\t\t, Muuttujat[Koulutusaste, taso 2], Muuttujat[Koodit Koulutusaste taso 2]",
+              "\t\t, Muuttujat[Koulutusala, taso 1], Muuttujat[Koodit Koulutusala taso 1]",
+              "\t\t, Muuttujat[Koulutusala, taso 2], Muuttujat[Koodit Koulutusala taso 2]",
+              "\t\t, Muuttujat[Koulutusala, taso 3], Muuttujat[Koodit Koulutusala taso 3]",
+              "\t\t, Muuttujat[OKM ohjauksen ala korkeak.], Muuttujat[Koodit OKM ohjauksen ala korkeak]",
+              "\t\t, Muuttujat[Rahoitusmallialat amk 2017-2020], Muuttujat[Rahoitusmallialat amk 2021-2024]",
+              "\t\t, Muuttujat[Rahoitusmallialat yo 2017-2020], Muuttujat[Rahoitusmallialat yo 2021-2024])",
+              "\t--poistetaan lääkärit ja erikoistumiset (koultyp <> 1, 2, 6)",
+              "\t, FILTER(Muuttujat, [Koodit Koulutusaste taso 2] <> \"73\" && [Koodit Koulutusaste taso 2] <> \"91\")",
+              "\t, FILTER(Muuttujat, [Tilastovuosi] <> \"2000\" && [Tilastovuosi] <> \"2001\" && [Tilastovuosi] <> \"2002\"  && [Tilastovuosi] <> \"2003\" && [Tilastovuosi] <> \"2004\" && [Tilastovuosi] <> \"2005\" && [Tilastovuosi] <> \"2006\" && [Tilastovuosi] <> \"2007\" && [Tilastovuosi] <> \"2008\" && [Tilastovuosi] <> \"2009\"))",
+              "",
+              "return IF(lkm = 0, BLANK(), lkm)",
+              "",
+              ""
+            ],
+            "formatString": "#,0.0"
           }
         ],
         "annotations": [
@@ -13872,6 +13903,9 @@
               },
               {
                 "name": "Uudet opiskelijat lkm_s"
+              },
+              {
+                "name": "Opiskelijat FTE lkm_s"
               }
             ]
           }
