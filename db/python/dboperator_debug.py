@@ -198,8 +198,7 @@ def execute(sql,debug=False):
       count = cur.rowcount
       conn.commit()
       return 1
-  except pymssql.Error as e:
-    sqlerror = e
+  except pymssql.Error as sqlerror:
     return sqlerror
 
 # get results of a query as an array of dicts
