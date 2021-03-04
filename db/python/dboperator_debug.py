@@ -199,7 +199,7 @@ def execute(sql,debug=False):
       conn.commit()
       return 1
   except pymssql.Error as sqlerror:
-    return sqlerror
+    return str(sqlerror)
 
 # get results of a query as an array of dicts
 def get(sql,debug=False):
