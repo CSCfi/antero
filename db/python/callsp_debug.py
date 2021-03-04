@@ -21,8 +21,8 @@ def load(database,schema,procedure,verbose=False):
   sql = "execute "+database+"."+schema+"."+procedure
   try:
     dboperator.execute(sql)
-  except:
-    show("Something went wrong. Probably procedure wasn't found or there is a permission problem. Over and out.")
+except Error as e:
+    #show("Something went wrong. Probably procedure wasn't found or there is a permission problem. Over and out.")
     print(e)
     dboperator.close()
     exit(2) # lopeta virheeseen
