@@ -198,18 +198,12 @@ def execute(sql,debug=False):
       count = cur.rowcount
       conn.commit()
   except _mssql.MssqlDatabaseException as e:
-    print("A MSSQLDatabaseException has been caught.")
-    print('Number = ',e.number, ' Severity = ',e.severity, ' State = ',e.state)
-    print('Message = ',e.message)
+    raise e
   except _mssql.OperationalError as e:
-   print("A MSSQL operational error has been caught.")
-   print('Number = ',e.number, ' Severity = ',e.severity, ' State = ',e.state)
-   print('Message = ',e.message)
+    raise e
   except _mssql.Error as e:
-   print("A MSSQL error has been caught.")
-   print('Number = ',e.number, ' Severity = ',e.severity, ' State = ',e.state)
-   print('Message = ',e.message)
-   
+    raise e
+
 # get results of a query as an array of dicts
 def get(sql,debug=False):
   global conn, cur, count
