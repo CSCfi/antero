@@ -24,6 +24,8 @@ def load(database,schema,procedure,verbose=False):
    #print(result)
    show("A MSSQL error has been caught.")
    show(result)
+
+
    dboperator.close()
    exit(2) # lopeta virheeseen
 
