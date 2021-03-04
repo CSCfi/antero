@@ -21,8 +21,10 @@ def load(database,schema,procedure,verbose=False):
   sql = "execute "+database+"."+schema+"."+procedure
   result = dboperator.execute(sql)
   if (result != 1):
-   show("sqlerror:")
-   print(result)
+   #print(result)
+   print("A MSSQL error has been caught.")
+   print('Number = ',result.number, ' Severity = ',result.severity, ' State = ',result.state)
+   print('Message = ',result.message)
    dboperator.close()
    exit(2) # lopeta virheeseen
 
