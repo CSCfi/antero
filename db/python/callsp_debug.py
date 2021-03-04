@@ -23,7 +23,7 @@ def load(database,schema,procedure,verbose=False):
   if (result != 1):
    #print(result)
    show("A MSSQL error has been caught.")
-   show(result)
+   show("Error code: " + result)
 
 
    dboperator.close()

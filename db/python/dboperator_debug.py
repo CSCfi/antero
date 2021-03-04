@@ -199,9 +199,7 @@ def execute(sql,debug=False):
       conn.commit()
       return 1
   except pymssql.Error as sqlerror:
-    sqlerrormessage= "Error code = " + str(sqlerror.number) +  " Severity = "+ str(sqlerror.severity) + " State = " + str(sqlerror.state) + " Message = " + str(sqlerror.message)
-
-    return sqlerrormessage
+    return str(sqlerror)
 
 # get results of a query as an array of dicts
 def get(sql,debug=False):
