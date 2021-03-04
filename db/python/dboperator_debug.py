@@ -202,7 +202,7 @@ def execute(sql,debug=False):
   #except pymssql.OperationalError as e:
     #raise e
   except pymssql.Error as e:
-    raise e
+    raise sqlerror(e) 
 
 # get results of a query as an array of dicts
 def get(sql,debug=False):
