@@ -27,7 +27,7 @@ def load(database,schema,procedure,verbose=False):
         show("Executing procedure failed.")
         print(e)
         dboperator.close()
-    exit(2) # lopeta virheeseen
+        exit(2) # lopeta virheeseen
 
   dboperator.close()
 
