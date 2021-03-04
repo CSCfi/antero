@@ -197,11 +197,11 @@ def execute(sql,debug=False):
       cur.execute(sql)
       count = cur.rowcount
       conn.commit()
-  except _mssql.MssqlDatabaseException as e:
-    raise e
-  except _mssql.OperationalError as e:
-    raise e
-  except _mssql.Error as e:
+  #except pymssql.MssqlDatabaseException as e:
+    #raise e
+  #except pymssql.OperationalError as e:
+    #raise e
+  except pymssql.Error as e:
     raise e
 
 # get results of a query as an array of dicts
