@@ -21,7 +21,7 @@ def load(database,schema,procedure,verbose=False):
   sql = "execute "+database+"."+schema+"."+procedure
   try:
     dboperator.execute(sql)
-  except sqlerror as e:
+except dboperator.sqlerror as e:
     show("Executing procedure failed.")
     print(e)
     dboperator.close()
