@@ -1,4 +1,6 @@
 /****** Script for SelectTopNRows command from SSMS  ******/
+use [VipunenTK_lisatiedot]
+go
 
 if not exists (select * from [VipunenTK_lisatiedot].[dbo].[ykieli] where ykieli_koodi = '8' or id = 5)
 
