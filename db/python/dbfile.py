@@ -29,7 +29,10 @@ def loadsql(sqlfile,verbose=False):
   # split MS SQL batches
   for sql in re.split('\ngo.*\n', allsql, flags=re.IGNORECASE):
     if verbose: show(sql)
-    dboperator.execute(sql)
+      r2 = dboperator.execute(sql)
+        if (r2!=1):
+            show(result)
+            exit(2)
 
 def load(sqlfile,migrate,verbose=False):
   show("begin "+sqlfile)
@@ -55,7 +58,7 @@ def load(sqlfile,migrate,verbose=False):
         loadsql(sqlfile,verbose)
         result = dboperator.execute("insert into migration (phase,number) values ('%s',%s)"%(migrate,number_togo))
         if (result!=1):
-            print(result)
+            show(result)
             exit(2)
       else:
         if verbose: show("skipping migration %s < %s"%(number_togo,number_last))
