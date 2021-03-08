@@ -29,7 +29,7 @@ def loadsql(sqlfile,verbose=False):
   # split MS SQL batches
   for sql in re.split('\ngo.*\n', allsql, flags=re.IGNORECASE):
     if verbose: show(sql)
-      r2 = dboperator.execute(sql)
+        r2 = dboperator.execute(sql)
         if (r2!=1):
             show(result)
             exit(2)
