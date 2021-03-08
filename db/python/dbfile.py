@@ -32,7 +32,7 @@ def loadsql(sqlfile,verbose=False):
     r2 = dboperator.execute(sql)
     if (r2!=1):
         show(r2)
-        exit(2)
+        exit(1)
 
 def load(sqlfile,migrate,verbose=False):
   show("begin "+sqlfile)
