@@ -54,6 +54,8 @@ def load(sqlfile,migrate,verbose=False):
         show("Migrating from %s to %s"%(number_last,number_togo))
         loadsql(sqlfile,verbose)
         result = dboperator.execute("insert into migration (phase,number) values ('%s',%s)"%(migrate,number_togo))
+        if (result!=1):
+            print(result)
       else:
         if verbose: show("skipping migration %s < %s"%(number_togo,number_last))
 
