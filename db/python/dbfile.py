@@ -31,7 +31,7 @@ def loadsql(sqlfile,verbose=False):
     if verbose: show(sql)
         r2 = dboperator.execute(sql)
         if (r2!=1):
-            show(result)
+            show(r2)
             exit(2)
 
 def load(sqlfile,migrate,verbose=False):
