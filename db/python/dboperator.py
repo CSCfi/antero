@@ -193,9 +193,13 @@ def insertMany(source, schema, table, rows, debug=False): #insert array
 def execute(sql,debug=False):
   global conn, cur, count
   if debug: print("dboperator.execute: sql="+sql)
-  cur.execute(sql)
-  count = cur.rowcount
-  conn.commit()
+  try:
+      cur.execute(sql)
+      count = cur.rowcount
+      conn.commit()
+      return 1
+  except pymssql.Error as sqlerror:
+    return str(sqlerror)
 
 # get results of a query as an array of dicts
 def get(sql,debug=False):

@@ -17,17 +17,16 @@ def show(message):
 
 def load(database,schema,procedure,verbose=False):
   show("begin with "+database+" "+schema+" "+procedure)
-
   sql = "execute "+database+"."+schema+"."+procedure
-  try:
-    dboperator.execute(sql)
-  except:
-    show("Something went wrong. Probably procedure wasn't found or there is a permission problem. Over and out.")
-    dboperator.close()
-    exit(2) # lopeta virheeseen
+  result = dboperator.execute(sql)
+  #succesful execution result returns 1, anything else is error message
+  if (result != 1):
+   show("A MSSQL error has been caught during executing " + procedure)
+   show("Error code: " + result)
+   dboperator.close()
+   exit(2) # lopeta virheeseen
 
   dboperator.close()
-
   show("ready")
 
 def usage():
