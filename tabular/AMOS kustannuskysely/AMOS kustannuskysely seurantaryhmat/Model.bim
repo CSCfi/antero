@@ -17,8 +17,8 @@
         ]
       },
       {
-        "name": "SqlServer dwitvipuarch ANTERO_31102019",
-        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipuarch;Initial Catalog=ANTERO_31102019;Integrated Security=SSPI;Persist Security Info=false",
+        "name": "SqlServer dwitvipuarch ANTERO_master",
+        "connectionString": "Provider=SQLNCLI11.1;Integrated Security=SSPI;Persist Security Info=False;User ID=;Initial Catalog=ANTERO_master;Data Source=dwitvipuarch;Initial File Name=;Server SPN=",
         "impersonationMode": "impersonateAccount",
         "account": "dwi\\t_viputk_kuutio",
         "annotations": [
@@ -868,14 +868,12 @@
           {
             "name": "ov_painottamaton",
             "dataType": "double",
-            "sourceColumn": "ov_painottamaton",
-            "sourceProviderType": "Double"
+            "sourceColumn": "ov_painottamaton"
           },
           {
             "name": "ov_painotettu",
             "dataType": "double",
-            "sourceColumn": "ov_painotettu",
-            "sourceProviderType": "Double"
+            "sourceColumn": "ov_painotettu"
           }
         ],
         "partitions": [
@@ -883,77 +881,13 @@
             "name": "Query",
             "dataView": "full",
             "source": {
-              "query": [
-                "SELECT",
-                "\ttilastovuosi",
-                "\t,avain_R12 = ",
-                "\tCONCAT(",
-                "\t\ttilastovuosi",
-                "\t\t,d1.organisaatio_koodi",
-                "\t\t,case when d3.koodi='ot' then '09' else d2.tutkintotyypin_ryhma_koodi end",
-                "\t\t,case when d3.koodi='ot' then '-1' else coalesce(sa.uusi_koulutusala_taso1_koodi,d2.koulutusalataso1_koodi) end",
-                "\t\t,coalesce(sa.uusi_kustannusryhma_koodi,d3.koodi)",
-                "\t\t,d4.kytkin_koodi",
-                "\t\t,d5.kytkin_koodi",
-                "\t)",
-                "\t,ov_painottamaton = SUM(f.opiskelijavuodet_painottamaton)",
-                "\t,ov_painotettu = SUM(f.opiskelijavuodet_painotettu)",
-                "",
-                "FROM dw.f_amos_opiskelijavuodet_painotetut_kustannuskysely f",
-                "left join dw.d_organisaatioluokitus d1 on d1.id=f.d_organisaatioluokitus_jarj_id",
-                "left join dw.d_ammatillisen_tutkinnon_kustannusryhma d3 on d3.id=f.d_kustannusryhma_id",
-                "left join dw.d_koulutusluokitus d2 on d2.id=f.d_koulutusluokitus_id",
-                "left join sa.sa_amos_kustannuskysely_poistuvien_tutkintojen_mappaus sa on sa.koulutus_koodi = d2.koulutusluokitus_koodi",
-                "left join dw.d_kytkin d4 on d4.id=f.d_kytkin_oppisopimuskoulutus_id",
-                "left join dw.d_kytkin d5 on d5.id=f.d_kytkin_vankilaopetus_id",
-                "GROUP BY ",
-                "\t\ttilastovuosi",
-                "\t\t,d1.organisaatio_koodi",
-                "\t\t,case when d3.koodi='ot' then '09' else d2.tutkintotyypin_ryhma_koodi end",
-                "\t\t,case when d3.koodi='ot' then '-1' else coalesce(sa.uusi_koulutusala_taso1_koodi,d2.koulutusalataso1_koodi) end",
-                "\t\t,coalesce(sa.uusi_kustannusryhma_koodi,d3.koodi)",
-                "\t\t,d4.kytkin_koodi",
-                "\t\t,d5.kytkin_koodi",
-                "HAVING SUM(f.opiskelijavuodet_painottamaton) > 0"
-              ],
-              "dataSource": "SqlServer dwitvipuarch ANTERO_31102019"
+              "query": "SELECT * FROM dw.v_amos_opiskelijavuodet_painotetut_kustannuskysely2",
+              "dataSource": "SqlServer dwitvipuarch ANTERO_master"
             },
             "annotations": [
               {
                 "name": "QueryEditorSerialization",
-                "value": [
-                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT",
-                  "\ttilastovuosi",
-                  "\t,avain_R12 = ",
-                  "\tCONCAT(",
-                  "\t\ttilastovuosi",
-                  "\t\t,d1.organisaatio_koodi",
-                  "\t\t,case when d3.koodi='ot' then '09' else d2.tutkintotyypin_ryhma_koodi end",
-                  "\t\t,case when d3.koodi='ot' then '-1' else coalesce(sa.uusi_koulutusala_taso1_koodi,d2.koulutusalataso1_koodi) end",
-                  "\t\t,coalesce(sa.uusi_kustannusryhma_koodi,d3.koodi)",
-                  "\t\t,d4.kytkin_koodi",
-                  "\t\t,d5.kytkin_koodi",
-                  "\t)",
-                  "\t,ov_painottamaton = SUM(f.opiskelijavuodet_painottamaton)",
-                  "\t,ov_painotettu = SUM(f.opiskelijavuodet_painotettu)",
-                  "",
-                  "FROM dw.f_amos_opiskelijavuodet_painotetut_kustannuskysely f",
-                  "left join dw.d_organisaatioluokitus d1 on d1.id=f.d_organisaatioluokitus_jarj_id",
-                  "left join dw.d_ammatillisen_tutkinnon_kustannusryhma d3 on d3.id=f.d_kustannusryhma_id",
-                  "left join dw.d_koulutusluokitus d2 on d2.id=f.d_koulutusluokitus_id",
-                  "left join sa.sa_amos_kustannuskysely_poistuvien_tutkintojen_mappaus sa on sa.koulutus_koodi = d2.koulutusluokitus_koodi",
-                  "left join dw.d_kytkin d4 on d4.id=f.d_kytkin_oppisopimuskoulutus_id",
-                  "left join dw.d_kytkin d5 on d5.id=f.d_kytkin_vankilaopetus_id",
-                  "GROUP BY ",
-                  "\t\ttilastovuosi",
-                  "\t\t,d1.organisaatio_koodi",
-                  "\t\t,case when d3.koodi='ot' then '09' else d2.tutkintotyypin_ryhma_koodi end",
-                  "\t\t,case when d3.koodi='ot' then '-1' else coalesce(sa.uusi_koulutusala_taso1_koodi,d2.koulutusalataso1_koodi) end",
-                  "\t\t,coalesce(sa.uusi_kustannusryhma_koodi,d3.koodi)",
-                  "\t\t,d4.kytkin_koodi",
-                  "\t\t,d5.kytkin_koodi",
-                  "HAVING SUM(f.opiskelijavuodet_painottamaton) > 0</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-                ]
+                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT * FROM dw.v_amos_opiskelijavuodet_painotetut_kustannuskysely2</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
               }
             ]
           }
@@ -961,39 +895,7 @@
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": [
-              "SELECT",
-              "\ttilastovuosi",
-              "\t,avain_R12 = ",
-              "\tCONCAT(",
-              "\t\ttilastovuosi",
-              "\t\t,d1.organisaatio_koodi",
-              "\t\t,case when d3.koodi='ot' then '09' else d2.tutkintotyypin_ryhma_koodi end",
-              "\t\t,case when d3.koodi='ot' then '-1' else coalesce(sa.uusi_koulutusala_taso1_koodi,d2.koulutusalataso1_koodi) end",
-              "\t\t,coalesce(sa.uusi_kustannusryhma_koodi,d3.koodi)",
-              "\t\t,d4.kytkin_koodi",
-              "\t\t,d5.kytkin_koodi",
-              "\t)",
-              "\t,ov_painottamaton = SUM(f.opiskelijavuodet_painottamaton)",
-              "\t,ov_painotettu = SUM(f.opiskelijavuodet_painotettu)",
-              "",
-              "FROM dw.f_amos_opiskelijavuodet_painotetut_kustannuskysely f",
-              "left join dw.d_organisaatioluokitus d1 on d1.id=f.d_organisaatioluokitus_jarj_id",
-              "left join dw.d_ammatillisen_tutkinnon_kustannusryhma d3 on d3.id=f.d_kustannusryhma_id",
-              "left join dw.d_koulutusluokitus d2 on d2.id=f.d_koulutusluokitus_id",
-              "left join sa.sa_amos_kustannuskysely_poistuvien_tutkintojen_mappaus sa on sa.koulutus_koodi = d2.koulutusluokitus_koodi",
-              "left join dw.d_kytkin d4 on d4.id=f.d_kytkin_oppisopimuskoulutus_id",
-              "left join dw.d_kytkin d5 on d5.id=f.d_kytkin_vankilaopetus_id",
-              "GROUP BY ",
-              "\t\ttilastovuosi",
-              "\t\t,d1.organisaatio_koodi",
-              "\t\t,case when d3.koodi='ot' then '09' else d2.tutkintotyypin_ryhma_koodi end",
-              "\t\t,case when d3.koodi='ot' then '-1' else coalesce(sa.uusi_koulutusala_taso1_koodi,d2.koulutusalataso1_koodi) end",
-              "\t\t,coalesce(sa.uusi_kustannusryhma_koodi,d3.koodi)",
-              "\t\t,d4.kytkin_koodi",
-              "\t\t,d5.kytkin_koodi",
-              "HAVING SUM(f.opiskelijavuodet_painottamaton) > 0"
-            ]
+            "value": "SELECT * FROM dw.v_amos_opiskelijavuodet_painotetut_kustannuskysely2"
           },
           {
             "name": "_TM_ExtProp_DbTableName",
@@ -1001,39 +903,7 @@
           },
           {
             "name": "QueryEditorSerialization",
-            "value": [
-              "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT",
-              "\ttilastovuosi",
-              "\t,avain_R12 = ",
-              "\tCONCAT(",
-              "\t\ttilastovuosi",
-              "\t\t,d1.organisaatio_koodi",
-              "\t\t,case when d3.koodi='ot' then '09' else d2.tutkintotyypin_ryhma_koodi end",
-              "\t\t,case when d3.koodi='ot' then '-1' else coalesce(sa.uusi_koulutusala_taso1_koodi,d2.koulutusalataso1_koodi) end",
-              "\t\t,coalesce(sa.uusi_kustannusryhma_koodi,d3.koodi)",
-              "\t\t,d4.kytkin_koodi",
-              "\t\t,d5.kytkin_koodi",
-              "\t)",
-              "\t,ov_painottamaton = SUM(f.opiskelijavuodet_painottamaton)",
-              "\t,ov_painotettu = SUM(f.opiskelijavuodet_painotettu)",
-              "",
-              "FROM dw.f_amos_opiskelijavuodet_painotetut_kustannuskysely f",
-              "left join dw.d_organisaatioluokitus d1 on d1.id=f.d_organisaatioluokitus_jarj_id",
-              "left join dw.d_ammatillisen_tutkinnon_kustannusryhma d3 on d3.id=f.d_kustannusryhma_id",
-              "left join dw.d_koulutusluokitus d2 on d2.id=f.d_koulutusluokitus_id",
-              "left join sa.sa_amos_kustannuskysely_poistuvien_tutkintojen_mappaus sa on sa.koulutus_koodi = d2.koulutusluokitus_koodi",
-              "left join dw.d_kytkin d4 on d4.id=f.d_kytkin_oppisopimuskoulutus_id",
-              "left join dw.d_kytkin d5 on d5.id=f.d_kytkin_vankilaopetus_id",
-              "GROUP BY ",
-              "\t\ttilastovuosi",
-              "\t\t,d1.organisaatio_koodi",
-              "\t\t,case when d3.koodi='ot' then '09' else d2.tutkintotyypin_ryhma_koodi end",
-              "\t\t,case when d3.koodi='ot' then '-1' else coalesce(sa.uusi_koulutusala_taso1_koodi,d2.koulutusalataso1_koodi) end",
-              "\t\t,coalesce(sa.uusi_kustannusryhma_koodi,d3.koodi)",
-              "\t\t,d4.kytkin_koodi",
-              "\t\t,d5.kytkin_koodi",
-              "HAVING SUM(f.opiskelijavuodet_painottamaton) > 0</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-            ]
+            "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT * FROM dw.v_amos_opiskelijavuodet_painotetut_kustannuskysely2</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
           }
         ]
       },
@@ -1071,67 +941,13 @@
             "name": "Query",
             "dataView": "full",
             "source": {
-              "query": [
-                "SELECT",
-                "\ttilastovuosi",
-                "\t,avain_R12 = ",
-                "\tCONCAT(",
-                "\t\ttilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi",
-                "\t\t,coalesce(sa.uusi_koulutusala_taso1_koodi,d2.koulutusalataso1_koodi)",
-                "\t\t,coalesce(sa.uusi_kustannusryhma_koodi,d3.koodi)",
-                "\t\t,d4.kytkin_koodi, d5.kytkin_koodi",
-                "\t) ",
-                "\t,op_painottamaton = SUM(f.painottamaton_osaamispisteet)",
-                "\t,op_painotettu = SUM(f.painotettu_tutkinnon_osien_osaamispisteet_yht)",
-                "\t\t\t\t\t+SUM(f.painotettu_tutkinnot_pt_kr_pk)",
-                "\t\t\t\t\t+SUM(f.painotettu_tutkinnot_at_eat_kr_pk)",
-                "\t\t\t\t\t+SUM(f.painotettu_tutkinnot_erityistuki)",
-                "FROM dw.f_amos_tutkinnot_ja_tutkinnonosat_painotetut f",
-                "left join dw.d_organisaatioluokitus d1 on d1.id=f.d_organisaatioluokitus_jarjestaja_id",
-                "left join dw.d_ammatillisen_tutkinnon_kustannusryhma d3 on d3.id=f.d_kustannusryhma_id",
-                "left join dw.d_koulutusluokitus d2 on d2.id=f.d_koulutusluokitus_id",
-                "left join sa.sa_amos_kustannuskysely_poistuvien_tutkintojen_mappaus sa on sa.koulutus_koodi = d2.koulutusluokitus_koodi",
-                "left join dw.d_kytkin d4 on d4.id=f.d_oppisopimuskoulutus_id",
-                "left join dw.d_kytkin d5 on d5.id=f.d_kytkin_vankilaopetus_id",
-                "GROUP BY ",
-                "\t\ttilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi",
-                "\t\t,coalesce(sa.uusi_koulutusala_taso1_koodi,d2.koulutusalataso1_koodi)",
-                "\t\t,coalesce(sa.uusi_kustannusryhma_koodi,d3.koodi)",
-                "\t\t,d4.kytkin_koodi, d5.kytkin_koodi"
-              ],
-              "dataSource": "SqlServer dwitvipuarch ANTERO_31102019"
+              "query": "SELECT * FROM dw.v_amos_tutkinnot_ja_tutkinnonosat_painotetut_kustannuskysely2",
+              "dataSource": "SqlServer dwitvipuarch ANTERO_master"
             },
             "annotations": [
               {
                 "name": "QueryEditorSerialization",
-                "value": [
-                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT",
-                  "\ttilastovuosi",
-                  "\t,avain_R12 = ",
-                  "\tCONCAT(",
-                  "\t\ttilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi",
-                  "\t\t,coalesce(sa.uusi_koulutusala_taso1_koodi,d2.koulutusalataso1_koodi)",
-                  "\t\t,coalesce(sa.uusi_kustannusryhma_koodi,d3.koodi)",
-                  "\t\t,d4.kytkin_koodi, d5.kytkin_koodi",
-                  "\t) ",
-                  "\t,op_painottamaton = SUM(f.painottamaton_osaamispisteet)",
-                  "\t,op_painotettu = SUM(f.painotettu_tutkinnon_osien_osaamispisteet_yht)",
-                  "\t\t\t\t\t+SUM(f.painotettu_tutkinnot_pt_kr_pk)",
-                  "\t\t\t\t\t+SUM(f.painotettu_tutkinnot_at_eat_kr_pk)",
-                  "\t\t\t\t\t+SUM(f.painotettu_tutkinnot_erityistuki)",
-                  "FROM dw.f_amos_tutkinnot_ja_tutkinnonosat_painotetut f",
-                  "left join dw.d_organisaatioluokitus d1 on d1.id=f.d_organisaatioluokitus_jarjestaja_id",
-                  "left join dw.d_ammatillisen_tutkinnon_kustannusryhma d3 on d3.id=f.d_kustannusryhma_id",
-                  "left join dw.d_koulutusluokitus d2 on d2.id=f.d_koulutusluokitus_id",
-                  "left join sa.sa_amos_kustannuskysely_poistuvien_tutkintojen_mappaus sa on sa.koulutus_koodi = d2.koulutusluokitus_koodi",
-                  "left join dw.d_kytkin d4 on d4.id=f.d_oppisopimuskoulutus_id",
-                  "left join dw.d_kytkin d5 on d5.id=f.d_kytkin_vankilaopetus_id",
-                  "GROUP BY ",
-                  "\t\ttilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi",
-                  "\t\t,coalesce(sa.uusi_koulutusala_taso1_koodi,d2.koulutusalataso1_koodi)",
-                  "\t\t,coalesce(sa.uusi_kustannusryhma_koodi,d3.koodi)",
-                  "\t\t,d4.kytkin_koodi, d5.kytkin_koodi</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-                ]
+                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT * FROM dw.v_amos_tutkinnot_ja_tutkinnonosat_painotetut_kustannuskysely2</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
               }
             ]
           }
@@ -1139,34 +955,7 @@
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": [
-              "SELECT",
-              "\ttilastovuosi",
-              "\t,avain_R12 = ",
-              "\tCONCAT(",
-              "\t\ttilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi",
-              "\t\t,coalesce(sa.uusi_koulutusala_taso1_koodi,d2.koulutusalataso1_koodi)",
-              "\t\t,coalesce(sa.uusi_kustannusryhma_koodi,d3.koodi)",
-              "\t\t,d4.kytkin_koodi, d5.kytkin_koodi",
-              "\t) ",
-              "\t,op_painottamaton = SUM(f.painottamaton_osaamispisteet)",
-              "\t,op_painotettu = SUM(f.painotettu_tutkinnon_osien_osaamispisteet_yht)",
-              "\t\t\t\t\t+SUM(f.painotettu_tutkinnot_pt_kr_pk)",
-              "\t\t\t\t\t+SUM(f.painotettu_tutkinnot_at_eat_kr_pk)",
-              "\t\t\t\t\t+SUM(f.painotettu_tutkinnot_erityistuki)",
-              "FROM dw.f_amos_tutkinnot_ja_tutkinnonosat_painotetut f",
-              "left join dw.d_organisaatioluokitus d1 on d1.id=f.d_organisaatioluokitus_jarjestaja_id",
-              "left join dw.d_ammatillisen_tutkinnon_kustannusryhma d3 on d3.id=f.d_kustannusryhma_id",
-              "left join dw.d_koulutusluokitus d2 on d2.id=f.d_koulutusluokitus_id",
-              "left join sa.sa_amos_kustannuskysely_poistuvien_tutkintojen_mappaus sa on sa.koulutus_koodi = d2.koulutusluokitus_koodi",
-              "left join dw.d_kytkin d4 on d4.id=f.d_oppisopimuskoulutus_id",
-              "left join dw.d_kytkin d5 on d5.id=f.d_kytkin_vankilaopetus_id",
-              "GROUP BY ",
-              "\t\ttilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi",
-              "\t\t,coalesce(sa.uusi_koulutusala_taso1_koodi,d2.koulutusalataso1_koodi)",
-              "\t\t,coalesce(sa.uusi_kustannusryhma_koodi,d3.koodi)",
-              "\t\t,d4.kytkin_koodi, d5.kytkin_koodi"
-            ]
+            "value": "SELECT * FROM dw.v_amos_tutkinnot_ja_tutkinnonosat_painotetut_kustannuskysely2"
           },
           {
             "name": "_TM_ExtProp_DbTableName",
@@ -1174,34 +963,7 @@
           },
           {
             "name": "QueryEditorSerialization",
-            "value": [
-              "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT",
-              "\ttilastovuosi",
-              "\t,avain_R12 = ",
-              "\tCONCAT(",
-              "\t\ttilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi",
-              "\t\t,coalesce(sa.uusi_koulutusala_taso1_koodi,d2.koulutusalataso1_koodi)",
-              "\t\t,coalesce(sa.uusi_kustannusryhma_koodi,d3.koodi)",
-              "\t\t,d4.kytkin_koodi, d5.kytkin_koodi",
-              "\t) ",
-              "\t,op_painottamaton = SUM(f.painottamaton_osaamispisteet)",
-              "\t,op_painotettu = SUM(f.painotettu_tutkinnon_osien_osaamispisteet_yht)",
-              "\t\t\t\t\t+SUM(f.painotettu_tutkinnot_pt_kr_pk)",
-              "\t\t\t\t\t+SUM(f.painotettu_tutkinnot_at_eat_kr_pk)",
-              "\t\t\t\t\t+SUM(f.painotettu_tutkinnot_erityistuki)",
-              "FROM dw.f_amos_tutkinnot_ja_tutkinnonosat_painotetut f",
-              "left join dw.d_organisaatioluokitus d1 on d1.id=f.d_organisaatioluokitus_jarjestaja_id",
-              "left join dw.d_ammatillisen_tutkinnon_kustannusryhma d3 on d3.id=f.d_kustannusryhma_id",
-              "left join dw.d_koulutusluokitus d2 on d2.id=f.d_koulutusluokitus_id",
-              "left join sa.sa_amos_kustannuskysely_poistuvien_tutkintojen_mappaus sa on sa.koulutus_koodi = d2.koulutusluokitus_koodi",
-              "left join dw.d_kytkin d4 on d4.id=f.d_oppisopimuskoulutus_id",
-              "left join dw.d_kytkin d5 on d5.id=f.d_kytkin_vankilaopetus_id",
-              "GROUP BY ",
-              "\t\ttilastovuosi, d1.organisaatio_koodi, d2.tutkintotyypin_ryhma_koodi",
-              "\t\t,coalesce(sa.uusi_koulutusala_taso1_koodi,d2.koulutusalataso1_koodi)",
-              "\t\t,coalesce(sa.uusi_kustannusryhma_koodi,d3.koodi)",
-              "\t\t,d4.kytkin_koodi, d5.kytkin_koodi</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-            ]
+            "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT * FROM dw.v_amos_tutkinnot_ja_tutkinnonosat_painotetut_kustannuskysely2</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
           }
         ]
       }
