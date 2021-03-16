@@ -17,8 +17,8 @@
         ]
       },
       {
-        "name": "SqlServer dwitvipuarch ANTERO_31102019",
-        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipuarch;Initial Catalog=ANTERO_31102019;Integrated Security=SSPI;Persist Security Info=false",
+        "name": "SqlServer dwitvipuarch ANTERO_master",
+        "connectionString": "Provider=SQLNCLI11.1;Integrated Security=SSPI;Persist Security Info=False;Initial Catalog=ANTERO_master;Data Source=dwitvipuarch",
         "impersonationMode": "impersonateAccount",
         "account": "dwi\\t_viputk_kuutio",
         "annotations": [
@@ -854,35 +854,13 @@
             "name": "Query",
             "dataView": "full",
             "source": {
-              "query": [
-                "SELECT",
-                "\ttilastovuosi",
-                "\t,avain = CONCAT(tilastovuosi, d1.organisaatio_koodi)",
-                "\t,ov_painottamaton = SUM(f.opiskelijavuodet_painottamaton)",
-                "\t,ov_painotettu = SUM(f.opiskelijavuodet_painotettu)",
-                "FROM dw.f_amos_opiskelijavuodet_painotetut_kustannuskysely f",
-                "",
-                "left join dw.d_organisaatioluokitus d1 on d1.id=f.d_organisaatioluokitus_jarj_id",
-                "",
-                "GROUP BY tilastovuosi, d1.organisaatio_koodi"
-              ],
-              "dataSource": "SqlServer dwitvipuarch ANTERO_31102019"
+              "query": "select * from dw.v_amos_opiskelijavuodet_painotetut_kustannuskysely",
+              "dataSource": "SqlServer dwitvipuarch ANTERO_master"
             },
             "annotations": [
               {
                 "name": "QueryEditorSerialization",
-                "value": [
-                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT",
-                  "\ttilastovuosi",
-                  "\t,avain = CONCAT(tilastovuosi, d1.organisaatio_koodi)",
-                  "\t,ov_painottamaton = SUM(f.opiskelijavuodet_painottamaton)",
-                  "\t,ov_painotettu = SUM(f.opiskelijavuodet_painotettu)",
-                  "FROM dw.f_amos_opiskelijavuodet_painotetut_kustannuskysely f",
-                  "",
-                  "left join dw.d_organisaatioluokitus d1 on d1.id=f.d_organisaatioluokitus_jarj_id",
-                  "",
-                  "GROUP BY tilastovuosi, d1.organisaatio_koodi</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-                ]
+                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>select * from dw.v_amos_opiskelijavuodet_painotetut_kustannuskysely</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
               }
             ]
           }
@@ -890,18 +868,7 @@
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": [
-              "SELECT",
-              "\ttilastovuosi",
-              "\t,avain = CONCAT(tilastovuosi, d1.organisaatio_koodi)",
-              "\t,ov_painottamaton = SUM(f.opiskelijavuodet_painottamaton)",
-              "\t,ov_painotettu = SUM(f.opiskelijavuodet_painotettu)",
-              "FROM dw.f_amos_opiskelijavuodet_painotetut_kustannuskysely f",
-              "",
-              "left join dw.d_organisaatioluokitus d1 on d1.id=f.d_organisaatioluokitus_jarj_id",
-              "",
-              "GROUP BY tilastovuosi, d1.organisaatio_koodi"
-            ]
+            "value": "select * from dw.v_amos_opiskelijavuodet_painotetut_kustannuskysely"
           },
           {
             "name": "_TM_ExtProp_DbTableName",
@@ -909,18 +876,7 @@
           },
           {
             "name": "QueryEditorSerialization",
-            "value": [
-              "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT",
-              "\ttilastovuosi",
-              "\t,avain = CONCAT(tilastovuosi, d1.organisaatio_koodi)",
-              "\t,ov_painottamaton = SUM(f.opiskelijavuodet_painottamaton)",
-              "\t,ov_painotettu = SUM(f.opiskelijavuodet_painotettu)",
-              "FROM dw.f_amos_opiskelijavuodet_painotetut_kustannuskysely f",
-              "",
-              "left join dw.d_organisaatioluokitus d1 on d1.id=f.d_organisaatioluokitus_jarj_id",
-              "",
-              "GROUP BY tilastovuosi, d1.organisaatio_koodi</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-            ]
+            "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>select * from dw.v_amos_opiskelijavuodet_painotetut_kustannuskysely</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
           }
         ]
       },
@@ -958,41 +914,13 @@
             "name": "Query 1",
             "dataView": "full",
             "source": {
-              "query": [
-                "SELECT",
-                "\ttilastovuosi",
-                "\t,avain = CONCAT(tilastovuosi, d1.organisaatio_koodi)",
-                "\t,op_painottamaton = SUM(f.painottamaton_osaamispisteet)",
-                "\t,op_painotettu = SUM(f.painotettu_tutkinnon_osien_osaamispisteet_yht)",
-                "\t\t\t\t\t+SUM(f.painotettu_tutkinnot_pt_kr_pk)",
-                "\t\t\t\t\t+SUM(f.painotettu_tutkinnot_at_eat_kr_pk)",
-                "\t\t\t\t\t+SUM(f.painotettu_tutkinnot_erityistuki)",
-                "FROM dw.f_amos_tutkinnot_ja_tutkinnonosat_painotetut f",
-                "",
-                "left join dw.d_organisaatioluokitus d1 on d1.id=f.d_organisaatioluokitus_jarjestaja_id",
-                "",
-                "GROUP BY tilastovuosi, d1.organisaatio_koodi"
-              ],
-              "dataSource": "SqlServer dwitvipuarch ANTERO_31102019"
+              "query": "SELECT * FROM dw.v_amos_tutkinnot_ja_tutkinnonosat_painotetut_kustannuskysely",
+              "dataSource": "SqlServer dwitvipuarch ANTERO_master"
             },
             "annotations": [
               {
                 "name": "QueryEditorSerialization",
-                "value": [
-                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT",
-                  "\ttilastovuosi",
-                  "\t,avain = CONCAT(tilastovuosi, d1.organisaatio_koodi)",
-                  "\t,op_painottamaton = SUM(f.painottamaton_osaamispisteet)",
-                  "\t,op_painotettu = SUM(f.painotettu_tutkinnon_osien_osaamispisteet_yht)",
-                  "\t\t\t\t\t+SUM(f.painotettu_tutkinnot_pt_kr_pk)",
-                  "\t\t\t\t\t+SUM(f.painotettu_tutkinnot_at_eat_kr_pk)",
-                  "\t\t\t\t\t+SUM(f.painotettu_tutkinnot_erityistuki)",
-                  "FROM dw.f_amos_tutkinnot_ja_tutkinnonosat_painotetut f",
-                  "",
-                  "left join dw.d_organisaatioluokitus d1 on d1.id=f.d_organisaatioluokitus_jarjestaja_id",
-                  "",
-                  "GROUP BY tilastovuosi, d1.organisaatio_koodi</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-                ]
+                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT * FROM dw.v_amos_tutkinnot_ja_tutkinnonosat_painotetut_kustannuskysely</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
               }
             ]
           }
@@ -1000,21 +928,7 @@
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": [
-              "SELECT",
-              "\ttilastovuosi",
-              "\t,avain = CONCAT(tilastovuosi, d1.organisaatio_koodi)",
-              "\t,op_painottamaton = SUM(f.painottamaton_osaamispisteet)",
-              "\t,op_painotettu = SUM(f.painotettu_tutkinnon_osien_osaamispisteet_yht)",
-              "\t\t\t\t\t+SUM(f.painotettu_tutkinnot_pt_kr_pk)",
-              "\t\t\t\t\t+SUM(f.painotettu_tutkinnot_at_eat_kr_pk)",
-              "\t\t\t\t\t+SUM(f.painotettu_tutkinnot_erityistuki)",
-              "FROM dw.f_amos_tutkinnot_ja_tutkinnonosat_painotetut f",
-              "",
-              "left join dw.d_organisaatioluokitus d1 on d1.id=f.d_organisaatioluokitus_jarjestaja_id",
-              "",
-              "GROUP BY tilastovuosi, d1.organisaatio_koodi"
-            ]
+            "value": "SELECT * FROM dw.v_amos_tutkinnot_ja_tutkinnonosat_painotetut_kustannuskysely"
           },
           {
             "name": "_TM_ExtProp_DbTableName",
@@ -1022,21 +936,7 @@
           },
           {
             "name": "QueryEditorSerialization",
-            "value": [
-              "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT",
-              "\ttilastovuosi",
-              "\t,avain = CONCAT(tilastovuosi, d1.organisaatio_koodi)",
-              "\t,op_painottamaton = SUM(f.painottamaton_osaamispisteet)",
-              "\t,op_painotettu = SUM(f.painotettu_tutkinnon_osien_osaamispisteet_yht)",
-              "\t\t\t\t\t+SUM(f.painotettu_tutkinnot_pt_kr_pk)",
-              "\t\t\t\t\t+SUM(f.painotettu_tutkinnot_at_eat_kr_pk)",
-              "\t\t\t\t\t+SUM(f.painotettu_tutkinnot_erityistuki)",
-              "FROM dw.f_amos_tutkinnot_ja_tutkinnonosat_painotetut f",
-              "",
-              "left join dw.d_organisaatioluokitus d1 on d1.id=f.d_organisaatioluokitus_jarjestaja_id",
-              "",
-              "GROUP BY tilastovuosi, d1.organisaatio_koodi</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-            ]
+            "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT * FROM dw.v_amos_tutkinnot_ja_tutkinnonosat_painotetut_kustannuskysely</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
           }
         ]
       }
