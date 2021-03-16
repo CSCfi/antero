@@ -7,7 +7,8 @@ todo doc
 """
 import sys,os,getopt
 import urllib, base64, http.client
-#import urllib.request
+import urllib.request
+import urllib.error
 import ijson.backends.yajl2_cffi as ijson
 import json
 from time import localtime, strftime
@@ -37,18 +38,18 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
 
   # automatic POST with (post)data
   print("value used for , -r, --rowcount=", rowcount)
-  request = urllib.urlopen(address, data=postdata, headers=reqheaders)
+  request = urllib.request.urlopen(address, data=postdata, headers=reqheaders)
   try:
-    response = urllib.urlopen(request)
+    response = urllib.request.urlopen(request)
   except http.client.IncompleteRead as e:
     show('IncompleteRead exception.')
     show('Received: %d'%(e.partial))
     sys.exit(2)
-  except urllib.HTTPError as e:
+except urllib.error.HTTPError as e:
     show('The server couldn\'t fulfill the request.')
     show('Error code: %d'%(e.code))
     sys.exit(2)
-  except urllib.URLError as e:
+except urllib.error.URLError as e:
     show('We failed to reach a server.')
     show('Reason: %s'%(e.reason))
     sys.exit(2)
