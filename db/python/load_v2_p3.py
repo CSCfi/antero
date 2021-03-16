@@ -8,7 +8,7 @@ todo doc
 import sys,os,getopt
 import base64, http.client
 from urllib.request import Request, urlopen
-import urllib.error
+from urllib.error import HTTPError, URLError
 import ijson.backends.yajl2_cffi as ijson
 import json
 from time import localtime, strftime
@@ -45,11 +45,11 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
     show('IncompleteRead exception.')
     show('Received: %d'%(e.partial))
     sys.exit(2)
-  except urllib.error.HTTPError as e:
+  except HTTPError as e:
     show('The server couldn\'t fulfill the request.')
     show('Error code: %d'%(e.code))
     sys.exit(2)
-  except urllib.error.URLError as e:
+  except URLError as e:
     show('We failed to reach a server.')
     show('Reason: %s'%(e.reason))
     sys.exit(2)
