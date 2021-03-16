@@ -7,6 +7,7 @@ todo doc
 """
 import sys,os,getopt
 import urllib, base64, http.client
+#import urllib.request
 import ijson.backends.yajl2_cffi as ijson
 import json
 from time import localtime, strftime
@@ -36,7 +37,7 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
 
   # automatic POST with (post)data
   print("value used for , -r, --rowcount=", rowcount)
-  request = urllib.Request(address, data=postdata, headers=reqheaders)
+  request = urllib.urlopen(address, data=postdata, headers=reqheaders)
   try:
     response = urllib.urlopen(request)
   except http.client.IncompleteRead as e:
