@@ -45,11 +45,11 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
     show('IncompleteRead exception.')
     show('Received: %d'%(e.partial))
     sys.exit(2)
-except urllib.error.HTTPError as e:
+  except urllib.error.HTTPError as e:
     show('The server couldn\'t fulfill the request.')
     show('Error code: %d'%(e.code))
     sys.exit(2)
-except urllib.error.URLError as e:
+  except urllib.error.URLError as e:
     show('We failed to reach a server.')
     show('Reason: %s'%(e.reason))
     sys.exit(2)
