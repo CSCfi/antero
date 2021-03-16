@@ -38,7 +38,7 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
 
   # automatic POST with (post)data
   print("value used for , -r, --rowcount=", rowcount)
-  request = urllib.Request(address, data=postdata, headers=reqheaders)
+  request = Request(address, data=postdata, headers=reqheaders)
   try:
     response = urlopen(request)
   except http.client.IncompleteRead as e:
