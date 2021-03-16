@@ -7,7 +7,7 @@ todo doc
 """
 import sys,os,getopt
 import base64, http.client
-import urllib.request
+from urllib.request import Request, urlopen
 import urllib.error
 import ijson.backends.yajl2_cffi as ijson
 import json
@@ -38,9 +38,9 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
 
   # automatic POST with (post)data
   print("value used for , -r, --rowcount=", rowcount)
-  request = urllib.request.urlopen(address, data=postdata, headers=reqheaders)
+  request = urllib.Request(address, data=postdata, headers=reqheaders)
   try:
-    response = urllib.request.urlopen(request)
+    response = urlopen(request)
   except http.client.IncompleteRead as e:
     show('IncompleteRead exception.')
     show('Received: %d'%(e.partial))
