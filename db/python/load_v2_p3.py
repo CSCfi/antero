@@ -6,7 +6,7 @@ load
 todo doc
 """
 import sys,os,getopt
-import urllib, base64, http.client
+import base64, http.client
 import urllib.request
 import urllib.error
 import ijson.backends.yajl2_cffi as ijson
