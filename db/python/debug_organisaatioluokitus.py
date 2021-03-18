@@ -1,6 +1,5 @@
 import requests, json
 import sys, os, socket, getopt
-from pandas.io.json import json_normalize
 from time import localtime, strftime
 from imp import reload
 
@@ -204,7 +203,7 @@ def main(argv):
   hostname = os.getenv("OPINTOPOLKU") or "virkailija.opintopolku.fi"
   url = "/organisaatio-service/rest/organisaatio/"
   schema = os.getenv("SCHEMA") or "sa"
-  table = os.getenv("TABLE") or "sa_organisaatioluokitus"
+  table = os.getenv("TABLE") or "sa_organisaatioluokitus_light_test"
   verbose = False
 
   try:
