@@ -213,8 +213,7 @@ def main(argv):
     usage()
     sys.exit(2)
   for opt, arg in opts:
-    if opt in ("-s", "--secure"): secure=True
-    elif opt in ("-H", "--hostname"): hostname = arg
+    if opt in  ("-H", "--hostname"): hostname = arg
     elif opt in ("-u", "--url"): url = arg
     elif opt in ("-e", "--schema"): schema = arg
     elif opt in ("-t", "--table"): table = arg
