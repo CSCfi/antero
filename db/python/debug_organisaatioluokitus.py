@@ -222,7 +222,7 @@ def main(argv):
     usage()
     sys.exit(2)
 
-  load(secure,hostname,url,schema,table,verbose)
+  load(hostname,url,schema,table,verbose)
 
 if __name__ == "__main__":
   main(sys.argv[1:])
