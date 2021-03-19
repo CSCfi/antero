@@ -49,7 +49,7 @@ def jv(jsondata, key):
 ###       else:
 ###         return jsondata[key]
 ###     return None
-  
+
 
 def getmeta(i,tieto,kieli):
   for m in i["metadata"]:
@@ -311,7 +311,7 @@ def load(secure,hostname,url,schema,table,verbose=False):
           row["tyyppi"] = "Koulutustoimija"
           row["koodi"] = jv(i,"ytunnus")
           if not row["koodi"]:
-            row["koodi"] = jv(i,"virastotunnus") # alternatively try virastotunnus if ytunnus is missing
+            row["koodi"] = jv(i,"virastoTunnus") # alternatively try virastotunnus if ytunnus is missing
           if not row["koodi"]:
             row["tyyppi"] = None # cancel this organization from loading
         elif "tyypit" in i and "Oppilaitos" in i["tyypit"]:
