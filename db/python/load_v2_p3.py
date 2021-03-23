@@ -1,4 +1,4 @@
-#!/usr/bin/python
+ #!/usr/bin/python3
 # vim: set fileencoding=UTF-8 :
 """
 load v2 p3
