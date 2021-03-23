@@ -24,7 +24,7 @@ def loadsql(sqlfile,verbose=False):
   fd = open(sqlfile, 'r')
   allsql = fd.read()
   # remove UTF-8 BOM characters if they exist
-  allsql = allsql[3:] if allsql.startswith(tuple(codecs.BOM_UTF8)) else allsql
+  allsql = allsql[3:] if allsql.startswith(str(codecs.BOM_UTF8)) else allsql
   fd.close()
   # split MS SQL batches
   for sql in re.split('\ngo.*\n', allsql, flags=re.IGNORECASE):
