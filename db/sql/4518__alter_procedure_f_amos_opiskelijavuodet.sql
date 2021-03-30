@@ -14,6 +14,7 @@ ALTER PROCEDURE [dw].[p_lataa_f_amos_opiskelijavuodet] AS
 
 TRUNCATE TABLE [ANTERO].[dw].[f_amos_opiskelijavuodet]
 
+
 INSERT INTO ANTERO.dw.f_amos_opiskelijavuodet (
 	 vuosi
 	,d_kalenteri_id
