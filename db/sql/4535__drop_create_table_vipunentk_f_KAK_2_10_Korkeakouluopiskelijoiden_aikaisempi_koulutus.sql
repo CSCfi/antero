@@ -1,235 +1,235 @@
 USE [VipunenTK]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_yotutk_kulunut_aika_d_koulutuksesta_kulunut_aika]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_yotutk_kulunut_aika_d_koulutuksesta_kulunut_aika]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_ylkktutk_kulunut_aika_d_koulutuksesta_kulunut_aika]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_ylkktutk_kulunut_aika_d_koulutuksesta_kulunut_aika]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_ylamktutk_kulunut_aika_d_koulutuksesta_kulunut_aika]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_ylamktutk_kulunut_aika_d_koulutuksesta_kulunut_aika]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_suoritettu_yotutk_d_oppilaitoksen_taustatiedot_historia]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_suoritettu_yotutk_d_oppilaitoksen_taustatiedot_historia]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_suoritettu_yotutk_d_oppilaitoksen_taustatiedot]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_suoritettu_yotutk_d_oppilaitoksen_taustatiedot]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_suoritettu_yotutk_d_koulutusluokitus_historia]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_suoritettu_yotutk_d_koulutusluokitus_historia]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_suoritettu_ylempikktutk_d_oppilaitoksen_taustatiedot_historia]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_suoritettu_ylempikktutk_d_oppilaitoksen_taustatiedot_historia]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_suoritettu_ylempikktutk_d_oppilaitoksen_taustatiedot]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_suoritettu_ylempikktutk_d_oppilaitoksen_taustatiedot]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_suoritettu_ylempikktutk_d_koulutusluokitus_historia]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_suoritettu_ylempikktutk_d_koulutusluokitus_historia]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_suoritettu_ylempiamktutk_d_oppilaitoksen_taustatiedot_historia]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_suoritettu_ylempiamktutk_d_oppilaitoksen_taustatiedot_historia]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_suoritettu_ylempiamktutk_d_oppilaitoksen_taustatiedot]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_suoritettu_ylempiamktutk_d_oppilaitoksen_taustatiedot]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_suoritettu_ylempiamktutk_d_koulutusluokitus_historia]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_suoritettu_ylempiamktutk_d_koulutusluokitus_historia]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_suoritettu_ammtutk_d_oppilaitoksen_taustatiedot_historia]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_suoritettu_ammtutk_d_oppilaitoksen_taustatiedot_historia]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_suoritettu_ammtutk_d_oppilaitoksen_taustatiedot]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_suoritettu_ammtutk_d_oppilaitoksen_taustatiedot]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_suoritettu_ammtutk_d_koulutusluokitus_historia]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_suoritettu_ammtutk_d_koulutusluokitus_historia]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_suoritettu_amktutk_d_oppilaitoksen_taustatiedot_historia]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_suoritettu_amktutk_d_oppilaitoksen_taustatiedot_historia]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_suoritettu_amktutk_d_oppilaitoksen_taustatiedot]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_suoritettu_amktutk_d_oppilaitoksen_taustatiedot]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_suoritettu_amktutk_d_koulutusluokitus_historia]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_suoritettu_amktutk_d_koulutusluokitus_historia]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_suoritettu_alempikktutk_d_oppilaitoksen_taustatiedot_historia]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_suoritettu_alempikktutk_d_oppilaitoksen_taustatiedot_historia]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_suoritettu_alempikktutk_d_oppilaitoksen_taustatiedot]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_suoritettu_alempikktutk_d_oppilaitoksen_taustatiedot]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_suoritettu_alempikktutk_d_koulutusluokitus_historia]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_suoritettu_alempikktutk_d_koulutusluokitus_historia]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_sukupuoli_d_sukupuoli]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_sukupuoli_d_sukupuoli]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_rahoituslahde_d_rahoituslahde]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_rahoituslahde_d_rahoituslahde]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_pohjakoulutuksen_tila_d_pohjakoulutuksen_tila]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_pohjakoulutuksen_tila_d_pohjakoulutuksen_tila]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_opiskelumuoto_d_opiskelumuoto]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_opiskelumuoto_d_opiskelumuoto]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_opiskelijan_opintoala_2002_edellisvuonna_d_koulutusluokitus]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_opiskelijan_opintoala_2002_edellisvuonna_d_koulutusluokitus]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_opiskelijan_opintoala_1995_edellisvuonna_d_koulutusluokitus]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_opiskelijan_opintoala_1995_edellisvuonna_d_koulutusluokitus]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_opiskelijan_olo_tamm_d_opiskelijan_olo_tamm]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_opiskelijan_olo_tamm_d_opiskelijan_olo_tamm]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_opiskelijan_olo_syys_d_opiskelijan_olo]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_opiskelijan_olo_syys_d_opiskelijan_olo]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_opiskelijan_koulutus_edellisvuonna_d_koulutusluokitus]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_opiskelijan_koulutus_edellisvuonna_d_koulutusluokitus]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_opiskelijan_fte_tieto_d_opiskelijan_fte_tieto]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_opiskelijan_fte_tieto_d_opiskelijan_fte_tieto]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_lahde_id_d_lahde]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_lahde_id_d_lahde]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_koulutustyyppi_d_koulutustyyppi]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_koulutustyyppi_d_koulutustyyppi]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_koulutusluokitusd_koulutusluokitus_historia]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_koulutusluokitusd_koulutusluokitus_historia]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_koulutusluokitus_d_koulutusluokitus]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_koulutusluokitus_d_koulutusluokitus]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_koulutuksen_kunta_d_alueluokitus_historia]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_koulutuksen_kunta_d_alueluokitus_historia]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_koulutuksen_kunta_d_alueluokitus]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_koulutuksen_kunta_d_alueluokitus]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_kotikunta_historia_d_alueluokitus_historia]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_kotikunta_historia_d_alueluokitus_historia]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_kotikunta_d_alueluokitus]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_kotikunta_d_alueluokitus]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_kotikunta_d_aidinkieli_versio1]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_kotikunta_d_aidinkieli_versio1]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_kirjoihintulovuosi_sektori_lasnaoleva_d_kausi]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_kirjoihintulovuosi_sektori_lasnaoleva_d_kausi]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_kirjoihintulovuosi_sektori_d_kausi]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_kirjoihintulovuosi_sektori_d_kausi]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_kirjoihintulovuosi_opintoala_lasnaoleva_d_kausi]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_kirjoihintulovuosi_opintoala_lasnaoleva_d_kausi]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_kirjoihintulovuosi_opintoala_d_kausi]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_kirjoihintulovuosi_opintoala_d_kausi]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_kirjoihintulovuosi_korkeakoulusektori_lasnaoleva_d_kausi]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_kirjoihintulovuosi_korkeakoulusektori_lasnaoleva_d_kausi]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_kirjoihintulovuosi_korkeakoulusektori_d_kausi]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_kirjoihintulovuosi_korkeakoulusektori_d_kausi]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_kirjoihintulovuosi_korkeakoulu_lasnaoleva_d_kausi]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_kirjoihintulovuosi_korkeakoulu_lasnaoleva_d_kausi]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_kirjoihintulovuosi_korkeakoulu_d_kausi]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_kirjoihintulovuosi_korkeakoulu_d_kausi]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_kirjoihintulovuosi_d_kausi]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_kirjoihintulovuosi_d_kausi]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_kirjoihintulolukukausi_d_kausi]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_kirjoihintulolukukausi_d_kausi]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_kansalaisuus_versio2_d_kansalaisuus_versio2]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_kansalaisuus_versio2_d_kansalaisuus_versio2]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_KAK_koulutustyyppi_d_koulutustyyppi]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_KAK_koulutustyyppi_d_koulutustyyppi]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_ika_5v_id_d_ika]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_ika_5v_id_d_ika]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_ika_1v_id_d_ika]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_ika_1v_id_d_ika]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_ika_18_65_id_d_ika]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_ika_18_65_id_d_ika]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_ika_14_65_id_d_ika]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_ika_14_65_id_d_ika]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_d_vahintaan_55_op_suorittanut]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_d_vahintaan_55_op_suorittanut]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_d_vahintaan_45_op_suorittanut]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_d_vahintaan_45_op_suorittanut]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_d_oppilaitoksen_taustatiedot_historia]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_d_oppilaitoksen_taustatiedot_historia]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_d_oppilaitoksen_taustatiedot]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_d_oppilaitoksen_taustatiedot]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_avoinvayla_d_avoinvayla]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_avoinvayla_d_avoinvayla]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_ammtutk_kulunut_aika_d_koulutuksesta_kulunut_aika]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_ammtutk_kulunut_aika_d_koulutuksesta_kulunut_aika]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_amktutk_kulunut_aika_d_koulutuksesta_kulunut_aika]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_amktutk_kulunut_aika_d_koulutuksesta_kulunut_aika]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_alkktutk_kulunut_aika_d_koulutuksesta_kulunut_aika]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_alkktutk_kulunut_aika_d_koulutuksesta_kulunut_aika]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_aikaisempi_korkein_tutkinto_d_aikaisempi_korkein_tutkinto]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_aikaisempi_korkein_tutkinto_d_aikaisempi_korkein_tutkinto]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_aikaisemmin_suoritetun_yotutk_suoritusvuosi_d_kausi]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_aikaisemmin_suoritetun_yotutk_suoritusvuosi_d_kausi]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_aikaisemmin_suoritetun_ylempikktutk_suoritusvuosi_d_kausi]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_aikaisemmin_suoritetun_ylempikktutk_suoritusvuosi_d_kausi]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_aikaisemmin_suoritetun_ylempiamktutk_suoritusvuosi_d_kausi]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_aikaisemmin_suoritetun_ylempiamktutk_suoritusvuosi_d_kausi]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_aikaisemmin_suoritetun_ammtutk_suoritusvuosi_d_kausi]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_aikaisemmin_suoritetun_ammtutk_suoritusvuosi_d_kausi]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_aikaisemmin_suoritetun_amktutk_suoritusvuosi_d_kausi]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_aikaisemmin_suoritetun_amktutk_suoritusvuosi_d_kausi]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_aikaisemmin_suoritetun_alempikktutk_suoritusvuosi_d_kausi]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_aikaisemmin_suoritetun_alempikktutk_suoritusvuosi_d_kausi]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_aik_suor_yotutk_koulk_d_koulutusluokitus]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_aik_suor_yotutk_koulk_d_koulutusluokitus]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_aik_suor_ylempikktutk_koulk_d_koulutusluokitus]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_aik_suor_ylempikktutk_koulk_d_koulutusluokitus]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_aik_suor_ylempiamktutk_koulk_d_koulutusluokitus]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_aik_suor_ylempiamktutk_koulk_d_koulutusluokitus]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_aik_suor_ammtutk_koulk_d_koulutusluokitus]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_aik_suor_ammtutk_koulk_d_koulutusluokitus]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_aik_suor_amktutk_koulk_d_koulutusluokitus]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_aik_suor_amktutk_koulk_d_koulutusluokitus]
 GO
 
-ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT [FK_f_KAK_2_10_aik_suor_alempikktutk_koulk_d_koulutusluokitus]
+ALTER TABLE [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus] DROP CONSTRAINT IF EXISTS[FK_f_KAK_2_10_aik_suor_alempikktutk_koulk_d_koulutusluokitus]
 GO
 
 /****** Object:  Table [dbo].[f_KAK_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus]    Script Date: 9.4.2021 1:06:54 ******/
