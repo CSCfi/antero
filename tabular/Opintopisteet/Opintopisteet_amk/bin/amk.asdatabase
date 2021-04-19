@@ -8,7 +8,7 @@
         "name": "SqlServer dwitvipusql16 ANTERO",
         "connectionString": "Provider=SQLNCLI11.1;Integrated Security=SSPI;Persist Security Info=False;User ID=;Initial Catalog=ANTERO;Data Source=dwitvipusql16;Initial File Name=;Server SPN=",
         "impersonationMode": "impersonateAccount",
-        "account": "dwi\\klehtosa",
+        "account": "dwi\\T_VIPUTK_KUUTIO",
         "annotations": [
           {
             "name": "ConnectionEditUISource",
@@ -29,40 +29,11 @@
             "displayFolder": "Aikamuuttujat"
           },
           {
-            "name": "Suorituspäivämäärä",
-            "dataType": "dateTime",
-            "isHidden": true,
-            "sourceColumn": "Suorituspäivämäärä",
-            "formatString": "General Date",
-            "sourceProviderType": "DBTimeStamp"
-          },
-          {
-            "name": "Suoritusvuosi",
-            "dataType": "int64",
-            "sourceColumn": "Suoritusvuosi",
-            "sourceProviderType": "Integer",
-            "displayFolder": "Aikamuuttujat"
-          },
-          {
-            "name": "Suorituskuukausi",
-            "dataType": "int64",
-            "sourceColumn": "Suorituskuukausi",
-            "sourceProviderType": "Integer",
-            "displayFolder": "Aikamuuttujat"
-          },
-          {
             "name": "Suorituspäivä",
             "dataType": "int64",
             "sourceColumn": "Suorituspäivä",
             "sourceProviderType": "Integer",
             "displayFolder": "Aikamuuttujat"
-          },
-          {
-            "name": "Koulutustyyppi_koodi",
-            "dataType": "int64",
-            "isHidden": true,
-            "sourceColumn": "Koulutustyyppi_koodi",
-            "sourceProviderType": "Integer"
           },
           {
             "name": "Koulutustyyppi",
@@ -156,6 +127,47 @@
             "sourceProviderType": "Integer"
           },
           {
+            "name": "Suorituspäivämäärä",
+            "dataType": "dateTime",
+            "isHidden": true,
+            "sourceColumn": "Suorituspäivämäärä",
+            "formatString": "General Date",
+            "sourceProviderType": "DBTimeStamp"
+          },
+          {
+            "name": "Suoritusvuosi",
+            "dataType": "int64",
+            "sourceColumn": "Suoritusvuosi",
+            "sourceProviderType": "Integer",
+            "displayFolder": "Aikamuuttujat"
+          },
+          {
+            "name": "Suorituskuukausi",
+            "dataType": "int64",
+            "sourceColumn": "Suorituskuukausi",
+            "sourceProviderType": "Integer",
+            "displayFolder": "Aikamuuttujat"
+          },
+          {
+            "name": "Ajankohta järjestys",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "Ajankohta järjestys"
+          },
+          {
+            "name": "Ammattikorkeakoulu",
+            "dataType": "string",
+            "sourceColumn": "Ammattikorkeakoulu",
+            "displayFolder": "Organisaatiomuuttujat"
+          },
+          {
+            "name": "Koulutustyyppi_koodi",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "Koulutustyyppi_koodi",
+            "sourceProviderType": "Integer"
+          },
+          {
             "name": "Ulkomaanharjoittelu",
             "dataType": "int64",
             "isHidden": true,
@@ -176,12 +188,6 @@
             "sourceColumn": "Ammattikorkeakoulu_koodi"
           },
           {
-            "name": "Ammattikorkeakoulu",
-            "dataType": "string",
-            "sourceColumn": "Ammattikorkeakoulu",
-            "displayFolder": "Organisaatiomuuttujat"
-          },
-          {
             "name": "Koulutusala_koodi",
             "dataType": "int64",
             "isHidden": true,
@@ -192,11 +198,6 @@
             "dataType": "string",
             "sourceColumn": "Koulutusala",
             "displayFolder": "Koulutusmuuttujat"
-          },
-          {
-            "name": "Ajankohta järjestys",
-            "dataType": "int64",
-            "sourceColumn": "Ajankohta järjestys"
           },
           {
             "name": "Tietojen_ajankohta2",
@@ -213,12 +214,13 @@
           },
           {
             "type": "calculated",
-            "name": "Tietojen_ajankohta",
+            "name": "Tietojen ajankohta",
             "dataType": "string",
             "isDataTypeInferred": false,
             "isNullable": false,
             "expression": "IF(Muuttujat[Tietojen_ajankohta2]=MAX([Tietojen_ajankohta2]),\"Uusin\",FORMAT(Muuttujat[Tietojen_ajankohta2],\"dd.mm.yyyy\"))",
-            "sortByColumn": "Ajankohta järjestys"
+            "sortByColumn": "Ajankohta järjestys",
+            "displayFolder": "Aikamuuttujat"
           }
         ],
         "partitions": [
@@ -789,69 +791,82 @@
         "measures": [
           {
             "name": "Perustutkinto-opiskelijat",
-            "expression": "sum(Muuttujat[perustutk_opiskelijat])"
+            "expression": "sum(Muuttujat[perustutk_opiskelijat])",
+            "formatString": "#,0"
           },
           {
             "name": "Vieraskieliset suoritukset",
-            "expression": "SUM(Muuttujat[vierask_suoritukset])"
+            "expression": "SUM(Muuttujat[vierask_suoritukset])",
+            "formatString": "#,0"
           },
           {
             "name": "Kansainvälinen vaihto",
-            "expression": "SUM(Muuttujat[kansainv_vaihto])"
+            "expression": "SUM(Muuttujat[kansainv_vaihto])",
+            "formatString": "#,0"
           },
           {
             "name": "Korkeakoulujen yhteistyö",
-            "expression": "SUM(Muuttujat[kk_yhteistyo])"
+            "expression": "SUM(Muuttujat[kk_yhteistyo])",
+            "formatString": "#,0"
           },
           {
             "name": "Avoin korkeakoulu",
-            "expression": "sum(Muuttujat[avoin_kk])"
+            "expression": "sum(Muuttujat[avoin_kk])",
+            "formatString": "#,0"
           },
           {
             "name": "Erillinen opinto-oikeus",
-            "expression": "sum(Muuttujat[erillinen_opinto_oikeus])"
+            "expression": "sum(Muuttujat[erillinen_opinto_oikeus])",
+            "formatString": "#,0"
           },
           {
             "name": "Ulkomailta hyväksiluetut",
-            "expression": "SUM(Muuttujat[ulkomailta_hyv_luet])"
+            "expression": "SUM(Muuttujat[ulkomailta_hyv_luet])",
+            "formatString": "#,0"
           },
           {
             "name": "Maahanmuuttajien valmentava koulutus",
-            "expression": "sum(Muuttujat[maahanm_val_koulutus])"
+            "expression": "sum(Muuttujat[maahanm_val_koulutus])",
+            "formatString": "#,0"
           },
           {
             "name": "TKI toiminnan laajuus",
-            "expression": "sum(Muuttujat[TKI_toiminnan_laajuus])"
+            "expression": "sum(Muuttujat[TKI_toiminnan_laajuus])",
+            "formatString": "#,0"
           },
           {
             "name": "TKI muut laajuus",
-            "expression": "sum(Muuttujat[TKI_muut_laajuus])"
+            "expression": "sum(Muuttujat[TKI_muut_laajuus])",
+            "formatString": "#,0"
           },
           {
             "name": "TKI harjoittelun laajuus",
-            "expression": "sum(Muuttujat[TKI_harjoittelun_laajuus])"
+            "expression": "sum(Muuttujat[TKI_harjoittelun_laajuus])",
+            "formatString": "#,0"
           },
           {
             "name": "Ulkomaanharjoittelut",
-            "expression": "sum(Muuttujat[Ulkomaanharjoittelu])"
+            "expression": "sum(Muuttujat[Ulkomaanharjoittelu])",
+            "formatString": "#,0"
           },
           {
             "name": "Erikoistumiskoulutukset",
-            "expression": "sum(Muuttujat[Erikoistumiskoulutus])"
+            "expression": "sum(Muuttujat[Erikoistumiskoulutus])",
+            "formatString": "#,0"
           }
         ],
         "annotations": [
           {
-            "name": "_TM_ExtProp_QueryDefinition",
-            "value": " SELECT [dw].[v_virta_otp_opintopiste_pvm_amk].[Tilastovuosi],[dw].[v_virta_otp_opintopiste_pvm_amk].[Suorituspäivämäärä],[dw].[v_virta_otp_opintopiste_pvm_amk].[Suoritusvuosi],[dw].[v_virta_otp_opintopiste_pvm_amk].[Suorituskuukausi],[dw].[v_virta_otp_opintopiste_pvm_amk].[Suorituspäivä],[dw].[v_virta_otp_opintopiste_pvm_amk].[Koulutusala_koodi],[dw].[v_virta_otp_opintopiste_pvm_amk].[Koulutusala],[dw].[v_virta_otp_opintopiste_pvm_amk].[Koulutustyyppi_koodi],[dw].[v_virta_otp_opintopiste_pvm_amk].[Koulutustyyppi],[dw].[v_virta_otp_opintopiste_pvm_amk].[Ammattikorkeakoulu_koodi],[dw].[v_virta_otp_opintopiste_pvm_amk].[Ammattikorkeakoulu],[dw].[v_virta_otp_opintopiste_pvm_amk].[Lukumaara],[dw].[v_virta_otp_opintopiste_pvm_amk].[Perustutk_opiskelijat],[dw].[v_virta_otp_opintopiste_pvm_amk].[Vierask_suoritukset],[dw].[v_virta_otp_opintopiste_pvm_amk].[Kansainv_vaihto],[dw].[v_virta_otp_opintopiste_pvm_amk].[Kk_yhteistyo],[dw].[v_virta_otp_opintopiste_pvm_amk].[Avoin_kk],[dw].[v_virta_otp_opintopiste_pvm_amk].[Erillinen_opinto_oikeus],[dw].[v_virta_otp_opintopiste_pvm_amk].[Ulkomailta_hyv_luet],[dw].[v_virta_otp_opintopiste_pvm_amk].[Maahanm_val_koulutus],[dw].[v_virta_otp_opintopiste_pvm_amk].[TKI_toiminnan_laajuus],[dw].[v_virta_otp_opintopiste_pvm_amk].[TKI_muut_laajuus],[dw].[v_virta_otp_opintopiste_pvm_amk].[TKI_harjoittelun_laajuus],[dw].[v_virta_otp_opintopiste_pvm_amk].[Ulkomaanharjoittelu],[dw].[v_virta_otp_opintopiste_pvm_amk].[Erikoistumiskoulutus],[dw].[v_virta_otp_opintopiste_pvm_amk].[Tietojen_ajankohta2],[dw].[v_virta_otp_opintopiste_pvm_amk].[Ajankohta järjestys] FROM [dw].[v_virta_otp_opintopiste_pvm_amk] "
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dw"
           },
           {
             "name": "_TM_ExtProp_DbTableName",
             "value": "v_virta_otp_opintopiste_pvm_amk"
           },
           {
-            "name": "_TM_ExtProp_DbSchemaName",
-            "value": "dw"
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [dw].[v_virta_otp_opintopiste_pvm_amk].[Tilastovuosi],[dw].[v_virta_otp_opintopiste_pvm_amk].[Suorituspäivämäärä],[dw].[v_virta_otp_opintopiste_pvm_amk].[Suoritusvuosi],[dw].[v_virta_otp_opintopiste_pvm_amk].[Suorituskuukausi],[dw].[v_virta_otp_opintopiste_pvm_amk].[Suorituspäivä],[dw].[v_virta_otp_opintopiste_pvm_amk].[Koulutusala_koodi],[dw].[v_virta_otp_opintopiste_pvm_amk].[Koulutusala],[dw].[v_virta_otp_opintopiste_pvm_amk].[Koulutustyyppi_koodi],[dw].[v_virta_otp_opintopiste_pvm_amk].[Koulutustyyppi],[dw].[v_virta_otp_opintopiste_pvm_amk].[Ammattikorkeakoulu_koodi],[dw].[v_virta_otp_opintopiste_pvm_amk].[Ammattikorkeakoulu],[dw].[v_virta_otp_opintopiste_pvm_amk].[Lukumaara],[dw].[v_virta_otp_opintopiste_pvm_amk].[Perustutk_opiskelijat],[dw].[v_virta_otp_opintopiste_pvm_amk].[Vierask_suoritukset],[dw].[v_virta_otp_opintopiste_pvm_amk].[Kansainv_vaihto],[dw].[v_virta_otp_opintopiste_pvm_amk].[Kk_yhteistyo],[dw].[v_virta_otp_opintopiste_pvm_amk].[Avoin_kk],[dw].[v_virta_otp_opintopiste_pvm_amk].[Erillinen_opinto_oikeus],[dw].[v_virta_otp_opintopiste_pvm_amk].[Ulkomailta_hyv_luet],[dw].[v_virta_otp_opintopiste_pvm_amk].[Maahanm_val_koulutus],[dw].[v_virta_otp_opintopiste_pvm_amk].[TKI_toiminnan_laajuus],[dw].[v_virta_otp_opintopiste_pvm_amk].[TKI_muut_laajuus],[dw].[v_virta_otp_opintopiste_pvm_amk].[TKI_harjoittelun_laajuus],[dw].[v_virta_otp_opintopiste_pvm_amk].[Ulkomaanharjoittelu],[dw].[v_virta_otp_opintopiste_pvm_amk].[Erikoistumiskoulutus],[dw].[v_virta_otp_opintopiste_pvm_amk].[Tietojen_ajankohta2],[dw].[v_virta_otp_opintopiste_pvm_amk].[Ajankohta järjestys] FROM [dw].[v_virta_otp_opintopiste_pvm_amk] "
           },
           {
             "name": "TableWidgetSerialization",
@@ -1414,12 +1429,14 @@
           {
             "name": "Sarakeleveys",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "Sarakeleveys",
             "sourceProviderType": "Char"
           },
           {
             "name": "leveys",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "leveys",
             "sourceProviderType": "Char"
           }
@@ -1436,16 +1453,16 @@
         ],
         "annotations": [
           {
-            "name": "_TM_ExtProp_QueryDefinition",
-            "value": " SELECT [dw].[Sarakeleveys].* FROM [dw].[Sarakeleveys] "
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dw"
           },
           {
             "name": "_TM_ExtProp_DbTableName",
             "value": "Sarakeleveys"
           },
           {
-            "name": "_TM_ExtProp_DbSchemaName",
-            "value": "dw"
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [dw].[Sarakeleveys].* FROM [dw].[Sarakeleveys] "
           }
         ]
       }
@@ -1479,7 +1496,7 @@
                 "name": "Tilastovuosi"
               },
               {
-                "name": "Tietojen_ajankohta"
+                "name": "Tietojen ajankohta"
               }
             ],
             "measures": [
@@ -1580,6 +1597,10 @@
           {
             "memberName": "DWI\\P_VIPU_SSAS_DB_R_TK",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1754"
+          },
+          {
+            "memberName": "NT AUTHORITY\\IUSR",
+            "memberId": "S-1-5-17"
           }
         ]
       }
