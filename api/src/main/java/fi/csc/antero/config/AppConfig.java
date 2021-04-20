@@ -2,7 +2,7 @@ package fi.csc.antero.config;
 
 import com.querydsl.sql.H2Templates;
 import com.querydsl.sql.SQLQueryFactory;
-import com.querydsl.sql.SQLServer2012Templates;
+import com.querydsl.sql.SQLServer2016Templates;
 import com.querydsl.sql.SQLTemplates;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,7 +24,7 @@ public class AppConfig {
     @Bean
     @Profile("prod")
     public SQLQueryFactory getMSSQLQueryFactory(@Qualifier("dataSource") @Autowired DataSource dataSource) {
-        return getSqlQueryFactory(dataSource, new SQLServer2012Templates());
+        return getSqlQueryFactory(dataSource, new SQLServer2016Templates());
     }
 
     private SQLQueryFactory getSqlQueryFactory(@Qualifier("dataSource") @Autowired DataSource dataSource, SQLTemplates templates) {
