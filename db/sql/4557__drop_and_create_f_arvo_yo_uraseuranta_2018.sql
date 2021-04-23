@@ -59,7 +59,7 @@ CREATE TABLE [dw].[f_arvo_yo_uraseuranta_2018](
 	[Utbildningens språk] [varchar](30) NOT NULL,
 	[Utbildningens kommun] [varchar](30) NOT NULL,
 	[Utbildningens landskap] [varchar](30) NOT NULL,
-	[kysely_sv] [varchar](13) NOT NULL,
+	[kysely_sv] [varchar](30) NOT NULL,
 	[Frågegrupp] [nvarchar](max) NULL,
 	[Fråga] [nvarchar](500) NULL,
 	[Flervalsalternativ] [varchar](3000) NULL,
