@@ -12,5 +12,3 @@ set tutkintolaji_tyollistymiseen = 'Ammatillinen perustutkinto (näyttötutkinto
 ,tutkintolaji_tyollistymiseen_SV = 'Grundläggande yrkesexamen (fristående examen)'
 ,tutkintolaji_tyollistymiseen_EN = 'Vocational upper secondary qualification (competence-based)'
 where tutkintolaji_tyollistymiseen_koodi = '05'
-
-go
