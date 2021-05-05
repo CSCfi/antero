@@ -2099,6 +2099,15 @@
           {
             "name": "henkilo_cum_sum",
             "expression": " SUMX(SUMMARIZE(Muuttujat,[henkilo_id],[cum_sum]),[cum_sum])"
+          },
+          {
+            "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)",
+            "expression": [
+              "",
+              "var summa =  Calculate(DISTINCTCOUNT([henkilo_id]),  Muuttujat[jarjestamismuoto_koodi] = \"JM02\" || Muuttujat[jarjestamismuoto_koodi] = \"JM03\" || Muuttujat[jarjestamismuoto_koodi] = \"JM04\" || Muuttujat[jarjestamismuoto_koodi] = \"JM05\")",
+              "return IF(summa = 0, BLANK(), IF(summa < 5, \"\", MROUND(summa, 3)))",
+              ""
+            ]
           }
         ],
         "annotations": [
@@ -3825,6 +3834,15 @@
               },
               {
                 "name": "yritysmuoto_ryhma_fi"
+              },
+              {
+                "name": "jarjestamismuoto_en"
+              },
+              {
+                "name": "jarjestamismuoto_fi"
+              },
+              {
+                "name": "jarjestamismuoto_sv"
               }
             ],
             "measures": [
@@ -3896,6 +3914,9 @@
               },
               {
                 "name": "Yksityisen vakan kumulatiivinen summa"
+              },
+              {
+                "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)"
               }
             ]
           }
