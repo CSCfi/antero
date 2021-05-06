@@ -2083,7 +2083,10 @@
           },
           {
             "name": "Kunnallisen vakan kumulatiivinen summa",
-            "expression": " CALCULATE( sumx(VALUES(Muuttujat[cum_sum]), calculate(MAX([cum_sum]),GROUPBY(Muuttujat,[henkilo_id],[cum_sum]))), filter(Muuttujat, [jarjestamismuoto_koodi]= \"JM01\" || [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"))"
+            "expression": [
+              " ",
+              "CALCULATe([henkilo_cum_sum], filter(Muuttujat, [jarjestamismuoto_koodi]= \"JM01\" || [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"))"
+            ]
           },
           {
             "name": "Palveluseteli ja ostopalvelun kumulatiivinen summa",
@@ -2091,7 +2094,20 @@
           },
           {
             "name": "Yksityisen vakan kumulatiivinen summa",
-            "expression": " CALCULATE( sumx(VALUES(Muuttujat[cum_sum]), calculate(MAX([cum_sum]),GROUPBY(Muuttujat,[henkilo_id],[cum_sum]))), filter(Muuttujat, [jarjestamismuoto_koodi] = \"JM04\" || [jarjestamismuoto_koodi] = \"JM05\"))"
+            "expression": " CALCULATE([henkilo_cum_sum], filter(Muuttujat, [jarjestamismuoto_koodi] = \"JM04\" || [jarjestamismuoto_koodi] = \"JM05\"))"
+          },
+          {
+            "name": "henkilo_cum_sum",
+            "expression": " SUMX(SUMMARIZE(Muuttujat,[henkilo_id],[cum_sum]),[cum_sum])"
+          },
+          {
+            "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)",
+            "expression": [
+              "",
+              "var summa =  Calculate(DISTINCTCOUNT([henkilo_id]),  Muuttujat[jarjestamismuoto_koodi] = \"JM02\" || Muuttujat[jarjestamismuoto_koodi] = \"JM03\" || Muuttujat[jarjestamismuoto_koodi] = \"JM04\" || Muuttujat[jarjestamismuoto_koodi] = \"JM05\")",
+              "return IF(summa = 0, BLANK(), IF(summa < 5, \"\", MROUND(summa, 3)))",
+              ""
+            ]
           }
         ],
         "annotations": [
@@ -3818,6 +3834,15 @@
               },
               {
                 "name": "yritysmuoto_ryhma_fi"
+              },
+              {
+                "name": "jarjestamismuoto_en"
+              },
+              {
+                "name": "jarjestamismuoto_fi"
+              },
+              {
+                "name": "jarjestamismuoto_sv"
               }
             ],
             "measures": [
@@ -3889,6 +3914,9 @@
               },
               {
                 "name": "Yksityisen vakan kumulatiivinen summa"
+              },
+              {
+                "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)"
               }
             ]
           }
@@ -3913,7 +3941,7 @@
             "memberId": "S-1-5-17"
           },
           {
-            "memberName": "DWI\\t_viputk_kuutio",
+            "memberName": "DWI\\T_VIPUTK_KUUTIO",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1263"
           }
         ]
