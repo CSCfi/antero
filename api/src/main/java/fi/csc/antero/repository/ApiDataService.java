@@ -137,7 +137,7 @@ public class ApiDataService {
         if (StringUtils.isEmpty(sort)) {
 			sort = "(+" + configService.getDefaultOrderColumn() + ")";
 		} else if (!StringUtils.isEmpty(sort)) {
-			sort = sort + ", (+" + configService.getDefaultOrderColumn() + ")";
+			sort = sort.substring(0, sort.length()-2) + ",+" + configService.getDefaultOrderColumn() + ")";
 		} 
 
         DefaultSortParser sortParser = new DefaultSortParser();
