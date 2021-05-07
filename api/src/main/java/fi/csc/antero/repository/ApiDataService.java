@@ -176,6 +176,7 @@ public class ApiDataService {
             }
             pathMap.put(column.getApiName(), path);
         }
+		pathMap.put("defaultorder", Expressions.stringPath("defaultorder"));
         return pathMap;
     }
 
