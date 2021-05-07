@@ -47,7 +47,7 @@ def load(sqlfile,migrate,verbose=False):
       loadsql(sqlfile,verbose)
     else:
       number_last = None
-      result = dboperator.get("select max(number) as number from dbo.migration where phase='%s'"%(migrate))
+      result = dboperator.get("select max(number) as number from antero.dbo.migration where phase='%s'"%(migrate))
       if result[0]["number"] is not None:
         number_last = int(result[0]["number"])
 
@@ -56,7 +56,7 @@ def load(sqlfile,migrate,verbose=False):
       if number_last is None or number_togo > number_last:
         show("Migrating from %s to %s"%(number_last,number_togo))
         loadsql(sqlfile,verbose)
-        result = dboperator.execute("insert into migration (phase,number) values ('%s',%s)"%(migrate,number_togo))
+        result = dboperator.execute("insert into antero.dbo.migration (phase,number) values ('%s',%s)"%(migrate,number_togo))
         if (result!=1):
             show(result)
             exit(2)

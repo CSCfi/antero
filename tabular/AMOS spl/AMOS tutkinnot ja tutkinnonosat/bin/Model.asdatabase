@@ -556,6 +556,12 @@
             "dataType": "double",
             "isHidden": true,
             "sourceColumn": "painotettu_tutkinnon_osien_osaamispisteet_erityistuki_hyv"
+          },
+          {
+            "name": "Luvaton koulutus totuusarvo",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "Luvaton koulutus totuusarvo"
           }
         ],
         "partitions": [
@@ -1227,6 +1233,14 @@
                   "        <int>397</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Luvaton koulutus totuusarvo</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>214</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -1877,6 +1891,14 @@
                   "        <int>80</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Luvaton koulutus totuusarvo</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>81</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -2328,6 +2350,14 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Luvaton koulutus totuusarvo</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -2650,6 +2680,58 @@
             "displayFolder": "Painottamattomat"
           },
           {
+            "name": "Erityisen tuen mukaan painotetut tutkintojen pisteet_testi",
+            "expression": [
+              "",
+              "var summa_perus=CALCULATE(SUM(Muuttujat[painotettu_tutkinnot_erityistuki]),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "var summa_hyv=CALCULATE(SUM(Muuttujat[painotettu_tutkinnot_erityistuki_hyv]),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "var erotus=summa_perus-summa_hyv",
+              "var luvaton=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])<>\"1\",1,0),0)",
+              "var siirretaan_hyvaksytyksi=IF(ISFILTERED(Muuttujat[Luvaton korotustekijä]),CALCULATE(SUM([painotettu_tutkinnot_erityistuki_hyv]),Muuttujat[jarj_luvaton_korotustekija]<>\"1\",ALL(Muuttujat[Luvaton korotustekijä])),0)",
+              "var korotusehto=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"1\",1,0),1)",
+              "",
+              "return IF(summa_perus=0 || korotusehto=0,BLANK(),IF(luvaton=1,erotus,summa_perus+siirretaan_hyvaksytyksi))"
+            ],
+            "formatString": "#,0.00",
+            "isHidden": true
+          },
+          {
+            "name": "Erityisen tuen mukaan painotetut tutkinnon osien osaamispisteet_testi",
+            "expression": [
+              "",
+              "var summa_perus=CALCULATE(SUM(Muuttujat[painotettu_tutkinnon_osien_osaamispisteet_erityistuki]),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "var summa_hyv=CALCULATE(SUM(Muuttujat[painotettu_tutkinnon_osien_osaamispisteet_erityistuki_hyv]),ALL(Muuttujat[Luvaton korotustekijä]))",
+              "var erotus=summa_perus-summa_hyv",
+              "var luvaton=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])<>\"1\",1,0),0)",
+              "var siirretaan_hyvaksytyksi=IF(ISFILTERED(Muuttujat[Luvaton korotustekijä]),CALCULATE(SUM([painotettu_tutkinnon_osien_osaamispisteet_erityistuki_hyv]),Muuttujat[jarj_luvaton_korotustekija]<>\"1\",ALL(Muuttujat[Luvaton korotustekijä])),0)",
+              "var korotusehto=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"1\",1,0),1)",
+              "var summa=SUM([painotettu_tutkinnon_osien_osaamispisteet_erityistuki])",
+              "return IF(summa_perus=0 || korotusehto=0,BLANK(),IF(luvaton=1,erotus,summa_perus+siirretaan_hyvaksytyksi))",
+              ""
+            ],
+            "formatString": "#,0.00",
+            "isHidden": true
+          },
+          {
+            "name": "korotusehto",
+            "expression": [
+              "IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"1\",1,0),1)",
+              ""
+            ],
+            "isHidden": true
+          },
+          {
+            "name": "Laskentaan hyväksytyt painotetut osaamispisteet %",
+            "expression": [
+              "",
+              "DIVIDE(",
+              "\t[Laskentaan hyväksytyt painotetut osaamispisteet]",
+              "\t,CALCULATE([Laskentaan hyväksytyt painotetut osaamispisteet],ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusmuoto]),Muuttujat[Tilastovuosi])",
+              ")"
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %"
+          },
+          {
             "name": "Tutkintojen ja tutkinnon osien painotetut pisteet, järj. %-osuus OIKAISU",
             "expression": [
               "",
@@ -2717,56 +2799,6 @@
             ],
             "formatString": "0.00 %;-0.00 %;0.00 %",
             "isHidden": true
-          },
-          {
-            "name": "Erityisen tuen mukaan painotetut tutkintojen pisteet_testi",
-            "expression": [
-              "",
-              "var summa_perus=CALCULATE(SUM(Muuttujat[painotettu_tutkinnot_erityistuki]),ALL(Muuttujat[Luvaton korotustekijä]))",
-              "var summa_hyv=CALCULATE(SUM(Muuttujat[painotettu_tutkinnot_erityistuki_hyv]),ALL(Muuttujat[Luvaton korotustekijä]))",
-              "var erotus=summa_perus-summa_hyv",
-              "var luvaton=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])<>\"1\",1,0),0)",
-              "var siirretaan_hyvaksytyksi=IF(ISFILTERED(Muuttujat[Luvaton korotustekijä]),CALCULATE(SUM([painotettu_tutkinnot_erityistuki_hyv]),Muuttujat[jarj_luvaton_korotustekija]<>\"1\",ALL(Muuttujat[Luvaton korotustekijä])),0)",
-              "var korotusehto=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"1\",1,0),1)",
-              "",
-              "return IF(summa_perus=0 || korotusehto=0,BLANK(),IF(luvaton=1,erotus,summa_perus+siirretaan_hyvaksytyksi))"
-            ],
-            "formatString": "#,0.00"
-          },
-          {
-            "name": "Erityisen tuen mukaan painotetut tutkinnon osien osaamispisteet_testi",
-            "expression": [
-              "",
-              "var summa_perus=CALCULATE(SUM(Muuttujat[painotettu_tutkinnon_osien_osaamispisteet_erityistuki]),ALL(Muuttujat[Luvaton korotustekijä]))",
-              "var summa_hyv=CALCULATE(SUM(Muuttujat[painotettu_tutkinnon_osien_osaamispisteet_erityistuki_hyv]),ALL(Muuttujat[Luvaton korotustekijä]))",
-              "var erotus=summa_perus-summa_hyv",
-              "var luvaton=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])<>\"1\",1,0),0)",
-              "var siirretaan_hyvaksytyksi=IF(ISFILTERED(Muuttujat[Luvaton korotustekijä]),CALCULATE(SUM([painotettu_tutkinnon_osien_osaamispisteet_erityistuki_hyv]),Muuttujat[jarj_luvaton_korotustekija]<>\"1\",ALL(Muuttujat[Luvaton korotustekijä])),0)",
-              "var korotusehto=IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"1\",1,0),1)",
-              "var summa=SUM([painotettu_tutkinnon_osien_osaamispisteet_erityistuki])",
-              "return IF(summa_perus=0 || korotusehto=0,BLANK(),IF(luvaton=1,erotus,summa_perus+siirretaan_hyvaksytyksi))",
-              ""
-            ],
-            "formatString": "#,0.00"
-          },
-          {
-            "name": "korotusehto",
-            "expression": [
-              "IF(COUNTROWS(VALUES(Muuttujat[jarj_luvaton_korotustekija]))=1,IF(VALUES(Muuttujat[jarj_luvaton_korotustekija])=\"1\",1,0),1)",
-              ""
-            ],
-            "isHidden": true
-          },
-          {
-            "name": "Laskentaan hyväksytyt painotetut osaamispisteet %",
-            "expression": [
-              "",
-              "DIVIDE(",
-              "\t[Laskentaan hyväksytyt painotetut osaamispisteet]",
-              "\t,CALCULATE([Laskentaan hyväksytyt painotetut osaamispisteet],ALLEXCEPT(Muuttujat,Muuttujat[Rahoitusmuoto]),Muuttujat[Tilastovuosi])",
-              ")"
-            ],
-            "formatString": "0.00 %;-0.00 %;0.00 %"
           }
         ],
         "annotations": [
@@ -3442,6 +3474,14 @@
               "        <int>397</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Luvaton koulutus totuusarvo</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>214</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -4092,6 +4132,14 @@
               "        <int>80</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Luvaton koulutus totuusarvo</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>81</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -4543,6 +4591,14 @@
               "        <boolean>true</boolean>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Luvaton koulutus totuusarvo</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
               "  </ColumnChecked>",
               "  <ColumnFilter />",
               "  <SelectionFilter />",
@@ -4717,6 +4773,9 @@
               },
               {
                 "name": "Koodit Hankintakoulutuksen järjestäjä"
+              },
+              {
+                "name": "Luvaton koulutus totuusarvo"
               }
             ],
             "measures": [
