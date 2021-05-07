@@ -135,8 +135,10 @@ public class ApiDataService {
     private OrderSpecifier[] createOrderSpecifiers(String table, String sort) {
         final OrderSpecifier[] orderSpecifiers = {};
         if (StringUtils.isEmpty(sort)) {
-            sort = "(+" + configService.getDefaultOrderColumn() + ")";
-        }
+			sort = "(+" + configService.getDefaultOrderColumn() + ")";
+		} else if (!StringUtils.isEmpty(sort)) {
+			sort = sort + ", (+" + configService.getDefaultOrderColumn() + ")";
+		} 
 
         DefaultSortParser sortParser = new DefaultSortParser();
         try {
