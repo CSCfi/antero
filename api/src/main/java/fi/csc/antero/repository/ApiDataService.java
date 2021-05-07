@@ -135,10 +135,8 @@ public class ApiDataService {
     private OrderSpecifier[] createOrderSpecifiers(String table, String sort) {
         final OrderSpecifier[] orderSpecifiers = {};
         if (StringUtils.isEmpty(sort)) {
-			sort = "(+" + configService.getDefaultOrderColumn() + ")";
-		} else {
-			sort = sort.substring(0, sort.length()-2) + ",+" + configService.getDefaultOrderColumn() + ")";
-		}
+            sort = "(+" + configService.getDefaultOrderColumn() + ")";
+        }
 
         DefaultSortParser sortParser = new DefaultSortParser();
         try {
@@ -176,7 +174,6 @@ public class ApiDataService {
             }
             pathMap.put(column.getApiName(), path);
         }
-		pathMap.put("defaultorder", Expressions.stringPath("defaultorder"));
         return pathMap;
     }
 
