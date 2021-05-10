@@ -700,6 +700,35 @@
             "name": "Julkaisun tekijan rooli",
             "dataType": "string",
             "sourceColumn": "Julkaisun tekijan rooli"
+          },
+          {
+            "type": "calculated",
+            "name": "Rahoitusmalli_jufo_koodi",
+            "dataType": "int64",
+            "isDataTypeInferred": false,
+            "isHidden": true,
+            "expression": [
+              " SWITCH([Koodit Julkaisufoorumitaso_uusi], \"-\", \"-2\", [Koodit Julkaisufoorumitaso_uusi])",
+              ""
+            ]
+          },
+          {
+            "type": "calculated",
+            "name": "Rahoitusmalli_suodatin",
+            "dataType": "int64",
+            "isDataTypeInferred": true,
+            "expression": [
+              " ",
+              "",
+              "var taulu = CALCULATETABLE(SUMMARIZE(Muuttujat, Muuttujat[Tilastovuosi], \"Maksimi\", MAX(Muuttujat[Rahoitusmalli_jufo_koodi])), ALLEXCEPT(Muuttujat, Muuttujat[Tilastovuosi]))",
+              "",
+              "var arvo = MAXX(taulu,[Maksimi])",
+              "",
+              "return",
+              "",
+              "IF(arvo < 0, 0, 1)",
+              ""
+            ]
           }
         ],
         "partitions": [
