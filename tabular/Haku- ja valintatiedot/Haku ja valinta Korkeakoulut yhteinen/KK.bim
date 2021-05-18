@@ -2557,9 +2557,14 @@
             "name": "Uusien ylioppilaiden osuus, ensisijaiset hakijat (I sykli)",
             "expression": [
               "",
-              "var uusi_yo = CALCULATE([Ensisijaiset hakijat],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1,Muuttujat[uusi ylioppilas2]=1)",
+              "var osa = CALCULATE([Ensisijaiset hakijat],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1,Muuttujat[uusi ylioppilas2]=1)",
               "var kaikki = CALCULATE([Ensisijaiset hakijat],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
-              "return DIVIDE(uusi_yo,kaikki)"
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
+              ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Uudet ylioppilaat"
@@ -2568,9 +2573,14 @@
             "name": "Uusien ylioppilaiden osuus, hakijat (I sykli)",
             "expression": [
               "",
-              "var uusi_yo = CALCULATE([Kaikki hakijat],Muuttujat[uusi ylioppilas2]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
+              "var osa = CALCULATE([Kaikki hakijat],Muuttujat[uusi ylioppilas2]=1,Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
               "var kaikki = CALCULATE([Kaikki hakijat],Muuttujat[Tutkinnon aloitussykli hakukohde järjestys]=1)",
-              "return DIVIDE(uusi_yo,kaikki)",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
+              "",
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
