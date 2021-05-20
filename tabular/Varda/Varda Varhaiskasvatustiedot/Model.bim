@@ -119,6 +119,7 @@
             "name": "ikäryhmä",
             "dataType": "string",
             "sourceColumn": "ikäryhmä",
+            "sortByColumn": "ikäryhmä_jarj",
             "sourceProviderType": "Char"
           },
           {
@@ -426,6 +427,7 @@
           {
             "name": "ikäryhmä_jarj",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "ikäryhmä_jarj",
             "sourceProviderType": "Integer"
           },
@@ -474,6 +476,7 @@
           {
             "name": "maksun_luokka_jarjestys_nro",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "maksun_luokka_jarjestys_nro",
             "sourceProviderType": "Integer"
           },
@@ -517,7 +520,14 @@
           {
             "name": "toimintamuoto_jarj",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "toimintamuoto_jarj"
+          },
+          {
+            "name": "tilastointi",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "tilastointi"
           }
         ],
         "partitions": [
@@ -1133,6 +1143,14 @@
                   "        <int>63</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>tilastointi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>73</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -1727,12 +1745,28 @@
                   "        <int>73</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>tilastointi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>74</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
                   "    <item>",
                   "      <key>",
                   "        <string>toimintamuoto_jarj</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>tilastointi</string>",
                   "      </key>",
                   "      <value>",
                   "        <boolean>true</boolean>",
@@ -1754,7 +1788,7 @@
             "name": "Lasten lukumäärä",
             "expression": [
               "",
-              "var lkm = calculate(DISTINCTCOUNT(Muuttujat[henkilo_id]),Muuttujat[henkilo_id]<>BLANK())",
+              "var lkm = calculate(DISTINCTCOUNT(Muuttujat[henkilo_id]),Muuttujat[henkilo_id]<>BLANK(),Muuttujat[tilastointi]=1)",
               "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
             ],
             "formatString": "#,0",
@@ -1809,42 +1843,42 @@
           },
           {
             "name": "Kuntien asiakasmaksu min",
-            "expression": "ROUND(MINX(FILTER(Muuttujat, [jarjestamismuoto_koodi] = \"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"),[asiakasmaksu]), 0)",
+            "expression": "ROUND(MINX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\") && [tilastointi] = 1),[asiakasmaksu]), 0)",
             "displayFolder": "Mittarit"
           },
           {
             "name": "Kuntien asiakasmaksu max",
-            "expression": "ROUND(MAXX(FILTER(Muuttujat, [jarjestamismuoto_koodi] = \"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"),[asiakasmaksu]), 0)",
+            "expression": "ROUND(MAXX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\")&& [tilastointi] = 1),[asiakasmaksu]), 0)",
             "displayFolder": "Mittarit"
           },
           {
             "name": "Kuntien asiakasmaksu mediaani",
-            "expression": " ROUND(MEDIANX(FILTER(Muuttujat,  [jarjestamismuoto_koodi] = \"JM01\" || [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\" && [asiakasmaksu] <> BLANK()),[asiakasmaksu]), 0)",
+            "expression": "ROUND(MEDIANX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM01\" || [jarjestamismuoto_koodi] = \"JM03\") && NOT(ISBLANK([asiakasmaksu])) && [tilastointi] = 1),[asiakasmaksu]), 0)",
             "displayFolder": "Mittarit"
           },
           {
             "name": "Kuntien asiakasmaksu keskiarvo",
-            "expression": "ROUND(AVERAGEX(FILTER(Muuttujat, [jarjestamismuoto_koodi] = \"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"),[asiakasmaksu]), 0)",
+            "expression": "ROUND(AVERAGEX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\") && [tilastointi] = 1),[asiakasmaksu]), 0)",
             "displayFolder": "Mittarit"
           },
           {
             "name": "Yksityisten asiakasmaksu min",
-            "expression": "ROUND(MINX(FILTER(Muuttujat, [jarjestamismuoto_koodi] = \"JM04\" || [jarjestamismuoto_koodi] = \"JM05\"),[asiakasmaksu]), 0)",
+            "expression": "ROUND(MINX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM04\" || [jarjestamismuoto_koodi] = \"JM05\")&& [tilastointi] = 1),[asiakasmaksu]), 0)",
             "displayFolder": "Mittarit"
           },
           {
             "name": "Yksityisten asiakasmaksu max",
-            "expression": "ROUND(MAXX(FILTER(Muuttujat, [jarjestamismuoto_koodi] = \"JM04\" || [jarjestamismuoto_koodi] = \"JM05\"),[asiakasmaksu]), 0)",
+            "expression": "ROUND(MAXX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM04\" || [jarjestamismuoto_koodi] = \"JM05\") && [tilastointi] = 1),[asiakasmaksu]), 0)",
             "displayFolder": "Mittarit"
           },
           {
             "name": "Yksityisten asiakasmaksu mediaani",
-            "expression": "ROUND(MEDIANX(FILTER(Muuttujat,  [jarjestamismuoto_koodi] = \"JM04\" || [jarjestamismuoto_koodi] = \"JM05\"),[asiakasmaksu]), 0)",
+            "expression": "ROUND(MEDIANX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM04\" || [jarjestamismuoto_koodi] = \"JM05\") && NOT(ISBLANK([asiakasmaksu])) &&[tilastointi] = 1),[asiakasmaksu]), 0)",
             "displayFolder": "Mittarit"
           },
           {
             "name": "Yksityisten asiakasmaksu keskiarvo",
-            "expression": "ROUND(AVERAGEX(FILTER(Muuttujat,  [jarjestamismuoto_koodi] = \"JM04\" || [jarjestamismuoto_koodi] = \"JM05\"),[asiakasmaksu]), 0)",
+            "expression": "ROUND(AVERAGEX(FILTER(Muuttujat,  ([jarjestamismuoto_koodi] = \"JM04\" || [jarjestamismuoto_koodi] = \"JM05\") && [tilastointi] = 1),[asiakasmaksu]), 0)",
             "displayFolder": "Mittarit"
           },
           {
@@ -1855,6 +1889,7 @@
               "return IF(summa = 0, BLANK(), IF(summa < 5, \"\", MROUND(summa, 3)))",
               ""
             ],
+            "formatString": "#,0",
             "displayFolder": "Mittarit"
           },
           {
@@ -1865,6 +1900,7 @@
               "return IF(summa = 0, BLANK(), IF(summa < 5, \"\", MROUND(summa, 3)))",
               ""
             ],
+            "formatString": "#,0",
             "displayFolder": "Mittarit"
           },
           {
@@ -1875,6 +1911,7 @@
               "return IF(summa = 0, BLANK(), IF(summa < 5, \"\", MROUND(summa, 3)))",
               ""
             ],
+            "formatString": "#,0",
             "displayFolder": "Mittarit"
           },
           {
@@ -1884,23 +1921,26 @@
               "var summa =   Calculate(DISTINCTCOUNT([maksutieto_id]), Muuttujat[jarjestamismuoto_koodi] = \"JM04\" || Muuttujat[jarjestamismuoto_koodi] = \"JM05\",Muuttujat[yritystyyppi]=\"Yksityinen\")",
               "return IF(summa = 0, BLANK(), IF(summa < 5, \"\", MROUND(summa, 3)))"
             ],
+            "formatString": "#,0",
             "displayFolder": "Mittarit"
           },
           {
             "name": "Palveluseteli min",
-            "expression": "ROUND(MINX(FILTER(Muuttujat, [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"),[palveluseteli_arvo]), 0)"
+            "expression": "ROUND(MINX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\") && [tilastointi] = 1),[palveluseteli_arvo]), 0)"
           },
           {
             "name": "Palveluseteli max",
-            "expression": "ROUND(MAXX(FILTER(Muuttujat, [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"),[palveluseteli_arvo]), 0)"
+            "expression": "ROUND(MAXX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\") && [tilastointi] = 1),[palveluseteli_arvo]), 0)",
+            "formatString": "#,0"
           },
           {
             "name": "Palveluseteli mediaani",
-            "expression": "ROUND(MEDIANX(FILTER(Muuttujat, [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"),[palveluseteli_arvo]), 0)"
+            "expression": "ROUND(MEDIANX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\") && [tilastointi] = 1),[palveluseteli_arvo]), 0)",
+            "formatString": "#,0"
           },
           {
             "name": "Palveluseteli keskiarvo",
-            "expression": "ROUND(AVERAGEX(FILTER(Muuttujat, [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"),[palveluseteli_arvo]), 0)"
+            "expression": "ROUND(AVERAGEX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\") && [tilastointi] = 1),[palveluseteli_arvo]), 0)"
           },
           {
             "name": "Palvelusetelillä lapsia",
@@ -1909,7 +1949,8 @@
               " var summa = Calculate(DISTINCTCOUNT([henkilo_id]), FILTER(Muuttujat, [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"))",
               "return IF(summa = 0, BLANK(), IF(summa < 5, \"\", MROUND(summa, 3)))",
               ""
-            ]
+            ],
+            "formatString": "#,0"
           },
           {
             "name": "Palvelusetelillä maksuja",
@@ -1918,15 +1959,18 @@
               "var summa =  Calculate(DISTINCTCOUNT([maksutieto_id]), FILTER(Muuttujat, [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"))",
               "return IF(summa = 0, BLANK(), IF(summa < 5, \"\", MROUND(summa, 3)))",
               ""
-            ]
+            ],
+            "formatString": "#,0"
           },
           {
             "name": "Asiakasmaksun keskiarvo",
-            "expression": "ROUND(AVERAGEX(FILTER(Muuttujat, [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"),[asiakasmaksu]), 0)"
+            "expression": "ROUND(AVERAGEX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\") && [tilastointi] = 1),[asiakasmaksu]), 0)",
+            "formatString": "#,0"
           },
           {
             "name": "% osuus kunnan lapsista",
-            "expression": " Format(DIVIDE([Palvelusetelillä lapsia_s], [Kunnallisia lapsia_s]), \"0.0 %\")"
+            "expression": " Format(DIVIDE([Palvelusetelillä lapsia_s], [Kunnallisia lapsia_s]), \"0.0 %\")",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Palvelusetelillä lapsia_s",
@@ -1947,15 +1991,18 @@
             "expression": [
               " ",
               "CALCULATe([henkilo_cum_sum], filter(Muuttujat, [jarjestamismuoto_koodi]= \"JM01\" || [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"))"
-            ]
+            ],
+            "formatString": "#,0"
           },
           {
             "name": "Palveluseteli ja ostopalvelun kumulatiivinen summa",
-            "expression": " CALCULATE( sumx(VALUES(Muuttujat[cum_sum]), calculate(MAX([cum_sum]),GROUPBY(Muuttujat,[henkilo_id],[cum_sum]))), filter(Muuttujat, [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"))"
+            "expression": " CALCULATE( sumx(VALUES(Muuttujat[cum_sum]), calculate(MAX([cum_sum]),GROUPBY(Muuttujat,[henkilo_id],[cum_sum]))), filter(Muuttujat, [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"))",
+            "formatString": "#,0"
           },
           {
             "name": "Yksityisen vakan kumulatiivinen summa",
-            "expression": " CALCULATE([henkilo_cum_sum], filter(Muuttujat, [jarjestamismuoto_koodi] = \"JM04\" || [jarjestamismuoto_koodi] = \"JM05\"))"
+            "expression": " CALCULATE([henkilo_cum_sum], filter(Muuttujat, [jarjestamismuoto_koodi] = \"JM04\" || [jarjestamismuoto_koodi] = \"JM05\"))",
+            "formatString": "#,0"
           },
           {
             "name": "henkilo_cum_sum",
@@ -2589,6 +2636,14 @@
               "        <int>63</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>tilastointi</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>73</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -3183,6 +3238,14 @@
               "        <int>73</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>tilastointi</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>74</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -3194,2721 +3257,2729 @@
               "        <boolean>true</boolean>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>tilastointi</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
               "  </ColumnChecked>",
               "  <ColumnFilter />",
               "  <SelectionFilter />",
               "  <FilterParameters />",
               "  <IsSortDescending>false</IsSortDescending>",
               "</TableWidgetGridSerialization>]]></AnnotationContent></Gemini>"
-            ]
-          }
-        ]
-      }
-    ],
-    "cultures": [
-      {
-        "name": "fi-FI",
-        "translations": {
-          "model": {
-            "name": "Model",
-            "tables": [
-              {
-                "name": "Muuttujat",
-                "translatedCaption": "Muuttujat",
-                "columns": [
-                  {
-                    "name": "tilastovuosi",
-                    "translatedCaption": "Tilastovuosi",
-                    "translatedDisplayFolder": "Aikamuuttujat"
-                  },
-                  {
-                    "name": "kotikunta_fi",
-                    "translatedCaption": "Kotikunta",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "kotikunta_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "kotikunta_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "kotikunta_koodi",
-                    "translatedCaption": "Kotikuntakoodi",
-                    "translatedDisplayFolder": "Koodimuuttujat"
-                  },
-                  {
-                    "name": "ikä",
-                    "translatedCaption": "Ikä",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "ikäryhmä",
-                    "translatedCaption": "Ikäryhmä",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "aidinkieli_fi",
-                    "translatedCaption": "Äidinkieli",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "aidinkieli_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "aidinkieli_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "sukupuoli_fi",
-                    "translatedCaption": "Sukupuoli",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "sukupuoli_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "sukupuoli_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "jarjestamismuoto_koodi",
-                    "translatedCaption": "Järjestämismuotokoodi",
-                    "translatedDisplayFolder": "Koodimuuttujat"
-                  },
-                  {
-                    "name": "jarjestamismuoto_fi",
-                    "translatedCaption": "Järjestämismuoto",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "jarjestamismuoto_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "jarjestamismuoto_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "vuorohoito_kytkin_fi",
-                    "translatedCaption": "Vuorohoitokytkin",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "vuorohoito_kytkin_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "vuorohoito_kytkin_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "kokopaivainen_vaka_kytkin_fi",
-                    "translatedCaption": "Kokopäiväinen varhaiskasvatus",
-                    "translatedDisplayFolder": "Koodimuuttujat"
-                  },
-                  {
-                    "name": "kokopaivainen_vaka_kytkin_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Koodimuuttujat"
-                  },
-                  {
-                    "name": "kokopaivainen_vaka_kytkin_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Koodimuuttujat"
-                  },
-                  {
-                    "name": "paivittainen_vaka_kytkin_fi",
-                    "translatedCaption": "Päivittäinen varhaiskasvatus",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "paivittainen_vaka_kytkin_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "paivittainen_vaka_kytkin_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "pikakasittely_kytkin_fi",
-                    "translatedCaption": "Pikakäsittely kytkin"
-                  },
-                  {
-                    "name": "pikakasittely_kytkin_en",
-                    "translatedCaption": "."
-                  },
-                  {
-                    "name": "pikakasittely_kytkin_sv",
-                    "translatedCaption": "."
-                  },
-                  {
-                    "name": "tuntimaara_viikossa",
-                    "translatedCaption": "Tuntimäärä viikossa",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "tuntimäärä_asteikko",
-                    "translatedCaption": "Tuntimäärä asteikko",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "vakajarjestaja_nimi",
-                    "translatedCaption": "Varhaiskasvatustoimijan nimi",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "yritysmuoto_fi",
-                    "translatedCaption": "Yritysmuoto",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "yritysmuoto_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "yritysmuoto_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "yritysmuoto_ryhma_fi",
-                    "translatedCaption": "Yritysmuotoryhmä",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "yritystyyppi",
-                    "translatedCaption": "Yritystyyppi",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "vakajarjestaja_kunta_fi",
-                    "translatedCaption": "Varhaiskasvatustoimijan kunta",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "vakajarjestaja_kunta_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "vakajarjestaja_kunta_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "toimipaikka_maakunta_fi",
-                    "translatedCaption": "Toimipaikan maakunta",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "toimipaikka_maakunta_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "toimipaikka_maakunta_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "toimipaikka_kunta_fi",
-                    "translatedCaption": "Toimipaikan kunta",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "toimipaikka_kunta_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "toimipaikka_kunta_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "kasvatusopillinen_jarjestelma_fi",
-                    "translatedCaption": "Kasvatusopillinen järjestelmä",
-                    "translatedDisplayFolder": "Koodimuuttujat"
-                  },
-                  {
-                    "name": "kasvatusopillinen_jarjestelma_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Koodimuuttujat"
-                  },
-                  {
-                    "name": "kasvatusopillinen_jarjestelma_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Koodimuuttujat"
-                  },
-                  {
-                    "name": "toimintamuoto_fi",
-                    "translatedCaption": "Toimintamuoto",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "toimintamuoto_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "toimintamuoto_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "toimipaikkaluokitus_fi",
-                    "translatedCaption": "Toimipaikkaluokitus",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "toimipaikkaluokitus_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "toimipaikkaluokitus_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "maksutieto_id",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Koulutusmuuttujat"
-                  },
-                  {
-                    "name": "maksun_peruste_fi",
-                    "translatedCaption": "Maksun peruste",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "maksun_peruste_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "maksun_peruste_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "maksun_luokka_fi",
-                    "translatedCaption": "Maksun luokka",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "maksun_luokka_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "maksun_luokka_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "palveluseteli_arvo",
-                    "translatedCaption": "Palvelusetelin arvo"
-                  },
-                  {
-                    "name": "asiakasmaksu",
-                    "translatedCaption": "Asiakasmaksu"
-                  },
-                  {
-                    "name": "perheen_koko",
-                    "translatedCaption": "Perheen koko"
-                  },
-                  {
-                    "name": "cum_sum",
-                    "translatedCaption": "Kumulatiivinen summa"
-                  }
-                ],
-                "measures": [
-                  {
-                    "name": "Lasten lukumäärä",
-                    "translatedCaption": "Varhaiskasvatuksessa olevien lasten lukumäärä"
-                  },
-                  {
-                    "name": "poikia",
-                    "translatedCaption": "Poikia"
-                  },
-                  {
-                    "name": "tyttöjä",
-                    "translatedCaption": "Tyttöjä"
-                  },
-                  {
-                    "name": "Lasten osuus varhaiskasvatuksessa",
-                    "translatedCaption": "Lasten osuus koko ikäryhmästä"
-                  },
-                  {
-                    "name": "Kuntien asiakasmaksu min",
-                    "translatedCaption": "Kuntien asiakasmaksun minimiarvo"
-                  },
-                  {
-                    "name": "Kuntien asiakasmaksu max",
-                    "translatedCaption": "Kuntien asiakasmaksun maksimiarvo"
-                  },
-                  {
-                    "name": "Kuntien asiakasmaksu mediaani",
-                    "translatedCaption": "Kuntien asiakasmaksun mediaani"
-                  },
-                  {
-                    "name": "Kuntien asiakasmaksu keskiarvo",
-                    "translatedCaption": "Kuntien asiakasmaksujen keskiarvo"
-                  },
-                  {
-                    "name": "Yksityisten asiakasmaksu min",
-                    "translatedCaption": "Yksityisten asiakasmaksujen minimiarvo"
-                  },
-                  {
-                    "name": "Yksityisten asiakasmaksu max",
-                    "translatedCaption": "Yksityisten asiakasmaksujen maksimiarvo"
-                  },
-                  {
-                    "name": "Yksityisten asiakasmaksu mediaani",
-                    "translatedCaption": "Yksityisten asiakasmaksujen mediaani"
-                  },
-                  {
-                    "name": "Yksityisten asiakasmaksu keskiarvo",
-                    "translatedCaption": "Yksityisten asiakasmaksujen keskiarvo"
-                  },
-                  {
-                    "name": "Kunnallisia lapsia",
-                    "translatedCaption": "Kunnallisia lapsia"
-                  },
-                  {
-                    "name": "Kunnallisia maksuja",
-                    "translatedCaption": "Kunnallisia maksuja"
-                  },
-                  {
-                    "name": "Yksityisiä lapsia",
-                    "translatedCaption": "Yksityisiä lapsia"
-                  },
-                  {
-                    "name": "Yksityisiä maksuja",
-                    "translatedCaption": "Yksityisiä maksuja"
-                  },
-                  {
-                    "name": "Palveluseteli min",
-                    "translatedCaption": "Palvelusetelin minimiarvo"
-                  },
-                  {
-                    "name": "Palveluseteli max",
-                    "translatedCaption": "Palvelusetelin maksimiarvo"
-                  },
-                  {
-                    "name": "Palveluseteli mediaani",
-                    "translatedCaption": "Palvelusetelin mediaani"
-                  },
-                  {
-                    "name": "Palveluseteli keskiarvo",
-                    "translatedCaption": "Palvelusetelin keskiarvo"
-                  },
-                  {
-                    "name": "Palvelusetelillä lapsia",
-                    "translatedCaption": "Palvelusetelillä lapsia"
-                  },
-                  {
-                    "name": "Palvelusetelillä maksuja",
-                    "translatedCaption": "Palvelusetelillä maksuja"
-                  },
-                  {
-                    "name": "Asiakasmaksun keskiarvo",
-                    "translatedCaption": "Asiakasmaksun keskiarvo"
-                  },
-                  {
-                    "name": "% osuus kunnan lapsista",
-                    "translatedCaption": "% osuus kunnan lapsista"
-                  },
-                  {
-                    "name": "Palvelusetelillä lapsia_s",
-                    "translatedCaption": "Palvelusetelillä lapsia_s"
-                  },
-                  {
-                    "name": "Kunnallisia lapsia_s",
-                    "translatedCaption": "Kunnallisia lapsia_s"
-                  },
-                  {
-                    "name": "Kunnallisen vakan kumulatiivinen summa",
-                    "translatedCaption": "Kunnallisen varhaiskasvatuksen kumulatiivinen summa"
-                  },
-                  {
-                    "name": "Palveluseteli ja ostopalvelun kumulatiivinen summa",
-                    "translatedCaption": "Palveluseteli ja ostopalvelun kumulatiivinen summa",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "Yksityisen vakan kumulatiivinen summa",
-                    "translatedCaption": "Yksityisen varhaiskasvatuksen kumulatiivinen summa"
-                  },
-                  {
-                    "name": "henkilo_cum_sum",
-                    "translatedCaption": "Henkilön kumulatiivinen summa"
-                  },
-                  {
-                    "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)",
-                    "translatedCaption": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)"
-                  }
-                ]
+              ]
               }
-            ]
-          }
-        }
-      },
-      {
-        "name": "sv-SE",
-        "translations": {
-          "model": {
-            "name": "Model",
-            "tables": [
-              {
-                "name": "Muuttujat",
-                "translatedCaption": "Variabler",
-                "columns": [
-                  {
-                    "name": "tilastovuosi",
-                    "translatedCaption": "Statistikår",
-                    "translatedDisplayFolder": "Tidsvariabler"
-                  },
-                  {
-                    "name": "kotikunta_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Tidsvariabler"
-                  },
-                  {
-                    "name": "kotikunta_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Tidsvariabler"
-                  },
-                  {
-                    "name": "kotikunta_sv",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Personvariabler"
-                  },
-                  {
-                    "name": "kotikunta_koodi",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Kodvariabler"
-                  },
-                  {
-                    "name": "ikä",
-                    "translatedCaption": "Ålder",
-                    "translatedDisplayFolder": "Personvariabler"
-                  },
-                  {
-                    "name": "ikäryhmä",
-                    "translatedCaption": "Ålder grupp",
-                    "translatedDisplayFolder": "Personvariabler"
-                  },
-                  {
-                    "name": "aidinkieli_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Personvariabler"
-                  },
-                  {
-                    "name": "aidinkieli_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Personvariabler"
-                  },
-                  {
-                    "name": "aidinkieli_sv",
-                    "translatedCaption": "Modersmål",
-                    "translatedDisplayFolder": "Personvariabler"
-                  },
-                  {
-                    "name": "sukupuoli_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Personvariabler"
-                  },
-                  {
-                    "name": "sukupuoli_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Personvariabler"
-                  },
-                  {
-                    "name": "sukupuoli_sv",
-                    "translatedCaption": "Kön",
-                    "translatedDisplayFolder": "Personvariabler"
-                  },
-                  {
-                    "name": "jarjestamismuoto_koodi",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Kodvariabler"
-                  },
-                  {
-                    "name": "jarjestamismuoto_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Personvariabler"
-                  },
-                  {
-                    "name": "jarjestamismuoto_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Personvariabler"
-                  },
-                  {
-                    "name": "jarjestamismuoto_sv",
-                    "translatedCaption": "Formen i vilken utbildningen anordnas",
-                    "translatedDisplayFolder": "Utbildningsvariabler"
-                  },
-                  {
-                    "name": "vuorohoito_kytkin_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Utbildningsvariabler"
-                  },
-                  {
-                    "name": "vuorohoito_kytkin_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Utbildningsvariabler"
-                  },
-                  {
-                    "name": "vuorohoito_kytkin_sv",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Utbildningsvariabler"
-                  },
-                  {
-                    "name": "kokopaivainen_vaka_kytkin_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Utbildningsvariabler"
-                  },
-                  {
-                    "name": "kokopaivainen_vaka_kytkin_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Utbildningsvariabler"
-                  },
-                  {
-                    "name": "kokopaivainen_vaka_kytkin_sv",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Kodvariabler"
-                  },
-                  {
-                    "name": "paivittainen_vaka_kytkin_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Kodvariabler"
-                  },
-                  {
-                    "name": "paivittainen_vaka_kytkin_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Kodvariabler"
-                  },
-                  {
-                    "name": "paivittainen_vaka_kytkin_sv",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Personvariabler"
-                  },
-                  {
-                    "name": "pikakasittely_kytkin_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Personvariabler"
-                  },
-                  {
-                    "name": "pikakasittely_kytkin_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Personvariabler"
-                  },
-                  {
-                    "name": "pikakasittely_kytkin_sv",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "tuntimaara_viikossa",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Personvariabler"
-                  },
-                  {
-                    "name": "tuntimäärä_asteikko",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Personvariabler"
-                  },
-                  {
-                    "name": "vakajarjestaja_nimi",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Utbildningsvariabler"
-                  },
-                  {
-                    "name": "yritysmuoto_fi",
-                    "translatedCaption": "."
-                  },
-                  {
-                    "name": "yritysmuoto_en",
-                    "translatedCaption": "."
-                  },
-                  {
-                    "name": "yritysmuoto_sv",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Utbildningsvariabler"
-                  },
-                  {
-                    "name": "yritysmuoto_ryhma_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Personvariabler"
-                  },
-                  {
-                    "name": "yritystyyppi",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Utbildningsvariabler"
-                  },
-                  {
-                    "name": "vakajarjestaja_kunta_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Utbildningsvariabler"
-                  },
-                  {
-                    "name": "vakajarjestaja_kunta_sv",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Utbildningsvariabler"
-                  },
-                  {
-                    "name": "vakajarjestaja_kunta_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Utbildningsvariabler"
-                  },
-                  {
-                    "name": "toimipaikka_maakunta_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Utbildningsvariabler"
-                  },
-                  {
-                    "name": "toimipaikka_maakunta_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Utbildningsvariabler"
-                  },
-                  {
-                    "name": "toimipaikka_maakunta_sv",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Utbildningsvariabler"
-                  },
-                  {
-                    "name": "toimipaikka_kunta_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Utbildningsvariabler"
-                  },
-                  {
-                    "name": "toimipaikka_kunta_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Utbildningsvariabler"
-                  },
-                  {
-                    "name": "toimipaikka_kunta_sv",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Utbildningsvariabler"
-                  },
-                  {
-                    "name": "kasvatusopillinen_jarjestelma_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Utbildningsvariabler"
-                  },
-                  {
-                    "name": "kasvatusopillinen_jarjestelma_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Utbildningsvariabler"
-                  },
-                  {
-                    "name": "kasvatusopillinen_jarjestelma_sv",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Kodvariabler"
-                  },
-                  {
-                    "name": "toimintamuoto_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Kodvariabler"
-                  },
-                  {
-                    "name": "toimintamuoto_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Kodvariabler"
-                  },
-                  {
-                    "name": "toimintamuoto_sv",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Utbildningsvariabler"
-                  },
-                  {
-                    "name": "toimipaikkaluokitus_fi",
-                    "translatedCaption": "."
-                  },
-                  {
-                    "name": "toimipaikkaluokitus_en",
-                    "translatedCaption": "."
-                  },
-                  {
-                    "name": "toimipaikkaluokitus_sv",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Utbildningsvariabler"
-                  },
-                  {
-                    "name": "maksutieto_id",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Utbildningsvariabler"
-                  },
-                  {
-                    "name": "maksun_peruste_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Utbildningsvariabler"
-                  },
-                  {
-                    "name": "maksun_peruste_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Utbildningsvariabler"
-                  },
-                  {
-                    "name": "maksun_peruste_sv",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Personvariabler"
-                  },
-                  {
-                    "name": "maksun_luokka_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Kodvariabler"
-                  },
-                  {
-                    "name": "maksun_luokka_en",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Kodvariabler"
-                  },
-                  {
-                    "name": "maksun_luokka_sv",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Personvariabler"
-                  },
-                  {
-                    "name": "palveluseteli_arvo",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "asiakasmaksu",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "perheen_koko",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "cum_sum",
-                    "translatedCaption": "Käännös puuttuu"
-                  }
-                ],
-                "measures": [
-                  {
-                    "name": "Lasten lukumäärä",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "poikia",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "tyttöjä",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Lasten osuus varhaiskasvatuksessa",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Kuntien asiakasmaksu min",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Kuntien asiakasmaksu max",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Kuntien asiakasmaksu mediaani",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Kuntien asiakasmaksu keskiarvo",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Yksityisten asiakasmaksu min",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Yksityisten asiakasmaksu max",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Yksityisten asiakasmaksu mediaani",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Yksityisten asiakasmaksu keskiarvo",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Kunnallisia lapsia",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Kunnallisia maksuja",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Yksityisiä lapsia",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Yksityisiä maksuja",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Palveluseteli min",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Palveluseteli max",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Palveluseteli mediaani",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Palveluseteli keskiarvo",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Palvelusetelillä lapsia",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Palvelusetelillä maksuja",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Asiakasmaksun keskiarvo",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "% osuus kunnan lapsista",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Palvelusetelillä lapsia_s",
-                    "translatedCaption": "Käännös puuttuu_s"
-                  },
-                  {
-                    "name": "Kunnallisia lapsia_s",
-                    "translatedCaption": "Käännös puuttuu_s"
-                  },
-                  {
-                    "name": "Kunnallisen vakan kumulatiivinen summa",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Palveluseteli ja ostopalvelun kumulatiivinen summa",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Personvariabler"
-                  },
-                  {
-                    "name": "Yksityisen vakan kumulatiivinen summa",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "henkilo_cum_sum",
-                    "translatedCaption": "Henkilön kumulatiivinen summa"
-                  },
-                  {
-                    "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)",
-                    "translatedCaption": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)"
-                  }
-                ]
+              ]
               }
-            ]
-          }
-        }
-      },
-      {
-        "name": "en-US",
-        "translations": {
-          "model": {
-            "name": "Model",
-            "tables": [
+              ],
+              "cultures": [
               {
-                "name": "Muuttujat",
-                "translatedCaption": "Variables",
-                "columns": [
-                  {
-                    "name": "tilastovuosi",
-                    "translatedCaption": "Statistical year",
-                    "translatedDisplayFolder": "Time variables"
-                  },
-                  {
-                    "name": "kotikunta_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Time variables"
-                  },
-                  {
-                    "name": "kotikunta_en",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Person variables"
-                  },
-                  {
-                    "name": "kotikunta_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Person variables"
-                  },
-                  {
-                    "name": "kotikunta_koodi",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Code variables"
-                  },
-                  {
-                    "name": "ikä",
-                    "translatedCaption": "Age",
-                    "translatedDisplayFolder": "Person variables"
-                  },
-                  {
-                    "name": "ikäryhmä",
-                    "translatedCaption": "Age group",
-                    "translatedDisplayFolder": "Person variables"
-                  },
-                  {
-                    "name": "aidinkieli_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Person variables"
-                  },
-                  {
-                    "name": "aidinkieli_en",
-                    "translatedCaption": "Mother tongue",
-                    "translatedDisplayFolder": "Person variables"
-                  },
-                  {
-                    "name": "aidinkieli_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Person variables"
-                  },
-                  {
-                    "name": "sukupuoli_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Person variables"
-                  },
-                  {
-                    "name": "sukupuoli_en",
-                    "translatedCaption": "Gender",
-                    "translatedDisplayFolder": "Person variables"
-                  },
-                  {
-                    "name": "sukupuoli_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Person variables"
-                  },
-                  {
-                    "name": "jarjestamismuoto_koodi",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Code variables"
-                  },
-                  {
-                    "name": "jarjestamismuoto_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Person variables"
-                  },
-                  {
-                    "name": "jarjestamismuoto_en",
-                    "translatedCaption": "Form of vocational education and training",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "jarjestamismuoto_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "vuorohoito_kytkin_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "vuorohoito_kytkin_en",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "vuorohoito_kytkin_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "kokopaivainen_vaka_kytkin_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "kokopaivainen_vaka_kytkin_en",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Code variables"
-                  },
-                  {
-                    "name": "kokopaivainen_vaka_kytkin_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Code variables"
-                  },
-                  {
-                    "name": "paivittainen_vaka_kytkin_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Code variables"
-                  },
-                  {
-                    "name": "paivittainen_vaka_kytkin_en",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Person variables"
-                  },
-                  {
-                    "name": "paivittainen_vaka_kytkin_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Person variables"
-                  },
-                  {
-                    "name": "pikakasittely_kytkin_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Person variables"
-                  },
-                  {
-                    "name": "pikakasittely_kytkin_en",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "pikakasittely_kytkin_sv",
-                    "translatedCaption": "."
-                  },
-                  {
-                    "name": "tuntimaara_viikossa",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Person variables"
-                  },
-                  {
-                    "name": "tuntimäärä_asteikko",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Person variables"
-                  },
-                  {
-                    "name": "vakajarjestaja_nimi",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "yritysmuoto_fi",
-                    "translatedCaption": "."
-                  },
-                  {
-                    "name": "yritysmuoto_en",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "yritysmuoto_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "yritysmuoto_ryhma_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Person variables"
-                  },
-                  {
-                    "name": "yritystyyppi",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "vakajarjestaja_kunta_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "vakajarjestaja_kunta_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "vakajarjestaja_kunta_en",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "toimipaikka_maakunta_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "toimipaikka_maakunta_en",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "toimipaikka_maakunta_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "toimipaikka_kunta_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "toimipaikka_kunta_en",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "toimipaikka_kunta_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "kasvatusopillinen_jarjestelma_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "kasvatusopillinen_jarjestelma_en",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Code variables"
-                  },
-                  {
-                    "name": "kasvatusopillinen_jarjestelma_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Code variables"
-                  },
-                  {
-                    "name": "toimintamuoto_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Code variables"
-                  },
-                  {
-                    "name": "toimintamuoto_en",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "toimintamuoto_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "toimipaikkaluokitus_fi",
-                    "translatedCaption": "."
-                  },
-                  {
-                    "name": "toimipaikkaluokitus_en",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "toimipaikkaluokitus_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "maksutieto_id",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "maksun_peruste_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Education variables"
-                  },
-                  {
-                    "name": "maksun_peruste_en",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Person variables"
-                  },
-                  {
-                    "name": "maksun_peruste_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Person variables"
-                  },
-                  {
-                    "name": "maksun_luokka_fi",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Code variables"
-                  },
-                  {
-                    "name": "maksun_luokka_en",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Person variables"
-                  },
-                  {
-                    "name": "maksun_luokka_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Person variables"
-                  },
-                  {
-                    "name": "palveluseteli_arvo",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "asiakasmaksu",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "perheen_koko",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "cum_sum",
-                    "translatedCaption": "Käännös puuttuu"
-                  }
-                ],
-                "measures": [
-                  {
-                    "name": "Lasten lukumäärä",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "poikia",
-                    "translatedCaption": "Boys"
-                  },
-                  {
-                    "name": "tyttöjä",
-                    "translatedCaption": "Girls"
-                  },
-                  {
-                    "name": "Lasten osuus varhaiskasvatuksessa",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Kuntien asiakasmaksu min",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Kuntien asiakasmaksu max",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Kuntien asiakasmaksu mediaani",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Kuntien asiakasmaksu keskiarvo",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Yksityisten asiakasmaksu min",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Yksityisten asiakasmaksu max",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Yksityisten asiakasmaksu mediaani",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Yksityisten asiakasmaksu keskiarvo",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Kunnallisia lapsia",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Kunnallisia maksuja",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Yksityisiä lapsia",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Yksityisiä maksuja",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Palveluseteli min",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Palveluseteli max",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Palveluseteli mediaani",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Palveluseteli keskiarvo",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Palvelusetelillä lapsia",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Palvelusetelillä maksuja",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Asiakasmaksun keskiarvo",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "% osuus kunnan lapsista",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Palvelusetelillä lapsia_s",
-                    "translatedCaption": "Käännös puuttuu_s"
-                  },
-                  {
-                    "name": "Kunnallisia lapsia_s",
-                    "translatedCaption": "Käännös puuttuu_s"
-                  },
-                  {
-                    "name": "Kunnallisen vakan kumulatiivinen summa",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "Palveluseteli ja ostopalvelun kumulatiivinen summa",
-                    "translatedCaption": "Käännös puuttuu",
-                    "translatedDisplayFolder": "Person variables"
-                  },
-                  {
-                    "name": "Yksityisen vakan kumulatiivinen summa",
-                    "translatedCaption": "Käännös puuttuu"
-                  },
-                  {
-                    "name": "henkilo_cum_sum",
-                    "translatedCaption": "Henkilön kumulatiivinen summa"
-                  },
-                  {
-                    "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)",
-                    "translatedCaption": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)"
-                  }
-                ]
+              "name": "fi-FI",
+              "translations": {
+              "model": {
+              "name": "Model",
+              "tables": [
+              {
+              "name": "Muuttujat",
+              "translatedCaption": "Muuttujat",
+              "columns": [
+              {
+              "name": "tilastovuosi",
+              "translatedCaption": "Tilastovuosi",
+              "translatedDisplayFolder": "Aikamuuttujat"
+              },
+              {
+              "name": "kotikunta_fi",
+              "translatedCaption": "Kotikunta",
+              "translatedDisplayFolder": "Henkilömuuttujat"
+              },
+              {
+              "name": "kotikunta_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Henkilömuuttujat"
+              },
+              {
+              "name": "kotikunta_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Henkilömuuttujat"
+              },
+              {
+              "name": "kotikunta_koodi",
+              "translatedCaption": "Kotikuntakoodi",
+              "translatedDisplayFolder": "Koodimuuttujat"
+              },
+              {
+              "name": "ikä",
+              "translatedCaption": "Ikä",
+              "translatedDisplayFolder": "Henkilömuuttujat"
+              },
+              {
+              "name": "ikäryhmä",
+              "translatedCaption": "Ikäryhmä",
+              "translatedDisplayFolder": "Henkilömuuttujat"
+              },
+              {
+              "name": "aidinkieli_fi",
+              "translatedCaption": "Äidinkieli",
+              "translatedDisplayFolder": "Henkilömuuttujat"
+              },
+              {
+              "name": "aidinkieli_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Henkilömuuttujat"
+              },
+              {
+              "name": "aidinkieli_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Henkilömuuttujat"
+              },
+              {
+              "name": "sukupuoli_fi",
+              "translatedCaption": "Sukupuoli",
+              "translatedDisplayFolder": "Henkilömuuttujat"
+              },
+              {
+              "name": "sukupuoli_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Henkilömuuttujat"
+              },
+              {
+              "name": "sukupuoli_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Henkilömuuttujat"
+              },
+              {
+              "name": "jarjestamismuoto_koodi",
+              "translatedCaption": "Järjestämismuotokoodi",
+              "translatedDisplayFolder": "Koodimuuttujat"
+              },
+              {
+              "name": "jarjestamismuoto_fi",
+              "translatedCaption": "Järjestämismuoto",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "jarjestamismuoto_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "jarjestamismuoto_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "vuorohoito_kytkin_fi",
+              "translatedCaption": "Vuorohoitokytkin",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "vuorohoito_kytkin_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "vuorohoito_kytkin_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "kokopaivainen_vaka_kytkin_fi",
+              "translatedCaption": "Kokopäiväinen varhaiskasvatus",
+              "translatedDisplayFolder": "Koodimuuttujat"
+              },
+              {
+              "name": "kokopaivainen_vaka_kytkin_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Koodimuuttujat"
+              },
+              {
+              "name": "kokopaivainen_vaka_kytkin_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Koodimuuttujat"
+              },
+              {
+              "name": "paivittainen_vaka_kytkin_fi",
+              "translatedCaption": "Päivittäinen varhaiskasvatus",
+              "translatedDisplayFolder": "Henkilömuuttujat"
+              },
+              {
+              "name": "paivittainen_vaka_kytkin_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Henkilömuuttujat"
+              },
+              {
+              "name": "paivittainen_vaka_kytkin_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Henkilömuuttujat"
+              },
+              {
+              "name": "pikakasittely_kytkin_fi",
+              "translatedCaption": "Pikakäsittely kytkin"
+              },
+              {
+              "name": "pikakasittely_kytkin_en",
+              "translatedCaption": "."
+              },
+              {
+              "name": "pikakasittely_kytkin_sv",
+              "translatedCaption": "."
+              },
+              {
+              "name": "tuntimaara_viikossa",
+              "translatedCaption": "Tuntimäärä viikossa",
+              "translatedDisplayFolder": "Henkilömuuttujat"
+              },
+              {
+              "name": "tuntimäärä_asteikko",
+              "translatedCaption": "Tuntimäärä asteikko",
+              "translatedDisplayFolder": "Henkilömuuttujat"
+              },
+              {
+              "name": "vakajarjestaja_nimi",
+              "translatedCaption": "Varhaiskasvatustoimijan nimi",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "yritysmuoto_fi",
+              "translatedCaption": "Yritysmuoto",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "yritysmuoto_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "yritysmuoto_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "yritysmuoto_ryhma_fi",
+              "translatedCaption": "Yritysmuotoryhmä",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "yritystyyppi",
+              "translatedCaption": "Yritystyyppi",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "vakajarjestaja_kunta_fi",
+              "translatedCaption": "Varhaiskasvatustoimijan kunta",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "vakajarjestaja_kunta_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "vakajarjestaja_kunta_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "toimipaikka_maakunta_fi",
+              "translatedCaption": "Toimipaikan maakunta",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "toimipaikka_maakunta_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "toimipaikka_maakunta_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "toimipaikka_kunta_fi",
+              "translatedCaption": "Toimipaikan kunta",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "toimipaikka_kunta_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "toimipaikka_kunta_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "kasvatusopillinen_jarjestelma_fi",
+              "translatedCaption": "Kasvatusopillinen järjestelmä",
+              "translatedDisplayFolder": "Koodimuuttujat"
+              },
+              {
+              "name": "kasvatusopillinen_jarjestelma_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Koodimuuttujat"
+              },
+              {
+              "name": "kasvatusopillinen_jarjestelma_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Koodimuuttujat"
+              },
+              {
+              "name": "toimintamuoto_fi",
+              "translatedCaption": "Toimintamuoto",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "toimintamuoto_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "toimintamuoto_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "toimipaikkaluokitus_fi",
+              "translatedCaption": "Toimipaikkaluokitus",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "toimipaikkaluokitus_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "toimipaikkaluokitus_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "maksutieto_id",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Koulutusmuuttujat"
+              },
+              {
+              "name": "maksun_peruste_fi",
+              "translatedCaption": "Maksun peruste",
+              "translatedDisplayFolder": "Henkilömuuttujat"
+              },
+              {
+              "name": "maksun_peruste_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Henkilömuuttujat"
+              },
+              {
+              "name": "maksun_peruste_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Henkilömuuttujat"
+              },
+              {
+              "name": "maksun_luokka_fi",
+              "translatedCaption": "Maksun luokka",
+              "translatedDisplayFolder": "Henkilömuuttujat"
+              },
+              {
+              "name": "maksun_luokka_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Henkilömuuttujat"
+              },
+              {
+              "name": "maksun_luokka_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Henkilömuuttujat"
+              },
+              {
+              "name": "palveluseteli_arvo",
+              "translatedCaption": "Palvelusetelin arvo"
+              },
+              {
+              "name": "asiakasmaksu",
+              "translatedCaption": "Asiakasmaksu"
+              },
+              {
+              "name": "perheen_koko",
+              "translatedCaption": "Perheen koko"
+              },
+              {
+              "name": "cum_sum",
+              "translatedCaption": "Kumulatiivinen summa"
               }
-            ]
-          }
-        }
-      }
-    ],
-    "perspectives": [
-      {
-        "name": "toimipaikat",
-        "tables": [
-          {
-            "name": "Muuttujat",
-            "columns": [
+              ],
+              "measures": [
               {
-                "name": "ikä"
+              "name": "Lasten lukumäärä",
+              "translatedCaption": "Varhaiskasvatuksessa olevien lasten lukumäärä"
               },
               {
-                "name": "ikäryhmä"
+              "name": "poikia",
+              "translatedCaption": "Poikia"
               },
               {
-                "name": "ikäryhmä_jarj"
+              "name": "tyttöjä",
+              "translatedCaption": "Tyttöjä"
               },
               {
-                "name": "jarjestamismuoto_en"
+              "name": "Lasten osuus varhaiskasvatuksessa",
+              "translatedCaption": "Lasten osuus koko ikäryhmästä"
               },
               {
-                "name": "jarjestamismuoto_fi"
+              "name": "Kuntien asiakasmaksu min",
+              "translatedCaption": "Asiakasmaksut kuntien järjestämässä varhaiskasvatuksessa, asiakasmaksun minimiarvo"
               },
               {
-                "name": "jarjestamismuoto_sv"
+              "name": "Kuntien asiakasmaksu max",
+              "translatedCaption": "Asiakasmaksut kuntien järjestämässä varhaiskasvatuksessa, asiakasmaksun maksimiarvo"
               },
               {
-                "name": "tilastovuosi"
+              "name": "Kuntien asiakasmaksu mediaani",
+              "translatedCaption": "Asiakasmaksut kuntien järjestämässä varhaiskasvatuksessa, asiakasmaksun mediaani"
               },
               {
-                "name": "vakajarjestaja_kunta_en"
+              "name": "Kuntien asiakasmaksu keskiarvo",
+              "translatedCaption": "Asiakasmaksut kuntien järjestämässä varhaiskasvatuksessa, asiakasmaksujen keskiarvo"
               },
               {
-                "name": "vakajarjestaja_kunta_fi"
+              "name": "Yksityisten asiakasmaksu min",
+              "translatedCaption": "Asiakasmaksut yksityisten järjestämässä varhaiskasvatuksessa, asiakasmaksujen minimiarvo"
               },
               {
-                "name": "vakajarjestaja_kunta_sv"
+              "name": "Yksityisten asiakasmaksu max",
+              "translatedCaption": "Asiakasmaksut yksityisten järjestämässä varhaiskasvatuksessa, asiakasmaksujen maksimiarvo"
               },
               {
-                "name": "vakajarjestaja_nimi"
+              "name": "Yksityisten asiakasmaksu mediaani",
+              "translatedCaption": "Asiakasmaksut yksityisten järjestämässä varhaiskasvatuksessa, asiakasmaksujen mediaani"
               },
               {
-                "name": "yritysmuoto_en"
+              "name": "Yksityisten asiakasmaksu keskiarvo",
+              "translatedCaption": "Asiakasmaksut yksityisten järjestämässä varhaiskasvatuksessa, asiakasmaksujen keskiarvo"
               },
               {
-                "name": "yritysmuoto_fi"
+              "name": "Kunnallisia lapsia",
+              "translatedCaption": "Asiakasmaksut kuntien järjestämässä varhaiskasvatuksessa, lasten lukumäärä"
               },
               {
-                "name": "yritysmuoto_sv"
+              "name": "Kunnallisia maksuja",
+              "translatedCaption": "Asiakasmaksut kuntien järjestämässä varhaiskasvatuksessa, asiakasmaksujen lukumäärä"
               },
               {
-                "name": "yritystyyppi"
+              "name": "Yksityisiä lapsia",
+              "translatedCaption": "Asiakasmaksut yksityisten järjestämässä varhaiskasvatuksessa, lasten lukumäärä"
+              },
+              {
+              "name": "Yksityisiä maksuja",
+              "translatedCaption": "Asiakasmaksut yksityisten ärjestämässä varhaiskasvatuksessa, asiakasmaksujen lukumäärä"
+              },
+              {
+              "name": "Palveluseteli min",
+              "translatedCaption": "Palvelusetelin minimiarvo"
+              },
+              {
+              "name": "Palveluseteli max",
+              "translatedCaption": "Palvelusetelin maksimiarvo"
+              },
+              {
+              "name": "Palveluseteli mediaani",
+              "translatedCaption": "Palvelusetelin mediaani"
+              },
+              {
+              "name": "Palveluseteli keskiarvo",
+              "translatedCaption": "Palvelusetelin keskiarvo"
+              },
+              {
+              "name": "Palvelusetelillä lapsia",
+              "translatedCaption": "Palvelusetelillä lapsia"
+              },
+              {
+              "name": "Palvelusetelillä maksuja",
+              "translatedCaption": "Palvelusetelillä maksuja"
+              },
+              {
+              "name": "Asiakasmaksun keskiarvo",
+              "translatedCaption": "Asiakasmaksun keskiarvo"
+              },
+              {
+              "name": "% osuus kunnan lapsista",
+              "translatedCaption": "% osuus kunnan lapsista"
+              },
+              {
+              "name": "Palvelusetelillä lapsia_s",
+              "translatedCaption": "Palvelusetelillä lapsia_s"
+              },
+              {
+              "name": "Kunnallisia lapsia_s",
+              "translatedCaption": "Kunnallisia lapsia_s"
+              },
+              {
+              "name": "Kunnallisen vakan kumulatiivinen summa",
+              "translatedCaption": "Kunnallisen varhaiskasvatuksen kumulatiivinen summa"
+              },
+              {
+              "name": "Palveluseteli ja ostopalvelun kumulatiivinen summa",
+              "translatedCaption": "Palveluseteli ja ostopalvelun kumulatiivinen summa",
+              "translatedDisplayFolder": "Henkilömuuttujat"
+              },
+              {
+              "name": "Yksityisen vakan kumulatiivinen summa",
+              "translatedCaption": "Yksityisen varhaiskasvatuksen kumulatiivinen summa"
+              },
+              {
+              "name": "henkilo_cum_sum",
+              "translatedCaption": "Henkilön kumulatiivinen summa"
+              },
+              {
+              "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)",
+              "translatedCaption": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)"
               }
-            ],
-            "measures": [
-              {
-                "name": "Lasten lukumäärä"
-              },
-              {
-                "name": "Lasten osuus varhaiskasvatuksessa"
-              },
-              {
-                "name": "poikia"
-              },
-              {
-                "name": "tyttöjä"
-              },
-              {
-                "name": "Väestö summa"
+              ]
               }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "lapset",
-        "tables": [
-          {
-            "name": "Muuttujat",
-            "columns": [
-              {
-                "name": "aidinkieli_en"
-              },
-              {
-                "name": "aidinkieli_fi"
-              },
-              {
-                "name": "aidinkieli_sv"
-              },
-              {
-                "name": "ikä"
-              },
-              {
-                "name": "ikäryhmä"
-              },
-              {
-                "name": "jarjestamismuoto_en"
-              },
-              {
-                "name": "jarjestamismuoto_fi"
-              },
-              {
-                "name": "jarjestamismuoto_sv"
-              },
-              {
-                "name": "kasvatusopillinen_jarjestelma_en"
-              },
-              {
-                "name": "kasvatusopillinen_jarjestelma_fi"
-              },
-              {
-                "name": "kasvatusopillinen_jarjestelma_sv"
-              },
-              {
-                "name": "kokopaivainen_vaka_kytkin_en"
-              },
-              {
-                "name": "kokopaivainen_vaka_kytkin_fi"
-              },
-              {
-                "name": "kokopaivainen_vaka_kytkin_sv"
-              },
-              {
-                "name": "kotikunta_en"
-              },
-              {
-                "name": "kotikunta_fi"
-              },
-              {
-                "name": "kotikunta_koodi"
-              },
-              {
-                "name": "kotikunta_sv"
-              },
-              {
-                "name": "paivittainen_vaka_kytkin_en"
-              },
-              {
-                "name": "paivittainen_vaka_kytkin_fi"
-              },
-              {
-                "name": "paivittainen_vaka_kytkin_sv"
-              },
-              {
-                "name": "sukupuoli_en"
-              },
-              {
-                "name": "sukupuoli_fi"
-              },
-              {
-                "name": "sukupuoli_sv"
-              },
-              {
-                "name": "tilastovuosi"
-              },
-              {
-                "name": "toimintamuoto_en"
-              },
-              {
-                "name": "toimintamuoto_fi"
-              },
-              {
-                "name": "toimintamuoto_sv"
-              },
-              {
-                "name": "toimipaikka_kunta_en"
-              },
-              {
-                "name": "toimipaikka_kunta_fi"
-              },
-              {
-                "name": "toimipaikka_kunta_sv"
-              },
-              {
-                "name": "toimipaikka_maakunta_en"
-              },
-              {
-                "name": "toimipaikka_maakunta_fi"
-              },
-              {
-                "name": "toimipaikka_maakunta_sv"
-              },
-              {
-                "name": "tuntimaara_viikossa"
-              },
-              {
-                "name": "tuntimäärä_asteikko"
-              },
-              {
-                "name": "tuntimäärä_asteikko_jarj"
-              },
-              {
-                "name": "vuorohoito_kytkin_en"
-              },
-              {
-                "name": "vuorohoito_kytkin_fi"
-              },
-              {
-                "name": "vuorohoito_kytkin_sv"
-              },
-              {
-                "name": "Väestö"
-              },
-              {
-                "name": "yritysmuoto_en"
-              },
-              {
-                "name": "yritysmuoto_fi"
-              },
-              {
-                "name": "yritysmuoto_sv"
-              },
-              {
-                "name": "yritystyyppi"
+              ]
               }
-            ],
-            "measures": [
-              {
-                "name": "Lasten lukumäärä"
-              },
-              {
-                "name": "Lasten osuus varhaiskasvatuksessa"
-              },
-              {
-                "name": "poikia"
-              },
-              {
-                "name": "tyttöjä"
-              },
-              {
-                "name": "Väestö summa"
               }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "maksutiedot",
-        "tables": [
-          {
-            "name": "Muuttujat",
-            "columns": [
-              {
-                "name": "asiakasmaksu"
               },
               {
-                "name": "maksun_peruste_en"
+              "name": "sv-SE",
+              "translations": {
+              "model": {
+              "name": "Model",
+              "tables": [
+              {
+              "name": "Muuttujat",
+              "translatedCaption": "Variabler",
+              "columns": [
+              {
+              "name": "tilastovuosi",
+              "translatedCaption": "Statistikår",
+              "translatedDisplayFolder": "Tidsvariabler"
               },
               {
-                "name": "maksun_peruste_fi"
+              "name": "kotikunta_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Tidsvariabler"
               },
               {
-                "name": "maksun_peruste_sv"
+              "name": "kotikunta_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Tidsvariabler"
               },
               {
-                "name": "palveluseteli_arvo"
+              "name": "kotikunta_sv",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Personvariabler"
               },
               {
-                "name": "perheen_koko"
+              "name": "kotikunta_koodi",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Kodvariabler"
               },
               {
-                "name": "tilastovuosi"
+              "name": "ikä",
+              "translatedCaption": "Ålder",
+              "translatedDisplayFolder": "Personvariabler"
               },
               {
-                "name": "toimipaikka_maakunta_en"
+              "name": "ikäryhmä",
+              "translatedCaption": "Ålder grupp",
+              "translatedDisplayFolder": "Personvariabler"
               },
               {
-                "name": "toimipaikka_maakunta_fi"
+              "name": "aidinkieli_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Personvariabler"
               },
               {
-                "name": "toimipaikka_maakunta_sv"
+              "name": "aidinkieli_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Personvariabler"
               },
               {
-                "name": "yritysmuoto_en"
+              "name": "aidinkieli_sv",
+              "translatedCaption": "Modersmål",
+              "translatedDisplayFolder": "Personvariabler"
               },
               {
-                "name": "yritysmuoto_fi"
+              "name": "sukupuoli_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Personvariabler"
               },
               {
-                "name": "yritysmuoto_sv"
+              "name": "sukupuoli_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Personvariabler"
               },
               {
-                "name": "yritystyyppi"
+              "name": "sukupuoli_sv",
+              "translatedCaption": "Kön",
+              "translatedDisplayFolder": "Personvariabler"
               },
               {
-                "name": "ikä"
+              "name": "jarjestamismuoto_koodi",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Kodvariabler"
               },
               {
-                "name": "ikäryhmä"
+              "name": "jarjestamismuoto_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Personvariabler"
               },
               {
-                "name": "maksun_luokka_en"
+              "name": "jarjestamismuoto_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Personvariabler"
               },
               {
-                "name": "maksun_luokka_fi"
+              "name": "jarjestamismuoto_sv",
+              "translatedCaption": "Formen i vilken utbildningen anordnas",
+              "translatedDisplayFolder": "Utbildningsvariabler"
               },
               {
-                "name": "maksun_luokka_sv"
+              "name": "vuorohoito_kytkin_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Utbildningsvariabler"
               },
               {
-                "name": "toimipaikka_kunta_en"
+              "name": "vuorohoito_kytkin_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Utbildningsvariabler"
               },
               {
-                "name": "toimipaikka_kunta_fi"
+              "name": "vuorohoito_kytkin_sv",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Utbildningsvariabler"
               },
               {
-                "name": "toimipaikka_kunta_sv"
+              "name": "kokopaivainen_vaka_kytkin_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Utbildningsvariabler"
               },
               {
-                "name": "toimintamuoto_fi"
+              "name": "kokopaivainen_vaka_kytkin_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Utbildningsvariabler"
               },
               {
-                "name": "toimipaikkaluokitus_fi"
+              "name": "kokopaivainen_vaka_kytkin_sv",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Kodvariabler"
               },
               {
-                "name": "yritysmuoto_ryhma_fi"
+              "name": "paivittainen_vaka_kytkin_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Kodvariabler"
               },
               {
-                "name": "jarjestamismuoto_en"
+              "name": "paivittainen_vaka_kytkin_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Kodvariabler"
               },
               {
-                "name": "jarjestamismuoto_fi"
+              "name": "paivittainen_vaka_kytkin_sv",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Personvariabler"
               },
               {
-                "name": "jarjestamismuoto_sv"
+              "name": "pikakasittely_kytkin_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Personvariabler"
+              },
+              {
+              "name": "pikakasittely_kytkin_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Personvariabler"
+              },
+              {
+              "name": "pikakasittely_kytkin_sv",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "tuntimaara_viikossa",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Personvariabler"
+              },
+              {
+              "name": "tuntimäärä_asteikko",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Personvariabler"
+              },
+              {
+              "name": "vakajarjestaja_nimi",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Utbildningsvariabler"
+              },
+              {
+              "name": "yritysmuoto_fi",
+              "translatedCaption": "."
+              },
+              {
+              "name": "yritysmuoto_en",
+              "translatedCaption": "."
+              },
+              {
+              "name": "yritysmuoto_sv",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Utbildningsvariabler"
+              },
+              {
+              "name": "yritysmuoto_ryhma_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Personvariabler"
+              },
+              {
+              "name": "yritystyyppi",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Utbildningsvariabler"
+              },
+              {
+              "name": "vakajarjestaja_kunta_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Utbildningsvariabler"
+              },
+              {
+              "name": "vakajarjestaja_kunta_sv",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Utbildningsvariabler"
+              },
+              {
+              "name": "vakajarjestaja_kunta_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Utbildningsvariabler"
+              },
+              {
+              "name": "toimipaikka_maakunta_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Utbildningsvariabler"
+              },
+              {
+              "name": "toimipaikka_maakunta_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Utbildningsvariabler"
+              },
+              {
+              "name": "toimipaikka_maakunta_sv",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Utbildningsvariabler"
+              },
+              {
+              "name": "toimipaikka_kunta_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Utbildningsvariabler"
+              },
+              {
+              "name": "toimipaikka_kunta_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Utbildningsvariabler"
+              },
+              {
+              "name": "toimipaikka_kunta_sv",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Utbildningsvariabler"
+              },
+              {
+              "name": "kasvatusopillinen_jarjestelma_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Utbildningsvariabler"
+              },
+              {
+              "name": "kasvatusopillinen_jarjestelma_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Utbildningsvariabler"
+              },
+              {
+              "name": "kasvatusopillinen_jarjestelma_sv",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Kodvariabler"
+              },
+              {
+              "name": "toimintamuoto_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Kodvariabler"
+              },
+              {
+              "name": "toimintamuoto_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Kodvariabler"
+              },
+              {
+              "name": "toimintamuoto_sv",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Utbildningsvariabler"
+              },
+              {
+              "name": "toimipaikkaluokitus_fi",
+              "translatedCaption": "."
+              },
+              {
+              "name": "toimipaikkaluokitus_en",
+              "translatedCaption": "."
+              },
+              {
+              "name": "toimipaikkaluokitus_sv",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Utbildningsvariabler"
+              },
+              {
+              "name": "maksutieto_id",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Utbildningsvariabler"
+              },
+              {
+              "name": "maksun_peruste_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Utbildningsvariabler"
+              },
+              {
+              "name": "maksun_peruste_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Utbildningsvariabler"
+              },
+              {
+              "name": "maksun_peruste_sv",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Personvariabler"
+              },
+              {
+              "name": "maksun_luokka_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Kodvariabler"
+              },
+              {
+              "name": "maksun_luokka_en",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Kodvariabler"
+              },
+              {
+              "name": "maksun_luokka_sv",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Personvariabler"
+              },
+              {
+              "name": "palveluseteli_arvo",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "asiakasmaksu",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "perheen_koko",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "cum_sum",
+              "translatedCaption": "Käännös puuttuu"
               }
-            ],
-            "measures": [
+              ],
+              "measures": [
               {
-                "name": "Kuntien asiakasmaksu keskiarvo"
+              "name": "Lasten lukumäärä",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "Kuntien asiakasmaksu max"
+              "name": "poikia",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "Kuntien asiakasmaksu mediaani"
+              "name": "tyttöjä",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "Kuntien asiakasmaksu min"
+              "name": "Lasten osuus varhaiskasvatuksessa",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "Yksityisten asiakasmaksu keskiarvo"
+              "name": "Kuntien asiakasmaksu min",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "Yksityisten asiakasmaksu max"
+              "name": "Kuntien asiakasmaksu max",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "Yksityisten asiakasmaksu mediaani"
+              "name": "Kuntien asiakasmaksu mediaani",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "Yksityisten asiakasmaksu min"
+              "name": "Kuntien asiakasmaksu keskiarvo",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "Yksityisiä lapsia"
+              "name": "Yksityisten asiakasmaksu min",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "Kunnallisia lapsia"
+              "name": "Yksityisten asiakasmaksu max",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "Kunnallisia maksuja"
+              "name": "Yksityisten asiakasmaksu mediaani",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "Yksityisiä maksuja"
+              "name": "Yksityisten asiakasmaksu keskiarvo",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "Palveluseteli keskiarvo"
+              "name": "Kunnallisia lapsia",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "Palveluseteli max"
+              "name": "Kunnallisia maksuja",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "Palveluseteli mediaani"
+              "name": "Yksityisiä lapsia",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "Palveluseteli min"
+              "name": "Yksityisiä maksuja",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "Palvelusetelillä lapsia"
+              "name": "Palveluseteli min",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "Palvelusetelillä maksuja"
+              "name": "Palveluseteli max",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "Asiakasmaksun keskiarvo"
+              "name": "Palveluseteli mediaani",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "% osuus kunnan lapsista"
+              "name": "Palveluseteli keskiarvo",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "Kunnallisen vakan kumulatiivinen summa"
+              "name": "Palvelusetelillä lapsia",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "Palveluseteli ja ostopalvelun kumulatiivinen summa"
+              "name": "Palvelusetelillä maksuja",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "Yksityisen vakan kumulatiivinen summa"
+              "name": "Asiakasmaksun keskiarvo",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)"
+              "name": "% osuus kunnan lapsista",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "Palvelusetelillä lapsia_s",
+              "translatedCaption": "Käännös puuttuu_s"
+              },
+              {
+              "name": "Kunnallisia lapsia_s",
+              "translatedCaption": "Käännös puuttuu_s"
+              },
+              {
+              "name": "Kunnallisen vakan kumulatiivinen summa",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "Palveluseteli ja ostopalvelun kumulatiivinen summa",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Personvariabler"
+              },
+              {
+              "name": "Yksityisen vakan kumulatiivinen summa",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "henkilo_cum_sum",
+              "translatedCaption": "Henkilön kumulatiivinen summa"
+              },
+              {
+              "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)",
+              "translatedCaption": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)"
               }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "toimipaikat_fi",
-        "tables": [
-          {
-            "name": "Muuttujat",
-            "columns": [
-              {
-                "name": "ikä"
-              },
-              {
-                "name": "ikäryhmä"
-              },
-              {
-                "name": "ikäryhmä_jarj"
-              },
-              {
-                "name": "jarjestamismuoto_fi"
-              },
-              {
-                "name": "tilastovuosi"
-              },
-              {
-                "name": "vakajarjestaja_kunta_fi"
-              },
-              {
-                "name": "vakajarjestaja_nimi"
-              },
-              {
-                "name": "yritysmuoto_fi"
-              },
-              {
-                "name": "yritystyyppi"
+              ]
               }
-            ],
-            "measures": [
-              {
-                "name": "Lasten lukumäärä"
-              },
-              {
-                "name": "Lasten osuus varhaiskasvatuksessa"
-              },
-              {
-                "name": "poikia"
-              },
-              {
-                "name": "tyttöjä"
-              },
-              {
-                "name": "Väestö summa"
+              ]
               }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "toimipaikat_en",
-        "tables": [
-          {
-            "name": "Muuttujat",
-            "columns": [
-              {
-                "name": "ikä"
-              },
-              {
-                "name": "ikäryhmä"
-              },
-              {
-                "name": "ikäryhmä_jarj"
-              },
-              {
-                "name": "jarjestamismuoto_en"
-              },
-              {
-                "name": "tilastovuosi"
-              },
-              {
-                "name": "vakajarjestaja_kunta_en"
-              },
-              {
-                "name": "vakajarjestaja_nimi"
-              },
-              {
-                "name": "yritysmuoto_en"
-              },
-              {
-                "name": "yritystyyppi"
               }
-            ],
-            "measures": [
-              {
-                "name": "Lasten lukumäärä"
               },
               {
-                "name": "Lasten osuus varhaiskasvatuksessa"
+              "name": "en-US",
+              "translations": {
+              "model": {
+              "name": "Model",
+              "tables": [
+              {
+              "name": "Muuttujat",
+              "translatedCaption": "Variables",
+              "columns": [
+              {
+              "name": "tilastovuosi",
+              "translatedCaption": "Statistical year",
+              "translatedDisplayFolder": "Time variables"
               },
               {
-                "name": "poikia"
+              "name": "kotikunta_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Time variables"
               },
               {
-                "name": "tyttöjä"
+              "name": "kotikunta_en",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Person variables"
               },
               {
-                "name": "Väestö summa"
+              "name": "kotikunta_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Person variables"
+              },
+              {
+              "name": "kotikunta_koodi",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Code variables"
+              },
+              {
+              "name": "ikä",
+              "translatedCaption": "Age",
+              "translatedDisplayFolder": "Person variables"
+              },
+              {
+              "name": "ikäryhmä",
+              "translatedCaption": "Age group",
+              "translatedDisplayFolder": "Person variables"
+              },
+              {
+              "name": "aidinkieli_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Person variables"
+              },
+              {
+              "name": "aidinkieli_en",
+              "translatedCaption": "Mother tongue",
+              "translatedDisplayFolder": "Person variables"
+              },
+              {
+              "name": "aidinkieli_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Person variables"
+              },
+              {
+              "name": "sukupuoli_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Person variables"
+              },
+              {
+              "name": "sukupuoli_en",
+              "translatedCaption": "Gender",
+              "translatedDisplayFolder": "Person variables"
+              },
+              {
+              "name": "sukupuoli_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Person variables"
+              },
+              {
+              "name": "jarjestamismuoto_koodi",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Code variables"
+              },
+              {
+              "name": "jarjestamismuoto_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Person variables"
+              },
+              {
+              "name": "jarjestamismuoto_en",
+              "translatedCaption": "Form of vocational education and training",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "jarjestamismuoto_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "vuorohoito_kytkin_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "vuorohoito_kytkin_en",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "vuorohoito_kytkin_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "kokopaivainen_vaka_kytkin_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "kokopaivainen_vaka_kytkin_en",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Code variables"
+              },
+              {
+              "name": "kokopaivainen_vaka_kytkin_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Code variables"
+              },
+              {
+              "name": "paivittainen_vaka_kytkin_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Code variables"
+              },
+              {
+              "name": "paivittainen_vaka_kytkin_en",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Person variables"
+              },
+              {
+              "name": "paivittainen_vaka_kytkin_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Person variables"
+              },
+              {
+              "name": "pikakasittely_kytkin_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Person variables"
+              },
+              {
+              "name": "pikakasittely_kytkin_en",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "pikakasittely_kytkin_sv",
+              "translatedCaption": "."
+              },
+              {
+              "name": "tuntimaara_viikossa",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Person variables"
+              },
+              {
+              "name": "tuntimäärä_asteikko",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Person variables"
+              },
+              {
+              "name": "vakajarjestaja_nimi",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "yritysmuoto_fi",
+              "translatedCaption": "."
+              },
+              {
+              "name": "yritysmuoto_en",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "yritysmuoto_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "yritysmuoto_ryhma_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Person variables"
+              },
+              {
+              "name": "yritystyyppi",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "vakajarjestaja_kunta_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "vakajarjestaja_kunta_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "vakajarjestaja_kunta_en",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "toimipaikka_maakunta_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "toimipaikka_maakunta_en",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "toimipaikka_maakunta_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "toimipaikka_kunta_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "toimipaikka_kunta_en",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "toimipaikka_kunta_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "kasvatusopillinen_jarjestelma_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "kasvatusopillinen_jarjestelma_en",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Code variables"
+              },
+              {
+              "name": "kasvatusopillinen_jarjestelma_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Code variables"
+              },
+              {
+              "name": "toimintamuoto_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Code variables"
+              },
+              {
+              "name": "toimintamuoto_en",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "toimintamuoto_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "toimipaikkaluokitus_fi",
+              "translatedCaption": "."
+              },
+              {
+              "name": "toimipaikkaluokitus_en",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "toimipaikkaluokitus_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "maksutieto_id",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "maksun_peruste_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Education variables"
+              },
+              {
+              "name": "maksun_peruste_en",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Person variables"
+              },
+              {
+              "name": "maksun_peruste_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Person variables"
+              },
+              {
+              "name": "maksun_luokka_fi",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Code variables"
+              },
+              {
+              "name": "maksun_luokka_en",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Person variables"
+              },
+              {
+              "name": "maksun_luokka_sv",
+              "translatedCaption": ".",
+              "translatedDisplayFolder": "Person variables"
+              },
+              {
+              "name": "palveluseteli_arvo",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "asiakasmaksu",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "perheen_koko",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "cum_sum",
+              "translatedCaption": "Käännös puuttuu"
               }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "toimipaikat_sv",
-        "tables": [
-          {
-            "name": "Muuttujat",
-            "columns": [
+              ],
+              "measures": [
               {
-                "name": "ikä"
+              "name": "Lasten lukumäärä",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "ikäryhmä"
+              "name": "poikia",
+              "translatedCaption": "Boys"
               },
               {
-                "name": "ikäryhmä_jarj"
+              "name": "tyttöjä",
+              "translatedCaption": "Girls"
               },
               {
-                "name": "jarjestamismuoto_en"
+              "name": "Lasten osuus varhaiskasvatuksessa",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "jarjestamismuoto_sv"
+              "name": "Kuntien asiakasmaksu min",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "tilastovuosi"
+              "name": "Kuntien asiakasmaksu max",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "vakajarjestaja_kunta_sv"
+              "name": "Kuntien asiakasmaksu mediaani",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "vakajarjestaja_nimi"
+              "name": "Kuntien asiakasmaksu keskiarvo",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "yritysmuoto_sv"
+              "name": "Yksityisten asiakasmaksu min",
+              "translatedCaption": "Käännös puuttuu"
               },
               {
-                "name": "yritystyyppi"
+              "name": "Yksityisten asiakasmaksu max",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "Yksityisten asiakasmaksu mediaani",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "Yksityisten asiakasmaksu keskiarvo",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "Kunnallisia lapsia",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "Kunnallisia maksuja",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "Yksityisiä lapsia",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "Yksityisiä maksuja",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "Palveluseteli min",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "Palveluseteli max",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "Palveluseteli mediaani",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "Palveluseteli keskiarvo",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "Palvelusetelillä lapsia",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "Palvelusetelillä maksuja",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "Asiakasmaksun keskiarvo",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "% osuus kunnan lapsista",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "Palvelusetelillä lapsia_s",
+              "translatedCaption": "Käännös puuttuu_s"
+              },
+              {
+              "name": "Kunnallisia lapsia_s",
+              "translatedCaption": "Käännös puuttuu_s"
+              },
+              {
+              "name": "Kunnallisen vakan kumulatiivinen summa",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "Palveluseteli ja ostopalvelun kumulatiivinen summa",
+              "translatedCaption": "Käännös puuttuu",
+              "translatedDisplayFolder": "Person variables"
+              },
+              {
+              "name": "Yksityisen vakan kumulatiivinen summa",
+              "translatedCaption": "Käännös puuttuu"
+              },
+              {
+              "name": "henkilo_cum_sum",
+              "translatedCaption": "Henkilön kumulatiivinen summa"
+              },
+              {
+              "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)",
+              "translatedCaption": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)"
               }
-            ],
-            "measures": [
-              {
-                "name": "Lasten lukumäärä"
-              },
-              {
-                "name": "Lasten osuus varhaiskasvatuksessa"
-              },
-              {
-                "name": "poikia"
-              },
-              {
-                "name": "tyttöjä"
-              },
-              {
-                "name": "Väestö summa"
+              ]
               }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "lapset_fi",
-        "tables": [
-          {
-            "name": "Muuttujat",
-            "columns": [
-              {
-                "name": "aidinkieli_fi"
-              },
-              {
-                "name": "ikä"
-              },
-              {
-                "name": "ikäryhmä"
-              },
-              {
-                "name": "jarjestamismuoto_fi"
-              },
-              {
-                "name": "kasvatusopillinen_jarjestelma_fi"
-              },
-              {
-                "name": "kokopaivainen_vaka_kytkin_fi"
-              },
-              {
-                "name": "kotikunta_fi"
-              },
-              {
-                "name": "kotikunta_koodi"
-              },
-              {
-                "name": "paivittainen_vaka_kytkin_fi"
-              },
-              {
-                "name": "sukupuoli_fi"
-              },
-              {
-                "name": "tilastovuosi"
-              },
-              {
-                "name": "toimintamuoto_fi"
-              },
-              {
-                "name": "toimipaikka_kunta_fi"
-              },
-              {
-                "name": "toimipaikka_maakunta_fi"
-              },
-              {
-                "name": "tuntimaara_viikossa"
-              },
-              {
-                "name": "tuntimäärä_asteikko"
-              },
-              {
-                "name": "tuntimäärä_asteikko_jarj"
-              },
-              {
-                "name": "vuorohoito_kytkin_fi"
-              },
-              {
-                "name": "Väestö"
-              },
-              {
-                "name": "yritysmuoto_fi"
-              },
-              {
-                "name": "yritystyyppi"
-              },
-              {
-                "name": "yritysmuoto_ryhma_fi"
+              ]
               }
-            ],
-            "measures": [
-              {
-                "name": "Lasten lukumäärä"
-              },
-              {
-                "name": "Lasten osuus varhaiskasvatuksessa"
-              },
-              {
-                "name": "poikia"
-              },
-              {
-                "name": "tyttöjä"
-              },
-              {
-                "name": "Väestö summa"
-              },
-              {
-                "name": "Kunnallisia lapsia"
-              },
-              {
-                "name": "Yksityisiä lapsia"
-              },
-              {
-                "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)"
               }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "lapset_en",
-        "tables": [
-          {
-            "name": "Muuttujat",
-            "columns": [
-              {
-                "name": "aidinkieli_en"
-              },
-              {
-                "name": "ikä"
-              },
-              {
-                "name": "ikäryhmä"
-              },
-              {
-                "name": "jarjestamismuoto_en"
-              },
-              {
-                "name": "kasvatusopillinen_jarjestelma_en"
-              },
-              {
-                "name": "kokopaivainen_vaka_kytkin_en"
-              },
-              {
-                "name": "kotikunta_en"
-              },
-              {
-                "name": "kotikunta_koodi"
-              },
-              {
-                "name": "paivittainen_vaka_kytkin_en"
-              },
-              {
-                "name": "sukupuoli_en"
-              },
-              {
-                "name": "tilastovuosi"
-              },
-              {
-                "name": "toimintamuoto_en"
-              },
-              {
-                "name": "toimipaikka_kunta_en"
-              },
-              {
-                "name": "toimipaikka_maakunta_en"
-              },
-              {
-                "name": "tuntimaara_viikossa"
-              },
-              {
-                "name": "tuntimäärä_asteikko"
-              },
-              {
-                "name": "tuntimäärä_asteikko_jarj"
-              },
-              {
-                "name": "vuorohoito_kytkin_en"
-              },
-              {
-                "name": "Väestö"
-              },
-              {
-                "name": "yritysmuoto_en"
-              },
-              {
-                "name": "yritystyyppi"
-              },
-              {
-                "name": "yritysmuoto_ryhma_fi"
               }
-            ],
-            "measures": [
+              ],
+              "perspectives": [
               {
-                "name": "Lasten lukumäärä"
+              "name": "toimipaikat",
+              "tables": [
+              {
+              "name": "Muuttujat",
+              "columns": [
+              {
+              "name": "ikä"
               },
               {
-                "name": "Lasten osuus varhaiskasvatuksessa"
+              "name": "ikäryhmä"
               },
               {
-                "name": "poikia"
+              "name": "ikäryhmä_jarj"
               },
               {
-                "name": "tyttöjä"
+              "name": "jarjestamismuoto_en"
               },
               {
-                "name": "Väestö summa"
+              "name": "jarjestamismuoto_fi"
               },
               {
-                "name": "Kunnallisia lapsia"
+              "name": "jarjestamismuoto_sv"
               },
               {
-                "name": "Yksityisiä lapsia"
+              "name": "tilastovuosi"
               },
               {
-                "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)"
+              "name": "vakajarjestaja_kunta_en"
+              },
+              {
+              "name": "vakajarjestaja_kunta_fi"
+              },
+              {
+              "name": "vakajarjestaja_kunta_sv"
+              },
+              {
+              "name": "vakajarjestaja_nimi"
+              },
+              {
+              "name": "yritysmuoto_en"
+              },
+              {
+              "name": "yritysmuoto_fi"
+              },
+              {
+              "name": "yritysmuoto_sv"
+              },
+              {
+              "name": "yritystyyppi"
               }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "lapset_sv",
-        "tables": [
-          {
-            "name": "Muuttujat",
-            "columns": [
+              ],
+              "measures": [
               {
-                "name": "aidinkieli_sv"
+              "name": "Lasten lukumäärä"
               },
               {
-                "name": "ikä"
+              "name": "Lasten osuus varhaiskasvatuksessa"
               },
               {
-                "name": "ikäryhmä"
+              "name": "poikia"
               },
               {
-                "name": "jarjestamismuoto_sv"
+              "name": "tyttöjä"
               },
               {
-                "name": "kasvatusopillinen_jarjestelma_sv"
-              },
-              {
-                "name": "kokopaivainen_vaka_kytkin_sv"
-              },
-              {
-                "name": "kotikunta_koodi"
-              },
-              {
-                "name": "kotikunta_sv"
-              },
-              {
-                "name": "paivittainen_vaka_kytkin_sv"
-              },
-              {
-                "name": "sukupuoli_sv"
-              },
-              {
-                "name": "tilastovuosi"
-              },
-              {
-                "name": "toimintamuoto_sv"
-              },
-              {
-                "name": "toimipaikka_kunta_sv"
-              },
-              {
-                "name": "toimipaikka_maakunta_sv"
-              },
-              {
-                "name": "tuntimaara_viikossa"
-              },
-              {
-                "name": "tuntimäärä_asteikko"
-              },
-              {
-                "name": "tuntimäärä_asteikko_jarj"
-              },
-              {
-                "name": "vuorohoito_kytkin_sv"
-              },
-              {
-                "name": "Väestö"
-              },
-              {
-                "name": "yritysmuoto_sv"
-              },
-              {
-                "name": "yritystyyppi"
-              },
-              {
-                "name": "yritysmuoto_ryhma_fi"
+              "name": "Väestö summa"
               }
-            ],
-            "measures": [
-              {
-                "name": "Lasten lukumäärä"
-              },
-              {
-                "name": "Lasten osuus varhaiskasvatuksessa"
-              },
-              {
-                "name": "poikia"
-              },
-              {
-                "name": "tyttöjä"
-              },
-              {
-                "name": "Väestö summa"
-              },
-              {
-                "name": "Kunnallisia lapsia"
-              },
-              {
-                "name": "Yksityisiä lapsia"
-              },
-              {
-                "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)"
+              ]
               }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "maksutiedot_fi",
-        "tables": [
-          {
-            "name": "Muuttujat",
-            "columns": [
-              {
-                "name": "asiakasmaksu"
+              ]
               },
               {
-                "name": "ikä"
+              "name": "lapset",
+              "tables": [
+              {
+              "name": "Muuttujat",
+              "columns": [
+              {
+              "name": "aidinkieli_en"
               },
               {
-                "name": "ikäryhmä"
+              "name": "aidinkieli_fi"
               },
               {
-                "name": "jarjestamismuoto_fi"
+              "name": "aidinkieli_sv"
               },
               {
-                "name": "maksun_luokka_fi"
+              "name": "ikä"
               },
               {
-                "name": "maksun_peruste_fi"
+              "name": "ikäryhmä"
               },
               {
-                "name": "palveluseteli_arvo"
+              "name": "jarjestamismuoto_en"
               },
               {
-                "name": "perheen_koko"
+              "name": "jarjestamismuoto_fi"
               },
               {
-                "name": "tilastovuosi"
+              "name": "jarjestamismuoto_sv"
               },
               {
-                "name": "toimintamuoto_fi"
+              "name": "kasvatusopillinen_jarjestelma_en"
               },
               {
-                "name": "toimipaikka_kunta_fi"
+              "name": "kasvatusopillinen_jarjestelma_fi"
               },
               {
-                "name": "toimipaikka_maakunta_fi"
+              "name": "kasvatusopillinen_jarjestelma_sv"
               },
               {
-                "name": "toimipaikkaluokitus_fi"
+              "name": "kokopaivainen_vaka_kytkin_en"
               },
               {
-                "name": "yritysmuoto_fi"
+              "name": "kokopaivainen_vaka_kytkin_fi"
               },
               {
-                "name": "yritysmuoto_ryhma_fi"
+              "name": "kokopaivainen_vaka_kytkin_sv"
               },
               {
-                "name": "yritystyyppi"
+              "name": "kotikunta_en"
+              },
+              {
+              "name": "kotikunta_fi"
+              },
+              {
+              "name": "kotikunta_koodi"
+              },
+              {
+              "name": "kotikunta_sv"
+              },
+              {
+              "name": "paivittainen_vaka_kytkin_en"
+              },
+              {
+              "name": "paivittainen_vaka_kytkin_fi"
+              },
+              {
+              "name": "paivittainen_vaka_kytkin_sv"
+              },
+              {
+              "name": "sukupuoli_en"
+              },
+              {
+              "name": "sukupuoli_fi"
+              },
+              {
+              "name": "sukupuoli_sv"
+              },
+              {
+              "name": "tilastovuosi"
+              },
+              {
+              "name": "toimintamuoto_en"
+              },
+              {
+              "name": "toimintamuoto_fi"
+              },
+              {
+              "name": "toimintamuoto_sv"
+              },
+              {
+              "name": "toimipaikka_kunta_en"
+              },
+              {
+              "name": "toimipaikka_kunta_fi"
+              },
+              {
+              "name": "toimipaikka_kunta_sv"
+              },
+              {
+              "name": "toimipaikka_maakunta_en"
+              },
+              {
+              "name": "toimipaikka_maakunta_fi"
+              },
+              {
+              "name": "toimipaikka_maakunta_sv"
+              },
+              {
+              "name": "tuntimaara_viikossa"
+              },
+              {
+              "name": "tuntimäärä_asteikko"
+              },
+              {
+              "name": "tuntimäärä_asteikko_jarj"
+              },
+              {
+              "name": "vuorohoito_kytkin_en"
+              },
+              {
+              "name": "vuorohoito_kytkin_fi"
+              },
+              {
+              "name": "vuorohoito_kytkin_sv"
+              },
+              {
+              "name": "Väestö"
+              },
+              {
+              "name": "yritysmuoto_en"
+              },
+              {
+              "name": "yritysmuoto_fi"
+              },
+              {
+              "name": "yritysmuoto_sv"
+              },
+              {
+              "name": "yritystyyppi"
               }
-            ],
-            "measures": [
+              ],
+              "measures": [
               {
-                "name": "% osuus kunnan lapsista"
+              "name": "Lasten lukumäärä"
               },
               {
-                "name": "Asiakasmaksun keskiarvo"
+              "name": "Lasten osuus varhaiskasvatuksessa"
               },
               {
-                "name": "Kunnallisen vakan kumulatiivinen summa"
+              "name": "poikia"
               },
               {
-                "name": "Kunnallisia lapsia"
+              "name": "tyttöjä"
               },
               {
-                "name": "Kunnallisia maksuja"
-              },
-              {
-                "name": "Kuntien asiakasmaksu keskiarvo"
-              },
-              {
-                "name": "Kuntien asiakasmaksu max"
-              },
-              {
-                "name": "Kuntien asiakasmaksu mediaani"
-              },
-              {
-                "name": "Kuntien asiakasmaksu min"
-              },
-              {
-                "name": "Palveluseteli ja ostopalvelun kumulatiivinen summa"
-              },
-              {
-                "name": "Palveluseteli keskiarvo"
-              },
-              {
-                "name": "Palveluseteli max"
-              },
-              {
-                "name": "Palveluseteli mediaani"
-              },
-              {
-                "name": "Palveluseteli min"
-              },
-              {
-                "name": "Palvelusetelillä maksuja"
-              },
-              {
-                "name": "Yksityisen vakan kumulatiivinen summa"
-              },
-              {
-                "name": "Yksityisiä lapsia"
-              },
-              {
-                "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)"
-              },
-              {
-                "name": "Yksityisiä maksuja"
-              },
-              {
-                "name": "Yksityisten asiakasmaksu keskiarvo"
-              },
-              {
-                "name": "Yksityisten asiakasmaksu max"
-              },
-              {
-                "name": "Yksityisten asiakasmaksu mediaani"
-              },
-              {
-                "name": "Yksityisten asiakasmaksu min"
-              },
-              {
-                "name": "Palvelusetelillä lapsia"
+              "name": "Väestö summa"
               }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "maksutiedot_en",
-        "tables": [
-          {
-            "name": "Muuttujat",
-            "columns": [
-              {
-                "name": "asiakasmaksu"
-              },
-              {
-                "name": "ikä"
-              },
-              {
-                "name": "ikäryhmä"
-              },
-              {
-                "name": "jarjestamismuoto_en"
-              },
-              {
-                "name": "maksun_luokka_en"
-              },
-              {
-                "name": "maksun_peruste_en"
-              },
-              {
-                "name": "palveluseteli_arvo"
-              },
-              {
-                "name": "perheen_koko"
-              },
-              {
-                "name": "tilastovuosi"
-              },
-              {
-                "name": "toimintamuoto_en"
-              },
-              {
-                "name": "toimipaikka_kunta_en"
-              },
-              {
-                "name": "toimipaikka_maakunta_en"
-              },
-              {
-                "name": "toimipaikkaluokitus_en"
-              },
-              {
-                "name": "yritysmuoto_en"
-              },
-              {
-                "name": "yritysmuoto_ryhma_fi"
-              },
-              {
-                "name": "yritystyyppi"
+              ]
               }
-            ],
-            "measures": [
-              {
-                "name": "% osuus kunnan lapsista"
+              ]
               },
               {
-                "name": "Asiakasmaksun keskiarvo"
+              "name": "maksutiedot",
+              "tables": [
+              {
+              "name": "Muuttujat",
+              "columns": [
+              {
+              "name": "asiakasmaksu"
               },
               {
-                "name": "Kunnallisen vakan kumulatiivinen summa"
+              "name": "maksun_peruste_en"
               },
               {
-                "name": "Kunnallisia lapsia"
+              "name": "maksun_peruste_fi"
               },
               {
-                "name": "Kunnallisia maksuja"
+              "name": "maksun_peruste_sv"
               },
               {
-                "name": "Kuntien asiakasmaksu keskiarvo"
+              "name": "palveluseteli_arvo"
               },
               {
-                "name": "Kuntien asiakasmaksu max"
+              "name": "perheen_koko"
               },
               {
-                "name": "Kuntien asiakasmaksu mediaani"
+              "name": "tilastovuosi"
               },
               {
-                "name": "Kuntien asiakasmaksu min"
+              "name": "toimipaikka_maakunta_en"
               },
               {
-                "name": "Palveluseteli ja ostopalvelun kumulatiivinen summa"
+              "name": "toimipaikka_maakunta_fi"
               },
               {
-                "name": "Palveluseteli keskiarvo"
+              "name": "toimipaikka_maakunta_sv"
               },
               {
-                "name": "Palveluseteli max"
+              "name": "yritysmuoto_en"
               },
               {
-                "name": "Palveluseteli mediaani"
+              "name": "yritysmuoto_fi"
               },
               {
-                "name": "Palveluseteli min"
+              "name": "yritysmuoto_sv"
               },
               {
-                "name": "Palvelusetelillä lapsia"
+              "name": "yritystyyppi"
               },
               {
-                "name": "Palvelusetelillä maksuja"
+              "name": "ikä"
               },
               {
-                "name": "Yksityisen vakan kumulatiivinen summa"
+              "name": "ikäryhmä"
               },
               {
-                "name": "Yksityisiä lapsia"
+              "name": "maksun_luokka_en"
               },
               {
-                "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)"
+              "name": "maksun_luokka_fi"
               },
               {
-                "name": "Yksityisiä maksuja"
+              "name": "maksun_luokka_sv"
               },
               {
-                "name": "Yksityisten asiakasmaksu keskiarvo"
+              "name": "toimipaikka_kunta_en"
               },
               {
-                "name": "Yksityisten asiakasmaksu max"
+              "name": "toimipaikka_kunta_fi"
               },
               {
-                "name": "Yksityisten asiakasmaksu mediaani"
+              "name": "toimipaikka_kunta_sv"
               },
               {
-                "name": "Yksityisten asiakasmaksu min"
+              "name": "toimintamuoto_fi"
+              },
+              {
+              "name": "toimipaikkaluokitus_fi"
+              },
+              {
+              "name": "yritysmuoto_ryhma_fi"
+              },
+              {
+              "name": "jarjestamismuoto_en"
+              },
+              {
+              "name": "jarjestamismuoto_fi"
+              },
+              {
+              "name": "jarjestamismuoto_sv"
               }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "maksutiedot_sv",
-        "tables": [
-          {
-            "name": "Muuttujat",
-            "columns": [
+              ],
+              "measures": [
               {
-                "name": "asiakasmaksu"
+              "name": "Kuntien asiakasmaksu keskiarvo"
               },
               {
-                "name": "ikä"
+              "name": "Kuntien asiakasmaksu max"
               },
               {
-                "name": "ikäryhmä"
+              "name": "Kuntien asiakasmaksu mediaani"
               },
               {
-                "name": "jarjestamismuoto_sv"
+              "name": "Kuntien asiakasmaksu min"
               },
               {
-                "name": "maksun_luokka_sv"
+              "name": "Yksityisten asiakasmaksu keskiarvo"
               },
               {
-                "name": "maksun_peruste_sv"
+              "name": "Yksityisten asiakasmaksu max"
               },
               {
-                "name": "palveluseteli_arvo"
+              "name": "Yksityisten asiakasmaksu mediaani"
               },
               {
-                "name": "perheen_koko"
+              "name": "Yksityisten asiakasmaksu min"
               },
               {
-                "name": "tilastovuosi"
+              "name": "Yksityisiä lapsia"
               },
               {
-                "name": "toimintamuoto_sv"
+              "name": "Kunnallisia lapsia"
               },
               {
-                "name": "toimipaikka_kunta_sv"
+              "name": "Kunnallisia maksuja"
               },
               {
-                "name": "toimipaikka_maakunta_sv"
+              "name": "Yksityisiä maksuja"
               },
               {
-                "name": "toimipaikkaluokitus_sv"
+              "name": "Palveluseteli keskiarvo"
               },
               {
-                "name": "yritysmuoto_ryhma_fi"
+              "name": "Palveluseteli max"
               },
               {
-                "name": "yritysmuoto_sv"
+              "name": "Palveluseteli mediaani"
               },
               {
-                "name": "yritystyyppi"
+              "name": "Palveluseteli min"
+              },
+              {
+              "name": "Palvelusetelillä lapsia"
+              },
+              {
+              "name": "Palvelusetelillä maksuja"
+              },
+              {
+              "name": "Asiakasmaksun keskiarvo"
+              },
+              {
+              "name": "% osuus kunnan lapsista"
+              },
+              {
+              "name": "Kunnallisen vakan kumulatiivinen summa"
+              },
+              {
+              "name": "Palveluseteli ja ostopalvelun kumulatiivinen summa"
+              },
+              {
+              "name": "Yksityisen vakan kumulatiivinen summa"
+              },
+              {
+              "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)"
               }
-            ],
-            "measures": [
-              {
-                "name": "% osuus kunnan lapsista"
-              },
-              {
-                "name": "Asiakasmaksun keskiarvo"
-              },
-              {
-                "name": "Kunnallisen vakan kumulatiivinen summa"
-              },
-              {
-                "name": "Kunnallisia lapsia"
-              },
-              {
-                "name": "Kunnallisia maksuja"
-              },
-              {
-                "name": "Kuntien asiakasmaksu keskiarvo"
-              },
-              {
-                "name": "Kuntien asiakasmaksu max"
-              },
-              {
-                "name": "Kuntien asiakasmaksu mediaani"
-              },
-              {
-                "name": "Kuntien asiakasmaksu min"
-              },
-              {
-                "name": "Palveluseteli ja ostopalvelun kumulatiivinen summa"
-              },
-              {
-                "name": "Palveluseteli keskiarvo"
-              },
-              {
-                "name": "Palveluseteli max"
-              },
-              {
-                "name": "Palveluseteli mediaani"
-              },
-              {
-                "name": "Palveluseteli min"
-              },
-              {
-                "name": "Palvelusetelillä lapsia"
-              },
-              {
-                "name": "Palvelusetelillä maksuja"
-              },
-              {
-                "name": "Yksityisen vakan kumulatiivinen summa"
-              },
-              {
-                "name": "Yksityisiä lapsia"
-              },
-              {
-                "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)"
-              },
-              {
-                "name": "Yksityisiä maksuja"
-              },
-              {
-                "name": "Yksityisten asiakasmaksu keskiarvo"
-              },
-              {
-                "name": "Yksityisten asiakasmaksu max"
-              },
-              {
-                "name": "Yksityisten asiakasmaksu mediaani"
-              },
-              {
-                "name": "Yksityisten asiakasmaksu min"
+              ]
               }
-            ]
-          }
-        ]
-      }
-    ],
-    "roles": [
-      {
-        "name": "Testi",
-        "modelPermission": "read",
-        "members": [
-          {
-            "memberName": "DWI\\T_SP_Excel_S_Read",
-            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1732"
-          },
-          {
-            "memberName": "NT AUTHORITY\\IUSR",
-            "memberId": "S-1-5-17"
-          }
-        ]
-      },
-      {
-        "name": "Tuotanto",
-        "modelPermission": "read",
-        "members": [
-          {
-            "memberName": "DWI\\T_SP_Excel_S_Read",
-            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1732"
-          },
-          {
-            "memberName": "NT AUTHORITY\\IUSR",
-            "memberId": "S-1-5-17"
-          }
-        ]
-      }
-    ],
-    "annotations": [
-      {
-        "name": "ClientCompatibilityLevel",
-        "value": "400"
-      }
-    ]
-  },
-  "id": "SemanticModel"
-}
+              ]
+              },
+              {
+              "name": "toimipaikat_fi",
+              "tables": [
+              {
+              "name": "Muuttujat",
+              "columns": [
+              {
+              "name": "ikä"
+              },
+              {
+              "name": "ikäryhmä"
+              },
+              {
+              "name": "ikäryhmä_jarj"
+              },
+              {
+              "name": "jarjestamismuoto_fi"
+              },
+              {
+              "name": "tilastovuosi"
+              },
+              {
+              "name": "vakajarjestaja_kunta_fi"
+              },
+              {
+              "name": "vakajarjestaja_nimi"
+              },
+              {
+              "name": "yritysmuoto_fi"
+              },
+              {
+              "name": "yritystyyppi"
+              }
+              ],
+              "measures": [
+              {
+              "name": "Lasten lukumäärä"
+              },
+              {
+              "name": "Lasten osuus varhaiskasvatuksessa"
+              },
+              {
+              "name": "poikia"
+              },
+              {
+              "name": "tyttöjä"
+              },
+              {
+              "name": "Väestö summa"
+              }
+              ]
+              }
+              ]
+              },
+              {
+              "name": "toimipaikat_en",
+              "tables": [
+              {
+              "name": "Muuttujat",
+              "columns": [
+              {
+              "name": "ikä"
+              },
+              {
+              "name": "ikäryhmä"
+              },
+              {
+              "name": "ikäryhmä_jarj"
+              },
+              {
+              "name": "jarjestamismuoto_en"
+              },
+              {
+              "name": "tilastovuosi"
+              },
+              {
+              "name": "vakajarjestaja_kunta_en"
+              },
+              {
+              "name": "vakajarjestaja_nimi"
+              },
+              {
+              "name": "yritysmuoto_en"
+              },
+              {
+              "name": "yritystyyppi"
+              }
+              ],
+              "measures": [
+              {
+              "name": "Lasten lukumäärä"
+              },
+              {
+              "name": "Lasten osuus varhaiskasvatuksessa"
+              },
+              {
+              "name": "poikia"
+              },
+              {
+              "name": "tyttöjä"
+              },
+              {
+              "name": "Väestö summa"
+              }
+              ]
+              }
+              ]
+              },
+              {
+              "name": "toimipaikat_sv",
+              "tables": [
+              {
+              "name": "Muuttujat",
+              "columns": [
+              {
+              "name": "ikä"
+              },
+              {
+              "name": "ikäryhmä"
+              },
+              {
+              "name": "ikäryhmä_jarj"
+              },
+              {
+              "name": "jarjestamismuoto_en"
+              },
+              {
+              "name": "jarjestamismuoto_sv"
+              },
+              {
+              "name": "tilastovuosi"
+              },
+              {
+              "name": "vakajarjestaja_kunta_sv"
+              },
+              {
+              "name": "vakajarjestaja_nimi"
+              },
+              {
+              "name": "yritysmuoto_sv"
+              },
+              {
+              "name": "yritystyyppi"
+              }
+              ],
+              "measures": [
+              {
+              "name": "Lasten lukumäärä"
+              },
+              {
+              "name": "Lasten osuus varhaiskasvatuksessa"
+              },
+              {
+              "name": "poikia"
+              },
+              {
+              "name": "tyttöjä"
+              },
+              {
+              "name": "Väestö summa"
+              }
+              ]
+              }
+              ]
+              },
+              {
+              "name": "lapset_fi",
+              "tables": [
+              {
+              "name": "Muuttujat",
+              "columns": [
+              {
+              "name": "aidinkieli_fi"
+              },
+              {
+              "name": "ikä"
+              },
+              {
+              "name": "ikäryhmä"
+              },
+              {
+              "name": "jarjestamismuoto_fi"
+              },
+              {
+              "name": "kasvatusopillinen_jarjestelma_fi"
+              },
+              {
+              "name": "kokopaivainen_vaka_kytkin_fi"
+              },
+              {
+              "name": "kotikunta_fi"
+              },
+              {
+              "name": "kotikunta_koodi"
+              },
+              {
+              "name": "paivittainen_vaka_kytkin_fi"
+              },
+              {
+              "name": "sukupuoli_fi"
+              },
+              {
+              "name": "tilastovuosi"
+              },
+              {
+              "name": "toimintamuoto_fi"
+              },
+              {
+              "name": "toimipaikka_kunta_fi"
+              },
+              {
+              "name": "toimipaikka_maakunta_fi"
+              },
+              {
+              "name": "tuntimaara_viikossa"
+              },
+              {
+              "name": "tuntimäärä_asteikko"
+              },
+              {
+              "name": "tuntimäärä_asteikko_jarj"
+              },
+              {
+              "name": "vuorohoito_kytkin_fi"
+              },
+              {
+              "name": "Väestö"
+              },
+              {
+              "name": "yritysmuoto_fi"
+              },
+              {
+              "name": "yritystyyppi"
+              },
+              {
+              "name": "yritysmuoto_ryhma_fi"
+              }
+              ],
+              "measures": [
+              {
+              "name": "Lasten lukumäärä"
+              },
+              {
+              "name": "Lasten osuus varhaiskasvatuksessa"
+              },
+              {
+              "name": "poikia"
+              },
+              {
+              "name": "tyttöjä"
+              },
+              {
+              "name": "Väestö summa"
+              },
+              {
+              "name": "Kunnallisia lapsia"
+              },
+              {
+              "name": "Yksityisiä lapsia"
+              },
+              {
+              "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)"
+              }
+              ]
+              }
+              ]
+              },
+              {
+              "name": "lapset_en",
+              "tables": [
+              {
+              "name": "Muuttujat",
+              "columns": [
+              {
+              "name": "aidinkieli_en"
+              },
+              {
+              "name": "ikä"
+              },
+              {
+              "name": "ikäryhmä"
+              },
+              {
+              "name": "jarjestamismuoto_en"
+              },
+              {
+              "name": "kasvatusopillinen_jarjestelma_en"
+              },
+              {
+              "name": "kokopaivainen_vaka_kytkin_en"
+              },
+              {
+              "name": "kotikunta_en"
+              },
+              {
+              "name": "kotikunta_koodi"
+              },
+              {
+              "name": "paivittainen_vaka_kytkin_en"
+              },
+              {
+              "name": "sukupuoli_en"
+              },
+              {
+              "name": "tilastovuosi"
+              },
+              {
+              "name": "toimintamuoto_en"
+              },
+              {
+              "name": "toimipaikka_kunta_en"
+              },
+              {
+              "name": "toimipaikka_maakunta_en"
+              },
+              {
+              "name": "tuntimaara_viikossa"
+              },
+              {
+              "name": "tuntimäärä_asteikko"
+              },
+              {
+              "name": "tuntimäärä_asteikko_jarj"
+              },
+              {
+              "name": "vuorohoito_kytkin_en"
+              },
+              {
+              "name": "Väestö"
+              },
+              {
+              "name": "yritysmuoto_en"
+              },
+              {
+              "name": "yritystyyppi"
+              },
+              {
+              "name": "yritysmuoto_ryhma_fi"
+              }
+              ],
+              "measures": [
+              {
+              "name": "Lasten lukumäärä"
+              },
+              {
+              "name": "Lasten osuus varhaiskasvatuksessa"
+              },
+              {
+              "name": "poikia"
+              },
+              {
+              "name": "tyttöjä"
+              },
+              {
+              "name": "Väestö summa"
+              },
+              {
+              "name": "Kunnallisia lapsia"
+              },
+              {
+              "name": "Yksityisiä lapsia"
+              },
+              {
+              "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)"
+              }
+              ]
+              }
+              ]
+              },
+              {
+              "name": "lapset_sv",
+              "tables": [
+              {
+              "name": "Muuttujat",
+              "columns": [
+              {
+              "name": "aidinkieli_sv"
+              },
+              {
+              "name": "ikä"
+              },
+              {
+              "name": "ikäryhmä"
+              },
+              {
+              "name": "jarjestamismuoto_sv"
+              },
+              {
+              "name": "kasvatusopillinen_jarjestelma_sv"
+              },
+              {
+              "name": "kokopaivainen_vaka_kytkin_sv"
+              },
+              {
+              "name": "kotikunta_koodi"
+              },
+              {
+              "name": "kotikunta_sv"
+              },
+              {
+              "name": "paivittainen_vaka_kytkin_sv"
+              },
+              {
+              "name": "sukupuoli_sv"
+              },
+              {
+              "name": "tilastovuosi"
+              },
+              {
+              "name": "toimintamuoto_sv"
+              },
+              {
+              "name": "toimipaikka_kunta_sv"
+              },
+              {
+              "name": "toimipaikka_maakunta_sv"
+              },
+              {
+              "name": "tuntimaara_viikossa"
+              },
+              {
+              "name": "tuntimäärä_asteikko"
+              },
+              {
+              "name": "tuntimäärä_asteikko_jarj"
+              },
+              {
+              "name": "vuorohoito_kytkin_sv"
+              },
+              {
+              "name": "Väestö"
+              },
+              {
+              "name": "yritysmuoto_sv"
+              },
+              {
+              "name": "yritystyyppi"
+              },
+              {
+              "name": "yritysmuoto_ryhma_fi"
+              }
+              ],
+              "measures": [
+              {
+              "name": "Lasten lukumäärä"
+              },
+              {
+              "name": "Lasten osuus varhaiskasvatuksessa"
+              },
+              {
+              "name": "poikia"
+              },
+              {
+              "name": "tyttöjä"
+              },
+              {
+              "name": "Väestö summa"
+              },
+              {
+              "name": "Kunnallisia lapsia"
+              },
+              {
+              "name": "Yksityisiä lapsia"
+              },
+              {
+              "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)"
+              }
+              ]
+              }
+              ]
+              },
+              {
+              "name": "maksutiedot_fi",
+              "tables": [
+              {
+              "name": "Muuttujat",
+              "columns": [
+              {
+              "name": "asiakasmaksu"
+              },
+              {
+              "name": "ikä"
+              },
+              {
+              "name": "ikäryhmä"
+              },
+              {
+              "name": "jarjestamismuoto_fi"
+              },
+              {
+              "name": "maksun_luokka_fi"
+              },
+              {
+              "name": "maksun_peruste_fi"
+              },
+              {
+              "name": "palveluseteli_arvo"
+              },
+              {
+              "name": "perheen_koko"
+              },
+              {
+              "name": "tilastovuosi"
+              },
+              {
+              "name": "toimintamuoto_fi"
+              },
+              {
+              "name": "toimipaikka_kunta_fi"
+              },
+              {
+              "name": "toimipaikka_maakunta_fi"
+              },
+              {
+              "name": "toimipaikkaluokitus_fi"
+              },
+              {
+              "name": "yritysmuoto_fi"
+              },
+              {
+              "name": "yritysmuoto_ryhma_fi"
+              },
+              {
+              "name": "yritystyyppi"
+              }
+              ],
+              "measures": [
+              {
+              "name": "% osuus kunnan lapsista"
+              },
+              {
+              "name": "Asiakasmaksun keskiarvo"
+              },
+              {
+              "name": "Kunnallisen vakan kumulatiivinen summa"
+              },
+              {
+              "name": "Kunnallisia lapsia"
+              },
+              {
+              "name": "Kunnallisia maksuja"
+              },
+              {
+              "name": "Kuntien asiakasmaksu keskiarvo"
+              },
+              {
+              "name": "Kuntien asiakasmaksu max"
+              },
+              {
+              "name": "Kuntien asiakasmaksu mediaani"
+              },
+              {
+              "name": "Kuntien asiakasmaksu min"
+              },
+              {
+              "name": "Palveluseteli ja ostopalvelun kumulatiivinen summa"
+              },
+              {
+              "name": "Palveluseteli keskiarvo"
+              },
+              {
+              "name": "Palveluseteli max"
+              },
+              {
+              "name": "Palveluseteli mediaani"
+              },
+              {
+              "name": "Palveluseteli min"
+              },
+              {
+              "name": "Palvelusetelillä maksuja"
+              },
+              {
+              "name": "Yksityisen vakan kumulatiivinen summa"
+              },
+              {
+              "name": "Yksityisiä lapsia"
+              },
+              {
+              "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)"
+              },
+              {
+              "name": "Yksityisiä maksuja"
+              },
+              {
+              "name": "Yksityisten asiakasmaksu keskiarvo"
+              },
+              {
+              "name": "Yksityisten asiakasmaksu max"
+              },
+              {
+              "name": "Yksityisten asiakasmaksu mediaani"
+              },
+              {
+              "name": "Yksityisten asiakasmaksu min"
+              },
+              {
+              "name": "Palvelusetelillä lapsia"
+              }
+              ]
+              }
+              ]
+              },
+              {
+              "name": "maksutiedot_en",
+              "tables": [
+              {
+              "name": "Muuttujat",
+              "columns": [
+              {
+              "name": "asiakasmaksu"
+              },
+              {
+              "name": "ikä"
+              },
+              {
+              "name": "ikäryhmä"
+              },
+              {
+              "name": "jarjestamismuoto_en"
+              },
+              {
+              "name": "maksun_luokka_en"
+              },
+              {
+              "name": "maksun_peruste_en"
+              },
+              {
+              "name": "palveluseteli_arvo"
+              },
+              {
+              "name": "perheen_koko"
+              },
+              {
+              "name": "tilastovuosi"
+              },
+              {
+              "name": "toimintamuoto_en"
+              },
+              {
+              "name": "toimipaikka_kunta_en"
+              },
+              {
+              "name": "toimipaikka_maakunta_en"
+              },
+              {
+              "name": "toimipaikkaluokitus_en"
+              },
+              {
+              "name": "yritysmuoto_en"
+              },
+              {
+              "name": "yritysmuoto_ryhma_fi"
+              },
+              {
+              "name": "yritystyyppi"
+              }
+              ],
+              "measures": [
+              {
+              "name": "% osuus kunnan lapsista"
+              },
+              {
+              "name": "Asiakasmaksun keskiarvo"
+              },
+              {
+              "name": "Kunnallisen vakan kumulatiivinen summa"
+              },
+              {
+              "name": "Kunnallisia lapsia"
+              },
+              {
+              "name": "Kunnallisia maksuja"
+              },
+              {
+              "name": "Kuntien asiakasmaksu keskiarvo"
+              },
+              {
+              "name": "Kuntien asiakasmaksu max"
+              },
+              {
+              "name": "Kuntien asiakasmaksu mediaani"
+              },
+              {
+              "name": "Kuntien asiakasmaksu min"
+              },
+              {
+              "name": "Palveluseteli ja ostopalvelun kumulatiivinen summa"
+              },
+              {
+              "name": "Palveluseteli keskiarvo"
+              },
+              {
+              "name": "Palveluseteli max"
+              },
+              {
+              "name": "Palveluseteli mediaani"
+              },
+              {
+              "name": "Palveluseteli min"
+              },
+              {
+              "name": "Palvelusetelillä lapsia"
+              },
+              {
+              "name": "Palvelusetelillä maksuja"
+              },
+              {
+              "name": "Yksityisen vakan kumulatiivinen summa"
+              },
+              {
+              "name": "Yksityisiä lapsia"
+              },
+              {
+              "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)"
+              },
+              {
+              "name": "Yksityisiä maksuja"
+              },
+              {
+              "name": "Yksityisten asiakasmaksu keskiarvo"
+              },
+              {
+              "name": "Yksityisten asiakasmaksu max"
+              },
+              {
+              "name": "Yksityisten asiakasmaksu mediaani"
+              },
+              {
+              "name": "Yksityisten asiakasmaksu min"
+              }
+              ]
+              }
+              ]
+              },
+              {
+              "name": "maksutiedot_sv",
+              "tables": [
+              {
+              "name": "Muuttujat",
+              "columns": [
+              {
+              "name": "asiakasmaksu"
+              },
+              {
+              "name": "ikä"
+              },
+              {
+              "name": "ikäryhmä"
+              },
+              {
+              "name": "jarjestamismuoto_sv"
+              },
+              {
+              "name": "maksun_luokka_sv"
+              },
+              {
+              "name": "maksun_peruste_sv"
+              },
+              {
+              "name": "palveluseteli_arvo"
+              },
+              {
+              "name": "perheen_koko"
+              },
+              {
+              "name": "tilastovuosi"
+              },
+              {
+              "name": "toimintamuoto_sv"
+              },
+              {
+              "name": "toimipaikka_kunta_sv"
+              },
+              {
+              "name": "toimipaikka_maakunta_sv"
+              },
+              {
+              "name": "toimipaikkaluokitus_sv"
+              },
+              {
+              "name": "yritysmuoto_ryhma_fi"
+              },
+              {
+              "name": "yritysmuoto_sv"
+              },
+              {
+              "name": "yritystyyppi"
+              }
+              ],
+              "measures": [
+              {
+              "name": "% osuus kunnan lapsista"
+              },
+              {
+              "name": "Asiakasmaksun keskiarvo"
+              },
+              {
+              "name": "Kunnallisen vakan kumulatiivinen summa"
+              },
+              {
+              "name": "Kunnallisia lapsia"
+              },
+              {
+              "name": "Kunnallisia maksuja"
+              },
+              {
+              "name": "Kuntien asiakasmaksu keskiarvo"
+              },
+              {
+              "name": "Kuntien asiakasmaksu max"
+              },
+              {
+              "name": "Kuntien asiakasmaksu mediaani"
+              },
+              {
+              "name": "Kuntien asiakasmaksu min"
+              },
+              {
+              "name": "Palveluseteli ja ostopalvelun kumulatiivinen summa"
+              },
+              {
+              "name": "Palveluseteli keskiarvo"
+              },
+              {
+              "name": "Palveluseteli max"
+              },
+              {
+              "name": "Palveluseteli mediaani"
+              },
+              {
+              "name": "Palveluseteli min"
+              },
+              {
+              "name": "Palvelusetelillä lapsia"
+              },
+              {
+              "name": "Palvelusetelillä maksuja"
+              },
+              {
+              "name": "Yksityisen vakan kumulatiivinen summa"
+              },
+              {
+              "name": "Yksityisiä lapsia"
+              },
+              {
+              "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)"
+              },
+              {
+              "name": "Yksityisiä maksuja"
+              },
+              {
+              "name": "Yksityisten asiakasmaksu keskiarvo"
+              },
+              {
+              "name": "Yksityisten asiakasmaksu max"
+              },
+              {
+              "name": "Yksityisten asiakasmaksu mediaani"
+              },
+              {
+              "name": "Yksityisten asiakasmaksu min"
+              }
+              ]
+              }
+              ]
+              }
+              ],
+              "roles": [
+              {
+              "name": "Testi",
+              "modelPermission": "read",
+              "members": [
+              {
+              "memberName": "DWI\\T_SP_Excel_S_Read",
+              "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1732"
+              },
+              {
+              "memberName": "NT AUTHORITY\\IUSR",
+              "memberId": "S-1-5-17"
+              }
+              ]
+              },
+              {
+              "name": "Tuotanto",
+              "modelPermission": "read",
+              "members": [
+              {
+              "memberName": "DWI\\T_SP_Excel_S_Read",
+              "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1732"
+              },
+              {
+              "memberName": "NT AUTHORITY\\IUSR",
+              "memberId": "S-1-5-17"
+              }
+              ]
+              }
+              ],
+              "annotations": [
+              {
+              "name": "ClientCompatibilityLevel",
+              "value": "400"
+              }
+              ]
+              },
+              "id": "SemanticModel"
+              }
