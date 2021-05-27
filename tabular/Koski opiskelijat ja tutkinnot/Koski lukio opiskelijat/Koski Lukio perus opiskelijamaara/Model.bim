@@ -2508,16 +2508,16 @@
             "name": "Eronnut, vaihtoi koulutuksen järjestäjää (sama tutkinto)",
             "expression": [
               "",
-              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[eronnut_opiskelija]=1, Muuttujat[jatkaa_amm_tutkintokoulutus] = 1, Muuttujat[jatkaa_kj] = 0, Muuttujat[jatkaa_tutkinto_boo] = TRUE())",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[eronnut_opiskelija]=1, Muuttujat[jatkaa_yleissivistava] = 1, Muuttujat[jatkaa_kj] = 0, Muuttujat[jatkaa_tutkinto_boo] = TRUE())",
               "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
             ],
             "formatString": "#,0"
           },
           {
-            "name": "Eronnut, vaihtoi koulutuksen järjestäjää (eri tutkinto)",
+            "name": "Eronnut, vaihtoi koulutuksen järjestäjää (ammatilliseen)",
             "expression": [
               "",
-              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[eronnut_opiskelija]=1, Muuttujat[jatkaa_amm_tutkintokoulutus] = 1, Muuttujat[jatkaa_kj] = 0, Muuttujat[jatkaa_tutkinto_boo] = FALSE())",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[eronnut_opiskelija]=1, Muuttujat[jatkaa_ammatillinen] = 1, Muuttujat[jatkaa_kj] = 0, Muuttujat[jatkaa_tutkinto_boo] = FALSE())",
               "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
             ],
             "formatString": "#,0"
@@ -2536,7 +2536,7 @@
             "name": "Eronnut, vaihtoi oppimäärää",
             "expression": [
               "",
-              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[eronnut_opiskelija]=1, Muuttujat[jatkaa_oppimaara] = 0)",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[eronnut_opiskelija]=1, Muuttujat[jatkaa_oppimaara] = 0, Muuttujat[jatkaa_aikuistenops] = 1 || Muuttujat[jatkaa_nuortenops] =1)",
               "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
               ""
             ],
@@ -2563,7 +2563,12 @@
             "formatString": "#,0"
           },
           {
-            "name": "Eronnut, vaihtoii lukion nuorten oppimäärään",
+            "name": "Kaikki opiskelijat",
+            "expression": " IF(DISTINCTCOUNT([oppija_oid]) < 5, \"1 - 4\", MROUND(DISTINCTCOUNT([oppija_oid]), 3))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Eronnut, vaihtoi lukion nuorten oppimäärään",
             "expression": [
               "",
               "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[eronnut_opiskelija]=1,Muuttujat[jatkaa_oppimaara] = 0, Muuttujat[jatkaa_nuortenops] = 1)",
@@ -2573,7 +2578,7 @@
             "formatString": "#,0"
           },
           {
-            "name": "Eronnut, vaihtoii lukion aikuisten oppimäärään",
+            "name": "Eronnut, vaihtoi lukion aikuisten oppimäärään",
             "expression": [
               "",
               "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[eronnut_opiskelija]=1,Muuttujat[jatkaa_oppimaara] = 0, Muuttujat[jatkaa_aikuistenops] = 1)",
@@ -2583,8 +2588,23 @@
             "formatString": "#,0"
           },
           {
-            "name": "Kaikki opiskelijat",
-            "expression": " IF(DISTINCTCOUNT([oppija_oid]) < 5, \"1 - 4\", MROUND(DISTINCTCOUNT([oppija_oid]), 3))",
+            "name": "Eronnut, vaihtoi koulutuksen järjestäjää (jatkaa lukiokoulutuksessa)",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[eronnut_opiskelija]=1, Muuttujat[jatkaa_yleissivistava] = 1, Muuttujat[jatkaa_kj] = 0, Muuttujat[jatkaa_yleissivistava] = 1)",
+              "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Eronnut, jatkoi samalla koulutuksen järjestäjällä ammatillisessa",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[eronnut_opiskelija]=1, Muuttujat[jatkaa_kj] = 1, Muuttujat[jatkaa_ammatillinen] = 1)",
+              "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
+              ""
+            ],
             "formatString": "#,0"
           }
         ],
@@ -4667,7 +4687,7 @@
                 "name": "Eronnut, keskeytti toisen asteen"
               },
               {
-                "name": "Eronnut, vaihtoi koulutuksen järjestäjää (eri tutkinto)"
+                "name": "Eronnut, vaihtoi koulutuksen järjestäjää (ammatilliseen)"
               },
               {
                 "name": "Eronnut, vaihtoi koulutuksen järjestäjää (sama tutkinto)"
@@ -4676,16 +4696,7 @@
                 "name": "Eronnut, vaihtoi lukiota"
               },
               {
-                "name": "Eronnut, vaihtoi oppimäärää"
-              },
-              {
                 "name": "Eronnut, vaihtoi tutkintoa"
-              },
-              {
-                "name": "Eronnut, vaihtoii lukion aikuisten oppimäärään"
-              },
-              {
-                "name": "Eronnut, vaihtoii lukion nuorten oppimäärään"
               },
               {
                 "name": "Kaikki opiskelijat"
@@ -4698,6 +4709,18 @@
               },
               {
                 "name": "Uudet opiskelijat"
+              },
+              {
+                "name": "Eronnut, vaihtoi lukion aikuisten oppimäärään"
+              },
+              {
+                "name": "Eronnut, vaihtoi lukion nuorten oppimäärään"
+              },
+              {
+                "name": "Eronnut, jatkoi samalla koulutuksen järjestäjällä ammatillisessa"
+              },
+              {
+                "name": "Eronnut, vaihtoi koulutuksen järjestäjää (jatkaa lukiokoulutuksessa)"
               }
             ]
           }
