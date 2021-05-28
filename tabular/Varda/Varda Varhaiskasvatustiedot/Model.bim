@@ -82,6 +82,7 @@
           {
             "name": "henkilo_id",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "henkilo_id",
             "sourceProviderType": "Integer"
           },
@@ -421,6 +422,7 @@
           {
             "name": "tuntimäärä_asteikko_jarj",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "tuntimäärä_asteikko_jarj",
             "sourceProviderType": "Integer"
           },
@@ -1844,22 +1846,22 @@
           },
           {
             "name": "Kuntien asiakasmaksu min",
-            "expression": "ROUND(MINX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\") && [tilastointi] = 1),[asiakasmaksu]), 0)",
+            "expression": "ROUND(MINX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM01\" || [jarjestamismuoto_koodi] = \"JM02\") && [tilastointi] = 1),[asiakasmaksu]), 0)",
             "displayFolder": "Mittarit"
           },
           {
             "name": "Kuntien asiakasmaksu max",
-            "expression": "ROUND(MAXX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\")&& [tilastointi] = 1),[asiakasmaksu]), 0)",
+            "expression": "ROUND(MAXX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM01\" || [jarjestamismuoto_koodi] = \"JM02\")&& [tilastointi] = 1),[asiakasmaksu]), 0)",
             "displayFolder": "Mittarit"
           },
           {
             "name": "Kuntien asiakasmaksu mediaani",
-            "expression": "ROUND(MEDIANX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM01\" || [jarjestamismuoto_koodi] = \"JM03\") && NOT(ISBLANK([asiakasmaksu])) && [tilastointi] = 1),[asiakasmaksu]), 0)",
+            "expression": "ROUND(MEDIANX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM01\" || [jarjestamismuoto_koodi] = \"JM02\") && NOT(ISBLANK([asiakasmaksu])) && [tilastointi] = 1),[asiakasmaksu]), 0)",
             "displayFolder": "Mittarit"
           },
           {
             "name": "Kuntien asiakasmaksu keskiarvo",
-            "expression": "ROUND(AVERAGEX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\") && [tilastointi] = 1),[asiakasmaksu]), 0)",
+            "expression": "ROUND(AVERAGEX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\") && [tilastointi] = 1),[asiakasmaksu]), 0)",
             "displayFolder": "Mittarit"
           },
           {
@@ -1886,7 +1888,7 @@
             "name": "Kunnallisia lapsia",
             "expression": [
               "",
-              "var summa = Calculate(DISTINCTCOUNT([henkilo_id]), FILTER(Muuttujat, [jarjestamismuoto_koodi]=\"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"))",
+              "var summa = Calculate(DISTINCTCOUNT([henkilo_id]), FILTER(Muuttujat, [jarjestamismuoto_koodi]=\"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\"))",
               "return IF(summa = 0, BLANK(), IF(summa < 5, \"\", MROUND(summa, 3)))",
               ""
             ],
@@ -1897,7 +1899,7 @@
             "name": "Kunnallisia maksuja",
             "expression": [
               "",
-              "var summa =  Calculate(DISTINCTCOUNT([maksutieto_id]), FILTER(Muuttujat, [jarjestamismuoto_koodi] = \"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"))",
+              "var summa =  Calculate(DISTINCTCOUNT([maksutieto_id]), FILTER(Muuttujat, [jarjestamismuoto_koodi] = \"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\" ))",
               "return IF(summa = 0, BLANK(), IF(summa < 5, \"\", MROUND(summa, 3)))",
               ""
             ],
@@ -1927,27 +1929,27 @@
           },
           {
             "name": "Palveluseteli min",
-            "expression": "ROUND(MINX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\") && [tilastointi] = 1),[palveluseteli_arvo]), 0)"
+            "expression": "ROUND(MINX(FILTER(Muuttujat, [jarjestamismuoto_koodi] = \"JM03\" && [tilastointi] = 1),[palveluseteli_arvo]), 0)"
           },
           {
             "name": "Palveluseteli max",
-            "expression": "ROUND(MAXX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\") && [tilastointi] = 1),[palveluseteli_arvo]), 0)",
+            "expression": "ROUND(MAXX(FILTER(Muuttujat, [jarjestamismuoto_koodi] = \"JM03\" && [tilastointi] = 1),[palveluseteli_arvo]), 0)",
             "formatString": "#,0"
           },
           {
             "name": "Palveluseteli mediaani",
-            "expression": "ROUND(MEDIANX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\") && [tilastointi] = 1),[palveluseteli_arvo]), 0)",
+            "expression": "ROUND(MEDIANX(FILTER(Muuttujat, [jarjestamismuoto_koodi] = \"JM03\" && [tilastointi] = 1),[palveluseteli_arvo]), 0)",
             "formatString": "#,0"
           },
           {
             "name": "Palveluseteli keskiarvo",
-            "expression": "ROUND(AVERAGEX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\") && [tilastointi] = 1),[palveluseteli_arvo]), 0)"
+            "expression": "ROUND(AVERAGEX(FILTER(Muuttujat, [jarjestamismuoto_koodi] = \"JM03\" && [tilastointi] = 1),[palveluseteli_arvo]), 0)"
           },
           {
             "name": "Palvelusetelillä lapsia",
             "expression": [
               "",
-              " var summa = Calculate(DISTINCTCOUNT([henkilo_id]), FILTER(Muuttujat, [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"))",
+              " var summa = Calculate(DISTINCTCOUNT([henkilo_id]), FILTER(Muuttujat, [jarjestamismuoto_koodi] = \"JM03\"))",
               "return IF(summa = 0, BLANK(), IF(summa < 5, \"\", MROUND(summa, 3)))",
               ""
             ],
@@ -1957,7 +1959,7 @@
             "name": "Palvelusetelillä maksuja",
             "expression": [
               "",
-              "var summa =  Calculate(DISTINCTCOUNT([maksutieto_id]), FILTER(Muuttujat, [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"))",
+              "var summa =  Calculate(DISTINCTCOUNT([maksutieto_id]), FILTER(Muuttujat,[jarjestamismuoto_koodi] = \"JM03\"))",
               "return IF(summa = 0, BLANK(), IF(summa < 5, \"\", MROUND(summa, 3)))",
               ""
             ],
@@ -1970,34 +1972,43 @@
           },
           {
             "name": "% osuus kunnan lapsista",
-            "expression": " Format(DIVIDE([Palvelusetelillä lapsia_s], [Kunnallisia lapsia_s]), \"0.0 %\")",
+            "expression": [
+              "",
+              "var osa = [Palvelusetelillä lapsia_s]",
+              "var kaikki = [Kunnallisia lapsia_s]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki <5, \"25 % – 100 %\",",
+              "IF(osa < 5, IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
+              ""
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Palvelusetelillä lapsia_s",
             "expression": [
-              " Calculate(DISTINCTCOUNT([henkilo_id]), FILTER(Muuttujat, [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"))",
-              "",
+              " Calculate(DISTINCTCOUNT([henkilo_id]), FILTER(Muuttujat, [jarjestamismuoto_koodi] = \"JM03\"))",
               ""
             ],
             "isHidden": true
           },
           {
             "name": "Kunnallisia lapsia_s",
-            "expression": " Calculate(DISTINCTCOUNT([henkilo_id]), FILTER(Muuttujat, [jarjestamismuoto_koodi]=\"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"))",
+            "expression": " Calculate(DISTINCTCOUNT([henkilo_id]), FILTER(Muuttujat, [jarjestamismuoto_koodi]=\"JM01\" || [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"))",
             "isHidden": true
           },
           {
             "name": "Kunnallisen vakan kumulatiivinen summa",
             "expression": [
               " ",
-              "CALCULATe([henkilo_cum_sum], filter(Muuttujat, [jarjestamismuoto_koodi]= \"JM01\" || [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"))"
+              "CALCULATe([henkilo_cum_sum], filter(Muuttujat, [jarjestamismuoto_koodi]= \"JM01\" || [jarjestamismuoto_koodi] = \"JM03\"))"
             ],
             "formatString": "#,0"
           },
           {
             "name": "Palveluseteli ja ostopalvelun kumulatiivinen summa",
-            "expression": " CALCULATE( sumx(VALUES(Muuttujat[cum_sum]), calculate(MAX([cum_sum]),GROUPBY(Muuttujat,[henkilo_id],[cum_sum]))), filter(Muuttujat, [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"))",
+            "expression": " CALCULATE( sumx(VALUES(Muuttujat[cum_sum]), calculate(MAX([cum_sum]),GROUPBY(Muuttujat,[henkilo_id],[cum_sum]))), filter(Muuttujat, [jarjestamismuoto_koodi] = \"JM03\" || [jarjestamismuoto_koodi] = \"JM02\"))",
             "formatString": "#,0"
           },
           {
@@ -2023,7 +2034,7 @@
             "name": "Kunnallisia lapsia joilla maksutieto",
             "expression": [
               " ",
-              "var summa = Calculate(DISTINCTCOUNT([henkilo_id]), FILTER(Muuttujat, ([jarjestamismuoto_koodi]=\"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\") && Not(isblank(Muuttujat[maksun_luokka_fi]))))",
+              "var summa = Calculate(DISTINCTCOUNT([henkilo_id]), FILTER(Muuttujat, ([jarjestamismuoto_koodi]=\"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\") && Not(isblank(Muuttujat[maksun_luokka_fi]))))",
               "return IF(summa = 0, BLANK(), IF(summa < 5, \"\", MROUND(summa, 3)))",
               ""
             ],
