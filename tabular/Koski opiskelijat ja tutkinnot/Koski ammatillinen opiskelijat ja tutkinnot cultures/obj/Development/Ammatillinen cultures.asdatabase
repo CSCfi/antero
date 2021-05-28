@@ -2425,17 +2425,35 @@
                 ],
                 "measures": [
                     {
-                        "name": "netto_opiskelijamaara",
+                        "name": "uudet_opiskelijat",
+                        "formatString": "#,0",
+                        "expression": [
+                            "",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_uusi_opiskelija]=1)",
+                            "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
+                        ]
+                    },
+                    {
+                        "name": "opiskelijat",
+                        "formatString": "#,0",
+                        "expression": [
+                            "",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_opiskelija]=1)",
+                            "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
+                        ]
+                    },
+                    {
+                        "name": "netto_opiskelijamaara_fi",
                         "formatString": "#,0",
                         "expression": [
                             "",
                             "var taulu = ",
                             "ADDCOLUMNS(",
-                            "\tSUMMARIZE(Muuttujat,[],[],[])",
+                            "\tSUMMARIZE(Muuttujat,[tilastovuosi_fi],[tilastokuukausi_fi],[apusarake_pv_kk])",
                             "\t,\"summa\"",
-                            "\t,CALCULATE(SUM([]))",
+                            "\t,CALCULATE(SUM([apusarake_opiskelijat_netto]))",
                             ")",
-                            "var lkm = SUMX(taulu, [] * []) / SUMX(taulu, [])",
+                            "var lkm = SUMX(taulu, [summa] * [apusarake_pv_kk]) / SUMX(taulu, [apusarake_pv_kk])",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2445,164 +2463,174 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1)",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_tutkinnon_suorittanut]=1)",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
                         ]
                     },
                     {
-                        "name": "opiskelijat_pros",
+                        "name": "opiskelijat_pros_fi",
                         "formatString": "0.0 %;-0.0 %;0.0 %",
                         "expression": [
                             "",
-                            "var lkm = []",
-                            "var lkm_all = CALCULATE([],ALL(Muuttujat[]),ALL(Muuttujat[]),ALL(Muuttujat[]))",
+                            "var lkm = [Opiskelijat]",
+                            "var lkm_all = CALCULATE([Opiskelijat],ALL(Muuttujat[oppisopimuskoulutus_fi]),ALL(Muuttujat[koulutussopimus_fi]),ALL(Muuttujat[oppisopimus_koulutussopimus_fi]))",
                             "return DIVIDE(lkm,lkm_all)"
                         ]
                     },
                     {
-                        "name": "tutkinnon_suorittaneet_pros",
+                        "name": "tutkinnon_suorittaneet_pros_fi",
                         "formatString": "0.0 %;-0.0 %;0.0 %",
                         "expression": [
                             "",
-                            "var lkm = []",
-                            "var lkm_all = CALCULATE([],ALL(Muuttujat[]),ALL(Muuttujat[]),ALL(Muuttujat[]),ALL(Muuttujat[]),ALL(Muuttujat[]))",
+                            "var lkm = [Tutkinnon suorittaneet]",
+                            "var lkm_all = CALCULATE([Tutkinnon suorittaneet],ALL(Muuttujat[oppisopimuskoulutus_fi]),ALL(Muuttujat[koulutussopimus_fi]),ALL(Muuttujat[oppisopimuksen_suoritusosuus_fi]),ALL(Muuttujat[koulutussopimuksen_suoritusosuus_fi]),ALL(Muuttujat[oppisopimus_koulutussopimus_fi]))",
                             "return DIVIDE(lkm,lkm_all)",
                             ""
                         ]
                     },
                     {
-                        "name": "oppisopimusopiskelijoiden_osuus_opiskelijoista",
+                        "name": "oppisopimusopiskelijoiden_osuus_opiskelijoista_fi",
                         "formatString": "0.0 %;-0.0 %;0.0 %",
                         "displayFolder": "Suhteellinen",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE([],Muuttujat[]=1)",
-                            "var lkm_all = CALCULATE([],ALL(Muuttujat[]))",
+                            "var lkm = CALCULATE([Opiskelijat],Muuttujat[koodit_oppisopimuskoulutus]=1)",
+                            "var lkm_all = CALCULATE([Opiskelijat],ALL(Muuttujat[oppisopimuskoulutus_fi]))",
                             "return DIVIDE(lkm,lkm_all)",
                             ""
                         ]
                     },
                     {
-                        "name": "koulutussopimusopiskelijoiden_osuus_opiskelijoista",
+                        "name": "koulutussopimusopiskelijoiden_osuus_opiskelijoista_fi",
                         "formatString": "0.0 %;-0.0 %;0.0 %",
                         "displayFolder": "Suhteellinen",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE([],Muuttujat[]=1)",
-                            "var lkm_all = CALCULATE([],ALL(Muuttujat[]))",
+                            "var lkm = CALCULATE([Opiskelijat],Muuttujat[koodit_koulutussopimus]=1)",
+                            "var lkm_all = CALCULATE([Opiskelijat],ALL(Muuttujat[koulutussopimus_fi]))",
                             "return DIVIDE(lkm,lkm_all)"
                         ]
                     },
                     {
-                        "name": "oppisopimusopiskelijoiden_osuus_uusista_opiskelijoista",
+                        "name": "oppisopimusopiskelijoiden_osuus_uusista_opiskelijoista_fi",
                         "formatString": "0.0 %;-0.0 %;0.0 %",
                         "displayFolder": "Suhteellinen",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE([],Muuttujat[]=1)",
-                            "var lkm_all = CALCULATE([],ALL(Muuttujat[]))",
+                            "var lkm = CALCULATE([Uudet opiskelijat],Muuttujat[koodit_oppisopimuskoulutus]=1)",
+                            "var lkm_all = CALCULATE([Uudet opiskelijat],ALL(Muuttujat[oppisopimuskoulutus_fi]))",
                             "return DIVIDE(lkm,lkm_all)"
                         ]
                     },
                     {
-                        "name": "koulutussopimusopiskelijoiden_osuus_uusista_opiskelijoista",
+                        "name": "koulutussopimusopiskelijoiden_osuus_uusista_opiskelijoista_fi",
                         "formatString": "0.0 %;-0.0 %;0.0 %",
                         "displayFolder": "Suhteellinen",
                         "expression": [
                             " ",
-                            "var lkm = CALCULATE([],Muuttujat[]=1)",
-                            "var lkm_all = CALCULATE([],ALL(Muuttujat[]))",
+                            "var lkm = CALCULATE([Uudet opiskelijat],Muuttujat[koodit_koulutussopimus]=1)",
+                            "var lkm_all = CALCULATE([Uudet opiskelijat],ALL(Muuttujat[koulutussopimus_fi]))",
                             "return DIVIDE(lkm,lkm_all)"
                         ]
                     },
                     {
-                        "name": "oppisopimusopiskelijoiden_osuus_tutkinnon_suorittaneista",
+                        "name": "oppisopimusopiskelijoiden_osuus_tutkinnon_suorittaneista_fi",
                         "formatString": "0.0 %;-0.0 %;0.0 %",
                         "displayFolder": "Suhteellinen",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE([],Muuttujat[]=1)",
-                            "var lkm_all = CALCULATE([],ALL(Muuttujat[]))",
+                            "var lkm = CALCULATE([Tutkinnon suorittaneet],Muuttujat[koodit_oppisopimuskoulutus]=1)",
+                            "var lkm_all = CALCULATE([Tutkinnon suorittaneet],ALL(Muuttujat[oppisopimuskoulutus_fi]))",
                             "return DIVIDE(lkm,lkm_all)"
                         ]
                     },
                     {
-                        "name": "koulutussopimusopiskelijoiden_osuus_tutkinnon_suorittaneista",
+                        "name": "koulutussopimusopiskelijoiden_osuus_tutkinnon_suorittaneista_fi",
                         "formatString": "0.0 %;-0.0 %;0.0 %",
                         "displayFolder": "Suhteellinen",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE([],Muuttujat[]=1)",
-                            "var lkm_all = CALCULATE([],ALL(Muuttujat[]))",
+                            "var lkm = CALCULATE([Tutkinnon suorittaneet],Muuttujat[koodit_koulutussopimus]=1)",
+                            "var lkm_all = CALCULATE([Tutkinnon suorittaneet],ALL(Muuttujat[koulutussopimus_fi]))",
                             "return DIVIDE(lkm,lkm_all)"
                         ]
                     },
                     {
-                        "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_uusista_opiskelijoista",
+                        "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_uusista_opiskelijoista_fi",
                         "formatString": "0.0 %;-0.0 %;0.0 %",
                         "displayFolder": "Suhteellinen",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE([],Muuttujat[]=0, Muuttujat[]=0)",
-                            "var lkm_all = CALCULATE([],ALL(Muuttujat[]),ALL(Muuttujat[]))",
+                            "var lkm = CALCULATE([Uudet opiskelijat],Muuttujat[koodit_oppisopimuskoulutus]=0, Muuttujat[koodit_koulutussopimus]=0)",
+                            "var lkm_all = CALCULATE([Uudet opiskelijat],ALL(Muuttujat[oppisopimuskoulutus_fi]),ALL(Muuttujat[koulutussopimus_fi]))",
                             "return DIVIDE(lkm,lkm_all)"
                         ]
                     },
                     {
-                        "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_opiskelijoista",
+                        "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_opiskelijoista_fi",
                         "formatString": "0.0 %;-0.0 %;0.0 %",
                         "displayFolder": "Suhteellinen",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE([],Muuttujat[]=0, Muuttujat[]=0)",
-                            "var lkm_all = CALCULATE([],ALL(Muuttujat[]),ALL(Muuttujat[]))",
+                            "var lkm = CALCULATE([Opiskelijat],Muuttujat[koodit_oppisopimuskoulutus]=0, Muuttujat[koodit_koulutussopimus]=0)",
+                            "var lkm_all = CALCULATE([Opiskelijat],ALL(Muuttujat[oppisopimuskoulutus_fi]),ALL(Muuttujat[koulutussopimus_fi]))",
                             "return DIVIDE(lkm,lkm_all)",
                             ""
                         ]
                     },
                     {
-                        "name": "uudet_opiskelijat_pros",
+                        "name": "uudet_opiskelijat_pros_fi",
                         "formatString": "0.0 %;-0.0 %;0.0 %",
                         "expression": [
                             "",
-                            "var lkm = []",
-                            "var lkm_all = CALCULATE([],ALL(Muuttujat[]),ALL(Muuttujat[]),ALL(Muuttujat[]))",
+                            "var lkm = [Uudet opiskelijat]",
+                            "var lkm_all = CALCULATE([Uudet opiskelijat],ALL(Muuttujat[oppisopimuskoulutus_fi]),ALL(Muuttujat[koulutussopimus_fi]),ALL(Muuttujat[oppisopimus_koulutussopimus_fi]))",
                             "return DIVIDE(lkm,lkm_all)",
                             ""
                         ]
                     },
                     {
                         "name": "Uudet opiskelijat (opiskeluoikeus)",
-                        "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_opiskeluoikeus_oid]),Muuttujat[apusarake_uusi_opiskelija]=1)",
                         "formatString": "#,0",
-                        "isHidden": true
+                        "isHidden": true,
+                        "expression": [
+                            "CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_opiskeluoikeus_oid]),Muuttujat[apusarake_uusi_opiskelija]=1)"
+                        ]
                     },
                     {
-                        "name": "uudet_opiskelijat_oppisopimus",
-                        "expression": " CALCULATE([uudet_opiskelijat],Muuttujat[Koodit Oppisopimuskoulutus]=1)",
-                        "formatString": "#,0"
+                        "name": "uudet_opiskelijat_oppisopimus_fi",
+                        "formatString": "#,0",
+                        "expression": [
+                            " CALCULATE([Uudet opiskelijat],Muuttujat[koodit_oppisopimuskoulutus]=1)"
+                        ]
                     },
                     {
-                        "name": "uudet_opiskelijat_koulutussopimus",
-                        "expression": " CALCULATE([uudet_opiskelijat],Muuttujat[koodit_koulutussopimus]=1)",
-                        "formatString": "#,0"
+                        "name": "uudet_opiskelijat_koulutussopimus_fi",
+                        "formatString": "#,0",
+                        "expression": [
+                            " CALCULATE([Uudet opiskelijat],Muuttujat[koodit_koulutussopimus]=1)"
+                        ]
                     },
                     {
-                        "name": "opiskelijat_oppisopimus",
-                        "expression": " CALCULATE([opiskelijat],Muuttujat[Koodit Oppisopimuskoulutus]=1)",
-                        "formatString": "#,0"
+                        "name": "opiskelijat_oppisopimus_fi",
+                        "formatString": "#,0",
+                        "expression": [
+                            " CALCULATE([Opiskelijat],Muuttujat[koodit_oppisopimuskoulutus]=1)"
+                        ]
                     },
                     {
-                        "name": "opiskelijat_koulutussopimus",
-                        "expression": " CALCULATE([opiskelijat],Muuttujat[koodit_koulutussopimus]=1)",
-                        "formatString": "#,0"
+                        "name": "opiskelijat_koulutussopimus_fi",
+                        "formatString": "#,0",
+                        "expression": [
+                            " CALCULATE([Opiskelijat],Muuttujat[koodit_koulutussopimus]=1)"
+                        ]
                     },
                     {
                         "name": "uudet_opiskelijat_rahoitus",
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1)",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_uusi_opiskelija_rahoitus]=1)",
                             "return if(lkm=0,BLANK(),lkm)"
                         ]
                     },
@@ -2611,7 +2639,7 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1, Muuttujat[] = 1)",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1, Muuttujat[apusarake_jatkaa_kj] = 1)",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2621,7 +2649,7 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1, Muuttujat[] = 1)",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1, Muuttujat[apusarake_jatkaa_oppilaitos] = 1)",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2631,7 +2659,7 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1, Muuttujat[] = 1)",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1, Muuttujat[apusarake_jatkaa_valmentava] = 1)",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2641,7 +2669,7 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1, Muuttujat[] = 1)",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1, Muuttujat[apusarake_jatkaa_yleissivistava] = 1)",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2651,7 +2679,7 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1, Muuttujat[] = 1)",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1, Muuttujat[apusarake_jatkaa_ammatillinen] = 1)",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2661,7 +2689,7 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1, Muuttujat[] = 1)",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1, Muuttujat[apusarake_jatkaa_tutkintotyyppi] = 1)",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2671,7 +2699,7 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1, Muuttujat[] = TRUE())",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1, Muuttujat[apusarake_jatkaa_tutkinto_boo] = TRUE())",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2681,7 +2709,7 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1, Muuttujat[] = TRUE())",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1, Muuttujat[apusarake_jatkaa_koulutusala_taso3_boo] = TRUE())",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2691,7 +2719,7 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1, Muuttujat[] = TRUE())",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1, Muuttujat[apusarake_jatkaa_koulutusala_taso2_boo] = TRUE())",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2701,7 +2729,7 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1, Muuttujat[] = TRUE())",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1, Muuttujat[apusarake_jatkaa_koulutusala_taso1_boo] = TRUE())",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2711,7 +2739,7 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1, Muuttujat[] = TRUE())",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1, Muuttujat[apusarake_jatkaa_toinen_aste_boo] = TRUE())",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2721,7 +2749,7 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1)",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1)",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2731,7 +2759,7 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1, Muuttujat[] = FALSE())",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1, Muuttujat[apusarake_jatkaa_toinen_aste_boo] = FALSE())",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2741,7 +2769,7 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1, Muuttujat[] = 0)",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1, Muuttujat[apusarake_jatkaa_ammatillinen] = 0)",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2751,7 +2779,7 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1, Muuttujat[] = 1)",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1, Muuttujat[apusarake_jatkaa_muu_ammatillinen] = 1)",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2761,7 +2789,7 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1, Muuttujat[] = 1)",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1, Muuttujat[apusarake_jatkaa_lukio_valmentava] = 1)",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2771,7 +2799,7 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1, Muuttujat[] = 1)",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1, Muuttujat[apusarake_jatkaa_amm_valmentava] = 1)",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2781,7 +2809,7 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1, Muuttujat[] = 1, Muuttujat[] = FALSE())",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1, Muuttujat[apusarake_jatkaa_amm_tutkintokoulutus] = 1, Muuttujat[apusarake_jatkaa_tutkinto_boo] = FALSE())",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2791,7 +2819,7 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1, Muuttujat[] = 1, Muuttujat[] = FALSE())",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1, Muuttujat[apusarake_jatkaa_amm_tutkintokoulutus] = 1, Muuttujat[apusarake_jatkaa_koulutusala_taso1_boo] = FALSE())",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2801,7 +2829,7 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1, Muuttujat[] = 1, Muuttujat[] = 0, Muuttujat[] = FALSE())",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1, Muuttujat[apusarake_jatkaa_amm_tutkintokoulutus] = 1, Muuttujat[apusarake_jatkaa_kj] = 0, Muuttujat[apusarake_jatkaa_tutkinto_boo] = FALSE())",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2811,7 +2839,7 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1, Muuttujat[] = 1, Muuttujat[] = FALSE())",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1, Muuttujat[apusarake_jatkaa_amm_tutkintokoulutus] = 1, Muuttujat[apusarake_jatkaa_koulutusala_taso2_boo] = FALSE())",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2821,7 +2849,7 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1, Muuttujat[] = 1, Muuttujat[] = FALSE())",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1, Muuttujat[apusarake_jatkaa_amm_tutkintokoulutus] = 1, Muuttujat[apusarake_jatkaa_koulutusala_taso3_boo] = FALSE())",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2831,7 +2859,7 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1, Muuttujat[] = 1, Muuttujat[] = 0)",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1, Muuttujat[apusarake_jatkaa_amm_tutkintokoulutus] = 1, Muuttujat[apusarake_jatkaa_tutkintotyyppi] = 0)",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2841,7 +2869,7 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1, Muuttujat[] = 1, Muuttujat[] = 0, Muuttujat[] = TRUE())",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1, Muuttujat[apusarake_jatkaa_amm_tutkintokoulutus] = 1, Muuttujat[apusarake_jatkaa_kj] = 0, Muuttujat[apusarake_jatkaa_tutkinto_boo] = TRUE())",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2851,7 +2879,7 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1, Muuttujat[] = TRUE())",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1, Muuttujat[apusarake_jatkaa_koulutusmuoto_boo] = TRUE())",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
                         ]
@@ -2861,9 +2889,201 @@
                         "formatString": "#,0",
                         "expression": [
                             "",
-                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[]=1, Muuttujat[] = 0)",
+                            "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut_opiskelija]=1, Muuttujat[apusarake_jatkaa_amm_tutkintokoulutus] = 0)",
                             "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
                             ""
+                        ]
+                    },
+                    {
+                        "name": "netto_opiskelijamaara_sv",
+                        "formatString": "#,0",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "netto_opiskelijamaara_en",
+                        "formatString": "#,0",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "opiskelijat_pros_sv",
+                        "formatString": "0.0 %;-0.0 %;0.0 %",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "opiskelijat_pros_en",
+                        "formatString": "0.0 %;-0.0 %;0.0 %",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "tutkinnon_suorittaneet_pros_sv",
+                        "formatString": "0.0 %;-0.0 %;0.0 %",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "tutkinnon_suorittaneet_pros_en",
+                        "formatString": "0.0 %;-0.0 %;0.0 %",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "oppisopimusopiskelijoiden_osuus_opiskelijoista_sv",
+                        "formatString": "0.0 %;-0.0 %;0.0 %",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "oppisopimusopiskelijoiden_osuus_opiskelijoista_en",
+                        "formatString": "0.0 %;-0.0 %;0.0 %",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "koulutussopimusopiskelijoiden_osuus_opiskelijoista_sv",
+                        "formatString": "0.0 %;-0.0 %;0.0 %",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "koulutussopimusopiskelijoiden_osuus_opiskelijoista_en",
+                        "formatString": "0.0 %;-0.0 %;0.0 %",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "oppisopimusopiskelijoiden_osuus_uusista_opiskelijoista_sv",
+                        "formatString": "0.0 %;-0.0 %;0.0 %",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "oppisopimusopiskelijoiden_osuus_uusista_opiskelijoista_en",
+                        "formatString": "0.0 %;-0.0 %;0.0 %",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "koulutussopimusopiskelijoiden_osuus_uusista_opiskelijoista_sv",
+                        "formatString": "0.0 %;-0.0 %;0.0 %",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "koulutussopimusopiskelijoiden_osuus_uusista_opiskelijoista_en",
+                        "formatString": "0.0 %;-0.0 %;0.0 %",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "oppisopimusopiskelijoiden_osuus_tutkinnon_suorittaneista_sv",
+                        "formatString": "0.0 %;-0.0 %;0.0 %",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "oppisopimusopiskelijoiden_osuus_tutkinnon_suorittaneista_en",
+                        "formatString": "0.0 %;-0.0 %;0.0 %",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "koulutussopimusopiskelijoiden_osuus_tutkinnon_suorittaneista_sv",
+                        "formatString": "0.0 %;-0.0 %;0.0 %",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "koulutussopimusopiskelijoiden_osuus_tutkinnon_suorittaneista_en",
+                        "formatString": "0.0 %;-0.0 %;0.0 %",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_uusista_opiskelijoista_sv",
+                        "formatString": "0.0 %;-0.0 %;0.0 %",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_uusista_opiskelijoista_en",
+                        "formatString": "0.0 %;-0.0 %;0.0 %",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_opiskelijoista_sv",
+                        "formatString": "0.0 %;-0.0 %;0.0 %",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_opiskelijoista_en",
+                        "formatString": "0.0 %;-0.0 %;0.0 %",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "uudet_opiskelijat_pros_sv",
+                        "formatString": "0.0 %;-0.0 %;0.0 %",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "uudet_opiskelijat_pros_en",
+                        "formatString": "0.0 %;-0.0 %;0.0 %",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "uudet_opiskelijat_oppisopimus_sv",
+                        "formatString": "#,0",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "uudet_opiskelijat_oppisopimus_en",
+                        "formatString": "#,0",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "uudet_opiskelijat_koulutussopimus_sv",
+                        "formatString": "#,0",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "uudet_opiskelijat_koulutussopimus_en",
+                        "formatString": "#,0",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "opiskelijat_oppisopimus_sv",
+                        "formatString": "#,0",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "opiskelijat_oppisopimus_en",
+                        "formatString": "#,0",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "opiskelijat_koulutussopimus_sv",
+                        "formatString": "#,0",
+                        "expression": [
+                        ]
+                    },
+                    {
+                        "name": "opiskelijat_koulutussopimus_en",
+                        "formatString": "#,0",
+                        "expression": [
                         ]
                     }
                 ],
@@ -5398,10 +5618,10 @@
                         "sortByColumn": "jarjestys_majoitus"
                     },
                     {
-                        "name": "oppisopimus_fi",
+                        "name": "oppisopimuskoulutus_fi",
                         "dataType": "string",
-                        "sourceColumn": "oppisopimus_fi",
-                        "sortByColumn": "jarjestys_oppisopimus"
+                        "sourceColumn": "oppisopimuskoulutus_fi",
+                        "sortByColumn": "jarjestys_oppisopimuskoulutus"
                     },
                     {
                         "name": "koulutussopimus_fi",
@@ -5636,10 +5856,10 @@
                         "sortByColumn": "jarjestys_majoitus"
                     },
                     {
-                        "name": "oppisopimus_sv",
+                        "name": "oppisopimuskoulutus_sv",
                         "dataType": "string",
-                        "sourceColumn": "oppisopimus_sv",
-                        "sortByColumn": "jarjestys_oppisopimus"
+                        "sourceColumn": "oppisopimuskoulutus_sv",
+                        "sortByColumn": "jarjestys_oppisopimuskoulutus"
                     },
                     {
                         "name": "koulutussopimus_sv",
@@ -5874,10 +6094,10 @@
                         "sortByColumn": "jarjestys_majoitus"
                     },
                     {
-                        "name": "oppisopimus_en",
+                        "name": "oppisopimuskoulutus_en",
                         "dataType": "string",
-                        "sourceColumn": "oppisopimus_en",
-                        "sortByColumn": "jarjestys_oppisopimus"
+                        "sourceColumn": "oppisopimuskoulutus_en",
+                        "sortByColumn": "jarjestys_oppisopimuskoulutus"
                     },
                     {
                         "name": "koulutussopimus_en",
@@ -6178,9 +6398,9 @@
                         "sourceColumn": "koodit_osaamisala"
                     },
                     {
-                        "name": "koodit_oppisopimus",
+                        "name": "koodit_oppisopimuskoulutus",
                         "dataType": "string",
-                        "sourceColumn": "koodit_oppisopimus"
+                        "sourceColumn": "koodit_oppisopimuskoulutus"
                     },
                     {
                         "name": "koodit_koulutussopimus",
@@ -6254,9 +6474,9 @@
                         "isHidden": true
                     },
                     {
-                        "name": "jarjestys_oppisopimus",
+                        "name": "jarjestys_oppisopimuskoulutus",
                         "dataType": "int64",
-                        "sourceColumn": "jarjestys_oppisopimus",
+                        "sourceColumn": "jarjestys_oppisopimuskoulutus",
                         "isHidden": true
                     },
                     {
@@ -6424,13 +6644,13 @@
                                 "name": "uudet_opiskelijat"
                             },
                             {
-                                "name": "opiskelijat_pros"
+                                "name": "opiskelijat_pros_fi"
                             },
                             {
-                                "name": "tutkinnon_suorittaneet_pros"
+                                "name": "tutkinnon_suorittaneet_pros_fi"
                             },
                             {
-                                "name": "uudet_opiskelijat_pros"
+                                "name": "uudet_opiskelijat_pros_fi"
                             }
                         ],
                         "columns": [
@@ -6442,6 +6662,18 @@
                             },
                             {
                                 "name": "ikaryhma_fi"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_avi_fi"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_ely_fi"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_kunta_fi"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_maakunta_fi"
                             },
                             {
                                 "name": "koulutuksen_jarjestaja_fi"
@@ -6472,6 +6704,9 @@
                             },
                             {
                                 "name": "oppilaitos_fi"
+                            },
+                            {
+                                "name": "oppisopimuskoulutus_fi"
                             },
                             {
                                 "name": "osa_aikaisuus_fi"
@@ -6564,52 +6799,52 @@
                                 "name": "tutkinnon_suorittaneet"
                             },
                             {
-                                "name": "koulutussopimusopiskelijoiden_osuus_opiskelijoista"
+                                "name": "koulutussopimusopiskelijoiden_osuus_opiskelijoista_fi"
                             },
                             {
-                                "name": "oppisopimusopiskelijoiden_osuus_opiskelijoista"
+                                "name": "oppisopimusopiskelijoiden_osuus_opiskelijoista_fi"
                             },
                             {
                                 "name": "uudet_opiskelijat"
                             },
                             {
-                                "name": "koulutussopimusopiskelijoiden_osuus_tutkinnon_suorittaneista"
+                                "name": "koulutussopimusopiskelijoiden_osuus_tutkinnon_suorittaneista_fi"
                             },
                             {
-                                "name": "koulutussopimusopiskelijoiden_osuus_uusista_opiskelijoista"
+                                "name": "koulutussopimusopiskelijoiden_osuus_uusista_opiskelijoista_fi"
                             },
                             {
-                                "name": "oppisopimusopiskelijoiden_osuus_tutkinnon_suorittaneista"
+                                "name": "oppisopimusopiskelijoiden_osuus_tutkinnon_suorittaneista_fi"
                             },
                             {
-                                "name": "oppisopimusopiskelijoiden_osuus_uusista_opiskelijoista"
+                                "name": "oppisopimusopiskelijoiden_osuus_uusista_opiskelijoista_fi"
                             },
                             {
-                                "name": "tutkinnon_suorittaneet_pros"
+                                "name": "tutkinnon_suorittaneet_pros_fi"
                             },
                             {
-                                "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_uusista_opiskelijoista"
+                                "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_uusista_opiskelijoista_fi"
                             },
                             {
-                                "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_opiskelijoista"
+                                "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_opiskelijoista_fi"
                             },
                             {
-                                "name": "opiskelijat_pros"
+                                "name": "opiskelijat_pros_fi"
                             },
                             {
-                                "name": "uudet_opiskelijat_pros"
+                                "name": "uudet_opiskelijat_pros_fi"
                             },
                             {
-                                "name": "opiskelijat_koulutussopimus"
+                                "name": "opiskelijat_koulutussopimus_fi"
                             },
                             {
-                                "name": "opiskelijat_oppisopimus"
+                                "name": "opiskelijat_oppisopimus_fi"
                             },
                             {
-                                "name": "uudet_opiskelijat_koulutussopimus"
+                                "name": "uudet_opiskelijat_koulutussopimus_fi"
                             },
                             {
-                                "name": "uudet_opiskelijat_oppisopimus"
+                                "name": "uudet_opiskelijat_oppisopimus_fi"
                             }
                         ],
                         "columns": [
@@ -6627,6 +6862,18 @@
                             },
                             {
                                 "name": "kansalaisuus_maanosa_fi"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_avi_fi"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_ely_fi"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_kunta_fi"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_maakunta_fi"
                             },
                             {
                                 "name": "koulutuksen_jarjestaja_fi"
@@ -6666,6 +6913,9 @@
                             },
                             {
                                 "name": "oppisopimuksen_suoritusosuus_fi"
+                            },
+                            {
+                                "name": "oppisopimuskoulutus_fi"
                             },
                             {
                                 "name": "osa_aikaisuus_fi"
@@ -6750,7 +7000,7 @@
                         "name": "Muuttujat",
                         "measures": [
                             {
-                                "name": "netto_opiskelijamaara"
+                                "name": "netto_opiskelijamaara_fi"
                             }
                         ],
                         "columns": [
@@ -6768,6 +7018,18 @@
                             },
                             {
                                 "name": "kansalaisuus_maanosa_fi"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_avi_fi"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_ely_fi"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_kunta_fi"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_maakunta_fi"
                             },
                             {
                                 "name": "koulutuksen_jarjestaja_fi"
@@ -6813,6 +7075,9 @@
                             },
                             {
                                 "name": "oppisopimus_koulutussopimus_fi"
+                            },
+                            {
+                                "name": "oppisopimuskoulutus_fi"
                             },
                             {
                                 "name": "osa_aikaisuus_fi"
@@ -6904,6 +7169,18 @@
                                 "name": "kansalaisuus_maanosa_fi"
                             },
                             {
+                                "name": "koulutuksen_jarjestajan_avi_fi"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_ely_fi"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_kunta_fi"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_maakunta_fi"
+                            },
+                            {
                                 "name": "koulutuksen_jarjestaja_fi"
                             },
                             {
@@ -6953,6 +7230,9 @@
                             },
                             {
                                 "name": "oppisopimus_koulutussopimus_fi"
+                            },
+                            {
+                                "name": "oppisopimuskoulutus_fi"
                             },
                             {
                                 "name": "osa_aikaisuus_fi"
@@ -7024,19 +7304,19 @@
                                 "name": "opiskelijat"
                             },
                             {
-                                "name": "opiskelijat_pros"
+                                "name": "opiskelijat_pros_fi"
                             },
                             {
                                 "name": "tutkinnon_suorittaneet"
                             },
                             {
-                                "name": "tutkinnon_suorittaneet_pros"
+                                "name": "tutkinnon_suorittaneet_pros_fi"
                             },
                             {
                                 "name": "uudet_opiskelijat"
                             },
                             {
-                                "name": "uudet_opiskelijat_pros"
+                                "name": "uudet_opiskelijat_pros_fi"
                             },
                             {
                                 "name": "Eronnut opiskeluoikeudesta"
@@ -7111,10 +7391,10 @@
                                 "name": "Vaihtoi tutkintotyyppiä"
                             },
                             {
-                                "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_opiskelijoista"
+                                "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_opiskelijoista_fi"
                             },
                             {
-                                "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_uusista_opiskelijoista"
+                                "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_uusista_opiskelijoista_fi"
                             },
                             {
                                 "name": "Keskeyttänyt amm. tutkintokoulutuksen"
@@ -7135,6 +7415,18 @@
                             },
                             {
                                 "name": "kansalaisuus_maanosa_fi"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_avi_fi"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_ely_fi"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_kunta_fi"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_maakunta_fi"
                             },
                             {
                                 "name": "koulutuksen_jarjestaja_fi"
@@ -7183,6 +7475,9 @@
                             },
                             {
                                 "name": "oppisopimus_koulutussopimus_fi"
+                            },
+                            {
+                                "name": "oppisopimuskoulutus_fi"
                             },
                             {
                                 "name": "osa_aikaisuus_fi"
@@ -7254,6 +7549,18 @@
                                 "name": "ikaryhma_sv"
                             },
                             {
+                                "name": "koulutuksen_jarjestajan_avi_sv"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_ely_sv"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_kunta_sv"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_maakunta_sv"
+                            },
+                            {
                                 "name": "koulutuksen_jarjestaja_sv"
                             },
                             {
@@ -7282,6 +7589,9 @@
                             },
                             {
                                 "name": "oppilaitos_sv"
+                            },
+                            {
+                                "name": "oppisopimuskoulutus_sv"
                             },
                             {
                                 "name": "osa_aikaisuus_sv"
@@ -7349,16 +7659,22 @@
                         ],
                         "measures": [
                             {
+                                "name": "opiskelijat"
+                            },
+                            {
                                 "name": "tutkinnon_suorittaneet"
                             },
                             {
-                                "name": "opiskelijat_pros"
+                                "name": "uudet_opiskelijat"
                             },
                             {
-                                "name": "tutkinnon_suorittaneet_pros"
+                                "name": "opiskelijat_pros_sv"
                             },
                             {
-                                "name": "uudet_opiskelijat_pros"
+                                "name": "tutkinnon_suorittaneet_pros_sv"
+                            },
+                            {
+                                "name": "uudet_opiskelijat_pros_sv"
                             }
                         ]
                     },
@@ -7395,6 +7711,18 @@
                             },
                             {
                                 "name": "kansalaisuus_maanosa_sv"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_avi_sv"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_ely_sv"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_kunta_sv"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_maakunta_sv"
                             },
                             {
                                 "name": "koulutuksen_jarjestaja_sv"
@@ -7434,6 +7762,9 @@
                             },
                             {
                                 "name": "oppisopimuksen_suoritusosuus_sv"
+                            },
+                            {
+                                "name": "oppisopimuskoulutus_sv"
                             },
                             {
                                 "name": "osa_aikaisuus_sv"
@@ -7483,52 +7814,58 @@
                         ],
                         "measures": [
                             {
+                                "name": "opiskelijat"
+                            },
+                            {
                                 "name": "tutkinnon_suorittaneet"
                             },
                             {
-                                "name": "koulutussopimusopiskelijoiden_osuus_opiskelijoista"
+                                "name": "koulutussopimusopiskelijoiden_osuus_opiskelijoista_sv"
                             },
                             {
-                                "name": "oppisopimusopiskelijoiden_osuus_opiskelijoista"
+                                "name": "oppisopimusopiskelijoiden_osuus_opiskelijoista_sv"
                             },
                             {
-                                "name": "koulutussopimusopiskelijoiden_osuus_tutkinnon_suorittaneista"
+                                "name": "uudet_opiskelijat"
                             },
                             {
-                                "name": "koulutussopimusopiskelijoiden_osuus_uusista_opiskelijoista"
+                                "name": "koulutussopimusopiskelijoiden_osuus_tutkinnon_suorittaneista_sv"
                             },
                             {
-                                "name": "oppisopimusopiskelijoiden_osuus_tutkinnon_suorittaneista"
+                                "name": "koulutussopimusopiskelijoiden_osuus_uusista_opiskelijoista_sv"
                             },
                             {
-                                "name": "oppisopimusopiskelijoiden_osuus_uusista_opiskelijoista"
+                                "name": "oppisopimusopiskelijoiden_osuus_tutkinnon_suorittaneista_sv"
                             },
                             {
-                                "name": "tutkinnon_suorittaneet_pros"
+                                "name": "oppisopimusopiskelijoiden_osuus_uusista_opiskelijoista_sv"
                             },
                             {
-                                "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_uusista_opiskelijoista"
+                                "name": "tutkinnon_suorittaneet_pros_sv"
                             },
                             {
-                                "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_opiskelijoista"
+                                "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_uusista_opiskelijoista_sv"
                             },
                             {
-                                "name": "opiskelijat_pros"
+                                "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_opiskelijoista_sv"
                             },
                             {
-                                "name": "uudet_opiskelijat_pros"
+                                "name": "opiskelijat_pros_sv"
                             },
                             {
-                                "name": "opiskelijat_koulutussopimus"
+                                "name": "uudet_opiskelijat_pros_sv"
                             },
                             {
-                                "name": "opiskelijat_oppisopimus"
+                                "name": "opiskelijat_koulutussopimus_sv"
                             },
                             {
-                                "name": "uudet_opiskelijat_koulutussopimus"
+                                "name": "opiskelijat_oppisopimus_sv"
                             },
                             {
-                                "name": "uudet_opiskelijat_oppisopimus"
+                                "name": "uudet_opiskelijat_koulutussopimus_sv"
+                            },
+                            {
+                                "name": "uudet_opiskelijat_oppisopimus_sv"
                             }
                         ]
                     },
@@ -7583,6 +7920,18 @@
                                 "name": "kansalaisuus_maanosa_sv"
                             },
                             {
+                                "name": "koulutuksen_jarjestajan_avi_sv"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_ely_sv"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_kunta_sv"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_maakunta_sv"
+                            },
+                            {
                                 "name": "koulutuksen_jarjestaja_sv"
                             },
                             {
@@ -7626,6 +7975,9 @@
                             },
                             {
                                 "name": "oppisopimus_koulutussopimus_sv"
+                            },
+                            {
+                                "name": "oppisopimuskoulutus_sv"
                             },
                             {
                                 "name": "osa_aikaisuus_sv"
@@ -7678,7 +8030,7 @@
                         ],
                         "measures": [
                             {
-                                "name": "netto_opiskelijamaara"
+                                "name": "netto_opiskelijamaara_sv"
                             }
                         ]
                     },
@@ -7715,6 +8067,18 @@
                             },
                             {
                                 "name": "kansalaisuus_maanosa_sv"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_avi_sv"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_ely_sv"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_kunta_sv"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_maakunta_sv"
                             },
                             {
                                 "name": "koulutuksen_jarjestaja_sv"
@@ -7766,6 +8130,9 @@
                             },
                             {
                                 "name": "oppisopimus_koulutussopimus_sv"
+                            },
+                            {
+                                "name": "oppisopimuskoulutus_sv"
                             },
                             {
                                 "name": "osa_aikaisuus_sv"
@@ -7854,6 +8221,18 @@
                                 "name": "kansalaisuus_maanosa_sv"
                             },
                             {
+                                "name": "koulutuksen_jarjestajan_avi_sv"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_ely_sv"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_kunta_sv"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_maakunta_sv"
+                            },
+                            {
                                 "name": "koulutuksen_jarjestaja_sv"
                             },
                             {
@@ -7902,6 +8281,9 @@
                                 "name": "oppisopimus_koulutussopimus_sv"
                             },
                             {
+                                "name": "oppisopimuskoulutus_sv"
+                            },
+                            {
                                 "name": "osa_aikaisuus_sv"
                             },
                             {
@@ -7943,16 +8325,22 @@
                         ],
                         "measures": [
                             {
-                                "name": "opiskelijat_pros"
+                                "name": "opiskelijat"
+                            },
+                            {
+                                "name": "opiskelijat_pros_sv"
                             },
                             {
                                 "name": "tutkinnon_suorittaneet"
                             },
                             {
-                                "name": "tutkinnon_suorittaneet_pros"
+                                "name": "tutkinnon_suorittaneet_pros_sv"
                             },
                             {
-                                "name": "uudet_opiskelijat_pros"
+                                "name": "uudet_opiskelijat"
+                            },
+                            {
+                                "name": "uudet_opiskelijat_pros_sv"
                             },
                             {
                                 "name": "Eronnut opiskeluoikeudesta"
@@ -8027,10 +8415,10 @@
                                 "name": "Vaihtoi tutkintotyyppiä"
                             },
                             {
-                                "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_opiskelijoista"
+                                "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_opiskelijoista_sv"
                             },
                             {
-                                "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_uusista_opiskelijoista"
+                                "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_uusista_opiskelijoista_sv"
                             },
                             {
                                 "name": "Keskeyttänyt amm. tutkintokoulutuksen"
@@ -8066,6 +8454,18 @@
                                 "name": "ikaryhma_en"
                             },
                             {
+                                "name": "koulutuksen_jarjestajan_avi_en"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_ely_en"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_kunta_en"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_maakunta_en"
+                            },
+                            {
                                 "name": "koulutuksen_jarjestaja_en"
                             },
                             {
@@ -8094,6 +8494,9 @@
                             },
                             {
                                 "name": "oppilaitos_en"
+                            },
+                            {
+                                "name": "oppisopimuskoulutus_en"
                             },
                             {
                                 "name": "osa_aikaisuus_en"
@@ -8161,16 +8564,22 @@
                         ],
                         "measures": [
                             {
+                                "name": "opiskelijat"
+                            },
+                            {
                                 "name": "tutkinnon_suorittaneet"
                             },
                             {
-                                "name": "opiskelijat_pros"
+                                "name": "uudet_opiskelijat"
                             },
                             {
-                                "name": "tutkinnon_suorittaneet_pros"
+                                "name": "opiskelijat_pros_en"
                             },
                             {
-                                "name": "uudet_opiskelijat_pros"
+                                "name": "tutkinnon_suorittaneet_pros_en"
+                            },
+                            {
+                                "name": "uudet_opiskelijat_pros_en"
                             }
                         ]
                     },
@@ -8207,6 +8616,18 @@
                             },
                             {
                                 "name": "kansalaisuus_maanosa_en"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_avi_en"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_ely_en"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_kunta_en"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_maakunta_en"
                             },
                             {
                                 "name": "koulutuksen_jarjestaja_en"
@@ -8246,6 +8667,9 @@
                             },
                             {
                                 "name": "oppisopimuksen_suoritusosuus_en"
+                            },
+                            {
+                                "name": "oppisopimuskoulutus_en"
                             },
                             {
                                 "name": "osa_aikaisuus_en"
@@ -8295,52 +8719,58 @@
                         ],
                         "measures": [
                             {
+                                "name": "opiskelijat"
+                            },
+                            {
                                 "name": "tutkinnon_suorittaneet"
                             },
                             {
-                                "name": "koulutussopimusopiskelijoiden_osuus_opiskelijoista"
+                                "name": "koulutussopimusopiskelijoiden_osuus_opiskelijoista_en"
                             },
                             {
-                                "name": "oppisopimusopiskelijoiden_osuus_opiskelijoista"
+                                "name": "oppisopimusopiskelijoiden_osuus_opiskelijoista_en"
                             },
                             {
-                                "name": "koulutussopimusopiskelijoiden_osuus_tutkinnon_suorittaneista"
+                                "name": "uudet_opiskelijat"
                             },
                             {
-                                "name": "koulutussopimusopiskelijoiden_osuus_uusista_opiskelijoista"
+                                "name": "koulutussopimusopiskelijoiden_osuus_tutkinnon_suorittaneista_en"
                             },
                             {
-                                "name": "oppisopimusopiskelijoiden_osuus_tutkinnon_suorittaneista"
+                                "name": "koulutussopimusopiskelijoiden_osuus_uusista_opiskelijoista_en"
                             },
                             {
-                                "name": "oppisopimusopiskelijoiden_osuus_uusista_opiskelijoista"
+                                "name": "oppisopimusopiskelijoiden_osuus_tutkinnon_suorittaneista_en"
                             },
                             {
-                                "name": "tutkinnon_suorittaneet_pros"
+                                "name": "oppisopimusopiskelijoiden_osuus_uusista_opiskelijoista_en"
                             },
                             {
-                                "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_uusista_opiskelijoista"
+                                "name": "tutkinnon_suorittaneet_pros_en"
                             },
                             {
-                                "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_opiskelijoista"
+                                "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_uusista_opiskelijoista_en"
                             },
                             {
-                                "name": "opiskelijat_pros"
+                                "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_opiskelijoista_en"
                             },
                             {
-                                "name": "uudet_opiskelijat_pros"
+                                "name": "opiskelijat_pros_en"
                             },
                             {
-                                "name": "opiskelijat_koulutussopimus"
+                                "name": "uudet_opiskelijat_pros_en"
                             },
                             {
-                                "name": "opiskelijat_oppisopimus"
+                                "name": "opiskelijat_koulutussopimus_en"
                             },
                             {
-                                "name": "uudet_opiskelijat_koulutussopimus"
+                                "name": "opiskelijat_oppisopimus_en"
                             },
                             {
-                                "name": "uudet_opiskelijat_oppisopimus"
+                                "name": "uudet_opiskelijat_koulutussopimus_en"
+                            },
+                            {
+                                "name": "uudet_opiskelijat_oppisopimus_en"
                             }
                         ]
                     },
@@ -8395,6 +8825,18 @@
                                 "name": "kansalaisuus_maanosa_en"
                             },
                             {
+                                "name": "koulutuksen_jarjestajan_avi_en"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_ely_en"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_kunta_en"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_maakunta_en"
+                            },
+                            {
                                 "name": "koulutuksen_jarjestaja_en"
                             },
                             {
@@ -8438,6 +8880,9 @@
                             },
                             {
                                 "name": "oppisopimus_koulutussopimus_en"
+                            },
+                            {
+                                "name": "oppisopimuskoulutus_en"
                             },
                             {
                                 "name": "osa_aikaisuus_en"
@@ -8490,7 +8935,7 @@
                         ],
                         "measures": [
                             {
-                                "name": "netto_opiskelijamaara"
+                                "name": "netto_opiskelijamaara_en"
                             }
                         ]
                     },
@@ -8527,6 +8972,18 @@
                             },
                             {
                                 "name": "kansalaisuus_maanosa_en"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_avi_en"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_ely_en"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_kunta_en"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_maakunta_en"
                             },
                             {
                                 "name": "koulutuksen_jarjestaja_en"
@@ -8578,6 +9035,9 @@
                             },
                             {
                                 "name": "oppisopimus_koulutussopimus_en"
+                            },
+                            {
+                                "name": "oppisopimuskoulutus_en"
                             },
                             {
                                 "name": "osa_aikaisuus_en"
@@ -8666,6 +9126,18 @@
                                 "name": "kansalaisuus_maanosa_en"
                             },
                             {
+                                "name": "koulutuksen_jarjestajan_avi_en"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_ely_en"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_kunta_en"
+                            },
+                            {
+                                "name": "koulutuksen_jarjestajan_maakunta_en"
+                            },
+                            {
                                 "name": "koulutuksen_jarjestaja_en"
                             },
                             {
@@ -8714,6 +9186,9 @@
                                 "name": "oppisopimus_koulutussopimus_en"
                             },
                             {
+                                "name": "oppisopimuskoulutus_en"
+                            },
+                            {
                                 "name": "osa_aikaisuus_en"
                             },
                             {
@@ -8755,16 +9230,22 @@
                         ],
                         "measures": [
                             {
-                                "name": "opiskelijat_pros"
+                                "name": "opiskelijat"
+                            },
+                            {
+                                "name": "opiskelijat_pros_en"
                             },
                             {
                                 "name": "tutkinnon_suorittaneet"
                             },
                             {
-                                "name": "tutkinnon_suorittaneet_pros"
+                                "name": "tutkinnon_suorittaneet_pros_en"
                             },
                             {
-                                "name": "uudet_opiskelijat_pros"
+                                "name": "uudet_opiskelijat"
+                            },
+                            {
+                                "name": "uudet_opiskelijat_pros_en"
                             },
                             {
                                 "name": "Eronnut opiskeluoikeudesta"
@@ -8839,10 +9320,10 @@
                                 "name": "Vaihtoi tutkintotyyppiä"
                             },
                             {
-                                "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_opiskelijoista"
+                                "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_opiskelijoista_en"
                             },
                             {
-                                "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_uusista_opiskelijoista"
+                                "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_uusista_opiskelijoista_en"
                             },
                             {
                                 "name": "Keskeyttänyt amm. tutkintokoulutuksen"
@@ -9019,8 +9500,8 @@
                                         "translatedDisplayFolder": "Koulutusmuuttujat"
                                     },
                                     {
-                                        "name": "oppisopimus_fi",
-                                        "translatedCaption": "Oppisopimus",
+                                        "name": "oppisopimuskoulutus_fi",
+                                        "translatedCaption": "Oppisopimuskoulutus",
                                         "translatedDisplayFolder": "Koulutusmuuttujat"
                                     },
                                     {
@@ -9120,7 +9601,7 @@
                                     },
                                     {
                                         "name": "oppisopimus_koulutussopimus_fi",
-                                        "translatedCaption": "Oppisopimus/koulutussopimus",
+                                        "translatedCaption": "Oppisopimus/Koulutussopimus",
                                         "translatedDisplayFolder": "Koulutusmuuttujat"
                                     },
                                     {
@@ -9144,8 +9625,8 @@
                                         "translatedDisplayFolder": "Koodimuuttujat"
                                     },
                                     {
-                                        "name": "koodit_oppisopimus",
-                                        "translatedCaption": "Koodit Oppisopimus",
+                                        "name": "koodit_oppisopimuskoulutus",
+                                        "translatedCaption": "Koodit Oppisopimuskoulutus",
                                         "translatedDisplayFolder": "Koodimuuttujat"
                                     },
                                     {
@@ -9286,8 +9767,8 @@
                                         "translatedDisplayFolder": "Utbildningsvariabler"
                                     },
                                     {
-                                        "name": "oppisopimus_sv",
-                                        "translatedCaption": "Läroavtal",
+                                        "name": "oppisopimuskoulutus_sv",
+                                        "translatedCaption": "Läroavtalsutbildning",
                                         "translatedDisplayFolder": "Utbildningsvariabler"
                                     },
                                     {
@@ -9387,7 +9868,7 @@
                                     },
                                     {
                                         "name": "oppisopimus_koulutussopimus_sv",
-                                        "translatedCaption": "Läroavtal/utbildningsavtal",
+                                        "translatedCaption": "Läroavtal/Utbildningsavtal",
                                         "translatedDisplayFolder": "Utbildningsvariabler"
                                     },
                                     {
@@ -9411,8 +9892,8 @@
                                         "translatedDisplayFolder": "Kodvariabler"
                                     },
                                     {
-                                        "name": "koodit_oppisopimus",
-                                        "translatedCaption": "Kod Läroavtal",
+                                        "name": "koodit_oppisopimuskoulutus",
+                                        "translatedCaption": "Kod Läroavtalsutbildning",
                                         "translatedDisplayFolder": "Kodvariabler"
                                     },
                                     {
@@ -9553,8 +10034,8 @@
                                         "translatedDisplayFolder": "Education variables"
                                     },
                                     {
-                                        "name": "oppisopimus_en",
-                                        "translatedCaption": "Apprenticeship agreement",
+                                        "name": "oppisopimuskoulutus_en",
+                                        "translatedCaption": "Apprenticeship training",
                                         "translatedDisplayFolder": "Education variables"
                                     },
                                     {
@@ -9654,7 +10135,7 @@
                                     },
                                     {
                                         "name": "oppisopimus_koulutussopimus_en",
-                                        "translatedCaption": "Apprenticeship/training agreement",
+                                        "translatedCaption": "Apprenticeship/Training agreement",
                                         "translatedDisplayFolder": "Education variables"
                                     },
                                     {
@@ -9678,8 +10159,8 @@
                                         "translatedDisplayFolder": "Code variables"
                                     },
                                     {
-                                        "name": "koodit_oppisopimus",
-                                        "translatedCaption": "Codes Apprenticeship agreement",
+                                        "name": "koodit_oppisopimuskoulutus",
+                                        "translatedCaption": "Codes Apprenticeship training",
                                         "translatedDisplayFolder": "Code variables"
                                     },
                                     {
