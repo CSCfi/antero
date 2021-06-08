@@ -2505,7 +2505,7 @@
             "formatString": "#,0"
           },
           {
-            "name": "Eronnut, vaihtoi koulutuksen järjestäjää (sama tutkinto)",
+            "name": "Eronnut, vaihtoi koulutuksen järjestäjää (jatkoi samassa tutkinnossa)",
             "expression": [
               "",
               "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[eronnut_opiskelija]=1, Muuttujat[jatkaa_yleissivistava] = 1, Muuttujat[jatkaa_kj] = 0, Muuttujat[jatkaa_tutkinto_boo] = TRUE())",
@@ -2514,7 +2514,7 @@
             "formatString": "#,0"
           },
           {
-            "name": "Eronnut, vaihtoi koulutuksen järjestäjää (ammatilliseen)",
+            "name": "Eronnut, vaihtoi koulutuksen järjestäjää (siirtyi ammatilliseen)",
             "expression": [
               "",
               "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[eronnut_opiskelija]=1, Muuttujat[jatkaa_ammatillinen] = 1, Muuttujat[jatkaa_kj] = 0, Muuttujat[jatkaa_tutkinto_boo] = FALSE())",
@@ -2588,7 +2588,7 @@
             "formatString": "#,0"
           },
           {
-            "name": "Eronnut, vaihtoi koulutuksen järjestäjää (jatkaa lukiokoulutuksessa)",
+            "name": "Eronnut, vaihtoi koulutuksen järjestäjää (jatkoi lukiokoulutuksessa)",
             "expression": [
               "",
               "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[eronnut_opiskelija]=1, Muuttujat[jatkaa_yleissivistava] = 1, Muuttujat[jatkaa_kj] = 0, Muuttujat[jatkaa_yleissivistava] = 1)",
@@ -2598,7 +2598,7 @@
             "formatString": "#,0"
           },
           {
-            "name": "Eronnut, jatkoi samalla koulutuksen järjestäjällä ammatillisessa",
+            "name": "Eronnut, jatkoi samalla koulutuksen järjestäjällä (siirtyi ammatilliseen)",
             "expression": [
               "",
               "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[eronnut_opiskelija]=1, Muuttujat[jatkaa_kj] = 1, Muuttujat[jatkaa_ammatillinen] = 1)",
@@ -2606,6 +2606,15 @@
               ""
             ],
             "formatString": "#,0"
+          },
+          {
+            "name": "Eronnut, vaihtoi lukiota samalla koulutuksen järjestäjällä",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[eronnut_opiskelija]=1, Muuttujat[jatkaa_kj] = 1, Muuttujat[jatkaa_oppilaitos] = 0)",
+              "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
+              ""
+            ]
           }
         ],
         "annotations": [
@@ -4672,9 +4681,6 @@
                 "name": "Eronnut, jatkoi samassa oppilaitoksessa"
               },
               {
-                "name": "Eronnut, jatkoi samassa tutkinnossa"
-              },
-              {
                 "name": "Eronnut, jatkoi toisen asteen koulutuksessa"
               },
               {
@@ -4687,10 +4693,10 @@
                 "name": "Eronnut, keskeytti toisen asteen"
               },
               {
-                "name": "Eronnut, vaihtoi koulutuksen järjestäjää (ammatilliseen)"
+                "name": "Eronnut, vaihtoi koulutuksen järjestäjää (siirtyi ammatilliseen)"
               },
               {
-                "name": "Eronnut, vaihtoi koulutuksen järjestäjää (sama tutkinto)"
+                "name": "Eronnut, vaihtoi koulutuksen järjestäjää (jatkoi samassa tutkinnossa)"
               },
               {
                 "name": "Eronnut, vaihtoi lukiota"
@@ -4708,19 +4714,19 @@
                 "name": "Katsottu eronneeksi [%]"
               },
               {
-                "name": "Uudet opiskelijat"
-              },
-              {
                 "name": "Eronnut, vaihtoi lukion aikuisten oppimäärään"
               },
               {
                 "name": "Eronnut, vaihtoi lukion nuorten oppimäärään"
               },
               {
-                "name": "Eronnut, jatkoi samalla koulutuksen järjestäjällä ammatillisessa"
+                "name": "Eronnut, jatkoi samalla koulutuksen järjestäjällä (siirtyi ammatilliseen)"
               },
               {
-                "name": "Eronnut, vaihtoi koulutuksen järjestäjää (jatkaa lukiokoulutuksessa)"
+                "name": "Eronnut, vaihtoi koulutuksen järjestäjää (jatkoi lukiokoulutuksessa)"
+              },
+              {
+                "name": "Eronnut, vaihtoi lukiota samalla koulutuksen järjestäjällä"
               }
             ]
           }
