@@ -11,4 +11,3 @@ if not exists
 
 alter table [ANTERO].[sa].[sa_haku_ja_valinta_vuosikello_korkea_aste]
 add [seuraava_kaynnistys] date null
-go
