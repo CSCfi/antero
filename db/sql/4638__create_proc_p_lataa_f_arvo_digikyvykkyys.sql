@@ -21,6 +21,8 @@ INSERT INTO dw.f_arvo_digikyvykkyys (
 	,numerovalinta
 	,vastaajaid
 	,source
+	,loadtime
+	,username
 )
 
 SELECT 
@@ -33,6 +35,8 @@ SELECT
 	,MAIN_QUERY.numerovalinta
 	,MAIN_QUERY.vastaajaid
 	,MAIN_QUERY.source
+	,getdate() as loadtime
+	,suser_name() as username
 FROM (
 
 	SELECT 
