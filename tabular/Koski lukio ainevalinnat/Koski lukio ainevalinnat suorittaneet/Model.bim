@@ -1640,6 +1640,7 @@
               ", ALL(Muuttujat[Oppimäärä tai kieli])",
               ", ALL(Muuttujat[Oppiaineen laajuus])",
               ", ALL(Muuttujat[Oppiaineen suorituskieli])",
+              "--; ALL(Muuttujat[Oppiaineen arvosana])",
               ", ALL(Muuttujat[Kurssin OPS])",
               ", ALL(Muuttujat[Kurssin tyyppi])",
               ", ALL(Muuttujat[Kurssin suorituskieli])",
@@ -1694,17 +1695,6 @@
               "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
             ],
             "formatString": "#,0"
-          },
-          {
-            "name": "Oppiaineen laajuuden keskiarvo (kurssia)",
-            "expression": [
-              "",
-              "--var lkm = DISTINCTCOUNT([osasuoritus_id])",
-              "var tbl = SUMMARIZE(Muuttujat, Muuttujat[osasuoritus_id], \"laajuus\", CALCULATE(MAX(Muuttujat[aine_laajuus]), Muuttujat[aine_laajuus_yksikko]=\"4\"))",
-              "var ka = AVERAGEX(tbl, [laajuus])",
-              "return IF(COUNTROWS(tbl) < 5, BLANK(), ka)"
-            ],
-            "formatString": "0.0"
           },
           {
             "name": "Kurssit / Ainevalinnat",
@@ -1788,7 +1778,7 @@
               "osa / kaikki)))",
               ""
             ],
-            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+            "formatString": "0.0 %;-0.0 %;0.0 %"
           }
         ],
         "annotations": [
@@ -3136,9 +3126,6 @@
               },
               {
                 "name": "Kurssit / Oppimäärän suorittaneet"
-              },
-              {
-                "name": "Oppiaineen laajuuden keskiarvo (kurssia)"
               },
               {
                 "name": "Oppiaineen S-merkinnät"
