@@ -425,7 +425,7 @@
           },
           {
             "name": "opiskelijat_netto",
-            "dataType": "int64",
+            "dataType": "double",
             "isHidden": true,
             "sourceColumn": "opiskelijat_netto"
           },
@@ -3332,6 +3332,16 @@
             "formatString": "#,0"
           },
           {
+            "name": "Eronnut opiskeluoikeudesta",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[eronnut_opiskelija]=1)",
+              "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
             "name": "Eronnut, jatkoi samalla koulutuksen järjestäjällä",
             "expression": [
               "",
@@ -3436,16 +3446,6 @@
             "expression": [
               "",
               "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[eronnut_opiskelija]=1, Muuttujat[jatkaa_toinen_aste_boo] = TRUE())",
-              "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
-              ""
-            ],
-            "formatString": "#,0"
-          },
-          {
-            "name": "Eronnut opiskeluoikeudesta",
-            "expression": [
-              "",
-              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[eronnut_opiskelija]=1)",
               "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
               ""
             ],
