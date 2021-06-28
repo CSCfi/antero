@@ -1,5 +1,5 @@
 {
-  "name": "SemanticModel",
+  "name": "Varda Varhaiskasvatustiedot",
   "compatibilityLevel": 1200,
   "model": {
     "culture": "fi-FI",
@@ -50,6 +50,7 @@
             "name": "Sarakeleveys",
             "dataView": "full",
             "source": {
+              "type": "query",
               "query": " SELECT [dw].[Sarakeleveys].* FROM [dw].[Sarakeleveys] ",
               "dataSource": "SqlServer dwitvipusql16 antero"
             }
@@ -538,6 +539,7 @@
             "name": "v_varda_varhaiskasvatustiedot",
             "dataView": "full",
             "source": {
+              "type": "query",
               "query": " SELECT [dw].[v_varda_varhaiskasvatustiedot].* FROM [dw].[v_varda_varhaiskasvatustiedot] ",
               "dataSource": "SqlServer dwitvipusql16 Antero 2"
             },
@@ -1801,7 +1803,7 @@
             "name": "poikia",
             "expression": [
               "",
-              "var summa = COUNTROWS(FILTER(GROUPBY(Muuttujat,[henkilo_id],Muuttujat[sukupuoli_fi]), Muuttujat[sukupuoli_fi]=\"Mies\"))",
+              "var summa = COUNTROWS(FILTER(GROUPBY(Muuttujat,[henkilo_id],Muuttujat[sukupuoli_fi], Muuttujat[tilastointi]), Muuttujat[sukupuoli_fi]=\"Poika\" && Muuttujat[tilastointi]=1))",
               "return IF(summa = 0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))"
             ],
             "formatString": "#,0",
@@ -1811,7 +1813,7 @@
             "name": "tyttöjä",
             "expression": [
               "",
-              "var summa = COUNTROWS(FILTER(GROUPBY(Muuttujat,[henkilo_id],Muuttujat[sukupuoli_fi]), Muuttujat[sukupuoli_fi]=\"Nainen\"))",
+              "var summa = COUNTROWS(FILTER(GROUPBY(Muuttujat,[henkilo_id],Muuttujat[sukupuoli_fi], Muuttujat[tilastointi]), Muuttujat[sukupuoli_fi]=\"Tyttö\" && Muuttujat[tilastointi]=1))",
               "return IF(summa = 0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))"
             ],
             "formatString": "#,0",
@@ -5608,6 +5610,5 @@
         "value": "400"
       }
     ]
-  },
-  "id": "SemanticModel"
+  }
 }
