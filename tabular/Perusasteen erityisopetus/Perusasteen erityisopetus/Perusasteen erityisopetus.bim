@@ -10870,7 +10870,8 @@ ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measure
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Kaikki oppilaat]=calculate([Kaikki oppilaat2],all(Muuttujat[Erityinen tuki]),all(Muuttujat[Erityinen tuki2]));
+CREATE MEASURE 'Muuttujat'[Kaikki oppilaat]=calculate([Kaikki oppilaat2],all(Muuttujat[Erityinen tuki]),all(Muuttujat[Erityinen tuki2]), VALUES(Muuttujat[Tilastovuosi]), Muuttujat[Tilastovuosi]&lt;&gt;"2020")
+;
 </Text>
                   <Annotations>
                     <Annotation>
@@ -10990,7 +10991,7 @@ osa / kaikki)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Erityisen tuen oppilaiden osuus kaikista oppilaista]=var osa = [Erityisen tuen oppilaat]
+CREATE MEASURE 'Muuttujat'[Erityisen tuen oppilaiden osuus kaikista oppilaista]=var osa = CALCULATE([Erityisen tuen oppilaat], VALUES(Muuttujat[Tilastovuosi]), Muuttujat[Tilastovuosi]&lt;&gt;"2020")
 var kaikki = [Kaikki oppilaat]
 return IF(osa = BLANK(), BLANK(),	
 IF(kaikki = "1-4", "25 % – 100 %",
@@ -11015,7 +11016,7 @@ osa / kaikki)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Tehostetun tuen oppilaiden osuus kaikista oppilaista]=var osa = [Tehostetun tuen oppilaat]
+CREATE MEASURE 'Muuttujat'[Tehostetun tuen oppilaiden osuus kaikista oppilaista]=var osa = CALCULATE([Tehostetun tuen oppilaat], VALUES(Muuttujat[Tilastovuosi]), Muuttujat[Tilastovuosi]&lt;&gt;"2020")
 var kaikki = [Kaikki oppilaat]
 return IF(osa = BLANK(), BLANK(),	
 IF(kaikki = "1-4", "25 % – 100 %",
@@ -11040,7 +11041,8 @@ osa / kaikki)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Osuus kaikista erityisen tuen oppilaista]=var osa = [Erityisen tuen oppilaat]
+CREATE MEASURE 'Muuttujat'[Osuus kaikista erityisen tuen oppilaista]=
+var osa = [Erityisen tuen oppilaat]
 var kaikki = CALCULATE([Kaikki oppilaat2],ALL(Muuttujat[Opetuksen toteutuspaikka]),Muuttujat[Erityisen tuen päätös]="Erityisen tuen päätös")
 return IF(osa = BLANK(), BLANK(),	
 IF(kaikki = "1-4", "25 % – 100 %",
@@ -11065,7 +11067,8 @@ osa / kaikki)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Erityisen tuen oppilaiden osuus kaikista tuen piirissä olevista]=var osa = [Erityisen tuen oppilaat]
+CREATE MEASURE 'Muuttujat'[Erityisen tuen oppilaiden osuus kaikista tuen piirissä olevista]=
+var osa = [Erityisen tuen oppilaat]
 var kaikki = [Kaikki oppilaat2]
 return IF(osa = BLANK(), BLANK(),	
 IF(kaikki = "1-4", "25 % – 100 %",
@@ -11090,7 +11093,8 @@ osa / kaikki)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Osuus erityisen tuen oppilaista]=var osa = [Erityisen tuen oppilaat]
+CREATE MEASURE 'Muuttujat'[Osuus erityisen tuen oppilaista]=
+var osa = [Erityisen tuen oppilaat]
 var kaikki = CALCULATE([Kaikki oppilaat2],ALL(Muuttujat[Oppimäärän yksilöllistäminen]),Muuttujat[Erityisen tuen päätös]="Erityisen tuen päätös")
 return IF(osa = BLANK(), BLANK(),	
 IF(kaikki = "1-4", "25 % – 100 %",
@@ -11247,7 +11251,8 @@ osa / kaikki)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Tehostetun tuen oppilaiden osuus kaikista tuen piirissä olevista]=var osa = [Tehostetun tuen oppilaat]
+CREATE MEASURE 'Muuttujat'[Tehostetun tuen oppilaiden osuus kaikista tuen piirissä olevista]=
+var osa = [Tehostetun tuen oppilaat]
 var kaikki = [Kaikki oppilaat2]
 return IF(osa = BLANK(), BLANK(),	
 IF(kaikki = "1-4", "25 % – 100 %",
@@ -11748,8 +11753,7 @@ CREATE MEASURE 'Muuttujat'[Percentage of pupils receiving intensified support]=[
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Andel jopo-elever]=
-var osa = [Jopo-oppilaat]
+CREATE MEASURE 'Muuttujat'[Andel jopo-elever]=var osa = [Jopo-oppilaat]
 var kaikki = CALCULATE([Kaikki oppilaat2],ALL(Muuttujat[Flexibel grundläggande utbildning]))
 return IF(osa = BLANK(), BLANK(),	
 IF(kaikki = "1-4", "25 % – 100 %",
@@ -11774,8 +11778,7 @@ osa / kaikki)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Percentage of jopo-pupils]=
-var osa = [Jopo-oppilaat]
+CREATE MEASURE 'Muuttujat'[Percentage of jopo-pupils]=var osa = [Jopo-oppilaat]
 var kaikki = CALCULATE([Kaikki oppilaat2],ALL(Muuttujat[Flexible basic education]))
 return IF(osa = BLANK(), BLANK(),	
 IF(kaikki = "1-4", "25 % – 100 %",
@@ -11800,15 +11803,13 @@ osa / kaikki)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[The proportion of all pupils receiving special support]=
-var osa = [Pupils receiving special support]
+CREATE MEASURE 'Muuttujat'[The proportion of all pupils receiving special support]=var osa = [Pupils receiving special support]
 var kaikki = CALCULATE([Kaikki oppilaat2],ALL(Muuttujat[Teaching location]),Muuttujat[Erityisen tuen päätös]="Erityisen tuen päätös")
 return IF(osa = BLANK(), BLANK(),	
 IF(kaikki = "1-4", "25 % – 100 %",
 IF(osa = "1-4", IF(kaikki &gt; 8000, "0.0 %"
 , CONCATENATE(FORMAT(1 / kaikki, "0.0 % – "), FORMAT(4 / kaikki, "0.0 %"))),
-osa / kaikki)))
-;
+osa / kaikki)));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -11827,8 +11828,7 @@ osa / kaikki)))
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[The proportion of pupils receiving special support]=
-var osa = [Pupils receiving special support]
+CREATE MEASURE 'Muuttujat'[The proportion of pupils receiving special support]=var osa = [Pupils receiving special support]
 var kaikki = CALCULATE([Kaikki oppilaat2],ALL(Muuttujat[Individualization of curriculum]),Muuttujat[Erityisen tuen päätös]="Erityisen tuen päätös")
 return IF(osa = BLANK(), BLANK(),	
 IF(kaikki = "1-4", "25 % – 100 %",
@@ -11967,8 +11967,7 @@ CREATE MEASURE 'Muuttujat'[Andel elever som får intensifierat stöd av samtliga
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Andel av samtliga elever som får särskilt stöd]=
-var osa = [Elever som får särskilt stöd]
+CREATE MEASURE 'Muuttujat'[Andel av samtliga elever som får särskilt stöd]=var osa = [Elever som får särskilt stöd]
 var kaikki = CALCULATE([Kaikki oppilaat2],ALL(Muuttujat[Undervisningens plats]),Muuttujat[Erityisen tuen päätös]="Erityisen tuen päätös")
 return IF(osa = BLANK(), BLANK(),	
 IF(kaikki = "1-4", "25 % – 100 %",
@@ -11993,8 +11992,7 @@ osa / kaikki)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Andel av alla elever som får särskilt stöd]=
-var osa = [Elever som får särskilt stöd]
+CREATE MEASURE 'Muuttujat'[Andel av alla elever som får särskilt stöd]=var osa = [Elever som får särskilt stöd]
 var kaikki = CALCULATE([Kaikki oppilaat2],ALL(Muuttujat[Individualiserad lärokurs]),Muuttujat[Erityisen tuen päätös]="Erityisen tuen päätös")
 return IF(osa = BLANK(), BLANK(),	
 IF(kaikki = "1-4", "25 % – 100 %",
