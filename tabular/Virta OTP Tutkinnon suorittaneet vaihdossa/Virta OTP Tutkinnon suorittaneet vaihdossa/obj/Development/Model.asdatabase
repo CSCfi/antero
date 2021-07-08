@@ -316,6 +316,7 @@
           {
             "name": "opiskelijaavain",
             "dataType": "string",
+            "isHidden": true,
             "sourceColumn": "opiskelijaavain"
           },
           {
@@ -968,7 +969,7 @@
             "expression": [
               "",
               "var summa =CALCULATE(DISTINCTCOUNT([opiskelijaavain]),Muuttujat[opiskelijaavain] <> BLANK())",
-              "return if(summa=0,BLANK(),summa)"
+              "return if(summa=0,BLANK(),IF(summa<5,\"1-4\",MROUND(summa,3)))"
             ],
             "formatString": "#,0"
           },
@@ -984,7 +985,16 @@
           },
           {
             "name": "Vaihdossa käyneiden osuus",
-            "expression": "IF([Tutkinnon suorittaneet]=\"1-4\",\"\",DIVIDE([Vaihdossa käyneet],[Tutkinnon suorittaneet]))",
+            "expression": [
+              "",
+              "var osa = [Vaihdossa käyneet]",
+              "var kaikki = [Tutkinnon suorittaneet]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           }
         ],
