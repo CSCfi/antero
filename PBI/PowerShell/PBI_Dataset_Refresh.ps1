@@ -19,29 +19,37 @@ $RefreshDSCheck = 'groups/' + $WSID + '/datasets/' + $DSID + '/refreshes?$top=1'
 
 $MailFailureNotify = @{"notifyOption"="MailOnFailure"}
 
-# Refresh dataset
+$error.clear()
+
+# Refresh dataset and error handling
 Invoke-PowerBIRestMethod -Url $RefreshDS -Method Post -Body $MailFailureNotify
+if (!$error) {
+	# Refresh status of dataset
+	$RefreshStatus = "Unknown"
 
-# Refresh status of dataset
-$RefreshStatus = "Unknown"
+	$limit = (Get-Date).AddMinutes(90)
 
-$limit = (Get-Date).AddMinutes(90)
+	# While loop runs until dataset refresh has been completed or failed. Time limit for the loop is 90 minutes. 
 
-# While loop runs until dataset refresh has been completed or failed. Time limit for the loop is 90 minutes. 
-while ($RefreshStatus -eq "Unknown" -and (Get-Date) -le $limit)
-{	
-	$RefreshStatus = (ConvertFrom-Json (Invoke-PowerBIRestMethod -Url $RefreshDSCheck -Method Get)).value.status
-	ECHO "Inspecting refresh status..."
-	Start-Sleep -s 30
-}
+	ECHO "################################################"
 
-if ($RefreshStatus -eq "Completed") {
-    ECHO "Refresh was completed"
-} elseif ($RefreshStatus -eq "Failed") {
-    ECHO "Refresh failed"
+	ECHO $env:PBIDS
+
+	while ($RefreshStatus -eq "Unknown" -and (Get-Date) -le $limit) {	
+		$RefreshStatus = (ConvertFrom-Json (Invoke-PowerBIRestMethod -Url $RefreshDSCheck -Method Get)).value.status
+		ECHO "Inspecting refresh status..."
+		Start-Sleep -s 30
+	}
+
+	if ($RefreshStatus -eq "Completed") {
+		ECHO "Refresh was completed successfully"
+	} elseif ($RefreshStatus -eq "Failed") {
+		ECHO "Refresh failed"
+	} else {
+		ECHO "Something unexpected happened"
+	}
+
+	ECHO "################################################"
 } else {
-    ECHO "Something unexpected happened"
+	ECHO "Refresh failed"
 }
-
-# Saves refresh status in a file
-Out-File -FilePath D:\PBI\RefreshStatus\Status.csv -InputObject $RefreshStatus -Encoding ASCII -Width 50
