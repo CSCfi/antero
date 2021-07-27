@@ -1112,6 +1112,7 @@
           {
             "name": "jarjestys_kansalaisuus_maanosa",
             "dataType": "int64",
+            "isHidden": true,
             "sourceColumn": "jarjestys_kansalaisuus_maanosa"
           }
         ],
@@ -4601,9 +4602,13 @@
             "name": "oppisopimusopiskelijoiden_osuus_opiskelijoista_fi",
             "expression": [
               "",
-              "var lkm = CALCULATE([opiskelijat],Muuttujat[koodit_oppisopimuskoulutus]=\"1\")",
-              "var lkm_all = CALCULATE([opiskelijat],ALL(Muuttujat[oppisopimuskoulutus_fi]))",
-              "return DIVIDE(lkm,lkm_all)",
+              "var osa = CALCULATE([opiskelijat],Muuttujat[koodit_oppisopimuskoulutus]=\"1\")",
+              "var kaikki = CALCULATE([opiskelijat],ALL(Muuttujat[oppisopimuskoulutus_fi]))",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
@@ -4613,9 +4618,13 @@
             "name": "koulutussopimusopiskelijoiden_osuus_opiskelijoista_fi",
             "expression": [
               "",
-              "var lkm = CALCULATE([opiskelijat],Muuttujat[koodit_koulutussopimus]=\"1\")",
-              "var lkm_all = CALCULATE([opiskelijat],ALL(Muuttujat[koulutussopimus_fi]))",
-              "return DIVIDE(lkm,lkm_all)"
+              "var osa = CALCULATE([opiskelijat],Muuttujat[koodit_koulutussopimus]=\"1\")",
+              "var kaikki = CALCULATE([opiskelijat],ALL(Muuttujat[koulutussopimus_fi]))",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Suhteellinen"
@@ -4624,9 +4633,13 @@
             "name": "oppisopimusopiskelijoiden_osuus_uusista_opiskelijoista_fi",
             "expression": [
               "",
-              "var lkm = CALCULATE([uudet_opiskelijat],Muuttujat[koodit_oppisopimuskoulutus]=\"1\")",
-              "var lkm_all = CALCULATE([uudet_opiskelijat],ALL(Muuttujat[oppisopimuskoulutus_fi]))",
-              "return DIVIDE(lkm,lkm_all)"
+              "var osa = CALCULATE([uudet_opiskelijat],Muuttujat[koodit_oppisopimuskoulutus]=\"1\")",
+              "var kaikki = CALCULATE([uudet_opiskelijat],ALL(Muuttujat[oppisopimuskoulutus_fi]))",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Suhteellinen"
@@ -4635,9 +4648,13 @@
             "name": "koulutussopimusopiskelijoiden_osuus_uusista_opiskelijoista_fi",
             "expression": [
               "",
-              "var lkm = CALCULATE([uudet_opiskelijat],Muuttujat[koodit_koulutussopimus]=\"1\")",
-              "var lkm_all = CALCULATE([uudet_opiskelijat],ALL(Muuttujat[koulutussopimus_fi]))",
-              "return DIVIDE(lkm,lkm_all)"
+              "var osa = CALCULATE([uudet_opiskelijat],Muuttujat[koodit_koulutussopimus]=\"1\")",
+              "var kaikki = CALCULATE([uudet_opiskelijat],ALL(Muuttujat[koulutussopimus_fi]))",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Suhteellinen"
@@ -4646,9 +4663,13 @@
             "name": "oppisopimusopiskelijoiden_osuus_tutkinnon_suorittaneista_fi",
             "expression": [
               "",
-              "var lkm = CALCULATE([tutkinnon_suorittaneet],Muuttujat[koodit_oppisopimuskoulutus]=\"1\")",
-              "var lkm_all = CALCULATE([tutkinnon_suorittaneet],ALL(Muuttujat[oppisopimuskoulutus_fi]))",
-              "return DIVIDE(lkm,lkm_all)"
+              "var osa = CALCULATE([tutkinnon_suorittaneet],Muuttujat[koodit_oppisopimuskoulutus]=\"1\")",
+              "var kaikki = CALCULATE([tutkinnon_suorittaneet],ALL(Muuttujat[oppisopimuskoulutus_fi]))",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Suhteellinen"
@@ -4657,9 +4678,13 @@
             "name": "koulutussopimusopiskelijoiden_osuus_tutkinnon_suorittaneista_fi",
             "expression": [
               "",
-              "var lkm = CALCULATE([tutkinnon_suorittaneet],Muuttujat[koodit_koulutussopimus]=\"1\")",
-              "var lkm_all = CALCULATE([tutkinnon_suorittaneet],ALL(Muuttujat[koulutussopimus_fi]))",
-              "return DIVIDE(lkm,lkm_all)"
+              "var osa = CALCULATE([tutkinnon_suorittaneet],Muuttujat[koodit_koulutussopimus]=\"1\")",
+              "var kaikki = CALCULATE([tutkinnon_suorittaneet],ALL(Muuttujat[koulutussopimus_fi]))",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Suhteellinen"
@@ -4668,9 +4693,13 @@
             "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_uusista_opiskelijoista_fi",
             "expression": [
               "",
-              "var lkm = CALCULATE([uudet_opiskelijat],Muuttujat[koodit_oppisopimuskoulutus]=\"0\", Muuttujat[koodit_koulutussopimus]=\"0\")",
-              "var lkm_all = CALCULATE([uudet_opiskelijat],ALL(Muuttujat[oppisopimuskoulutus_fi]),ALL(Muuttujat[koulutussopimus_fi]))",
-              "return DIVIDE(lkm,lkm_all)"
+              "var osa = CALCULATE([uudet_opiskelijat],Muuttujat[koodit_oppisopimuskoulutus]=\"0\", Muuttujat[koodit_koulutussopimus]=\"0\")",
+              "var kaikki = CALCULATE([uudet_opiskelijat],ALL(Muuttujat[oppisopimuskoulutus_fi]),ALL(Muuttujat[koulutussopimus_fi]))",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "displayFolder": "Suhteellinen"
@@ -4679,9 +4708,13 @@
             "name": "ei_oppisopimusta_tai_koulutussopimusta_osuus_opiskelijoista_fi",
             "expression": [
               "",
-              "var lkm = CALCULATE([opiskelijat],Muuttujat[koodit_oppisopimuskoulutus]=\"0\", Muuttujat[koodit_koulutussopimus]=\"0\")",
-              "var lkm_all = CALCULATE([opiskelijat],ALL(Muuttujat[oppisopimuskoulutus_fi]),ALL(Muuttujat[koulutussopimus_fi]))",
-              "return DIVIDE(lkm,lkm_all)",
+              "var osa = CALCULATE([opiskelijat],Muuttujat[koodit_oppisopimuskoulutus]=\"0\", Muuttujat[koodit_koulutussopimus]=\"0\")",
+              "var kaikki = CALCULATE([opiskelijat],ALL(Muuttujat[oppisopimuskoulutus_fi]),ALL(Muuttujat[koulutussopimus_fi]))",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %",

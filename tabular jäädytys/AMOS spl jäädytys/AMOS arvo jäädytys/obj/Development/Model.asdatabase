@@ -4565,14 +4565,14 @@
               "",
               "var taulu = ",
               "CALCULATETABLE(",
-              "            ADDCOLUMNS(",
-              "            SUMMARIZE(Muuttujat, [Koodit Koulutuksen järjestäjä], [Kyselyn kohderyhmä], [Rahoituskausi])",
-              "            ,\"vast\", CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),NOT(ISBLANK(Muuttujat[vastaajaid])))",
-              "            ,\"vast_oph\", CALCULATE(AVERAGE([Vahvistetut vastanneet]))",
-              "            ,\"kohteet\", CALCULATE(AVERAGE([Vahvistetut kyselyn kohteena olleet]))",
-              "            ,\"katokytkin\", CALCULATE(MAX(Muuttujat[kytkin_katokorjaus]))",
-              "        )        ",
-              "        ,VALUES(Muuttujat[Kyselyn kohderyhmä])",
+              "            \tADDCOLUMNS(",
+              "           \t\tSUMMARIZE(Muuttujat, [Koodit Koulutuksen järjestäjä], [Kyselyn kohderyhmä], [Rahoituskausi])",
+              "           \t \t,\"vast\", CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),NOT(ISBLANK(Muuttujat[vastaajaid])))",
+              "\t           \t,\"vast_oph\", CALCULATE(AVERAGE([Vahvistetut vastanneet]))",
+              "\t\t,\"kohteet\", CALCULATE(AVERAGE([Vahvistetut kyselyn kohteena olleet]))",
+              "\t\t,\"katokytkin\", CALCULATE(MAX(Muuttujat[kytkin_katokorjaus]))",
+              "\t)        ",
+              "\t,VALUES(Muuttujat[Kyselyn kohderyhmä])",
               "\t,Muuttujat[Koodit Rahoitusmallikysymys]=1",
               " )",
               "return ",
@@ -5188,54 +5188,6 @@
             "name": "Weighted score %",
             "expression": " [Painotetut pisteet % (Arvo)]",
             "formatString": "0.00 %;-0.00 %;0.00 %"
-          },
-          {
-            "name": "Korjauskerroin (Rahoitus) vanha",
-            "expression": [
-              "",
-              "IF([Vastanneet (Rahoitus)]=BLANK(),BLANK(),IF(not(isfiltered('Muuttujat'[Koulutuksen järjestäjä])), blank(), CALCULATE(",
-              "\tIF(MAX([kytkin_katokorjaus]) = 1,",
-              "\t\tIF([Vastausosuus (Rahoitus)]  >=  0.8, ",
-              "\t\t\tDIVIDE(1,[Vastausosuus (Rahoitus)]),",
-              "\t\t\t1 + (15/16) * [Vastausosuus (Rahoitus)] - (25/32) * [Vastausosuus (Rahoitus)] * [Vastausosuus (Rahoitus)]),",
-              "\t\tCALCULATE(IF([Vastausosuus (Rahoitus)]  >=  0.7, DIVIDE(1,[Vastausosuus (Rahoitus)]),IF([Vastausosuus (Rahoitus)] <= 0.2, (857/350), 1/0.7 + 2.04 * (0.7 - \t\t\t\t[Vastausosuus (Rahoitus)]))\t\t",
-              "\t\t\t),Muuttujat[Koodit Rahoitusmallikysymys]=1)",
-              "\t\t\t",
-              "\t\t\t))",
-              "))",
-              ""
-            ]
-          },
-          {
-            "name": "Painotetut pisteet (Rahoitus) vanha",
-            "expression": [
-              "",
-              "var taulu = ADDCOLUMNS(",
-              "\t\tSUMMARIZE(Muuttujat,[Koodit Koulutuksen järjestäjä]) \t",
-              "\t\t,\"pisteet1\", CALCULATE(IF([Vastanneet_s]>[Vastanneet (OPH)],SUM([numerovalinta])*(DIVIDE([Vastanneet (OPH)],[Vastanneet_s])),SUM([numerovalinta])),Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
-              "\t\t,\"pisteet2\", 3 * CALCULATE(IF([Vastanneet_s]>[Vastanneet (OPH)],SUM([numerovalinta])*(DIVIDE([Vastanneet (OPH)],[Vastanneet_s])),SUM([numerovalinta])),Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
-              "\t\t,\"pisteet3\" ,CALCULATE(IF([Vastanneet_s]>[Vastanneet (OPH)],SUM([numerovalinta])*(DIVIDE([Vastanneet (OPH)],[Vastanneet_s])),SUM([numerovalinta])),Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1) ",
-              "\t\t",
-              "\t\t,\"kato1\",CALCULATE(IF(MAX(Muuttujat[kytkin_katokorjaus]) = 1,\t",
-              "\t\t\tIF([Vastausosuus (Rahoitus)]  >=  0.8, DIVIDE(1,[Vastausosuus (Rahoitus)]),1 + (15/16) * [Vastausosuus (Rahoitus)] - (25/32) * [Vastausosuus (Rahoitus)] * [Vastausosuus (Rahoitus)]),",
-              "\t\t\tCALCULATE(IF([Vastausosuus (Rahoitus)]  >=  0.7, DIVIDE(1,[Vastausosuus (Rahoitus)]),IF([Vastausosuus (Rahoitus)] <= 0.2, (857/350), 1/0.7 + 2.04 * \t\t\t\t(0.7 - [Vastausosuus (Rahoitus)])))))",
-              "\t\t,Muuttujat[Kyselyn kohderyhmä]=\"Aloittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1)\t\t\t\t",
-              "\t\t,\"kato2\",CALCULATE(IF(MAX([kytkin_katokorjaus]) = 1,",
-              "\t\t\tIF([Vastausosuus (Rahoitus)]  >=  0.8, DIVIDE(1,[Vastausosuus (Rahoitus)]),1 + (15/16) * [Vastausosuus (Rahoitus)] - (25/32) * [Vastausosuus (Rahoitus)] * [Vastausosuus (Rahoitus)]),",
-              "\t\t\tCALCULATE(IF([Vastausosuus (Rahoitus)]  >=  0.7, DIVIDE(1,[Vastausosuus (Rahoitus)]),IF([Vastausosuus (Rahoitus)] <= 0.2, (857/350), 1/0.7 + 2.04 * (0.7 - [Vastausosuus (Rahoitus)])))))\t\t\t",
-              "\t\t,Muuttujat[Kyselyn kohderyhmä]=\"Koko tutkinnon suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1)\t\t\t\t",
-              "\t\t,\"kato3\",CALCULATE(IF(MAX([kytkin_katokorjaus]) = 1,",
-              "\t\t\tIF([Vastausosuus (Rahoitus)]  >=  0.8, DIVIDE(1,[Vastausosuus (Rahoitus)]),1 + (15/16) * [Vastausosuus (Rahoitus)] - (25/32) * [Vastausosuus (Rahoitus)] * [Vastausosuus (Rahoitus)]),",
-              "\t\t\tCALCULATE(IF([Vastausosuus (Rahoitus)]  >=  0.7, DIVIDE(1,[Vastausosuus (Rahoitus)]),IF([Vastausosuus (Rahoitus)] <= 0.2, (857/350), 1/0.7 + 2.04 * \t\t\t\t(0.7 - [Vastausosuus (Rahoitus)])))))\t\t\t",
-              "\t\t,Muuttujat[Kyselyn kohderyhmä]=\"Tutkinnon osia suorittaneet\",VALUES(Muuttujat[Kyselyn kohderyhmä]),Muuttujat[Koodit Rahoitusmallikysymys]=1)",
-              "\t )",
-              "var painotettu1 = SUMX(taulu, [kato1]* [pisteet1])",
-              "var painotettu2 = SUMX(taulu, [kato2] * [pisteet2])",
-              "var painotettu3 = SUMX(taulu, [kato3] * [pisteet3])",
-              "var painotettu = painotettu1 + painotettu2 + painotettu3",
-              "return painotettu",
-              ""
-            ]
           }
         ],
         "annotations": [
@@ -8637,79 +8589,6 @@
             ]
           }
         ]
-      },
-      {
-        "name": "CalculatedTable 1",
-        "columns": [
-          {
-            "type": "calculatedTableColumn",
-            "name": "Kyselyn kohderyhmä",
-            "dataType": "string",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "Muuttujat[Kyselyn kohderyhmä]"
-          },
-          {
-            "type": "calculatedTableColumn",
-            "name": "Rahoituskausi",
-            "dataType": "string",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "Muuttujat[Rahoituskausi]"
-          },
-          {
-            "type": "calculatedTableColumn",
-            "name": "Vahvistetut vastanneet nimi",
-            "dataType": "double",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "[Vahvistetut vastanneet nimi]"
-          },
-          {
-            "type": "calculatedTableColumn",
-            "name": "Vastanneet_arvo",
-            "dataType": "int64",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "[Vastanneet_arvo]"
-          },
-          {
-            "type": "calculatedTableColumn",
-            "name": "Numerosumma",
-            "dataType": "int64",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "[Numerosumma]"
-          },
-          {
-            "type": "calculatedTableColumn",
-            "name": "Koulutuksen järjestäjä",
-            "dataType": "string",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "Muuttujat[Koulutuksen järjestäjä]"
-          }
-        ],
-        "partitions": [
-          {
-            "name": "CalculatedTable 1",
-            "source": {
-              "type": "calculated",
-              "expression": [
-                "ADDCOLUMNS(SUMMARIZE(FILTER(Muuttujat,[Koodit Rahoitusmallikysymys]=1),",
-                "                        [Kyselyn kohderyhmä],",
-                "                        [Koulutuksen järjestäjä],",
-                "                        [Rahoituskausi]",
-                "                        ),",
-                "                        \"Vahvistetut vastanneet nimi\", CALCULATE(AVERAGE(Muuttujat[Vahvistetut vastanneet])),",
-                "                        \"Vastanneet_arvo\", CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),NOT(ISBLANK(Muuttujat[vastaajaid]))),",
-                "                        \"Numerosumma\", CALCULATE(SUM(muuttujat[numerovalinta]))",
-                "                    )",
-                ""
-              ]
-            }
-          }
-        ]
       }
     ],
     "relationships": [
@@ -9863,6 +9742,9 @@
               },
               {
                 "name": "NPS"
+              },
+              {
+                "name": "Vastanneet (Arvo)"
               }
             ]
           },
