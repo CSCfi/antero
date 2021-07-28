@@ -8,7 +8,8 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-
+DROP view if exists [dw].[v_virta_otp_55_jaahdytetty_2020] 
+go
 
 CREATE VIEW  [dw].[v_virta_otp_55_jaahdytetty_2020] 
 AS
