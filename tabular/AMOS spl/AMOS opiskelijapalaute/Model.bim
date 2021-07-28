@@ -68,67 +68,83 @@
             "name": "Rahoituskausi",
             "dataType": "string",
             "sourceColumn": "Rahoituskausi",
-            "sourceProviderType": "WChar"
+            "sourceProviderType": "WChar",
+            "displayFolder": "Aikamuuttujat"
           },
           {
             "name": "Kysely",
             "dataType": "string",
             "sourceColumn": "Kysely",
-            "sourceProviderType": "WChar"
+            "sourceProviderType": "WChar",
+            "displayFolder": "Kyselymuuttujat"
           },
           {
             "name": "Kyselyn kohderyhmä",
             "dataType": "string",
             "sourceColumn": "Kyselyn kohderyhmä",
-            "sourceProviderType": "WChar"
+            "sourceProviderType": "WChar",
+            "displayFolder": "Kyselymuuttujat"
           },
           {
             "name": "Kysymys",
             "dataType": "string",
             "sourceColumn": "Kysymys",
-            "sourceProviderType": "WChar"
+            "sortByColumn": "Järjestys kysymys",
+            "sourceProviderType": "WChar",
+            "displayFolder": "Kyselymuuttujat"
           },
           {
             "name": "Kysymysryhmä",
             "dataType": "string",
             "sourceColumn": "Kysymysryhmä",
-            "sourceProviderType": "WChar"
+            "sortByColumn": "Järjestys kysymysryhma",
+            "sourceProviderType": "WChar",
+            "displayFolder": "Kyselymuuttujat"
           },
           {
             "name": "Koulutuksen järjestäjä",
             "dataType": "string",
             "sourceColumn": "Koulutuksen järjestäjä",
-            "sourceProviderType": "WChar"
+            "sourceProviderType": "WChar",
+            "displayFolder": "Organisaatiomuuttujat"
           },
           {
             "name": "Koul. järjestäjän maakunta",
             "dataType": "string",
             "sourceColumn": "Koul. järjestäjän maakunta",
-            "sourceProviderType": "WChar"
+            "sortByColumn": "Järjestys jarj maakunta",
+            "sourceProviderType": "WChar",
+            "displayFolder": "Organisaatiomuuttujat"
           },
           {
             "name": "Koul. järjestäjän kunta",
             "dataType": "string",
             "sourceColumn": "Koul. järjestäjän kunta",
-            "sourceProviderType": "WChar"
+            "sourceProviderType": "WChar",
+            "displayFolder": "Organisaatiomuuttujat"
           },
           {
             "name": "Koul. järjestäjän AVI",
             "dataType": "string",
             "sourceColumn": "Koul. järjestäjän AVI",
-            "sourceProviderType": "WChar"
+            "sortByColumn": "Järjestys jarj avi",
+            "sourceProviderType": "WChar",
+            "displayFolder": "Organisaatiomuuttujat"
           },
           {
             "name": "Koul. järjestäjän ELY",
             "dataType": "string",
             "sourceColumn": "Koul. järjestäjän ELY",
-            "sourceProviderType": "WChar"
+            "sortByColumn": "Järjestys jarj ely",
+            "sourceProviderType": "WChar",
+            "displayFolder": "Organisaatiomuuttujat"
           },
           {
             "name": "Koodit Koulutuksen järjestäjä",
             "dataType": "string",
             "sourceColumn": "Koodit Koulutuksen järjestäjä",
-            "sourceProviderType": "Char"
+            "sourceProviderType": "Char",
+            "displayFolder": "Koodimuuttujat"
           },
           {
             "name": "Järjestys jarj avi",
@@ -196,7 +212,7 @@
             "name": "v_arvo_amis_spl_testi",
             "dataView": "full",
             "source": {
-              "query": " SELECT [dw].[v_arvo_amis_spl_testi].* FROM [dw].[v_arvo_amis_spl_testi] ",
+              "query": " SELECT [dw].[v_amos_opiskelijapalaute].* FROM [dw].[v_amos_opiskelijapalaute] ",
               "dataSource": "SqlServer dwitvipusql16 ANTERO"
             },
             "annotations": [
@@ -607,7 +623,8 @@
             "name": "Vastanneet (Rahoitus)",
             "expression": [
               "",
-              "SUM('Lukumaarat ja kertoimet'[vastanneet_rahoitus])"
+              "var summa = SUM('Lukumaarat ja kertoimet'[vastanneet_rahoitus])",
+              "return IF(summa=0,BLANK(),summa)"
             ],
             "formatString": "#,0"
           },
@@ -698,7 +715,11 @@
           },
           {
             "name": "Vastaajamäärä (Rahoitus)",
-            "expression": "FIRSTNONBLANK('Lukumaarat ja kertoimet'[vastaajamaaran_lahde],TRUE())"
+            "expression": [
+              "",
+              "var lkm = DISTINCTCOUNT('Lukumaarat ja kertoimet'[vastaajamaaran_lahde])",
+              "return IF(lkm>1,BLANK(),FIRSTNONBLANK('Lukumaarat ja kertoimet'[vastaajamaaran_lahde],TRUE()))"
+            ]
           },
           {
             "name": "Vastanneet (Arvo)",
@@ -717,11 +738,11 @@
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": " SELECT [dw].[v_arvo_amis_spl_testi].* FROM [dw].[v_arvo_amis_spl_testi] "
+            "value": " SELECT [dw].[v_amos_opiskelijapalaute].* FROM [dw].[v_amos_opiskelijapalaute] "
           },
           {
             "name": "_TM_ExtProp_DbTableName",
-            "value": "v_arvo_amis_spl_testi"
+            "value": "v_amos_opiskelijapalaute"
           },
           {
             "name": "_TM_ExtProp_DbSchemaName",
