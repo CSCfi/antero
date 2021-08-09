@@ -54,6 +54,7 @@ if (!$error) {
 	ECHO "################################################"
 } else {
 	ECHO "Refresh failed"
+	$RefreshStatus = "Failed"
 }
 
 $endTime = Get-Date
