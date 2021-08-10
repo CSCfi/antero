@@ -163,13 +163,13 @@ GO
 ALTER TABLE [dbo].[f_OTV_2_4_Ammatillisen_koulutuksen_tutkinnot] DROP CONSTRAINT IF EXISTS [FK__2_4__d_koulutuksen_jarjestamismuoto]
 GO
 
-ALTER TABLE [dbo].[f_OTV_2_4_Ammatillisen_koulutuksen_tutkinnot] DROP CONSTRAINT IF EXISTS IF EXISTS [FK__2_4__d_amm_sopimusjaksot]
+ALTER TABLE [dbo].[f_OTV_2_4_Ammatillisen_koulutuksen_tutkinnot] DROP CONSTRAINT IF EXISTS [FK__2_4__d_amm_sopimusjaksot]
 GO
 
-ALTER TABLE [dbo].[f_OTV_2_4_Ammatillisen_koulutuksen_tutkinnot] DROP CONSTRAINT IF EXISTS IF EXISTS [FK__2_4__d_ika_1v]
+ALTER TABLE [dbo].[f_OTV_2_4_Ammatillisen_koulutuksen_tutkinnot] DROP CONSTRAINT IF EXISTS [FK__2_4__d_ika_1v]
 GO
 
-ALTER TABLE [dbo].[f_OTV_2_4_Ammatillisen_koulutuksen_tutkinnot] DROP CONSTRAINT IF EXISTS IF EXISTS [FK__2_4__d_ika_5v]
+ALTER TABLE [dbo].[f_OTV_2_4_Ammatillisen_koulutuksen_tutkinnot] DROP CONSTRAINT IF EXISTS [FK__2_4__d_ika_5v]
 GO
 
 ALTER TABLE [dbo].[f_OTV_2_4_Ammatillisen_koulutuksen_tutkinnot] DROP CONSTRAINT IF EXISTS [FK__2_4__d_hallinnonala]

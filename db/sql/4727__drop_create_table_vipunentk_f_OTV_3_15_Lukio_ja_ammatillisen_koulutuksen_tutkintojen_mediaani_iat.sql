@@ -82,7 +82,7 @@ GO
 ALTER TABLE [dbo].[f_OTV_3_15_Lukio_ja_ammatillisen_koulutuksen_tutkintojen_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_15__d_koulutuksen_jarjestamismuoto]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_15_Lukio_ja_ammatillisen_koulutuksen_tutkintojen_mediaani_iat] DROP CONSTRAINT IF EXISTS IF EXISTS [FK__3_15__d_amm_sopimusjaksot]
+ALTER TABLE [dbo].[f_OTV_3_15_Lukio_ja_ammatillisen_koulutuksen_tutkintojen_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_15__d_amm_sopimusjaksot]
 GO
 
 ALTER TABLE [dbo].[f_OTV_3_15_Lukio_ja_ammatillisen_koulutuksen_tutkintojen_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_15__d_ammatillisen_koulutuksen_koulutuslaji]
