@@ -1,14 +1,14 @@
 USE [VipunenTK_lisatiedot]
 GO
-ALTER TABLE [dbo].[koulutuslaji3] DROP CONSTRAINT [DF__koulutuslaji3__tietolahde]
+ALTER TABLE [dbo].[koulutuslaji3] DROP CONSTRAINT IF EXISTS [DF__koulutuslaji3__tietolahde]
 GO
-ALTER TABLE [dbo].[koulutuslaji2] DROP CONSTRAINT [DF__koulutuslaji2__tietolahde]
+ALTER TABLE [dbo].[koulutuslaji2] DROP CONSTRAINT IF EXISTS [DF__koulutuslaji2__tietolahde]
 GO
-ALTER TABLE [dbo].[koulutuslaji] DROP CONSTRAINT [DF__koulutuslaji__tietolahde]
+ALTER TABLE [dbo].[koulutuslaji] DROP CONSTRAINT IF EXISTS [DF__koulutuslaji__tietolahde]
 GO
-ALTER TABLE [dbo].[koulutuslaji] DROP CONSTRAINT [DF__koulutuslaji__paattyy]
+ALTER TABLE [dbo].[koulutuslaji] DROP CONSTRAINT IF EXISTS [DF__koulutuslaji__paattyy]
 GO
-ALTER TABLE [dbo].[koulutuslaji] DROP CONSTRAINT [DF__koulutuslaji__alkaa]
+ALTER TABLE [dbo].[koulutuslaji] DROP CONSTRAINT IF EXISTS [DF__koulutuslaji__alkaa]
 GO
 /****** Object:  Table [dbo].[koulutusryhma]    Script Date: 6.8.2021 15:58:10 ******/
 DROP TABLE [dbo].[koulutusryhma]
