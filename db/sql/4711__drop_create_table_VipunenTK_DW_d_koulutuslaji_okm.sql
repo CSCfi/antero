@@ -1,7 +1,7 @@
 USE [VipunenTK_DW]
 GO
 
-ALTER TABLE [dbo].[d_koulutuslaji_okm] DROP CONSTRAINT [DF__koulutuslaji_okm__tietolahde]
+ALTER TABLE [dbo].[d_koulutuslaji_okm] DROP CONSTRAINT IF EXISTS [DF__koulutuslaji_okm__tietolahde]
 GO
 
 /****** Object:  Table [dbo].[d_koulutuslaji_okm]    Script Date: 6.8.2021 11:32:54 ******/
