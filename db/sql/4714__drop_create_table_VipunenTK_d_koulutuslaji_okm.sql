@@ -1,6 +1,8 @@
 USE [VipunenTK]
 GO
 
+--esityhjättiin TK-faktat
+
 ALTER TABLE [dbo].[f_OTV_2_1_R2_22_Peruskoulutiedosto_Oppilaitostason_oppil_ja_opisk] DROP CONSTRAINT IF EXISTS [FK__2_1_R2_22__d_koulutuslaji_okm]
 GO
 
