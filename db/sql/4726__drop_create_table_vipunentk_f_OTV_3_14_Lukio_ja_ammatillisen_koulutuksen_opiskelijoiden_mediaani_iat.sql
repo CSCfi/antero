@@ -1,94 +1,94 @@
 USE [VipunenTK]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__syntymavuosi__d_kausi]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__syntymavuosi__d_kausi]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__syntymakuukausi__d_kausi]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__syntymakuukausi__d_kausi]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__oppisopimuskoulutuksen_jarjestaja__d_oppilaitoksen_taustatiedot_historia]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__oppisopimuskoulutuksen_jarjestaja__d_oppilaitoksen_taustatiedot_historia]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__oppisopimuskoulutuksen_jarjestaja__d_oppilaitoksen_taustatiedot]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__oppisopimuskoulutuksen_jarjestaja__d_oppilaitoksen_taustatiedot]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__oppilaitos_kunta_d_alueluokitus_historia]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__oppilaitos_kunta_d_alueluokitus_historia]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__oppilaitos_kunta_d_alueluokitus]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__oppilaitos_kunta_d_alueluokitus]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__oppilaitos__d_oppilaitoksen_taustatiedot_historia]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__oppilaitos__d_oppilaitoksen_taustatiedot_historia]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__oppilaitos__d_oppilaitoksen_taustatiedot]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__oppilaitos__d_oppilaitoksen_taustatiedot]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__koulutusluokitus__d_koulutusluokitus_historia]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__koulutusluokitus__d_koulutusluokitus_historia]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__koulutuksen_jarjestaja_kunta_d_alueluokitus_historia]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__koulutuksen_jarjestaja_kunta_d_alueluokitus_historia]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__koulutuksen_jarjestaja_kunta_d_alueluokitus]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__koulutuksen_jarjestaja_kunta_d_alueluokitus]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__koulutuksen_jarjestaja__d_oppilaitoksen_taustatiedot_historia]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__koulutuksen_jarjestaja__d_oppilaitoksen_taustatiedot_historia]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__koulutuksen_jarjestaja__d_oppilaitoksen_taustatiedot]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__koulutuksen_jarjestaja__d_oppilaitoksen_taustatiedot]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__kirjoihintulovuosi__d_kausi]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__kirjoihintulovuosi__d_kausi]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__kirjoihintulokausi__d_kausi]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__kirjoihintulokausi__d_kausi]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__ika_1v__d_ika]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__ika_1v__d_ika]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__d_sukupuoli]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__d_sukupuoli]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__d_opetussuunnitelmaperusteinen_koulutus_nayttotutkintoon_valmistava_koulutus]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__d_opetussuunnitelmaperusteinen_koulutus_nayttotutkintoon_valmistava_koulutus]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__d_opetushallinnon_koulutus]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__d_opetushallinnon_koulutus]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__d_nuorten_aikuisten_koulutus]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__d_nuorten_aikuisten_koulutus]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__d_lahde]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__d_lahde]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__d_koulutussektori]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__d_koulutussektori]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__d_koulutuslaji_okm]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__d_koulutuslaji_okm]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__d_koulutuksen_jarjestamismuoto]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__d_koulutuksen_jarjestamismuoto]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__d_amm_sopimusjaksot]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS IF EXISTS [FK__3_14__d_amm_sopimusjaksot]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__d_ammatillisen_koulutuksen_koulutuslaji]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__d_ammatillisen_koulutuksen_koulutuslaji]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__d_ammatillinen_peruskoulutus_lisakoulutus]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__d_ammatillinen_peruskoulutus_lisakoulutus]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__d_aineisto_OTV]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__d_aineisto_OTV]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__d_aineisto]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__d_aineisto]
 GO
 
-ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT [FK__3_14__d_aidinkieli_versio1]
+ALTER TABLE [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat] DROP CONSTRAINT IF EXISTS [FK__3_14__d_aidinkieli_versio1]
 GO
 
 /****** Object:  Table [dbo].[f_OTV_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat]    Script Date: 9.8.2021 22:17:44 ******/
