@@ -38,9 +38,10 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
 
   # automatic POST with (post)data
   print("value used for , -r, --rowcount=", rowcount)
-  request = Request(address, data=postdata, headers=reqheaders, timeout=300)
+  request = Request(address, data=postdata, headers=reqheaders)
+  print(request)
   try:
-    response = urlopen(request)
+    response = urlopen(request, timeout=300)
   except http.client.IncompleteRead as e:
     show('IncompleteRead exception.')
     show('Received: %d'%(e.partial))
