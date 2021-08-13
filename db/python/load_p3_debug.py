@@ -35,9 +35,9 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose):
     reqheaders['Authorization'] = 'Basic %s' % base64.b64encode(apiuser+":"+apipass)
 
   # automatic POST with (post)data
-  request = urllib.request.Request(address, data=postdata, headers=reqheaders)
+  #request = urllib.request.Request(address, data=postdata, headers=reqheaders)
   try:
-    response = urllib.request.urlopen(request)
+    response = urllib.request.urlopen(address, data=postdata, headers=reqheaders, timeout=300)
   #turha?
   #except http.client.IncompleteRead as e:
     #show('IncompleteRead exception.')
@@ -90,7 +90,7 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose):
       show("wrote %d"%(cnt))
       show("ready")
   except error as e:
-      print(e, " on row : ",cnt)
+      print(e, " on row : ",cnt, " ", row)
 
 def usage():
   print("""
