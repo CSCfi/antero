@@ -41,7 +41,7 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
   request = Request(address, data=postdata, headers=reqheaders)
   print(request)
   try:
-    response = urlopen(request, timeout=300)
+    response = urlopen(request)
   except http.client.IncompleteRead as e:
     show('IncompleteRead exception.')
     show('Received: %d'%(e.partial))
