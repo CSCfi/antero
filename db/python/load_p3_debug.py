@@ -6,6 +6,7 @@ Python 3 version of load.py
 todo doc
 """
 import sys,os,getopt
+import requests
 import urllib.request, urllib.error, urllib.parse, base64, http.client
 import ijson.backends.yajl2_cffi as ijson
 import json
@@ -35,23 +36,28 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose):
     reqheaders['Authorization'] = 'Basic %s' % base64.b64encode(apiuser+":"+apipass)
 
   # automatic POST with (post)data
-  request = urllib.request.Request(address, data=postdata, headers=reqheaders)
-  time=300
+  #request = urllib.request.Request(address, data=postdata, headers=reqheaders)
+  #time=300
   try:
-    response = urllib.request.urlopen(request, timeout=time)
+    #response = urllib.request.urlopen(request, timeout=time)
+    response = request.get(address, headers=reqheaders).json()
   #turha?
+  except HTTPError as e:
+    show('The server couldn\'t fulfill the request.')
+    show('Error code: %d'%(e.code))
+    sys.exit(2)
   #except http.client.IncompleteRead as e:
     #show('IncompleteRead exception.')
     #show('Received: %d'%(e.partial))
     #sys.exit(2)
-  except urllib.error.HTTPError as e:
-    show('The server couldn\'t fulfill the request.')
-    show('Error code: %d'%(e.code))
-    sys.exit(2)
-  except urllib.error.URLError as e:
-    show('We failed to reach a server.')
-    show('Reason: %s'%(e.reason))
-    sys.exit(2)
+  #except urllib.error.HTTPError as e:
+    #show('The server couldn\'t fulfill the request.')
+    #show('Error code: %d'%(e.code))
+    #sys.exit(2)
+  #except urllib.error.URLError as e:
+    #show('We failed to reach a server.')
+    #show('Reason: %s'%(e.reason))
+    #sys.exit(2)
   else:
     # everything is fine
     show("api call OK")
@@ -67,31 +73,30 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose):
 
   show("insert data")
   cnt=0
-  try:
-      for row in ijson.items(response,'item'):
-        cnt+=1
-        # show some sign of being alive
-        if cnt%100 == 0:
-          sys.stdout.write('.')
-          sys.stdout.flush()
-        if cnt%1000 == 0:
-          show("-- %d" % (cnt))
-        if verbose: show("%d -- %s"%(cnt,row))
 
-        # find out which columns to use on insert
-        dboperator.resetcolumns(row)
+  for row in ijson.items(response,'item'):
+    cnt+=1
+    # show some sign of being alive
+    if cnt%100 == 0:
+      sys.stdout.write('.')
+      sys.stdout.flush()
+    if cnt%1000 == 0:
+      show("-- %d" % (cnt))
+    if verbose: show("%d -- %s"%(cnt,row))
 
-        # flatten arrays/lists
-        for col in row:
-          if type(row[col]) is list:
-            row[col] = ''.join(map(str,json.dumps(row[col])))
+    # find out which columns to use on insert
+    dboperator.resetcolumns(row)
 
-        dboperator.insert(address,schema,table,row)
+    # flatten arrays/lists
+    for col in row:
+      if type(row[col]) is list:
+        row[col] = ''.join(map(str,json.dumps(row[col])))
 
-      show("wrote %d"%(cnt))
-      show("ready")
-  except error as e:
-      print(e, " on row : ",cnt, " ", row)
+    dboperator.insert(address,schema,table,row)
+
+  show("wrote %d"%(cnt))
+  show("ready")
+
 
 def usage():
   print("""
