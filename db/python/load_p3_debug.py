@@ -40,7 +40,7 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose):
   #time=300
   try:
     #response = urllib.request.urlopen(request, timeout=time)
-    response = request.get(address, headers=reqheaders).json()
+    response = requests.get(address, headers=reqheaders).json()
   #turha?
   except HTTPError as e:
     show('The server couldn\'t fulfill the request.')
