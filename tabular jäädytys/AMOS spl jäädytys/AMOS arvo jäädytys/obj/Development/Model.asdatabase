@@ -4545,7 +4545,8 @@
             "expression": [
               " ",
               "var taulu =ADDCOLUMNS(SUMMARIZE(Muuttujat,[Kyselyn kohderyhmä],[Koodit Koulutuksen järjestäjä],[Rahoituskausi]),\"Pisteiden laskennassa käytetyt vastanneet nimi\",CALCULATE(IF(ISBLANK([Vastanneet (OPH)]),[Vastanneet_s],IF([Vastanneet_s]>=[Vastanneet (OPH)],[Vastanneet (OPH)],[Vastanneet_s]))))",
-              "return SUMX(taulu,[Pisteiden laskennassa käytetyt vastanneet nimi])"
+              "var summa = SUMX(taulu,[Pisteiden laskennassa käytetyt vastanneet nimi])",
+              "return IF(summa=0,BLANK(),summa)"
             ],
             "formatString": "#,0"
           },
@@ -4575,7 +4576,7 @@
               "\t,VALUES(Muuttujat[Kyselyn kohderyhmä])",
               "\t,Muuttujat[Koodit Rahoitusmallikysymys]=1",
               " )",
-              "return ",
+              "return IF([Vastanneet (Rahoitus)]=0,BLANK(),",
               "AVERAGEX(taulu, ",
               "        IF([katokytkin] = 1",
               "        \t,IF(",
@@ -4593,6 +4594,7 @@
               "               \t)",
               "            \t)",
               "       )",
+              ")",
               ")",
               ""
             ],
@@ -4760,7 +4762,7 @@
           },
           {
             "name": "Vastaajamäärä (Rahoitus)",
-            "expression": "IF([Vastanneet_s]>[Vastanneet (OPH)],\"Vastanneet (OPH)\", IF([Vastanneet (Arvo)]<[Vastanneet (OPH)],\"Vastanneet (Arvo)\", \"Sama\"))"
+            "expression": "IF([Vastanneet (Rahoitus)]=0,BLANK(),IF([Vastanneet_s]>[Vastanneet (OPH)],\"Vastanneet (OPH)\", IF([Vastanneet (Arvo)]<[Vastanneet (OPH)],\"Vastanneet (Arvo)\", \"Sama\")))"
           },
           {
             "name": "Vastanneet_perus",

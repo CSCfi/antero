@@ -38,10 +38,11 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose):
   request = urllib.request.Request(address, data=postdata, headers=reqheaders)
   try:
     response = urllib.request.urlopen(request)
-  except http.client.IncompleteRead as e:
-    show('IncompleteRead exception.')
-    show('Received: %d'%(e.partial))
-    sys.exit(2)
+  #turha?
+  #except http.client.IncompleteRead as e:
+    #show('IncompleteRead exception.')
+    #show('Received: %d'%(e.partial))
+    #sys.exit(2)
   except urllib.error.HTTPError as e:
     show('The server couldn\'t fulfill the request.')
     show('Error code: %d'%(e.code))
