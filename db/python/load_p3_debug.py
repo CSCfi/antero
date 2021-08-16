@@ -7,13 +7,25 @@ todo doc
 """
 import sys,os,getopt
 import requests
-import urllib.request, urllib.error, urllib.parse, base64, http.client
-import ijson.backends.yajl2_cffi as ijson
 import json
 from time import localtime, strftime
 
 import dboperator
 
+def makerow():
+  return {
+    'avoinKK': None,'db': None, 'erikoistumiskoulutus': None, 'erillinenOpintoOikeus': None,'kansainvVaihto': None,
+    'kkYhteistyo': None,'koodi': None,'koulutustyyppi': None,'kuvaus': None, 'lukumaara': None,'luoja': None,
+    'luontipaivamaara': None,'maahanmValKoulutus': None,'oppilaitostunnus': None,'perustutkOpiskelijat': None,
+    'suorituspaiva': None,'tkiHarjoittelunLaajuus': None,'tkiMuutLaajuus': None,'tkiToiminnanLaajuus': None,
+    'ulkomaaharjoittelu': None,'ulkomailtaHyvLuet': None,'vieraskSuoritukset': None,'vuosi': None
+  }
+
+# get value from json
+def jv(jsondata, key):
+  if key in jsondata:
+    return jsondata[key]
+  return None
 def show(message):
   print((strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message))
 
@@ -39,25 +51,14 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose):
   #request = urllib.request.Request(address, data=postdata, headers=reqheaders)
   #time=300
   try:
-    #response = urllib.request.urlopen(request, timeout=time)
-    response = requests.get(address, headers=reqheaders)#.json()
-  #turha?
-  except HTTPError as e:
-    show('The server couldn\'t fulfill the request.')
-    show('Error code: %d'%(e.code))
+
+    response = requests.get(address, headers=reqheaders).json()
+
+  except Exception as e:
+    show('HTTP GET failed.')
+    show('Reason: %s'%(str(e)))
     sys.exit(2)
-  #except http.client.IncompleteRead as e:
-    #show('IncompleteRead exception.')
-    #show('Received: %d'%(e.partial))
-    #sys.exit(2)
-  #except urllib.error.HTTPError as e:
-    #show('The server couldn\'t fulfill the request.')
-    #show('Error code: %d'%(e.code))
-    #sys.exit(2)
-  #except urllib.error.URLError as e:
-    #show('We failed to reach a server.')
-    #show('Reason: %s'%(e.reason))
-    #sys.exit(2)
+
   else:
     # everything is fine
     show("api call OK")
@@ -74,28 +75,45 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose):
   show("insert data")
   cnt=0
 
-  for row in ijson.items(response,'item'):
+  for i in response:
     cnt+=1
-    # show some sign of being alive
+    row = makerow()
+    row["avoinKK"] = jv(i,"avoinKK")
+    row["db"] = jv(i,"db")
+    row["erikoistumiskoulutus"] = jv(i,"erikoistumiskoulutus")
+    row["erillinenOpintoOikeus"] = jv(i,"erillinenOpintoOikeus")
+    row["kansainvVaihto"] = jv(i,"kansainvVaihto")
+    row["kkYhteistyo"] = jv(i,"kkYhteistyö")
+    row["koodi"] = jv(i,"koodi")
+    row["koulutustyyppi"] = jv(i,"koulutustyyppi")
+    row["kuvaus"] = jv(i,"kuvaus")
+    row["lukumaara"] = jv(i,"lukumaara")
+    row["luoja"] = jv(i,"luoja")
+    row["luontipaivamaara"] = jv(i,"luontipaivamaara")
+    row["maahanmValKoulutus"] = jv(i,"maahanmValKoulutus")
+    row["oppilaitostunnus"] = jv(i,"oppilaitostunnus")
+    row["perustutkOpiskelijat"] = jv(i,"perustutkOpiskelijat")
+    row["suorituspaiva"] = jv(i,"suorituspaiva")
+    row["tkiHarjoittelunLaajuus"] = jv(i,"tkiHarjoittelunLaajuus")
+    row["tkiMuutLaajuus"] = jv(i,"tkiMuutLaajuus")
+    row["tkiToiminnanLaajuus"] = jv(i,"tkiToiminnanLaajuus")
+    row["ulkomaaharjoittelu"] = jv(i,"ulkomaaharjoittelu")
+    row["ulkomailtaHyvLuet"] = jv(i,"ulkomailtaHyvLuet")
+    row["vieraskSuoritukset"] = jv(i,"vierasSuoritukset")
+    row["vuosi"] = jv(i,"vuosi")
+
+
+    dboperator.insert(address,schema,table,row)
+     # show some sign of being alive
     if cnt%100 == 0:
       sys.stdout.write('.')
       sys.stdout.flush()
     if cnt%1000 == 0:
       show("-- %d" % (cnt))
     if verbose: show("%d -- %s"%(cnt,row))
-
-    # find out which columns to use on insert
-    dboperator.resetcolumns(row)
-
-    # flatten arrays/lists
-    for col in row:
-      if type(row[col]) is list:
-        row[col] = ''.join(map(str,json.dumps(row[col])))
-
-    dboperator.insert(address,schema,table,row)
-
   show("wrote %d"%(cnt))
   show("ready")
+
 
 
 def usage():
