@@ -10870,8 +10870,7 @@ ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measure
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Kaikki oppilaat]=calculate([Kaikki oppilaat2],all(Muuttujat[Erityinen tuki]),all(Muuttujat[Erityinen tuki2]), VALUES(Muuttujat[Tilastovuosi]), Muuttujat[Tilastovuosi]&lt;&gt;"2020")
-;
+CREATE MEASURE 'Muuttujat'[Kaikki oppilaat]=calculate([Kaikki oppilaat2],all(Muuttujat[Erityinen tuki]),all(Muuttujat[Erityinen tuki2]));
 </Text>
                   <Annotations>
                     <Annotation>
@@ -10991,7 +10990,8 @@ osa / kaikki)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Erityisen tuen oppilaiden osuus kaikista oppilaista]=var osa = CALCULATE([Erityisen tuen oppilaat], VALUES(Muuttujat[Tilastovuosi]), Muuttujat[Tilastovuosi]&lt;&gt;"2020")
+CREATE MEASURE 'Muuttujat'[Erityisen tuen oppilaiden osuus kaikista oppilaista]=
+var osa = [Erityisen tuen oppilaat]
 var kaikki = [Kaikki oppilaat]
 return IF(osa = BLANK(), BLANK(),	
 IF(kaikki = "1-4", "25 % – 100 %",
@@ -11016,7 +11016,8 @@ osa / kaikki)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Tehostetun tuen oppilaiden osuus kaikista oppilaista]=var osa = CALCULATE([Tehostetun tuen oppilaat], VALUES(Muuttujat[Tilastovuosi]), Muuttujat[Tilastovuosi]&lt;&gt;"2020")
+CREATE MEASURE 'Muuttujat'[Tehostetun tuen oppilaiden osuus kaikista oppilaista]=
+var osa = [Tehostetun tuen oppilaat]
 var kaikki = [Kaikki oppilaat]
 return IF(osa = BLANK(), BLANK(),	
 IF(kaikki = "1-4", "25 % – 100 %",
@@ -11041,8 +11042,7 @@ osa / kaikki)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Osuus kaikista erityisen tuen oppilaista]=
-var osa = [Erityisen tuen oppilaat]
+CREATE MEASURE 'Muuttujat'[Osuus kaikista erityisen tuen oppilaista]=var osa = [Erityisen tuen oppilaat]
 var kaikki = CALCULATE([Kaikki oppilaat2],ALL(Muuttujat[Opetuksen toteutuspaikka]),Muuttujat[Erityisen tuen päätös]="Erityisen tuen päätös")
 return IF(osa = BLANK(), BLANK(),	
 IF(kaikki = "1-4", "25 % – 100 %",
@@ -11067,8 +11067,7 @@ osa / kaikki)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Erityisen tuen oppilaiden osuus kaikista tuen piirissä olevista]=
-var osa = [Erityisen tuen oppilaat]
+CREATE MEASURE 'Muuttujat'[Erityisen tuen oppilaiden osuus kaikista tuen piirissä olevista]=var osa = [Erityisen tuen oppilaat]
 var kaikki = [Kaikki oppilaat2]
 return IF(osa = BLANK(), BLANK(),	
 IF(kaikki = "1-4", "25 % – 100 %",
@@ -11093,8 +11092,7 @@ osa / kaikki)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Osuus erityisen tuen oppilaista]=
-var osa = [Erityisen tuen oppilaat]
+CREATE MEASURE 'Muuttujat'[Osuus erityisen tuen oppilaista]=var osa = [Erityisen tuen oppilaat]
 var kaikki = CALCULATE([Kaikki oppilaat2],ALL(Muuttujat[Oppimäärän yksilöllistäminen]),Muuttujat[Erityisen tuen päätös]="Erityisen tuen päätös")
 return IF(osa = BLANK(), BLANK(),	
 IF(kaikki = "1-4", "25 % – 100 %",
@@ -11251,8 +11249,7 @@ osa / kaikki)));
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Tehostetun tuen oppilaiden osuus kaikista tuen piirissä olevista]=
-var osa = [Tehostetun tuen oppilaat]
+CREATE MEASURE 'Muuttujat'[Tehostetun tuen oppilaiden osuus kaikista tuen piirissä olevista]=var osa = [Tehostetun tuen oppilaat]
 var kaikki = [Kaikki oppilaat2]
 return IF(osa = BLANK(), BLANK(),	
 IF(kaikki = "1-4", "25 % – 100 %",
@@ -14334,7 +14331,7 @@ CREATE MEASURE 'Muuttujat'[Erityistä tai tehostettua tukea saavien oppilaiden o
           <ConnectionString>Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=VipunenTK;Integrated Security=SSPI;Persist Security Info=false</ConnectionString>
           <ImpersonationInfo>
             <ImpersonationMode>ImpersonateAccount</ImpersonationMode>
-            <Account>dwi\pankalai</Account>
+            <Account>dwi\t_viputk_kuutio</Account>
           </ImpersonationInfo>
           <Timeout>PT0S</Timeout>
         </DataSource>
