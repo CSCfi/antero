@@ -10,6 +10,7 @@ GO
 ALTER TABLE [dbo].[d_tutkintonimike_ammpk] DROP CONSTRAINT IF EXISTS [DF__d_tutkintonimike_ammpk__alkaa]
 GO
 
+
 ALTER TABLE [dbo].[f_OTV_2_3_Lukiokoulutuksen_ja_ammatillisen_koulutuksen_opiskelijat] DROP CONSTRAINT IF EXISTS [FK__2_3__d_tutkintonimike_ammpk]
 GO
 
