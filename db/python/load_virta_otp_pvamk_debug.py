@@ -38,11 +38,9 @@ def show(message):
   print((strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message))
 
 def load(secure,hostname,url,schema,table,postdata,condition,verbose):
-  show("begin "+hostname+" "+url+" "+schema+" "+table+" "+(postdata or "")+" "+(condition or ""))
-  if secure:
-    address = "https://"+hostname+url
-  else:
-    address = "http://"+hostname+url
+  show("begin "+hostname+" "+url+" "+schema+" "+table+" "+(postdata or "No postdata")+" "+(condition or ""))
+
+  address = "http://"+hostname+url
   show("load from "+address)
 
   reqheaders = {'Content-Type': 'application/json'}
