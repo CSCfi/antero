@@ -37,7 +37,7 @@ def jv(jsondata, key):
 def show(message):
   print((strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message))
 
-def load(secure,hostname,url,schema,table,postdata,condition,verbose):
+def load(secure,hostname,url,schema,table,postdata,condition,verbose,debug):
   show("begin "+hostname+" "+url+" "+schema+" "+table+" "+(postdata or "No postdata")+" "+(condition or ""))
 
   address = "http://"+hostname+url
@@ -132,7 +132,8 @@ def main(argv):
   hostname,url,schema,table="","","",""
   postdata=None
   condition=None
-  verbose,debug = False,False
+  verbose = False
+
 
   try:
     opts,args=getopt.getopt(argv,"sH:u:e:t:p:c:v",["secure","hostname=","url=","schema=","table=","postdata=","condition=","verbose"])
@@ -149,11 +150,12 @@ def main(argv):
     elif opt in ("-p", "--postdata"): postdata=arg
     elif opt in ("-c", "--condition"): condition=arg
     elif opt in ("-v", "--verbose"): verbose=True
+
   if not hostname or not url or not schema or not table:
     usage()
     sys.exit(2)
 
-  load(secure,hostname,url,schema,table,postdata,condition,verbose)
+  load(secure,hostname,url,schema,table,postdata,condition,verbose,debug=False)
 
   dboperator.close()
 
