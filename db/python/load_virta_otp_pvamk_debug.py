@@ -108,7 +108,7 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose):
     row["vuosi"] = jv(i,"vuosi")
 
 
-    dboperator.insert(address,schema,table,row)
+    dboperator.insert(address,schema,table,row,debug)
      # show some sign of being alive
     if cnt%100 == 0:
       sys.stdout.write('.')
@@ -132,7 +132,7 @@ def main(argv):
   hostname,url,schema,table="","","",""
   postdata=None
   condition=None
-  verbose=False
+  verbose,debug = False,False
 
   try:
     opts,args=getopt.getopt(argv,"sH:u:e:t:p:c:v",["secure","hostname=","url=","schema=","table=","postdata=","condition=","verbose"])
