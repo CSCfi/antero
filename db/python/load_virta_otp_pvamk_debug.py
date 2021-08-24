@@ -85,7 +85,6 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose):
     row = makerow()
     row["avoinKK"] = jv(i,"avoinKK")
     row["db"] = jv(i,"db")
-    row["erikoistumiskoulutus"] = jv(i,"erikoistumiskoulutus")
     row["erillinenOpintoOikeus"] = jv(i,"erillinenOpintoOikeus")
     row["kansainvVaihto"] = jv(i,"kansainvVaihto")
     row["kkYhteistyo"] = jv(i,"kkYhteistyö")
