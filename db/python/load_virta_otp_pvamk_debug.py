@@ -37,7 +37,7 @@ def jv(jsondata, key):
 def show(message):
   print((strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message))
 
-def load(secure,hostname,url,schema,table,postdata,condition,verbose,debug):
+def load(secure,hostname,url,schema,table,postdata,condition,verbose):
   show("begin "+hostname+" "+url+" "+schema+" "+table+" "+(postdata or "No postdata")+" "+(condition or ""))
 
   address = "http://"+hostname+url
@@ -108,7 +108,7 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,debug):
     row["vuosi"] = jv(i,"vuosi")
 
 
-    dboperator.insert(address,schema,table,row,debug)
+    dboperator.insert(hostname+url,schema,table,row,debug=True)
      # show some sign of being alive
     if cnt%100 == 0:
       sys.stdout.write('.')
@@ -155,7 +155,7 @@ def main(argv):
     usage()
     sys.exit(2)
 
-  load(secure,hostname,url,schema,table,postdata,condition,verbose,debug=False)
+  load(secure,hostname,url,schema,table,postdata,condition,verbose)
 
   dboperator.close()
 
