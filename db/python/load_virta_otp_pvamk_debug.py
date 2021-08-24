@@ -22,12 +22,12 @@ import dboperator
 
 def makerow():
   return {
-    'avoinKK': None,'db': None, 'erikoistumiskoulutus': None, 'erillinenOpintoOikeus': None,'kansainvVaihto': None,
-    'kkYhteistyo': None,'koodi': None,'koulutustyyppi': None,'kuvaus': None, 'lukumaara': None,'luoja': None,
-    'luontipaivamaara': None,'maahanmValKoulutus': None,'oppilaitostunnus': None,'perustutkOpiskelijat': None,
-    'suorituspaiva': None,'tkiHarjoittelunLaajuus': None,'tkiMuutLaajuus': None,'tkiToiminnanLaajuus': None,
-    'ulkomaaharjoittelu': None,'ulkomailtaHyvLuet': None,'vieraskSuoritukset': None,'vuosi': None
-  }
+    'vuosi': None, 'suorituspaiva': None, 'koodi': None, 'kuvaus': None, 'lukumaara': None, 'perustutkOpiskelijat': None,
+    'vieraskSuoritukset': None, 'kansainvVaihto': None,'kkYhteistyo': None, 'avoinKK': None, 'erillinenOpintoOikeus': None,
+    'ulkomailtaHyvLuet': None, 'db': None, 'oppilaitostunnus': None, 'luoja': None, 'luontipaivamaara': None,
+    'maahanmValKoulutus': None, 'koulutustyyppi': None, 'tkiToiminnanLaajuus': None, 'tkiMuutLaajuus': None,
+    'tkiHarjoittelunLaajuus': None,'ulkomaaharjoittelu': None, 'erikoistumiskoulutus': None
+    }
 
 # get value from json
 def jv(jsondata, key):
