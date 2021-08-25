@@ -22,12 +22,12 @@ import dboperator
 
 def makerow():
   return {
-    'avoinKK': None,'db': None, 'erikoistumiskoulutus': None, 'erillinenOpintoOikeus': None,'kansainvVaihto': None,
-    'kkYhteistyo': None,'koodi': None,'koulutustyyppi': None,'kuvaus': None, 'lukumaara': None,'luoja': None,
-    'luontipaivamaara': None,'maahanmValKoulutus': None,'oppilaitostunnus': None,'perustutkOpiskelijat': None,
-    'suorituspaiva': None,'tkiHarjoittelunLaajuus': None,'tkiMuutLaajuus': None,'tkiToiminnanLaajuus': None,
-    'ulkomaaharjoittelu': None,'ulkomailtaHyvLuet': None,'vieraskSuoritukset': None,'vuosi': None
-  }
+    'vuosi': None, 'suorituspaiva': None, 'koodi': None, 'kuvaus': None, 'lukumaara': None, 'perustutkOpiskelijat': None,
+    'vieraskSuoritukset': None, 'kansainvVaihto': None,'kkYhteistyo': None, 'avoinKK': None, 'erillinenOpintoOikeus': None,
+    'ulkomailtaHyvLuet': None, 'db': None, 'oppilaitostunnus': None, 'luoja': None, 'luontipaivamaara': None,
+    'maahanmValKoulutus': None, 'koulutustyyppi': None, 'tkiToiminnanLaajuus': None, 'tkiMuutLaajuus': None,
+    'tkiHarjoittelunLaajuus': None,'ulkomaaharjoittelu': None
+    }
 
 # get value from json
 def jv(jsondata, key):
@@ -38,11 +38,9 @@ def show(message):
   print((strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message))
 
 def load(secure,hostname,url,schema,table,postdata,condition,verbose):
-  show("begin "+hostname+" "+url+" "+schema+" "+table+" "+(postdata or "")+" "+(condition or ""))
-  if secure:
-    address = "https://"+hostname+url
-  else:
-    address = "http://"+hostname+url
+  show("begin "+hostname+" "+url+" "+schema+" "+table+" "+(postdata or "No postdata")+" "+(condition or ""))
+
+  address = "http://"+hostname+url
   show("load from "+address)
 
   reqheaders = {'Content-Type': 'application/json'}
@@ -84,10 +82,12 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose):
 
   for i in response:
     cnt+=1
+    # make "columnlist" (type has no meaning as we're not creating table)
     row = makerow()
+    # setup dboperator so other calls work
+    dboperator.columns(row)
     row["avoinKK"] = jv(i,"avoinKK")
     row["db"] = jv(i,"db")
-    row["erikoistumiskoulutus"] = jv(i,"erikoistumiskoulutus")
     row["erillinenOpintoOikeus"] = jv(i,"erillinenOpintoOikeus")
     row["kansainvVaihto"] = jv(i,"kansainvVaihto")
     row["kkYhteistyo"] = jv(i,"kkYhteistyö")
@@ -110,7 +110,7 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose):
     row["vuosi"] = jv(i,"vuosi")
 
 
-    dboperator.insert(address,schema,table,row)
+    dboperator.insert(hostname+url,schema,table,row)
      # show some sign of being alive
     if cnt%100 == 0:
       sys.stdout.write('.')
@@ -134,7 +134,8 @@ def main(argv):
   hostname,url,schema,table="","","",""
   postdata=None
   condition=None
-  verbose=False
+  verbose = False
+
 
   try:
     opts,args=getopt.getopt(argv,"sH:u:e:t:p:c:v",["secure","hostname=","url=","schema=","table=","postdata=","condition=","verbose"])
@@ -151,6 +152,7 @@ def main(argv):
     elif opt in ("-p", "--postdata"): postdata=arg
     elif opt in ("-c", "--condition"): condition=arg
     elif opt in ("-v", "--verbose"): verbose=True
+
   if not hostname or not url or not schema or not table:
     usage()
     sys.exit(2)
