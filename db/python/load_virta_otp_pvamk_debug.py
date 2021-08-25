@@ -18,7 +18,7 @@ import json
 import base64
 from time import localtime, strftime
 
-import dboperator
+import dboperator_debug as dboperator
 
 def makerow():
   return {
@@ -37,7 +37,7 @@ def jv(jsondata, key):
 def show(message):
   print((strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message))
 
-def load(secure,hostname,url,schema,table,postdata,condition,verbose):
+def load(secure,hostname,url,schema,table,postdata,condition,verbose, debug):
   show("begin "+hostname+" "+url+" "+schema+" "+table+" "+(postdata or "No postdata")+" "+(condition or ""))
 
   address = "http://"+hostname+url
@@ -107,7 +107,7 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose):
     row["vuosi"] = jv(i,"vuosi")
 
 
-    dboperator.insert(hostname+url,schema,table,row,debug=True)
+    dboperator.insert(hostname+url,schema,table,row,debug)
      # show some sign of being alive
     if cnt%100 == 0:
       sys.stdout.write('.')
@@ -153,8 +153,8 @@ def main(argv):
   if not hostname or not url or not schema or not table:
     usage()
     sys.exit(2)
-
-  load(secure,hostname,url,schema,table,postdata,condition,verbose)
+  debug = True
+  load(secure,hostname,url,schema,table,postdata,condition,verbose, debug)
 
   dboperator.close()
 
