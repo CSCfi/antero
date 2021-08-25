@@ -26,7 +26,7 @@ def makerow():
     'vieraskSuoritukset': None, 'kansainvVaihto': None,'kkYhteistyo': None, 'avoinKK': None, 'erillinenOpintoOikeus': None,
     'ulkomailtaHyvLuet': None, 'db': None, 'oppilaitostunnus': None, 'luoja': None, 'luontipaivamaara': None,
     'maahanmValKoulutus': None, 'koulutustyyppi': None, 'tkiToiminnanLaajuus': None, 'tkiMuutLaajuus': None,
-    'tkiHarjoittelunLaajuus': None,'ulkomaaharjoittelu': None, 'erikoistumiskoulutus': None
+    'tkiHarjoittelunLaajuus': None,'ulkomaaharjoittelu': None
     }
 
 # get value from json
