@@ -2225,14 +2225,11 @@
             "name": "Oppilaat",
             "expression": [
               "",
+              "--IF(NOT(ISFILTERED(Muuttujat[Tilastokuukausi])); BLANK();",
               "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]), Muuttujat[opisk]=1)",
-              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
+              "--)"
             ],
-            "formatString": "#,0"
-          },
-          {
-            "name": "Oppilaat 20.9.",
-            "expression": "CALCULATE([Oppilaat], Muuttujat[tilastopaiva_1_0] = 1)",
             "formatString": "#,0"
           },
           {
@@ -2397,19 +2394,6 @@
             "expression": [
               "",
               "var lkm = [Oppilaat]",
-              "var ehto = ISFILTERED(Muuttujat[Oppilaitos])",
-              "return IF(lkm = \"1-4\" || ehto, lkm, DIVIDE(lkm, [Oppilaitokset]))",
-              "",
-              "",
-              ""
-            ],
-            "formatString": "#,0"
-          },
-          {
-            "name": "Oppilaat 20.9. / Oppilaitokset",
-            "expression": [
-              "",
-              "var lkm = [Oppilaat 20.9.]",
               "var ehto = ISFILTERED(Muuttujat[Oppilaitos])",
               "return IF(lkm = \"1-4\" || ehto, lkm, DIVIDE(lkm, [Oppilaitokset]))",
               "",
@@ -4304,9 +4288,6 @@
                 "name": "Oppilaat"
               },
               {
-                "name": "Oppilaat 20.9."
-              },
-              {
                 "name": "Koulutuksen suorittaneet"
               },
               {
@@ -4356,9 +4337,6 @@
               },
               {
                 "name": "Oppilaitokset"
-              },
-              {
-                "name": "Oppilaat 20.9. / Oppilaitokset"
               },
               {
                 "name": "Tehostetun tuen oppilaat"
@@ -4493,9 +4471,6 @@
             "measures": [
               {
                 "name": "Oppilaat"
-              },
-              {
-                "name": "Oppilaat 20.9."
               }
             ]
           },
@@ -4630,6 +4605,18 @@
               },
               {
                 "name": "Sisäoppilaitosmuotoisessa majoituksessa olevat oppilaat %"
+              },
+              {
+                "name": "Tehostetun tuen oppilaat"
+              },
+              {
+                "name": "Tehostetun tuen tuen oppilaat %"
+              },
+              {
+                "name": "Ulkomailla olevat oppilaat"
+              },
+              {
+                "name": "Ulkomailla olevat oppilaat %"
               }
             ]
           },
@@ -4758,12 +4745,6 @@
               },
               {
                 "name": "Oppilaitokset"
-              },
-              {
-                "name": "Oppilaat 20.9."
-              },
-              {
-                "name": "Oppilaat 20.9. / Oppilaitokset"
               }
             ]
           },
@@ -4883,12 +4864,6 @@
             "measures": [
               {
                 "name": "Koulutuksen suorittaneet"
-              },
-              {
-                "name": "Oppilaat"
-              },
-              {
-                "name": "Oppilaat 20.9."
               }
             ]
           },
