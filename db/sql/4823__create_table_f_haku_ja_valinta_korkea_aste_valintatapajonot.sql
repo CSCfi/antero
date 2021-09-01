@@ -17,11 +17,7 @@ CREATE TABLE [dw].[f_haku_ja_valinta_korkea_aste_valintatapajonot](
 	[loadtime] [datetime] NULL,
 	[source] [varchar](250) NOT NULL,
 	[username] [varchar](250) NULL,
- CONSTRAINT [PK__f_haku_ja_valinta_korkea_aste_valintatapajonot] PRIMARY KEY CLUSTERED 
-(
-	[id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
+ ON [PRIMARY]
 
 GO
 
