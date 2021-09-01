@@ -19,9 +19,9 @@ CREATE TABLE [dw].[f_haku_ja_valinta_korkea_aste_valintatapajonot](
 	[username] [varchar](250) NULL,
  ON [PRIMARY]
 
-GO
-
 END
+
+GO
 
 USE [ANTERO]
 
