@@ -16,7 +16,7 @@ CREATE TABLE [dw].[f_haku_ja_valinta_korkea_aste_valintatapajonot](
 	[paatelty] [int] NULL,
 	[loadtime] [datetime] NULL,
 	[source] [varchar](250) NOT NULL,
-	[username] [varchar](250) NULL,
+	[username] [varchar](250) NULL)
  ON [PRIMARY]
 
 END
