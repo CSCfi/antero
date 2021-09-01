@@ -54,12 +54,14 @@ SELECT
 FROM (
 	SELECT
 		CASE 
-			WHEN f.JonoTyyppi is not null then f.JonoTyyppi
+			/*WHEN f.JonoTyyppi is not null then f.JonoTyyppi
 			WHEN f.JonoNimi like '%yhteispiste%' OR f.JonoNimi like '%ja koepiste%' OR f.JonoNimi like '%Totalp%' OR f.JonoNimi like '%Total p%' then 'yp'
 			WHEN (f.JonoNimi like 'Exam%' OR f.JonoNimi like '%Koepiste%' OR f.JonoNimi like '%Koevalinta%') AND (f.JonoNimi not like '%+%' AND f.JonoNimi not like '% ja %') then 'kp'
 			WHEN f.JonoNimi like '%Todistus%' then 'tv'
 			WHEN f.JonoNimi like '%Kilpailu%' then 'km'
-			WHEN (f.JonoNimi like 'Avoim%') OR (d1.haun_nimi_fi like '%Avoimen%' OR d1.haun_nimi_fi like '%Öppna%') then 'av'
+			WHEN (f.JonoNimi like 'Avoim%') OR (d1.haun_nimi_fi like '%Avoimen%' OR d1.haun_nimi_fi like '%Öppna%') then 'av' */
+			WHEN f.JonoTyyppi = 'av' then 'm'
+			ELSE f.JonoTyyppi
 		END AS JonoTyyppi,
 		f.JonoNimi,
 		CASE 
