@@ -214,17 +214,17 @@ SELECT
 	, f2.vastaajatunnukset_lkm					AS 'luodut_vastaajatunnukset_lkm'
 	, f.d_arvokyselykerta_id					AS 'kyselykertaid'
 	, NULL /*  av2.priorisointi_vastaajaid */	AS 'pohjakoulutus_priorisointi_vastaajaid'
-	--,case 
-	--	when d5.kyselypohja_tarkenne_fi ='Aloittaneet' then f3.[Vastanneet (Aloitusvaiheenkysely)]
-	--	when d5.kyselypohja_tarkenne_fi='Koko tutkinnon suorittaneet' then f3.[Vastanneet (Tutkinnon suorittaneiden päättövaiheen kysely)]
-	--	when d5.kyselypohja_tarkenne_fi='Tutkinnon osia suorittaneet' then f3.[Vastanneet (Tutkinnon osan suorittaneiden päättövaiheen kysely)]
-	--end as 'Vahvistetut vastanneet'
-	--,case 
-	--	when d5.kyselypohja_tarkenne_fi ='Aloittaneet' then f3.[Kyselyn kohteena olleet  (Aloitusvaiheenkysely)]
-	--	when d5.kyselypohja_tarkenne_fi='Koko tutkinnon suorittaneet' then f3.[Kyselyn kohteena olleet  (Tutkinnon suorittaneiden päättövaiheen kysely)]
-	--	when d5.kyselypohja_tarkenne_fi='Tutkinnon osia suorittaneet' then f3.[Kyselyn kohteena olleet  (Tutkinnon osan suorittaneiden päättövaiheen kysely)]
-	--end as 'Vahvistetut kyselyn kohteena olleet'
-	--,case when d3.rahoituskausi_amm = '01.07.2018 - 30.06.2019' then 1 else 2 end as kytkin_katokorjaus
+	,case 
+		when d5.kyselypohja_tarkenne_fi ='Aloittaneet' then f3.[Vastanneet (Aloitusvaiheenkysely)]
+		when d5.kyselypohja_tarkenne_fi='Koko tutkinnon suorittaneet' then f3.[Vastanneet (Tutkinnon suorittaneiden päättövaiheen kysely)]
+		when d5.kyselypohja_tarkenne_fi='Tutkinnon osia suorittaneet' then f3.[Vastanneet (Tutkinnon osan suorittaneiden päättövaiheen kysely)]
+	end as 'Vahvistetut vastanneet'
+	,case 
+		when d5.kyselypohja_tarkenne_fi ='Aloittaneet' then f3.[Kyselyn kohteena olleet  (Aloitusvaiheenkysely)]
+		when d5.kyselypohja_tarkenne_fi='Koko tutkinnon suorittaneet' then f3.[Kyselyn kohteena olleet  (Tutkinnon suorittaneiden päättövaiheen kysely)]
+		when d5.kyselypohja_tarkenne_fi='Tutkinnon osia suorittaneet' then f3.[Kyselyn kohteena olleet  (Tutkinnon osan suorittaneiden päättövaiheen kysely)]
+	end as 'Vahvistetut kyselyn kohteena olleet'
+	,case when d3.rahoituskausi_amm = '01.07.2018 - 30.06.2019' then 1 else 2 end as kytkin_katokorjaus
 
 FROM dw.f_arvo_amis AS f
 
@@ -252,7 +252,7 @@ LEFT JOIN dw.f_arvo_luodut_vastaajatunnukset f2 ON f2.kyselykertaid = d5.kyselyk
 												and f2.oppilaitoskoodi = o2.organisaatio_koodi 
 												and coalesce(f2.tutkintokoodi,'-1') = d7.koulutusluokitus_koodi 
 												and YEAR(f2.kuukausi) = d3.vuosi and MONTH(f2.kuukausi) = d3.kuukausi
---LEFT JOIN [ANTERO].[dw].[f_amos_opiskelijapalaute_vastaajamäärä_vahvistettu] f3 ON (f3.rahoituskausi=d3.rahoituskausi_amm AND  f3.[Koulutuksen järjestäjän Y-tunnus]= d1.organisaatio_koodi)
+LEFT JOIN [ANTERO].[dw].[f_amos_opiskelijapalaute_vastaajamäärä_vahvistettu] f3 ON (f3.rahoituskausi=d3.rahoituskausi_amm AND  f3.[Koulutuksen järjestäjän Y-tunnus]= d1.organisaatio_koodi)
 WHERE 1=1
 AND DATEDIFF(MONTH,d3.paivays,GETDATE()) >= 3 
 AND coalesce(p.priorisointi_vastaajaid,1) = 1
