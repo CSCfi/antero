@@ -44,5 +44,5 @@ JOIN [dw].[d_yo_toimipisteen_toimipaikka] s4 ON s1.yliopisto_tunnus = s4.koodi_y
 	AND s1.toimipiste_koodi = s4.koodi_toimipiste
 	AND s1.toimipaikka_koodi = s4.koodi_toimipaikka
 	AND s1.vuosi = s4.vuosi
-
+;
 GO
