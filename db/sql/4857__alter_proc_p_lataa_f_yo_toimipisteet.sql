@@ -1,12 +1,13 @@
 USE [ANTERO]
 GO
 
-/****** Object:  StoredProcedure [dw].[p_lataa_f_yo_toimipisteet]    Script Date: 16.9.2021 11:47:10 ******/
+/****** Object:  StoredProcedure [dw].[p_lataa_f_yo_toimipisteet]    Script Date: 16.9.2021 13:44:09 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 ALTER PROCEDURE [dw].[p_lataa_f_yo_toimipisteet]
 AS
@@ -44,5 +45,9 @@ JOIN [dw].[d_yo_toimipisteen_toimipaikka] s4 ON s1.yliopisto_tunnus = s4.koodi_y
 	AND s1.toimipiste_koodi = s4.koodi_toimipiste
 	AND s1.toimipaikka_koodi = s4.koodi_toimipaikka
 	AND s1.vuosi = s4.vuosi
-;
+
 GO
+
+USE [ANTERO]
+
+
