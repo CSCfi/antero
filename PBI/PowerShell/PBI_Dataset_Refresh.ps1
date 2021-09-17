@@ -41,6 +41,7 @@ Invoke-PowerBIRestMethod -Url $RefreshDS -Method Post -Body $MailFailureNotify
 if (!$error) {
 	# Refresh status of dataset
 	$RefreshStatus = "Unknown"
+	$RefreshError = "No errors"
 
 	$limit = (Get-Date).AddMinutes(60)
 
@@ -78,6 +79,6 @@ $duration = $endTime - $startTime
 
 $duration = $duration.ToString("hh\:mm\:ss")
 
-$output = "$Dataset;$RefreshStatus;$startTime;$endTime;$duration"
+$output = "$Dataset;$RefreshStatus;$startTime;$endTime;$duration;$RefreshError"
 
 Out-File -FilePath D:\PBI\RefreshStatus\Refresh.csv -InputObject $output -Encoding utf8 -Width 50
