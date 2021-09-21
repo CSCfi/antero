@@ -1,736 +1,736 @@
 USE [VipunenTK_DW]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__11h_ei__73FA97A5]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__11h_ei__73FA97A5]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__11h_ky__7306036C]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__11h_ky__7306036C]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__11g_ei__7911DF33]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__11g_ei__7911DF33]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__11g_ky__711DBAFA]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__11g_ky__711DBAFA]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__11f_ei__709996C1]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__11f_ei__709996C1]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__11f_ky__6F357988]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__11f_ky__6F357988]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__11e_ei__6E414E4F]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__11e_ei__6E414E4F]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__11e_ky__6D4D11a16]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__11e_ky__6D4D11a16]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__11b_ke__6C5905DD]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__11b_ke__6C5905DD]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__11b_ke__6B64E1A4]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__11b_ke__6B64E1A4]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__11b_op__6A70BD6B]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__11b_op__6A70BD6B]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__11b_tu__697C9939]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__11b_tu__697C9939]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__11b_op__688874F9]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__11b_op__688874F9]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__11b_tu__679450C0]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__11b_tu__679450C0]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__11a_ke__66A09C87]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__11a_ke__66A09C87]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__11a_ke__65AC084E]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__11a_ke__65AC084E]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__11a_op__64B7E415]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__11a_op__64B7E415]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__11a_op__63C3BFDC]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__11a_op__63C3BFDC]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__11a_tu__69CF9BA3]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__11a_tu__69CF9BA3]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__11a_tu__61DB776A]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__11a_tu__61DB776A]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__10h_ei__73FA97A5]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__10h_ei__73FA97A5]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__10h_ky__7306036C]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__10h_ky__7306036C]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__10g_ei__7911DF33]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__10g_ei__7911DF33]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__10g_ky__711DBAFA]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__10g_ky__711DBAFA]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__10f_ei__709996C1]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__10f_ei__709996C1]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__10f_ky__6F357988]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__10f_ky__6F357988]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__10e_ei__6E414E4F]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__10e_ei__6E414E4F]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__10e_ky__6D4D10a16]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__10e_ky__6D4D10a16]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__10b_ke__6C5905DD]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__10b_ke__6C5905DD]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__10b_ke__6B64E1A4]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__10b_ke__6B64E1A4]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__10b_op__6A70BD6B]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__10b_op__6A70BD6B]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__10b_tu__697C9939]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__10b_tu__697C9939]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__10b_op__688874F9]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__10b_op__688874F9]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__10b_tu__679450C0]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__10b_tu__679450C0]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__10a_ke__66A09C87]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__10a_ke__66A09C87]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__10a_ke__65AC084E]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__10a_ke__65AC084E]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__10a_op__64B7E415]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__10a_op__64B7E415]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__10a_op__63C3BFDC]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__10a_op__63C3BFDC]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__10a_tu__69CF9BA3]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__10a_tu__69CF9BA3]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__10a_tu__61DB776A]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__10a_tu__61DB776A]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__9h_ei__73FA97A5]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__9h_ei__73FA97A5]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__9h_ky__7306036C]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__9h_ky__7306036C]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__9g_ei__7911DF33]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__9g_ei__7911DF33]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__9g_ky__711DBAFA]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__9g_ky__711DBAFA]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__9f_ei__709996C1]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__9f_ei__709996C1]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__9f_ky__6F357988]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__9f_ky__6F357988]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__9e_ei__6E414E4F]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__9e_ei__6E414E4F]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__9e_ky__6D4D9A16]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__9e_ky__6D4D9A16]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__9b_ke__6C5905DD]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__9b_ke__6C5905DD]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__9b_ke__6B64E1A4]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__9b_ke__6B64E1A4]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__9b_op__6A70BD6B]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__9b_op__6A70BD6B]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__9b_tu__697C9939]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__9b_tu__697C9939]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__9b_op__688874F9]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__9b_op__688874F9]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__9b_tu__679450C0]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__9b_tu__679450C0]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__9a_ke__66A09C87]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__9a_ke__66A09C87]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__9a_ke__65AC084E]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__9a_ke__65AC084E]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__9a_op__64B7E415]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__9a_op__64B7E415]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__9a_op__63C3BFDC]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__9a_op__63C3BFDC]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__9a_tu__69CF9BA3]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__9a_tu__69CF9BA3]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__9a_tu__61DB776A]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__9a_tu__61DB776A]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__8h_ei__666B225D]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__8h_ei__666B225D]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__8h_ky__6576FE24]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__8h_ky__6576FE24]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__8g_ei__6482D9EB]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__8g_ei__6482D9EB]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__8g_ky__638EB5B2]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__8g_ky__638EB5B2]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__8f_ei__629A9179]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__8f_ei__629A9179]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__8f_ky__61A66D40]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__8f_ky__61A66D40]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__8e_ei__60B24907]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__8e_ei__60B24907]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__8e_ky__5FBE24CE]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__8e_ky__5FBE24CE]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__8b_ke__5ECA0095]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__8b_ke__5ECA0095]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__8b_ke__5DD5DC5C]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__8b_ke__5DD5DC5C]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__8b_op__5CE1B823]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__8b_op__5CE1B823]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__8b_tu__5BED93EA]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__8b_tu__5BED93EA]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__8b_op__5AF96FB1]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__8b_op__5AF96FB1]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__8b_tu__5A054B78]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__8b_tu__5A054B78]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__8a_ke__5911273F]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__8a_ke__5911273F]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__8a_ke__581D0306]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__8a_ke__581D0306]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__8a_op__5728DECD]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__8a_op__5728DECD]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__8a_op__5634BA94]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__8a_op__5634BA94]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__8a_tu__5540965B]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__8a_tu__5540965B]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__8a_tu__544C7222]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__8a_tu__544C7222]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__7h_ei__53584DE9]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__7h_ei__53584DE9]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__7h_ky__526429B0]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__7h_ky__526429B0]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__7g_ei__51700577]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__7g_ei__51700577]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__7g_ky__507BE13E]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__7g_ky__507BE13E]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__7f_ei__4F87BD05]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__7f_ei__4F87BD05]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__7f_ky__4E9398CC]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__7f_ky__4E9398CC]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__7e_ei__4D9F7493]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__7e_ei__4D9F7493]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__7e_ky__4CAB505A]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__7e_ky__4CAB505A]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__7b_ke__4BB72C21]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__7b_ke__4BB72C21]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__7b_ke__4AC307E8]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__7b_ke__4AC307E8]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__7b_op__49CEE3AF]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__7b_op__49CEE3AF]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__7b_tu__48DABF76]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__7b_tu__48DABF76]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__7b_op__47E69B3D]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__7b_op__47E69B3D]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__7b_tu__46F27704]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__7b_tu__46F27704]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__7a_ke__45FE52CB]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__7a_ke__45FE52CB]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__7a_ke__450A2E92]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__7a_ke__450A2E92]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__7a_op__44160A59]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__7a_op__44160A59]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__7a_op__4321E620]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__7a_op__4321E620]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__7a_tu__422DC1E7]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__7a_tu__422DC1E7]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__7a_tu__41399DAE]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__7a_tu__41399DAE]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__6h_ei__40457975]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__6h_ei__40457975]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__6h_ky__3F51553C]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__6h_ky__3F51553C]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__6g_ei__3E5D3103]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__6g_ei__3E5D3103]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__6g_ky__3D690CCA]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__6g_ky__3D690CCA]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__6f_ei__3C74E891]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__6f_ei__3C74E891]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__6f_ky__3B80C458]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__6f_ky__3B80C458]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__6e_ei__3A8CA01F]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__6e_ei__3A8CA01F]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__6e_ky__39987BE6]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__6e_ky__39987BE6]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__6b_ke__38A457AD]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__6b_ke__38A457AD]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__6b_ke__37B03374]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__6b_ke__37B03374]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__6b_op__36BC0F3B]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__6b_op__36BC0F3B]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__6b_tu__35C7EB02]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__6b_tu__35C7EB02]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__6b_op__34D3C6C9]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__6b_op__34D3C6C9]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__6b_tu__33DFA290]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__6b_tu__33DFA290]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__6a_ke__32EB7E57]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__6a_ke__32EB7E57]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__6a_ke__31F75A1E]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__6a_ke__31F75A1E]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__6a_op__310335E5]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__6a_op__310335E5]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__6a_op__300F11AC]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__6a_op__300F11AC]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__6a_tu__2F1AED73]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__6a_tu__2F1AED73]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__6a_tu__2E26C93A]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__6a_tu__2E26C93A]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__5h_ei__2D32A501]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__5h_ei__2D32A501]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__5h_ky__2C3E80C8]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__5h_ky__2C3E80C8]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__5g_ei__2B4A5C8F]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__5g_ei__2B4A5C8F]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__5g_ky__2A563856]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__5g_ky__2A563856]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__5f_ei__2962141D]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__5f_ei__2962141D]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__5f_ky__286DEFE4]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__5f_ky__286DEFE4]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__5e_ei__2779CBAB]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__5e_ei__2779CBAB]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__5e_ky__2685A772]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__5e_ky__2685A772]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__5b_ke__25918339]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__5b_ke__25918339]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__5b_ke__249D5F00]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__5b_ke__249D5F00]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__5b_op__23A93AC7]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__5b_op__23A93AC7]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__5b_tu__22B5168E]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__5b_tu__22B5168E]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__5b_op__21C0F255]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__5b_op__21C0F255]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__5b_tu__20CCCE1C]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__5b_tu__20CCCE1C]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__5a_ke__1FD8A9E3]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__5a_ke__1FD8A9E3]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__5a_ke__1EE485AA]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__5a_ke__1EE485AA]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__5a_op__1DF06171]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__5a_op__1DF06171]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__5a_op__1CFC3D38]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__5a_op__1CFC3D38]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__5a_tu__1C0818FF]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__5a_tu__1C0818FF]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__5a_tu__1B13F4C6]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__5a_tu__1B13F4C6]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__4h_ei__1A1FD08D]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__4h_ei__1A1FD08D]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__4h_ky__192BAC54]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__4h_ky__192BAC54]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__4g_ei__1837881B]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__4g_ei__1837881B]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__4g_ky__174363E2]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__4g_ky__174363E2]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__4f_ei__164F3FA9]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__4f_ei__164F3FA9]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__4f_ky__155B1B70]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__4f_ky__155B1B70]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__4e_ei__1466F737]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__4e_ei__1466F737]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__4e_ky__1372D2FE]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__4e_ky__1372D2FE]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__4b_ke__127EAEC5]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__4b_ke__127EAEC5]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__4b_ke__118A8A8C]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__4b_ke__118A8A8C]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__4b_op__10966653]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__4b_op__10966653]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__4b_tu__0FA2421A]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__4b_tu__0FA2421A]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__4b_op__0EAE1DE1]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__4b_op__0EAE1DE1]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__4b_tu__0DB9F9A8]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__4b_tu__0DB9F9A8]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__4a_ke__0CC5D56F]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__4a_ke__0CC5D56F]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__4a_ke__0BD1B136]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__4a_ke__0BD1B136]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__4a_op__0ADD8CFD]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__4a_op__0ADD8CFD]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__4a_op__09E968C4]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__4a_op__09E968C4]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__4a_tu__08F5448B]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__4a_tu__08F5448B]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__4a_tu__08012052]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__4a_tu__08012052]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__3h_ei__070CFC19]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__3h_ei__070CFC19]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__3h_ky__0618D7E0]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__3h_ky__0618D7E0]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__3g_ei__0524B3A7]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__3g_ei__0524B3A7]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__3g_ky__04308F6E]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__3g_ky__04308F6E]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__3f_ei__033C6B35]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__3f_ei__033C6B35]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__3f_ky__024846FC]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__3f_ky__024846FC]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__3e_ei__015422C3]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__3e_ei__015422C3]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__3e_ky__005FFE8A]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__3e_ky__005FFE8A]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__3b_ke__7F6BDA51]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__3b_ke__7F6BDA51]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__3b_ke__7E77B618]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__3b_ke__7E77B618]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__3b_op__7D8391DF]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__3b_op__7D8391DF]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__3b_tu__7C8F6DA6]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__3b_tu__7C8F6DA6]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__3b_op__7B9B496D]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__3b_op__7B9B496D]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__3b_tu__7AA72534]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__3b_tu__7AA72534]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__3a_ke__79B300FB]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__3a_ke__79B300FB]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__3a_ke__78BEDCC2]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__3a_ke__78BEDCC2]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__3a_op__77CAB889]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__3a_op__77CAB889]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__3a_op__76D69450]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__3a_op__76D69450]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__3a_tu__75E27017]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__3a_tu__75E27017]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__3a_tu__74EE4BDE]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__3a_tu__74EE4BDE]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__2h_ei__73FA27A5]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__2h_ei__73FA27A5]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__2h_ky__7306036C]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__2h_ky__7306036C]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__2g_ei__7211DF33]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__2g_ei__7211DF33]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__2g_ky__711DBAFA]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__2g_ky__711DBAFA]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__2f_ei__702996C1]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__2f_ei__702996C1]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__2f_ky__6F357288]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__2f_ky__6F357288]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__2e_ei__6E414E4F]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__2e_ei__6E414E4F]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__2e_ky__6D4D2A16]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__2e_ky__6D4D2A16]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__2b_ke__6C5905DD]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__2b_ke__6C5905DD]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__2b_ke__6B64E1A4]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__2b_ke__6B64E1A4]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__2b_op__6A70BD6B]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__2b_op__6A70BD6B]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__2b_tu__697C9932]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__2b_tu__697C9932]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__2b_op__688874F9]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__2b_op__688874F9]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__2b_tu__679450C0]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__2b_tu__679450C0]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__2a_ke__66A02C87]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__2a_ke__66A02C87]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__2a_ke__65AC084E]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__2a_ke__65AC084E]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__2a_op__64B7E415]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__2a_op__64B7E415]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__2a_op__63C3BFDC]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__2a_op__63C3BFDC]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__2a_tu__62CF9BA3]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__2a_tu__62CF9BA3]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__2a_tu__61DB776A]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__2a_tu__61DB776A]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1h_ei__60E75331]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1h_ei__60E75331]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1h_ky__5FF32EF8]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1h_ky__5FF32EF8]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1g_ei__5EFF0ABF]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1g_ei__5EFF0ABF]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1g_ky__5E0AE686]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1g_ky__5E0AE686]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1f_ei__5D16C24D]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1f_ei__5D16C24D]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1f_ky__5C229E14]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1f_ky__5C229E14]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1e_ei__5B2E79DB]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1e_ei__5B2E79DB]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1e_ky__5A3A55A2]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1e_ky__5A3A55A2]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1d_ei__59463169]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1d_ei__59463169]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1d_op__58520D30]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1d_op__58520D30]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1d_op__575DE8F7]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1d_op__575DE8F7]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1d_op__5669C4BE]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1d_op__5669C4BE]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1d_op__5575A085]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1d_op__5575A085]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1d_op__54817C4C]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1d_op__54817C4C]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1d_op__538D5813]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1d_op__538D5813]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1d_op__529933DA]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1d_op__529933DA]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1d_op__51A50FA1]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1d_op__51A50FA1]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1d_op__50B0EB68]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1d_op__50B0EB68]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1d_op__4FBCC72F]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1d_op__4FBCC72F]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1c_ei__4EC8A2F6]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1c_ei__4EC8A2F6]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1c_mu__4DD47EBD]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1c_mu__4DD47EBD]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1c_tu__4CE05A84]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1c_tu__4CE05A84]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1c_yl__4BEC364B]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1c_yl__4BEC364B]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1c_yl__4AF81212]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1c_yl__4AF81212]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1c_al__4A03EDD9]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1c_al__4A03EDD9]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1c_am__490FC9A0]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1c_am__490FC9A0]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1c_mu__481BA567]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1c_mu__481BA567]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1c_am__4727812E]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1c_am__4727812E]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1c_am__46335CF5]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1c_am__46335CF5]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1c_tu__453F38BC]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1c_tu__453F38BC]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1b_ke__444B1483]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1b_ke__444B1483]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1b_ke__4356F04A]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1b_ke__4356F04A]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1b_op__4262CC11]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1b_op__4262CC11]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1b_tu__416EA7D8]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1b_tu__416EA7D8]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1b_tu__407A839F]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1b_tu__407A839F]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1b_op__3F865F66]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1b_op__3F865F66]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1b_tu__3E923B2D]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1b_tu__3E923B2D]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1a_ke__3D9E16F4]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1a_ke__3D9E16F4]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1a_ke__3CA9F2BB]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1a_ke__3CA9F2BB]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1a_op__3BB5CE82]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1a_op__3BB5CE82]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1a_op__3AC1AA49]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1a_op__3AC1AA49]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1a_tu__39CD8610]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1a_tu__39CD8610]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1a_tu__38D961D7]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1a_tu__38D961D7]
 GO
 
-ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT [DF___aloittan__1a_tu__37E53D9E]
+ALTER TABLE [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet] DROP CONSTRAINT IF EXISTS [DF___aloittan__1a_tu__37E53D9E]
 GO
 
 /****** Object:  Table [dbo].[_aloittaneiden_lapaisy_lasketut_sarakkeet]    Script Date: 15.9.2021 21:53:35 ******/
