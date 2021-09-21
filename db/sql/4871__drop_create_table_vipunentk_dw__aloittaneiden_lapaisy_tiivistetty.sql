@@ -1044,7 +1044,6 @@ CREATE TABLE [dbo].[_aloittaneiden_lapaisy_tiivistetty](
 	[Sarakeryhma55_tutkintolaji] [varchar](5) NULL
 ) ON [PRIMARY]
 
-GO
 
 
 /****** Object:  Index [idx_aloittaneiden_lapaisy_tiivistetty_rivinumero]    Script Date: 9.9.2021 19:40:33 ******/
@@ -1052,4 +1051,3 @@ CREATE UNIQUE NONCLUSTERED INDEX [idx_aloittaneiden_lapaisy_tiivistetty_rivinume
 (
 	[rivinumero] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-GO
