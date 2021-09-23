@@ -10,7 +10,7 @@ GO
 ALTER PROCEDURE [dbo].[p_lataa_sa_aloittaneiden_lapaisy_tiivistetty_nykytila] AS
 
 /*
-	Huom. (päivitetty 15.9.2021) / CSC Juha:
+	Huom. (päivitetty 21.9.2021) / CSC Juha:
 	- Aiemmin sovittu, että rajataan tarkastelu toistaiseksi 15 vuoteen. Tarkastelujaksot 15+ v tarvittaessa lisättävä manuaalisesti loppuun sekä myöhempään esivalmistelulataukseen. 
 	- Vasta faktalatauksessa riveistä karsiutuu lähes puolet (tulevaisuuteen ulottuvat tarkastelujaksot), tässä ehkä optimoivan esikarsinnan mahdollisuus.
 	
@@ -25,8 +25,8 @@ ALTER PROCEDURE [dbo].[p_lataa_sa_aloittaneiden_lapaisy_tiivistetty_nykytila] AS
 	- Lisätty koulutusalat 1-3 nimellä kalat1, kalat2 ja kalat3.
 	- Korvattu sarakeryhmistä amas, olosyys ja olotamm em. järjestyksessä kaloilla.
 	- Tehty vastaavat muutokset myös sarakeryhmien nykytilanäkymään (ja -tauluun) sekä c#-vaiheeseen.
-	- c#:issa myös monistettu päättelyt koulutusala2002/opmala-viitteiden avulla. Lopputuloksena mm. opintojen kulun taulut 9-11, joita ei vielä dimensioitu.
-	- poistettu testinä saavutetun tutkinnon koulutuskoodijohdannaisia c#:ista ja sen kohdetaulusta, jotta olisi mahdollisimman vähän ylimääräisiä tekstikenttiä.
+	- c#:issa myös monistettu päättelyt koulutusala2002/opmala-viitteiden avulla. Lopputuloksena mm. opintojen kulun taulut 9-11, jotka dimensioitu.
+	- poistettu saavutetun tutkinnon koulutuskoodijohdannaisia c#:ista ja sen kohdetaulusta, jotta olisi mahdollisimman vähän ylimääräisiä tekstikenttiä.
 	
 */
 
