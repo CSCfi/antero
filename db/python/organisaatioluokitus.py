@@ -329,6 +329,9 @@ def load(secure,hostname,url,schema,table,verbose=False):
         elif "tyypit" in i and "Varhaiskasvatuksen toimipaikka" in i["tyypit"]:
           row["tyyppi"] = "Varhaiskasvatuksen toimipaikka"
           row["koodi"] = jv(i,"toimipistekoodi")
+        elif "tyypit" in i and "Varhaiskasvatuksen jarjestaja" in i["tyypit"]:
+          row["tyyppi"] = "Varhaiskasvatuksen järjestaja"
+          row["koodi"] = jv(i,"toimipistekoodi")
         # was current organization of type of interest
         if row["tyyppi"]:
 
