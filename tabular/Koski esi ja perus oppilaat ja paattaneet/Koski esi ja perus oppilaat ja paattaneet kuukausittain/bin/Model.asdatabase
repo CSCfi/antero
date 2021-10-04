@@ -2384,8 +2384,9 @@
             "name": "Oppilaitokset",
             "expression": [
               "",
-              "var ehto = ISFILTERED(Muuttujat[Oppilaitos])",
-              "return IF(ehto, BLANK(), DISTINCTCOUNT(Muuttujat[oppilaitos_oid]))"
+              "var ehto1 = ISFILTERED(Muuttujat[Oppilaitos])",
+              "var ehto2 = ISBLANK([Oppilaat])",
+              "return IF(ehto1 || ehto2, BLANK(), DISTINCTCOUNT(Muuttujat[oppilaitos_oid]))"
             ],
             "formatString": "#,0"
           },
@@ -2395,7 +2396,7 @@
               "",
               "var lkm = [Oppilaat]",
               "var ehto = ISFILTERED(Muuttujat[Oppilaitos])",
-              "return IF(lkm = \"1-4\" || ehto, lkm, DIVIDE(lkm, [Oppilaitokset]))",
+              "return IF(ehto || lkm = \"1-4\", lkm, DIVIDE(lkm, [Oppilaitokset]))",
               "",
               "",
               ""
@@ -4463,9 +4464,6 @@
               },
               {
                 "name": "Aikuisten perusop. alkuvaiheen opiskelija"
-              },
-              {
-                "name": "Kielikylpykieli"
               }
             ],
             "measures": [
@@ -4731,9 +4729,6 @@
               },
               {
                 "name": "Vuosiluokkaryhmä tai koulutus"
-              },
-              {
-                "name": "Kielikylpykieli"
               }
             ],
             "measures": [
@@ -4856,9 +4851,6 @@
               },
               {
                 "name": "Vuosiluokkiin sitomaton opetus"
-              },
-              {
-                "name": "Kielikylpykieli"
               }
             ],
             "measures": [
