@@ -26,7 +26,7 @@ def makerow():
     'vieraskSuoritukset': None, 'kansainvVaihto': None,'kkYhteistyo': None, 'avoinKK': None, 'erillinenOpintoOikeus': None,
     'ulkomailtaHyvLuet': None, 'db': None, 'oppilaitostunnus': None, 'luoja': None, 'luontipaivamaara': None,
     'maahanmValKoulutus': None, 'koulutustyyppi': None, 'tkiToiminnanLaajuus': None, 'tkiMuutLaajuus': None,
-    'tkiHarjoittelunLaajuus': None,'ulkomaaharjoittelu': None
+    'tkiHarjoittelunLaajuus': None,'ulkomaaharjoittelu': None, 'erikoistumiskoulutus': None
     }
 
 # get value from json
@@ -90,7 +90,7 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose):
     row["db"] = jv(i,"db")
     row["erillinenOpintoOikeus"] = jv(i,"erillinenOpintoOikeus")
     row["kansainvVaihto"] = jv(i,"kansainvVaihto")
-    row["kkYhteistyo"] = jv(i,"kkYhteistyö")
+    row["kkYhteistyo"] = jv(i,"kkYhteistyo")
     row["koodi"] = jv(i,"koodi")
     row["koulutustyyppi"] = jv(i,"koulutustyyppi")
     row["kuvaus"] = jv(i,"kuvaus")
@@ -106,9 +106,9 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose):
     row["tkiToiminnanLaajuus"] = jv(i,"tkiToiminnanLaajuus")
     row["ulkomaaharjoittelu"] = jv(i,"ulkomaaharjoittelu")
     row["ulkomailtaHyvLuet"] = jv(i,"ulkomailtaHyvLuet")
-    row["vieraskSuoritukset"] = jv(i,"vierasSuoritukset")
+    row["vieraskSuoritukset"] = jv(i,"vieraskSuoritukset")
     row["vuosi"] = jv(i,"vuosi")
-
+    row["erikoistumiskoulutus"] = jv(i,"erikoistumiskoulutus")
 
     dboperator.insert(hostname+url,schema,table,row)
      # show some sign of being alive
