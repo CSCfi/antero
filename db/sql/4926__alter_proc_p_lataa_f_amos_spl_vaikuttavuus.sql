@@ -565,4 +565,6 @@ DROP TABLE IF EXISTS ANTERO.sa.z_tmp_TK_K1_13_sopv
 DROP TABLE IF EXISTS ANTERO.sa.z_tmp_TK_K1_K13_sopv_jarjkerroin
 DROP TABLE IF EXISTS ANTERO.sa.z_tmp_TK_K1_K13_sopv_jarjkerroin_fuusiot
 
+go
+
 use antero
