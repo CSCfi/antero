@@ -1,12 +1,21 @@
 USE [ANTERO]
 GO
-
-/****** Object:  StoredProcedure [dw].[p_lataa_f_amos_spl_vaikuttavuus]    Script Date: 22.10.2021 12:47:37 ******/
+/****** Object:  StoredProcedure [dw].[p_lataa_f_amos_spl_vaikuttavuus]    Script Date: 22.10.2021 13:47:09 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -555,8 +564,5 @@ INTO ANTERO.dw.f_amos_spl_vaikuttavuus
 DROP TABLE IF EXISTS ANTERO.sa.z_tmp_TK_K1_13_sopv
 DROP TABLE IF EXISTS ANTERO.sa.z_tmp_TK_K1_K13_sopv_jarjkerroin
 DROP TABLE IF EXISTS ANTERO.sa.z_tmp_TK_K1_K13_sopv_jarjkerroin_fuusiot
-
-
-
 
 use antero
