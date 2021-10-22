@@ -3,6 +3,19 @@ $SecPasswd = ConvertTo-SecureString $env:PBIPW -AsPlainText -Force
 
 $Cred = New-Object System.Management.Automation.PSCredential($env:PBIUN,$SecPasswd)
 
+# Fix encoding issues concerning name of the dataset
+
+$DSBytes = [system.text.encoding]::UTF8.GetBytes($env:PBIDS)
+
+$DSBytesToString = $DSBytes -join '-'
+$DSBytesToString = $DSBytesToString.replace("226-148-156-195-130", "195-182")
+$DSBytesToString = $DSBytesToString.replace("226-148-156-195-177", "195-164")
+
+$DSBytes = $DSBytesToString.split("-")
+
+$Dataset = [system.text.encoding]::UTF8.GetChars($DSBytes)
+$Dataset = $Dataset -join ''
+
 # Login to Power BI
 Connect-PowerBIServiceAccount -Credential $Cred
 
@@ -11,7 +24,7 @@ $WSID = (Get-PowerBIWorkspace -Name $env:PBIWS -Scope Individual).Id
 
 # Get datasetid
 $DSID = Get-PowerBIDataset -Scope Individual -WorkspaceId $WSID | `
-Where {$_.Name -eq $env:PBIDS} | ForEach {$_.Id}
+Where {$_.Name -eq $Dataset} | ForEach {$_.Id}
 
 $RefreshDS = 'groups/' + $WSID + '/datasets/' + $DSID + '/refreshes'
 
@@ -28,6 +41,7 @@ Invoke-PowerBIRestMethod -Url $RefreshDS -Method Post -Body $MailFailureNotify
 if (!$error) {
 	# Refresh status of dataset
 	$RefreshStatus = "Unknown"
+	$RefreshError = "No errors"
 
 	$limit = (Get-Date).AddMinutes(60)
 
@@ -35,7 +49,7 @@ if (!$error) {
 
 	ECHO "################################################"
 
-	ECHO $env:PBIDS
+	ECHO $Dataset
 
 	while ($RefreshStatus -eq "Unknown" -and (Get-Date) -le $limit) {	
 		$RefreshStatus = (ConvertFrom-Json (Invoke-PowerBIRestMethod -Url $RefreshDSCheck -Method Get)).value.status
@@ -47,13 +61,15 @@ if (!$error) {
 		ECHO "Refresh was completed successfully"
 	} elseif ($RefreshStatus -eq "Failed") {
 		ECHO "Refresh failed"
+		$RefreshError = (ConvertFrom-Json (Invoke-PowerBIRestMethod -Url $RefreshDSCheck -Method Get)).value.serviceExceptionJson
+		ECHO $RefreshError
 	} else {
 		ECHO "Something unexpected happened"
 	}
 
 	ECHO "################################################"
 } else {
-	ECHO "Refresh failed"
+	ECHO "Refresh failed immediately"
 	$RefreshStatus = "Failed"
 }
 
@@ -63,6 +79,6 @@ $duration = $endTime - $startTime
 
 $duration = $duration.ToString("hh\:mm\:ss")
 
-$output = "$env:PBIDS;$RefreshStatus;$startTime;$endTime;$duration"
+$output = "$Dataset;$RefreshStatus;$startTime;$endTime;$duration;$RefreshError"
 
-Out-File -FilePath D:\PBI\RefreshStatus\Refresh.csv -InputObject $output -Encoding ASCII -Width 50
+Out-File -FilePath D:\PBI\RefreshStatus\Refresh.csv -InputObject $output -Encoding utf8 -Width 50
