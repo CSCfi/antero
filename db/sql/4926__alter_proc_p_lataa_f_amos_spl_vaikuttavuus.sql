@@ -1,51 +1,35 @@
 USE [ANTERO]
 GO
 
-/****** Object:  StoredProcedure [dw].[p_lataa_f_amos_spl_vaikuttavuus]    Script Date: 22.10.2021 12:47:37 ******/
+-- Object:  StoredProcedure [dw].[p_lataa_f_amos_spl_vaikuttavuus]    Script Date: 22.10.2021 12:47:37 
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-
-
-
-
-
-
-
 ALTER PROCEDURE [dw].[p_lataa_f_amos_spl_vaikuttavuus] AS
 
-/*
-Tässä latuksessa hyödynnetään TK_K1_13_sopv-aineistoa. Aineisto sisältää tietoja
-opiskelijoiden asemasta ennen koulutusta ja sen jälkeen. Näiden perusteella lasketaan
-suoritepäätöksen mukaiset pisteet.
 
-1. Vaihe: siivotaan aineisto
-2. Vaihe: lasketaan järjestäjäkertoimet
-3. Vaihe: lasketaan fuusioiden vaikutukset järjestäjäkertoimiin
-4. Vaihe: tehdään faktalataus
-	- huom. Tässä tehdään join maakuntakertoimien tauluun, jonka lataus on
-	  p_lataa_f_amos_spl_vaikuttavuus_maakunnat
-*/
+--Tässä latuksessa hyödynnetään TK_K1_13_sopv-aineistoa. Aineisto sisältää tietoja
+--opiskelijoiden asemasta ennen koulutusta ja sen jälkeen. Näiden perusteella lasketaan
+--suoritepäätöksen mukaiset pisteet.
 
+--1. Vaihe: siivotaan aineisto
+--2. Vaihe: lasketaan järjestäjäkertoimet
+--3. Vaihe: lasketaan fuusioiden vaikutukset järjestäjäkertoimiin
+--4. Vaihe: tehdään faktalataus
+--	- huom. Tässä tehdään join maakuntakertoimien tauluun, jonka lataus on
+--	  p_lataa_f_amos_spl_vaikuttavuus_maakunnat
 
+--
+--
+-- Ladataan kolme väliaikaista taulua 
+-- ANTERO.sa.z_tmp_TK_K1_13_sopv
+-- ANTERO.sa.z_tmp_TK_K1_K13_sopv_jarjkerroin
+-- ANTERO.sa.z_tmp_TK_K1_K13_sopv_jarjkerroin_fuusiot
 
-
-
-
-
-/*
-
-Ladataan kolme väliaikaista taulua 
-ANTERO.sa.z_tmp_TK_K1_13_sopv
-ANTERO.sa.z_tmp_TK_K1_K13_sopv_jarjkerroin
-ANTERO.sa.z_tmp_TK_K1_K13_sopv_jarjkerroin_fuusiot
-
-Faktalatauksessa hyödynnetään vielä maakuntakertoimien taulua
-
-*/
+--Faktalatauksessa hyödynnetään vielä maakuntakertoimien taulua
 
 -- VÄLIAIKAINEN TAULU
 -- Ladataan TK K1.13 aineisto ja tehdään muutostöitä seuraavaa vaihetta varten
@@ -116,12 +100,12 @@ tutk_osia_suor_7*lkm as tutk_osia_suor_7,
 tutk_osia_suor_8*lkm as tutk_osia_suor_8,
 
 
-/* Kertoimet
- Karin speksi 2019-04-05
-Työllistyminen ja jatko-opiskelu raporttimalli 2019 04 05.xlsx
- .. välilehti: Painotettujen laskentasäännöt
-Työlliset ja opiskelijat
-*/
+-- Kertoimet
+-- Karin speksi 2019-04-05
+-- Työllistyminen ja jatko-opiskelu raporttimalli 2019 04 05.xlsx
+-- .. välilehti: Painotettujen laskentasäännöt
+--Työlliset ja opiskelijat
+
 CASE
 WHEN tutk_suor_1=1 THEN lkm
 WHEN tutk_suor_2=1 THEN lkm
@@ -184,7 +168,7 @@ WHEN tutk_osia_suor_5=1 THEN 0
 WHEN tutk_osia_suor_6=1 THEN 0 ELSE 0 END
 as statuskerroin
 
--- # Välilehti: Suoriteraportti 2
+-- Välilehti: Suoriteraportti 2
 -- Työllistyneet, ei työllisenä ennen koulutusta
 ,CASE
 WHEN tutk_suor_1=1 THEN lkm
@@ -227,7 +211,7 @@ WHEN tutk_osia_suor_7 = 1 THEN lkm ELSE 0 END
 
  --,CASE WHEN ptoim1r2e_kytkin='ptoim_99' THEN lkm ELSE 0 END 
 -- jhe 2.9.2019
-/*Kari 13.8.2019: ”Muussa toiminnassa” sisältää kaikki loput tutkinnon suorittaneet, jotka eivät ole työllistyneet tai jatko-opiskelijat sarakkeissa. Ei siis pelkästään 99:t.*/
+-- Kari 13.8.2019: ”Muussa toiminnassa” sisältää kaikki loput tutkinnon suorittaneet, jotka eivät ole työllistyneet tai jatko-opiskelijat sarakkeissa. Ei siis pelkästään 99:t.
  ,CASE 
  WHEN tutk_suor_4 = 1 THEN lkm
 WHEN tutk_osia_suor_4 = 1 THEN lkm
@@ -557,6 +541,6 @@ DROP TABLE IF EXISTS ANTERO.sa.z_tmp_TK_K1_K13_sopv_jarjkerroin
 DROP TABLE IF EXISTS ANTERO.sa.z_tmp_TK_K1_K13_sopv_jarjkerroin_fuusiot
 
 
+GO
 
-
-use antero
+USE [ANTERO]
