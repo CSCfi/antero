@@ -1,4 +1,4 @@
-﻿USE [ANTERO]
+USE [ANTERO]
 GO
 
 /****** Object:  View [dw].[v_amos_spl_vaikuttavuus]    Script Date: 22.10.2021 12:55:52 ******/
