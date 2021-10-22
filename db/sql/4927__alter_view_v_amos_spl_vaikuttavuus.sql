@@ -116,4 +116,3 @@ GO
 
 
 use antero
-go
