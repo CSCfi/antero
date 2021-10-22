@@ -571,4 +571,5 @@ DROP TABLE IF EXISTS ANTERO.sa.z_tmp_TK_K1_K13_sopv_jarjkerroin_fuusiot
 GO
 
 
-use antero
+USE [ANTERO]
+GO
