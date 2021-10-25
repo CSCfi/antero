@@ -35,6 +35,25 @@ data3 = read.csv("http://cordis.europa.eu/data/reference/cordisref-countries.csv
 # organisation type codes
 data4 = read.csv("http://cordis.europa.eu/data/reference/cordisref-organizationActivityType.csv", header = TRUE, sep = ";", encoding="UTF-8")
 
+
+# programmes
+tf <- tempfile()
+td <- tempdir()
+download.file("https://cordis.europa.eu/data/reference/cordisref-H2020programmes-csv.zip",tf, mode = "wb")
+file.names <- unzip(tf, exdir = td)
+data5 = read.csv(file.names, header = TRUE, sep = ";", encoding="UTF-8")
+
+# topics
+tf2 <- tempfile()
+td2 <- tempdir()
+download.file("https://cordis.europa.eu/data/reference/cordisref-H2020topics-csv.zip",tf2, mode = "wb")
+file.names <- unzip(tf2, exdir = td2)
+data6 = read.csv(file.names, header = TRUE, sep = ";", encoding="UTF-8")
+
+#funding schemes
+data7 <- read.csv("https://cordis.europa.eu/data/reference/cordisref-projectFundingSchemeCategory.csv", header = TRUE, sep = ";", encoding="UTF-8")
+
+
 #---------------------------#
 
 #     data pre-processing   #
@@ -45,6 +64,9 @@ data <- within(data, rm(projectUrl, participants, participantCountries, subjects
 data2 <- within(data2, rm(organizationUrl, contactForm, contactType, contactTitle, contactFirstNames, contactLastNames, contactFunction, contactTelephoneNumber, contactFaxNumber, street, city, postCode, vatNumber))
 data3 <- subset(data3, language == 'en', select=c(X.U.FEFF.euCode,isoCode, name))
 data4 <- subset(data4, language == 'en', select=c(Code, Title))
+data5 <- subset(data5, language == 'en', select=c(X.U.FEFF.id, title, shortTitle,rcn))
+data6 <- subset(data6, language == 'en', select=c(X.U.FEFF.id, code, title, call, rcn))
+data7 <- subset(data7, language == 'en', select=c(code, title))
 
 ##### Kirjoitetaan csv-tiedostot #####
 
@@ -52,6 +74,9 @@ write.csv2(data,"D:/pdi_integrations/data/horizon/horizon_projects.csv",row.name
 write.csv2(data2,"D:/pdi_integrations/data/horizon/horizon_organisations.csv",row.names = FALSE, na="", fileEncoding = "UTF-8")
 write.csv2(data3,"D:/pdi_integrations/data/horizon/horizon_country_codes.csv",row.names = FALSE, na="", fileEncoding = "UTF-8")
 write.csv2(data4,"D:/pdi_integrations/data/horizon/horizon_org_type_codes.csv",row.names = FALSE, na="", fileEncoding = "UTF-8")
+write.csv2(data5,"D:/pdi_integrations/data/horizon/horizon_programmes.csv",row.names = FALSE, na="", fileEncoding = "UTF-8")
+write.csv2(data6,"D:/pdi_integrations/data/horizon/horizon_topics.csv",row.names = FALSE, na="", fileEncoding = "UTF-8")
+write.csv2(data7,"D:/pdi_integrations/data/horizon/horizon_funding_schemes.csv",row.names = FALSE, na="", fileEncoding = "UTF-8")
 
 ##### Nimetään organisaatiot uudestaan (mm. kyrilliset aakkoset) #####
 
