@@ -10,6 +10,7 @@ CREATE TABLE [dw].[d_horizon_ohjelma](
 	[Ohjelma] [varchar](1000) NULL,
 	[Ohjelman lyhenne] [varchar](1000) NULL,
 	[rcn] [varchar](2000) NULL,
+	[loadtime] [datetime] NOT NULL,
 	[username] [varchar](100) NOT NULL
 ) ON [PRIMARY]
 
