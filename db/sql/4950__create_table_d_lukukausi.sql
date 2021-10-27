@@ -1,5 +1,8 @@
 USE [ANTERO]
 GO
+
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[d_lukukausi]') AND type in (N'U'))
+begin
 /****** Object:  Table [dw].[d_lukukausi]    Script Date: 27.10.2021 12:40:39 ******/
 SET ANSI_NULLS ON
 GO
@@ -34,3 +37,5 @@ INSERT [dw].[d_lukukausi] ([id], [lukukausi_fi], [lukukausi_sv], [lukukausi_en],
 SET IDENTITY_INSERT [dw].[d_lukukausi] OFF
 
 use antero
+
+end
