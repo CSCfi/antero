@@ -19,7 +19,7 @@ def load(database,schema,procedure,parvals,verbose=False):
   show("begin with "+database+" "+schema+" "+procedure+" "+parvals)
   sql = "execute "+database+"."+schema+"."+procedure
   if (parvals != ""):
-   sql = "execute "+database+"."+schema+"."+procedure+"("+parvals+")"
+   sql = "execute "+database+"."+schema+"."+procedure+" "+parvals
    
   result = dboperator.execute(sql)
   #succesful execution result returns 1, anything else is error message
