@@ -18,7 +18,7 @@ def show(message):
 def load(database,schema,procedure,parvals,verbose=False):
   show("begin with "+database+" "+schema+" "+procedure+" "+parvals)
   sql = "execute "+database+"."+schema+"."+procedure
-  if (parvals != "")
+  if (parvals != ""):
    sql = "execute "+database+"."+schema+"."+procedure+"("+parvals+")"
    
   result = dboperator.execute(sql)
