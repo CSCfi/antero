@@ -306,7 +306,7 @@ def load(secure,hostname,url,schema,table,verbose=False):
         # liitokset
         row["liitosoid"] = liitosmap[o] if o in liitosmap else None
         # yritysmuoto 3.11.2021 vha testing
-        if 'yritysmuoto' in i
+        if 'yritysmuoto' in i:
             row["yritysmuoto"] = jv(i,"yritysmuoto")
         # TODO does the order here matter? if multiple tyyppi's, what to do?
         if "tyypit" in i and "Koulutustoimija" in i["tyypit"]:
