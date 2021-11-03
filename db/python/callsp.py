@@ -15,9 +15,12 @@ import dboperator
 def show(message):
   print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message)
 
-def load(database,schema,procedure,verbose=False):
-  show("begin with "+database+" "+schema+" "+procedure)
+def load(database,schema,procedure,parameters,verbose=False):
+  show("begin with "+database+" "+schema+" "+procedure+" "+parameters)
   sql = "execute "+database+"."+schema+"."+procedure
+  if (parameters != ""):
+   sql = "execute "+database+"."+schema+"."+procedure+" "+parameters
+   
   result = dboperator.execute(sql)
   #succesful execution result returns 1, anything else is error message
   if (result != 1):
@@ -42,10 +45,11 @@ def main(argv):
   database = os.getenv("DATABASE_NAME")
   schema = os.getenv("SCHEMA") or ""
   procedure = ""
+  parameters = ""
   verbose = False
 
   try:
-    opts, args = getopt.getopt(argv,"d:e:p:v",["database=","schema=","procedure=","verbose"])
+    opts, args = getopt.getopt(argv,"d:e:p:s:v",["database=","schema=","procedure=","parameters=","verbose"])
   except getopt.GetoptError as err:
     print(err)
     usage()
@@ -54,12 +58,13 @@ def main(argv):
     if opt in ("-d", "--database"): database = arg
     elif opt in ("-e", "--schema"): schema = arg
     elif opt in ("-p", "--procedure"): procedure = arg
+    elif opt in ("-s", "--parameters"): parameters = arg
     elif opt in ("-v", "--verbose"): verbose = True
   if not schema or not procedure:
     usage()
     sys.exit(2)
 
-  load(database,schema,procedure,verbose)
+  load(database,schema,procedure,parameters,verbose)
 
 if __name__ == "__main__":
   main(sys.argv[1:])
