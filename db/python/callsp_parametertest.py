@@ -49,7 +49,7 @@ def main(argv):
   verbose = False
 
   try:
-    opts, args = getopt.getopt(argv,"d:e:p:s:v",["database=","schema=","procedure=","verbose"])
+    opts, args = getopt.getopt(argv,"d:e:p:s:v",["database=","schema=","procedure=","parvals=","verbose"])
   except getopt.GetoptError as err:
     print(err)
     usage()
