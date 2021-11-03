@@ -58,7 +58,7 @@ def main(argv):
     if opt in ("-d", "--database"): database = arg
     elif opt in ("-e", "--schema"): schema = arg
     elif opt in ("-p", "--procedure"): procedure = arg
-	elif opt in ("-s", "--parvals"): parvals = arg
+    elif opt in ("-s", "--parvals"): parvals = arg
     elif opt in ("-v", "--verbose"): verbose = True
   if not schema or not procedure:
     usage()
