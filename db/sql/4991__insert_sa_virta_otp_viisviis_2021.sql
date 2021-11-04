@@ -1,10 +1,9 @@
 
 use antero
-set identity_insert antero.sa.sa_virta_otp_viisviis_2021 on
+
 insert into antero.sa.[sa_virta_otp_viisviis_2021]
 (
-[id]
-      ,[edellinenSyysolo]
+[edellinenSyysolo]
       ,[hetu]
       ,[ika]
       ,[kevat]
@@ -35,8 +34,7 @@ insert into antero.sa.[sa_virta_otp_viisviis_2021]
 )
 
 select 
-		[id]
-      ,[edellinenSyysolo]
+[edellinenSyysolo]
       ,[hetu]
       ,[ika]
       ,[kevat]
@@ -65,7 +63,7 @@ select
       ,[uuttaPankkiin]
       ,[vuosi]
 	  from antero.sa.sa_virta_otp_viisviis
-	  set identity_insert antero.sa.sa_virta_otp_viisviis_2021 off
+
 	  
 	  go
 	  use antero
