@@ -1881,24 +1881,24 @@
           },
           {
             "name": "Kuntien asiakasmaksu min",
-            "expression": "ROUND(MINX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM01\" || [jarjestamismuoto_koodi] = \"JM02\") && [tilastointi] = 1),[asiakasmaksu]), 0)",
+            "expression": "ROUND(MINX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM01\" || [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\") && [tilastointi] = 1),[asiakasmaksu]), 0)",
             "displayFolder": "Mittarit"
           },
           {
             "name": "Kuntien asiakasmaksu max",
-            "expression": "ROUND(MAXX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM01\" || [jarjestamismuoto_koodi] = \"JM02\")&& [tilastointi] = 1),[asiakasmaksu]), 0)",
+            "expression": "ROUND(MAXX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM01\" || [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\")&& [tilastointi] = 1),[asiakasmaksu]), 0)",
             "formatString": "#,0",
             "displayFolder": "Mittarit"
           },
           {
             "name": "Kuntien asiakasmaksu mediaani",
-            "expression": "ROUND(MEDIANX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM01\" || [jarjestamismuoto_koodi] = \"JM02\") && NOT(ISBLANK([asiakasmaksu])) && [tilastointi] = 1),[asiakasmaksu]), 0)",
+            "expression": "ROUND(MEDIANX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM01\" || [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\") && NOT(ISBLANK([asiakasmaksu])) && [tilastointi] = 1),[asiakasmaksu]), 0)",
             "formatString": "#,0",
             "displayFolder": "Mittarit"
           },
           {
             "name": "Kuntien asiakasmaksu keskiarvo",
-            "expression": "ROUND(AVERAGEX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\") && [tilastointi] = 1),[asiakasmaksu]), 0)",
+            "expression": "ROUND(AVERAGEX(FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\") && [tilastointi] = 1),[asiakasmaksu]), 0)",
             "formatString": "#,0",
             "displayFolder": "Mittarit"
           },
@@ -1929,7 +1929,7 @@
             "name": "Kunnallisia lapsia",
             "expression": [
               "",
-              "var summa = Calculate(DISTINCTCOUNT([henkilo_id]), FILTER(Muuttujat, ([jarjestamismuoto_koodi]=\"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\") && Muuttujat[tilastointi] = 1))",
+              "var summa = Calculate(DISTINCTCOUNT([henkilo_id]), FILTER(Muuttujat, ([jarjestamismuoto_koodi]=\"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\") && Muuttujat[tilastointi] = 1))",
               "return IF(summa = 0, BLANK(), IF(summa < 5,  \"1-4\", MROUND(summa, 3)))",
               ""
             ],
@@ -1940,7 +1940,7 @@
             "name": "Kunnallisia maksuja",
             "expression": [
               "",
-              "var summa =  Calculate(DISTINCTCOUNT([maksutieto_id]), FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\"  ) && Muuttujat[tilastointi]=1))",
+              "var summa =  Calculate(DISTINCTCOUNT([maksutieto_id]), FILTER(Muuttujat, ([jarjestamismuoto_koodi] = \"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"  ) && Muuttujat[tilastointi]=1))",
               "return IF(summa = 0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))",
               ""
             ],
@@ -2044,7 +2044,7 @@
             "name": "Kunnallisen vakan kumulatiivinen summa",
             "expression": [
               " ",
-              "CALCULATe([henkilo_cum_sum], filter(Muuttujat, [jarjestamismuoto_koodi]= \"JM01\" || [jarjestamismuoto_koodi] = \"JM03\"))"
+              "CALCULATe([henkilo_cum_sum], filter(Muuttujat, [jarjestamismuoto_koodi]= \"JM01\" || [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\"))"
             ],
             "formatString": "#,0"
           },
@@ -2077,7 +2077,7 @@
             "name": "Kunnallisia lapsia joilla maksutieto",
             "expression": [
               " ",
-              "var summa = Calculate(DISTINCTCOUNT([henkilo_id]), FILTER(Muuttujat, ([jarjestamismuoto_koodi]=\"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\") && Muuttujat[tilastointi] = 1))",
+              "var summa = Calculate(DISTINCTCOUNT([henkilo_id]), FILTER(Muuttujat, ([jarjestamismuoto_koodi]=\"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\") && Muuttujat[tilastointi] = 1))",
               "return IF(summa = 0, BLANK(), IF(summa < 5,  \"1-4\", MROUND(summa, 3)))",
               ""
             ],
@@ -2091,6 +2091,11 @@
               "return IF(summa = 0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))",
               ""
             ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Palvelusetelin kumulatiivinen summa",
+            "expression": " CALCULATE( sumx(VALUES(Muuttujat[cum_sum]), calculate(MAX([cum_sum]),GROUPBY(Muuttujat,[henkilo_id],[cum_sum]))), filter(Muuttujat, [jarjestamismuoto_koodi] = \"JM03\"))",
             "formatString": "#,0"
           }
         ],
@@ -3729,35 +3734,35 @@
                   },
                   {
                     "name": "Kuntien asiakasmaksu min",
-                    "translatedCaption": "Asiakasmaksut kuntien järjestämässä varhaiskasvatuksessa, asiakasmaksun minimiarvo"
+                    "translatedCaption": "Asiakasmaksun minimiarvo, kunnan järjestämä"
                   },
                   {
                     "name": "Kuntien asiakasmaksu max",
-                    "translatedCaption": "Asiakasmaksut kuntien järjestämässä varhaiskasvatuksessa, asiakasmaksun maksimiarvo"
+                    "translatedCaption": "Asiakasmaksun maksimiarvo, kunnan järjestämä"
                   },
                   {
                     "name": "Kuntien asiakasmaksu mediaani",
-                    "translatedCaption": "Asiakasmaksut kuntien järjestämässä varhaiskasvatuksessa, asiakasmaksun mediaani"
+                    "translatedCaption": "Asiakasmaksun mediaani, kunnan järjestämä"
                   },
                   {
                     "name": "Kuntien asiakasmaksu keskiarvo",
-                    "translatedCaption": "Asiakasmaksut kuntien järjestämässä varhaiskasvatuksessa, asiakasmaksujen keskiarvo"
+                    "translatedCaption": "Asiakasmaksujen keskiarvo, kunnan järjestämä"
                   },
                   {
                     "name": "Yksityisten asiakasmaksu min",
-                    "translatedCaption": "Asiakasmaksut yksityisten järjestämässä varhaiskasvatuksessa, asiakasmaksujen minimiarvo"
+                    "translatedCaption": "Asiakasmaksujen minimiarvo, yksityisen järjestämä"
                   },
                   {
                     "name": "Yksityisten asiakasmaksu max",
-                    "translatedCaption": "Asiakasmaksut yksityisten järjestämässä varhaiskasvatuksessa, asiakasmaksujen maksimiarvo"
+                    "translatedCaption": "Asiakasmaksujen maksimiarvo, yksityisen järjestämä"
                   },
                   {
                     "name": "Yksityisten asiakasmaksu mediaani",
-                    "translatedCaption": "Asiakasmaksut yksityisten järjestämässä varhaiskasvatuksessa, asiakasmaksujen mediaani"
+                    "translatedCaption": "Asiakasmaksujen mediaani, yksityisen järjestämä"
                   },
                   {
                     "name": "Yksityisten asiakasmaksu keskiarvo",
-                    "translatedCaption": "Asiakasmaksut yksityisten järjestämässä varhaiskasvatuksessa, asiakasmaksujen keskiarvo"
+                    "translatedCaption": "Asiakasmaksujen keskiarvo, yksityisen järjestämä"
                   },
                   {
                     "name": "Kunnallisia lapsia",
@@ -3765,7 +3770,7 @@
                   },
                   {
                     "name": "Kunnallisia maksuja",
-                    "translatedCaption": "Asiakasmaksut kuntien järjestämässä varhaiskasvatuksessa, asiakasmaksujen lukumäärä"
+                    "translatedCaption": "Asiakasmaksujen lukumäärä, kunnan järjestämä"
                   },
                   {
                     "name": "Yksityisiä lapsia",
@@ -3773,7 +3778,7 @@
                   },
                   {
                     "name": "Yksityisiä maksuja",
-                    "translatedCaption": "Asiakasmaksut yksityisten järjestämässä varhaiskasvatuksessa, asiakasmaksujen lukumäärä"
+                    "translatedCaption": "Asiakasmaksujen lukumäärä, yksityisen järjestämä"
                   },
                   {
                     "name": "Palveluseteli min",
@@ -3838,11 +3843,15 @@
                   },
                   {
                     "name": "Kunnallisia lapsia joilla maksutieto",
-                    "translatedCaption": "Asiakasmaksut kuntien järjestämässä varhaiskasvatuksessa, lasten lukumäärä"
+                    "translatedCaption": "Asiakasmaksullisten lasten lukumäärä kuntien järjestämässä varhaiskasvatuksessa"
                   },
                   {
                     "name": "Yksityisiä lapsia joilla maksutieto",
-                    "translatedCaption": "Asiakasmaksut yksityisten järjestämässä varhaiskasvatuksessa, lasten lukumäärä"
+                    "translatedCaption": "Asiakasmaksullisten lasten lukumäärä yksityisten järjestämässä varhaiskasvatuksessa"
+                  },
+                  {
+                    "name": "Palvelusetelin kumulatiivinen summa",
+                    "translatedCaption": "Palvelusetelin kumulatiivinen summa"
                   }
                 ]
               }
@@ -4307,6 +4316,10 @@
                   {
                     "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)",
                     "translatedCaption": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)"
+                  },
+                  {
+                    "name": "Palvelusetelin kumulatiivinen summa",
+                    "translatedCaption": "Palvelusetelin kumulatiivinen summa"
                   }
                 ]
               }
@@ -4772,6 +4785,10 @@
                   {
                     "name": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)",
                     "translatedCaption": "Yksityisiä lapsia (ml. palveluseteli ja ostopalvelu)"
+                  },
+                  {
+                    "name": "Palvelusetelin kumulatiivinen summa",
+                    "translatedCaption": "Palvelusetelin kumulatiivinen summa"
                   }
                 ]
               }
@@ -5370,6 +5387,9 @@
               },
               {
                 "name": "Yksityisiä lapsia joilla maksutieto"
+              },
+              {
+                "name": "Palvelusetelin kumulatiivinen summa"
               }
             ]
           }
@@ -5502,6 +5522,9 @@
               },
               {
                 "name": "Yksityisiä lapsia joilla maksutieto"
+              },
+              {
+                "name": "Palvelusetelin kumulatiivinen summa"
               }
             ]
           }
@@ -5634,6 +5657,9 @@
               },
               {
                 "name": "Yksityisiä lapsia joilla maksutieto"
+              },
+              {
+                "name": "Palvelusetelin kumulatiivinen summa"
               }
             ]
           }
