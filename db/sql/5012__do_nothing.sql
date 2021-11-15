@@ -1,3 +1,3 @@
 USE [Antero]
 GO
-select 1
+select 1 as 'a'
