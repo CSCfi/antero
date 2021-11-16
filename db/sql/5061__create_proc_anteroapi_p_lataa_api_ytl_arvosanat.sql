@@ -59,7 +59,7 @@ BEGIN
       ,[arvosana_koodi]
       ,[arvosana]
       ,[arvosanapisteet]
-  FROM [ANTERO].[dw].[api_ytl_arvosanat]
+  FROM [dw].[api_ytl_arvosanat]
 
 END
 
