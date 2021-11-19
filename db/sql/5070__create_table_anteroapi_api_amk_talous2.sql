@@ -2,7 +2,7 @@ USE [AnteroAPI]
 GO
 
 
-DROP TABLE IF EXISTS  [api].[amk_talous2]
+DROP TABLE IF EXISTS  [dw].[api_avoin_amk]
 GO
 
 SET ANSI_NULLS ON
@@ -11,49 +11,30 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [api].[amk_talous2](
+CREATE TABLE [dw].[api_avoin_amk](
 	[defaultorder] [bigint] NOT NULL,
-	[Ammattikorkeakoulun tunnus] [varchar](5) NOT NULL,
-	[Ammattikorkeakoulu] [varchar](100) NOT NULL,
-	[Konserni] [varchar](5) NOT NULL,
-	[Tilikausi] [int] NOT NULL,
-	[Ohjauksenala] [varchar](100) NOT NULL,
-	[Yrkeshögskolas beteckning] [varchar](5) NOT NULL,
-	[Yrkeshögskola] [varchar](100) NOT NULL,
-	[Finansår] [int] NOT NULL,
-	[Utbildningsområde] [varchar](100) NOT NULL,
-	[Identifier of the university of applied science] [varchar](5) NOT NULL,
-	[University of applied science] [varchar](100) NOT NULL,
-	[Financial year] [int] NOT NULL,
-	[Field of education] [varchar](100) NOT NULL,
-	[Ohjauksenalakoodi] [varchar](3) NOT NULL,
-	[Ohjauksenala koodilla] [varchar](104) NOT NULL,
-	[tili_taso0_fi] [varchar](100) NOT NULL,
-	[tili_taso1_fi] [varchar](100) NOT NULL,
-	[tili_taso2_fi] [varchar](100) NOT NULL,
-	[tili_taso3_fi] [varchar](100) NOT NULL,
-	[tili_taso4_fi] [varchar](100) NOT NULL,
-	[tili_taso5_fi] [nvarchar](100) NOT NULL,
-	[tili_taso0_sv] [varchar](100) NOT NULL,
-	[tili_taso1_sv] [varchar](100) NOT NULL,
-	[tili_taso2_sv] [varchar](100) NOT NULL,
-	[tili_taso3_sv] [varchar](100) NOT NULL,
-	[tili_taso4_sv] [varchar](100) NOT NULL,
-	[tili_taso5_sv] [nvarchar](100) NOT NULL,
-	[tili_taso0_en] [varchar](100) NOT NULL,
-	[tili_taso1_en] [varchar](100) NOT NULL,
-	[tili_taso2_en] [varchar](100) NOT NULL,
-	[tili_taso3_en] [varchar](100) NOT NULL,
-	[tili_taso4_en] [varchar](100) NOT NULL,
-	[tili_taso5_en] [nvarchar](100) NOT NULL,
-	[toiminto_nimi_fi] [nvarchar](100) NOT NULL,
-	[erittely_nimi_fi] [nvarchar](100) NOT NULL,
-	[arvo] [bigint] NULL,
-	[tili_koodi] [varchar](50) NOT NULL
-PRIMARY KEY CLUSTERED
-(
-	[defaultorder] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
-) ON [PRIMARY]
+	[Tilastovuosi] [int]  NULL,
+	[Sukupuoli] [nvarchar](100)  NULL,
+	[OKM ohjauksen ala] [varchar](100)  NULL,
+	[Koulutusala] [varchar](255)  NULL,
+	[Ammattikorkeakoulu] [varchar](100)  NULL,
+	[osallistuneet] [int]  NULL,
+	[opintopisteet_yht] [int] NULL,
+	[opintopisteet_amk] [int] NULL,
+	[opintopisteet_kansalaisopistot] [int] NULL,
+	[opintopisteet_kansanopistot] [int] NULL,
+	[opintopisteet_kesayo] [int] NULL,
+	[opintopisteet_muut] [int] NULL,
+	[opintopisteet_yo] [int] NULL,
+	[Sektori] [varchar](9)  NULL,
+	[Koodit Ammattikorkeakoulu] [varchar](5)  NULL,
+	[Koodit Sukupuoli] [varchar](5)  NULL,
+	[Koodit OKM ohjauksen ala] [varchar](3)  NULL,
+	[Koodit Koulutusala] [int]  NULL
+	PRIMARY KEY CLUSTERED
+	(
+		[defaultorder] ASC
+	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+	) ON [PRIMARY]
 
 USE [ANTERO]
