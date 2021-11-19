@@ -15,7 +15,7 @@ CREATE TABLE [dw].[api_toimitilat](
 	[defaultorder] [bigint] NOT NULL,
 	[Tilastovuosi] [int] NULL,
 	[Yliopisto] [varchar](100) NULL,
-	[Ammattikorkeakoulu] [int] NULL,
+	[Ammattikorkeakoulu] [varchar](100) NULL,
 	[Toimipiste] [varchar](500) NULL,
 	[Toimipaikka] [varchar](500)  NULL,
 	[harjoittelukoulujen_tilat] [int] NULL,
