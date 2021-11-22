@@ -21,7 +21,6 @@ END
 GO
 
 
-
 ALTER PROCEDURE [dw].[p_lataa__oiva_luvat] AS
 	
 DECLARE @vuosi INT = 2018
