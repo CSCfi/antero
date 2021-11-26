@@ -1,325 +1,325 @@
 USE [VipunenTK]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_ika5v]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_ika5v]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_ika1v]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_ika1v]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_valtio_eumaa]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_valtio_eumaa]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_valtio_etamaa]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_valtio_etamaa]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_sukupuoli]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_sukupuoli]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_pohjoismaa]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_pohjoismaa]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_paaasiallinen_toiminta_versio2]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_paaasiallinen_toiminta_versio2]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_oppilaitoksen_taustatiedot_tutkinnon_suorittamisoppilaitos]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_oppilaitoksen_taustatiedot_tutkinnon_suorittamisoppilaitos]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_oppilaitoksen_taustatiedot_tutkinnon_jarjestaja]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_oppilaitoksen_taustatiedot_tutkinnon_jarjestaja]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_oppilaitoksen_taustatiedot_seuraavan_vuoden_oppilaitos]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_oppilaitoksen_taustatiedot_seuraavan_vuoden_oppilaitos]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_oppilaitoksen_taustatiedot_seuraavan_vuoden_jarjestaja]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_oppilaitoksen_taustatiedot_seuraavan_vuoden_jarjestaja]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_oppilaitoksen_taustatiedot]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_oppilaitoksen_taustatiedot]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_opiskelijan_olo_lk]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_opiskelijan_olo_lk]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_opintojen_kulku_koulutusaste2002_mukaan]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_opintojen_kulku_koulutusaste2002_mukaan]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_opetushallinnon_koulutus]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_opetushallinnon_koulutus]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_lahde]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_lahde]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_koulutustyyppi_tutkinnon_koulutustyyppi]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_koulutustyyppi_tutkinnon_koulutustyyppi]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_koulutustyyppi_seuraavan_vuoden_koulutustyyppi]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_koulutustyyppi_seuraavan_vuoden_koulutustyyppi]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_koulutustyyppi]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_koulutustyyppi]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_koulutusluokitus_tutkinnon_koulutusluokitus]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_koulutusluokitus_tutkinnon_koulutusluokitus]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_koulutusluokitus_seuraavan_vuoden_koulutusluokitus]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_koulutusluokitus_seuraavan_vuoden_koulutusluokitus]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_koulutusluokitus_koulutusluokitus]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_koulutusluokitus_koulutusluokitus]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_koulutuksen_kieli_versio1]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_koulutuksen_kieli_versio1]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_kausi_kirjoihintulovuosi]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_kausi_kirjoihintulovuosi]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_kausi_kirjoihintulolukukausi]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_kausi_kirjoihintulolukukausi]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_kansalaisuus_versio1]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_kansalaisuus_versio1]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_ammattiasema]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_ammattiasema]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_alueluokitus_tutkinnon_suorittamismaakunta]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_alueluokitus_tutkinnon_suorittamismaakunta]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_alueluokitus_seuraavan_vuoden_maakunta]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_alueluokitus_seuraavan_vuoden_maakunta]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_alueluokitus_koulutuksen_kunta]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_alueluokitus_koulutuksen_kunta]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_alueluokitus_kotikunta]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_alueluokitus_kotikunta]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_aineisto]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_aineisto]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_d_aidinkieli_versio1]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_d_aidinkieli_versio1]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_7f_jatkaa_opiskelua_muulla_koulutussektorilla]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_7f_jatkaa_opiskelua_muulla_koulutussektorilla]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_7e_jatkaa_opiskelua_alkuperaisella_koulutussektorilla]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_7e_jatkaa_opiskelua_alkuperaisella_koulutussektorilla]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_7d_d_tutkinto_muulla_koulutussektorilla]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_7d_d_tutkinto_muulla_koulutussektorilla]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_7c_d_tutkinto_alkuperaisella_koulutussektorilla]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_7c_d_tutkinto_alkuperaisella_koulutussektorilla]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_7b_d_opintojen_kulku_koulutussektori_mukaan]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_7b_d_opintojen_kulku_koulutussektori_mukaan]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_7a_d_opintojen_kulku_koulutussektori_mukaan]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_7a_d_opintojen_kulku_koulutussektori_mukaan]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_6f_jatkaa_opiskelua_muussa_maakunnassa]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_6f_jatkaa_opiskelua_muussa_maakunnassa]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_6e_jatkaa_opiskelua_alkuperaisessa_maakunnassa]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_6e_jatkaa_opiskelua_alkuperaisessa_maakunnassa]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_6d_d_tutkinto_muussa_maakunnassa]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_6d_d_tutkinto_muussa_maakunnassa]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_6c_d_tutkinto_alkuperaisessa_maakunnassa]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_6c_d_tutkinto_alkuperaisessa_maakunnassa]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_6b_d_opintojen_kulku_maakunnan_mukaan]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_6b_d_opintojen_kulku_maakunnan_mukaan]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_6a_d_opintojen_kulku_maakunnan_mukaan]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_6a_d_opintojen_kulku_maakunnan_mukaan]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_5f_jatkaa_opiskelua_muussa_oppilaitoksessa]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_5f_jatkaa_opiskelua_muussa_oppilaitoksessa]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_5e_jatkaa_opiskelua_alkuperaisessa_oppilaitoksessa]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_5e_jatkaa_opiskelua_alkuperaisessa_oppilaitoksessa]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_5d_d_tutkinto_muussa_oppilaitoksessa]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_5d_d_tutkinto_muussa_oppilaitoksessa]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_5c_d_tutkinto_alkuperaisessa_oppilaitoksessa]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_5c_d_tutkinto_alkuperaisessa_oppilaitoksessa]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_5bb_d_opintojen_kulku_oppilaitoksen_mukaan_versio2]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_5bb_d_opintojen_kulku_oppilaitoksen_mukaan_versio2]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_5b_d_opintojen_kulku_oppilaitoksen_mukaan]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_5b_d_opintojen_kulku_oppilaitoksen_mukaan]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_5a_d_opintojen_kulku_oppilaitoksen_mukaan]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_5a_d_opintojen_kulku_oppilaitoksen_mukaan]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_4f_jatkaa_opiskelua_muulla_koulutuksen_jarjestajalla]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_4f_jatkaa_opiskelua_muulla_koulutuksen_jarjestajalla]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_4e_jatkaa_opiskelua_alkuperaisella_koulutuksen_jarjestajalla]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_4e_jatkaa_opiskelua_alkuperaisella_koulutuksen_jarjestajalla]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_4d_d_tutkinto_muulla_koulutuksen_jarjestajalla]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_4d_d_tutkinto_muulla_koulutuksen_jarjestajalla]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_4c_d_tutkinto_alkuperaisella_koulutuksen_jarjestajalla]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_4c_d_tutkinto_alkuperaisella_koulutuksen_jarjestajalla]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_4bb_d_opintojen_kulku_koulutuksen_jarjestajan_mukaan_versio2_2016]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_4bb_d_opintojen_kulku_koulutuksen_jarjestajan_mukaan_versio2_2016]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_4bb_d_opintojen_kulku_koulutuksen_jarjestajan_mukaan_versio2]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_4bb_d_opintojen_kulku_koulutuksen_jarjestajan_mukaan_versio2]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_4b_d_opintojen_kulku_koulutuksen_jarjestajan_mukaan]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_4b_d_opintojen_kulku_koulutuksen_jarjestajan_mukaan]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_4a_d_opintojen_kulku_koulutuksen_jarjestajan_mukaan]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_4a_d_opintojen_kulku_koulutuksen_jarjestajan_mukaan]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_3f_jatkaa_opiskelua_muulla_opintoalalla_2002]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_3f_jatkaa_opiskelua_muulla_opintoalalla_2002]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_3e_jatkaa_opiskelua_alkuperaisella_opintoalalla_2002]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_3e_jatkaa_opiskelua_alkuperaisella_opintoalalla_2002]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_3d_d_tutkinto_muulla_opintoalalla_2002]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_3d_d_tutkinto_muulla_opintoalalla_2002]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_3c_d_tutkinto_alkuperaisella_opintoalalla_2002]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_3c_d_tutkinto_alkuperaisella_opintoalalla_2002]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_3bb_d_opintojen_kulku_opintoala2002_mukaan_versio2]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_3bb_d_opintojen_kulku_opintoala2002_mukaan_versio2]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_3b_d_opintojen_kulku_opintoala2002_mukaan]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_3b_d_opintojen_kulku_opintoala2002_mukaan]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_3a_d_opintojen_kulku_opintoala2002_mukaan]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_3a_d_opintojen_kulku_opintoala2002_mukaan]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2f_jatkaa_opiskelua_muulla_koulutusalalla_2002]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2f_jatkaa_opiskelua_muulla_koulutusalalla_2002]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2f_jatkaa_opiskelua_muulla_kala_t3lla]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2f_jatkaa_opiskelua_muulla_kala_t3lla]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2f_jatkaa_opiskelua_muulla_kala_t2lla]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2f_jatkaa_opiskelua_muulla_kala_t2lla]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2f_jatkaa_opiskelua_muulla_kala_t1lla]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2f_jatkaa_opiskelua_muulla_kala_t1lla]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2e_jatkaa_opiskelua_alkuperaisella_koulutusalalla_2002]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2e_jatkaa_opiskelua_alkuperaisella_koulutusalalla_2002]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2e_jatkaa_opiskelua_alkuperaisella_kala_t3lla]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2e_jatkaa_opiskelua_alkuperaisella_kala_t3lla]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2e_jatkaa_opiskelua_alkuperaisella_kala_t2lla]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2e_jatkaa_opiskelua_alkuperaisella_kala_t2lla]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2e_jatkaa_opiskelua_alkuperaisella_kala_t1lla]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2e_jatkaa_opiskelua_alkuperaisella_kala_t1lla]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2d_d_tutkinto_muulla_koulutusalalla_2002]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2d_d_tutkinto_muulla_koulutusalalla_2002]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2d_d_tutkinto_muulla_kala_t3lla]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2d_d_tutkinto_muulla_kala_t3lla]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2d_d_tutkinto_muulla_kala_t2lla]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2d_d_tutkinto_muulla_kala_t2lla]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2d_d_tutkinto_muulla_kala_t1lla]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2d_d_tutkinto_muulla_kala_t1lla]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2c_d_tutkinto_alkuperaisella_koulutusalalla_2002]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2c_d_tutkinto_alkuperaisella_koulutusalalla_2002]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2c_d_tutkinto_alkuperaisella_kala_t3lla]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2c_d_tutkinto_alkuperaisella_kala_t3lla]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2c_d_tutkinto_alkuperaisella_kala_t2lla]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2c_d_tutkinto_alkuperaisella_kala_t2lla]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2c_d_tutkinto_alkuperaisella_kala_t1lla]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2c_d_tutkinto_alkuperaisella_kala_t1lla]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2bb_d_opintojen_kulku_koulutusala2002_mukaan_versio2]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2bb_d_opintojen_kulku_koulutusala2002_mukaan_versio2]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2bb_d_opintojen_kulku_kala_t3_mukaan_versio2]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2bb_d_opintojen_kulku_kala_t3_mukaan_versio2]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2bb_d_opintojen_kulku_kala_t2_mukaan_versio2]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2bb_d_opintojen_kulku_kala_t2_mukaan_versio2]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2bb_d_opintojen_kulku_kala_t1_mukaan_versio2]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2bb_d_opintojen_kulku_kala_t1_mukaan_versio2]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2b_d_opintojen_kulku_koulutusala2002_mukaan]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2b_d_opintojen_kulku_koulutusala2002_mukaan]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2b_d_opintojen_kulku_kala_t3_mukaan]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2b_d_opintojen_kulku_kala_t3_mukaan]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2b_d_opintojen_kulku_kala_t2_mukaan]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2b_d_opintojen_kulku_kala_t2_mukaan]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2b_d_opintojen_kulku_kala_t1_mukaan]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2b_d_opintojen_kulku_kala_t1_mukaan]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2a_d_opintojen_kulku_koulutusala2002_mukaan]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2a_d_opintojen_kulku_koulutusala2002_mukaan]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2a_d_opintojen_kulku_kala_t3_mukaan]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2a_d_opintojen_kulku_kala_t3_mukaan]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2a_d_opintojen_kulku_kala_t2_mukaan]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2a_d_opintojen_kulku_kala_t2_mukaan]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_2a_d_opintojen_kulku_kala_t1_mukaan]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_2a_d_opintojen_kulku_kala_t1_mukaan]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_1f_jatkaa_opiskelua_muulla_koulutusasteella_2002]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_1f_jatkaa_opiskelua_muulla_koulutusasteella_2002]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_1f_jatkaa_opiskelua_muulla_kaste_t2ella]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_1f_jatkaa_opiskelua_muulla_kaste_t2ella]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_1e_jatkaa_opiskelua_alkuperaisella_koulutusasteella_2002]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_1e_jatkaa_opiskelua_alkuperaisella_koulutusasteella_2002]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_1e_jatkaa_opiskelua_alkuperaisella_kaste_t2ella]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_1e_jatkaa_opiskelua_alkuperaisella_kaste_t2ella]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_1d_d_tutkinto_muulla_koulutusasteella_2002]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_1d_d_tutkinto_muulla_koulutusasteella_2002]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_1d_d_tutkinto_muulla_kaste_t2ella]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_1d_d_tutkinto_muulla_kaste_t2ella]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_1c_d_tutkinto_alkuperaisella_koulutusasteella_2002]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_1c_d_tutkinto_alkuperaisella_koulutusasteella_2002]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_1c_d_tutkinto_alkuperaisella_kaste_t2ella]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_1c_d_tutkinto_alkuperaisella_kaste_t2ella]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_1b_d_opintojen_kulku_koulutusaste2002_mukaan]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_1b_d_opintojen_kulku_koulutusaste2002_mukaan]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_1b_d_opintojen_kulku_kaste_t2_mukaan]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_1b_d_opintojen_kulku_kaste_t2_mukaan]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_1a_d_opintojen_kulku_koulutusaste2002_mukaan]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_1a_d_opintojen_kulku_koulutusaste2002_mukaan]
 GO
 
-ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT [FK_f_keskeyttaneet_1a_d_opintojen_kulku_kaste_t2_mukaan]
+ALTER TABLE [dbo].[f_keskeyttaneet] DROP CONSTRAINT IF EXISTS [FK_f_keskeyttaneet_1a_d_opintojen_kulku_kaste_t2_mukaan]
 GO
 
 /****** Object:  Table [dbo].[f_keskeyttaneet]    Script Date: 23.11.2021 18:01:36 ******/
