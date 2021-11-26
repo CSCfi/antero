@@ -1,176 +1,78 @@
 USE [VipunenTK_lisatiedot]
 GO
-/*
-ALTER TABLE [dbo].[tutkinto_muulla_kaste_t2ella] DROP CONSTRAINT [DF__tutkinto_muulla_kaste_t2ella__paattyy]
-GO
-ALTER TABLE [dbo].[tutkinto_muulla_kaste_t2ella] DROP CONSTRAINT [DF__tutkinto_muulla_kaste_t2ella__alkaa]
-GO
-ALTER TABLE [dbo].[tutkinto_muulla_kala_t3lla] DROP CONSTRAINT [DF__tutkinto_muulla_kala_t3lla__paattyy]
-GO
-ALTER TABLE [dbo].[tutkinto_muulla_kala_t3lla] DROP CONSTRAINT [DF__tutkinto_muulla_kala_t3lla__alkaa]
-GO
-ALTER TABLE [dbo].[tutkinto_muulla_kala_t2lla] DROP CONSTRAINT [DF__tutkinto_muulla_kala_t2lla__paattyy]
-GO
-ALTER TABLE [dbo].[tutkinto_muulla_kala_t2lla] DROP CONSTRAINT [DF__tutkinto_muulla_kala_t2lla__alkaa]
-GO
-ALTER TABLE [dbo].[tutkinto_muulla_kala_t1lla] DROP CONSTRAINT [DF__tutkinto_muulla_kala_t1lla__paattyy]
-GO
-ALTER TABLE [dbo].[tutkinto_muulla_kala_t1lla] DROP CONSTRAINT [DF__tutkinto_muulla_kala_t1lla__alkaa]
-GO
-ALTER TABLE [dbo].[tutkinto_alkuperaisella_kaste_t2ella] DROP CONSTRAINT [DF__tutkinto_alkuperaisella_kaste_t2ella__paattyy]
-GO
-ALTER TABLE [dbo].[tutkinto_alkuperaisella_kaste_t2ella] DROP CONSTRAINT [DF__tutkinto_alkuperaisella_kaste_t2ella__alkaa]
-GO
-ALTER TABLE [dbo].[tutkinto_alkuperaisella_kala_t3lla] DROP CONSTRAINT [DF__tutkinto_alkuperaisella_kala_t3lla__paattyy]
-GO
-ALTER TABLE [dbo].[tutkinto_alkuperaisella_kala_t3lla] DROP CONSTRAINT [DF__tutkinto_alkuperaisella_kala_t3lla__alkaa]
-GO
-ALTER TABLE [dbo].[tutkinto_alkuperaisella_kala_t2lla] DROP CONSTRAINT [DF__tutkinto_alkuperaisella_kala_t2lla__paattyy]
-GO
-ALTER TABLE [dbo].[tutkinto_alkuperaisella_kala_t2lla] DROP CONSTRAINT [DF__tutkinto_alkuperaisella_kala_t2lla__alkaa]
-GO
-ALTER TABLE [dbo].[tutkinto_alkuperaisella_kala_t1lla] DROP CONSTRAINT [DF__tutkinto_alkuperaisella_kala_t1lla__paattyy]
-GO
-ALTER TABLE [dbo].[tutkinto_alkuperaisella_kala_t1lla] DROP CONSTRAINT [DF__tutkinto_alkuperaisella_kala_t1lla__alkaa]
-GO
-ALTER TABLE [dbo].[opintojen_kulku_koulutuksen_jarjestajan_mukaan_versio2] DROP CONSTRAINT [DF__opintojen_kulku_koulutuksen_jarjestajan_mukaan_versio2__paattyy]
-GO
-ALTER TABLE [dbo].[opintojen_kulku_koulutuksen_jarjestajan_mukaan_versio2] DROP CONSTRAINT [DF__opintojen_kulku_koulutuksen_jarjestajan_mukaan_versio2__alkaa]
-GO
-ALTER TABLE [dbo].[opintojen_kulku_kaste_t2en_mukaan] DROP CONSTRAINT [DF__opintojen_kulku_kaste_t2en_mukaan__paattyy]
-GO
-ALTER TABLE [dbo].[opintojen_kulku_kaste_t2en_mukaan] DROP CONSTRAINT [DF__opintojen_kulku_kaste_t2en_mukaan__alkaa]
-GO
-ALTER TABLE [dbo].[opintojen_kulku_kala_t3n_mukaan_versio2] DROP CONSTRAINT [DF__opintojen_kulku_kala_t3n_mukaan_versio2__paattyy]
-GO
-ALTER TABLE [dbo].[opintojen_kulku_kala_t3n_mukaan_versio2] DROP CONSTRAINT [DF__opintojen_kulku_kala_t3n_mukaan_versio2__alkaa]
-GO
-ALTER TABLE [dbo].[opintojen_kulku_kala_t3n_mukaan] DROP CONSTRAINT [DF__opintojen_kulku_kala_t3n_mukaan__paattyy]
-GO
-ALTER TABLE [dbo].[opintojen_kulku_kala_t3n_mukaan] DROP CONSTRAINT [DF__opintojen_kulku_kala_t3n_mukaan__alkaa]
-GO
-ALTER TABLE [dbo].[opintojen_kulku_kala_t2n_mukaan_versio2] DROP CONSTRAINT [DF__opintojen_kulku_kala_t2n_mukaan_versio2__paattyy]
-GO
-ALTER TABLE [dbo].[opintojen_kulku_kala_t2n_mukaan_versio2] DROP CONSTRAINT [DF__opintojen_kulku_kala_t2n_mukaan_versio2__alkaa]
-GO
-ALTER TABLE [dbo].[opintojen_kulku_kala_t2n_mukaan] DROP CONSTRAINT [DF__opintojen_kulku_kala_t2n_mukaan__paattyy]
-GO
-ALTER TABLE [dbo].[opintojen_kulku_kala_t2n_mukaan] DROP CONSTRAINT [DF__opintojen_kulku_kala_t2n_mukaan__alkaa]
-GO
-ALTER TABLE [dbo].[opintojen_kulku_kala_t1n_mukaan_versio2] DROP CONSTRAINT [DF__opintojen_kulku_kala_t1n_mukaan_versio2__paattyy]
-GO
-ALTER TABLE [dbo].[opintojen_kulku_kala_t1n_mukaan_versio2] DROP CONSTRAINT [DF__opintojen_kulku_kala_t1n_mukaan_versio2__alkaa]
-GO
-ALTER TABLE [dbo].[opintojen_kulku_kala_t1n_mukaan] DROP CONSTRAINT [DF__opintojen_kulku_kala_t1n_mukaan__paattyy]
-GO
-ALTER TABLE [dbo].[opintojen_kulku_kala_t1n_mukaan] DROP CONSTRAINT [DF__opintojen_kulku_kala_t1n_mukaan__alkaa]
-GO
-ALTER TABLE [dbo].[jatkaa_opiskelua_muulla_kaste_t2ella] DROP CONSTRAINT [DF__jatkaa_opiskelua_muulla_kaste_t2ella__paattyy]
-GO
-ALTER TABLE [dbo].[jatkaa_opiskelua_muulla_kaste_t2ella] DROP CONSTRAINT [DF__jatkaa_opiskelua_muulla_kaste_t2ella__alkaa]
-GO
-ALTER TABLE [dbo].[jatkaa_opiskelua_muulla_kala_t3lla] DROP CONSTRAINT [DF__jatkaa_opiskelua_muulla_kala_t3lla__paattyy]
-GO
-ALTER TABLE [dbo].[jatkaa_opiskelua_muulla_kala_t3lla] DROP CONSTRAINT [DF__jatkaa_opiskelua_muulla_kala_t3lla__alkaa]
-GO
-ALTER TABLE [dbo].[jatkaa_opiskelua_muulla_kala_t2lla] DROP CONSTRAINT [DF__jatkaa_opiskelua_muulla_kala_t2lla__paattyy]
-GO
-ALTER TABLE [dbo].[jatkaa_opiskelua_muulla_kala_t2lla] DROP CONSTRAINT [DF__jatkaa_opiskelua_muulla_kala_t2lla__alkaa]
-GO
-ALTER TABLE [dbo].[jatkaa_opiskelua_muulla_kala_t1lla] DROP CONSTRAINT [DF__jatkaa_opiskelua_muulla_kala_t1lla__paattyy]
-GO
-ALTER TABLE [dbo].[jatkaa_opiskelua_muulla_kala_t1lla] DROP CONSTRAINT [DF__jatkaa_opiskelua_muulla_kala_t1lla__alkaa]
-GO
-ALTER TABLE [dbo].[jatkaa_opiskelua_alkuperaisella_kaste_t2ella] DROP CONSTRAINT [DF__jatkaa_opiskelua_alkuperaisella_kaste_t2ella__paattyy]
-GO
-ALTER TABLE [dbo].[jatkaa_opiskelua_alkuperaisella_kaste_t2ella] DROP CONSTRAINT [DF__jatkaa_opiskelua_alkuperaisella_kaste_t2ella__alkaa]
-GO
-ALTER TABLE [dbo].[jatkaa_opiskelua_alkuperaisella_kala_t3lla] DROP CONSTRAINT [DF__jatkaa_opiskelua_alkuperaisella_kala_t3lla__paattyy]
-GO
-ALTER TABLE [dbo].[jatkaa_opiskelua_alkuperaisella_kala_t3lla] DROP CONSTRAINT [DF__jatkaa_opiskelua_alkuperaisella_kala_t3lla__alkaa]
-GO
-ALTER TABLE [dbo].[jatkaa_opiskelua_alkuperaisella_kala_t2lla] DROP CONSTRAINT [DF__jatkaa_opiskelua_alkuperaisella_kala_t2lla__paattyy]
-GO
-ALTER TABLE [dbo].[jatkaa_opiskelua_alkuperaisella_kala_t2lla] DROP CONSTRAINT [DF__jatkaa_opiskelua_alkuperaisella_kala_t2lla__alkaa]
-GO
-ALTER TABLE [dbo].[jatkaa_opiskelua_alkuperaisella_kala_t1lla] DROP CONSTRAINT [DF__jatkaa_opiskelua_alkuperaisella_kala_t1lla__paattyy]
-GO
-ALTER TABLE [dbo].[jatkaa_opiskelua_alkuperaisella_kala_t1lla] DROP CONSTRAINT [DF__jatkaa_opiskelua_alkuperaisella_kala_t1lla__alkaa]
-GO
-*/
-/****** Object:  Table [dbo].[tutkinto_muulla_kaste_t2ella]    Script Date: 24.11.2021 21:55:03 ******/
+
 DROP TABLE IF EXISTS [dbo].[tutkinto_muulla_kaste_t2ella]
 GO
-/****** Object:  Table [dbo].[tutkinto_muulla_kala_t3lla]    Script Date: 24.11.2021 21:55:03 ******/
+
 DROP TABLE IF EXISTS [dbo].[tutkinto_muulla_kala_t3lla]
 GO
-/****** Object:  Table [dbo].[tutkinto_muulla_kala_t2lla]    Script Date: 24.11.2021 21:55:03 ******/
+
 DROP TABLE IF EXISTS [dbo].[tutkinto_muulla_kala_t2lla]
 GO
-/****** Object:  Table [dbo].[tutkinto_muulla_kala_t1lla]    Script Date: 24.11.2021 21:55:03 ******/
+
 DROP TABLE IF EXISTS [dbo].[tutkinto_muulla_kala_t1lla]
 GO
-/****** Object:  Table [dbo].[tutkinto_alkuperaisella_kaste_t2ella]    Script Date: 24.11.2021 21:55:03 ******/
+
 DROP TABLE IF EXISTS [dbo].[tutkinto_alkuperaisella_kaste_t2ella]
 GO
-/****** Object:  Table [dbo].[tutkinto_alkuperaisella_kala_t3lla]    Script Date: 24.11.2021 21:55:03 ******/
+
 DROP TABLE IF EXISTS [dbo].[tutkinto_alkuperaisella_kala_t3lla]
 GO
-/****** Object:  Table [dbo].[tutkinto_alkuperaisella_kala_t2lla]    Script Date: 24.11.2021 21:55:03 ******/
+
 DROP TABLE IF EXISTS [dbo].[tutkinto_alkuperaisella_kala_t2lla]
 GO
-/****** Object:  Table [dbo].[tutkinto_alkuperaisella_kala_t1lla]    Script Date: 24.11.2021 21:55:03 ******/
+
 DROP TABLE IF EXISTS [dbo].[tutkinto_alkuperaisella_kala_t1lla]
 GO
-/****** Object:  Table [dbo].[opintojen_kulku_koulutuksen_jarjestajan_mukaan_versio2]    Script Date: 24.11.2021 21:55:03 ******/
+
 DROP TABLE IF EXISTS [dbo].[opintojen_kulku_koulutuksen_jarjestajan_mukaan_versio2]
 GO
-/****** Object:  Table [dbo].[opintojen_kulku_kaste_t2en_mukaan]    Script Date: 24.11.2021 21:55:03 ******/
+
 DROP TABLE IF EXISTS [dbo].[opintojen_kulku_kaste_t2en_mukaan]
 GO
-/****** Object:  Table [dbo].[opintojen_kulku_kala_t3n_mukaan_versio2]    Script Date: 24.11.2021 21:55:03 ******/
+
 DROP TABLE IF EXISTS [dbo].[opintojen_kulku_kala_t3n_mukaan_versio2]
 GO
-/****** Object:  Table [dbo].[opintojen_kulku_kala_t3n_mukaan]    Script Date: 24.11.2021 21:55:03 ******/
+
 DROP TABLE IF EXISTS [dbo].[opintojen_kulku_kala_t3n_mukaan]
 GO
-/****** Object:  Table [dbo].[opintojen_kulku_kala_t2n_mukaan_versio2]    Script Date: 24.11.2021 21:55:03 ******/
+
 DROP TABLE IF EXISTS [dbo].[opintojen_kulku_kala_t2n_mukaan_versio2]
 GO
-/****** Object:  Table [dbo].[opintojen_kulku_kala_t2n_mukaan]    Script Date: 24.11.2021 21:55:03 ******/
+
 DROP TABLE IF EXISTS [dbo].[opintojen_kulku_kala_t2n_mukaan]
 GO
-/****** Object:  Table [dbo].[opintojen_kulku_kala_t1n_mukaan_versio2]    Script Date: 24.11.2021 21:55:03 ******/
+
 DROP TABLE IF EXISTS [dbo].[opintojen_kulku_kala_t1n_mukaan_versio2]
 GO
-/****** Object:  Table [dbo].[opintojen_kulku_kala_t1n_mukaan]    Script Date: 24.11.2021 21:55:03 ******/
+
 DROP TABLE IF EXISTS [dbo].[opintojen_kulku_kala_t1n_mukaan]
 GO
-/****** Object:  Table [dbo].[jatkaa_opiskelua_muulla_kaste_t2ella]    Script Date: 24.11.2021 21:55:03 ******/
+
 DROP TABLE IF EXISTS [dbo].[jatkaa_opiskelua_muulla_kaste_t2ella]
 GO
-/****** Object:  Table [dbo].[jatkaa_opiskelua_muulla_kala_t3lla]    Script Date: 24.11.2021 21:55:03 ******/
+
 DROP TABLE IF EXISTS [dbo].[jatkaa_opiskelua_muulla_kala_t3lla]
 GO
-/****** Object:  Table [dbo].[jatkaa_opiskelua_muulla_kala_t2lla]    Script Date: 24.11.2021 21:55:03 ******/
+
 DROP TABLE IF EXISTS [dbo].[jatkaa_opiskelua_muulla_kala_t2lla]
 GO
-/****** Object:  Table [dbo].[jatkaa_opiskelua_muulla_kala_t1lla]    Script Date: 24.11.2021 21:55:03 ******/
+
 DROP TABLE IF EXISTS [dbo].[jatkaa_opiskelua_muulla_kala_t1lla]
 GO
-/****** Object:  Table [dbo].[jatkaa_opiskelua_alkuperaisella_kaste_t2ella]    Script Date: 24.11.2021 21:55:03 ******/
+
 DROP TABLE IF EXISTS [dbo].[jatkaa_opiskelua_alkuperaisella_kaste_t2ella]
 GO
-/****** Object:  Table [dbo].[jatkaa_opiskelua_alkuperaisella_kala_t3lla]    Script Date: 24.11.2021 21:55:03 ******/
+
 DROP TABLE IF EXISTS [dbo].[jatkaa_opiskelua_alkuperaisella_kala_t3lla]
 GO
-/****** Object:  Table [dbo].[jatkaa_opiskelua_alkuperaisella_kala_t2lla]    Script Date: 24.11.2021 21:55:03 ******/
+
 DROP TABLE IF EXISTS [dbo].[jatkaa_opiskelua_alkuperaisella_kala_t2lla]
 GO
-/****** Object:  Table [dbo].[jatkaa_opiskelua_alkuperaisella_kala_t1lla]    Script Date: 24.11.2021 21:55:03 ******/
+
 DROP TABLE IF EXISTS [dbo].[jatkaa_opiskelua_alkuperaisella_kala_t1lla]
 GO
-/****** Object:  Table [dbo].[jatkaa_opiskelua_alkuperaisella_kala_t1lla]    Script Date: 24.11.2021 21:55:03 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -192,7 +94,7 @@ CREATE TABLE [dbo].[jatkaa_opiskelua_alkuperaisella_kala_t1lla](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[jatkaa_opiskelua_alkuperaisella_kala_t2lla]    Script Date: 24.11.2021 21:55:03 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -214,7 +116,7 @@ CREATE TABLE [dbo].[jatkaa_opiskelua_alkuperaisella_kala_t2lla](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[jatkaa_opiskelua_alkuperaisella_kala_t3lla]    Script Date: 24.11.2021 21:55:03 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -236,7 +138,7 @@ CREATE TABLE [dbo].[jatkaa_opiskelua_alkuperaisella_kala_t3lla](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[jatkaa_opiskelua_alkuperaisella_kaste_t2ella]    Script Date: 24.11.2021 21:55:03 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -258,7 +160,7 @@ CREATE TABLE [dbo].[jatkaa_opiskelua_alkuperaisella_kaste_t2ella](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[jatkaa_opiskelua_muulla_kala_t1lla]    Script Date: 24.11.2021 21:55:03 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -280,7 +182,7 @@ CREATE TABLE [dbo].[jatkaa_opiskelua_muulla_kala_t1lla](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[jatkaa_opiskelua_muulla_kala_t2lla]    Script Date: 24.11.2021 21:55:03 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -302,7 +204,7 @@ CREATE TABLE [dbo].[jatkaa_opiskelua_muulla_kala_t2lla](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[jatkaa_opiskelua_muulla_kala_t3lla]    Script Date: 24.11.2021 21:55:03 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -324,7 +226,7 @@ CREATE TABLE [dbo].[jatkaa_opiskelua_muulla_kala_t3lla](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[jatkaa_opiskelua_muulla_kaste_t2ella]    Script Date: 24.11.2021 21:55:03 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -346,7 +248,7 @@ CREATE TABLE [dbo].[jatkaa_opiskelua_muulla_kaste_t2ella](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[opintojen_kulku_kala_t1n_mukaan]    Script Date: 24.11.2021 21:55:03 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -369,7 +271,7 @@ CREATE TABLE [dbo].[opintojen_kulku_kala_t1n_mukaan](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[opintojen_kulku_kala_t1n_mukaan_versio2]    Script Date: 24.11.2021 21:55:03 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -391,7 +293,7 @@ CREATE TABLE [dbo].[opintojen_kulku_kala_t1n_mukaan_versio2](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[opintojen_kulku_kala_t2n_mukaan]    Script Date: 24.11.2021 21:55:03 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -414,7 +316,7 @@ CREATE TABLE [dbo].[opintojen_kulku_kala_t2n_mukaan](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[opintojen_kulku_kala_t2n_mukaan_versio2]    Script Date: 24.11.2021 21:55:03 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -436,7 +338,7 @@ CREATE TABLE [dbo].[opintojen_kulku_kala_t2n_mukaan_versio2](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[opintojen_kulku_kala_t3n_mukaan]    Script Date: 24.11.2021 21:55:03 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -459,7 +361,7 @@ CREATE TABLE [dbo].[opintojen_kulku_kala_t3n_mukaan](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[opintojen_kulku_kala_t3n_mukaan_versio2]    Script Date: 24.11.2021 21:55:03 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -481,7 +383,7 @@ CREATE TABLE [dbo].[opintojen_kulku_kala_t3n_mukaan_versio2](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[opintojen_kulku_kaste_t2en_mukaan]    Script Date: 24.11.2021 21:55:03 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -504,7 +406,7 @@ CREATE TABLE [dbo].[opintojen_kulku_kaste_t2en_mukaan](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[opintojen_kulku_koulutuksen_jarjestajan_mukaan_versio2]    Script Date: 24.11.2021 21:55:03 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -529,7 +431,7 @@ CREATE TABLE [dbo].[opintojen_kulku_koulutuksen_jarjestajan_mukaan_versio2](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[tutkinto_alkuperaisella_kala_t1lla]    Script Date: 24.11.2021 21:55:03 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -551,7 +453,7 @@ CREATE TABLE [dbo].[tutkinto_alkuperaisella_kala_t1lla](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[tutkinto_alkuperaisella_kala_t2lla]    Script Date: 24.11.2021 21:55:03 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -573,7 +475,7 @@ CREATE TABLE [dbo].[tutkinto_alkuperaisella_kala_t2lla](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[tutkinto_alkuperaisella_kala_t3lla]    Script Date: 24.11.2021 21:55:03 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -595,7 +497,7 @@ CREATE TABLE [dbo].[tutkinto_alkuperaisella_kala_t3lla](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[tutkinto_alkuperaisella_kaste_t2ella]    Script Date: 24.11.2021 21:55:03 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -617,7 +519,7 @@ CREATE TABLE [dbo].[tutkinto_alkuperaisella_kaste_t2ella](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[tutkinto_muulla_kala_t1lla]    Script Date: 24.11.2021 21:55:03 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -639,7 +541,7 @@ CREATE TABLE [dbo].[tutkinto_muulla_kala_t1lla](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[tutkinto_muulla_kala_t2lla]    Script Date: 24.11.2021 21:55:03 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -661,7 +563,7 @@ CREATE TABLE [dbo].[tutkinto_muulla_kala_t2lla](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[tutkinto_muulla_kala_t3lla]    Script Date: 24.11.2021 21:55:03 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -683,7 +585,7 @@ CREATE TABLE [dbo].[tutkinto_muulla_kala_t3lla](
 ) ON [PRIMARY]
 
 GO
-/****** Object:  Table [dbo].[tutkinto_muulla_kaste_t2ella]    Script Date: 24.11.2021 21:55:03 ******/
+
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
