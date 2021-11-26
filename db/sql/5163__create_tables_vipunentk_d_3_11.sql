@@ -2,73 +2,73 @@ USE [VipunenTK]
 GO
 
 /****** Object:  Table [dbo].[d_tutkinto_muulla_kaste_t2ella]    Script Date: 26.11.2021 17:32:50 ******/
-DROP TABLE [dbo].[d_tutkinto_muulla_kaste_t2ella]
+DROP TABLE IF EXISTS [dbo].[d_tutkinto_muulla_kaste_t2ella]
 GO
 /****** Object:  Table [dbo].[d_tutkinto_muulla_kala_t3lla]    Script Date: 26.11.2021 17:32:50 ******/
-DROP TABLE [dbo].[d_tutkinto_muulla_kala_t3lla]
+DROP TABLE IF EXISTS [dbo].[d_tutkinto_muulla_kala_t3lla]
 GO
 /****** Object:  Table [dbo].[d_tutkinto_muulla_kala_t2lla]    Script Date: 26.11.2021 17:32:50 ******/
-DROP TABLE [dbo].[d_tutkinto_muulla_kala_t2lla]
+DROP TABLE IF EXISTS [dbo].[d_tutkinto_muulla_kala_t2lla]
 GO
 /****** Object:  Table [dbo].[d_tutkinto_muulla_kala_t1lla]    Script Date: 26.11.2021 17:32:50 ******/
-DROP TABLE [dbo].[d_tutkinto_muulla_kala_t1lla]
+DROP TABLE IF EXISTS [dbo].[d_tutkinto_muulla_kala_t1lla]
 GO
 /****** Object:  Table [dbo].[d_tutkinto_alkuperaisella_kaste_t2ella]    Script Date: 26.11.2021 17:32:50 ******/
-DROP TABLE [dbo].[d_tutkinto_alkuperaisella_kaste_t2ella]
+DROP TABLE IF EXISTS [dbo].[d_tutkinto_alkuperaisella_kaste_t2ella]
 GO
 /****** Object:  Table [dbo].[d_tutkinto_alkuperaisella_kala_t3lla]    Script Date: 26.11.2021 17:32:50 ******/
-DROP TABLE [dbo].[d_tutkinto_alkuperaisella_kala_t3lla]
+DROP TABLE IF EXISTS [dbo].[d_tutkinto_alkuperaisella_kala_t3lla]
 GO
 /****** Object:  Table [dbo].[d_tutkinto_alkuperaisella_kala_t2lla]    Script Date: 26.11.2021 17:32:50 ******/
-DROP TABLE [dbo].[d_tutkinto_alkuperaisella_kala_t2lla]
+DROP TABLE IF EXISTS [dbo].[d_tutkinto_alkuperaisella_kala_t2lla]
 GO
 /****** Object:  Table [dbo].[d_tutkinto_alkuperaisella_kala_t1lla]    Script Date: 26.11.2021 17:32:50 ******/
-DROP TABLE [dbo].[d_tutkinto_alkuperaisella_kala_t1lla]
+DROP TABLE IF EXISTS [dbo].[d_tutkinto_alkuperaisella_kala_t1lla]
 GO
 /****** Object:  Table [dbo].[d_opintojen_kulku_kaste_t2en_mukaan]    Script Date: 26.11.2021 17:32:50 ******/
-DROP TABLE [dbo].[d_opintojen_kulku_kaste_t2en_mukaan]
+DROP TABLE IF EXISTS [dbo].[d_opintojen_kulku_kaste_t2en_mukaan]
 GO
 /****** Object:  Table [dbo].[d_opintojen_kulku_kala_t3n_mukaan_versio2]    Script Date: 26.11.2021 17:32:50 ******/
-DROP TABLE [dbo].[d_opintojen_kulku_kala_t3n_mukaan_versio2]
+DROP TABLE IF EXISTS [dbo].[d_opintojen_kulku_kala_t3n_mukaan_versio2]
 GO
 /****** Object:  Table [dbo].[d_opintojen_kulku_kala_t3n_mukaan]    Script Date: 26.11.2021 17:32:50 ******/
-DROP TABLE [dbo].[d_opintojen_kulku_kala_t3n_mukaan]
+DROP TABLE IF EXISTS [dbo].[d_opintojen_kulku_kala_t3n_mukaan]
 GO
 /****** Object:  Table [dbo].[d_opintojen_kulku_kala_t2n_mukaan_versio2]    Script Date: 26.11.2021 17:32:50 ******/
-DROP TABLE [dbo].[d_opintojen_kulku_kala_t2n_mukaan_versio2]
+DROP TABLE IF EXISTS [dbo].[d_opintojen_kulku_kala_t2n_mukaan_versio2]
 GO
 /****** Object:  Table [dbo].[d_opintojen_kulku_kala_t2n_mukaan]    Script Date: 26.11.2021 17:32:50 ******/
-DROP TABLE [dbo].[d_opintojen_kulku_kala_t2n_mukaan]
+DROP TABLE IF EXISTS [dbo].[d_opintojen_kulku_kala_t2n_mukaan]
 GO
 /****** Object:  Table [dbo].[d_opintojen_kulku_kala_t1n_mukaan_versio2]    Script Date: 26.11.2021 17:32:50 ******/
-DROP TABLE [dbo].[d_opintojen_kulku_kala_t1n_mukaan_versio2]
+DROP TABLE IF EXISTS [dbo].[d_opintojen_kulku_kala_t1n_mukaan_versio2]
 GO
 /****** Object:  Table [dbo].[d_opintojen_kulku_kala_t1n_mukaan]    Script Date: 26.11.2021 17:32:50 ******/
-DROP TABLE [dbo].[d_opintojen_kulku_kala_t1n_mukaan]
+DROP TABLE IF EXISTS [dbo].[d_opintojen_kulku_kala_t1n_mukaan]
 GO
 /****** Object:  Table [dbo].[d_jatkaa_opiskelua_muulla_kaste_t2ella]    Script Date: 26.11.2021 17:32:50 ******/
-DROP TABLE [dbo].[d_jatkaa_opiskelua_muulla_kaste_t2ella]
+DROP TABLE IF EXISTS [dbo].[d_jatkaa_opiskelua_muulla_kaste_t2ella]
 GO
 /****** Object:  Table [dbo].[d_jatkaa_opiskelua_muulla_kala_t3lla]    Script Date: 26.11.2021 17:32:50 ******/
-DROP TABLE [dbo].[d_jatkaa_opiskelua_muulla_kala_t3lla]
+DROP TABLE IF EXISTS [dbo].[d_jatkaa_opiskelua_muulla_kala_t3lla]
 GO
 /****** Object:  Table [dbo].[d_jatkaa_opiskelua_muulla_kala_t2lla]    Script Date: 26.11.2021 17:32:50 ******/
-DROP TABLE [dbo].[d_jatkaa_opiskelua_muulla_kala_t2lla]
+DROP TABLE IF EXISTS [dbo].[d_jatkaa_opiskelua_muulla_kala_t2lla]
 GO
 /****** Object:  Table [dbo].[d_jatkaa_opiskelua_muulla_kala_t1lla]    Script Date: 26.11.2021 17:32:50 ******/
-DROP TABLE [dbo].[d_jatkaa_opiskelua_muulla_kala_t1lla]
+DROP TABLE IF EXISTS [dbo].[d_jatkaa_opiskelua_muulla_kala_t1lla]
 GO
 /****** Object:  Table [dbo].[d_jatkaa_opiskelua_alkuperaisella_kaste_t2ella]    Script Date: 26.11.2021 17:32:50 ******/
-DROP TABLE [dbo].[d_jatkaa_opiskelua_alkuperaisella_kaste_t2ella]
+DROP TABLE IF EXISTS [dbo].[d_jatkaa_opiskelua_alkuperaisella_kaste_t2ella]
 GO
 /****** Object:  Table [dbo].[d_jatkaa_opiskelua_alkuperaisella_kala_t3lla]    Script Date: 26.11.2021 17:32:50 ******/
-DROP TABLE [dbo].[d_jatkaa_opiskelua_alkuperaisella_kala_t3lla]
+DROP TABLE IF EXISTS [dbo].[d_jatkaa_opiskelua_alkuperaisella_kala_t3lla]
 GO
 /****** Object:  Table [dbo].[d_jatkaa_opiskelua_alkuperaisella_kala_t2lla]    Script Date: 26.11.2021 17:32:50 ******/
-DROP TABLE [dbo].[d_jatkaa_opiskelua_alkuperaisella_kala_t2lla]
+DROP TABLE IF EXISTS [dbo].[d_jatkaa_opiskelua_alkuperaisella_kala_t2lla]
 GO
 /****** Object:  Table [dbo].[d_jatkaa_opiskelua_alkuperaisella_kala_t1lla]    Script Date: 26.11.2021 17:32:50 ******/
-DROP TABLE [dbo].[d_jatkaa_opiskelua_alkuperaisella_kala_t1lla]
+DROP TABLE IF EXISTS [dbo].[d_jatkaa_opiskelua_alkuperaisella_kala_t1lla]
 GO
 /****** Object:  Table [dbo].[d_jatkaa_opiskelua_alkuperaisella_kala_t1lla]    Script Date: 26.11.2021 17:32:50 ******/
 SET ANSI_NULLS ON
