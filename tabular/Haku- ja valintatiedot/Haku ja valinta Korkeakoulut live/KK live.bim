@@ -1156,6 +1156,17 @@
             "dataType": "string",
             "sourceColumn": "Hakukohteen koulutusala 1995",
             "displayFolder": "Koulutusmuuttujat"
+          },
+          {
+            "type": "calculated",
+            "name": "Henkilö OID_Hakukohde OID",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "expression": [
+              " ",
+              "CONCATENATE([Henkilö OID], [hakukohde OID])"
+            ]
           }
         ],
         "partitions": [
@@ -4396,11 +4407,9 @@
             "name": "Kaikki hakijat (nettouttamaton)",
             "expression": [
               "",
-              "var lkm1_s = sum(Muuttujat[Lukumäärä])",
-              "var lkm2_s = calculate(sum(Muuttujat[Lukumäärä]),Muuttujat[yksi_pk_per_hakija]=1)",
-              "var lkm1 = IF(lkm1_s = 0, BLANK(), IF(lkm1_s < 5, \"1-4\", MROUND(lkm1_s, 3)))",
-              "var lkm2 = IF(lkm2_s = 0, BLANK(), IF(lkm2_s < 5, \"1-4\", MROUND(lkm2_s, 3)))",
-              "return IF(ISFILTERED(Muuttujat[Pohjakoulutus]), lkm1, lkm2)",
+              "var lkm_s = CALCULATE(DISTINCTCOUNT([Henkilö OID_Hakukohde OID]), Muuttujat[Lukumäärä] = 1)",
+              "return",
+              "IF(lkm_s = 0, BLANK(), IF(lkm_s < 5, \"1-4\", MROUND(lkm_s, 3)))",
               ""
             ],
             "formatString": "#,0"
@@ -4417,7 +4426,10 @@
           },
           {
             "name": "Kaikki hakijat (nettouttamaton)_s",
-            "expression": "IF(ISFILTERED(Muuttujat[Pohjakoulutus]),sum(Muuttujat[Lukumäärä]),calculate(sum(Muuttujat[Lukumäärä]),Muuttujat[yksi_pk_per_hakija]=1))",
+            "expression": [
+              "",
+              "CALCULATE(DISTINCTCOUNT([Henkilö OID_Hakukohde OID]), Muuttujat[Lukumäärä] = 1)"
+            ],
             "formatString": "#,0"
           },
           {
