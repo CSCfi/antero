@@ -47,7 +47,10 @@ if [ "$env" == "prod" ]; then
   export DATABASE_HOST="dwipvipusql16.csc.fi:1433"
   export TABULAR_HOST="dwipviputab16"
 fi
-
+if [ "$env" == "api" ]; then
+  export DATABASE_HOST="dwivipuapisql.csc.fi:1433"
+  #tarkista palomuuri&yhteydet
+fi
 export OPINTOPOLKU="virkailija.opintopolku.fi"
 
 # extra "help". set usual begin and end dates already
