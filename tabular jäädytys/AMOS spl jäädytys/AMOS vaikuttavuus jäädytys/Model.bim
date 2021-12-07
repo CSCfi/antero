@@ -439,17 +439,20 @@
           {
             "name": "Koulutuksen suoritusvuosi",
             "dataType": "string",
-            "sourceColumn": "Koulutuksen suoritusvuosi"
+            "sourceColumn": "Koulutuksen suoritusvuosi",
+            "displayFolder": "Koulutusmuuttujat"
           },
           {
             "name": "Koulutuksen aloitusvuosi",
             "dataType": "string",
-            "sourceColumn": "Koulutuksen aloitusvuosi"
+            "sourceColumn": "Koulutuksen aloitusvuosi",
+            "displayFolder": "Koulutusmuuttujat"
           },
           {
             "name": "Koulutuksen aloituslukukausi",
             "dataType": "string",
-            "sourceColumn": "Koulutuksen aloituslukukausi"
+            "sourceColumn": "Koulutuksen aloituslukukausi",
+            "displayFolder": "Koulutusmuuttujat"
           }
         ],
         "partitions": [
@@ -1632,37 +1635,65 @@
           },
           {
             "name": "Tutkinnon suorittaneet työllistyneet, painotetut pisteet",
-            "expression": "CALCULATE(SUM(Muuttujat[v Työllisten painotetut pisteet]), Muuttujat[Koulutuksen tavoite] = \"Koko tutkinto\")",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Työllisten painotetut pisteet]), Muuttujat[Koulutuksen tavoite] = \"Koko tutkinto\")",
+              "return IF(lkm=0,BLANK(),lkm)"
+            ],
             "formatString": "#,0.00"
           },
           {
             "name": "Tutkinnon osia suorittaneet työllistyneet, painotetut pisteet",
-            "expression": "CALCULATE(SUM(Muuttujat[v Työllisten painotetut pisteet]), Muuttujat[Koulutuksen tavoite] = \"Tutkinnon osa tai osia\")",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Työllisten painotetut pisteet]), Muuttujat[Koulutuksen tavoite] = \"Tutkinnon osa tai osia\")",
+              "return IF(lkm=0,BLANK(),lkm)"
+            ],
             "formatString": "#,0.00"
           },
           {
             "name": "Tutkinnon suorittaneet työllistyneet",
-            "expression": "CALCULATE(SUM(Muuttujat[v Työlliset]), Muuttujat[Koulutuksen tavoite] = \"Koko tutkinto\")",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Työlliset]), Muuttujat[Koulutuksen tavoite] = \"Koko tutkinto\")",
+              "return IF(lkm=0,BLANK(),lkm)"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Tutkinnon suorittaneet jatko-opiskelijat",
-            "expression": "CALCULATE(SUM(Muuttujat[v Opiskelijat]), Muuttujat[Koulutuksen tavoite] = \"Koko tutkinto\")",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Opiskelijat]), Muuttujat[Koulutuksen tavoite] = \"Koko tutkinto\")",
+              "return IF(lkm=0,BLANK(),lkm)"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Tutkinnon osia suorittaneet työllistyneet",
-            "expression": "CALCULATE(SUM(Muuttujat[v Työlliset]), Muuttujat[Koulutuksen tavoite] = \"Tutkinnon osa tai osia\")",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Työlliset]), Muuttujat[Koulutuksen tavoite] = \"Tutkinnon osa tai osia\")",
+              "return IF(lkm=0,BLANK(),lkm)"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Tutkinnon osia suorittaneet jatko-opiskelijat",
-            "expression": "CALCULATE(SUM(Muuttujat[v Opiskelijat]), Muuttujat[Koulutuksen tavoite] = \"Tutkinnon osa tai osia\")",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Opiskelijat]), Muuttujat[Koulutuksen tavoite] = \"Tutkinnon osa tai osia\")",
+              "return IF(lkm=0,BLANK(),lkm)"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Tutkinnon suorittaneet jatko-opiskelijat, painotetut pisteet",
-            "expression": "CALCULATE(SUM([v Opiskelijoiden painotetut pisteet]),Muuttujat[Koulutuksen tavoite] = \"Koko tutkinto\")",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([v Opiskelijoiden painotetut pisteet]),Muuttujat[Koulutuksen tavoite] = \"Koko tutkinto\")",
+              "return IF(lkm=0,BLANK(),lkm)"
+            ],
             "formatString": "#,0.00"
           },
           {
@@ -1672,12 +1703,20 @@
           },
           {
             "name": "Tutkinnon suorittaneet",
-            "expression": "SUM(Muuttujat[v Suoritetut tutkinnot])",
+            "expression": [
+              "",
+              "var lkm = SUM(Muuttujat[v Suoritetut tutkinnot])",
+              "return IF(lkm=0,BLANK(),lkm)"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Tutkinnon osia suorittaneet",
-            "expression": "SUM(Muuttujat[v Suoritetut tutkinnon osat])",
+            "expression": [
+              "",
+              "var lkm = SUM(Muuttujat[v Suoritetut tutkinnon osat])",
+              "return IF(lkm=0,BLANK(),lkm)"
+            ],
             "formatString": "#,0"
           },
           {
@@ -2833,6 +2872,15 @@
               },
               {
                 "name": "Suoritepäätös"
+              },
+              {
+                "name": "Koulutuksen aloitusvuosi"
+              },
+              {
+                "name": "Koulutuksen suoritusvuosi"
+              },
+              {
+                "name": "Koulutuksen tavoite"
               }
             ],
             "measures": [
