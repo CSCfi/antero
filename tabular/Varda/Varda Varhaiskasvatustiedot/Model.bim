@@ -2167,7 +2167,7 @@
             "name": "Yksityisiä maksuja",
             "expression": [
               "",
-              "var summa =   Calculate(DISTINCTCOUNT([maksutieto_id]), FILTER(Muuttujat,([jarjestamismuoto_koodi] = \"JM04\" || Muuttujat[jarjestamismuoto_koodi] = \"JM05\") && [yritystyyppi]=\"Yksityinen\" && [tilastointi]=1))",
+              "var summa =   Calculate(DISTINCTCOUNT([maksutieto_id]), FILTER(Muuttujat,([jarjestamismuoto_koodi] = \"JM04\" || Muuttujat[jarjestamismuoto_koodi] = \"JM05\") && [tilastointi]=1))",
               "return IF(summa = 0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))"
             ],
             "formatString": "#,0",
@@ -2206,7 +2206,7 @@
             "name": "Palvelusetelillä maksuja",
             "expression": [
               "",
-              "var summa =  Calculate(DISTINCTCOUNT([maksutieto_id]), FILTER(Muuttujat,[jarjestamismuoto_koodi] = \"JM03\" && [tilastointi]=1))",
+              "var summa =  Calculate(DISTINCTCOUNT([maksutieto_id]), FILTER(Muuttujat,[jarjestamismuoto_koodi] = \"JM03\" && Not(ISBLANK(Muuttujat[maksutieto_id])) && [tilastointi]=1))",
               "return IF(summa = 0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))",
               ""
             ],
@@ -2282,7 +2282,7 @@
             "name": "Kunnallisia lapsia joilla maksutieto",
             "expression": [
               " ",
-              "var summa = Calculate(DISTINCTCOUNT([henkilo_id]), FILTER(Muuttujat, ([jarjestamismuoto_koodi]=\"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\") && Muuttujat[tilastointi] = 1))",
+              "var summa = Calculate(DISTINCTCOUNT([henkilo_id]), FILTER(Muuttujat, ([jarjestamismuoto_koodi]=\"JM01\" ||  [jarjestamismuoto_koodi] = \"JM02\" || [jarjestamismuoto_koodi] = \"JM03\") && Not(ISBLANK(Muuttujat[maksutieto_id])) && Muuttujat[tilastointi] = 1))",
               "return IF(summa = 0, BLANK(), IF(summa < 5,  \"1-4\", MROUND(summa, 3)))",
               ""
             ],
@@ -2292,7 +2292,7 @@
             "name": "Yksityisiä lapsia joilla maksutieto",
             "expression": [
               " ",
-              "var summa = Calculate(DISTINCTCOUNT([henkilo_id]), FILTER(Muuttujat, ([jarjestamismuoto_koodi]=\"JM04\" ||  [jarjestamismuoto_koodi] = \"JM05\") && Muuttujat[tilastointi] = 1))",
+              "var summa = Calculate(DISTINCTCOUNT([henkilo_id]), FILTER(Muuttujat, ([jarjestamismuoto_koodi]=\"JM04\" ||  [jarjestamismuoto_koodi] = \"JM05\") && Not(ISBLANK(Muuttujat[maksutieto_id])) && Muuttujat[tilastointi] = 1))",
               "return IF(summa = 0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))",
               ""
             ],
