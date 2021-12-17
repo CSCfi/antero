@@ -141,7 +141,7 @@ BEGIN
 		,alku
 		,loppu = coalesce(loppu,'9999-12-31')
 	into #sopimusjaksot 
-	from [Koski_SA].[sa].[sa_ammatillisen_koulutuksen_sopimusjaksot_siivottu2]
+	from [sa].[sa_ammatillisen_koulutuksen_sopimusjaksot_siivottu2]
 	where alku <= @pvm_loppu and coalesce(loppu,'9999-12-31') >= @pvm_alku and alku <= coalesce(loppu,'9999-12-31')
 		
 	select * into #opsojaksot from #sopimusjaksot where sopimusmuoto = 'oppisopimus'
