@@ -2136,6 +2136,24 @@
             "name": "opiskelijat_koulutussopimus",
             "expression": "CALCULATE([opiskelijat],Muuttujat[koodit_koulutussopimus]=\"1\")",
             "formatString": "#,0"
+          },
+          {
+            "name": "oppilaitokset",
+            "expression": [
+              "CALCULATE(DISTINCTCOUNT('Muuttujat'[koodit_oppilaitos]), 'Muuttujat'[koodit_oppilaitos] <> \"-1\")",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "opiskelijat_oppilaitokset",
+            "expression": [
+              "",
+              "var lkm = [opiskelijat]",
+              "var ehto = ISFILTERED(Muuttujat[oppilaitos_fi]) || ISFILTERED(Muuttujat[oppilaitos_sv]) || ISFILTERED(Muuttujat[oppilaitos_en])",
+              "return IF(ehto || lkm = \"1-4\", lkm, DIVIDE(lkm, [oppilaitokset]))"
+            ],
+            "formatString": "#,0"
           }
         ],
         "annotations": [
@@ -2579,6 +2597,14 @@
                   {
                     "name": "opiskelijat_koulutussopimus",
                     "translatedCaption": "Opiskelijat, koulutussopimus"
+                  },
+                  {
+                    "name": "oppilaitokset",
+                    "translatedCaption": "Oppilaitokset"
+                  },
+                  {
+                    "name": "opiskelijat_oppilaitokset",
+                    "translatedCaption": "Opiskelijat / Oppilaitokset"
                   }
                 ]
               }
@@ -2967,6 +2993,14 @@
                   {
                     "name": "opiskelijat_koulutussopimus",
                     "translatedCaption": "Studerande, utbildningsavtal"
+                  },
+                  {
+                    "name": "oppilaitokset",
+                    "translatedCaption": "Läroanstalter"
+                  },
+                  {
+                    "name": "opiskelijat_oppilaitokset",
+                    "translatedCaption": "Studerande / Läroanstalter"
                   }
                 ]
               }
@@ -3355,6 +3389,14 @@
                   {
                     "name": "opiskelijat_koulutussopimus",
                     "translatedCaption": "Students, training agreement"
+                  },
+                  {
+                    "name": "oppilaitokset",
+                    "translatedCaption": "Educational institutions"
+                  },
+                  {
+                    "name": "opiskelijat_oppilaitokset",
+                    "translatedCaption": "Students / Educational institutions"
                   }
                 ]
               }
@@ -6481,6 +6523,471 @@
             "measures": [
               {
                 "name": "uudet_opiskelijat_rahoitus"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Oppilaitosverkko_fi",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "aidinkieli_fi"
+              },
+              {
+                "name": "erityisopetus_fi"
+              },
+              {
+                "name": "ika_fi"
+              },
+              {
+                "name": "ikaryhma_fi"
+              },
+              {
+                "name": "kansalaisuus_fi"
+              },
+              {
+                "name": "kansalaisuus_maanosa_fi"
+              },
+              {
+                "name": "koodit_osaamisala"
+              },
+              {
+                "name": "koulutuksen_jarjestaja_fi"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_avi_fi"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_ely_fi"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_kunta_fi"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_maakunta_fi"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_omistajatyyppi_fi"
+              },
+              {
+                "name": "koulutusala_taso_1_fi"
+              },
+              {
+                "name": "koulutusala_taso_2_fi"
+              },
+              {
+                "name": "koulutusala_taso_3_fi"
+              },
+              {
+                "name": "koulutussopimuksen_suoritusosuus_fi"
+              },
+              {
+                "name": "koulutussopimus_fi"
+              },
+              {
+                "name": "majoitus_fi"
+              },
+              {
+                "name": "oppilaitoksen_avi_fi"
+              },
+              {
+                "name": "oppilaitoksen_ely_fi"
+              },
+              {
+                "name": "oppilaitoksen_kunta_fi"
+              },
+              {
+                "name": "oppilaitoksen_maakunta_fi"
+              },
+              {
+                "name": "oppilaitoksen_opetuskieli_fi"
+              },
+              {
+                "name": "oppilaitos_fi"
+              },
+              {
+                "name": "oppilaitostyyppi_fi"
+              },
+              {
+                "name": "oppisopimuksen_suoritusosuus_fi"
+              },
+              {
+                "name": "oppisopimus_koulutussopimus_fi"
+              },
+              {
+                "name": "oppisopimuskoulutus_fi"
+              },
+              {
+                "name": "osa_aikaisuus_fi"
+              },
+              {
+                "name": "osaamisala_fi"
+              },
+              {
+                "name": "sukupuoli_fi"
+              },
+              {
+                "name": "suorituksen_tyyppi_fi"
+              },
+              {
+                "name": "suorituskieli_fi"
+              },
+              {
+                "name": "tilastokuukausi_fi"
+              },
+              {
+                "name": "tilastovuosi_fi"
+              },
+              {
+                "name": "toimipiste_fi"
+              },
+              {
+                "name": "tutkinto_fi"
+              },
+              {
+                "name": "tutkintotyypin_ryhma_fi"
+              },
+              {
+                "name": "tutkintotyyppi_fi"
+              },
+              {
+                "name": "tyovoimakoulutus_fi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "opiskelijat"
+              },
+              {
+                "name": "oppilaitokset"
+              },
+              {
+                "name": "opiskelijat_oppilaitokset"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Oppilaitosverkko_sv",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "aidinkieli_sv"
+              },
+              {
+                "name": "erityisopetus_sv"
+              },
+              {
+                "name": "ika_sv"
+              },
+              {
+                "name": "ikaryhma_sv"
+              },
+              {
+                "name": "kansalaisuus_maanosa_sv"
+              },
+              {
+                "name": "kansalaisuus_sv"
+              },
+              {
+                "name": "koodit_osaamisala"
+              },
+              {
+                "name": "koulutuksen_jarjestaja_sv"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_avi_sv"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_ely_sv"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_kunta_sv"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_maakunta_sv"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_omistajatyyppi_sv"
+              },
+              {
+                "name": "koulutusala_taso_1_sv"
+              },
+              {
+                "name": "koulutusala_taso_2_sv"
+              },
+              {
+                "name": "koulutusala_taso_3_sv"
+              },
+              {
+                "name": "koulutussopimuksen_suoritusosuus_sv"
+              },
+              {
+                "name": "koulutussopimus_sv"
+              },
+              {
+                "name": "majoitus_sv"
+              },
+              {
+                "name": "oppilaitoksen_avi_sv"
+              },
+              {
+                "name": "oppilaitoksen_ely_sv"
+              },
+              {
+                "name": "oppilaitoksen_kunta_sv"
+              },
+              {
+                "name": "oppilaitoksen_maakunta_sv"
+              },
+              {
+                "name": "oppilaitoksen_opetuskieli_sv"
+              },
+              {
+                "name": "oppilaitos_sv"
+              },
+              {
+                "name": "oppilaitostyyppi_sv"
+              },
+              {
+                "name": "oppisopimuksen_suoritusosuus_sv"
+              },
+              {
+                "name": "oppisopimus_koulutussopimus_sv"
+              },
+              {
+                "name": "oppisopimuskoulutus_sv"
+              },
+              {
+                "name": "osa_aikaisuus_sv"
+              },
+              {
+                "name": "osaamisala_sv"
+              },
+              {
+                "name": "sukupuoli_sv"
+              },
+              {
+                "name": "suorituksen_tyyppi_sv"
+              },
+              {
+                "name": "suorituskieli_sv"
+              },
+              {
+                "name": "tilastokuukausi_sv"
+              },
+              {
+                "name": "tilastovuosi_sv"
+              },
+              {
+                "name": "toimipiste_sv"
+              },
+              {
+                "name": "tutkinto_sv"
+              },
+              {
+                "name": "tutkintotyypin_ryhma_sv"
+              },
+              {
+                "name": "tutkintotyyppi_sv"
+              },
+              {
+                "name": "tyovoimakoulutus_sv"
+              }
+            ],
+            "measures": [
+              {
+                "name": "opiskelijat"
+              },
+              {
+                "name": "oppilaitokset"
+              },
+              {
+                "name": "opiskelijat_oppilaitokset"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Oppilaitosverkko_en",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "aidinkieli_en"
+              },
+              {
+                "name": "erityisopetus_en"
+              },
+              {
+                "name": "ika_en"
+              },
+              {
+                "name": "ikaryhma_en"
+              },
+              {
+                "name": "kansalaisuus_en"
+              },
+              {
+                "name": "kansalaisuus_maanosa_en"
+              },
+              {
+                "name": "koodit_osaamisala"
+              },
+              {
+                "name": "koulutuksen_jarjestaja_en"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_avi_en"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_ely_en"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_kunta_en"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_maakunta_en"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_omistajatyyppi_en"
+              },
+              {
+                "name": "koulutusala_taso_1_en"
+              },
+              {
+                "name": "koulutusala_taso_2_en"
+              },
+              {
+                "name": "koulutusala_taso_3_en"
+              },
+              {
+                "name": "koulutussopimuksen_suoritusosuus_en"
+              },
+              {
+                "name": "koulutussopimus_en"
+              },
+              {
+                "name": "majoitus_en"
+              },
+              {
+                "name": "oppilaitoksen_avi_en"
+              },
+              {
+                "name": "oppilaitoksen_ely_en"
+              },
+              {
+                "name": "oppilaitoksen_kunta_en"
+              },
+              {
+                "name": "oppilaitoksen_maakunta_en"
+              },
+              {
+                "name": "oppilaitoksen_opetuskieli_en"
+              },
+              {
+                "name": "oppilaitos_en"
+              },
+              {
+                "name": "oppilaitostyyppi_en"
+              },
+              {
+                "name": "oppisopimuksen_suoritusosuus_en"
+              },
+              {
+                "name": "oppisopimus_koulutussopimus_en"
+              },
+              {
+                "name": "oppisopimuskoulutus_en"
+              },
+              {
+                "name": "osa_aikaisuus_en"
+              },
+              {
+                "name": "osaamisala_en"
+              },
+              {
+                "name": "sukupuoli_en"
+              },
+              {
+                "name": "suorituksen_tyyppi_en"
+              },
+              {
+                "name": "suorituskieli_en"
+              },
+              {
+                "name": "tilastokuukausi_en"
+              },
+              {
+                "name": "tilastovuosi_en"
+              },
+              {
+                "name": "toimipiste_en"
+              },
+              {
+                "name": "tutkinto_en"
+              },
+              {
+                "name": "tutkintotyypin_ryhma_en"
+              },
+              {
+                "name": "tutkintotyyppi_en"
+              },
+              {
+                "name": "tyovoimakoulutus_en"
+              }
+            ],
+            "measures": [
+              {
+                "name": "opiskelijat"
+              },
+              {
+                "name": "oppilaitokset"
+              },
+              {
+                "name": "opiskelijat_oppilaitokset"
               }
             ]
           },

@@ -1484,13 +1484,33 @@
         "measures": [
           {
             "name": "Opiskelijat",
-            "expression": " IF(DISTINCTCOUNT(Muuttujat[oppija_oid]) < 5, \"1 - 4\", DISTINCTCOUNT(Muuttujat[oppija_oid]))",
+            "expression": [
+              " ",
+              "var lkm = DISTINCTCOUNT(Muuttujat[oppija_oid])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Opiskelijat_s",
             "expression": " DISTINCTCOUNT(Muuttujat[oppija_oid]) ",
             "formatString": "#,0"
+          },
+          {
+            "name": "Oppilaitokset",
+            "expression": "CALCULATE(DISTINCTCOUNT('Muuttujat'[Koodi Oppilaitos]), 'Muuttujat'[Koodi Oppilaitos] <> \"-1\")",
+            "formatString": "0"
+          },
+          {
+            "name": "Opiskelijat / Oppilaitokset",
+            "expression": [
+              "",
+              "var lkm = [Opiskelijat]",
+              "var ehto = ISFILTERED(Muuttujat[Oppilaitos]) --|| ISFILTERED(Muuttujat[oppilaitos_sv]) || ISFILTERED(Muuttujat[oppilaitos_en])",
+              "return IF(ehto || lkm = \"1-4\", lkm, DIVIDE(lkm, [Oppilaitokset]))",
+              ""
+            ],
+            "formatString": "0"
           }
         ],
         "annotations": [
@@ -2703,6 +2723,135 @@
             "measures": [
               {
                 "name": "Opiskelijat"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Oppilaitosverkko",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Ikä"
+              },
+              {
+                "name": "Ikäryhmä"
+              },
+              {
+                "name": "Kansalaisuus"
+              },
+              {
+                "name": "Koodi Koul. järj"
+              },
+              {
+                "name": "Koodi Koul. järj. kunta"
+              },
+              {
+                "name": "Koodi Koul. järj. seutukunta"
+              },
+              {
+                "name": "Koodi Oppilaitoksen kunta"
+              },
+              {
+                "name": "Koodi Oppilaitoksen seutukunta"
+              },
+              {
+                "name": "Koodi Oppilaitos"
+              },
+              {
+                "name": "Koul. järj. AVI"
+              },
+              {
+                "name": "Koul. järj. ELY"
+              },
+              {
+                "name": "Koul. järj. kunnan kielisuhde"
+              },
+              {
+                "name": "Koul. järj. kunta"
+              },
+              {
+                "name": "Koul. järj. kuntaryhmä"
+              },
+              {
+                "name": "Koul. järj. maakunta"
+              },
+              {
+                "name": "Koul. järj. seutukunta"
+              },
+              {
+                "name": "Koul. järj. yritysmuoto"
+              },
+              {
+                "name": "Koulutuksen järjestäjä"
+              },
+              {
+                "name": "Koulutus"
+              },
+              {
+                "name": "Opetuskieli"
+              },
+              {
+                "name": "Oppilaitoksen AVI"
+              },
+              {
+                "name": "Oppilaitoksen ELY"
+              },
+              {
+                "name": "Oppilaitoksen kunnan kielisuhde"
+              },
+              {
+                "name": "Oppilaitoksen kunta"
+              },
+              {
+                "name": "Oppilaitoksen kuntaryhmä"
+              },
+              {
+                "name": "Oppilaitoksen maakunta"
+              },
+              {
+                "name": "Oppilaitoksen seutukunta"
+              },
+              {
+                "name": "Oppilaitos"
+              },
+              {
+                "name": "Oppilaitostyyppi"
+              },
+              {
+                "name": "Oppimäärä"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Suorituskieli"
+              },
+              {
+                "name": "Tavoitetutkinto"
+              },
+              {
+                "name": "Tilastopaiva"
+              },
+              {
+                "name": "Toimipiste"
+              },
+              {
+                "name": "Äidinkieli"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Opiskelijat"
+              },
+              {
+                "name": "Opiskelijat / Oppilaitokset"
+              },
+              {
+                "name": "Oppilaitokset"
               }
             ]
           }
