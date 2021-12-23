@@ -13,11 +13,12 @@ GO
 
 
 
+DROP VIEW IF EXISTS  [sa].[v_hakukohde_kielet]
+GO
 
 
 
-
-ALTER view [sa].[v_hakukohde_kielet] as 
+CREATE view [sa].[v_hakukohde_kielet] as 
 
 
 SELECT 
