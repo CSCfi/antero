@@ -167,6 +167,6 @@ WHERE d5.vuosi is not null and d4.vastaustyyppi <> 'NPS'
 																							
 GO
 
-USE [ANTERO}
+USE [ANTERO]
 
 
