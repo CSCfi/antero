@@ -4299,8 +4299,9 @@
             "name": "Vastanneet",
             "expression": [
               "",
-              "var vastanneet_ei_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[Kiusaamiskysymys]=0,NOT(ISBLANK(Muuttujat[vastaajaid])))",
-              "var vastanneet_kius = CALCULATE([Vastanneet_kius],Muuttujat[Kiusaamiskysymys]=1,NOT(ISBLANK(Muuttujat[vastaajaid])))",
+              "var vastanneet_ei_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),KEEPFILTERS(FILTER(ALL(Muuttujat[Kiusaamiskysymys],Muuttujat[vastaajaid]),[Kiusaamiskysymys]=0 && NOT(ISBLANK(Muuttujat[vastaajaid])))))",
+              "var vastanneet_kius = CALCULATE([Vastanneet_kius],KEEPFILTERS(FILTER(ALL(Muuttujat[Kiusaamiskysymys],Muuttujat[vastaajaid]),[Kiusaamiskysymys]=1 && NOT(ISBLANK(Muuttujat[vastaajaid])))))",
+              "",
               "var summa = CALCULATE(vastanneet_ei_kius+vastanneet_kius)",
               "",
               "return IF(AND(summa<5,summa>0),\"1-4\",summa)",
@@ -4489,7 +4490,7 @@
               "--IF(",
               "--[Vastanneet_perus]=\"<5\";",
               "--BLANK();",
-              "CALCULATE(SUM(muuttujat[numerovalinta]),Muuttujat[Koodit Rahoitusmallikysymys]=1)",
+              "CALCULATE(SUM(muuttujat[numerovalinta]),KEEPFILTERS(Muuttujat[Koodit Rahoitusmallikysymys]=1))",
               "--;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1))",
               "--)"
             ],
@@ -4564,7 +4565,7 @@
               "IF(",
               "\t[ehtoFI]=TRUE()",
               "\t,BLANK()",
-              "\t,CALCULATE(AVERAGE('Muuttujat'[numerovalinta]),FILTER(VALUES(Muuttujat[vastaustyyppi_keskiarvo]),[vastaustyyppi_keskiarvo]=1))",
+              "\t,CALCULATE(AVERAGE('Muuttujat'[numerovalinta]),KEEPFILTERS(Muuttujat[vastaustyyppi_keskiarvo]=1))",
               "\t--;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
               ")"
             ],
@@ -4577,7 +4578,7 @@
               "IF(",
               "\t[ehtoFI]=TRUE()",
               "\t,BLANK()",
-              "\t,CALCULATE(STDEV.P('Muuttujat'[numerovalinta]),FILTER(VALUES(Muuttujat[vastaustyyppi_keskiarvo]),[vastaustyyppi_keskiarvo]=1))",
+              "\t,CALCULATE(STDEV.P('Muuttujat'[numerovalinta]),KEEPFILTERS(Muuttujat[vastaustyyppi_keskiarvo]=1))",
               "\t--;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
               ")"
             ],
@@ -4725,9 +4726,9 @@
             "name": "NPS",
             "expression": [
               "",
-              "var respondents = CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),FILTER(ALL(Muuttujat[vastaustyyppi]),Muuttujat[vastaustyyppi]=\"nps\"))",
-              "var promoters = CALCULATE(CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),FILTER(ALL(Muuttujat[vastaustyyppi]),Muuttujat[vastaustyyppi]=\"nps\")),Muuttujat[numerovalinta]>=9)",
-              "var detractors= CALCULATE(CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),FILTER(ALL(Muuttujat[vastaustyyppi]),Muuttujat[vastaustyyppi]=\"nps\")),Muuttujat[numerovalinta]<=6)",
+              "var respondents = CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),KEEPFILTERS(Muuttujat[vastaustyyppi]=\"nps\"))",
+              "var promoters = CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),KEEPFILTERS(FILTER(ALL(Muuttujat[vastaustyyppi],Muuttujat[numerovalinta]),[vastaustyyppi]=\"nps\" && [numerovalinta]>=9)))",
+              "var detractors= CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),KEEPFILTERS(FILTER(ALL(Muuttujat[vastaustyyppi],Muuttujat[numerovalinta]),[vastaustyyppi]=\"nps\" && [numerovalinta]<=6)))",
               "",
               "return IF([Vastanneet_perus]=\"1-4\" || ISFILTERED([Monivalintavaihtoehto]) || ISFILTERED([Flervalsalternativ]) || ISFILTERED([Multiple choice option]),BLANK(),(promoters-detractors)/respondents*100)"
             ],
@@ -4788,9 +4789,9 @@
               "IF(",
               "\t[Vastanneet_perus]=\"1-4\"",
               "\t,BLANK()",
-              "\t,CALCULATE([kaikki pisteet lkm],FILTER(VALUES(Muuttujat[numerovalinta]),[numerovalinta]=5)",
+              "\t,CALCULATE([kaikki pisteet lkm],KEEPFILTERS(Muuttujat[numerovalinta]=5))",
               "\t --;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
-              "))"
+              ")"
             ],
             "formatString": "#,0"
           },
@@ -4801,9 +4802,8 @@
               "IF(",
               "\t[Vastanneet_perus]=\"1-4\"",
               "\t,BLANK()",
-              "\t,CALCULATE([kaikki pisteet lkm],FILTER(VALUES(Muuttujat[numerovalinta]),[numerovalinta]=4)",
+              "\t,CALCULATE([kaikki pisteet lkm],KEEPFILTERS(Muuttujat[numerovalinta]=4))",
               "\t --;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
-              ")",
               ")"
             ],
             "formatString": "#,0"
@@ -4815,9 +4815,9 @@
               "IF(",
               "\t[Vastanneet_perus]=\"1-4\"",
               "\t,BLANK()",
-              "\t,CALCULATE([kaikki pisteet lkm],FILTER(VALUES(Muuttujat[numerovalinta]),[numerovalinta]=3)",
+              "\t,CALCULATE([kaikki pisteet lkm],KEEPFILTERS(Muuttujat[numerovalinta]=3))",
               "\t --;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
-              "))"
+              ")"
             ],
             "formatString": "#,0"
           },
@@ -4828,9 +4828,9 @@
               "IF(",
               "\t[Vastanneet_perus]=\"1-4\"",
               "\t,BLANK()",
-              "\t,CALCULATE([kaikki pisteet lkm],FILTER(VALUES(Muuttujat[numerovalinta]),[numerovalinta]=2)",
+              "\t,CALCULATE([kaikki pisteet lkm],KEEPFILTERS(Muuttujat[numerovalinta]=2))",
               "\t --;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
-              "))"
+              ")"
             ],
             "formatString": "#,0"
           },
@@ -4841,9 +4841,9 @@
               "IF(",
               "\t[Vastanneet_perus]=\"1-4\"",
               "\t,BLANK()",
-              "\t,CALCULATE([kaikki pisteet lkm],FILTER(VALUES(Muuttujat[numerovalinta]),[numerovalinta]=1)",
+              "\t,CALCULATE([kaikki pisteet lkm],KEEPFILTERS(Muuttujat[numerovalinta]=1))",
               "\t --;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
-              "))"
+              ")"
             ],
             "formatString": "#,0"
           },
