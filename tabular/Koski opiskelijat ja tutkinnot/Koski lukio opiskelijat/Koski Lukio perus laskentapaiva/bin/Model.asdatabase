@@ -1564,7 +1564,7 @@
             "formatString": "#,0"
           },
           {
-            "name": "Oppilaitokset",
+            "name": "Oppilaitosten lukumäärä",
             "expression": [
               "",
               "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[Oppilaitos]))",
@@ -1575,12 +1575,12 @@
             "formatString": "0"
           },
           {
-            "name": "Opiskelijat / Oppilaitokset",
+            "name": "Koulutuksen järjestäjien lukumäärä",
             "expression": [
               "",
-              "var lkm = [Opiskelijat]",
-              "var ehto = ISFILTERED(Muuttujat[Oppilaitos]) --|| ISFILTERED(Muuttujat[oppilaitos_sv]) || ISFILTERED(Muuttujat[oppilaitos_en])",
-              "return IF(ehto || lkm = \"1-4\", lkm, DIVIDE(lkm, [Oppilaitokset]))",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[Koulutuksen järjestäjä]))",
+              "var ehto = ISFILTERED(Muuttujat[Koulutuksen järjestäjä]) --|| ISFILTERED(Muuttujat[_sv]) || ISFILTERED(Muuttujat[_en])",
+              "return IF(ehto, BLANK(), lkm)",
               ""
             ],
             "formatString": "0"
@@ -2969,10 +2969,7 @@
                 "name": "Opiskelijat"
               },
               {
-                "name": "Opiskelijat / Oppilaitokset"
-              },
-              {
-                "name": "Oppilaitokset"
+                "name": "Oppilaitosten lukumäärä"
               }
             ]
           }
