@@ -4551,7 +4551,7 @@
               "IF(",
               "ISFILTERED(Muuttujat[Monivalintavaihtoehto]),",
               "BLANK(),",
-              "CALCULATE(COUNTROWS(Muuttujat),Muuttujat[vastaustyyppi]=\"asteikko5_1\")",
+              "[kaikki pisteet pros]",
               ")"
             ],
             "formatString": "#,0",
@@ -4712,9 +4712,11 @@
           {
             "name": "kaikki pisteet pros",
             "expression": [
-              "CALCULATE(CALCULATE(COUNTROWS(Muuttujat),FILTER(VALUES(Muuttujat[vastaustyyppi]),[vastaustyyppi]=\"asteikko5_1\"))",
-              "\t--;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1))\t",
-              ")"
+              "",
+              "CALCULATE(COUNTROWS(Muuttujat),KEEPFILTERS(FILTER(ALL(Muuttujat[vastaustyyppi],Muuttujat[numerovalinta]),[vastaustyyppi]=\"asteikko5_1\" && NOT(ISBLANK([numerovalinta])))))",
+              "--CALCULATE(COUNTROWS(Muuttujat);KEEPFILTERS(Muuttujat[vastaustyyppi]=\"asteikko5_1\"); KEEPFILTERS(NOT(ISBLANK(Muuttujat[numerovalinta]))))",
+              "--;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1))\t",
+              ""
             ],
             "formatString": "#,0",
             "isHidden": true
@@ -4786,9 +4788,9 @@
               "IF(",
               "\t[Vastanneet_perus]=\"1-4\"",
               "\t,BLANK()",
-              "\t,CALCULATE(CALCULATE([kaikki pisteet lkm]),FILTER(VALUES(Muuttujat[numerovalinta]),[numerovalinta]=5))",
+              "\t,CALCULATE([kaikki pisteet lkm],FILTER(VALUES(Muuttujat[numerovalinta]),[numerovalinta]=5)",
               "\t --;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
-              ")"
+              "))"
             ],
             "formatString": "#,0"
           },
@@ -4799,10 +4801,10 @@
               "IF(",
               "\t[Vastanneet_perus]=\"1-4\"",
               "\t,BLANK()",
-              "\t,CALCULATE(CALCULATE([kaikki pisteet lkm]),FILTER(VALUES(Muuttujat[numerovalinta]),[numerovalinta]=4))",
+              "\t,CALCULATE([kaikki pisteet lkm],FILTER(VALUES(Muuttujat[numerovalinta]),[numerovalinta]=4)",
               "\t --;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
               ")",
-              ""
+              ")"
             ],
             "formatString": "#,0"
           },
@@ -4813,9 +4815,9 @@
               "IF(",
               "\t[Vastanneet_perus]=\"1-4\"",
               "\t,BLANK()",
-              "\t,CALCULATE(CALCULATE([kaikki pisteet lkm]),FILTER(VALUES(Muuttujat[numerovalinta]),[numerovalinta]=3))",
+              "\t,CALCULATE([kaikki pisteet lkm],FILTER(VALUES(Muuttujat[numerovalinta]),[numerovalinta]=3)",
               "\t --;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
-              ")"
+              "))"
             ],
             "formatString": "#,0"
           },
@@ -4826,9 +4828,9 @@
               "IF(",
               "\t[Vastanneet_perus]=\"1-4\"",
               "\t,BLANK()",
-              "\t,CALCULATE(CALCULATE([kaikki pisteet lkm]),FILTER(VALUES(Muuttujat[numerovalinta]),[numerovalinta]=2))",
+              "\t,CALCULATE([kaikki pisteet lkm],FILTER(VALUES(Muuttujat[numerovalinta]),[numerovalinta]=2)",
               "\t --;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
-              ")"
+              "))"
             ],
             "formatString": "#,0"
           },
@@ -4839,9 +4841,9 @@
               "IF(",
               "\t[Vastanneet_perus]=\"1-4\"",
               "\t,BLANK()",
-              "\t,CALCULATE(CALCULATE([kaikki pisteet lkm]),FILTER(VALUES(Muuttujat[numerovalinta]),[numerovalinta]=1))",
+              "\t,CALCULATE([kaikki pisteet lkm],FILTER(VALUES(Muuttujat[numerovalinta]),[numerovalinta]=1)",
               "\t --;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1)",
-              ")"
+              "))"
             ],
             "formatString": "#,0"
           },
