@@ -4727,8 +4727,8 @@
             "expression": [
               "",
               "var respondents = CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),KEEPFILTERS(Muuttujat[vastaustyyppi]=\"nps\"))",
-              "var promoters = CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),KEEPFILTERS(FILTER(ALL(Muuttujat[vastaustyyppi],Muuttujat[numerovalinta]),[vastaustyyppi]=\"nps\" && [numerovalinta]>=9)))",
-              "var detractors= CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),KEEPFILTERS(FILTER(ALL(Muuttujat[vastaustyyppi],Muuttujat[numerovalinta]),[vastaustyyppi]=\"nps\" && [numerovalinta]<=6)))",
+              "var promoters = CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),KEEPFILTERS(Muuttujat[numerovalinta]>=9),KEEPFILTERS(Muuttujat[vastaustyyppi]=\"nps\"))",
+              "var detractors= CALCULATE(DISTINCTCOUNT(Muuttujat[vastaajaid]),KEEPFILTERS(Muuttujat[numerovalinta]<=6),KEEPFILTERS(Muuttujat[vastaustyyppi]=\"nps\"))",
               "",
               "return IF([Vastanneet_perus]=\"1-4\" || ISFILTERED([Monivalintavaihtoehto]) || ISFILTERED([Flervalsalternativ]) || ISFILTERED([Multiple choice option]),BLANK(),(promoters-detractors)/respondents*100)"
             ],
