@@ -154,7 +154,6 @@ FROM (
 	AND f3.taustakysymyksen_tyyppi is null
 	AND f3.vastaustyyppi != 'vapaateksti'
 
-
 ) MAIN_QUERY
 
 LEFT JOIN dw.d_organisaatioluokitus d1a ON d1a.organisaatio_avain like 'oppilaitos_%' and d1a.organisaatio_koodi = MAIN_QUERY.oppilaitoskoodi
