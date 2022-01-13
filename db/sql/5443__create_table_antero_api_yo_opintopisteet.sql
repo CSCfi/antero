@@ -11,7 +11,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE TABLE [dw].[api_yo_opintopisteet](
+CREATE TABLE [api].[yo_opintopisteet](
 	[defaultorder] [bigint] NOT NULL,
 	[tilastovuosi] [int] NULL,
 	[kuukausi] [int] NULL,
