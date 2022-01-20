@@ -8,8 +8,10 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+DROP VIEW IF EXISTS [dw].[v_haku_ja_valinta_kk_yo_keskiarvo] 
+GO
 
-ALTER VIEW [dw].[v_haku_ja_valinta_kk_yo_keskiarvo] AS
+CREATE VIEW [dw].[v_haku_ja_valinta_kk_yo_keskiarvo] AS
 
 SELECT f.[Henkilö OID], f.koulutuksen_alkamisvuosi, f.d_haku_id, f.Hakukohteet, f2.keskiarvo FROM (
 	SELECT DISTINCT CASE WHEN d46.selite_fi in('Hakenut vain ammattikorkeakoulutukseen', 'Hakenut vain yliopistokoulutukseen') THEN d46.selite_fi
