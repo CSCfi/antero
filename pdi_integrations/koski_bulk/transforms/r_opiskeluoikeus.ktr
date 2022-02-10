@@ -435,7 +435,91 @@
     <is_key_private>N</is_key_private>
   </info>
   <notepads>
+    <notepad>
+      <note>Muuta ANTERO db-palvelin ympäristön mukaan!</note>
+      <xloc>1312</xloc>
+      <yloc>432</yloc>
+      <width>270</width>
+      <heigth>26</heigth>
+      <fontname>Segoe UI</fontname>
+      <fontsize>9</fontsize>
+      <fontbold>N</fontbold>
+      <fontitalic>N</fontitalic>
+      <fontcolorred>0</fontcolorred>
+      <fontcolorgreen>0</fontcolorgreen>
+      <fontcolorblue>0</fontcolorblue>
+      <backgroundcolorred>255</backgroundcolorred>
+      <backgroundcolorgreen>205</backgroundcolorgreen>
+      <backgroundcolorblue>112</backgroundcolorblue>
+      <bordercolorred>100</bordercolorred>
+      <bordercolorgreen>100</bordercolorgreen>
+      <bordercolorblue>100</bordercolorblue>
+      <drawshadow>Y</drawshadow>
+    </notepad>
   </notepads>
+  <connection>
+    <name>ANTERO</name>
+    <server>dwitvipusql16.csc.fi</server>
+    <type>MSSQLNATIVE</type>
+    <access>Native</access>
+    <database>Koski_SA</database>
+    <port>1433</port>
+    <username>${DBUSER}</username>
+    <password>${DBPWD}</password>
+    <servername/>
+    <data_tablespace/>
+    <index_tablespace/>
+    <attributes>
+      <attribute>
+        <code>EXTRA_OPTION_MSSQLNATIVE.instance</code>
+        <attribute>sa</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_LOWERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>FORCE_IDENTIFIERS_TO_UPPERCASE</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>IS_CLUSTERED</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>MSSQLUseIntegratedSecurity</code>
+        <attribute>false</attribute>
+      </attribute>
+      <attribute>
+        <code>MSSQL_DOUBLE_DECIMAL_SEPARATOR</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>PORT_NUMBER</code>
+        <attribute>1433</attribute>
+      </attribute>
+      <attribute>
+        <code>PRESERVE_RESERVED_WORD_CASE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>QUOTE_ALL_FIELDS</code>
+        <attribute>N</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_BOOLEAN_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>SUPPORTS_TIMESTAMP_DATA_TYPE</code>
+        <attribute>Y</attribute>
+      </attribute>
+      <attribute>
+        <code>USE_POOLING</code>
+        <attribute>N</attribute>
+      </attribute>
+    </attributes>
+  </connection>
   <connection>
     <name>koski-raportointikanta</name>
     <server>localhost</server>
@@ -534,11 +618,6 @@
       <enabled>Y</enabled>
     </hop>
     <hop>
-      <from>Union values</from>
-      <to>r_opiskeluoikeus csv to sqlserver</to>
-      <enabled>Y</enabled>
-    </hop>
-    <hop>
       <from>yes</from>
       <to>get values from JSON</to>
       <enabled>Y</enabled>
@@ -546,6 +625,36 @@
     <hop>
       <from>get values from JSON</from>
       <to>undefined to null</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Union values</from>
+      <to>r_opiskeluoikeus csv to sqlserver</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>JSON maksuttomuus</from>
+      <to>Boolean to Int</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Boolean to Int</from>
+      <to>Collect data to insert 1</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Is maksuttomuus.maksuton present</from>
+      <to>JSON maksuttomuus</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Collect data to insert 1</from>
+      <to>sa_koski_opiskeluoikeus_maksuttomuusjaksot</to>
+      <enabled>Y</enabled>
+    </hop>
+    <hop>
+      <from>Union values</from>
+      <to>Is maksuttomuus.maksuton present</to>
       <enabled>Y</enabled>
     </hop>
   </order>
@@ -697,7 +806,7 @@
     <name>Union values</name>
     <type>SelectValues</type>
     <description/>
-    <distribute>Y</distribute>
+    <distribute>N</distribute>
     <custom_distribution/>
     <copies>1</copies>
     <partitioning>
@@ -767,6 +876,9 @@
       </field>
       <field>
         <name>vanha_koulutustoimija_nimi</name>
+      </field>
+      <field>
+        <name>vuosiluokkiin_sitoutumaton_opetus</name>
       </field>
       <field>
         <name>data</name>
@@ -852,6 +964,133 @@ var vanha_koulutustoimija_nimi = '';</jsScript_script>
     </GUI>
   </step>
   <step>
+    <name>get values from JSON</name>
+    <type>ScriptValueMod</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <compatible>N</compatible>
+    <optimizationLevel>9</optimizationLevel>
+    <jsScripts>
+      <jsScript>
+        <jsScript_type>0</jsScript_type>
+        <jsScript_name>Script 1</jsScript_name>
+        <jsScript_script>//Script here
+trans_Status = SKIP_TRANSFORMATION; // Poista ohjelman laukaiseva rivi. Ohjelma generoi uusia rivejä datan mukaan 
+try {
+	var koulutustoimija = (JSON.parse(data))['organisaatiohistoria'];
+	var vanha_koulutustoimija_oid;
+	var vanha_koulutustoimija_nimi;
+	var j = -1;
+	var i = 0;
+	var k = 0;
+	var maxpvm = new Date('1900', '01', '01');
+	for (var i = 0; i &lt; koulutustoimija.length;i++ ){
+		k++;
+		try {
+		var d1 =  koulutustoimija[i]['muutospäivä'];
+		var d2 = d1.split('-');
+		var d3 = new Date(d2[0], d2[1], d2[2]);
+
+			if (maxpvm.getTime() &lt; d3.getTime() &amp;&amp; koulutustoimija_oid != koulutustoimija[i]['koulutustoimija']['oid']) {
+				j = i;
+				maxpvm = d3;
+			}
+			else if(maxpvm.getTime() == d3.getTime() &amp;&amp; koulutustoimija_oid != koulutustoimija[i]['koulutustoimija']['oid']){
+				j = i;
+				maxpvm = d3;
+			}
+			else {
+				continue;
+			}
+		}
+		catch(e) {
+		//Alert(e);
+		}
+	}
+	if ( j != -1 || k != 0 ){ // asetetaan uusin ei duplikaattiarvo
+		if ( j != -1 ) {
+			try {
+			vanha_koulutustoimija_oid = koulutustoimija[j]['koulutustoimija']['oid'];
+			}
+			catch(e) { // jos arvoa ei saa luettua tai se on tyhjä
+			vanha_koulutustoimija_oid = '';
+			}
+			try {
+			vanha_koulutustoimija_nimi = koulutustoimija[j]['koulutustoimija']['nimi']['fi'];
+			}
+			catch(e) {
+			vanha_koulutustoimija_nimi = '';
+			}
+		}
+		else if ( k != 0 &amp;&amp; j == -1) { // hakee duplikaateista uusimman
+			try {
+			vanha_koulutustoimija_oid = koulutustoimija[k-1]['koulutustoimija']['oid'];
+			}
+			catch(e) { // jos arvoa ei saa luettua tai se on tyhjä
+			vanha_koulutustoimija_oid = '';
+			}
+			try {
+			vanha_koulutustoimija_nimi = koulutustoimija[k-1]['koulutustoimija']['nimi']['fi'];
+			}
+			catch(e) {
+			vanha_koulutustoimija_nimi = '';
+			}
+		}
+	// Kopioi rivin ja asettaa siihen uudet arvot ja lopuksi luo uuden rivin.
+	var row = createRowCopy(getOutputRowMeta().size());
+	var idx = getInputRowMeta().size();
+	row[idx++] = vanha_koulutustoimija_oid ;
+	row[idx++] = vanha_koulutustoimija_nimi;
+	putRow(row);
+	}//Alert(k);
+
+}
+catch (e){
+//Alert(e);
+}
+
+</jsScript_script>
+      </jsScript>
+    </jsScripts>
+    <fields>
+      <field>
+        <name>vanha_koulutustoimija_oid</name>
+        <rename>vanha_koulutustoimija_oid</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+      <field>
+        <name>vanha_koulutustoimija_nimi</name>
+        <rename>vanha_koulutustoimija_nimi</rename>
+        <type>String</type>
+        <length>-1</length>
+        <precision>-1</precision>
+        <replace>N</replace>
+      </field>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>640</xloc>
+      <yloc>192</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
     <name>is organisaatiohistoria present?</name>
     <type>Dummy</type>
     <description/>
@@ -930,475 +1169,46 @@ if (historia != null) {trans_Status = SKIP_TRANSFORMATION;} // jos dataa ei ole 
       <schema_name/>
     </partitioning>
     <connection>koski-raportointikanta</connection>
-    <sql>SELECT * FROM r_opiskeluoikeus;</sql>
+    <sql>SELECT
+
+  opiskeluoikeus_oid
+, versionumero
+, aikaleima
+, sisaltyy_opiskeluoikeuteen_oid
+, oppija_oid
+, oppilaitos_oid
+, oppilaitos_nimi
+, oppilaitos_kotipaikka
+, oppilaitosnumero
+, koulutustoimija_oid
+, koulutustoimija_nimi
+, koulutusmuoto
+, alkamispaiva
+, paattymispaiva
+, viimeisin_tila
+, lisatiedot_henkilostokoulutus
+, lisatiedot_koulutusvienti
+, lahdejarjestelma_koodiarvo
+, lahdejarjestelma_id
+, luokka
+, oppivelvollisuuden_suorittamiseen_kelpaava
+,CASE
+	WHEN data->'lisätiedot' ->> 'vuosiluokkiinSitoutumatonOpetus' = 'true'
+		THEN 1
+	WHEN data->'lisätiedot' ->> 'vuosiluokkiinSitoutumatonOpetus' = 'false'
+		THEN 0
+	ELSE null
+END AS vuosiluokkiin_sitoutumaton_opetus
+,data
+
+FROM r_opiskeluoikeus;</sql>
     <limit>0</limit>
     <lookup/>
     <execute_each_row>N</execute_each_row>
     <variables_active>N</variables_active>
     <lazy_conversion_active>N</lazy_conversion_active>
     <cached_row_meta_active>N</cached_row_meta_active>
-    <row-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>opiskeluoikeus_oid</name>
-        <length>2147483647</length>
-        <precision>-1</precision>
-        <origin>r_opiskeluoikeus</origin>
-        <comments>opiskeluoikeus_oid</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>Europe/Helsinki</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Integer</type>
-        <storagetype>normal</storagetype>
-        <name>versionumero</name>
-        <length>9</length>
-        <precision>0</precision>
-        <origin>r_opiskeluoikeus</origin>
-        <comments>versionumero</comments>
-        <conversion_Mask>####0;-####0</conversion_Mask>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>Europe/Helsinki</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Timestamp</type>
-        <storagetype>normal</storagetype>
-        <name>aikaleima</name>
-        <length>6</length>
-        <precision>-1</precision>
-        <origin>r_opiskeluoikeus</origin>
-        <comments>aikaleima</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>Europe/Helsinki</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>sisaltyy_opiskeluoikeuteen_oid</name>
-        <length>2147483647</length>
-        <precision>-1</precision>
-        <origin>r_opiskeluoikeus</origin>
-        <comments>sisaltyy_opiskeluoikeuteen_oid</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>Europe/Helsinki</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>oppija_oid</name>
-        <length>2147483647</length>
-        <precision>-1</precision>
-        <origin>r_opiskeluoikeus</origin>
-        <comments>oppija_oid</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>Europe/Helsinki</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>oppilaitos_oid</name>
-        <length>2147483647</length>
-        <precision>-1</precision>
-        <origin>r_opiskeluoikeus</origin>
-        <comments>oppilaitos_oid</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>Europe/Helsinki</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>oppilaitos_nimi</name>
-        <length>2147483647</length>
-        <precision>-1</precision>
-        <origin>r_opiskeluoikeus</origin>
-        <comments>oppilaitos_nimi</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>Europe/Helsinki</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>oppilaitos_kotipaikka</name>
-        <length>2147483647</length>
-        <precision>-1</precision>
-        <origin>r_opiskeluoikeus</origin>
-        <comments>oppilaitos_kotipaikka</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>Europe/Helsinki</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>oppilaitosnumero</name>
-        <length>2147483647</length>
-        <precision>-1</precision>
-        <origin>r_opiskeluoikeus</origin>
-        <comments>oppilaitosnumero</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>Europe/Helsinki</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>koulutustoimija_oid</name>
-        <length>2147483647</length>
-        <precision>-1</precision>
-        <origin>r_opiskeluoikeus</origin>
-        <comments>koulutustoimija_oid</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>Europe/Helsinki</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>koulutustoimija_nimi</name>
-        <length>2147483647</length>
-        <precision>-1</precision>
-        <origin>r_opiskeluoikeus</origin>
-        <comments>koulutustoimija_nimi</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>Europe/Helsinki</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>koulutusmuoto</name>
-        <length>2147483647</length>
-        <precision>-1</precision>
-        <origin>r_opiskeluoikeus</origin>
-        <comments>koulutusmuoto</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>Europe/Helsinki</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Date</type>
-        <storagetype>normal</storagetype>
-        <name>alkamispaiva</name>
-        <length>-1</length>
-        <precision>-1</precision>
-        <origin>r_opiskeluoikeus</origin>
-        <comments>alkamispaiva</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>Europe/Helsinki</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Date</type>
-        <storagetype>normal</storagetype>
-        <name>paattymispaiva</name>
-        <length>-1</length>
-        <precision>-1</precision>
-        <origin>r_opiskeluoikeus</origin>
-        <comments>paattymispaiva</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>Europe/Helsinki</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>viimeisin_tila</name>
-        <length>2147483647</length>
-        <precision>-1</precision>
-        <origin>r_opiskeluoikeus</origin>
-        <comments>viimeisin_tila</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>Europe/Helsinki</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Boolean</type>
-        <storagetype>normal</storagetype>
-        <name>lisatiedot_henkilostokoulutus</name>
-        <length>-1</length>
-        <precision>-1</precision>
-        <origin>r_opiskeluoikeus</origin>
-        <comments>lisatiedot_henkilostokoulutus</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>Europe/Helsinki</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>Boolean</type>
-        <storagetype>normal</storagetype>
-        <name>lisatiedot_koulutusvienti</name>
-        <length>-1</length>
-        <precision>-1</precision>
-        <origin>r_opiskeluoikeus</origin>
-        <comments>lisatiedot_koulutusvienti</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>Europe/Helsinki</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>lahdejarjestelma_koodiarvo</name>
-        <length>2147483647</length>
-        <precision>-1</precision>
-        <origin>r_opiskeluoikeus</origin>
-        <comments>lahdejarjestelma_koodiarvo</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>Europe/Helsinki</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>lahdejarjestelma_id</name>
-        <length>2147483647</length>
-        <precision>-1</precision>
-        <origin>r_opiskeluoikeus</origin>
-        <comments>lahdejarjestelma_id</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>Europe/Helsinki</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-      <value-meta>
-        <type>String</type>
-        <storagetype>normal</storagetype>
-        <name>data</name>
-        <length>-1</length>
-        <precision>-1</precision>
-        <origin>r_opiskeluoikeus</origin>
-        <comments>data</comments>
-        <conversion_Mask/>
-        <decimal_symbol>.</decimal_symbol>
-        <grouping_symbol>,</grouping_symbol>
-        <currency_symbol/>
-        <trim_type>none</trim_type>
-        <case_insensitive>N</case_insensitive>
-        <collator_disabled>Y</collator_disabled>
-        <collator_strength>0</collator_strength>
-        <sort_descending>N</sort_descending>
-        <output_padding>N</output_padding>
-        <date_format_lenient>N</date_format_lenient>
-        <date_format_locale>en_US</date_format_locale>
-        <date_format_timezone>Europe/Helsinki</date_format_timezone>
-        <lenient_string_to_number>N</lenient_string_to_number>
-      </value-meta>
-    </row-meta>
+    <row-meta/>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
@@ -1696,6 +1506,18 @@ if (historia != null) {trans_Status = SKIP_TRANSFORMATION;} // jos dataa ei ole 
         <precision>-1</precision>
       </field>
       <field>
+        <name>vuosiluokkiin_sitoutumaton_opetus</name>
+        <type>Integer</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <nullif/>
+        <trim_type>none</trim_type>
+        <length>-1</length>
+        <precision>-1</precision>
+      </field>
+      <field>
         <name>data</name>
         <type>String</type>
         <format/>
@@ -1754,7 +1576,7 @@ if (historia != null) {trans_Status = SKIP_TRANSFORMATION;} // jos dataa ei ole 
     </remotesteps>
     <GUI>
       <xloc>480</xloc>
-      <yloc>368</yloc>
+      <yloc>592</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
@@ -1836,7 +1658,169 @@ if (historia == null) {trans_Status = SKIP_TRANSFORMATION;} // jos dataa ei ole 
     </GUI>
   </step>
   <step>
-    <name>get values from JSON</name>
+    <name>JSON maksuttomuus</name>
+    <type>JsonInput</type>
+    <description/>
+    <distribute>N</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <include>N</include>
+    <include_field/>
+    <rownum>N</rownum>
+    <addresultfile>N</addresultfile>
+    <readurl>N</readurl>
+    <removeSourceField>N</removeSourceField>
+    <IsIgnoreEmptyFile>Y</IsIgnoreEmptyFile>
+    <doNotFailIfNoFile>Y</doNotFailIfNoFile>
+    <ignoreMissingPath>Y</ignoreMissingPath>
+    <defaultPathLeafToNull>Y</defaultPathLeafToNull>
+    <rownum_field/>
+    <file>
+      <name/>
+      <filemask/>
+      <exclude_filemask/>
+      <file_required>N</file_required>
+      <include_subfolders>N</include_subfolders>
+    </file>
+    <fields>
+      <field>
+        <name>maksuttomuus_maksuton</name>
+        <path>$.lisätiedot.maksuttomuus[*].maksuton</path>
+        <type>Boolean</type>
+        <format/>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>maksuttomuus_alku</name>
+        <path>$.lisätiedot.maksuttomuus[*].alku</path>
+        <type>Date</type>
+        <format>yyyy-MM-dd</format>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+      <field>
+        <name>maksuttomuus_loppu</name>
+        <path>$.lisätiedot.maksuttomuus[*].loppu</path>
+        <type>Date</type>
+        <format>yyyy-MM-dd</format>
+        <currency/>
+        <decimal/>
+        <group/>
+        <length>-1</length>
+        <precision>-1</precision>
+        <trim_type>none</trim_type>
+        <repeat>N</repeat>
+      </field>
+    </fields>
+    <limit>0</limit>
+    <IsInFields>Y</IsInFields>
+    <IsAFile>N</IsAFile>
+    <valueField>data</valueField>
+    <shortFileFieldName/>
+    <pathFieldName/>
+    <hiddenFieldName/>
+    <lastModificationTimeFieldName/>
+    <uriNameFieldName/>
+    <rootUriNameFieldName/>
+    <extensionFieldName/>
+    <sizeFieldName/>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>832</xloc>
+      <yloc>480</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Boolean to Int</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <fields>
+      <field>
+        <name>opiskeluoikeus_oid</name>
+      </field>
+      <field>
+        <name>maksuttomuus_maksuton</name>
+      </field>
+      <field>
+        <name>maksuttomuus_alku</name>
+      </field>
+      <field>
+        <name>maksuttomuus_loppu</name>
+      </field>
+      <field>
+        <name>soure</name>
+      </field>
+      <field>
+        <name>username</name>
+      </field>
+      <field>
+        <name>imp_created</name>
+      </field>
+      <select_unspecified>N</select_unspecified>
+      <meta>
+        <name>maksuttomuus_maksuton</name>
+        <rename>maksuttomuus_maksuton</rename>
+        <type>Integer</type>
+        <length>-2</length>
+        <precision>-2</precision>
+        <conversion_mask/>
+        <date_format_lenient>false</date_format_lenient>
+        <date_format_locale/>
+        <date_format_timezone/>
+        <lenient_string_to_number>false</lenient_string_to_number>
+        <encoding/>
+        <decimal_symbol/>
+        <grouping_symbol/>
+        <currency_symbol/>
+        <storage_type/>
+      </meta>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>992</xloc>
+      <yloc>480</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Is maksuttomuus.maksuton present</name>
     <type>ScriptValueMod</type>
     <description/>
     <distribute>Y</distribute>
@@ -1852,100 +1836,135 @@ if (historia == null) {trans_Status = SKIP_TRANSFORMATION;} // jos dataa ei ole 
       <jsScript>
         <jsScript_type>0</jsScript_type>
         <jsScript_name>Script 1</jsScript_name>
-        <jsScript_script>//Script here
-trans_Status = SKIP_TRANSFORMATION; // Poista ohjelman laukaiseva rivi. Ohjelma generoi uusia rivejä datan mukaan 
-try {
-	var koulutustoimija = (JSON.parse(data))['organisaatiohistoria'];
-	var vanha_koulutustoimija_oid;
-	var vanha_koulutustoimija_nimi;
-	var j = -1;
-	var i = 0;
-	var k = 0;
-	var maxpvm = new Date('1900', '01', '01');
-	for (var i = 0; i &lt; koulutustoimija.length;i++ ){
-		k++;
-		try {
-		var d1 =  koulutustoimija[i]['muutospäivä'];
-		var d2 = d1.split('-');
-		var d3 = new Date(d2[0], d2[1], d2[2]);
-
-			if (maxpvm.getTime() &lt; d3.getTime() &amp;&amp; koulutustoimija_oid != koulutustoimija[i]['koulutustoimija']['oid']) {
-				j = i;
-				maxpvm = d3;
-			}
-			else if(maxpvm.getTime() == d3.getTime() &amp;&amp; koulutustoimija_oid != koulutustoimija[i]['koulutustoimija']['oid']){
-				j = i;
-				maxpvm = d3;
-			}
-			else {
-				continue;
-			}
-		}
-		catch(e) {
-		//Alert(e);
-		}
-	}
-	if ( j != -1 || k != 0 ){ // asetetaan uusin ei duplikaattiarvo
-		if ( j != -1 ) {
-			try {
-			vanha_koulutustoimija_oid = koulutustoimija[j]['koulutustoimija']['oid'];
-			}
-			catch(e) { // jos arvoa ei saa luettua tai se on tyhjä
-			vanha_koulutustoimija_oid = '';
-			}
-			try {
-			vanha_koulutustoimija_nimi = koulutustoimija[j]['koulutustoimija']['nimi']['fi'];
-			}
-			catch(e) {
-			vanha_koulutustoimija_nimi = '';
-			}
-		}
-		else if ( k != 0 &amp;&amp; j == -1) { // hakee duplikaateista uusimman
-			try {
-			vanha_koulutustoimija_oid = koulutustoimija[k-1]['koulutustoimija']['oid'];
-			}
-			catch(e) { // jos arvoa ei saa luettua tai se on tyhjä
-			vanha_koulutustoimija_oid = '';
-			}
-			try {
-			vanha_koulutustoimija_nimi = koulutustoimija[k-1]['koulutustoimija']['nimi']['fi'];
-			}
-			catch(e) {
-			vanha_koulutustoimija_nimi = '';
-			}
-		}
-	// Kopioi rivin ja asettaa siihen uudet arvot ja lopuksi luo uuden rivin.
-	var row = createRowCopy(getOutputRowMeta().size());
-	var idx = getInputRowMeta().size();
-	row[idx++] = vanha_koulutustoimija_oid ;
-	row[idx++] = vanha_koulutustoimija_nimi;
-	putRow(row);
-	}//Alert(k);
-
+        <jsScript_script>trans_Status = CONTINUE_TRANSFORMATION;
+var maksuton = null;
+try{ // Kokeile onnistuuko käännös
+maksuton = (JSON.parse(data))['lisätiedot']['maksuttomuus'][0]['maksuton'];
 }
-catch (e){
-//Alert(e);
-}
-
-</jsScript_script>
+catch(e){} // ei onnistunut
+if (maksuton == null) {trans_Status = SKIP_TRANSFORMATION;} // jos dataa ei ole määritelty, älä jatka ketjua pidemmälle</jsScript_script>
       </jsScript>
     </jsScripts>
+    <fields>    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>656</xloc>
+      <yloc>480</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>Collect data to insert 1</name>
+    <type>SelectValues</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
     <fields>
       <field>
-        <name>vanha_koulutustoimija_oid</name>
-        <rename>vanha_koulutustoimija_oid</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
+        <name>opiskeluoikeus_oid</name>
       </field>
       <field>
-        <name>vanha_koulutustoimija_nimi</name>
-        <rename>vanha_koulutustoimija_nimi</rename>
-        <type>String</type>
-        <length>-1</length>
-        <precision>-1</precision>
-        <replace>N</replace>
+        <name>maksuttomuus_maksuton</name>
+      </field>
+      <field>
+        <name>maksuttomuus_alku</name>
+      </field>
+      <field>
+        <name>maksuttomuus_loppu</name>
+      </field>
+      <field>
+        <name>soure</name>
+      </field>
+      <field>
+        <name>username</name>
+      </field>
+      <field>
+        <name>imp_created</name>
+      </field>
+      <select_unspecified>N</select_unspecified>
+    </fields>
+    <attributes/>
+    <cluster_schema/>
+    <remotesteps>
+      <input>
+      </input>
+      <output>
+      </output>
+    </remotesteps>
+    <GUI>
+      <xloc>1136</xloc>
+      <yloc>480</yloc>
+      <draw>Y</draw>
+    </GUI>
+  </step>
+  <step>
+    <name>sa_koski_opiskeluoikeus_maksuttomuusjaksot</name>
+    <type>TableOutput</type>
+    <description/>
+    <distribute>Y</distribute>
+    <custom_distribution/>
+    <copies>1</copies>
+    <partitioning>
+      <method>none</method>
+      <schema_name/>
+    </partitioning>
+    <connection>ANTERO</connection>
+    <schema>sa</schema>
+    <table>sa_koski_opiskeluoikeus_maksuttomuusjaksot</table>
+    <commit>1000</commit>
+    <truncate>Y</truncate>
+    <ignore_errors>N</ignore_errors>
+    <use_batch>Y</use_batch>
+    <specify_fields>Y</specify_fields>
+    <partitioning_enabled>N</partitioning_enabled>
+    <partitioning_field/>
+    <partitioning_daily>N</partitioning_daily>
+    <partitioning_monthly>Y</partitioning_monthly>
+    <tablename_in_field>N</tablename_in_field>
+    <tablename_field/>
+    <tablename_in_table>Y</tablename_in_table>
+    <return_keys>N</return_keys>
+    <return_field/>
+    <fields>
+      <field>
+        <column_name>opiskeluoikeus_oid</column_name>
+        <stream_name>opiskeluoikeus_oid</stream_name>
+      </field>
+      <field>
+        <column_name>maksuttomuus_maksuton</column_name>
+        <stream_name>maksuttomuus_maksuton</stream_name>
+      </field>
+      <field>
+        <column_name>maksuttomuus_alku</column_name>
+        <stream_name>maksuttomuus_alku</stream_name>
+      </field>
+      <field>
+        <column_name>maksuttomuus_loppu</column_name>
+        <stream_name>maksuttomuus_loppu</stream_name>
+      </field>
+      <field>
+        <column_name>soure</column_name>
+        <stream_name>soure</stream_name>
+      </field>
+      <field>
+        <column_name>username</column_name>
+        <stream_name>username</stream_name>
+      </field>
+      <field>
+        <column_name>imp_created</column_name>
+        <stream_name>imp_created</stream_name>
       </field>
     </fields>
     <attributes/>
@@ -1957,8 +1976,8 @@ catch (e){
       </output>
     </remotesteps>
     <GUI>
-      <xloc>640</xloc>
-      <yloc>192</yloc>
+      <xloc>1424</xloc>
+      <yloc>480</yloc>
       <draw>Y</draw>
     </GUI>
   </step>
