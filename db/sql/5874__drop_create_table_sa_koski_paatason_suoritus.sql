@@ -54,10 +54,10 @@ CREATE TABLE [sa].[sa_koski_paatason_suoritus](
 END
 GO
 
-ALTER TABLE [sa].[sa_koski_paatason_suoritus] DROP CONSTRAINT EXISTS [DF__sa_koski_paatason_suoritus_imp_created]  --DEFAULT (getdate()) FOR [imp_created]
+ALTER TABLE [sa].[sa_koski_paatason_suoritus] DROP CONSTRAINT IF EXISTS [DF__sa_koski_paatason_suoritus_imp_created]  --DEFAULT (getdate()) FOR [imp_created]
 GO
 
-ALTER TABLE [sa].[sa_koski_paatason_suoritus] DROP CONSTRAINT EXISTS [DF__sa_koski_paatason_suoritus_username]  --DEFAULT (suser_sname()) FOR [username]
+ALTER TABLE [sa].[sa_koski_paatason_suoritus] DROP CONSTRAINT IF EXISTS [DF__sa_koski_paatason_suoritus_username]  --DEFAULT (suser_sname()) FOR [username]
 GO
 
 ALTER TABLE [sa].[sa_koski_paatason_suoritus] ADD  CONSTRAINT [DF__sa_koski_paatason_suoritus_imp_created]  DEFAULT (getdate()) FOR [imp_created]
