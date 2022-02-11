@@ -43,7 +43,7 @@ and kk.tyyppi not in ('tyoelamapalaute', 'amk-uraseuranta')
 
 UNION ALL
 
-SELECT
+/*SELECT
 	k.kyselykertaid
 	,oppilaitoskoodi
 	,tutkintokoodi
@@ -65,7 +65,7 @@ GROUP BY k.kyselykertaid
 	,k.[taustatiedot.sopimustyyppi]
 	,k.[taustatiedot.oppisopimuksen_perusta]
 
-UNION ALL
+UNION ALL*/
 
 SELECT
 	vt.[kyselykertaid]
