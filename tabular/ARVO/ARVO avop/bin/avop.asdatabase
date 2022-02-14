@@ -693,6 +693,19 @@
         ],
         "partitions": [
           {
+            "name": "Partitio_1",
+            "source": {
+              "query": "SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE partitioid = 1",
+              "dataSource": "SqlServer dwitvipusql16 antero"
+            },
+            "annotations": [
+              {
+                "name": "QueryEditorSerialization",
+                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE partitioid = 1</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+              }
+            ]
+          },
+          {
             "name": "Partitio_0",
             "mode": "import",
             "source": {
@@ -703,19 +716,6 @@
               {
                 "name": "QueryEditorSerialization",
                 "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE partitioid = 0</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-              }
-            ]
-          },
-          {
-            "name": "Partitio_1",
-            "source": {
-              "query": "SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE partitioid = 1",
-              "dataSource": "SqlServer dwitvipusql16 antero"
-            },
-            "annotations": [
-              {
-                "name": "QueryEditorSerialization",
-                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE partitioid = 1</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
               }
             ]
           }
@@ -765,21 +765,20 @@
             "name": "Vastaajamäärä",
             "expression": [
               "",
-              "var lkm = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1)",
-              "return IF(AND(lkm>0,lkm<5),[alle5],lkm)",
-              ""
+              "var summa = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1)",
+              "return IF(summa<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(),[alle5]),summa)"
             ],
             "formatString": "#,0"
           },
           {
             "name": "Keskiarvo",
             "expression": [
+              "",
               "IF(",
-              "([Vastaajamäärä]=[alle5])",
-              ",BLANK()",
-              ",CALCULATE(AVERAGE([numerovalinta]),Muuttujat[vuosi_tilasto]=1,Muuttujat[vastaustyyppi_keskiarvo]=1)",
-              ")",
-              ""
+              "\t[ehto2FI]=TRUE()",
+              "\t,BLANK()\t",
+              "\t,CALCULATE(AVERAGE([numerovalinta]),Muuttujat[vuosi_tilasto]=1,Muuttujat[vastaustyyppi_keskiarvo]=1)",
+              ")"
             ],
             "formatString": "0.0"
           },
@@ -788,7 +787,7 @@
             "expression": [
               "",
               "var hajonta = CALCULATE(STDEV.P(Muuttujat[numerovalinta]),Muuttujat[vuosi_tilasto]=1,Muuttujat[vastaustyyppi_keskiarvo]=1)",
-              "return IF([Vastaajamäärä]=[alle5],BLANK(),hajonta)",
+              "return IF([ehto2FI]=TRUE(),BLANK(),hajonta)",
               ""
             ],
             "formatString": "0.0"
@@ -798,14 +797,18 @@
             "expression": [
               "",
               "var summa = CALCULATE(SUM(Muuttujat[numerovalinta]),Muuttujat[Koodit Rahoitusmallikysymys]=1,Muuttujat[vuosi_tilasto]=1)",
-              "return IF([Vastaajamäärä]=[alle5],BLANK(),summa)",
+              "return IF([ehto2FI]=TRUE(),BLANK(),summa)",
               ""
             ],
             "formatString": "#,0"
           },
           {
             "name": "Antal personer som svarat",
-            "expression": "[Vastaajamäärä]",
+            "expression": [
+              "",
+              "var summa = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1)",
+              "return IF(summa<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(),[alle5]),summa)"
+            ],
             "formatString": "#,0"
           },
           {
@@ -825,7 +828,11 @@
           },
           {
             "name": "Number of respondents",
-            "expression": "[Vastaajamäärä]",
+            "expression": [
+              "",
+              "var summa = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1)",
+              "return IF(summa<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(),[alle5]),summa)"
+            ],
             "formatString": "#,0"
           },
           {
@@ -861,6 +868,21 @@
           {
             "name": "alle5",
             "expression": "\"1-4\""
+          },
+          {
+            "name": "ehto2FI",
+            "expression": "OR([Vastaajamäärä]=\"1-4\",ISFILTERED(Muuttujat[Monivalintavaihtoehto]))",
+            "isHidden": true
+          },
+          {
+            "name": "ehto2SV",
+            "expression": "OR([Vastaajamäärä]=\"1-4\",ISFILTERED(Muuttujat[Flervalsalternativ]))",
+            "isHidden": true
+          },
+          {
+            "name": "ehto2EN",
+            "expression": "OR([Vastaajamäärä]=\"1-4\",ISFILTERED(Muuttujat[Multiple choice option]))",
+            "isHidden": true
           }
         ],
         "annotations": [

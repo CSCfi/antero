@@ -693,6 +693,19 @@
         ],
         "partitions": [
           {
+            "name": "Partitio_1",
+            "source": {
+              "query": "SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE partitioid = 1",
+              "dataSource": "SqlServer dwitvipusql16 antero"
+            },
+            "annotations": [
+              {
+                "name": "QueryEditorSerialization",
+                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE partitioid = 1</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+              }
+            ]
+          },
+          {
             "name": "Partitio_0",
             "mode": "import",
             "source": {
@@ -705,19 +718,6 @@
                 "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE partitioid = 0</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
               }
             ]
-          },
-          {
-            "name": "Partitio_1",
-            "source": {
-              "query": "SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE partitioid = 1",
-              "dataSource": "SqlServer dwitvipusql16 antero"
-            },
-            "annotations": [
-              {
-                "name": "QueryEditorSerialization",
-                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE partitioid = 1</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-              }
-            ]
           }
         ],
         "measures": [
@@ -725,9 +725,8 @@
             "name": "Vastaajamäärä LIVE",
             "expression": [
               "",
-              "var lkm = DISTINCTCOUNT([vastaajaid])",
-              "return IF(AND(lkm>0,lkm<5),[alle5],lkm)",
-              ""
+              "var summa = CALCULATE(DISTINCTCOUNT([vastaajaid]))",
+              "return IF(summa<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(),[alle5]),summa)"
             ],
             "formatString": "#,0"
           },
@@ -735,9 +734,12 @@
             "name": "Keskiarvo LIVE",
             "expression": [
               "",
-              "IF",
-              "([Vastaajamäärä LIVE]=[alle5],BLANK(),CALCULATE(AVERAGE([numerovalinta]),Muuttujat[vastaustyyppi_keskiarvo]=1)",
-              ")"
+              "IF(",
+              "\tOR([Vastaajamäärä LIVE]=\"1-4\",ISFILTERED(Muuttujat[Monivalintavaihtoehto]))",
+              "\t,BLANK()\t",
+              "\t,CALCULATE(AVERAGE([numerovalinta]),Muuttujat[vastaustyyppi_keskiarvo]=1)",
+              ")",
+              ""
             ],
             "formatString": "0.0"
           },
@@ -746,8 +748,7 @@
             "expression": [
               "",
               "var hajonta = CALCULATE(STDEV.P(Muuttujat[numerovalinta]),Muuttujat[vastaustyyppi_keskiarvo]=1)",
-              "return IF([Vastaajamäärä LIVE]=[alle5],BLANK(),hajonta)",
-              ""
+              "return IF(OR([Vastaajamäärä LIVE]=\"1-4\",ISFILTERED(Muuttujat[Monivalintavaihtoehto])),BLANK(),hajonta)"
             ],
             "formatString": "0.0"
           },
@@ -756,8 +757,7 @@
             "expression": [
               "",
               "var summa = CALCULATE(SUM(Muuttujat[numerovalinta]),Muuttujat[Koodit Rahoitusmallikysymys]=1)",
-              "return IF([Vastaajamäärä LIVE]=[alle5],BLANK(),summa)",
-              ""
+              "return IF(OR([Vastaajamäärä LIVE]=\"1-4\",ISFILTERED(Muuttujat[Monivalintavaihtoehto])),BLANK(),summa)"
             ],
             "formatString": "#,0"
           },
@@ -765,21 +765,20 @@
             "name": "Vastaajamäärä",
             "expression": [
               "",
-              "var lkm = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1)",
-              "return IF(AND(lkm>0,lkm<5),[alle5],lkm)",
-              ""
+              "var summa = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1)",
+              "return IF(summa<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(),[alle5]),summa)"
             ],
             "formatString": "#,0"
           },
           {
             "name": "Keskiarvo",
             "expression": [
+              "",
               "IF(",
-              "([Vastaajamäärä]=[alle5])",
-              ",BLANK()",
-              ",CALCULATE(AVERAGE([numerovalinta]),Muuttujat[vuosi_tilasto]=1,Muuttujat[vastaustyyppi_keskiarvo]=1)",
-              ")",
-              ""
+              "\t[ehto2FI]=TRUE()",
+              "\t,BLANK()\t",
+              "\t,CALCULATE(AVERAGE([numerovalinta]),Muuttujat[vuosi_tilasto]=1,Muuttujat[vastaustyyppi_keskiarvo]=1)",
+              ")"
             ],
             "formatString": "0.0"
           },
@@ -788,7 +787,7 @@
             "expression": [
               "",
               "var hajonta = CALCULATE(STDEV.P(Muuttujat[numerovalinta]),Muuttujat[vuosi_tilasto]=1,Muuttujat[vastaustyyppi_keskiarvo]=1)",
-              "return IF([Vastaajamäärä]=[alle5],BLANK(),hajonta)",
+              "return IF([ehto2FI]=TRUE(),BLANK(),hajonta)",
               ""
             ],
             "formatString": "0.0"
@@ -798,49 +797,87 @@
             "expression": [
               "",
               "var summa = CALCULATE(SUM(Muuttujat[numerovalinta]),Muuttujat[Koodit Rahoitusmallikysymys]=1,Muuttujat[vuosi_tilasto]=1)",
-              "return IF([Vastaajamäärä]=[alle5],BLANK(),summa)",
+              "return IF([ehto2FI]=TRUE(),BLANK(),summa)",
               ""
             ],
             "formatString": "#,0"
           },
           {
             "name": "Antal personer som svarat",
-            "expression": "[Vastaajamäärä]",
+            "expression": [
+              "",
+              "var summa = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1)",
+              "return IF(summa<5,IF(OR(summa=0,ISFILTERED([Flervalsalternativ])),BLANK(),[alle5]),summa)"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Medeltal",
-            "expression": "[Keskiarvo]",
+            "expression": [
+              "",
+              "IF(",
+              "\t[ehto2SV]=TRUE()",
+              "\t,BLANK()\t",
+              "\t,CALCULATE(AVERAGE([numerovalinta]),Muuttujat[vuosi_tilasto]=1,Muuttujat[vastaustyyppi_keskiarvo]=1)",
+              ")"
+            ],
             "formatString": "0.0"
           },
           {
             "name": "Standardavvikelse",
-            "expression": "[Keskihajonta]",
+            "expression": [
+              "",
+              "var hajonta = CALCULATE(STDEV.P(Muuttujat[numerovalinta]),Muuttujat[vuosi_tilasto]=1,Muuttujat[vastaustyyppi_keskiarvo]=1)",
+              "return IF([ehto2SV]=TRUE(),BLANK(),hajonta)"
+            ],
             "formatString": "0.0"
           },
           {
             "name": "Poäng",
-            "expression": "[Pisteet]",
+            "expression": [
+              "",
+              "var summa = CALCULATE(SUM(Muuttujat[numerovalinta]),Muuttujat[Koodit Rahoitusmallikysymys]=1,Muuttujat[vuosi_tilasto]=1)",
+              "return IF([ehto2SV]=TRUE(),BLANK(),summa)"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Number of respondents",
-            "expression": "[Vastaajamäärä]",
+            "expression": [
+              "",
+              "var summa = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1)",
+              "return IF(summa<5,IF(OR(summa=0,ISFILTERED([Multiple choice option])),BLANK(),[alle5]),summa)"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Average",
-            "expression": "[Keskiarvo]",
+            "expression": [
+              "",
+              "IF(",
+              "\t[ehto2EN]=TRUE()",
+              "\t,BLANK()\t",
+              "\t,CALCULATE(AVERAGE([numerovalinta]),Muuttujat[vuosi_tilasto]=1,Muuttujat[vastaustyyppi_keskiarvo]=1)",
+              ")"
+            ],
             "formatString": "0.0"
           },
           {
             "name": "Standard deviation",
-            "expression": "[Keskihajonta]",
+            "expression": [
+              "",
+              "var hajonta = CALCULATE(STDEV.P(Muuttujat[numerovalinta]),Muuttujat[vuosi_tilasto]=1,Muuttujat[vastaustyyppi_keskiarvo]=1)",
+              "return IF([ehto2EN]=TRUE(),BLANK(),hajonta)"
+            ],
             "formatString": "0.0"
           },
           {
             "name": "Score",
-            "expression": "[Pisteet]",
+            "expression": [
+              "",
+              "var summa = CALCULATE(SUM(Muuttujat[numerovalinta]),Muuttujat[Koodit Rahoitusmallikysymys]=1,Muuttujat[vuosi_tilasto]=1)",
+              "return IF([ehto2EN]=TRUE(),BLANK(),summa)"
+            ],
             "formatString": "#,0"
           },
           {
@@ -861,6 +898,21 @@
           {
             "name": "alle5",
             "expression": "\"1-4\""
+          },
+          {
+            "name": "ehto2FI",
+            "expression": "OR([Vastaajamäärä]=\"1-4\",ISFILTERED(Muuttujat[Monivalintavaihtoehto]))",
+            "isHidden": true
+          },
+          {
+            "name": "ehto2SV",
+            "expression": "OR([Vastaajamäärä]=\"1-4\",ISFILTERED(Muuttujat[Flervalsalternativ]))",
+            "isHidden": true
+          },
+          {
+            "name": "ehto2EN",
+            "expression": "OR([Vastaajamäärä]=\"1-4\",ISFILTERED(Muuttujat[Multiple choice option]))",
+            "isHidden": true
           }
         ],
         "annotations": [
