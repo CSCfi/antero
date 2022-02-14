@@ -4300,11 +4300,12 @@
             "expression": [
               "",
               "var vastanneet_ei_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),KEEPFILTERS(FILTER(ALL(Muuttujat[Kiusaamiskysymys],Muuttujat[vastaajaid]),[Kiusaamiskysymys]=0 && NOT(ISBLANK(Muuttujat[vastaajaid])))))",
-              "var vastanneet_kius = CALCULATE([Vastanneet_kius],KEEPFILTERS(FILTER(ALL(Muuttujat[Kiusaamiskysymys],Muuttujat[vastaajaid]),[Kiusaamiskysymys]=1 && NOT(ISBLANK(Muuttujat[vastaajaid])))))",
-              "",
+              "var vastanneet_ei_kius_ylataso = CALCULATE(DISTINCTCOUNT([vastaajaid]),KEEPFILTERS(FILTER(ALL(Muuttujat[Kiusaamiskysymys],Muuttujat[vastaajaid]),[Kiusaamiskysymys]=0 && NOT(ISBLANK(Muuttujat[vastaajaid])))),ALL(Muuttujat[Monivalintavaihtoehto]))",
+              "var vastanneet_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),KEEPFILTERS(FILTER(ALL(Muuttujat[Kiusaamiskysymys],Muuttujat[vastaajaid]),[Kiusaamiskysymys]=1 && NOT(ISBLANK(Muuttujat[vastaajaid])))))",
               "var summa = CALCULATE(vastanneet_ei_kius+vastanneet_kius)",
               "",
-              "return IF(summa<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(),\"1-4\"),summa)"
+              "return IF(vastanneet_ei_kius_ylataso<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(),\"1-4\"),summa)",
+              ""
             ],
             "formatString": "#,0"
           },
@@ -4486,12 +4487,12 @@
           {
             "name": "Pisteet",
             "expression": [
-              "--IF(",
-              "--[Vastanneet_perus]=\"<5\";",
-              "--BLANK();",
-              "CALCULATE(SUM(muuttujat[numerovalinta]),KEEPFILTERS(Muuttujat[Koodit Rahoitusmallikysymys]=1))",
-              "--;FILTER(ALL(Muuttujat[pohjakoulutus_priorisointi_vastaajaid]);Muuttujat[pohjakoulutus_priorisointi_vastaajaid]=1))",
-              "--)"
+              "",
+              "IF(",
+              "\t[ehtoFI]=TRUE()",
+              "\t,BLANK()",
+              "\t,CALCULATE(SUM(muuttujat[numerovalinta]),KEEPFILTERS(Muuttujat[Koodit Rahoitusmallikysymys]=1))",
+              ")"
             ],
             "formatString": "#,0"
           },
@@ -4625,7 +4626,14 @@
           },
           {
             "name": "Poäng",
-            "expression": "[Pisteet]",
+            "expression": [
+              "",
+              "IF(",
+              "\t[ehtoSV]=TRUE()",
+              "\t,BLANK()",
+              "\t,CALCULATE(SUM(muuttujat[numerovalinta]),KEEPFILTERS(Muuttujat[Koodit Rahoitusmallikysymys]=1))",
+              ")"
+            ],
             "formatString": "#,0"
           },
           {
@@ -4685,7 +4693,14 @@
           },
           {
             "name": "Score",
-            "expression": "[Pisteet]",
+            "expression": [
+              "",
+              "IF(",
+              "\t[ehtoEN]=TRUE()",
+              "\t,BLANK()",
+              "\t,CALCULATE(SUM(muuttujat[numerovalinta]),KEEPFILTERS(Muuttujat[Koodit Rahoitusmallikysymys]=1))",
+              ")"
+            ],
             "formatString": "#,0"
           },
           {
@@ -4990,6 +5005,19 @@
             "expression": "[1 piste %]+[2 pistettä %]+[3 pistettä %]+[4 pistettä %]+[5 pistettä %]",
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "isHidden": true
+          },
+          {
+            "name": "Vastanneet testi",
+            "expression": [
+              "",
+              "var vastanneet_ei_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),KEEPFILTERS(FILTER(ALL(Muuttujat[Kiusaamiskysymys],Muuttujat[vastaajaid]),[Kiusaamiskysymys]=0 && NOT(ISBLANK(Muuttujat[vastaajaid])))))",
+              "var vastanneet_ei_kius_ylataso = CALCULATE(DISTINCTCOUNT([vastaajaid]),KEEPFILTERS(FILTER(ALL(Muuttujat[Kiusaamiskysymys],Muuttujat[vastaajaid]),[Kiusaamiskysymys]=0 && NOT(ISBLANK(Muuttujat[vastaajaid])))),ALL(Muuttujat[Monivalintavaihtoehto]))",
+              "var vastanneet_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),KEEPFILTERS(FILTER(ALL(Muuttujat[Kiusaamiskysymys],Muuttujat[vastaajaid]),[Kiusaamiskysymys]=1 && NOT(ISBLANK(Muuttujat[vastaajaid])))))",
+              "var summa = CALCULATE(vastanneet_ei_kius+vastanneet_kius)",
+              "",
+              "return IF(vastanneet_ei_kius_ylataso<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(),\"1-4\"),summa)",
+              ""
+            ]
           }
         ],
         "annotations": [
