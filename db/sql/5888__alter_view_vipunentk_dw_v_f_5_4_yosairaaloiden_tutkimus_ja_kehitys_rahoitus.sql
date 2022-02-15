@@ -25,7 +25,6 @@ ALTER VIEW [dbo].[v_f_5_4_yosairaaloiden_tutkimus_ja_kehitys_rahoitus] as
 -- Kysely
 -- Select * from VipunenTK_DW.dbo.v_f_5_4_yosairaaloiden_tutkimus_ja_kehitys_rahoitus
 
-
 SELECT 
 	   tilastovuosi = [tilv]
       ,[tilv_date]
@@ -420,6 +419,3 @@ Select
 From VipunenTK_DW.[dbo].[sa_5_4_yosairaaloiden_tutkimus_ja_kehitys] 
 Where BUDJETTI <> 0.0 and BUDJETTI is not null
  ) kaikki
-
-
-GO
