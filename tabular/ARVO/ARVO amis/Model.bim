@@ -880,17 +880,20 @@
           {
             "name": "Suorituskieli",
             "dataType": "string",
-            "sourceColumn": "Suorituskieli"
+            "sourceColumn": "Suorituskieli",
+            "displayFolder": "Koulutusmuuttujat"
           },
           {
             "name": "Studiespråk",
             "dataType": "string",
-            "sourceColumn": "Studiespråk"
+            "sourceColumn": "Studiespråk",
+            "displayFolder": "Utbildningsvariabler"
           },
           {
             "name": "Language of education",
             "dataType": "string",
-            "sourceColumn": "Language of education"
+            "sourceColumn": "Language of education",
+            "displayFolder": "Education variables"
           },
           {
             "name": "Tilastovuosi",
@@ -4260,14 +4263,17 @@
             "name": "Vastanneet_kius_filter",
             "expression": [
               "CALCULATE(",
-              "CALCULATE(COUNTROWS(Muuttujat)",
-              ",ALL(Muuttujat)",
-              ",VALUES(Muuttujat[Koulutuksen järjestäjä])",
-              ",VALUES(Muuttujat[Oppilaitos])",
-              ",VALUES(Muuttujat[Kysely])",
-              ",VALUES(Muuttujat[Kyselyn kohderyhmä])",
-              ",VALUES(Muuttujat[Kysymys])",
-              ",VALUES(Muuttujat[Monivalintavaihtoehto]))",
+              "CALCULATE(",
+              "\tCOUNTROWS(Muuttujat)",
+              "\t,ALL(Muuttujat)",
+              "\t,VALUES(Muuttujat[Koulutuksen järjestäjä])",
+              "\t,VALUES(Muuttujat[Oppilaitos])",
+              "\t,VALUES(Muuttujat[Kysely])",
+              "\t,VALUES(Muuttujat[Kyselyn kohderyhmä])",
+              "\t,VALUES(Muuttujat[Kysymys])",
+              "\t,VALUES(Muuttujat[Monivalintavaihtoehto])",
+              "\t,VALUES(Muuttujat[Rahoituskausi])",
+              ")",
               ",Muuttujat[Kiusaamiskysymys]=1",
               ")",
               ""
@@ -4299,13 +4305,10 @@
             "name": "Vastanneet",
             "expression": [
               "",
-              "var vastanneet_ei_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),KEEPFILTERS(FILTER(ALL(Muuttujat[Kiusaamiskysymys],Muuttujat[vastaajaid]),[Kiusaamiskysymys]=0 && NOT(ISBLANK(Muuttujat[vastaajaid])))))",
-              "var vastanneet_ei_kius_ylataso = CALCULATE(DISTINCTCOUNT([vastaajaid]),KEEPFILTERS(FILTER(ALL(Muuttujat[Kiusaamiskysymys],Muuttujat[vastaajaid]),[Kiusaamiskysymys]=0 && NOT(ISBLANK(Muuttujat[vastaajaid])))),ALL(Muuttujat[Monivalintavaihtoehto]))",
-              "var vastanneet_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),KEEPFILTERS(FILTER(ALL(Muuttujat[Kiusaamiskysymys],Muuttujat[vastaajaid]),[Kiusaamiskysymys]=1 && NOT(ISBLANK(Muuttujat[vastaajaid])))))",
-              "var summa = CALCULATE(vastanneet_ei_kius+vastanneet_kius)",
-              "",
-              "return IF(vastanneet_ei_kius_ylataso<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(),\"1-4\"),summa)",
-              ""
+              "var vastanneet_ei_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[Kiusaamiskysymys]=0,NOT(ISBLANK(Muuttujat[vastaajaid])))",
+              "var vastanneet_kius = CALCULATE([Vastanneet_kius],Muuttujat[Kiusaamiskysymys]=1,NOT(ISBLANK(Muuttujat[vastaajaid])))",
+              "var lkm = CALCULATE(vastanneet_ei_kius+vastanneet_kius)",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", lkm))"
             ],
             "formatString": "#,0"
           },
