@@ -42,6 +42,7 @@ td <- tempdir()
 download.file("https://cordis.europa.eu/data/reference/cordisref-H2020programmes-csv.zip",tf, mode = "wb")
 file.names <- unzip(tf, exdir = td)
 data5 = read.csv(file.names, header = TRUE, sep = ";", encoding="UTF-8")
+names(data5)[1] <- "X.U.FEFF.id"
 
 # topics
 tf2 <- tempfile()
@@ -49,6 +50,7 @@ td2 <- tempdir()
 download.file("https://cordis.europa.eu/data/reference/cordisref-H2020topics-csv.zip",tf2, mode = "wb")
 file.names <- unzip(tf2, exdir = td2)
 data6 = read.csv(file.names, header = TRUE, sep = ";", encoding="UTF-8")
+names(data6)[1] <- "X.U.FEFF.id"
 
 #funding schemes
 data7 <- read.csv("https://cordis.europa.eu/data/reference/cordisref-projectFundingSchemeCategory.csv", header = TRUE, sep = ";", encoding="UTF-8")
