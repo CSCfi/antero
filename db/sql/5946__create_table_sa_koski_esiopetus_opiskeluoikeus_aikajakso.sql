@@ -1,11 +1,6 @@
 USE [Koski_SA]
 GO
 
-ALTER TABLE [sa].[sa_koski_esiopetus_opiskeluoikeus_aikajakso] DROP CONSTRAINT IF EXISTS [DF__sa_koski_esiopetus_opiskeluoikeus_aikajakso_username]
-GO
-
-ALTER TABLE [sa].[sa_koski_esiopetus_opiskeluoikeus_aikajakso] DROP CONSTRAINT IF EXISTS [DF__sa_koski_esiopetus_opiskeluoikeus_aikajakso_imp_created]
-GO
 
 /****** Object:  Table [sa].[sa_koski_esiopetus_opiskeluoikeus_aikajakso]    Script Date: 25.2.2022 22:11:32 ******/
 DROP TABLE IF EXISTS [sa].[sa_koski_esiopetus_opiskeluoikeus_aikajakso]
