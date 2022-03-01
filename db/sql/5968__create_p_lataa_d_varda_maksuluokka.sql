@@ -1,4 +1,4 @@
-ï»¿USE [ANTERO]
+USE [ANTERO]
 GO
 
 /****** Object:  StoredProcedure [dw].[p_lataa_d_varda_maksuluokka]    Script Date: 1.3.2022 15.03.14 ******/
@@ -54,10 +54,10 @@ INSERT INTO [dw].[d_varda_maksuluokka]
 		   ,'Kunta'
            ,'Maksu 0 e'
            ,'Avgift 0 e'
-           ,'KÃ¤Ã¤nnÃ¶s puuttuu'
+           ,'Käännös puuttuu'
            ,'Maksu 0 e'
            ,'Avgift 0 e'
-           ,'KÃ¤Ã¤nnÃ¶s puuttuu'
+           ,'Käännös puuttuu'
 		   ,1
            ,'2021-04-14'
            ,NULL
@@ -67,12 +67,12 @@ INSERT INTO [dw].[d_varda_maksuluokka]
 		   ,'2020'
 		   ,'288'
            ,'Kunta'
-		   ,'Asiakasmaksu pienimmÃ¤n kerÃ¤ttÃ¤vÃ¤n ja enimmÃ¤ismaksun vÃ¤lillÃ¤'
-           ,'KÃ¤Ã¤nnÃ¶s puuttuu'
-           ,'KÃ¤Ã¤nnÃ¶s puuttuu'
-           ,'Asiakasmaksu pienimmÃ¤n kerÃ¤ttÃ¤vÃ¤n ja enimmÃ¤ismaksun vÃ¤lillÃ¤'
-           ,'KÃ¤Ã¤nnÃ¶s puuttuu'
-           ,'KÃ¤Ã¤nnÃ¶s puuttuu'
+		   ,'Asiakasmaksu pienimmän kerättävän ja enimmäismaksun välillä'
+           ,'Käännös puuttuu'
+           ,'Käännös puuttuu'
+           ,'Asiakasmaksu pienimmän kerättävän ja enimmäismaksun välillä'
+           ,'Käännös puuttuu'
+           ,'Käännös puuttuu'
 		   ,2
            ,'2021-04-14'
            ,NULL
@@ -82,12 +82,12 @@ INSERT INTO [dw].[d_varda_maksuluokka]
 		   ,'2020'
 		   ,NULL
            ,'Kunta'
-           ,'EnimmÃ¤ismaksu'
-           ,'KÃ¤Ã¤nnÃ¶s puuttuu'
-           ,'KÃ¤Ã¤nnÃ¶s puuttuu'
-           ,'EnimmÃ¤ismaksu'
-           ,'KÃ¤Ã¤nnÃ¶s puuttuu'
-           ,'KÃ¤Ã¤nnÃ¶s puuttuu'
+           ,'Enimmäismaksu'
+           ,'Käännös puuttuu'
+           ,'Käännös puuttuu'
+           ,'Enimmäismaksu'
+           ,'Käännös puuttuu'
+           ,'Käännös puuttuu'
 		   ,3
            ,'2021-04-14'
            ,NULL
@@ -159,10 +159,10 @@ INSERT INTO [dw].[d_varda_maksuluokka]
            ,'Kunta'
            ,'Maksu 0 e'
            ,'Avgift 0 e'
-           ,'KÃ¤Ã¤nnÃ¶s puuttuu'
+           ,'Käännös puuttuu'
            ,'Maksu 0 e'
            ,'Avgift 0 e'
-           ,'KÃ¤Ã¤nnÃ¶s puuttuu'
+           ,'Käännös puuttuu'
 		   ,1
            ,'2021-04-14'
            ,NULL
@@ -172,12 +172,12 @@ INSERT INTO [dw].[d_varda_maksuluokka]
 		   ,'2021'
 		   ,'288'
            ,'Kunta'
-		   ,'Asiakasmaksu pienimmÃ¤n kerÃ¤ttÃ¤vÃ¤n ja enimmÃ¤ismaksun vÃ¤lillÃ¤'
-           ,'KÃ¤Ã¤nnÃ¶s puuttuu'
-           ,'KÃ¤Ã¤nnÃ¶s puuttuu'
-           ,'Asiakasmaksu pienimmÃ¤n kerÃ¤ttÃ¤vÃ¤n ja enimmÃ¤ismaksun vÃ¤lillÃ¤'
-           ,'KÃ¤Ã¤nnÃ¶s puuttuu'
-           ,'KÃ¤Ã¤nnÃ¶s puuttuu'
+		   ,'Asiakasmaksu pienimmän kerättävän ja enimmäismaksun välillä'
+           ,'Käännös puuttuu'
+           ,'Käännös puuttuu'
+           ,'Asiakasmaksu pienimmän kerättävän ja enimmäismaksun välillä'
+           ,'Käännös puuttuu'
+           ,'Käännös puuttuu'
 		   ,2
            ,'2021-04-14'
            ,NULL
@@ -187,12 +187,12 @@ INSERT INTO [dw].[d_varda_maksuluokka]
 		   	,'2021'
 		   ,NULL
            ,'Kunta'
-           ,'EnimmÃ¤ismaksu'
-           ,'KÃ¤Ã¤nnÃ¶s puuttuu'
-           ,'KÃ¤Ã¤nnÃ¶s puuttuu'
-           ,'EnimmÃ¤ismaksu'
-           ,'KÃ¤Ã¤nnÃ¶s puuttuu'
-           ,'KÃ¤Ã¤nnÃ¶s puuttuu'
+           ,'Enimmäismaksu'
+           ,'Käännös puuttuu'
+           ,'Käännös puuttuu'
+           ,'Enimmäismaksu'
+           ,'Käännös puuttuu'
+           ,'Käännös puuttuu'
            ,3
 		   ,'2021-04-14'
            ,NULL
