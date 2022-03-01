@@ -10,6 +10,8 @@ GO
 
 
 
+
+
 --- jarj: tuntim‰‰r‰, ik‰ryhm‰, varhaiskasvatuspaikat luokittelu, 
 
 CREATE or ALTER VIEW [dw].[v_varda_varhaiskasvatustiedot] AS
