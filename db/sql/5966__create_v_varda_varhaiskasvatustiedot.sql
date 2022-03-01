@@ -1,4 +1,4 @@
-ÔªøUSE [ANTERO]
+USE [ANTERO]
 GO
 
 /****** Object:  View [dw].[v_varda_varhaiskasvatustiedot]    Script Date: 1.3.2022 15.02.02 ******/
@@ -10,7 +10,7 @@ GO
 
 
 
---- jarj: tuntim√§√§r√§, ik√§ryhm√§, varhaiskasvatuspaikat luokittelu, 
+--- jarj: tuntim‰‰r‰, ik‰ryhm‰, varhaiskasvatuspaikat luokittelu, 
 
 CREATE or ALTER VIEW [dw].[v_varda_varhaiskasvatustiedot] AS
 
@@ -20,11 +20,11 @@ CREATE or ALTER VIEW [dw].[v_varda_varhaiskasvatustiedot] AS
 	  alue.kunta_en as kotikunta_en,
 	  alue.kunta_sv as kotikunta_sv,
 	  alue.kunta_koodi as kotikunta_koodi,
-	  --When changing ik√§ check tilastointi-column as well
-	  DATEDIFF(year,henkilo_syntyma_pvm, cast(concat(vaka.tilastovuosi, '-12-31') as date)) AS ik√§,
-	  ikar.kuvaus_fi as ik√§ryhm√§_fi,
-	  ikar.kuvaus_en as ik√§ryhm√§_en,
-	  ikar.kuvaus_sv as ik√§ryhm√§_sv,	  
+	  --When changing ik‰ check tilastointi-column as well
+	  DATEDIFF(year,henkilo_syntyma_pvm, cast(concat(vaka.tilastovuosi, '-12-31') as date)) AS ik‰,
+	  ikar.kuvaus_fi as ik‰ryhm‰_fi,
+	  ikar.kuvaus_en as ik‰ryhm‰_en,
+	  ikar.kuvaus_sv as ik‰ryhm‰_sv,	  
 	  --Only the following languages are wanted on the report, rest are masked
 	  case when kieli.koodi in ('SEIN','SEPO','SEKO','SE') then (select nimi_fi from dw.d_varda_kielikoodistoopetushallinto where koodi = 'se')
 		   when kieli.koodi in ('FI','SV', 'EN','VK') then kieli.nimi_fi
@@ -43,7 +43,7 @@ CREATE or ALTER VIEW [dw].[v_varda_varhaiskasvatustiedot] AS
 		   else (select jarj_nro from dw.d_varda_kielikoodistoopetushallinto where koodi = 'XX')
 		   end as aidinkieli_jarj,
 	  case	when sukup.sukupuoli_koodi = 1 then 'Poika'
-			when sukup.sukupuoli_koodi = 2 then 'Tytt√∂'
+			when sukup.sukupuoli_koodi = 2 then 'Tyttˆ'
 			end as sukupuoli_fi,
 	case when sukup.sukupuoli_koodi = 1 then 'Male'
 		when sukup.sukupuoli_koodi = 2 then 'Female'
@@ -71,9 +71,9 @@ CREATE or ALTER VIEW [dw].[v_varda_varhaiskasvatustiedot] AS
 	  kytkin4.kytkin_en as pikakasittely_kytkin_en,
 	  kytkin4.kytkin_sv as pikakasittely_kytkin_sv,
 	  vakapaatos_tuntimaara_viikossa as tuntimaara_viikossa,
-	  tunti_ast.nimi_fi as tuntim√§√§r√§_asteikko_fi,
-	  tunti_ast.nimi_en as tuntim√§√§r√§_asteikko_en,
-	  tunti_ast.nimi_sv as tuntim√§√§r√§_asteikko_sv,
+	  tunti_ast.nimi_fi as tuntim‰‰r‰_asteikko_fi,
+	  tunti_ast.nimi_en as tuntim‰‰r‰_asteikko_en,
+	  tunti_ast.nimi_sv as tuntim‰‰r‰_asteikko_sv,
 	  vaka.vakasuhde_id,
 	  vaka.lapsi_id,
 	  --vakasuhde_alkamis_pvm,
@@ -111,8 +111,8 @@ CREATE or ALTER VIEW [dw].[v_varda_varhaiskasvatustiedot] AS
 	  --tp.varhaiskasvatuspaikat,
 	  --tp.alkamis_pvm,
 	  --tp.paattymis_pvm,
-	  tunti_ast.jarj_nro as tuntim√§√§r√§_asteikko_jarj,
-	  ikar.jarj_nro as ik√§ryhm√§_jarj,
+	  tunti_ast.jarj_nro as tuntim‰‰r‰_asteikko_jarj,
+	  ikar.jarj_nro as ik‰ryhm‰_jarj,
 	  tm.jarjestys as toimintamuoto_jarj,
 	  jm.jarj_nro as jarjestamismuoto_jarj,
 	  maksutieto_id,
@@ -135,8 +135,8 @@ CREATE or ALTER VIEW [dw].[v_varda_varhaiskasvatustiedot] AS
 		   else cast(tp.tilastovuosi as varchar) + '_' + tp.toimipaikka_oid 
 		   end as tilastovuosi_oid,
 	  
-	  null as "V√§est√∂",
-	  --,null as v√§est√∂_ik√§_vuosi
+	  null as "V‰estˆ",
+	  --,null as v‰estˆ_ik‰_vuosi
 	  case when DATEDIFF(year,henkilo_syntyma_pvm, cast(concat(vaka.tilastovuosi, '-12-31') as date)) > 10 then 0
 	       else 1
 		   END as tilastointi
@@ -185,31 +185,31 @@ select
 	al.kunta_en			as	kotikunta_en,
 	al.kunta_sv			as	kotikunta_sv,
 	al.kunta_koodi		as kotikunta_koodi,
-	va.ika				as ik√§,
+	va.ika				as ik‰,
 	case
 		when va.ika < 3 then				(select	kuvaus_fi from dw.d_varda_ikaryhma where id = 1)
 		when va.ika between 3 and 5 then	(select	kuvaus_fi from dw.d_varda_ikaryhma where id = 2)
 		when va.ika = 6 then				(select	kuvaus_fi from dw.d_varda_ikaryhma where id = 3)	
 		when va.ika > 6 then				(select	kuvaus_fi from dw.d_varda_ikaryhma where id = 4)	
-	end as ik√§ryhm√§_fi,
+	end as ik‰ryhm‰_fi,
 		case
 		when va.ika < 3 then				(select	kuvaus_en from dw.d_varda_ikaryhma where id = 1)
 		when va.ika between 3 and 5 then	(select	kuvaus_en from dw.d_varda_ikaryhma where id = 2)
 		when va.ika = 6 then				(select	kuvaus_en from dw.d_varda_ikaryhma where id = 3)	
 		when va.ika > 6 then				(select	kuvaus_en from dw.d_varda_ikaryhma where id = 4)	
-	end as ik√§ryhm√§_en,
+	end as ik‰ryhm‰_en,
 		case
 		when va.ika < 3 then				(select	kuvaus_sv from dw.d_varda_ikaryhma where id = 1)
 		when va.ika between 3 and 5 then	(select	kuvaus_sv from dw.d_varda_ikaryhma where id = 2)
 		when va.ika = 6 then				(select	kuvaus_sv from dw.d_varda_ikaryhma where id = 3)	
 		when va.ika > 6 then				(select	kuvaus_sv from dw.d_varda_ikaryhma where id = 4)	
-	end as ik√§ryhm√§_sv,
+	end as ik‰ryhm‰_sv,
 	'suomi' as		aidinkieli_fi,
 	'finnish' as		aidinkieli_en,
 	'finska' as		aidinkieli_sv,
 	1 as aidinkieli_jarj,
 	case when va.sukupuoli = 1 then 'Poika'
-		when va.sukupuoli = 2 then 'Tytt√∂'
+		when va.sukupuoli = 2 then 'Tyttˆ'
 	end as	sukupuoli_fi,
 	case when va.sukupuoli = 1 then 'Male'
 		when va.sukupuoli = 2 then 'Female'
@@ -221,7 +221,7 @@ select
 	--null as	  vakapaatos_alkamis_pvm,
 	--null as	  vakapaatos_paattymis_pvm,
 	'JM01' as   jarjestamismuoto_koodi,
-	'Kunnan tai kuntayhtym√§n j√§rjest√§m√§' as	  jarjestamismuoto_fi,
+	'Kunnan tai kuntayhtym‰n j‰rjest‰m‰' as	  jarjestamismuoto_fi,
 	NULL as	  jarjestamismuoto_en,
 	'Anordnas av kommunen eller samkommunen' as	  jarjestamismuoto_sv,
 	'Ei' as	  vuorohoito_kytkin_fi,
@@ -237,9 +237,9 @@ select
 	'No' as	  pikakasittely_kytkin_en,
 	'Ej' as	  pikakasittely_kytkin_sv,
 	null as	  tuntimaara_viikossa,
-	null as	  tuntim√§√§r√§_asteikko_fi,
-	null as   tuntim√§√§r√§_asteikko_en,
-	null as   tuntim√§√§r√§_asteikko_sv,
+	null as	  tuntim‰‰r‰_asteikko_fi,
+	null as   tuntim‰‰r‰_asteikko_en,
+	null as   tuntim‰‰r‰_asteikko_sv,
 	null as	  vakasuhde_id,
 	null as   lapsi_id,
 	--null as	  vakasuhde_alkamis_pvm,
@@ -265,28 +265,28 @@ select
 	al.kunta_SV		as   toimipaikka_kunta_sv,
 	'Muu' as	  kasvatusopillinen_jarjestelma_fi,
 	'Muu' as	  kasvatusopillinen_jarjestelma_en,
-	'√ñvrig inriktning' as	  kasvatusopillinen_jarjestelma_sv,
-	'P√§iv√§koti' as	  toimintamuoto_fi,
-	'P√§iv√§koti' as	  toimintamuoto_en,
+	'÷vrig inriktning' as	  kasvatusopillinen_jarjestelma_sv,
+	'P‰iv‰koti' as	  toimintamuoto_fi,
+	'P‰iv‰koti' as	  toimintamuoto_en,
 	'Daghem' as	  toimintamuoto_sv,
 	'11-20 toimipaikkaa' as   toimipaikkaluokitus_fi,
 	'11-20 toimipaikkaa' as   toimipaikkaluokitus_en,
 	'11-20 toimipaikkaa' as   toimipaikkaluokitus_sv,
-	-1 as	  tuntim√§√§r√§_asteikko_jarj,
+	-1 as	  tuntim‰‰r‰_asteikko_jarj,
 	case	when va.ika < 3				then (select jarj_nro from dw.d_varda_ikaryhma where id = 1)		
 			when va.ika between 3 and 5	then (select jarj_nro from dw.d_varda_ikaryhma where id = 2)
 			when va.ika = 6				then (select jarj_nro from dw.d_varda_ikaryhma where id = 3)
 			when va.ika > 6				then (select jarj_nro from dw.d_varda_ikaryhma where id = 4)
-	end as ik√§ryhm√§_jarj,
+	end as ik‰ryhm‰_jarj,
 	1 as toimintamuoto_jarj,
 	1 as jarjestamismuoto_jarj,
 	null as maksutieto_id,
 	'Maksu' as maksun_peruste_fi,
 	'Maksu' as maksun_peruste_en,
 	'Avgift' as maksun_peruste_sv,
-	'Maksu 0 ‚Ç¨' as maksun_luokka_fi,
-	'Maksua ei perit√§' as maksun_luokka_en,
-	'Avgift 0 ‚Ç¨' as maksun_luokka_sv,
+	'Maksu 0 Ä' as maksun_luokka_fi,
+	'Maksua ei perit‰' as maksun_luokka_en,
+	'Avgift 0 Ä' as maksun_luokka_sv,
 	1 as maksun_luokka_jarjestys_nro,
 	null as palveluseteli_arvo,
 	null as asiakasmaksu,
@@ -295,8 +295,8 @@ select
 	--null as maksutieto_paattymis_pvm,
 	null as cum_sum,
 	null as tilastovuosi_oid,
-	sum(lukumaara) as "V√§est√∂",
-	--,null as v√§est√∂_ik√§_vuosi
+	sum(lukumaara) as "V‰estˆ",
+	--,null as v‰estˆ_ik‰_vuosi
 	0 as tilastointi
 
 
@@ -312,7 +312,7 @@ select
 		when va.ika > 6 then				4
 	end,
 	case when va.sukupuoli = 1 then 'Poika'
-		when va.sukupuoli = 2 then 'Tytt√∂'
+		when va.sukupuoli = 2 then 'Tyttˆ'
 	end,
 	case when va.sukupuoli = 1 then 'Male'
 		when va.sukupuoli = 2 then 'Female'
