@@ -10,6 +10,7 @@ GO
 
 IF NOT EXISTS (select * from sysobjects where name = 'sa_varda_henkilo' and xtype='U')
 
+
 BEGIN;
 CREATE TABLE [sa].[sa_varda_henkilo](
 	[id] [bigint] IDENTITY(1,1) NOT NULL,
