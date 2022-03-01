@@ -273,9 +273,9 @@ select
 	'Maksu' as maksun_peruste_fi,
 	'Maksu' as maksun_peruste_en,
 	'Avgift' as maksun_peruste_sv,
-	'Maksu 0 €' as maksun_luokka_fi,
+	'Maksu 0 e' as maksun_luokka_fi,
 	'Maksua ei peritä' as maksun_luokka_en,
-	'Avgift 0 €' as maksun_luokka_sv,
+	'Avgift 0 e' as maksun_luokka_sv,
 	1 as maksun_luokka_jarjestys_nro,
 	null as palveluseteli_arvo,
 	null as asiakasmaksu,
@@ -311,7 +311,3 @@ select
 			when va.ika = 6				then  3
 			when va.ika > 6				then  4
 	end) a
-
-GO
-
-USE [ANTERO]
