@@ -128,12 +128,10 @@ CREATE or ALTER VIEW [dw].[v_varda_varhaiskasvatustiedot] AS
 	  ht.cum_sum,
 
 	  -- Field for linking data
-	  case when tp.toimipaikka_oid = '""' then null
-		   else cast(tp.tilastovuosi as varchar) + '_' + tp.toimipaikka_oid 
-		   end as tilastovuosi_oid,
+	  cast(tp.tilastovuosi as varchar) + '_' + tp.toimipaikka_oid as tilastovuosi_oid,
 	  
 	  null as vaesto,
-	  --null as väestö_ikä_vuosi
+
 	  case when DATEDIFF(year,henkilo_syntyma_pvm, cast(concat(vaka.tilastovuosi, '-12-31') as date)) > 10 then 0
 	       else 1
 		   END as tilastointi
@@ -214,9 +212,6 @@ select
 	case when va.sukupuoli = 1 then 'Man'
 		when va.sukupuoli = 2 then 'Kvinna'
 	end  as   sukupuoli_sv,
-	--null as	  vakapaatos_hakemus_pvm,
-	--null as	  vakapaatos_alkamis_pvm,
-	--null as	  vakapaatos_paattymis_pvm,
 	'JM01' as   jarjestamismuoto_koodi,
 	'Kunnan tai kuntayhtymän järjestämä' as	  jarjestamismuoto_fi,
 	NULL as	  jarjestamismuoto_en,
@@ -239,8 +234,6 @@ select
 	null as   tuntimaara_asteikko_sv,
 	null as	  vakasuhde_id,
 	null as   lapsi_id,
-	--null as	  vakasuhde_alkamis_pvm,
-	--null as	  vakasuhde_paattymis_pvm,
 	null as	  vakajarjestaja_nimi,
 	'Kunta' as   yritysmuoto_fi,
 	'Kunta' as   yritysmuoto_en,
@@ -252,7 +245,6 @@ select
 	al.kunta		as	  vakajarjestaja_kunta_fi,
 	al.kunta_EN		as	  vakajarjestaja_kunta_sv,
 	al.kunta_SV		as	  vakajarjestaja_kunta_en,
-	--null as	  toimipaikka_nimi,
 	null as	  toimipaikka_oid,
 	al.maakunta		as	  toimipaikka_maakunta_fi,
 	al.maakunta_EN	as   toimipaikka_maakunta_en,
@@ -288,12 +280,9 @@ select
 	null as palveluseteli_arvo,
 	null as asiakasmaksu,
 	null as perheen_koko,
-	--null as maksutieto_alkamis_pvm,
-	--null as maksutieto_paattymis_pvm,
 	null as cum_sum,
 	null as tilastovuosi_oid,
 	sum(lukumaara) as vaesto,
-	--null as väestö_ikä_vuosi
 	0 as tilastointi
 
 
