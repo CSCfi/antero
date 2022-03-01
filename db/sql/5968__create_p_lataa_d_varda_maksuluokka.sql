@@ -258,18 +258,3 @@ INSERT INTO [dw].[d_varda_maksuluokka]
            ,NULL
            ,'p_lataa_d_varda_maksuluokka')
 
-
-
-
-
-
-
-
-
-
-
-
-
-GO
-
-

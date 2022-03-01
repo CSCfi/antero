@@ -11,7 +11,6 @@ GO
 
 
 
-
 --- jarj: tuntimäärä, ikäryhmä, varhaiskasvatuspaikat luokittelu, 
 
 CREATE or ALTER VIEW [dw].[v_varda_varhaiskasvatustiedot] AS
@@ -328,31 +327,5 @@ select
 			when va.ika > 6				then  4
 	end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-GO
 
 
