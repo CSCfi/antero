@@ -23,9 +23,9 @@ CREATE or ALTER VIEW [dw].[v_varda_varhaiskasvatustiedot] AS
 	  alue.kunta_koodi as kotikunta_koodi,
 	  --When changing ik‰ check tilastointi-column as well
 	  DATEDIFF(year,henkilo_syntyma_pvm, cast(concat(vaka.tilastovuosi, '-12-31') as date)) AS ika,
-	  ikar.kuvaus_fi as ik‰ryhma_fi,
-	  ikar.kuvaus_en as ik‰ryhma_en,
-	  ikar.kuvaus_sv as ik‰ryhma_sv,	  
+	  ikar.kuvaus_fi as ikaryhma_fi,
+	  ikar.kuvaus_en as ikaryhma_en,
+	  ikar.kuvaus_sv as ikaryhma_sv,	  
 	  --Only the following languages are wanted on the report, rest are masked
 	  case when kieli.koodi in ('SEIN','SEPO','SEKO','SE') then (select nimi_fi from dw.d_varda_kielikoodistoopetushallinto where koodi = 'se')
 		   when kieli.koodi in ('FI','SV', 'EN','VK') then kieli.nimi_fi
@@ -72,9 +72,9 @@ CREATE or ALTER VIEW [dw].[v_varda_varhaiskasvatustiedot] AS
 	  kytkin4.kytkin_en as pikakasittely_kytkin_en,
 	  kytkin4.kytkin_sv as pikakasittely_kytkin_sv,
 	  vakapaatos_tuntimaara_viikossa as tuntimaara_viikossa,
-	  tunti_ast.nimi_fi as tuntim‰‰r‰_asteikko_fi,
-	  tunti_ast.nimi_en as tuntim‰‰r‰_asteikko_en,
-	  tunti_ast.nimi_sv as tuntim‰‰r‰_asteikko_sv,
+	  tunti_ast.nimi_fi as tuntimaara_asteikko_fi,
+	  tunti_ast.nimi_en as tuntimaara_asteikko_en,
+	  tunti_ast.nimi_sv as tuntimaara_asteikko_sv,
 	  vaka.vakasuhde_id,
 	  vaka.lapsi_id,
 	  --vakasuhde_alkamis_pvm,
@@ -112,8 +112,8 @@ CREATE or ALTER VIEW [dw].[v_varda_varhaiskasvatustiedot] AS
 	  --tp.varhaiskasvatuspaikat,
 	  --tp.alkamis_pvm,
 	  --tp.paattymis_pvm,
-	  tunti_ast.jarj_nro as tuntim‰‰r‰_asteikko_jarj,
-	  ikar.jarj_nro as ik‰ryhm‰_jarj,
+	  tunti_ast.jarj_nro as tuntimaara_asteikko_jarj,
+	  ikar.jarj_nro as ikaryhma_jarj,
 	  tm.jarjestys as toimintamuoto_jarj,
 	  jm.jarj_nro as jarjestamismuoto_jarj,
 	  maksutieto_id,
@@ -192,19 +192,19 @@ select
 		when va.ika between 3 and 5 then	(select	kuvaus_fi from dw.d_varda_ikaryhma where id = 2)
 		when va.ika = 6 then				(select	kuvaus_fi from dw.d_varda_ikaryhma where id = 3)	
 		when va.ika > 6 then				(select	kuvaus_fi from dw.d_varda_ikaryhma where id = 4)	
-	end as ik‰ryhma_fi,
+	end as ikaryhma_fi,
 		case
 		when va.ika < 3 then				(select	kuvaus_en from dw.d_varda_ikaryhma where id = 1)
 		when va.ika between 3 and 5 then	(select	kuvaus_en from dw.d_varda_ikaryhma where id = 2)
 		when va.ika = 6 then				(select	kuvaus_en from dw.d_varda_ikaryhma where id = 3)	
 		when va.ika > 6 then				(select	kuvaus_en from dw.d_varda_ikaryhma where id = 4)	
-	end as ik‰ryhma_en,
+	end as ikaryhma_en,
 		case
 		when va.ika < 3 then				(select	kuvaus_sv from dw.d_varda_ikaryhma where id = 1)
 		when va.ika between 3 and 5 then	(select	kuvaus_sv from dw.d_varda_ikaryhma where id = 2)
 		when va.ika = 6 then				(select	kuvaus_sv from dw.d_varda_ikaryhma where id = 3)	
 		when va.ika > 6 then				(select	kuvaus_sv from dw.d_varda_ikaryhma where id = 4)	
-	end as ik‰ryhma_sv,
+	end as ikaryhma_sv,
 	'suomi' as		aidinkieli_fi,
 	'finnish' as		aidinkieli_en,
 	'finska' as		aidinkieli_sv,
@@ -238,9 +238,9 @@ select
 	'No' as	  pikakasittely_kytkin_en,
 	'Ej' as	  pikakasittely_kytkin_sv,
 	null as	  tuntimaara_viikossa,
-	null as	  tuntim‰‰r‰_asteikko_fi,
-	null as   tuntim‰‰r‰_asteikko_en,
-	null as   tuntim‰‰r‰_asteikko_sv,
+	null as	  tuntimaara_asteikko_fi,
+	null as   tuntimaara_asteikko_en,
+	null as   tuntimaara_asteikko_sv,
 	null as	  vakasuhde_id,
 	null as   lapsi_id,
 	--null as	  vakasuhde_alkamis_pvm,
@@ -273,12 +273,12 @@ select
 	'11-20 toimipaikkaa' as   toimipaikkaluokitus_fi,
 	'11-20 toimipaikkaa' as   toimipaikkaluokitus_en,
 	'11-20 toimipaikkaa' as   toimipaikkaluokitus_sv,
-	-1 as	  tuntim‰‰r‰_asteikko_jarj,
+	-1 as	  tuntimaara_asteikko_jarj,
 	case	when va.ika < 3				then (select jarj_nro from dw.d_varda_ikaryhma where id = 1)		
 			when va.ika between 3 and 5	then (select jarj_nro from dw.d_varda_ikaryhma where id = 2)
 			when va.ika = 6				then (select jarj_nro from dw.d_varda_ikaryhma where id = 3)
 			when va.ika > 6				then (select jarj_nro from dw.d_varda_ikaryhma where id = 4)
-	end as ik‰ryhm‰_jarj,
+	end as ikaryhma_jarj,
 	1 as toimintamuoto_jarj,
 	1 as jarjestamismuoto_jarj,
 	null as maksutieto_id,
