@@ -1,7 +1,6 @@
-ï»¿USE [ANTERO]
+USE [ANTERO]
 GO
 
-/****** Object:  View [dw].[v_varda_varhaiskasvatustiedot]    Script Date: 1.3.2022 15.02.02 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -9,9 +8,6 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-
-
---- jarj: tuntimäärä, ikäryhmä, varhaiskasvatuspaikat luokittelu, 
 
 CREATE or ALTER VIEW [dw].[v_varda_varhaiskasvatustiedot] AS
  select * from (
@@ -137,7 +133,7 @@ CREATE or ALTER VIEW [dw].[v_varda_varhaiskasvatustiedot] AS
 		   end as tilastovuosi_oid,
 	  
 	  null as vaesto,
-	  --,null as väestö_ikä_vuosi
+	  --null as väestö_ikä_vuosi
 	  case when DATEDIFF(year,henkilo_syntyma_pvm, cast(concat(vaka.tilastovuosi, '-12-31') as date)) > 10 then 0
 	       else 1
 		   END as tilastointi
@@ -297,7 +293,7 @@ select
 	null as cum_sum,
 	null as tilastovuosi_oid,
 	sum(lukumaara) as vaesto,
-	--,null as väestö_ikä_vuosi
+	--null as väestö_ikä_vuosi
 	0 as tilastointi
 
 
