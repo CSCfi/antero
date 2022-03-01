@@ -8,6 +8,12 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+If not exists (select * from sys.schemas where name = 'sa')
+
+Begin;
+Exec('CREATE SCHEMA sa')
+END;
+
 IF NOT EXISTS (select * from sysobjects where name = 'sa_varda_henkilo' and xtype='U')
 
 
