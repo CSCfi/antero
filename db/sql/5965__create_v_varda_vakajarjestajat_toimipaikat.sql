@@ -1,4 +1,4 @@
-USE [ANTERO]
+﻿USE [ANTERO]
 GO
 
 /****** Object:  View [dw].[v_varda_vakajarjestajat_toimipaikat]    Script Date: 1.3.2022 11.06.57 ******/
