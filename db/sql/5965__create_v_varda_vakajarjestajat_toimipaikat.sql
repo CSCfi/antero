@@ -1,4 +1,4 @@
-﻿USE [ANTERO]
+USE [ANTERO]
 GO
 
 /****** Object:  View [dw].[v_varda_vakajarjestajat_toimipaikat]    Script Date: 1.3.2022 11.06.57 ******/
@@ -13,7 +13,7 @@ GO
 CREATE or alter VIEW [dw].[v_varda_vakajarjestajat_toimipaikat] AS
 
         select tp.tilastovuosi,
-		case when tp.toimipaikka_oid = '""' then null else tp.toimipaikka_oid end as toimipaikka_oid,
+		case when tp.toimipaikka_oid = '' then null else tp.toimipaikka_oid end as toimipaikka_oid,
 		tp.vakajarjestaja_id,
 		case when yl.yritys_tyyppi = 'Yksityinen' then NULL
 		     else tp.vakajarjestaja_nimi
@@ -64,7 +64,7 @@ CREATE or alter VIEW [dw].[v_varda_vakajarjestajat_toimipaikat] AS
 	  vpl.nimi_sv as varhaiskasvatuspaikat_luokittelu_sv,
 	  vpl.jarj_nro  as varhaiskasvatuspaikat_luokittelu_jarj,
 	  tm.jarjestys as toimintamuoto_jarj, 
-	  case when tp.toimipaikka_oid = '""' then null else CONCAT(tp.tilastovuosi, '_', tp.toimipaikka_oid) end as tilastovuosi_toimipaikkaoid,
+	  case when tp.toimipaikka_oid = '' then null else CONCAT(tp.tilastovuosi, '_', tp.toimipaikka_oid) end as tilastovuosi_toimipaikkaoid,
 	  c2.lapsia as lapsia,
 	  CONCAT(tp.tilastovuosi,tp.toimipaikka_id) as tilastovuosi_toimipaikkaID
 
