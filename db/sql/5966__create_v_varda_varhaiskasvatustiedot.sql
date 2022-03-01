@@ -1,7 +1,7 @@
 USE [ANTERO]
 GO
 
-/****** Object:  View [dw].[v_varda_varhaiskasvatustiedot]    Script Date: 1.3.2022 11.08.34 ******/
+/****** Object:  View [dw].[v_varda_varhaiskasvatustiedot]    Script Date: 1.3.2022 15.02.02 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -10,10 +10,9 @@ GO
 
 
 
-
 --- jarj: tuntimäärä, ikäryhmä, varhaiskasvatuspaikat luokittelu, 
 
-CREATE or alter VIEW [dw].[v_varda_varhaiskasvatustiedot] AS
+CREATE or ALTER VIEW [dw].[v_varda_varhaiskasvatustiedot] AS
 
       select vaka.tilastovuosi,
 	  vaka.henkilo_id,
@@ -327,5 +326,31 @@ select
 			when va.ika > 6				then  4
 	end
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+GO
 
 
