@@ -14,7 +14,7 @@ GO
 --- jarj: tuntimäärä, ikäryhmä, varhaiskasvatuspaikat luokittelu, 
 
 CREATE or ALTER VIEW [dw].[v_varda_varhaiskasvatustiedot] AS
-
+ select * from (
       select vaka.tilastovuosi,
 	  vaka.henkilo_id,
 	  alue.kunta_fi as kotikunta_fi,
@@ -136,7 +136,7 @@ CREATE or ALTER VIEW [dw].[v_varda_varhaiskasvatustiedot] AS
 		   else cast(tp.tilastovuosi as varchar) + '_' + tp.toimipaikka_oid 
 		   end as tilastovuosi_oid,
 	  
-	  null as "Väestö",
+	  null as vaesto,
 	  --,null as väestö_ikä_vuosi
 	  case when DATEDIFF(year,henkilo_syntyma_pvm, cast(concat(vaka.tilastovuosi, '-12-31') as date)) > 10 then 0
 	       else 1
@@ -296,7 +296,7 @@ select
 	--null as maksutieto_paattymis_pvm,
 	null as cum_sum,
 	null as tilastovuosi_oid,
-	sum(lukumaara) as "Väestö",
+	sum(lukumaara) as vaesto,
 	--,null as väestö_ikä_vuosi
 	0 as tilastointi
 
@@ -325,7 +325,7 @@ select
 			when va.ika between 3 and 5	then  2
 			when va.ika = 6				then  3
 			when va.ika > 6				then  4
-	end
+	end) a
 
 GO
 
