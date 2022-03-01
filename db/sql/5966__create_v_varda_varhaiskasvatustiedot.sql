@@ -22,10 +22,10 @@ CREATE or ALTER VIEW [dw].[v_varda_varhaiskasvatustiedot] AS
 	  alue.kunta_sv as kotikunta_sv,
 	  alue.kunta_koodi as kotikunta_koodi,
 	  --When changing ikä check tilastointi-column as well
-	  DATEDIFF(year,henkilo_syntyma_pvm, cast(concat(vaka.tilastovuosi, '-12-31') as date)) AS ikä,
-	  ikar.kuvaus_fi as ikäryhmä_fi,
-	  ikar.kuvaus_en as ikäryhmä_en,
-	  ikar.kuvaus_sv as ikäryhmä_sv,	  
+	  DATEDIFF(year,henkilo_syntyma_pvm, cast(concat(vaka.tilastovuosi, '-12-31') as date)) AS ika,
+	  ikar.kuvaus_fi as ikäryhma_fi,
+	  ikar.kuvaus_en as ikäryhma_en,
+	  ikar.kuvaus_sv as ikäryhma_sv,	  
 	  --Only the following languages are wanted on the report, rest are masked
 	  case when kieli.koodi in ('SEIN','SEPO','SEKO','SE') then (select nimi_fi from dw.d_varda_kielikoodistoopetushallinto where koodi = 'se')
 		   when kieli.koodi in ('FI','SV', 'EN','VK') then kieli.nimi_fi
@@ -186,25 +186,25 @@ select
 	al.kunta_en			as	kotikunta_en,
 	al.kunta_sv			as	kotikunta_sv,
 	al.kunta_koodi		as kotikunta_koodi,
-	va.ika				as ikä,
+	va.ika				as ika,
 	case
 		when va.ika < 3 then				(select	kuvaus_fi from dw.d_varda_ikaryhma where id = 1)
 		when va.ika between 3 and 5 then	(select	kuvaus_fi from dw.d_varda_ikaryhma where id = 2)
 		when va.ika = 6 then				(select	kuvaus_fi from dw.d_varda_ikaryhma where id = 3)	
 		when va.ika > 6 then				(select	kuvaus_fi from dw.d_varda_ikaryhma where id = 4)	
-	end as ikäryhmä_fi,
+	end as ikäryhma_fi,
 		case
 		when va.ika < 3 then				(select	kuvaus_en from dw.d_varda_ikaryhma where id = 1)
 		when va.ika between 3 and 5 then	(select	kuvaus_en from dw.d_varda_ikaryhma where id = 2)
 		when va.ika = 6 then				(select	kuvaus_en from dw.d_varda_ikaryhma where id = 3)	
 		when va.ika > 6 then				(select	kuvaus_en from dw.d_varda_ikaryhma where id = 4)	
-	end as ikäryhmä_en,
+	end as ikäryhma_en,
 		case
 		when va.ika < 3 then				(select	kuvaus_sv from dw.d_varda_ikaryhma where id = 1)
 		when va.ika between 3 and 5 then	(select	kuvaus_sv from dw.d_varda_ikaryhma where id = 2)
 		when va.ika = 6 then				(select	kuvaus_sv from dw.d_varda_ikaryhma where id = 3)	
 		when va.ika > 6 then				(select	kuvaus_sv from dw.d_varda_ikaryhma where id = 4)	
-	end as ikäryhmä_sv,
+	end as ikäryhma_sv,
 	'suomi' as		aidinkieli_fi,
 	'finnish' as		aidinkieli_en,
 	'finska' as		aidinkieli_sv,
