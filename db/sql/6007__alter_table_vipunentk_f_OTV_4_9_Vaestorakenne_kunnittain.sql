@@ -1,39 +1,6 @@
 USE [VipunenTK]
 GO
 
-ALTER TABLE [dbo].[f_OTV_4_9_Vaestorakenne_kunnittain] DROP CONSTRAINT [FK__4_9__maanosa__d_valtio]
-GO
-
-ALTER TABLE [dbo].[f_OTV_4_9_Vaestorakenne_kunnittain] DROP CONSTRAINT [FK__4_9__kotikunta__d_alueluokitus_historia]
-GO
-
-ALTER TABLE [dbo].[f_OTV_4_9_Vaestorakenne_kunnittain] DROP CONSTRAINT [FK__4_9__kotikunta__d_alueluokitus]
-GO
-
-ALTER TABLE [dbo].[f_OTV_4_9_Vaestorakenne_kunnittain] DROP CONSTRAINT [FK__4_9__eumaa__d_valtio]
-GO
-
-ALTER TABLE [dbo].[f_OTV_4_9_Vaestorakenne_kunnittain] DROP CONSTRAINT [FK__4_9__etamaa__d_valtio]
-GO
-
-ALTER TABLE [dbo].[f_OTV_4_9_Vaestorakenne_kunnittain] DROP CONSTRAINT [FK__4_9__d_sukupuoli]
-GO
-
-ALTER TABLE [dbo].[f_OTV_4_9_Vaestorakenne_kunnittain] DROP CONSTRAINT [FK__4_9__d_pohjoismaa]
-GO
-
-ALTER TABLE [dbo].[f_OTV_4_9_Vaestorakenne_kunnittain] DROP CONSTRAINT [FK__4_9__d_kansalaisuus_versio1]
-GO
-
-ALTER TABLE [dbo].[f_OTV_4_9_Vaestorakenne_kunnittain] DROP CONSTRAINT [FK__4_9__d_aineisto_OTV]
-GO
-
-ALTER TABLE [dbo].[f_OTV_4_9_Vaestorakenne_kunnittain] DROP CONSTRAINT [FK__4_9__d_aineisto]
-GO
-
-ALTER TABLE [dbo].[f_OTV_4_9_Vaestorakenne_kunnittain] DROP CONSTRAINT [FK__4_9__d_aidinkieli_versio2]
-GO
-
 /****** Object:  Table [dbo].[f_OTV_4_9_Vaestorakenne_kunnittain]    Script Date: 7.3.2022 0:24:02 ******/
 DROP TABLE [dbo].[f_OTV_4_9_Vaestorakenne_kunnittain]
 GO
