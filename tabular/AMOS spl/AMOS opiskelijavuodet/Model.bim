@@ -398,7 +398,7 @@
             "dataType": "string",
             "sourceColumn": "Hyväksytyt/hylätyt opiskelijavuodet",
             "sortByColumn": "jarj_hylkaamisperuste",
-            "displayFolder": "Koulutusmuuttujat"
+            "displayFolder": "Rahoitusmallimuuttujat"
           },
           {
             "name": "Tilastokuukausi",
@@ -520,13 +520,6 @@
             "sourceColumn": "hylatty"
           },
           {
-            "name": "Painotuksen tyyppi",
-            "dataType": "string",
-            "sourceColumn": "Painotuksen tyyppi",
-            "sortByColumn": "jarj_painotuksen_tyyppi",
-            "displayFolder": "Rahoitusmallimuuttujat"
-          },
-          {
             "name": "jarj_painotuksen_tyyppi",
             "dataType": "int64",
             "isHidden": true,
@@ -557,6 +550,12 @@
             "dataType": "string",
             "isHidden": true,
             "sourceColumn": "jarj_suorituskieli_luvanmukainen"
+          },
+          {
+            "name": "Opiskelijavuoden tyyppi",
+            "dataType": "string",
+            "sourceColumn": "Opiskelijavuoden tyyppi",
+            "displayFolder": "Rahoitusmallimuuttujat"
           }
         ],
         "partitions": [
@@ -564,13 +563,13 @@
             "name": "v_koski_opiskelijavuodet",
             "dataView": "full",
             "source": {
-              "query": "SELECT [dw].[v_amos_opiskelijavuodet_testi].* FROM [dw].[v_amos_opiskelijavuodet_testi] ORDER BY Tilastovuosi,[Koulutuksen järjestäjä],painottamaton,painotettu",
+              "query": "SELECT [dw].[v_amos_opiskelijavuodet].* FROM [dw].[v_amos_opiskelijavuodet] ORDER BY Tilastovuosi,[Koulutuksen järjestäjä],painottamaton,painotettu",
               "dataSource": "SqlServer dwitvipusql16 ANTERO"
             },
             "annotations": [
               {
                 "name": "QueryEditorSerialization",
-                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT [dw].[v_amos_opiskelijavuodet_testi].* FROM [dw].[v_amos_opiskelijavuodet_testi] ORDER BY Tilastovuosi,[Koulutuksen järjestäjä],painottamaton,painotettu</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT [dw].[v_amos_opiskelijavuodet].* FROM [dw].[v_amos_opiskelijavuodet] ORDER BY Tilastovuosi,[Koulutuksen järjestäjä],painottamaton,painotettu</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
               }
             ]
           }
@@ -612,7 +611,7 @@
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": "SELECT [dw].[v_amos_opiskelijavuodet_testi].* FROM [dw].[v_amos_opiskelijavuodet_testi] ORDER BY Tilastovuosi,[Koulutuksen järjestäjä],painottamaton,painotettu"
+            "value": "SELECT [dw].[v_amos_opiskelijavuodet].* FROM [dw].[v_amos_opiskelijavuodet] ORDER BY Tilastovuosi,[Koulutuksen järjestäjä],painottamaton,painotettu"
           },
           {
             "name": "_TM_ExtProp_DbTableName",
@@ -624,7 +623,7 @@
           },
           {
             "name": "QueryEditorSerialization",
-            "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT [dw].[v_amos_opiskelijavuodet_testi].* FROM [dw].[v_amos_opiskelijavuodet_testi] ORDER BY Tilastovuosi,[Koulutuksen järjestäjä],painottamaton,painotettu</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+            "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT [dw].[v_amos_opiskelijavuodet].* FROM [dw].[v_amos_opiskelijavuodet] ORDER BY Tilastovuosi,[Koulutuksen järjestäjä],painottamaton,painotettu</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
           }
         ]
       },
@@ -821,13 +820,13 @@
                 "name": "Luvaton koulutus totuusarvo"
               },
               {
-                "name": "Painotuksen tyyppi"
-              },
-              {
                 "name": "Suorituskieli"
               },
               {
                 "name": "Luvanmukainen suorituskieli"
+              },
+              {
+                "name": "Opiskelijavuoden tyyppi"
               }
             ],
             "measures": [
@@ -992,11 +991,175 @@
               },
               {
                 "name": "Luvanmukainen suorituskieli"
+              },
+              {
+                "name": "Opiskelijavuoden tyyppi"
               }
             ],
             "measures": [
               {
                 "name": "Hylätyty opiskelijavuodet"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Luvaton",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Erityisopetus"
+              },
+              {
+                "name": "Hankintakoulutuksen järjestäjä"
+              },
+              {
+                "name": "Hankintakoulutus"
+              },
+              {
+                "name": "Henkilöstokoulutus"
+              },
+              {
+                "name": "Hyväksytyt/hylätyt opiskelijavuodet"
+              },
+              {
+                "name": "Ikä"
+              },
+              {
+                "name": "Ikäryhmä"
+              },
+              {
+                "name": "Koodit Hankintakoulutuksen järjestäjä"
+              },
+              {
+                "name": "Koodit Koulutuksen järjestäjä"
+              },
+              {
+                "name": "Koodit Oppilaitos"
+              },
+              {
+                "name": "Koodit Osaamisala"
+              },
+              {
+                "name": "Koodit Tutkinto"
+              },
+              {
+                "name": "Koul. järjestäjän AVI"
+              },
+              {
+                "name": "Koul. järjestäjän ELY"
+              },
+              {
+                "name": "Koul. järjestäjän kunta"
+              },
+              {
+                "name": "Koul. järjestäjän maakunta"
+              },
+              {
+                "name": "Koulutuksen järjestäjä"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Kustannusryhmä"
+              },
+              {
+                "name": "Luvanmukainen suorituskieli"
+              },
+              {
+                "name": "Majoitus"
+              },
+              {
+                "name": "Oppilaitoksen AVI"
+              },
+              {
+                "name": "Oppilaitoksen ELY"
+              },
+              {
+                "name": "Oppilaitoksen kunta"
+              },
+              {
+                "name": "Oppilaitoksen maakunta"
+              },
+              {
+                "name": "Oppilaitos"
+              },
+              {
+                "name": "Oppisopimuskoulutus"
+              },
+              {
+                "name": "Osa-aikaisuus"
+              },
+              {
+                "name": "Osaamisala"
+              },
+              {
+                "name": "Rahoitusmuoto"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Suorituksen tyyppi"
+              },
+              {
+                "name": "Suorituskieli"
+              },
+              {
+                "name": "Tilastokuukausi"
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Toimipiste"
+              },
+              {
+                "name": "Tutkinto"
+              },
+              {
+                "name": "Tutkintotyypin ryhmä"
+              },
+              {
+                "name": "Tutkintotyyppi"
+              },
+              {
+                "name": "Työvoimakoulutus"
+              },
+              {
+                "name": "Vankilaopetus"
+              },
+              {
+                "name": "Äidinkieli"
+              },
+              {
+                "name": "Opiskelijavuoden tyyppi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Painottamattomat opiskelijavuodet"
               }
             ]
           },
