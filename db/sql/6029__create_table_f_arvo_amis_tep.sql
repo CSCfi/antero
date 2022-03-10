@@ -7,6 +7,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[f_arvo_amis_tep]') AND type in (N'U'))
 BEGIN
+
 CREATE TABLE [dw].[f_arvo_amis_tep](
 	[d_organisaatio_oppilaitos_id] [bigint] NULL,
 	[d_organisaatio_koulutustoimija_id] [bigint] NULL,

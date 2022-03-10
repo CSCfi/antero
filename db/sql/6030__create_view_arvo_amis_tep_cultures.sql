@@ -12,8 +12,6 @@ EXEC dbo.sp_executesql @statement = N'
 
 
 
-
-
 CREATE VIEW [dw].[v_arvo_amis_tep_cultures] AS
 
 SELECT --TOP 100
