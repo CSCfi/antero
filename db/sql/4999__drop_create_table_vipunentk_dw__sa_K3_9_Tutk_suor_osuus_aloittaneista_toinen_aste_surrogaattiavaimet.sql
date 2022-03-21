@@ -1,9 +1,0 @@
-use VipunenTK_SA
-go
-
-DROP TABLE VipunenTK_DW.dbo._sa_K3_9_Tutk_suor_osuus_aloittaneista_toinen_aste_surrogaattiavaimet
-
-Select top 0 * into VipunenTK_DW.dbo._sa_K3_9_Tutk_suor_osuus_aloittaneista_toinen_aste_surrogaattiavaimet 
-from VipunenTK_DW.dbo._v_sa_K3_9_Tutk_suor_osuus_aloittaneista_toinen_aste_surrogaattiavaimet_nykytila_taulusta
-
-go

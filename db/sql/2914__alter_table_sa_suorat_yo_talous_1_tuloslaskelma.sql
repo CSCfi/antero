@@ -1,7 +1,0 @@
-USE ANTERO
-
-IF  EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='sa' and TABLE_NAME='sa_suorat_yo_talous_1_tuloslaskelma'
-AND COLUMN_NAME ='EURAH')
-BEGIN
-	ALTER TABLE sa.sa_suorat_yo_talous_1_tuloslaskelma DROP COLUMN EURAH
-END
