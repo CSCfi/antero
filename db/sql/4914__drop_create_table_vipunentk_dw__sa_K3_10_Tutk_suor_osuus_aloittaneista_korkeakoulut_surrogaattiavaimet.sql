@@ -1,7 +1,0 @@
-use VipunenTK_DW
-go
-
-DROP TABLE VipunenTK_DW.dbo._sa_K3_10_Tutk_suor_osuus_aloittaneista_korkeakoulut_surrogaattiavaimet
-
-Select top 0 * into VipunenTK_DW.dbo._sa_K3_10_Tutk_suor_osuus_aloittaneista_korkeakoulut_surrogaattiavaimet 
-from VipunenTK_DW.dbo._v_sa_K3_10_Tutk_suor_osuus_aloittaneista_korkeakoulut_surrogaattiavaimet_nykytila_taulusta
