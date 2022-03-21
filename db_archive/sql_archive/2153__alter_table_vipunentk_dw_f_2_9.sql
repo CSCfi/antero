@@ -1,0 +1,87 @@
+USE [VipunenTK_DW]
+GO
+/****** Object:  Table [dbo].[f_2_9_Korkeakoulututkinnot]    Script Date: 12.3.2019 15:09:02 ******/
+DROP TABLE [dbo].[f_2_9_Korkeakoulututkinnot]
+GO
+/****** Object:  Table [dbo].[f_2_9_Korkeakoulututkinnot]    Script Date: 12.3.2019 15:09:02 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[f_2_9_Korkeakoulututkinnot](
+	[tilastointivuosi] [nvarchar](4) NULL,
+	[tilv_date] [date] NULL,
+	[aineisto] [nvarchar](2) NULL,
+	[lahde] [nvarchar](2) NULL,
+	[oppilaitos] [nvarchar](5) NULL,
+	[koulutuksen_jarjestaja] [nvarchar](10) NULL,
+	[koulutusluokitus] [nvarchar](6) NULL,
+	[opintoala1995] [nvarchar](2) NULL,
+	[koulutuksen_kunta] [nvarchar](3) NULL,
+	[sukupuoli] [nvarchar](2) NULL,
+	[aidinkieli_versio1x] [nvarchar](2) NULL,
+	[syntymavuosi] [nvarchar](4) NULL,
+	[kotikunta] [nvarchar](3) NULL,
+	[kotikunta1x] [nvarchar](3) NULL,
+	[kansalaisuus_versio2] [nvarchar](2) NULL,
+	[kirjoihintulovuosi] [nvarchar](10) NULL,
+	[jarjestys_kirjoihintulovuosi] [int] NULL,
+	[kirjoihintulokausi] [nvarchar](2) NULL,
+	[tutkinnon_suoritusvuosi] [nvarchar](4) NULL,
+	[tutkinnon_suorituslukukausi] [nvarchar](2) NULL,
+	[rahoituslahde] [nvarchar](2) NULL,
+	[kirjoihintulovuosi_korkeakoulusektori] [nvarchar](4) NULL,
+	[kirjoihintulovuosi_korkeakoulusektori_lasnaoleva] [nvarchar](4) NULL,
+	[kirjoihintulovuosi_sektori] [nvarchar](4) NULL,
+	[kirjoihintulovuosi_sektori_lasnaoleva] [nvarchar](4) NULL,
+	[kirjoihintulovuosi_korkeakoulu] [nvarchar](4) NULL,
+	[kirjoihintulovuosi_korkeakoulu_lasnaoleva] [nvarchar](4) NULL,
+	[kirjoihintulovuosi_opintoala] [nvarchar](4) NULL,
+	[kirjoihintulovuosi_opintoala_lasnaoleva] [nvarchar](4) NULL,
+	[lukumaara] [int] NULL,
+	[tutkinto_amk] [nvarchar](3) NULL,
+	[koulutusohjelma_amk] [nvarchar](4) NULL,
+	[suuntautumisvaihtoehto_amk] [nvarchar](5) NULL,
+	[koulutustyyppi] [nvarchar](2) NULL,
+	[koulutuksen_kieli] [nvarchar](2) NULL,
+	[lkm_lasnalk] [int] NULL,
+	[lkm_poissalk] [int] NULL,
+	[op_suoritettavien_laajuus] [int] NULL,
+	[kirjoihintulovuosi_tutkinto] [nvarchar](4) NULL,
+	[kirjoihintulokausi_tutkinto] [nvarchar](2) NULL,
+	[op_amk_yhteensa] [int] NULL,
+	[op_amk_yleissiv_amm_opplait] [int] NULL,
+	[op_amk_muualla] [int] NULL,
+	[op_amk_oma_amk] [int] NULL,
+	[op_amk_muu_amk] [int] NULL,
+	[op_amk_yliopistoissa] [int] NULL,
+	[op_amk_ulkomailla] [int] NULL,
+	[tilauskoulutuksen_sijaintimaa] [nvarchar](2) NULL,
+	[tutkinto_yo] [nvarchar](3) NULL,
+	[koulutusohjelma_yo] [nvarchar](4) NULL,
+	[paaaine_yo] [nvarchar](4) NULL,
+	[tiedekunta_yo] [nvarchar](2) NULL,
+	[opiskelumuoto] [nvarchar](2) NULL,
+	[opettajankelpoisuus] [nvarchar](2) NULL,
+	[op_yo_yhteensa] [int] NULL,
+	[op_yo_ulkomailla] [int] NULL,
+	[op_yo_muualla] [int] NULL,
+	[op_yo_oma_yo] [int] NULL,
+	[op_yo_avoimessa] [int] NULL,
+	[op_yo_muu_yo] [int] NULL,
+	[op_yo_ammattikorkeakouluissa] [int] NULL,
+	[tietolahde] [nvarchar](50) NULL,
+	[rivinumero] [int] NULL,
+	[aineistotunnus] [nvarchar](8) NULL,
+	[koulutussektori] [nvarchar](2) NULL,
+	[ika_1v] [nvarchar](4) NULL,
+	[tutkinnot] [int] NULL,
+	[koulutuslaji_OKM_avain] [nvarchar](2) NULL,
+	[koulutusryhma_avain] [varchar](2) NULL,
+	[ikaryhma1_avain] [varchar](10) NULL,
+	[ikaryhma2_avain] [varchar](10) NULL,
+	[laak] [varchar](1) NULL
+) ON [PRIMARY]
+
+GO
+USE [ANTERO]

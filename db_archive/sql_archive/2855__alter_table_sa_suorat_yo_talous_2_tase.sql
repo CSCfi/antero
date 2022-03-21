@@ -1,0 +1,44 @@
+USE ANTERO
+
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='sa' and TABLE_NAME='sa_suorat_yo_talous_2_tase'
+  AND COLUMN_NAME ='PORAH')
+BEGIN
+	ALTER TABLE [sa].[sa_suorat_yo_talous_2_tase] add PORAH int null
+END
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='sa' and TABLE_NAME='sa_suorat_yo_talous_2_tase'
+  AND COLUMN_NAME ='YKRAH')
+BEGIN
+	ALTER TABLE [sa].[sa_suorat_yo_talous_2_tase] add YKRAH int null
+END
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='sa' and TABLE_NAME='sa_suorat_yo_talous_2_tase'
+  AND COLUMN_NAME ='SIJVAPRAH')
+BEGIN
+	ALTER TABLE [sa].[sa_suorat_yo_talous_2_tase] add SIJVAPRAH int null
+END
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='sa' and TABLE_NAME='sa_suorat_yo_talous_2_tase'
+  AND COLUMN_NAME ='VARARAH')
+BEGIN
+	ALTER TABLE [sa].[sa_suorat_yo_talous_2_tase] add VARARAH int null
+END
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='sa' and TABLE_NAME='sa_suorat_yo_talous_2_tase'
+  AND COLUMN_NAME ='YJRAH')
+BEGIN
+	ALTER TABLE [sa].[sa_suorat_yo_talous_2_tase] add YJRAH int null
+END
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='sa' and TABLE_NAME='sa_suorat_yo_talous_2_tase'
+  AND COLUMN_NAME ='VAPRAHAS')
+BEGIN
+	ALTER TABLE [sa].[sa_suorat_yo_talous_2_tase] add VAPRAHAS int null
+END
+
+IF NOT EXISTS (SELECT * FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA='sa' and TABLE_NAME='sa_suorat_yo_talous_2_tase'
+  AND COLUMN_NAME ='VEROPVARA')
+BEGIN
+	ALTER TABLE [sa].[sa_suorat_yo_talous_2_tase] add VEROPVARA int null
+END

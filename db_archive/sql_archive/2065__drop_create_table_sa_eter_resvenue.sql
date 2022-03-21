@@ -1,0 +1,128 @@
+USE [ANTERO]
+IF EXISTS
+	(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='sa' AND TABLE_NAME='sa_eter_revenue')
+BEGIN
+	DROP TABLE [sa].[sa_eter_revenue];
+END
+
+IF  NOT EXISTS
+	(SELECT * FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='sa' AND TABLE_NAME='sa_eter_revenue')
+BEGIN
+
+
+CREATE TABLE [sa].[sa_eter_revenue](
+	[_id] [varchar](24) NOT NULL,
+	[REV.COREBUDGETOTHER.NC.code] [varchar](2) NULL,
+	[REV.COREBUDGETOTHER.NC.v] [varchar](16) NULL,
+	[REV.COREBUDGETOTHER.PPP.code] [varchar](2) NULL,
+	[REV.COREBUDGETOTHER.PPP.v] [varchar](17) NULL,
+	[REV.COREBUDGETOTHER.EURO.code] [varchar](2) NULL,
+	[REV.COREBUDGETOTHER.EURO.v] [varchar](17) NULL,
+	[REV.CORETOTAL.EURO.code] [varchar](2) NULL,
+	[REV.CORETOTAL.EURO.v] [varchar](16) NULL,
+	[REV.CORETOTAL.PPP.code] [varchar](2) NULL,
+	[REV.CORETOTAL.PPP.v] [varchar](17) NULL,
+	[REV.CORETOTAL.NC.code] [varchar](2) NULL,
+	[REV.CORETOTAL.NC.v] [varchar](16) NULL,
+	[REV.COREBUDGETPUBLIC.PPP.code] [varchar](2) NULL,
+	[REV.COREBUDGETPUBLIC.PPP.v] [varchar](16) NULL,
+	[REV.COREBUDGETPUBLIC.EURO.code] [varchar](2) NULL,
+	[REV.COREBUDGETPUBLIC.EURO.v] [varchar](16) NULL,
+	[REV.COREBUDGETPUBLIC.NC.code] [varchar](2) NULL,
+	[REV.COREBUDGETPUBLIC.NC.v] [varchar](16) NULL,
+	[REV.THIRDPARTYPUBLIC.PPP.code] [varchar](2) NULL,
+	[REV.THIRDPARTYPUBLIC.PPP.v] [varchar](17) NULL,
+	[REV.THIRDPARTYPUBLIC.NC.code] [varchar](2) NULL,
+	[REV.THIRDPARTYPUBLIC.NC.v] [varchar](16) NULL,
+	[REV.THIRDPARTYPUBLIC.EURO.code] [varchar](2) NULL,
+	[REV.THIRDPARTYPUBLIC.EURO.v] [varchar](17) NULL,
+	[REV.FLAGCOREBUDGETOTHER.v] [varchar](2) NULL,
+	[REV.FLAGCOREBUDGETOTHER.r] [varchar](2) NULL,
+	[REV.FLAGTHIRDPARTYPRIVATE.v] [varchar](2) NULL,
+	[REV.FLAGTHIRDPARTYPRIVATE.r] [varchar](2) NULL,
+	[REV.THIRDPARTYUND.NC.code] [varchar](2) NULL,
+	[REV.THIRDPARTYUND.NC.v] [varchar](11) NULL,
+	[REV.THIRDPARTYUND.PPP.code] [varchar](2) NULL,
+	[REV.THIRDPARTYUND.PPP.v] [varchar](17) NULL,
+	[REV.THIRDPARTYUND.EURO.code] [varchar](2) NULL,
+	[REV.THIRDPARTYUND.EURO.v] [varchar](17) NULL,
+	[REV.THIRDPARTYTOTAL.EURO.code] [varchar](2) NULL,
+	[REV.THIRDPARTYTOTAL.EURO.v] [varchar](16) NULL,
+	[REV.THIRDPARTYTOTAL.PPP.code] [varchar](2) NULL,
+	[REV.THIRDPARTYTOTAL.PPP.v] [varchar](17) NULL,
+	[REV.THIRDPARTYTOTAL.NC.code] [varchar](2) NULL,
+	[REV.THIRDPARTYTOTAL.NC.v] [varchar](16) NULL,
+	[REV.THIRDPARTYPRIVATE.EURO.code] [varchar](2) NULL,
+	[REV.THIRDPARTYPRIVATE.EURO.v] [varchar](16) NULL,
+	[REV.THIRDPARTYPRIVATE.NC.code] [varchar](2) NULL,
+	[REV.THIRDPARTYPRIVATE.NC.v] [varchar](12) NULL,
+	[REV.THIRDPARTYPRIVATE.PPP.code] [varchar](2) NULL,
+	[REV.THIRDPARTYPRIVATE.PPP.v] [varchar](16) NULL,
+	[REV.THIRDPARTYABROAD.PPP.code] [varchar](2) NULL,
+	[REV.THIRDPARTYABROAD.PPP.v] [varchar](17) NULL,
+	[REV.THIRDPARTYABROAD.EURO.code] [varchar](2) NULL,
+	[REV.THIRDPARTYABROAD.EURO.v] [varchar](17) NULL,
+	[REV.THIRDPARTYABROAD.NC.code] [varchar](2) NULL,
+	[REV.THIRDPARTYABROAD.NC.v] [varchar](16) NULL,
+	[REV.STUDFEES.EURO.code] [varchar](2) NULL,
+	[REV.STUDFEES.EURO.v] [varchar](17) NULL,
+	[REV.STUDFEES.PPP.code] [varchar](2) NULL,
+	[REV.STUDFEES.PPP.v] [varchar](17) NULL,
+	[REV.STUDFEES.NC.code] [varchar](2) NULL,
+	[REV.STUDFEES.NC.v] [varchar](13) NULL,
+	[REV.FLAGTHIRDPARTYUND.v] [varchar](5) NULL,
+	[REV.FLAGTHIRDPARTYUND.r] [varchar](2) NULL,
+	[REV.TUITFEES.code] [varchar](2) NULL,
+	[REV.TUITFEES.v] [varchar](2) NULL,
+	[REV.UNCL.NC.code] [varchar](2) NULL,
+	[REV.UNCL.NC.v] [varchar](16) NULL,
+	[REV.UNCL.PPP.code] [varchar](2) NULL,
+	[REV.UNCL.PPP.v] [varchar](17) NULL,
+	[REV.UNCL.EURO.code] [varchar](2) NULL,
+	[REV.UNCL.EURO.v] [varchar](17) NULL,
+	[REV.CURRTOTAL.EURO.code] [varchar](2) NULL,
+	[REV.CURRTOTAL.EURO.v] [varchar](16) NULL,
+	[REV.CURRTOTAL.NC.code] [varchar](2) NULL,
+	[REV.CURRTOTAL.NC.v] [varchar](16) NULL,
+	[REV.CURRTOTAL.PPP.code] [varchar](2) NULL,
+	[REV.CURRTOTAL.PPP.v] [varchar](17) NULL,
+	[REV.FLAGCURRTOTAL.v] [varchar](8) NULL,
+	[REV.FLAGCURRTOTAL.r] [varchar](2) NULL,
+	[REV.NONRECURR.PPP.code] [varchar](2) NULL,
+	[REV.NONRECURR.PPP.v] [varchar](16) NULL,
+	[REV.NONRECURR.EURO.code] [varchar](2) NULL,
+	[REV.NONRECURR.EURO.v] [varchar](16) NULL,
+	[REV.NONRECURR.NC.code] [varchar](2) NULL,
+	[REV.NONRECURR.NC.v] [varchar](16) NULL,
+	[REV.NOTES] [varchar](219) NULL,
+	[REV.FLAGCORETOTAL.v] [varchar](8) NULL,
+	[REV.FLAGCORETOTAL.r] [varchar](2) NULL,
+	[REV.FLAGTHIRDPARTYTOTAL.v] [varchar](11) NULL,
+	[REV.FLAGTHIRDPARTYTOTAL.r] [varchar](2) NULL,
+	[REV.FLAGSTUDFEES.v] [varchar](8) NULL,
+	[REV.FLAGSTUDFEES.r] [varchar](2) NULL,
+	[REV.FLAGTHIRDPARTYPUBLIC.v] [varchar](5) NULL,
+	[REV.FLAGTHIRDPARTYPUBLIC.r] [varchar](2) NULL,
+	[REV.FLAGCOREBUDGETPUBLIC.v] [varchar](2) NULL,
+	[REV.FLAGCOREBUDGETPUBLIC.r] [varchar](2) NULL,
+	[REV.FLAGTHIRDPARTYABROAD.v] [varchar](2) NULL,
+	[REV.FLAGTHIRDPARTYABROAD.r] [varchar](2) NULL,
+	[REV.FLAGNONRECURR.v] [varchar](2) NULL,
+	[REV.FLAGNONRECURR.r] [varchar](2) NULL,
+	[REV.FLAGUNCL.v] [varchar](8) NULL,
+	[REV.FLAGUNCL.r] [varchar](2) NULL,
+	[username] [varchar](100) NULL,
+	[Source] [varchar](100) NULL,
+	[Loadtime] [datetime] NULL,
+ CONSTRAINT [PK__sa_eter_revenue] PRIMARY KEY CLUSTERED
+(
+	[_id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+) ON [PRIMARY]
+END
+GO
+
+ALTER TABLE [sa].[sa_eter_revenue] ADD  CONSTRAINT [DF__sa_eter_revenue]  DEFAULT (suser_name()) FOR [username]
+GO
+
+USE ANTERO
