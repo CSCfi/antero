@@ -71,8 +71,8 @@ USING (
 		,selite_fi = nimi
 		,selite_sv = nimi_sv
 		,selite_en = coalesce(nimi_en,	case koodi 
-											when '1' then 'Employment, contractual employment or public service employment relationship'
-											when '2' then 'Entrepreneur'
+											when 1 then 'Employment, contractual employment or public service employment relationship'
+											when 2 then 'Entrepreneur'
 										end)
 		,jarjestys_koodi = koodi
 		,'etl: p_lataa_d_oppisopimuksen_perusta' AS source
