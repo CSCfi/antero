@@ -2906,7 +2906,10 @@
             "expression": [
               "",
               "var ehto = IF(COUNTROWS(VALUES(Muuttujat[kysymys_fi]))=1,IF(VALUES(Muuttujat[kysymys_fi])=\"Tieto puuttuu\",1,0),0)",
-              "return IF(ehto=1,BLANK(),CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_vastaajatunnus]),ALL(Muuttujat[apusarake_vastaustyyppi],Muuttujat[kysymys_fi])))"
+              "return IF(ehto=1",
+              "\t,BLANK()",
+              "\t,CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_vastaajatunnus]), ALL(Muuttujat[apusarake_vastaustyyppi],Muuttujat[kysymys_fi],Muuttujat[kysymys_sv],Muuttujat[kysymys_en]))",
+              ")"
             ],
             "formatString": "#,0",
             "isHidden": true
@@ -2914,10 +2917,10 @@
           {
             "name": "pisteet",
             "expression": [
-              "--IF([ehtoFI]=TRUE();BLANK();",
-              "var taulu = ADDCOLUMNS(SUMMARIZE(FILTER(Muuttujat,NOT(ISBLANK(Muuttujat[apusarake_vastaajaid])) && Muuttujat[koodit_rahoitusmallikysymys]=1),[apusarake_vastaajatunnus],[kysely_fi],[jarjestys_kysymys]),\"numero\",CALCULATE(AVERAGE(Muuttujat[apusarake_numerovalinta])))",
+              "IF([ehtoFISVEN]=TRUE(),BLANK(),",
+              "var taulu = ADDCOLUMNS(SUMMARIZE(FILTER(Muuttujat, NOT(ISBLANK(Muuttujat[apusarake_vastaajaid])) && Muuttujat[koodit_rahoitusmallikysymys]=1), [apusarake_vastaajatunnus], [kysely_fi], [jarjestys_kysymys]), \"numero\", CALCULATE(AVERAGE(Muuttujat[apusarake_numerovalinta])))",
               "return SUMX(taulu,[numero])",
-              ""
+              ")"
             ],
             "formatString": "#,0"
           },
@@ -2925,14 +2928,29 @@
             "name": "painotetut_pisteet",
             "expression": [
               "",
-              "var taulu = CALCULATETABLE(ADDCOLUMNS(",
-              "\tSUMMARIZE(Muuttujat,[koodit_koulutuksen_jarjestaja]) \t",
-              "\t,\"kato\",CALCULATE(IF([vastausosuus_tyopaikkajaksojen_paivien_lkm]  >=  0.7, DIVIDE(1,[vastausosuus_tyopaikkajaksojen_paivien_lkm]),IF([vastausosuus_tyopaikkajaksojen_paivien_lkm] <= 0.2, 857/350",
-              "\t,1/0.7 + 2.04 * (0.7 - [vastausosuus_tyopaikkajaksojen_paivien_lkm]))),Muuttujat[kyselyn_kohderyhma_fi]=\"Työelämäpalaute: työpaikkaohjaajan kysely\")",
-              "\t,\"pisteet1\",CALCULATE(SUM(Muuttujat[apusarake_numerovalinta]),Muuttujat[kyselyn_kohderyhma_fi]=\"Työelämäpalaute: työpaikkaohjaajan kysely\")",
-              "\t,\"paivat2\", CALCULATE([vastattu_tyopaikkajaksojen_paivien_lkm],Muuttujat[kyselyn_kohderyhma_fi]=\"Työelämäpalaute: työpaikkakysely\")",
-              "\t,\"pisteet2\",CALCULATE(SUM(Muuttujat[apusarake_numerovalinta]),Muuttujat[kyselyn_kohderyhma_fi]=\"Työelämäpalaute: työpaikkakysely\")",
-              "),Muuttujat[koodit_rahoitusmallikysymys]=1,VALUES(Muuttujat[kysely_fi]))",
+              "var taulu = ",
+              "CALCULATETABLE(",
+              "\tADDCOLUMNS(",
+              "\t\tSUMMARIZE(Muuttujat,[koodit_koulutuksen_jarjestaja]) \t",
+              "\t\t, \"kato\", CALCULATE(",
+              "\t\t\tIF([vastausosuus_tyopaikkajaksojen_paivien_lkm]  >=  0.7",
+              "\t\t\t, DIVIDE(1,[vastausosuus_tyopaikkajaksojen_paivien_lkm])",
+              "\t\t\t\t, IF([vastausosuus_tyopaikkajaksojen_paivien_lkm] <= 0.2",
+              "\t\t\t\t, 857/350",
+              "\t\t\t\t, 1/0.7 + 2.04 * (0.7 - [vastausosuus_tyopaikkajaksojen_paivien_lkm])",
+              "\t\t\t\t)",
+              "\t\t\t)",
+              "\t\t\t, Muuttujat[kyselyn_kohderyhma_fi]=\"Työelämäpalaute: työpaikkaohjaajan kysely\"",
+              "\t\t)",
+              "\t\t,\"pisteet1\", CALCULATE(SUM(Muuttujat[apusarake_numerovalinta]),Muuttujat[kyselyn_kohderyhma_fi]=\"Työelämäpalaute: työpaikkaohjaajan kysely\")",
+              "\t\t,\"paivat2\", CALCULATE([vastattu_tyopaikkajaksojen_paivien_lkm],Muuttujat[kyselyn_kohderyhma_fi]=\"Työelämäpalaute: työpaikkakysely\")",
+              "\t\t,\"pisteet2\", CALCULATE(SUM(Muuttujat[apusarake_numerovalinta]),Muuttujat[kyselyn_kohderyhma_fi]=\"Työelämäpalaute: työpaikkakysely\")",
+              "\t)",
+              "\t,Muuttujat[koodit_rahoitusmallikysymys]=1",
+              "\t,VALUES(Muuttujat[kysely_fi])",
+              "\t,VALUES(Muuttujat[kysely_sv])",
+              "\t,VALUES(Muuttujat[kysely_en])",
+              ")",
               "var painotettu1 = SUMX(taulu, [kato]*[pisteet1]) ",
               "var painotettu2 = SUMX(taulu, [paivat2]*[pisteet2])",
               "var painotettu = painotettu1 + painotettu2",
@@ -2946,7 +2964,7 @@
               "",
               "var ehto = IF(COUNTROWS(VALUES(Muuttujat[kysely_fi]))=1,IF(VALUES(Muuttujat[kysely_fi])=\"Työelämäpalaute: työpaikkakysely\",1,0),0)",
               "var vastausosuus = IF(ehto=1,1,[vastausosuus_tyopaikkajaksojen_paivien_lkm])",
-              "return IF(OR(NOT(ISFILTERED([kysely_fi])),ehto=1),BLANK(),CALCULATE(",
+              "return IF(OR(NOT(ISFILTERED([kysely_fi]) || ISFILTERED([kysely_sv]) || ISFILTERED([kysely_en])),ehto=1),BLANK(),CALCULATE(",
               "\tIF(vastausosuus  >=  0.7, DIVIDE(1,vastausosuus)",
               "\t,IF(vastausosuus <= 0.2, 857/350",
               "\t,1/0.7 + 2.04 * (0.7 - vastausosuus)))",
@@ -2958,9 +2976,9 @@
             "name": "kaikki pisteet lkm",
             "expression": [
               "IF(",
-              "ISFILTERED(Muuttujat[monivalintavaihtoehto_fi]),",
-              "BLANK(),",
-              "CALCULATE(COUNTROWS(Muuttujat),Muuttujat[apusarake_vastaustyyppi]=\"asteikko5_1\")",
+              "\tISFILTERED(Muuttujat[monivalintavaihtoehto_fi]) || ISFILTERED([monivalintavaihtoehto_sv]) || ISFILTERED([monivalintavaihtoehto_en])",
+              "\t, BLANK()",
+              "\t, CALCULATE(COUNTROWS(Muuttujat),Muuttujat[apusarake_vastaustyyppi]=\"asteikko5_1\")",
               ")"
             ],
             "formatString": "#,0",
@@ -3007,17 +3025,23 @@
           },
           {
             "name": "keskiarvo",
-            "expression": "IF([ehtoFI]=TRUE(),BLANK(),AVERAGE(Muuttujat[apusarake_numerovalinta]))",
+            "expression": "IF([ehtoFISVEN]=TRUE(),BLANK(),AVERAGE(Muuttujat[apusarake_numerovalinta]))",
             "formatString": "0.0"
           },
           {
             "name": "keskihajonta",
-            "expression": "IF([ehtoFI]=TRUE(),BLANK(),STDEV.P(Muuttujat[apusarake_numerovalinta]))",
+            "expression": "IF([ehtoFISVEN]=TRUE(),BLANK(),STDEV.P(Muuttujat[apusarake_numerovalinta]))",
             "formatString": "0.0"
           },
           {
-            "name": "ehtoFI",
-            "expression": "IF(OR(ISFILTERED([monivalintavaihtoehto_fi]),[vastattu_tyopaikkajaksojen_lkm]=[alle5]),TRUE(),FALSE())",
+            "name": "ehtoFISVEN",
+            "expression": [
+              "IF(",
+              "\tISFILTERED([monivalintavaihtoehto_fi]) || ISFILTERED([monivalintavaihtoehto_sv]) || ISFILTERED([monivalintavaihtoehto_en]) || [vastattu_tyopaikkajaksojen_lkm]=[alle5]",
+              "\t, TRUE()",
+              "\t, FALSE()",
+              ")"
+            ],
             "isHidden": true
           },
           {
@@ -3047,7 +3071,7 @@
               "var taulu = FILTER(Muuttujat,[apusarake_vastaustyyppi_keskiarvo]=1 && NOT(ISBLANK([apusarake_vastaajaid])))",
               "var summa_osoittaja = SUMX(taulu,[apusarake_numerovalinta]*[apusarake_tyopaikkajakson_kesto])",
               "var summa_nimittaja = SUMX(taulu,[apusarake_tyopaikkajakson_kesto])",
-              "return IF([ehtoFI]=TRUE(),BLANK(),summa_osoittaja/summa_nimittaja)"
+              "return IF([ehtoFISVEN]=TRUE(),BLANK(),summa_osoittaja/summa_nimittaja)"
             ],
             "formatString": "0.0"
           },
@@ -3059,7 +3083,7 @@
               "var painotettu_ka = [keskiarvo_painotettu_tyopaikkajaksojen_kestolla]",
               "var summa_nimittaja = SUMX(taulu,[apusarake_tyopaikkajakson_kesto])",
               "var summa_osoittaja = SUMX(taulu,[apusarake_tyopaikkajakson_kesto]*POWER([apusarake_numerovalinta]-painotettu_ka,2) )",
-              "return IF([ehtoFI]=TRUE(),BLANK(),summa_osoittaja / summa_nimittaja)"
+              "return IF([ehtoFISVEN]=TRUE(),BLANK(),summa_osoittaja / summa_nimittaja)"
             ],
             "formatString": "0.0"
           },
@@ -3183,7 +3207,11 @@
             "expression": [
               "",
               "var summa = [Kyselyn kohteena olleet jaksot_s]",
-              "return IF(OR(ISFILTERED([monivalintavaihtoehto_fi]),summa=0),BLANK(),IF(summa<5,\"1-4\",summa))"
+              "return IF(",
+              "\tISFILTERED([monivalintavaihtoehto_fi]) || ISFILTERED([monivalintavaihtoehto_sv]) || ISFILTERED([monivalintavaihtoehto_en]) || summa=0",
+              "\t,BLANK()",
+              "\t,IF(summa<5,\"1-4\",summa)",
+              ")"
             ],
             "formatString": "#,0"
           },
@@ -3192,8 +3220,11 @@
             "expression": [
               "",
               "var summa = [Jaksoista vastattu_s]",
-              "var summa_ylataso = CALCULATE([Jaksoista vastattu_s],ALL(Muuttujat[monivalintavaihtoehto_fi]))",
-              "return IF(summa_ylataso<5,IF(OR(ISFILTERED([monivalintavaihtoehto_fi]),summa=0),BLANK(),\"1-4\"),summa)"
+              "var summa_ylataso = CALCULATE([Jaksoista vastattu_s], ALL(Muuttujat[monivalintavaihtoehto_fi]), ALL(Muuttujat[monivalintavaihtoehto_sv]), ALL(Muuttujat[monivalintavaihtoehto_en]))",
+              "return IF(summa_ylataso<5",
+              "\t, IF(ISFILTERED([monivalintavaihtoehto_fi]) || ISFILTERED([monivalintavaihtoehto_sv]) || ISFILTERED([monivalintavaihtoehto_en]) || summa=0, BLANK(), \"1-4\")",
+              "\t, summa",
+              ")"
             ],
             "formatString": "#,0"
           },
@@ -3209,7 +3240,13 @@
             "name": "kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm",
             "expression": [
               "",
-              "var taulu = CALCULATETABLE(ADDCOLUMNS(SUMMARIZE(Muuttujat,[apusarake_vastaajatunnus]),\"ka\",CALCULATE(AVERAGE(Muuttujat[apusarake_tyopaikkajakson_kesto]))),ALL(Muuttujat[apusarake_vastaustyyppi],Muuttujat[kysymys_fi]))",
+              "var taulu = ",
+              "CALCULATETABLE(",
+              "\tADDCOLUMNS(",
+              "\t\tSUMMARIZE(Muuttujat,[apusarake_vastaajatunnus])",
+              "\t\t, \"ka\", CALCULATE(AVERAGE(Muuttujat[apusarake_tyopaikkajakson_kesto]))",
+              "\t), ALL(Muuttujat[apusarake_vastaustyyppi], Muuttujat[kysymys_fi], Muuttujat[kysely_sv], Muuttujat[kysymys_en])",
+              ")",
               "return SUMX(taulu, [ka])",
               "",
               ""
@@ -6921,9 +6958,6 @@
             ],
             "measures": [
               {
-                "name": "pisteet"
-              },
-              {
                 "name": "kyselyn_kohteet_tyopaikkajaksojen_lkm"
               },
               {
@@ -7270,9 +7304,6 @@
             ],
             "measures": [
               {
-                "name": "pisteet"
-              },
-              {
                 "name": "kyselyn_kohteet_tyopaikkajaksojen_lkm"
               },
               {
@@ -7424,9 +7455,6 @@
               }
             ],
             "measures": [
-              {
-                "name": "pisteet"
-              },
               {
                 "name": "kyselyn_kohteet_tyopaikkajaksojen_lkm"
               },
@@ -7971,9 +7999,6 @@
             ],
             "measures": [
               {
-                "name": "pisteet"
-              },
-              {
                 "name": "kyselyn_kohteet_tyopaikkajaksojen_lkm"
               },
               {
@@ -8125,9 +8150,6 @@
               }
             ],
             "measures": [
-              {
-                "name": "pisteet"
-              },
               {
                 "name": "kyselyn_kohteet_tyopaikkajaksojen_lkm"
               },
@@ -8294,9 +8316,6 @@
               },
               {
                 "name": "kyselyn_kohteiden_keskimaarainen_kesto"
-              },
-              {
-                "name": "pisteet"
               },
               {
                 "name": "vastattu_tyopaikkajaksojen_lkm"
