@@ -1,7 +1,7 @@
 USE [ANTERO]
 GO
 
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[virta_opettajapatevyys_priorisointi]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[virta_opettajakelpoisuus_priorisointi]') AND type in (N'U'))
 
 BEGIN
 
