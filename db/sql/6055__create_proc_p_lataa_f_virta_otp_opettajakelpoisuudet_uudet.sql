@@ -113,8 +113,6 @@ GROUP BY
 	,suoritustapa
 	,ainekelpoisuuksien_maara
 
-END
-
 GO
 
 USE [ANTERO]
