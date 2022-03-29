@@ -2905,11 +2905,24 @@
             "name": "Kyselyn kohteena olleet jaksot_s",
             "expression": [
               "",
-              "var ehto = IF(COUNTROWS(VALUES(Muuttujat[kysymys_fi]))=1,IF(VALUES(Muuttujat[kysymys_fi])=\"Tieto puuttuu\",1,0),0)",
-              "return IF(ehto=1",
-              "\t,BLANK()",
-              "\t,CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_vastaajatunnus]), ALL(Muuttujat[apusarake_vastaustyyppi],Muuttujat[kysymys_fi],Muuttujat[kysymys_sv],Muuttujat[kysymys_en]))",
-              ")"
+              "var ehto = (ISFILTERED([kysymys_fi]) || ISFILTERED([kysymys_sv]) || ISFILTERED([kysymys_en])) ",
+              "\t&& IF(COUNTROWS(VALUES(Muuttujat[kysymys_fi]))=1, IF(VALUES(Muuttujat[kysymys_fi])=\"Tieto puuttuu\", 1, 0), 0)",
+              "",
+              "return IF(ehto",
+              "\t, BLANK()",
+              "\t, CALCULATE(",
+              "\t\tDISTINCTCOUNT(Muuttujat[apusarake_vastaajatunnus])",
+              "\t\t, ALL(Muuttujat[apusarake_vastaustyyppi]",
+              "\t\t\t, Muuttujat[kysymys_fi], Muuttujat[kysymys_sv],Muuttujat[kysymys_en]",
+              "\t\t\t, Muuttujat[kysymysryhma_fi], Muuttujat[kysymysryhma_sv], Muuttujat[kysymysryhma_en]",
+              "\t\t\t, Muuttujat[rahoitusmallikysymys_fi], Muuttujat[rahoitusmallikysymys_sv], Muuttujat[rahoitusmallikysymys_en]",
+              "\t\t)",
+              "\t)",
+              ")",
+              "",
+              "--var ehto = IF(COUNTROWS(VALUES(Muuttujat[kysymys_fi]))=1;IF(VALUES(Muuttujat[kysymys_fi])=\"Tieto puuttuu\";1;0);0)",
+              "",
+              "--Huom. Lisätty all-ehtoihin kysymyksen ohella muita vastaavia muuttujia; voi vaatia ylläpitoa. JS 29.3.2022"
             ],
             "formatString": "#,0",
             "isHidden": true
@@ -3010,7 +3023,7 @@
           },
           {
             "name": "Jaksoista vastattu_s",
-            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_vastaajaid]),NOT(ISBLANK(Muuttujat[apusarake_vastaajaid])))",
+            "expression": "CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_vastaajaid]), NOT(ISBLANK(Muuttujat[apusarake_vastaajaid])))",
             "formatString": "#,0",
             "isHidden": true
           },
@@ -3048,7 +3061,8 @@
             "name": "vastausosuus_tyopaikkajaksojen_lkm",
             "expression": [
               "",
-              "DIVIDE([Jaksoista vastattu_s],[Kyselyn kohteena olleet jaksot_s])"
+              "var ehto = ISBLANK([kyselyn_kohteet_tyopaikkajaksojen_lkm])",
+              "return IF(ehto, BLANK(), DIVIDE([Jaksoista vastattu_s], [Kyselyn kohteena olleet jaksot_s]))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
@@ -3209,8 +3223,8 @@
               "var summa = [Kyselyn kohteena olleet jaksot_s]",
               "return IF(",
               "\tISFILTERED([monivalintavaihtoehto_fi]) || ISFILTERED([monivalintavaihtoehto_sv]) || ISFILTERED([monivalintavaihtoehto_en]) || summa=0",
-              "\t,BLANK()",
-              "\t,IF(summa<5,\"1-4\",summa)",
+              "\t, BLANK()",
+              "\t, IF(summa < 5, \"1-4\" ,summa)",
               ")"
             ],
             "formatString": "#,0"
@@ -3221,9 +3235,9 @@
               "",
               "var summa = [Jaksoista vastattu_s]",
               "var summa_ylataso = CALCULATE([Jaksoista vastattu_s], ALL(Muuttujat[monivalintavaihtoehto_fi]), ALL(Muuttujat[monivalintavaihtoehto_sv]), ALL(Muuttujat[monivalintavaihtoehto_en]))",
-              "return IF(summa_ylataso<5",
-              "\t, IF(ISFILTERED([monivalintavaihtoehto_fi]) || ISFILTERED([monivalintavaihtoehto_sv]) || ISFILTERED([monivalintavaihtoehto_en]) || summa=0, BLANK(), \"1-4\")",
-              "\t, summa",
+              "return IF(summa=0 || (summa_ylataso < 5 && (ISFILTERED([monivalintavaihtoehto_fi]) || ISFILTERED([monivalintavaihtoehto_sv]) || ISFILTERED([monivalintavaihtoehto_en])))",
+              "\t, BLANK()",
+              "\t, IF(summa < 5, \"1-4\", summa)",
               ")"
             ],
             "formatString": "#,0"
@@ -3232,7 +3246,7 @@
             "name": "kyselyn_kohteiden_keskimaarainen_kesto",
             "expression": [
               "",
-              "DIVIDE([kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm],[Kyselyn kohteena olleet jaksot_s])"
+              "DIVIDE([kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm], [Kyselyn kohteena olleet jaksot_s])"
             ],
             "formatString": "#,0.0"
           },
@@ -3240,16 +3254,23 @@
             "name": "kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm",
             "expression": [
               "",
+              "var ehto = ISBLANK([kyselyn_kohteet_tyopaikkajaksojen_lkm])",
               "var taulu = ",
               "CALCULATETABLE(",
               "\tADDCOLUMNS(",
-              "\t\tSUMMARIZE(Muuttujat,[apusarake_vastaajatunnus])",
-              "\t\t, \"ka\", CALCULATE(AVERAGE(Muuttujat[apusarake_tyopaikkajakson_kesto]))",
-              "\t), ALL(Muuttujat[apusarake_vastaustyyppi], Muuttujat[kysymys_fi], Muuttujat[kysely_sv], Muuttujat[kysymys_en])",
-              ")",
-              "return SUMX(taulu, [ka])",
+              "\t\tSUMMARIZE(Muuttujat, [apusarake_vastaajatunnus])",
+              "\t\t, \"ka\"",
+              "\t\t, CALCULATE(AVERAGE(Muuttujat[apusarake_tyopaikkajakson_kesto]))",
+              "\t), ALL(Muuttujat[apusarake_vastaustyyppi]",
+              "\t\t, Muuttujat[kysymys_fi], Muuttujat[kysymys_sv],Muuttujat[kysymys_en]",
+              "\t\t, Muuttujat[kysymysryhma_fi], Muuttujat[kysymysryhma_sv], Muuttujat[kysymysryhma_en]",
+              "\t\t, Muuttujat[rahoitusmallikysymys_fi], Muuttujat[rahoitusmallikysymys_sv], Muuttujat[rahoitusmallikysymys_en]",
+              "\t)",
               "",
-              ""
+              ")",
+              "return IF(ehto, BLANK(), SUMX(taulu, [ka]))",
+              "",
+              "--Huom. Lisätty all-ehtoihin kysymyksen ohella muita vastaavia muuttujia, voi vaatia ylläpitoa. JS 29.3.2022"
             ],
             "formatString": "#,0"
           },
@@ -3257,8 +3278,14 @@
             "name": "vastattu_tyopaikkajaksojen_paivien_lkm",
             "expression": [
               "",
-              "var taulu = ADDCOLUMNS(SUMMARIZE(Muuttujat,[apusarake_vastaajatunnus]), \"kesto\",CALCULATE(AVERAGE(Muuttujat[apusarake_tyopaikkajakson_kesto]),FILTER(VALUES(Muuttujat[apusarake_vastaajaid]),NOT(ISBLANK([apusarake_vastaajaid])))))",
-              "return SUMX(taulu,[kesto])"
+              "var ehto = ISBLANK([vastattu_tyopaikkajaksojen_lkm])",
+              "var taulu = ",
+              "ADDCOLUMNS(",
+              "\tSUMMARIZE(Muuttujat, [apusarake_vastaajatunnus])",
+              "\t, \"kesto\"",
+              "\t, CALCULATE(AVERAGE(Muuttujat[apusarake_tyopaikkajakson_kesto]), FILTER(VALUES(Muuttujat[apusarake_vastaajaid]), NOT(ISBLANK([apusarake_vastaajaid]))))",
+              ")",
+              "return IF(ehto, BLANK(), SUMX(taulu,[kesto]))"
             ],
             "formatString": "#,0"
           },
@@ -3266,7 +3293,7 @@
             "name": "vastausosuus_tyopaikkajaksojen_paivien_lkm",
             "expression": [
               "",
-              "DIVIDE([vastattu_tyopaikkajaksojen_paivien_lkm],[kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm])"
+              "DIVIDE([vastattu_tyopaikkajaksojen_paivien_lkm], [kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm])"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
@@ -3274,7 +3301,7 @@
             "name": "vastattujen_tyopaikkajaksojen_keskimaarainen_kesto",
             "expression": [
               "",
-              "DIVIDE([vastattu_tyopaikkajaksojen_paivien_lkm],[Jaksoista vastattu_s])"
+              "DIVIDE([vastattu_tyopaikkajaksojen_paivien_lkm], [Jaksoista vastattu_s])"
             ],
             "formatString": "#,0.0"
           }
