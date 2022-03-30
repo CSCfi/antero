@@ -68,4 +68,4 @@ LEFT JOIN dw.d_avoinsaatavuus d17 on d17.avoinsaatavuus_koodi = s1.OPEN_ACCESS_K
 LEFT JOIN [dw].[d_organisaatioluokitus] d18 ON s1.AMK_TUNNUS = d18.organisaatio_koodi
 GO
 
-USE [ANTREO]
+USE [ANTERO]
