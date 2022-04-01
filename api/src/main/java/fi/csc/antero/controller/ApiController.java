@@ -13,6 +13,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
+import org.springframework.core.Ordered;
+
+//1.4.2022 DataBinder fix
+
+import org.springframework.core.annotation.Order;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.InitBinder;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -87,4 +95,22 @@ public class ApiController {
             throw new NotFoundException(String.format("Resource '%s' not found", resource));
         }
     }
+}
+
+@ControllerAdvice
+
+@Order(10000)
+
+public class BinderControllerAdvice {
+
+    @InitBinder
+
+    public void setAllowedFields(WebDataBinder dataBinder) {
+
+         String[] denylist = new String[]{"class.*", "Class.*", "*.class.*", "*.Class.*"};
+
+         dataBinder.setDisallowedFields(denylist);
+
+    }
+
 }
