@@ -10,4 +10,4 @@ USE [ANTERO]
 GO
 ALTER TABLE [dw].[d_organisaatioluokitus] ALTER COLUMN [organisaatio_fi] [nvarchar](500) NULL
 ALTER TABLE [dw].[d_organisaatioluokitus] ALTER COLUMN [organisaatio_sv] [nvarchar](500) NULL
-ALTER TABLE [dw].[d_organisaatioluokitus] ALTER COLUMN [organisatio_en] [nvarchar](500) NULL
+ALTER TABLE [dw].[d_organisaatioluokitus] ALTER COLUMN [organisaatio_en] [nvarchar](500) NULL
