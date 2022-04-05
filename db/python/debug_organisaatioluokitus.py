@@ -35,7 +35,7 @@ def makerow():
     'kotikunta':None, 'oppilaitoksenopetuskieli':None,
     'oppilaitostyyppi':None,
     'osoitetyyppi':None, 'osoite':None, 'postinumero':None, 'postitoimipaikka':None,
-    'latitude':None, 'longitude':None, 'yritysmuoto':None
+    'latitude':None, 'longitude':None
   }
 
 # get value from json
@@ -305,9 +305,7 @@ def load(secure,hostname,url,schema,table,verbose=False):
         row["parentoid"] = jv(i,"parentOid")
         # liitokset
         row["liitosoid"] = liitosmap[o] if o in liitosmap else None
-        # yritysmuoto 3.11.2021 vha testing
-        if 'yritysmuoto' in i:
-            row["yritysmuoto"] = jv(i,"yritysmuoto")
+
         # TODO does the order here matter? if multiple tyyppi's, what to do?
         if "tyypit" in i and "Koulutustoimija" in i["tyypit"]:
           row["tyyppi"] = "Koulutustoimija"
@@ -371,7 +369,10 @@ def load(secure,hostname,url,schema,table,verbose=False):
               get_and_set_coordinates(row)
 
           if verbose: show(" %5d -- %s %s (%s)"%(cnt,row["tyyppi"],row["koodi"],row["nimi"]))
-          dboperator.insert(hostname+url,schema,table,row)
+          try:
+              dboperator.insert(hostname+url,schema,table,row)
+          except _mssql.MSSQLDatabaseException as sqle:
+              print('Error with oid: ', o )
     except ValueError as ve:
         print("ValueError: " + str(ve))
         print("vika: " + str(address) + " oid:" + str(o))
