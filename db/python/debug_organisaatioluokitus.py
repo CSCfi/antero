@@ -373,6 +373,7 @@ def load(secure,hostname,url,schema,table,verbose=False):
               dboperator.insert(hostname+url,schema,table,row)
           except _mssql.MSSQLDatabaseException as sqle:
               print('Error with oid: ', o, ' -- ',row )
+              continue
     except ValueError as ve:
         print("ValueError: " + str(ve))
         print("vika: " + str(address) + " oid:" + str(o))
