@@ -1,11 +1,15 @@
 USE [ANTERO]
 GO
 
-/****** Object:  View [dw].[v_virta_otp_opettajakelpoisuudet_aineet]    Script Date: 21.4.2022 11:14:14 ******/
+/****** Object:  View [dw].[v_virta_otp_opettajakelpoisuudet]    Script Date: 21.4.2022 11:35:35 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
+GO
+
+DROP VIEW IF EXISTS [dw].[v_virta_otp_opettajakelpoisuudet_aineet]
+
 GO
 
 

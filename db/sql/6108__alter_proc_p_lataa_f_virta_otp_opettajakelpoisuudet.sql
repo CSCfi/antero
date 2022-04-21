@@ -8,8 +8,13 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE PROCEDURE [dw].[p_lataa_f_virta_otp_opettajakelpoisuudet] AS
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[p_lataa_f_virta_otp_opettajakelpoisuudet]') AND type in (N'P', N'PC'))
+BEGIN
+EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dw].[p_lataa_f_virta_otp_opettajakelpoisuudet] AS' 
+END
+GO
 
+ALTER PROCEDURE [dw].[p_lataa_f_virta_otp_opettajakelpoisuudet]
 
 --sa-taulu
 EXEC [sa].[p_lataa_virta_opettajakelpoisuus]
@@ -40,7 +45,7 @@ SELECT
 	,kelpoisuuksien_maara
 	,lkm = count(distinct opiskelija_avain_org)
 
-INTO dw.f_virta_otp_opettajakelpoisuudet_uudet_uusi_testi
+INTO dw.f_virta_otp_opettajakelpoisuudet
 
 FROM sa.virta_opettajakelpoisuus v
 LEFT JOIN dw.d_sukupuoli d1 ON d1.sukupuoli_koodi = v.sukupuoli
