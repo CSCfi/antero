@@ -14,7 +14,7 @@ EXEC dbo.sp_executesql @statement = N'CREATE PROCEDURE [dw].[p_lataa_f_virta_otp
 END
 GO
 
-ALTER PROCEDURE [dw].[p_lataa_f_virta_otp_opettajakelpoisuudet]
+ALTER PROCEDURE [dw].[p_lataa_f_virta_otp_opettajakelpoisuudet] AS
 
 --sa-taulu
 EXEC [sa].[p_lataa_virta_opettajakelpoisuus]
