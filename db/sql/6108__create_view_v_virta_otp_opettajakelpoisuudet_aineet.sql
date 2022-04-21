@@ -9,7 +9,6 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-
 CREATE VIEW [dw].[v_virta_otp_opettajakelpoisuudet_aineet] AS
 
 
