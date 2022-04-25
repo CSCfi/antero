@@ -1,3 +1,5 @@
+use vipunentk_lisatiedot
+go
 
 if (select count(*) from [dbo].[seutukunta] where seutukunta_koodi in ('015','016')) = 0
 
