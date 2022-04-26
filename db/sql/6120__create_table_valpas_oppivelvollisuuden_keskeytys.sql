@@ -7,7 +7,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[valpas_oppivelvollisuuden_keskeytys]') AND type in (N'U'))
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[sa_valpas_oppivelvollisuuden_keskeytys]') AND type in (N'U'))
 BEGIN
 	DROP TABLE [sa].[sa_valpas_oppivelvollisuuden_keskeytys]
 END
