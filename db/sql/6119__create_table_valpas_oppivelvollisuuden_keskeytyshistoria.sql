@@ -7,15 +7,15 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[valpas_oppivelvollisuuden_keskeytyshistoria]') AND type in (N'U'))
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[sa_valpas_oppivelvollisuuden_keskeytyshistoria]') AND type in (N'U'))
 BEGIN
-	DROP TABLE [sa].[valpas_oppivelvollisuuden_keskeytyshistoria]
+	DROP TABLE [sa].[sa_valpas_oppivelvollisuuden_keskeytyshistoria]
 END
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[valpas_oppivelvollisuuden_keskeytyshistoria]') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[sa_valpas_oppivelvollisuuden_keskeytyshistoria]') AND type in (N'U'))
 
 BEGIN
-	CREATE TABLE [sa].[valpas_oppivelvollisuuden_keskeytyshistoria](
-		[id] INT IDENTITY(1,1) NULL,
+	CREATE TABLE [sa].[sa_valpas_oppivelvollisuuden_keskeytyshistoria](
+		[id] INT IDENTITY(1,1) NOT NULL,
 		[ov_keskeytys_uuid] VARCHAR(100) NULL,
 		[muutos_tehty] VARCHAR(100) NULL,
 		[muutoksen_tekija] VARCHAR(100) NULL,
@@ -29,7 +29,7 @@ BEGIN
 		[source] VARCHAR(500) NULL,
 		[loadtime] DATETIME NULL,
 		[username] VARCHAR(30) NULL,
-	 CONSTRAINT [PK__valpas_oppivelvollisuuden_keskeytyshistoria] PRIMARY KEY CLUSTERED
+	 CONSTRAINT [PK__sa_valpas_oppivelvollisuuden_keskeytyshistoria] PRIMARY KEY CLUSTERED
 	(
 		[id] ASC
 	)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
@@ -39,10 +39,10 @@ END
 
 GO
 
-ALTER TABLE [sa].[valpas_oppivelvollisuuden_keskeytyshistoria] ADD  CONSTRAINT [DF__valpas_oppivelvollisuuden_keskeytyshistoria__loadtime]  DEFAULT (getdate()) FOR [loadtime]
+ALTER TABLE [sa].[sa_valpas_oppivelvollisuuden_keskeytyshistoria] ADD  CONSTRAINT [DF__sa_valpas_oppivelvollisuuden_keskeytyshistoria__loadtime]  DEFAULT (getdate()) FOR [loadtime]
 GO
 
-ALTER TABLE [sa].[valpas_oppivelvollisuuden_keskeytyshistoria] ADD  CONSTRAINT [DF__valpas_oppivelvollisuuden_keskeytyshistoria__username]  DEFAULT (suser_name()) FOR [username]
+ALTER TABLE [sa].[sa_valpas_oppivelvollisuuden_keskeytyshistoria] ADD  CONSTRAINT [DF__sa_valpas_oppivelvollisuuden_keskeytyshistoria__username]  DEFAULT (suser_name()) FOR [username]
 GO
 
 USE [ANTERO]
