@@ -117,7 +117,6 @@
             "name": "Kansalaisuus",
             "dataType": "string",
             "sourceColumn": "Kansalaisuus",
-            "sortByColumn": "jarj_kansalaisuus",
             "sourceProviderType": "WChar",
             "displayFolder": "Henkilömuuttujat"
           },
@@ -323,13 +322,13 @@
             "dataType": "string",
             "sourceColumn": "Erityinen tuki",
             "sortByColumn": "jarj_erityinen_tuki",
-            "displayFolder": "Koulutusmuuttujat"
+            "displayFolder": "Henkilömuuttujat"
           },
           {
             "name": "Erityisen tuen päätös",
             "dataType": "string",
             "sourceColumn": "Erityisen tuen päätös",
-            "displayFolder": "Koulutusmuuttujat"
+            "displayFolder": "Henkilömuuttujat"
           },
           {
             "name": "Joustava perusopetus",
@@ -359,7 +358,7 @@
             "name": "Pidennetty oppivelvollisuus",
             "dataType": "string",
             "sourceColumn": "Pidennetty oppivelvollisuus",
-            "displayFolder": "Koulutusmuuttujat"
+            "displayFolder": "Henkilömuuttujat"
           },
           {
             "name": "jarj_aidinkieli_ryhma",
@@ -2243,32 +2242,36 @@
           },
           {
             "name": "Erityisen tuen oppilaat",
-            "expression": "CALCULATE([Oppilaat], Muuttujat[Erityisen tuen päätös] = \"Kyllä\")",
+            "expression": "CALCULATE([Oppilaat], KEEPFILTERS(Muuttujat[Erityisen tuen päätös] = \"Kyllä\"))",
             "formatString": "#,0"
           },
           {
             "name": "Joustavan perusopetuksen oppilaat",
             "expression": "CALCULATE([Oppilaat], Muuttujat[Joustava perusopetus] = \"Kyllä\")",
-            "formatString": "#,0"
+            "formatString": "#,0",
+            "isHidden": true
           },
           {
             "name": "Koulukotioppilaat",
             "expression": "CALCULATE([Oppilaat], Muuttujat[Koulukoti] = \"Kyllä\")",
-            "formatString": "#,0"
+            "formatString": "#,0",
+            "isHidden": true
           },
           {
             "name": "Kuljetusetuutta saavat oppilaat",
             "expression": "CALCULATE([Oppilaat], Muuttujat[Kuljetusetuus] = \"Kyllä\")",
-            "formatString": "#,0"
+            "formatString": "#,0",
+            "isHidden": true
           },
           {
             "name": "Sisäoppilaitosmuotoisessa majoituksessa olevat oppilaat",
             "expression": "CALCULATE([Oppilaat], Muuttujat[Sisäoppilaitosmuotoinen majoitus] = \"Kyllä\")",
-            "formatString": "#,0"
+            "formatString": "#,0",
+            "isHidden": true
           },
           {
             "name": "Pidennetyn oppivelvollisuuden oppilaat",
-            "expression": "CALCULATE([Oppilaat], Muuttujat[Pidennetty oppivelvollisuus] = \"Kyllä\")",
+            "expression": "CALCULATE([Oppilaat], KEEPFILTERS(Muuttujat[Pidennetty oppivelvollisuus] = \"Kyllä\"))",
             "formatString": "#,0"
           },
           {
@@ -2298,7 +2301,8 @@
               "osa / kaikki)))",
               ""
             ],
-            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
+            "isHidden": true
           },
           {
             "name": "Koulukotioppilaat %",
@@ -2313,7 +2317,8 @@
               "osa / kaikki)))",
               ""
             ],
-            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
+            "isHidden": true
           },
           {
             "name": "Kuljetusetuutta saavat oppilaat %",
@@ -2328,7 +2333,8 @@
               "osa / kaikki)))",
               ""
             ],
-            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
+            "isHidden": true
           },
           {
             "name": "Sisäoppilaitosmuotoisessa majoituksessa olevat oppilaat %",
@@ -2343,7 +2349,8 @@
               "osa / kaikki)))",
               ""
             ],
-            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
+            "isHidden": true
           },
           {
             "name": "Pidennetyn oppivelvollisuuden oppilaat %",
@@ -2363,7 +2370,8 @@
           {
             "name": "Kotiopetuksessa olevat oppilaat",
             "expression": "CALCULATE([Oppilaat], Muuttujat[Kotiopetus] = \"Kyllä\")",
-            "formatString": "#,0"
+            "formatString": "#,0",
+            "isHidden": true
           },
           {
             "name": "Kotiopetuksessa olevat oppilaat %",
@@ -2378,7 +2386,8 @@
               "osa / kaikki)))",
               ""
             ],
-            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
+            "isHidden": true
           },
           {
             "name": "Oppilaitokset",
@@ -2404,29 +2413,10 @@
             "formatString": "#,0"
           },
           {
-            "name": "Tehostetun tuen oppilaat",
-            "expression": "CALCULATE([Oppilaat], Muuttujat[Tehostettu tuki] = \"Kyllä\")",
-            "formatString": "0"
-          },
-          {
-            "name": "Tehostetun tuen tuen oppilaat %",
-            "expression": [
-              "",
-              "var osa = [Tehostetun tuen oppilaat]",
-              "var kaikki = [Oppilaat]",
-              "return IF(osa = BLANK(), BLANK(),",
-              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
-              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
-              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
-              "osa / kaikki)))",
-              ""
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
             "name": "Ulkomailla olevat oppilaat",
             "expression": "CALCULATE([Oppilaat], Muuttujat[Ulkomailla] = \"Kyllä\")",
-            "formatString": "0"
+            "formatString": "0",
+            "isHidden": true
           },
           {
             "name": "Ulkomailla olevat oppilaat %",
@@ -2441,7 +2431,19 @@
               "osa / kaikki)))",
               ""
             ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
+            "formatString": "0.0 %;-0.0 %;0.0 %",
+            "isHidden": true
+          },
+          {
+            "name": "Kaikki oppilaat",
+            "expression": [
+              "",
+              "--IF(NOT(ISFILTERED(Muuttujat[Tilastokuukausi])); BLANK();",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]), Muuttujat[opisk]=1, KEEPFILTERS(Muuttujat[Koulutusmuoto]=\"Esiopetus\" || Muuttujat[Koulutusmuoto]=\"Perusopetus\" || Muuttujat[Koulutusmuoto]=\"Perusopetuksen lisäopetus\"))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
+              "--)"
+            ],
+            "formatString": "#,0"
           }
         ],
         "annotations": [
@@ -4143,230 +4145,6 @@
     ],
     "perspectives": [
       {
-        "name": "Analyysi",
-        "tables": [
-          {
-            "name": "Muuttujat",
-            "columns": [
-              {
-                "name": "Ikä"
-              },
-              {
-                "name": "Kansalaisuus"
-              },
-              {
-                "name": "Lukukausi"
-              },
-              {
-                "name": "Lukuvuosi"
-              },
-              {
-                "name": "Oppilaitoksen AVI"
-              },
-              {
-                "name": "Oppilaitoksen ELY"
-              },
-              {
-                "name": "Oppilaitoksen kunta"
-              },
-              {
-                "name": "Oppilaitoksen opetuskieli"
-              },
-              {
-                "name": "Oppilaitos"
-              },
-              {
-                "name": "Oppilaitosnumero"
-              },
-              {
-                "name": "Oppilaitostyyppi"
-              },
-              {
-                "name": "Sukupuoli"
-              },
-              {
-                "name": "Suorituskieli"
-              },
-              {
-                "name": "Tilastovuosi"
-              },
-              {
-                "name": "Äidinkieli"
-              },
-              {
-                "name": "Oppilaitoksen maakunta"
-              },
-              {
-                "name": "Erityinen tuki"
-              },
-              {
-                "name": "Erityisen tuen päätös"
-              },
-              {
-                "name": "Joustava perusopetus"
-              },
-              {
-                "name": "Kansalaisuus (ryhmä)"
-              },
-              {
-                "name": "Kotiopetus"
-              },
-              {
-                "name": "Koulukoti"
-              },
-              {
-                "name": "Pidennetty oppivelvollisuus"
-              },
-              {
-                "name": "Äidinkieli (ryhmä)"
-              },
-              {
-                "name": "Sisäoppilaitosmuotoinen majoitus"
-              },
-              {
-                "name": "Tilastokuukausi"
-              },
-              {
-                "name": "Aikuisten perusop. alkuvaiheen opiskelija"
-              },
-              {
-                "name": "Koulutusmuoto"
-              },
-              {
-                "name": "Kuljetusetuus"
-              },
-              {
-                "name": "Opet. järjestäjän AVI"
-              },
-              {
-                "name": "Opet. järjestäjän ELY"
-              },
-              {
-                "name": "Opet. järjestäjän kunta"
-              },
-              {
-                "name": "Opet. järjestäjän maakunta"
-              },
-              {
-                "name": "Opet. järjestäjän yritysmuoto"
-              },
-              {
-                "name": "Opetuksen järjestäjä"
-              },
-              {
-                "name": "Toimipiste"
-              },
-              {
-                "name": "Vuosiluokka tai koulutus"
-              },
-              {
-                "name": "Vuosiluokkaryhmä tai koulutus"
-              },
-              {
-                "name": "Vuosiluokkiin sitomaton opetus"
-              },
-              {
-                "name": "Kielikylpykieli"
-              },
-              {
-                "name": "Koulutus"
-              },
-              {
-                "name": "Muu suorituskieli"
-              },
-              {
-                "name": "Perusopetuksen suoritustapa"
-              },
-              {
-                "name": "Tehostettu tuki"
-              },
-              {
-                "name": "Ulkomailla"
-              }
-            ],
-            "measures": [
-              {
-                "name": "Oppilaat"
-              },
-              {
-                "name": "Suorittaneet"
-              },
-              {
-                "name": "Erityisen tuen oppilaat"
-              },
-              {
-                "name": "Joustavan perusopetuksen oppilaat"
-              },
-              {
-                "name": "Koulukotioppilaat"
-              },
-              {
-                "name": "Kuljetusetuutta saavat oppilaat"
-              },
-              {
-                "name": "Sisäoppilaitosmuotoisessa majoituksessa olevat oppilaat"
-              },
-              {
-                "name": "Pidennetyn oppivelvollisuuden oppilaat"
-              },
-              {
-                "name": "Erityisen tuen oppilaat %"
-              },
-              {
-                "name": "Joustavan perusopetuksen oppilaat %"
-              },
-              {
-                "name": "Koulukotioppilaat %"
-              },
-              {
-                "name": "Kuljetusetuutta saavat oppilaat %"
-              },
-              {
-                "name": "Sisäoppilaitosmuotoisessa majoituksessa olevat oppilaat %"
-              },
-              {
-                "name": "Pidennetyn oppivelvollisuuden oppilaat %"
-              },
-              {
-                "name": "Kotiopetuksessa olevat oppilaat"
-              },
-              {
-                "name": "Kotiopetuksessa olevat oppilaat %"
-              },
-              {
-                "name": "Oppilaat / Oppilaitokset"
-              },
-              {
-                "name": "Oppilaitokset"
-              },
-              {
-                "name": "Tehostetun tuen oppilaat"
-              },
-              {
-                "name": "Tehostetun tuen tuen oppilaat %"
-              },
-              {
-                "name": "Ulkomailla olevat oppilaat"
-              },
-              {
-                "name": "Ulkomailla olevat oppilaat %"
-              }
-            ]
-          },
-          {
-            "name": "Sarakeleveys",
-            "columns": [
-              {
-                "name": "leveys"
-              },
-              {
-                "name": "Sarakeleveys"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "name": "Oppilaat",
         "tables": [
           {
@@ -4469,152 +4247,6 @@
             "measures": [
               {
                 "name": "Oppilaat"
-              }
-            ]
-          },
-          {
-            "name": "Sarakeleveys",
-            "columns": [
-              {
-                "name": "leveys"
-              },
-              {
-                "name": "Sarakeleveys"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "Oppilaat lisätieto",
-        "tables": [
-          {
-            "name": "Muuttujat",
-            "columns": [
-              {
-                "name": "Lukukausi"
-              },
-              {
-                "name": "Lukuvuosi"
-              },
-              {
-                "name": "Oppilaitoksen AVI"
-              },
-              {
-                "name": "Oppilaitoksen ELY"
-              },
-              {
-                "name": "Oppilaitoksen kunta"
-              },
-              {
-                "name": "Oppilaitoksen maakunta"
-              },
-              {
-                "name": "Oppilaitoksen opetuskieli"
-              },
-              {
-                "name": "Oppilaitos"
-              },
-              {
-                "name": "Oppilaitosnumero"
-              },
-              {
-                "name": "Oppilaitostyyppi"
-              },
-              {
-                "name": "Sukupuoli"
-              },
-              {
-                "name": "Tilastovuosi"
-              },
-              {
-                "name": "Tilastokuukausi"
-              },
-              {
-                "name": "Opet. järjestäjän ELY"
-              },
-              {
-                "name": "Opet. järjestäjän AVI"
-              },
-              {
-                "name": "Koulutusmuoto"
-              },
-              {
-                "name": "Opet. järjestäjän kunta"
-              },
-              {
-                "name": "Opet. järjestäjän maakunta"
-              },
-              {
-                "name": "Opet. järjestäjän yritysmuoto"
-              },
-              {
-                "name": "Opetuksen järjestäjä"
-              },
-              {
-                "name": "Vuosiluokka tai koulutus"
-              },
-              {
-                "name": "Vuosiluokkaryhmä tai koulutus"
-              },
-              {
-                "name": "Toimipiste"
-              }
-            ],
-            "measures": [
-              {
-                "name": "Erityisen tuen oppilaat"
-              },
-              {
-                "name": "Erityisen tuen oppilaat %"
-              },
-              {
-                "name": "Joustavan perusopetuksen oppilaat"
-              },
-              {
-                "name": "Joustavan perusopetuksen oppilaat %"
-              },
-              {
-                "name": "Kotiopetuksessa olevat oppilaat"
-              },
-              {
-                "name": "Kotiopetuksessa olevat oppilaat %"
-              },
-              {
-                "name": "Koulukotioppilaat"
-              },
-              {
-                "name": "Koulukotioppilaat %"
-              },
-              {
-                "name": "Kuljetusetuutta saavat oppilaat"
-              },
-              {
-                "name": "Kuljetusetuutta saavat oppilaat %"
-              },
-              {
-                "name": "Pidennetyn oppivelvollisuuden oppilaat"
-              },
-              {
-                "name": "Pidennetyn oppivelvollisuuden oppilaat %"
-              },
-              {
-                "name": "Sisäoppilaitosmuotoisessa majoituksessa olevat oppilaat"
-              },
-              {
-                "name": "Sisäoppilaitosmuotoisessa majoituksessa olevat oppilaat %"
-              },
-              {
-                "name": "Tehostetun tuen oppilaat"
-              },
-              {
-                "name": "Tehostetun tuen tuen oppilaat %"
-              },
-              {
-                "name": "Ulkomailla olevat oppilaat"
-              },
-              {
-                "name": "Ulkomailla olevat oppilaat %"
               }
             ]
           },
@@ -4856,6 +4488,101 @@
             "measures": [
               {
                 "name": "Suorittaneet"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "erityinen_tuki_fi",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Erityinen tuki"
+              },
+              {
+                "name": "Erityisen tuen päätös"
+              },
+              {
+                "name": "Koulutusmuoto"
+              },
+              {
+                "name": "Lukukausi"
+              },
+              {
+                "name": "Lukuvuosi"
+              },
+              {
+                "name": "Opet. järjestäjän AVI"
+              },
+              {
+                "name": "Opet. järjestäjän ELY"
+              },
+              {
+                "name": "Opet. järjestäjän maakunta"
+              },
+              {
+                "name": "Oppilaitoksen AVI"
+              },
+              {
+                "name": "Oppilaitoksen ELY"
+              },
+              {
+                "name": "Oppilaitoksen maakunta"
+              },
+              {
+                "name": "Pidennetty oppivelvollisuus"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Tilastokuukausi"
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Vuosiluokka tai koulutus"
+              },
+              {
+                "name": "Vuosiluokkaryhmä tai koulutus"
+              },
+              {
+                "name": "Äidinkieli (ryhmä)"
+              },
+              {
+                "name": "Oppilaitoksen kunta"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Erityisen tuen oppilaat"
+              },
+              {
+                "name": "Erityisen tuen oppilaat %"
+              },
+              {
+                "name": "Pidennetyn oppivelvollisuuden oppilaat"
+              },
+              {
+                "name": "Pidennetyn oppivelvollisuuden oppilaat %"
+              },
+              {
+                "name": "Kaikki oppilaat"
               }
             ]
           },
