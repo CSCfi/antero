@@ -1,7 +1,7 @@
 USE [ANTERO]
 GO
 
-ALTER TABLE [sa].[sa_eter_allfields_codes] DROP CONSTRAINT [DF__sa_eter_allfields_codes]
+ALTER TABLE [sa].[sa_eter_allfields_codes] DROP CONSTRAINT IF EXISTS [DF__sa_eter_allfields_codes]
 GO
 
 /****** Object:  Table [sa].[sa_eter_allfields_codes]    Script Date: 27.4.2022 10:41:54 ******/
