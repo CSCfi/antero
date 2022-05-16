@@ -2413,7 +2413,16 @@
           },
           {
             "name": "Katsottu eronneeksi [%]",
-            "expression": " [Katsottu eronneeksi] / [Opiskelijat]",
+            "expression": [
+              "",
+              "var osa = [Katsottu eronneeksi]",
+              "var kaikki = [Opiskelijat]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
