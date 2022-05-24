@@ -19,8 +19,6 @@ CREATE TABLE [sa].[sa_ytl_aine](
 	[username] [nvarchar](30) NULL
 ) ON [PRIMARY]
 
-GO
-
 END 
 
 GO
