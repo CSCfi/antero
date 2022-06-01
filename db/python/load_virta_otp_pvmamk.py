@@ -138,7 +138,7 @@ def main(argv):
 
 
   try:
-    opts,args=getopt.getopt(argv,"sH:u:e:t:p:c:v:r",["secure","hostname=","url=","schema=","table=","postdata=","condition=","verbose","rowcount"])
+    opts,args=getopt.getopt(argv,"sH:u:e:t:p:c:v:r",["secure","hostname=","url=","schema=","table=","postdata=","condition=","verbose","rowcount="])
   except getopt.GetoptError as err:
     print(err)
     usage()
