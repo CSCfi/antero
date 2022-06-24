@@ -9,9 +9,7 @@ GO
 
 ALTER PROCEDURE [dw].[p_lataa_d_arvovastaus_taustakysymys] AS
 
---JS 23.6.2022 /
---Pidättäydytään päivittämästä "kahden selitteen" kysymysid:t 5706, 5772, jollei toisin käsketä.
---Kysymysid:eille 5820, 5826 puolestaan haluttaneen kuunvaihteessa tuore selite (ehkäpä kertaluonteinen update sekä vastaava rajaus, jollei tule parempia ideoita).
+--Pidättäydytään päivittämästä "kahden selitteen" kysymysid:t 5706, 5772, jollei toisin käsketä. JS 23.6.2022
 
 --TARKISTUS ONKO DIMENSIOSSA TIETO PUUTTUU -RIVI. JOS EI, NIIN LISÄTÄÄN. MUUTEN PÄIVITETÄÄN RIVI.
 IF NOT EXISTS (SELECT * FROM dw.d_arvovastaus_taustakysymys WHERE id=-1) 
