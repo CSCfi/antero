@@ -9,8 +9,8 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
---testissä ajoja käynnissä, huom. lopussa vastaava off-asetus
-IF(@@SERVERNAME = 'DWIPVIPUSQL16')
+
+
 
 ALTER VIEW [dbo].[v_sa_4_8_Tutkinnon_suorittaneiden_myohempi_koulutus] AS
 
@@ -182,4 +182,3 @@ FROM [TK_H9098_CSC].[dbo].[TK_K4_8_sopv_22]
  ) kaikkivuodet
 
 GO
-
