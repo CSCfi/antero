@@ -1474,6 +1474,8 @@
             "name": "Hakeutumisvelvolliset",
             "expression": [
               "",
+              "var ehto = [piilotusehto]",
+              "var lkm = ",
               "CALCULATE(",
               "\t[Oppivelvolliset]",
               "\t, Muuttujat[hakeutumisvelvollinen_1_0] = 1",
@@ -1486,34 +1488,37 @@
               "\t\t, Muuttujat[Koul. alkamisvuosi (hakukohde)]",
               "\t\t, Muuttujat[Koulutustyyppi (hakukohde)]",
               "\t)",
-              ")"
+              ")",
+              "return IF(ehto, BLANK(), lkm)"
             ],
             "formatString": "#,0"
           },
           {
-            "name": "Hakeneet",
+            "name": "Hakenut tilastovuonna alkavaan koulutukseen",
             "expression": "CALCULATE([Oppivelvolliset], Muuttujat[hakenut_1_0] = 1)",
             "formatString": "#,0"
           },
           {
-            "name": "Valitut",
+            "name": "Valittu tilastovuonna alkavaan koulutukseen",
             "expression": "CALCULATE([Oppivelvolliset], Muuttujat[valittu_1_0] = 1)",
             "formatString": "#,0"
           },
           {
-            "name": "Paikan vastaanottaneet",
+            "name": "Vastaanottanut paikan tilastovuonna alkavassa koulutuksessa",
             "expression": "CALCULATE([Oppivelvolliset], Muuttujat[vastaanottanut_1_0] = 1)",
             "formatString": "#,0"
           },
           {
-            "name": "Ilmoittautuneet",
+            "name": "Ilmoittautunut tilastovuonna alkavaan koulutukseen",
             "expression": "CALCULATE([Oppivelvolliset], Muuttujat[ilmoittautunut_1_0] = 1)",
             "formatString": "#,0"
           },
           {
-            "name": "Ei hakeneet",
+            "name": "Ei ole hakenut tilastovuonna alkavaan koulutukseen",
             "expression": [
               "",
+              "var ehto = [piilotusehto]",
+              "var lkm =",
               "CALCULATE(",
               "\t[Oppivelvolliset]",
               "\t, Muuttujat[hakenut_1_0] = 0",
@@ -1526,9 +1531,14 @@
               "\t\t, Muuttujat[Koul. alkamisvuosi (hakukohde)]",
               "\t\t, Muuttujat[Koulutustyyppi (hakukohde)]",
               "\t)",
-              ")"
+              ")",
+              "return IF(ehto, BLANK(), lkm)"
             ],
             "formatString": "#,0"
+          },
+          {
+            "name": "piilotusehto",
+            "expression": "IF(COUNTROWS(VALUES(Muuttujat[Hakutapa]))=1, IF(VALUES(Muuttujat[Hakutapa])=\"Tieto puuttuu\", 1, 0), 0)"
           }
         ],
         "annotations": [
@@ -2619,22 +2629,22 @@
             ],
             "measures": [
               {
-                "name": "Ei hakeneet"
+                "name": "Ei ole hakenut tilastovuonna alkavaan koulutukseen"
               },
               {
-                "name": "Hakeneet"
+                "name": "Hakenut tilastovuonna alkavaan koulutukseen"
               },
               {
                 "name": "Hakeutumisvelvolliset"
               },
               {
-                "name": "Ilmoittautuneet"
+                "name": "Ilmoittautunut tilastovuonna alkavaan koulutukseen"
               },
               {
-                "name": "Paikan vastaanottaneet"
+                "name": "Vastaanottanut paikan tilastovuonna alkavassa koulutuksessa"
               },
               {
-                "name": "Valitut"
+                "name": "Valittu tilastovuonna alkavaan koulutukseen"
               }
             ]
           }
