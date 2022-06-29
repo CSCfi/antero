@@ -3790,8 +3790,8 @@
             "name": "Pisteet (Rahoitus)",
             "expression": [
               "",
-              "var ohjaajapisteet = CALCULATE([Pisteet (Rahoitus)_apumittari], Muuttujat[kysely_fi]=\"Työelämäpalaute: työpaikkaohjaajan kysely\")",
-              "var tyopaikkapisteet_perus = CALCULATE([Pisteet (Rahoitus)_apumittari], Muuttujat[kysely_fi]=\"Työelämäpalaute: työpaikkakysely\")",
+              "var ohjaajapisteet = CALCULATE([Pisteet (Rahoitus)_apumittari], FILTER(VALUES(Muuttujat[kysely_fi]), Muuttujat[kysely_fi]=\"Työelämäpalaute: työpaikkaohjaajan kysely\"))",
+              "var tyopaikkapisteet_perus = CALCULATE([Pisteet (Rahoitus)_apumittari], FILTER(VALUES(Muuttujat[kysely_fi]), Muuttujat[kysely_fi]=\"Työelämäpalaute: työpaikkakysely\"))",
               "var ehto = IF(COUNTROWS(VALUES(Muuttujat[kysely_fi]))=1, IF(VALUES(Muuttujat[kysely_fi])=\"Työelämäpalaute: työpaikkaohjaajan kysely\", 1, 0), 0)",
               "var tyopaikkapisteet_yrittajat = ",
               "IF(ehto",
@@ -3820,7 +3820,7 @@
               "\t\t, \"pisteet\"",
               "\t\t, CALCULATE([Pisteet (Rahoitus)_apumittari])",
               "\t)",
-              "\t, Muuttujat[kysely_fi]=\"Työelämäpalaute: työpaikkaohjaajan kysely\"",
+              "\t, FILTER(VALUES(Muuttujat[kysely_fi]), Muuttujat[kysely_fi]=\"Työelämäpalaute: työpaikkaohjaajan kysely\")",
               "\t, KEEPFILTERS(Muuttujat[koodit_rahoitusmallikysymys]=1)",
               ")",
               "var pisteet = ",
@@ -3938,8 +3938,8 @@
             "name": "Pisteet (Rahoitus), imputoitu",
             "expression": [
               "",
-              "var ohjaajapisteet = CALCULATE([Pisteet (Rahoitus)_apumittari, imputoitu], Muuttujat[kysely_fi]=\"Työelämäpalaute: työpaikkaohjaajan kysely\")",
-              "var tyopaikkapisteet_perus = CALCULATE([Pisteet (Rahoitus)_apumittari, imputoitu], Muuttujat[kysely_fi]=\"Työelämäpalaute: työpaikkakysely\")",
+              "var ohjaajapisteet = CALCULATE([Pisteet (Rahoitus)_apumittari, imputoitu], FILTER(VALUES(Muuttujat[kysely_fi]), Muuttujat[kysely_fi]=\"Työelämäpalaute: työpaikkaohjaajan kysely\"))",
+              "var tyopaikkapisteet_perus = CALCULATE([Pisteet (Rahoitus)_apumittari, imputoitu], FILTER(VALUES(Muuttujat[kysely_fi]), Muuttujat[kysely_fi]=\"Työelämäpalaute: työpaikkakysely\"))",
               "var ehto = IF(COUNTROWS(VALUES(Muuttujat[kysely_fi]))=1, IF(VALUES(Muuttujat[kysely_fi])=\"Työelämäpalaute: työpaikkaohjaajan kysely\", 1, 0), 0)",
               "var tyopaikkapisteet_yrittajat = ",
               "IF(ehto",
@@ -3978,7 +3978,7 @@
               "\t\t, \"pisteet\"",
               "\t\t, CALCULATE([Pisteet (Rahoitus)_apumittari, imputoitu])",
               "\t)",
-              "\t, Muuttujat[kysely_fi]=\"Työelämäpalaute: työpaikkaohjaajan kysely\"",
+              "\t, FILTER(VALUES(Muuttujat[kysely_fi]), Muuttujat[kysely_fi]=\"Työelämäpalaute: työpaikkaohjaajan kysely\")",
               "\t, KEEPFILTERS(Muuttujat[koodit_rahoitusmallikysymys]=1)",
               ")",
               "var pisteet = ",
@@ -7789,9 +7789,6 @@
                 "name": "koulutuksen_jarjestaja_fi"
               },
               {
-                "name": "kysely_fi"
-              },
-              {
                 "name": "koulutuksen_jarjestajan_avi_fi"
               },
               {
@@ -9704,6 +9701,145 @@
               },
               {
                 "name": "Pisteet % (Rahoitus), imputoitu / ei imputoitu"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "rahoitus_tyopaikkaohjaajakysely_fi",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "koodit_koulutuksen_jarjestaja"
+              },
+              {
+                "name": "koulutuksen_jarjestaja_fi"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_avi_fi"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_ely_fi"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_kieli_fi"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_kunta_fi"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_maakunta_fi"
+              },
+              {
+                "name": "rahoituskausi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Katokorjauskerroin (Rahoitus)"
+              },
+              {
+                "name": "Keskiarvo (Rahoitus)"
+              },
+              {
+                "name": "Kyselyn kohteet (Rahoitus)"
+              },
+              {
+                "name": "Painotetut pisteet % (Rahoitus)"
+              },
+              {
+                "name": "Painotetut pisteet (Rahoitus)"
+              },
+              {
+                "name": "Pisteet % (Rahoitus)"
+              },
+              {
+                "name": "Pisteet (Rahoitus)"
+              },
+              {
+                "name": "Vastanneet (Rahoitus)"
+              },
+              {
+                "name": "Vastausosuus (Rahoitus)"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "rahoitus_tyopaikkakysely_fi",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "koodit_koulutuksen_jarjestaja"
+              },
+              {
+                "name": "koulutuksen_jarjestaja_fi"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_avi_fi"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_ely_fi"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_kieli_fi"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_kunta_fi"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_maakunta_fi"
+              },
+              {
+                "name": "rahoituskausi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Keskiarvo (Rahoitus)"
+              },
+              {
+                "name": "Kyselyn kohteet (Rahoitus)"
+              },
+              {
+                "name": "Pisteet % (Rahoitus)"
+              },
+              {
+                "name": "Pisteet (Rahoitus)"
+              },
+              {
+                "name": "Vastanneet (Rahoitus)"
+              },
+              {
+                "name": "Vastausosuus (Rahoitus)"
               }
             ]
           },
