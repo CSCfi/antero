@@ -693,19 +693,6 @@
         ],
         "partitions": [
           {
-            "name": "Partitio_1",
-            "source": {
-              "query": "SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE partitioid = 1",
-              "dataSource": "SqlServer dwitvipusql16 antero"
-            },
-            "annotations": [
-              {
-                "name": "QueryEditorSerialization",
-                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE partitioid = 1</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-              }
-            ]
-          },
-          {
             "name": "Partitio_0",
             "mode": "import",
             "source": {
@@ -718,6 +705,19 @@
                 "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE partitioid = 0</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
               }
             ]
+          },
+          {
+            "name": "Partitio_1",
+            "source": {
+              "query": "SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE partitioid = 1",
+              "dataSource": "SqlServer dwitvipusql16 antero"
+            },
+            "annotations": [
+              {
+                "name": "QueryEditorSerialization",
+                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE partitioid = 1</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+              }
+            ]
           }
         ],
         "measures": [
@@ -726,7 +726,9 @@
             "expression": [
               "",
               "var summa = CALCULATE(DISTINCTCOUNT([vastaajaid]))",
-              "return IF(summa<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(),[alle5]),summa)"
+              "var summa_ylataso = CALCULATE(DISTINCTCOUNT([vastaajaid]),ALL(Muuttujat[Monivalintavaihtoehto]))",
+              "return IF(summa_ylataso<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(),[alle5]),MROUND(summa,3))",
+              ""
             ],
             "formatString": "#,0"
           },
@@ -767,7 +769,7 @@
               "",
               "var summa = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1)",
               "var summa_ylataso = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1,ALL(Muuttujat[Monivalintavaihtoehto]))",
-              "return IF(summa_ylataso<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(),[alle5]),summa)"
+              "return IF(summa_ylataso<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(),[alle5]),MROUND(summa,3))"
             ],
             "formatString": "#,0"
           },
@@ -808,7 +810,8 @@
             "expression": [
               "",
               "var summa = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1)",
-              "return IF(summa<5,IF(OR(summa=0,ISFILTERED([Flervalsalternativ])),BLANK(),[alle5]),summa)"
+              "var summa_ylataso = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1,ALL(Muuttujat[Flervalsalternativ]))",
+              "return IF(summa_ylataso<5,IF(OR(summa=0,ISFILTERED([Flervalsalternativ])),BLANK(),[alle5]),MROUND(summa,3))"
             ],
             "formatString": "#,0"
           },
@@ -847,7 +850,8 @@
             "expression": [
               "",
               "var summa = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1)",
-              "return IF(summa<5,IF(OR(summa=0,ISFILTERED([Multiple choice option])),BLANK(),[alle5]),summa)"
+              "var summa_ylataso = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1,ALL(Muuttujat[Multiple choice option]))",
+              "return IF(summa_ylataso<5,IF(OR(summa=0,ISFILTERED([Multiple choice option])),BLANK(),[alle5]),MROUND(summa,3))"
             ],
             "formatString": "#,0"
           },
