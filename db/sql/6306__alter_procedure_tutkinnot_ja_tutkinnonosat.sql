@@ -7,7 +7,6 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-
 ALTER PROCEDURE [sa].[p_lataa_tutkinnot_ja_tutkinnonosat_tutkinnon_osien_suoritukset] AS
 
 --DROP TABLE IF EXISTS [sa].[temp_tutkinnot_ja_tutkinnonosat_tutkinnon_osien_suoritukset]
