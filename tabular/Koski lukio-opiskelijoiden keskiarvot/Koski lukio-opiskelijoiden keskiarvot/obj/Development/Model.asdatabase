@@ -1942,20 +1942,28 @@
               "",
               "return",
               "",
-              "IF([lkm] > 4, AVERAGEX(taulu,AVERAGE([ka])), BLANK())"
+              "IF([lkm] = \"1-4\", BLANK(), AVERAGEX(taulu,AVERAGE([ka])))"
             ],
             "formatString": "0.00"
           },
           {
             "name": "lkm",
-            "expression": " DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid])",
+            "expression": [
+              " ",
+              "",
+              "var lkm = DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid])",
+              "",
+              "return",
+              "",
+              "if(and(lkm<5,lkm>0), \"1-4\", mround(lkm,3))"
+            ],
             "isHidden": true
           },
           {
             "name": "alin_lukuaineiden_keskiarvo",
             "expression": [
               " ",
-              "IF([lkm] > 4, MIN([apusarake_keskiarvo_lukuaineet]), BLANK())",
+              "IF([lkm] = \"1-4\", BLANK(), MIN([apusarake_keskiarvo_lukuaineet]))",
               ""
             ],
             "formatString": "0.00"
