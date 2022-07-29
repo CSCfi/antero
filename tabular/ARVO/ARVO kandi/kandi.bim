@@ -2732,7 +2732,7 @@
               "",
               "var summa = DISTINCTCOUNT([vastaajaid])",
               "var summa_ylataso = CALCULATE(DISTINCTCOUNT([vastaajaid]),ALL(Muuttujat[Monivalintavaihtoehto]))",
-              "return IF(summa_ylataso<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(),[alle5]),summa)",
+              "return IF(summa_ylataso<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(),[alle5]),MROUND(summa,3))",
               ""
             ],
             "formatString": "#,0"
@@ -2773,7 +2773,7 @@
               "",
               "var summa = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1)",
               "var summa_ylataso = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1,ALL(Muuttujat[Monivalintavaihtoehto]))",
-              "return IF(summa_ylataso<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(),[alle5]),summa)",
+              "return IF(summa_ylataso<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(),[alle5]),MROUND(summa,3))",
               ""
             ],
             "formatString": "#,0"
@@ -2829,7 +2829,7 @@
               "",
               "var summa = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1)",
               "var summa_ylataso = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1,ALL(Muuttujat[Flervalsalternativ]))",
-              "return IF(summa_ylataso<5,IF(OR(summa=0,ISFILTERED([Flervalsalternativ])),BLANK(),[alle5]),summa)"
+              "return IF(summa_ylataso<5,IF(OR(summa=0,ISFILTERED([Flervalsalternativ])),BLANK(),[alle5]),MROUND(summa,3))"
             ],
             "formatString": "#,0"
           },
@@ -2883,7 +2883,7 @@
               "",
               "var summa = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1)",
               "var summa_ylataso = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1,ALL(Muuttujat[Multiple choice option]))",
-              "return IF(summa_ylataso<5,IF(OR(summa=0,ISFILTERED([Multiple choice option])),BLANK(),[alle5]),summa)"
+              "return IF(summa_ylataso<5,IF(OR(summa=0,ISFILTERED([Multiple choice option])),BLANK(),[alle5]),MROUND(summa,3))"
             ],
             "formatString": "#,0"
           },
@@ -2944,10 +2944,11 @@
               "",
               "var kaikki = CALCULATE([Vastaajamäärä], ALL(Muuttujat[Monivalintavaihtoehto], Muuttujat[Flervalsalternativ], Muuttujat[Multiple choice option], Muuttujat[Teeman vastausjakauma]))",
               "",
-              "return",
-              "",
-              "IF(AND(osa = \"1-4\", kaikki = \"1-4\"), \"25 % - 100 %\", IF(osa = \"1-4\", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\")),",
-              "osa / kaikki))"
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },

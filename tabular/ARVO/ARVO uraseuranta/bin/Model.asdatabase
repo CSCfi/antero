@@ -3301,12 +3301,23 @@
           },
           {
             "name": "ka-ura-mais2",
-            "expression": "CALCULATE([vast-ura-mais-tilasto])/CALCULATE([vast-ura-mais-tilasto],ALL(Muuttujat[Monivalintavaihtoehto]))",
+            "expression": [
+              "",
+              "",
+              "var osa = [Vastaajamäärä (maisterit)]",
+              "var kaikki = CALCULATE([Vastaajamäärä (maisterit)],ALL(Muuttujat[Monivalintavaihtoehto]))",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 80000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0 % – \"), FORMAT(4 / kaikki, \"0 %\"))),",
+              "osa / kaikki)))",
+              ""
+            ],
             "isHidden": true
           },
           {
             "name": "Vastaajamäärä (maisterit)",
-            "expression": "IF(AND([vast-ura-mais-tilasto]>0,[vast-ura-mais-tilasto]<5),\"1-4\",[vast-ura-mais-tilasto])",
+            "expression": "IF(AND([vast-ura-mais-tilasto]>0,[vast-ura-mais-tilasto]<5),\"1-4\",MROUND([vast-ura-mais-tilasto],3))",
             "formatString": "#,0"
           },
           {
@@ -3366,7 +3377,17 @@
           },
           {
             "name": "ka-ura-toht2",
-            "expression": "CALCULATE([vast-ura-toht-tilasto])/CALCULATE([vast-ura-toht-tilasto],ALL(Muuttujat[monivalintavaihtoehto]))",
+            "expression": [
+              "",
+              "var osa = [Vastaajamäärä (tohtorit)]",
+              "var kaikki = CALCULATE([Vastaajamäärä (tohtorit)],ALL(Muuttujat[Monivalintavaihtoehto]))",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 80000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0 % – \"), FORMAT(4 / kaikki, \"0 %\"))),",
+              "osa / kaikki)))",
+              ""
+            ],
             "isHidden": true
           },
           {
@@ -3431,12 +3452,12 @@
               "",
               " IF",
               " ",
-              "  (OR ([vast-ura-toht-tilasto] < 5 , not(isfiltered('Muuttujat'[Monivalintavaihtoehto]))),",
+              "  (not(isfiltered('Muuttujat'[Monivalintavaihtoehto])),",
               "          \t BLANK(), ",
-              "          \t          \t      ",
-              "          \t FORMAT([ka-ura-toht2], \"0%\"))",
+              "          \t [ka-ura-toht2])",
               "          \t       "
-            ]
+            ],
+            "formatString": "0 %;-0 %;0 %"
           },
           {
             "name": "Score",
@@ -3445,7 +3466,7 @@
           },
           {
             "name": "Number of respondents (Master's degrees)",
-            "expression": "IF(AND([vast-ura-mais-tilasto]>0,[vast-ura-mais-tilasto]<5),\"1-4\",[vast-ura-mais-tilasto])",
+            "expression": "IF(AND([vast-ura-mais-tilasto]>0,[vast-ura-mais-tilasto]<5),\"1-4\",MROUND([vast-ura-mais-tilasto],3))",
             "formatString": "#,0"
           },
           {
@@ -3455,7 +3476,7 @@
           },
           {
             "name": "Antal personer som svarat (Magisterexamen)",
-            "expression": "IF(AND([vast-ura-mais-tilasto]>0,[vast-ura-mais-tilasto]<5),\"1-4\",[vast-ura-mais-tilasto])",
+            "expression": "IF(AND([vast-ura-mais-tilasto]>0,[vast-ura-mais-tilasto]<5),\"1-4\",MROUND([vast-ura-mais-tilasto],3))",
             "formatString": "#,0"
           },
           {
@@ -3506,13 +3527,13 @@
               "",
               " IF",
               " ",
-              "  (OR ([vast-ura-toht-tilasto] < 5 , not(isfiltered('Muuttujat'[Multiple choice option]))),",
+              "  (not(isfiltered('Muuttujat'[Multiple choice option])),",
               "          \t BLANK(), ",
-              "          \t          \t      ",
-              "          \t FORMAT([ka-ura-toht2_en], \"0%\"))",
+              "          \t [ka-ura-toht2_en])",
               "          \t       ",
               ""
-            ]
+            ],
+            "formatString": "0 %;-0 %;0 %"
           },
           {
             "name": "Fördelningen av svar (Doktorexamen)",
@@ -3520,12 +3541,12 @@
               "",
               " IF",
               " ",
-              "  (OR ([vast-ura-toht-tilasto] < 5 , not(isfiltered('Muuttujat'[Flervalsalternativ]))),",
+              "  (not(isfiltered('Muuttujat'[Flervalsalternativ])),",
               "          \t BLANK(), ",
-              "          \t          \t      ",
-              "          \t FORMAT([ka-ura-toht2_sv], \"0%\"))",
+              "          \t [ka-ura-toht2_sv])",
               ""
-            ]
+            ],
+            "formatString": "0 %;-0 %;0 %"
           },
           {
             "name": "Keskiarvo / Vastausjakauma (maisterit)",
@@ -3589,13 +3610,13 @@
               "",
               " IF",
               " ",
-              "  (OR ([vast-ura-mais-tilasto] < 5 , not(isfiltered('Muuttujat'[Monivalintavaihtoehto]))),",
+              "  (not(isfiltered('Muuttujat'[Monivalintavaihtoehto])),",
               "          \t BLANK(), ",
-              "          \t          \t      ",
-              "          \t FORMAT([ka-ura-mais2], \"0%\"))",
+              "          \t [ka-ura-mais2])",
               "          \t       ",
               "          \t       "
-            ]
+            ],
+            "formatString": "0 %;-0 %;0 %"
           },
           {
             "name": "Average / deviation (Master's degrees)",
@@ -3712,11 +3733,11 @@
               "",
               " IF",
               " ",
-              "  (OR ([vast-ura-mais-tilasto] < 5 , not(isfiltered('Muuttujat'[Multiple choice option]))),",
+              "  (not(isfiltered('Muuttujat'[Multiple choice option])),",
               "          \t BLANK(), ",
-              "          \t          \t      ",
-              "          \t FORMAT([ka-ura-mais2_en], \"0%\"))"
-            ]
+              "          \t [ka-ura-mais2_en])"
+            ],
+            "formatString": "0 %;-0 %;0 %"
           },
           {
             "name": "Fördelningen av svar (Magisterexamen)",
@@ -3724,11 +3745,11 @@
               "",
               " IF",
               " ",
-              "  (OR ([vast-ura-mais-tilasto] < 5 , not(isfiltered('Muuttujat'[Flervalsalternativ]))),",
+              "  (not(isfiltered('Muuttujat'[Flervalsalternativ])),",
               "          \t BLANK(), ",
-              "          \t          \t      ",
-              "          \t FORMAT([ka-ura-mais2_sv], \"0%\"))"
-            ]
+              "          \t [ka-ura-mais2_sv])"
+            ],
+            "formatString": "0 %;-0 %;0 %"
           },
           {
             "name": "Keskihajonta (tohtorit)",
@@ -3736,15 +3757,15 @@
           },
           {
             "name": "Vastaajamäärä (tohtorit)",
-            "expression": "IF(AND([vast-ura-toht-tilasto]>0,[vast-ura-toht-tilasto]<5),\"1-4\",[vast-ura-toht-tilasto])"
+            "expression": "IF(AND([vast-ura-toht-tilasto]>0,[vast-ura-toht-tilasto]<5),\"1-4\",MROUND([vast-ura-toht-tilasto],3))"
           },
           {
             "name": "Antal personer som svarat (Doktorexcamen)",
-            "expression": "IF(AND([vast-ura-toht-tilasto]>0,[vast-ura-toht-tilasto]<5),\"1-4\",[vast-ura-toht-tilasto])"
+            "expression": "IF(AND([vast-ura-toht-tilasto]>0,[vast-ura-toht-tilasto]<5),\"1-4\",MROUND([vast-ura-toht-tilasto],3))"
           },
           {
             "name": "Number of respondents (Doctoral degrees)",
-            "expression": "IF(AND([vast-ura-toht-tilasto]>0,[vast-ura-toht-tilasto]<5),\"1-4\",[vast-ura-toht-tilasto])"
+            "expression": "IF(AND([vast-ura-toht-tilasto]>0,[vast-ura-toht-tilasto]<5),\"1-4\",MROUND([vast-ura-toht-tilasto],3))"
           },
           {
             "name": "Standard deviation (Doctoral degrees)",
@@ -3756,11 +3777,31 @@
           },
           {
             "name": "ka-ura-mais2_en",
-            "expression": "CALCULATE([vast-ura-mais-tilasto])/CALCULATE([vast-ura-mais-tilasto],ALL(Muuttujat[Multiple choice option]))"
+            "expression": [
+              "",
+              "var osa = [Number of respondents (Master's degrees)]",
+              "var kaikki = CALCULATE([Number of respondents (Master's degrees)],ALL(Muuttujat[Multiple choice option]))",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 80000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0 % – \"), FORMAT(4 / kaikki, \"0 %\"))),",
+              "osa / kaikki)))",
+              ""
+            ]
           },
           {
             "name": "ka-ura-toht2_en",
-            "expression": "CALCULATE([vast-ura-toht-tilasto])/CALCULATE([vast-ura-toht-tilasto],ALL(Muuttujat[Multiple choice option]))"
+            "expression": [
+              "",
+              "var osa = [Number of respondents (Doctoral degrees)]",
+              "var kaikki = CALCULATE([Number of respondents (Doctoral degrees)],ALL(Muuttujat[Multiple choice option]))",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 80000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0 % – \"), FORMAT(4 / kaikki, \"0 %\"))),",
+              "osa / kaikki)))",
+              ""
+            ]
           },
           {
             "name": "Keskiarvo / Vastausjakauma (uraseuranta-tohtorit)_en",
@@ -3792,11 +3833,23 @@
           },
           {
             "name": "Vastaajamäärä",
-            "expression": "IF(AND([vast-tilasto]>0,[vast-tilasto]<5),3,[vast-tilasto])"
+            "expression": "IF(AND([vast-tilasto]>0,[vast-tilasto]<5),\"1-4\",MROUND([vast-tilasto],3))",
+            "formatString": "#,0"
           },
           {
             "name": "ka-ura-toht2_sv",
-            "expression": "CALCULATE([vast-ura-toht-tilasto])/CALCULATE([vast-ura-toht-tilasto],ALL(Muuttujat[Flervalsalternativ]))"
+            "expression": [
+              "",
+              "",
+              "var osa = [Antal personer som svarat (Doktorexcamen)]",
+              "var kaikki = CALCULATE([Antal personer som svarat (Doktorexcamen)],ALL(Muuttujat[Flervalsalternativ]))",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 80000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0 % – \"), FORMAT(4 / kaikki, \"0 %\"))),",
+              "osa / kaikki)))",
+              ""
+            ]
           },
           {
             "name": "Keskiarvo / Vastausjakauma (uraseuranta-tohtorit)_sv",
@@ -3818,7 +3871,17 @@
           },
           {
             "name": "ka-ura-mais2_sv",
-            "expression": "CALCULATE([vast-ura-mais-tilasto])/CALCULATE([vast-ura-mais-tilasto],ALL(Muuttujat[Flervalsalternativ]))"
+            "expression": [
+              "",
+              "",
+              "var osa = [Antal personer som svarat (Magisterexamen)]",
+              "var kaikki = CALCULATE([Antal personer som svarat (Magisterexamen)],ALL(Muuttujat[Flervalsalternativ]))",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 80000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0 % – \"), FORMAT(4 / kaikki, \"0 %\"))),",
+              "osa / kaikki)))"
+            ]
           }
         ],
         "annotations": [

@@ -3078,7 +3078,7 @@
             "expression": [
               "",
               "var maara=DISTINCTCOUNT([vastaajaid])",
-              "return IF(AND(maara>0,maara<5),\"1-4\",maara)"
+              "return IF(AND(maara>0,maara<5),\"1-4\",MROUND(maara,3))"
             ],
             "formatString": "#,0"
           },
@@ -3147,8 +3147,14 @@
             "name": "Vastausosuus",
             "expression": [
               "",
-              "IF([Vastanneet] = \"1-4\", BLANK(),",
-              "DIVIDE([Vastanneet], [Kyselyn kohteet]))"
+              "",
+              "var osa = [Vastanneet]",
+              "var kaikki = [Kyselyn kohteet]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(AND(kaikki>0,kaikki <5), \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
@@ -3210,7 +3216,7 @@
             "expression": [
               "",
               "var maara=DISTINCTCOUNT([vastaajaid])",
-              "return IF(AND(maara>0,maara<5),\"1-4\",maara)",
+              "return IF(AND(maara>0,maara<5),\"1-4\",MROUND(maara,3))",
               ""
             ],
             "formatString": "#,0"
@@ -3225,7 +3231,7 @@
             "expression": [
               "",
               "var maara=DISTINCTCOUNT([vastaajaid])",
-              "return IF(AND(maara>0,maara<5),\"1-4\",maara)",
+              "return IF(AND(maara>0,maara<5),\"1-4\",MROUND(maara,3))",
               ""
             ],
             "formatString": "#,0"
