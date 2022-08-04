@@ -1,12 +1,13 @@
 USE [ANTERO]
 GO
 
-/****** Object:  StoredProcedure [dw].[p_lataa_f_koski_oppivelvolliset]    Script Date: 4.8.2022 11:42:25 ******/
+/****** Object:  StoredProcedure [dw].[p_lataa_f_koski_oppivelvolliset]    Script Date: 4.8.2022 9:16:33 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 ALTER PROCEDURE [dw].[p_lataa_f_koski_oppivelvolliset]
 AS
@@ -100,16 +101,7 @@ TRUNCATE TABLE [Koski_SA].[sa].[temp_oppivelvollisuus_suoritettu]
 
 INSERT INTO [Koski_SA].[sa].[temp_oppivelvollisuus_suoritettu]
 
-SELECT  
-	f.oppija_oid,
-	f.opiskeluoikeus_oid,
-	f.koulutusmoduuli_koodiarvo,
-	f.koulutusmuoto,
-	f.suorituksen_tyyppi,
-	f.oppivelvollisen_toiminta,
-	f.oppivelvollisen_toiminta_min
-FROM (
-	SELECT 
+SELECT * FROM (SELECT 
 	f.oppija_oid,
 	f.opiskeluoikeus_oid,
 	f.koulutusmoduuli_koodiarvo,
@@ -119,7 +111,6 @@ FROM (
 	oppivelvollisen_toiminta_min = 
 				MIN(CONCAT(f.oppivelvollisen_toiminta,'_',f.opiskeluoikeus_oid)) OVER (
 					PARTITION BY f.oppija_oid)
-
 FROM (
 	SELECT DISTINCT
 		ov.oppija_oid,
@@ -136,8 +127,8 @@ FROM (
 		END as koulutusmoduuli_koodiarvo,
 		ov.oppivelvollisuus_suoritettu,
 		CASE 
-			WHEN aps.suorituksen_tyyppi = 'ammatillinentutkinto' and ooa.tila in ('lasna', 'loma','valmistunut','hyvaksytystisuoritettu') and oo.oppivelvollisuuden_suorittamiseen_kelpaava = 1 THEN 1
-			WHEN lps.tavoitetutkinto is not null and lps.tavoitetutkinto != 'Ei tutkintotavoitetta' and ooa.tila in ('lasna', 'loma','valmistunut','hyvaksytystisuoritettu') and oo.oppivelvollisuuden_suorittamiseen_kelpaava = 1 THEN 1
+			WHEN aps.suorituksen_tyyppi = 'ammatillinentutkinto' and ooa.tila in ('lasna', 'loma') and oo.oppivelvollisuuden_suorittamiseen_kelpaava = 1 THEN 1
+			WHEN lps.tavoitetutkinto is not null and lps.tavoitetutkinto != 'Ei tutkintotavoitetta' and ooa.tila in ('lasna', 'loma') and oo.oppivelvollisuuden_suorittamiseen_kelpaava = 1 THEN 1
 			WHEN ((ps.suorituksen_tyyppi in ('perusopetuksenoppimaara','aikuistenperusopetuksenoppimaara','aikuistenperusopetuksenoppimaaranalkuvaihe')) or 
 				 (ps.suorituksen_tyyppi in('internationalschoolpypvuosiluokka', 'internationalschoolmypvuosiluokka') and ps.koulutusmoduuli_koodiarvo in ('1','2','3','4','5','6','7','8','9'))) and ooa.tila in ('lasna', 'loma') and oo.oppivelvollisuuden_suorittamiseen_kelpaava = 1 THEN 2
 			WHEN (ps.suorituksen_tyyppi in ('esiopetuksensuoritus') or (ps.suorituksen_tyyppi = 'internationalschoolpypvuosiluokka' and ps.koulutusmoduuli_koodiarvo = 'explorer')) and ooa.tila in ('lasna', 'loma') and oo.oppivelvollisuuden_suorittamiseen_kelpaava = 1 THEN 3
@@ -156,6 +147,7 @@ FROM (
 	LEFT JOIN [Koski_SA].[sa].[sa_koski_paatason_suoritus] ps on ps.opiskeluoikeus_oid = ooa.opiskeluoikeus_oid
 	WHERE ov.oppivelvollisuus_suoritettu <= GETDATE()) f ) f
 WHERE f.oppivelvollisen_toiminta = f.oppivelvollisen_toiminta_min
+
 
 TRUNCATE TABLE ANTERO.dw.f_koski_oppivelvolliset
 
@@ -289,7 +281,7 @@ BEGIN
 		coalesce(d1.id,-1) as d_organisaatioluokitus_oppilaitos_id,
 		coalesce(d2.id,-1) as d_organisaatioluokitus_koulutuksen_jarjestaja_id,
 		coalesce(d11.id,-1) as d_organisaatioluokitus_perusopetuksen_oppilaitos_id,
-		coalesce(d11b.id,-1) as d_organisaatioluokitus_perusopetuksen_oppilaitos_all_time_id,
+		-- coalesce(d11b.id,-1) as d_organisaatioluokitus_perusopetuksen_oppilaitos_all_time_id,
 	
 		f.syntymavuosi,
 		coalesce(d3.id,-1) as d_sukupuoli_id,
@@ -341,8 +333,8 @@ BEGIN
 			CASE 
 				WHEN ov.perusopetus_suoritettu <= @alkuPvm THEN ov.perusopetuksen_oppilaitos_oid
 				ELSE NULL
-			END as perusopetuksen_oppilaitos_oid,
-			[perusopetuksen_oppilaitos_oid_all_time] = ov.perusopetuksen_oppilaitos_oid
+			END as perusopetuksen_oppilaitos_oid
+			--[perusopetuksen_oppilaitos_oid_all_time] = ov.perusopetuksen_oppilaitos_oid
 		FROM [Koski_SA].[sa].[temp_oppivelvolliset_esirajaukset] ov
 		INNER JOIN [Koski_SA].[sa].[temp_oppivelvollisten_toiminta] ovt on ovt.oppija_oid = ov.oppija_oid
 		LEFT JOIN [Koski_SA].[sa].[sa_koski_opiskeluoikeus] oo on ovt.opiskeluoikeus_oid = oo.opiskeluoikeus_oid AND ovt.oppivelvollisen_toiminta not in (10,11,12)
@@ -376,8 +368,8 @@ BEGIN
 			CASE 
 				WHEN ov.perusopetus_suoritettu <= @alkuPvm THEN ov.perusopetuksen_oppilaitos_oid
 				ELSE NULL
-			END as perusopetuksen_oppilaitos_oid,
-			[perusopetuksen_oppilaitos_oid_all_time] = ov.perusopetuksen_oppilaitos_oid
+			END as perusopetuksen_oppilaitos_oid
+			--[perusopetuksen_oppilaitos_oid_all_time] = ov.perusopetuksen_oppilaitos_oid
 		FROM [Koski_SA].[sa].[temp_oppivelvolliset_esirajaukset] ov
 		INNER JOIN [Koski_SA].[sa].[temp_oppivelvollisten_toiminta] ovt on ovt.oppija_oid = ov.oppija_oid
 		LEFT JOIN [Koski_SA].[sa].[temp_oppivelvollisuus_suoritettu] os on os.oppija_oid = ov.oppija_oid AND LEFT(os.oppivelvollisen_toiminta,1) != 9
@@ -399,12 +391,14 @@ BEGIN
 	LEFT JOIN [ANTERO].[dw].[d_kytkin] d9 on d9.kytkin_koodi = f.suorittanut_perusopetuksen_oppimaaran
 	LEFT JOIN [ANTERO].[dw].[d_kytkin] d10 on d10.kytkin_koodi = f.oppivelvollisuuden_suorittamiseen_kelpaava
 	LEFT JOIN [ANTERO].[dw].[d_organisaatioluokitus] d11 on d11.organisaatio_oid = f.perusopetuksen_oppilaitos_oid
-	LEFT JOIN [ANTERO].[dw].[d_organisaatioluokitus] d11b on d11b.organisaatio_oid = f.perusopetuksen_oppilaitos_oid_all_time
+	--LEFT JOIN [ANTERO].[dw].[d_organisaatioluokitus] d11b on d11b.organisaatio_oid = f.perusopetuksen_oppilaitos_oid_all_time
 	LEFT JOIN [ANTERO].[dw].[d_kalenteri] d12 on d12.kalenteri_avain = f.perusopetuksen_oppimaara_suoritettu_pvm
 		
 	SET @alkuPvm = DATEADD(MONTH, 1, @alkuPvm)
 
 END
+
+
 
 GO
 
