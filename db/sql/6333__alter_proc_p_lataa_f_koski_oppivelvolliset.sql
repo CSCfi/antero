@@ -281,7 +281,7 @@ BEGIN
 		coalesce(d1.id,-1) as d_organisaatioluokitus_oppilaitos_id,
 		coalesce(d2.id,-1) as d_organisaatioluokitus_koulutuksen_jarjestaja_id,
 		coalesce(d11.id,-1) as d_organisaatioluokitus_perusopetuksen_oppilaitos_id,
-		coalesce(d11b.id,-1) as d_organisaatioluokitus_perusopetuksen_oppilaitos_all_time_id,
+		-- coalesce(d11b.id,-1) as d_organisaatioluokitus_perusopetuksen_oppilaitos_all_time_id,
 	
 		f.syntymavuosi,
 		coalesce(d3.id,-1) as d_sukupuoli_id,
@@ -293,7 +293,7 @@ BEGIN
 		coalesce(d12.id,-1) as d_kalenteri_perusopetuksen_oppimaara_suoritettu_pvm_id,
 
 		coalesce(d8.id, -1) as d_koulutusluokitus_id,
-		coalesce(f.koulutusmuoto, 'Tieto puuttuu') as koulutusmuoto,
+		coalesce(f.koulutusmuoto, '-1') as koulutusmuoto,
 		coalesce(f.suorituksen_tyyppi, '-1') as suorituksen_tyyppi
 	FROM (
 		-- Oppivelvolliset, joilla on vähintään yksi opiskeluoikeus tarkasteluajanhetkellä
@@ -333,8 +333,8 @@ BEGIN
 			CASE 
 				WHEN ov.perusopetus_suoritettu <= @alkuPvm THEN ov.perusopetuksen_oppilaitos_oid
 				ELSE NULL
-			END as perusopetuksen_oppilaitos_oid,
-			[perusopetuksen_oppilaitos_oid_all_time] = ov.perusopetuksen_oppilaitos_oid
+			END as perusopetuksen_oppilaitos_oid
+			--[perusopetuksen_oppilaitos_oid_all_time] = ov.perusopetuksen_oppilaitos_oid
 		FROM [Koski_SA].[sa].[temp_oppivelvolliset_esirajaukset] ov
 		INNER JOIN [Koski_SA].[sa].[temp_oppivelvollisten_toiminta] ovt on ovt.oppija_oid = ov.oppija_oid
 		LEFT JOIN [Koski_SA].[sa].[sa_koski_opiskeluoikeus] oo on ovt.opiskeluoikeus_oid = oo.opiskeluoikeus_oid AND ovt.oppivelvollisen_toiminta not in (10,11,12)
@@ -368,8 +368,8 @@ BEGIN
 			CASE 
 				WHEN ov.perusopetus_suoritettu <= @alkuPvm THEN ov.perusopetuksen_oppilaitos_oid
 				ELSE NULL
-			END as perusopetuksen_oppilaitos_oid,
-			[perusopetuksen_oppilaitos_oid_all_time] = ov.perusopetuksen_oppilaitos_oid
+			END as perusopetuksen_oppilaitos_oid
+			--[perusopetuksen_oppilaitos_oid_all_time] = ov.perusopetuksen_oppilaitos_oid
 		FROM [Koski_SA].[sa].[temp_oppivelvolliset_esirajaukset] ov
 		INNER JOIN [Koski_SA].[sa].[temp_oppivelvollisten_toiminta] ovt on ovt.oppija_oid = ov.oppija_oid
 		LEFT JOIN [Koski_SA].[sa].[temp_oppivelvollisuus_suoritettu] os on os.oppija_oid = ov.oppija_oid AND LEFT(os.oppivelvollisen_toiminta,1) != 9
@@ -391,7 +391,7 @@ BEGIN
 	LEFT JOIN [ANTERO].[dw].[d_kytkin] d9 on d9.kytkin_koodi = f.suorittanut_perusopetuksen_oppimaaran
 	LEFT JOIN [ANTERO].[dw].[d_kytkin] d10 on d10.kytkin_koodi = f.oppivelvollisuuden_suorittamiseen_kelpaava
 	LEFT JOIN [ANTERO].[dw].[d_organisaatioluokitus] d11 on d11.organisaatio_oid = f.perusopetuksen_oppilaitos_oid
-	LEFT JOIN [ANTERO].[dw].[d_organisaatioluokitus] d11b on d11b.organisaatio_oid = f.perusopetuksen_oppilaitos_oid_all_time
+	--LEFT JOIN [ANTERO].[dw].[d_organisaatioluokitus] d11b on d11b.organisaatio_oid = f.perusopetuksen_oppilaitos_oid_all_time
 	LEFT JOIN [ANTERO].[dw].[d_kalenteri] d12 on d12.kalenteri_avain = f.perusopetuksen_oppimaara_suoritettu_pvm
 		
 	SET @alkuPvm = DATEADD(MONTH, 1, @alkuPvm)
@@ -401,6 +401,5 @@ END
 
 
 GO
-
 
 USE [ANTERO]
