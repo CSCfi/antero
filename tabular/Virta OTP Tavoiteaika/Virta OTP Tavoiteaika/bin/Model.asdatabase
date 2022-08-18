@@ -126,13 +126,6 @@
             "displayFolder": "Aikamuuttujat"
           },
           {
-            "name": "Tutkinto suoritettu tavoiteajassa",
-            "dataType": "string",
-            "sourceColumn": "Tutkinto suoritettu määräajassa",
-            "sourceProviderType": "Char",
-            "displayFolder": "Henkilömuuttujat"
-          },
-          {
             "name": "tavoiteajassavalmistunut",
             "dataType": "int64",
             "isHidden": true,
@@ -481,8 +474,9 @@
           },
           {
             "name": "Ikä tutkinnon aloittaessa",
-            "dataType": "int64",
+            "dataType": "string",
             "sourceColumn": "Ikä tutkinnon aloittaessa",
+            "sortByColumn": "Ikä tutkinnon aloittaessa jarj",
             "displayFolder": "Henkilömuuttujat"
           },
           {
@@ -508,6 +502,13 @@
             "dataType": "string",
             "isHidden": true,
             "sourceColumn": "Ikäryhmä tutkinnon aloittaessa jarj"
+          },
+          {
+            "name": "Tutkinto suoritettu tavoiteajassa",
+            "dataType": "string",
+            "sourceColumn": "Tutkinto suoritettu määräajassa",
+            "sourceProviderType": "Char",
+            "displayFolder": "Henkilömuuttujat"
           }
         ],
         "partitions": [
@@ -1682,22 +1683,27 @@
             "formatString": "#,0"
           },
           {
+            "name": "Aiempi tutkinto",
+            "expression": "CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[onaiempitutkinto]=1)"
+          },
+          {
+            "name": "Osuus aiempi tutk.",
+            "expression": "[Aiempi tutkinto]/[Tutkinnot yht.]",
+            "formatString": "0.00 %;-0.00 %;0.00 %"
+          },
+          {
+            "name": "Tutkintopisteet yht.",
+            "expression": "sum(Muuttujat[Tutkinto pisteet])",
+            "formatString": "#,0.00"
+          },
+          {
             "name": "Tavoiteajassa",
             "expression": "CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[tavoiteajassavalmistunut]=1)",
             "formatString": "#,0"
           },
           {
-            "name": "Aiempi tutkinto",
-            "expression": "CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[onaiempitutkinto]=1)"
-          },
-          {
             "name": "Osuus tavoiteajassa",
             "expression": "[Tavoiteajassa]/[Tutkinnot yht.]",
-            "formatString": "0.00 %;-0.00 %;0.00 %"
-          },
-          {
-            "name": "Osuus aiempi tutk.",
-            "expression": "[Aiempi tutkinto]/[Tutkinnot yht.]",
             "formatString": "0.00 %;-0.00 %;0.00 %"
           },
           {
@@ -1719,11 +1725,6 @@
             "name": "Osuus tavoiteaika ylit. 12kk",
             "expression": "[Tavoiteaika ylitetty yli 12 kk]/[Tutkinnot yht.]",
             "formatString": "0.00 %;-0.00 %;0.00 %"
-          },
-          {
-            "name": "Tutkintopisteet yht.",
-            "expression": "sum(Muuttujat[Tutkinto pisteet])",
-            "formatString": "#,0.00"
           }
         ],
         "annotations": [
@@ -3005,9 +3006,6 @@
                 "name": "Tutkinto pisteet"
               },
               {
-                "name": "Tutkinto suoritettu tavoiteajassa"
-              },
-              {
                 "name": "Tutkintokoodi"
               },
               {
@@ -3036,11 +3034,23 @@
               },
               {
                 "name": "Rahoituslähde"
+              },
+              {
+                "name": "Tutkinto suoritettu tavoiteajassa"
               }
             ],
             "measures": [
               {
                 "name": "Aiempi tutkinto"
+              },
+              {
+                "name": "Osuus aiempi tutk."
+              },
+              {
+                "name": "Tutkinnot yht."
+              },
+              {
+                "name": "Tutkintopisteet yht."
               },
               {
                 "name": "Tavoiteaika ylitetty enintään 12 kk"
@@ -3052,9 +3062,6 @@
                 "name": "Tavoiteajassa"
               },
               {
-                "name": "Osuus aiempi tutk."
-              },
-              {
                 "name": "Osuus tavoiteaika yli. enin. 12kk"
               },
               {
@@ -3062,12 +3069,6 @@
               },
               {
                 "name": "Osuus tavoiteajassa"
-              },
-              {
-                "name": "Tutkinnot yht."
-              },
-              {
-                "name": "Tutkintopisteet yht."
               }
             ]
           }
