@@ -1078,7 +1078,7 @@ SELECT [tilastointivuosi] as Tilastovuosi
 	LEFT JOIN [dbo].d_kansalaisuus_versio2 d8 ON d8.id = case when d1.aineisto_koodi = 'E' then '-1' else f.kansalaisuus_versio2_id end
 	LEFT JOIN [dbo].d_kansalaisuus_versio1 d8b ON d8b.id = f.kansalaisuus_versio1_id
 	-- Näytetään ennakkoaineiston kansalaisuus
-	LEFT JOIN [dbo].d_kansalaisuus_versio2 d8c ON d8.id = f.kansalaisuus_versio2_id
+	LEFT JOIN [dbo].d_kansalaisuus_versio2 d8c ON d8c.id = f.kansalaisuus_versio2_id
 	LEFT JOIN [dbo].d_oppilaitoksen_taustatiedot d9 ON d9.id = f.oppilaitos_id
 	LEFT JOIN [dbo].d_oppilaitoksen_taustatiedot d9b ON d9b.id = f.koulutuksen_jarjestaja_id
 	LEFT JOIN [dbo].d_oppilaitoksen_taustatiedot_historia d9c ON d9c.id = f.oppilaitos_historia_id
