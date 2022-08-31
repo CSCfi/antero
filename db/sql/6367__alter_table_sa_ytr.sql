@@ -8,7 +8,7 @@ IF NOT EXISTS (
   and COLUMN_NAME='school_details_period_1' and DATA_TYPE='datetime2'
 )
 BEGIN
-  ALTER TABLE sa.sa_ytr ADD COLUMN school_details_period_1 datetime2 NULL
+  ALTER TABLE sa.sa_ytr ADD  school_details_period_1 datetime2 NULL
 END
 IF NOT EXISTS (
   select * from INFORMATION_SCHEMA.COLUMNS
@@ -16,6 +16,6 @@ IF NOT EXISTS (
   and COLUMN_NAME='school_details_period_2' and DATA_TYPE='datetime2'
 )
 BEGIN
-  ALTER TABLE sa.sa_ytr ADD COLUMN school_details_period_2 datetime2 NULL
+  ALTER TABLE sa.sa_ytr ADD  school_details_period_2 datetime2 NULL
 END
 USE ANTERO
