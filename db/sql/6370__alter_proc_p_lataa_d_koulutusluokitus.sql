@@ -505,6 +505,3 @@ IF NOT EXISTS (
 	END
 
 GO
-
-EXEC [dw].[p_lataa_d_koulutusluokitus]
-GO
