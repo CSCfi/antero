@@ -3238,14 +3238,12 @@
               "\t, CALCULATE(",
               "\t\tDISTINCTCOUNT(Muuttujat[apusarake_vastaajatunnus])",
               "\t\t, ALL(Muuttujat[apusarake_vastaustyyppi]",
-              "\t\t\t, Muuttujat[kysymys_fi], Muuttujat[kysymys_sv],Muuttujat[kysymys_en]",
+              "\t\t\t, Muuttujat[kysymys_fi], Muuttujat[kysymys_sv], Muuttujat[kysymys_en]",
               "\t\t\t, Muuttujat[kysymysryhma_fi], Muuttujat[kysymysryhma_sv], Muuttujat[kysymysryhma_en]",
               "\t\t\t, Muuttujat[rahoitusmallikysymys_fi], Muuttujat[rahoitusmallikysymys_sv], Muuttujat[rahoitusmallikysymys_en]",
               "\t\t)",
               "\t)",
               ")",
-              "",
-              "--var ehto = IF(COUNTROWS(VALUES(Muuttujat[kysymys_fi]))=1;IF(VALUES(Muuttujat[kysymys_fi])=\"Tieto puuttuu\";1;0);0)",
               "",
               "--Huom. Lisätty all-ehtoihin kysymyksen ohella muita vastaavia muuttujia; voi vaatia ylläpitoa. JS 29.3.2022"
             ],
@@ -3739,7 +3737,22 @@
           },
           {
             "name": "Vastanneet (Rahoitus)",
-            "expression": "CALCULATE([vastattu_tyopaikkajaksojen_paivien_lkm], KEEPFILTERS(Muuttujat[koodit_rahoitusmallikysymys] = 1))",
+            "expression": [
+              "",
+              "var vastanneet = CALCULATE([vastattu_tyopaikkajaksojen_paivien_lkm], KEEPFILTERS(Muuttujat[koodit_rahoitusmallikysymys] = 1))",
+              "var ehto = IF(COUNTROWS(VALUES(Muuttujat[kysely_fi]))=1, IF(VALUES(Muuttujat[kysely_fi])=\"Työelämäpalaute: työpaikkakysely\", 1, 0), 0)",
+              "var yrittajat = ",
+              "IF(ehto",
+              "\t, CALCULATE(",
+              "\t\t[vastattu_tyopaikkajaksojen_paivien_lkm]",
+              "\t\t, KEEPFILTERS(Muuttujat[koodit_rahoitusmallikysymys] = 1)",
+              "\t\t, ALL(Muuttujat[kysely_fi])",
+              "\t\t, Muuttujat[oppisopimuksen_perusta_fi]=\"yrittäjä\"",
+              "\t)",
+              "\t, BLANK()",
+              ")",
+              "return vastanneet + yrittajat"
+            ],
             "formatString": "#,0"
           },
           {
@@ -3757,8 +3770,8 @@
               "\t[Vastausosuus (Rahoitus)]",
               "\t, ALLEXCEPT(Muuttujat, Muuttujat[rahoituskausi], Muuttujat[kysely_fi], Muuttujat[koulutuksen_jarjestaja_fi], Muuttujat[koodit_koulutuksen_jarjestaja])",
               ")",
-              "return IF(ehto && NOT(ISBLANK(osuus)), ",
-              "\tIF(osuus >= 0.7",
+              "return IF(ehto && NOT(ISBLANK(osuus))",
+              "\t, IF(osuus >= 0.7",
               "\t\t, DIVIDE(1, osuus)",
               "\t\t, IF(osuus <= 0.2",
               "\t\t\t, 857/350",
@@ -3771,18 +3784,24 @@
             "formatString": "0.00"
           },
           {
-            "name": "Keskiarvo (Rahoitus)",
+            "name": "Keskiarvo (Rahoitus), eksplisiittinen, ei työpaikkakyselyn yrittäjäjaksoja",
             "expression": [
               "",
-              "var osoittaja = [Pisteet (Rahoitus)_apumittari]",
-              "var nimittaja = ",
-              "CALCULATE(",
-              "\tSUMX(Muuttujat, [apusarake_tyopaikkajakson_kesto])",
+              "var taulu = ",
+              "CALCULATETABLE(",
+              "\tADDCOLUMNS(",
+              "\t\tSUMMARIZE(Muuttujat, [apusarake_vastaajatunnus])",
+              "\t\t\t, \"kesto\"",
+              "\t\t\t, CALCULATE(AVERAGE(Muuttujat[apusarake_tyopaikkajakson_kesto]))",
+              "\t\t\t, \"summa\"",
+              "\t\t\t, CALCULATE(SUM(Muuttujat[apusarake_numerovalinta]))",
+              "\t)",
               "\t, NOT(ISBLANK(Muuttujat[apusarake_vastaajaid]))",
               "\t, KEEPFILTERS(Muuttujat[koodit_rahoitusmallikysymys] = 1)",
               ")",
-              "return DIVIDE(osoittaja, nimittaja)",
-              "--IF([ehtoFISVEN]=TRUE(); BLANK()"
+              "var osoittaja = SUMX(taulu, [summa] * [kesto])",
+              "var nimittaja =  [kysymysten_lkm] * SUMX(taulu, [kesto])",
+              "return DIVIDE(osoittaja, nimittaja)"
             ],
             "formatString": "0.0"
           },
@@ -3792,16 +3811,17 @@
               "",
               "var ohjaajapisteet = CALCULATE([Pisteet (Rahoitus)_apumittari], FILTER(VALUES(Muuttujat[kysely_fi]), Muuttujat[kysely_fi]=\"Työelämäpalaute: työpaikkaohjaajan kysely\"))",
               "var tyopaikkapisteet_perus = CALCULATE([Pisteet (Rahoitus)_apumittari], FILTER(VALUES(Muuttujat[kysely_fi]), Muuttujat[kysely_fi]=\"Työelämäpalaute: työpaikkakysely\"))",
-              "var ehto = IF(COUNTROWS(VALUES(Muuttujat[kysely_fi]))=1, IF(VALUES(Muuttujat[kysely_fi])=\"Työelämäpalaute: työpaikkaohjaajan kysely\", 1, 0), 0)",
+              "var ehto = IF(COUNTROWS(VALUES(Muuttujat[kysely_fi]))=1, IF(VALUES(Muuttujat[kysely_fi])=\"Työelämäpalaute: työpaikkakysely\", 1, 0), 0)",
               "var tyopaikkapisteet_yrittajat = ",
               "IF(ehto",
-              "\t, BLANK()",
               "\t, 9/8 * CALCULATE(",
               "\t\t[Pisteet (Rahoitus)_apumittari]",
               "\t\t, ALL(Muuttujat[kysely_fi])",
               "\t\t, Muuttujat[oppisopimuksen_perusta_fi]=\"yrittäjä\"",
               "\t\t--; ISBLANK(Muuttujat[apusarake_tyopaikkakysely_vastaajatunnus]) --pisteet ohjaajakyselystä; estetty liittyminen jo tietokannassa",
               "\t)",
+              "\t, BLANK()",
+              "\t",
               ")",
               "return ohjaajapisteet + tyopaikkapisteet_perus + tyopaikkapisteet_yrittajat"
             ],
@@ -3834,7 +3854,7 @@
               "\t\t)",
               "\t) * [pisteet]",
               ")",
-              "return pisteet /*+ tyopaikkapisteet_perus + tyopaikkapisteet_yrittajat*/"
+              "return pisteet"
             ],
             "formatString": "#,0"
           },
@@ -3865,7 +3885,7 @@
             "name": "Kyselyn kohteet (Rahoitus)",
             "expression": [
               "",
-              "var taulu =",
+              "var taulu1 =",
               "CALCULATETABLE(",
               "\tADDCOLUMNS(",
               "\t\tSUMMARIZE(Muuttujat, [apusarake_vastaajatunnus])",
@@ -3874,7 +3894,21 @@
               "\t)",
               "\t, ALL(Muuttujat[rahoitusmallikysymys_fi], Muuttujat[koodit_rahoitusmallikysymys])",
               ")",
-              "return SUMX(taulu, [ka])"
+              "var ehto = IF(COUNTROWS(VALUES(Muuttujat[kysely_fi]))=1, IF(VALUES(Muuttujat[kysely_fi])=\"Työelämäpalaute: työpaikkakysely\", 1, 0), 0)",
+              "var taulu2 =",
+              "CALCULATETABLE(",
+              "\tADDCOLUMNS(",
+              "\t\tSUMMARIZE(Muuttujat, [apusarake_vastaajatunnus])",
+              "\t\t, \"ka\"",
+              "\t\t, CALCULATE(AVERAGE(Muuttujat[apusarake_tyopaikkajakson_kesto]))",
+              "\t)",
+              "\t, ALL(Muuttujat[rahoitusmallikysymys_fi], Muuttujat[koodit_rahoitusmallikysymys])",
+              "\t, ALL(Muuttujat[kysely_fi])",
+              "\t, Muuttujat[oppisopimuksen_perusta_fi]=\"yrittäjä\"",
+              ")",
+              "var kohteet = SUMX(taulu1, [ka])",
+              "var yrittajat = IF(ehto, SUMX(taulu2, [ka]), BLANK())",
+              "return kohteet + yrittajat"
             ],
             "formatString": "#,0"
           },
@@ -4010,8 +4044,17 @@
             "name": "kysymysten_lkm",
             "expression": [
               "",
-              "--imputointia varten, kyselystä riippuen 8 tai 9",
-              "IF(COUNTROWS(VALUES(Muuttujat[kysely_fi]))=1, IF(VALUES(Muuttujat[kysely_fi])=\"Työelämäpalaute: työpaikkaohjaajan kysely\", 8, 9), BLANK())"
+              "--implisiittisiä keskiarvoja, yrittäjäjaksojen huomiointia sekä imputointiesimerkkejä varten; kyselystä riippuen 8 tai 9",
+              "IF(",
+              "\tCOUNTROWS(VALUES(Muuttujat[kysely_fi]))=1",
+              "\t, IF(VALUES(Muuttujat[kysely_fi])=\"Työelämäpalaute: työpaikkaohjaajan kysely\"",
+              "\t\t, 8",
+              "\t\t, IF(VALUES(Muuttujat[kysely_fi])=\"Työelämäpalaute: työpaikkakysely\"",
+              "\t\t\t, 9",
+              "\t\t\t, BLANK()",
+              "\t\t)",
+              "\t)",
+              ")"
             ],
             "isHidden": true
           },
@@ -4034,6 +4077,91 @@
               "return DIVIDE(p1, p0)"
             ],
             "formatString": "0.000"
+          },
+          {
+            "name": "Keskiarvo (painotettu työpaikkajaksojen kestolla)",
+            "expression": [
+              "",
+              "var pisteet = [Pisteet (Rahoitus)_apumittari]",
+              "var kestot = ",
+              "CALCULATE(",
+              "\tSUMX(Muuttujat, [apusarake_tyopaikkajakson_kesto])",
+              "\t, NOT(ISBLANK(Muuttujat[apusarake_vastaajaid]))",
+              "\t, KEEPFILTERS(Muuttujat[koodit_rahoitusmallikysymys] = 1)",
+              ")",
+              "var ehto = IF(COUNTROWS(VALUES(Muuttujat[kysely_fi]))=1, IF(VALUES(Muuttujat[kysely_fi])=\"Työelämäpalaute: työpaikkakysely\", 1, 0), 0)",
+              "var yrittajapisteet = ",
+              "IF(ehto",
+              "\t, 9/8 * CALCULATE(",
+              "\t\t[Pisteet (Rahoitus)_apumittari]",
+              "\t\t, KEEPFILTERS(Muuttujat[koodit_rahoitusmallikysymys] = 1)",
+              "\t\t, ALL(Muuttujat[kysely_fi])",
+              "\t\t, Muuttujat[oppisopimuksen_perusta_fi]=\"yrittäjä\"",
+              "\t)",
+              "\t, BLANK()",
+              ")",
+              "var yrittajakestot = ",
+              "IF(ehto",
+              "\t, CALCULATE(",
+              "\t\tSUMX(Muuttujat, [apusarake_tyopaikkajakson_kesto])",
+              "\t\t, NOT(ISBLANK(Muuttujat[apusarake_vastaajaid]))",
+              "\t\t, KEEPFILTERS(Muuttujat[koodit_rahoitusmallikysymys] = 1)",
+              "\t\t, ALL(Muuttujat[kysely_fi])",
+              "\t\t, Muuttujat[oppisopimuksen_perusta_fi]=\"yrittäjä\"",
+              "\t)",
+              "\t, BLANK()",
+              ")",
+              "var osoittaja = pisteet + yrittajapisteet",
+              "var nimittaja = kestot + yrittajakestot",
+              "return DIVIDE(osoittaja, nimittaja)"
+            ],
+            "formatString": "0.0"
+          },
+          {
+            "name": "Keskiarvo (Rahoitus)",
+            "expression": "DIVIDE([Pisteet (Rahoitus)] / [Vastanneet (Rahoitus)], [kysymysten_lkm])",
+            "formatString": "0.0"
+          },
+          {
+            "name": "Pisteet (Rahoitus), työpaikkakyselyn yrittäjäjaksot",
+            "expression": [
+              "",
+              "var ehto = IF(COUNTROWS(VALUES(Muuttujat[kysely_fi]))=1, IF(VALUES(Muuttujat[kysely_fi])=\"Työelämäpalaute: työpaikkakysely\", 1, 0), 0)",
+              "var tyopaikkapisteet_yrittajat = ",
+              "IF(ehto",
+              "\t, 9/8 * CALCULATE(",
+              "\t\t[Pisteet (Rahoitus)_apumittari]",
+              "\t\t, ALL(Muuttujat[kysely_fi])",
+              "\t\t, Muuttujat[oppisopimuksen_perusta_fi]=\"yrittäjä\"",
+              "\t\t--; ISBLANK(Muuttujat[apusarake_tyopaikkakysely_vastaajatunnus]) --pisteet ohjaajakyselystä; estetty liittyminen jo tietokannassa",
+              "\t)",
+              "\t, BLANK()",
+              ")",
+              "return tyopaikkapisteet_yrittajat"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Copy of Kyselyn kohteet (Rahoitus)",
+            "expression": [
+              "",
+              "var taulu =",
+              "CALCULATETABLE(",
+              "\tADDCOLUMNS(",
+              "\t\tSUMMARIZE(Muuttujat, [apusarake_vastaajatunnus])",
+              "\t\t, \"ka\"",
+              "\t\t, CALCULATE(AVERAGE(Muuttujat[apusarake_tyopaikkajakson_kesto]))",
+              "\t)",
+              "\t, ALL(Muuttujat[rahoitusmallikysymys_fi], Muuttujat[koodit_rahoitusmallikysymys])",
+              ")",
+              "return SUMX(taulu, [ka])"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Copy of Vastanneet (Rahoitus)",
+            "expression": "CALCULATE([vastattu_tyopaikkajaksojen_paivien_lkm], KEEPFILTERS(Muuttujat[koodit_rahoitusmallikysymys] = 1))",
+            "formatString": "#,0"
           }
         ],
         "annotations": [
@@ -6853,7 +6981,7 @@
                     "translatedDisplayFolder": "Rahoitus"
                   },
                   {
-                    "name": "Keskiarvo (Rahoitus)",
+                    "name": "Keskiarvo (Rahoitus), eksplisiittinen, ei työpaikkakyselyn yrittäjäjaksoja",
                     "translatedDisplayFolder": "Rahoitus"
                   },
                   {
@@ -6874,6 +7002,46 @@
                   },
                   {
                     "name": "Pisteet % (Rahoitus)",
+                    "translatedDisplayFolder": "Rahoitus"
+                  },
+                  {
+                    "name": "Keskiarvo (Rahoitus), imputoitu",
+                    "translatedDisplayFolder": "Rahoitus"
+                  },
+                  {
+                    "name": "Pisteet (Rahoitus), imputoitu",
+                    "translatedDisplayFolder": "Rahoitus"
+                  },
+                  {
+                    "name": "Pisteet % (Rahoitus), imputoitu",
+                    "translatedDisplayFolder": "Rahoitus"
+                  },
+                  {
+                    "name": "Painotetut pisteet (Rahoitus), imputoitu",
+                    "translatedDisplayFolder": "Rahoitus"
+                  },
+                  {
+                    "name": "Painotetut pisteet % (Rahoitus), imputoitu",
+                    "translatedDisplayFolder": "Rahoitus"
+                  },
+                  {
+                    "name": "Painotetut pisteet % (Rahoitus), imputoitu / ei imputoitu",
+                    "translatedDisplayFolder": "Rahoitus"
+                  },
+                  {
+                    "name": "Pisteet % (Rahoitus), imputoitu / ei imputoitu",
+                    "translatedDisplayFolder": "Rahoitus"
+                  },
+                  {
+                    "name": "Keskiarvo (painotettu työpaikkajaksojen kestolla)",
+                    "translatedDisplayFolder": "Rahoitus"
+                  },
+                  {
+                    "name": "Keskiarvo (Rahoitus)",
+                    "translatedDisplayFolder": "Rahoitus"
+                  },
+                  {
+                    "name": "Pisteet (Rahoitus), työpaikkakyselyn yrittäjäjaksot",
                     "translatedDisplayFolder": "Rahoitus"
                   }
                 ]
@@ -7763,80 +7931,6 @@
               },
               {
                 "name": "vastausosuus_tyopaikkajaksojen_paivien_lkm"
-              }
-            ]
-          },
-          {
-            "name": "Sarakeleveys",
-            "columns": [
-              {
-                "name": "leveys"
-              },
-              {
-                "name": "Sarakeleveys"
-              }
-            ]
-          }
-        ]
-      },
-      {
-        "name": "rahoitus_fi",
-        "tables": [
-          {
-            "name": "Muuttujat",
-            "columns": [
-              {
-                "name": "koulutuksen_jarjestaja_fi"
-              },
-              {
-                "name": "koulutuksen_jarjestajan_avi_fi"
-              },
-              {
-                "name": "koulutuksen_jarjestajan_ely_fi"
-              },
-              {
-                "name": "koulutuksen_jarjestajan_kunta_fi"
-              },
-              {
-                "name": "koulutuksen_jarjestajan_maakunta_fi"
-              },
-              {
-                "name": "koulutuksen_jarjestajan_kieli_fi"
-              },
-              {
-                "name": "rahoituskausi"
-              },
-              {
-                "name": "koodit_koulutuksen_jarjestaja"
-              }
-            ],
-            "measures": [
-              {
-                "name": "Katokorjauskerroin (Rahoitus)"
-              },
-              {
-                "name": "Pisteet (Rahoitus)"
-              },
-              {
-                "name": "Keskiarvo (Rahoitus)"
-              },
-              {
-                "name": "Painotetut pisteet (Rahoitus)"
-              },
-              {
-                "name": "Vastanneet (Rahoitus)"
-              },
-              {
-                "name": "Vastausosuus (Rahoitus)"
-              },
-              {
-                "name": "Kyselyn kohteet (Rahoitus)"
-              },
-              {
-                "name": "Painotetut pisteet % (Rahoitus)"
-              },
-              {
-                "name": "Pisteet % (Rahoitus)"
               }
             ]
           },
@@ -8746,200 +8840,6 @@
         ]
       },
       {
-        "name": "rahoitus_en",
-        "tables": [
-          {
-            "name": "Muuttujat",
-            "columns": [
-              {
-                "name": "koulutuksen_jarjestaja_en"
-              },
-              {
-                "name": "kysely_en"
-              },
-              {
-                "name": "kysymys_en"
-              },
-              {
-                "name": "kysymysryhma_en"
-              },
-              {
-                "name": "monivalintavaihtoehto_en"
-              },
-              {
-                "name": "oppilaitoksen_avi_en"
-              },
-              {
-                "name": "oppilaitoksen_ely_en"
-              },
-              {
-                "name": "oppilaitoksen_kunta_en"
-              },
-              {
-                "name": "oppilaitoksen_maakunta_en"
-              },
-              {
-                "name": "oppisopimuksen_perusta_en"
-              },
-              {
-                "name": "rahoitusmallikysymys_en"
-              },
-              {
-                "name": "sopimustyyppi_en"
-              },
-              {
-                "name": "tilastokausi"
-              },
-              {
-                "name": "toimipaikan_maa_en"
-              },
-              {
-                "name": "koodit_tutkinto"
-              },
-              {
-                "name": "tutkintotyyppi_en"
-              },
-              {
-                "name": "tyopaikan_toimiala_en"
-              },
-              {
-                "name": "tutkinnon_osa_en"
-              },
-              {
-                "name": "tilastovuosi"
-              },
-              {
-                "name": "koulutuksen_jarjestajan_avi_en"
-              },
-              {
-                "name": "koulutuksen_jarjestajan_ely_en"
-              },
-              {
-                "name": "koulutuksen_jarjestajan_kunta_en"
-              },
-              {
-                "name": "koulutuksen_jarjestajan_maakunta_en"
-              },
-              {
-                "name": "oppilaitos_en"
-              },
-              {
-                "name": "tilastokuukausi_en"
-              },
-              {
-                "name": "toimipaikan_kunta_en"
-              },
-              {
-                "name": "toimipaikan_maakunta_en"
-              },
-              {
-                "name": "tutkinto_en"
-              },
-              {
-                "name": "koulutuksen_jarjestajan_kieli_en"
-              },
-              {
-                "name": "rahoituskausi"
-              },
-              {
-                "name": "yrityksen_yhteison_kunta_en"
-              },
-              {
-                "name": "yrityksen_yhteison_maakunta_en"
-              },
-              {
-                "name": "koodit_koulutuksen_jarjestaja"
-              }
-            ],
-            "measures": [
-              {
-                "name": "korjauskerroin"
-              },
-              {
-                "name": "painotetut_pisteet"
-              },
-              {
-                "name": "pisteet"
-              },
-              {
-                "name": "1_piste_prosentti"
-              },
-              {
-                "name": "1_piste_lkm"
-              },
-              {
-                "name": "2_pistetta_prosentti"
-              },
-              {
-                "name": "2_pistetta_lkm"
-              },
-              {
-                "name": "3_pistetta_prosentti"
-              },
-              {
-                "name": "3_pistetta_lkm"
-              },
-              {
-                "name": "4_pistetta_prosentti"
-              },
-              {
-                "name": "4_pistetta_lkm"
-              },
-              {
-                "name": "5_pistetta_prosentti"
-              },
-              {
-                "name": "5_pistetta_lkm"
-              },
-              {
-                "name": "keskiarvo_painotettu_tyopaikkajaksojen_kestolla"
-              },
-              {
-                "name": "keskihajonta_painotettu_tyopaikkajaksojen_kestolla"
-              },
-              {
-                "name": "kyselyn_kohteet_tyopaikkajaksojen_lkm"
-              },
-              {
-                "name": "kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm"
-              },
-              {
-                "name": "kyselyn_kohteiden_keskimaarainen_kesto"
-              },
-              {
-                "name": "painotetut_pisteet_prosentti"
-              },
-              {
-                "name": "vastattu_tyopaikkajaksojen_lkm"
-              },
-              {
-                "name": "vastattu_tyopaikkajaksojen_paivien_lkm"
-              },
-              {
-                "name": "vastattujen_tyopaikkajaksojen_keskimaarainen_kesto"
-              },
-              {
-                "name": "vastausosuus_tyopaikkajaksojen_lkm"
-              },
-              {
-                "name": "vastausosuus_tyopaikkajaksojen_paivien_lkm"
-              }
-            ]
-          },
-          {
-            "name": "Sarakeleveys",
-            "columns": [
-              {
-                "name": "leveys"
-              },
-              {
-                "name": "Sarakeleveys"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "name": "tyopaikkakysely_en",
         "tables": [
           {
@@ -9426,200 +9326,6 @@
         ]
       },
       {
-        "name": "rahoitus_sv",
-        "tables": [
-          {
-            "name": "Muuttujat",
-            "columns": [
-              {
-                "name": "koulutuksen_jarjestaja_sv"
-              },
-              {
-                "name": "kysely_sv"
-              },
-              {
-                "name": "kysymys_sv"
-              },
-              {
-                "name": "kysymysryhma_sv"
-              },
-              {
-                "name": "monivalintavaihtoehto_sv"
-              },
-              {
-                "name": "oppilaitoksen_avi_sv"
-              },
-              {
-                "name": "oppilaitoksen_ely_sv"
-              },
-              {
-                "name": "oppilaitoksen_kunta_sv"
-              },
-              {
-                "name": "oppilaitoksen_maakunta_sv"
-              },
-              {
-                "name": "oppisopimuksen_perusta_sv"
-              },
-              {
-                "name": "rahoitusmallikysymys_sv"
-              },
-              {
-                "name": "sopimustyyppi_sv"
-              },
-              {
-                "name": "tilastokausi"
-              },
-              {
-                "name": "toimipaikan_maa_sv"
-              },
-              {
-                "name": "koodit_tutkinto"
-              },
-              {
-                "name": "tutkintotyyppi_sv"
-              },
-              {
-                "name": "tyopaikan_toimiala_sv"
-              },
-              {
-                "name": "tutkinnon_osa_sv"
-              },
-              {
-                "name": "tilastovuosi"
-              },
-              {
-                "name": "koulutuksen_jarjestajan_avi_sv"
-              },
-              {
-                "name": "koulutuksen_jarjestajan_ely_sv"
-              },
-              {
-                "name": "koulutuksen_jarjestajan_kunta_sv"
-              },
-              {
-                "name": "koulutuksen_jarjestajan_maakunta_sv"
-              },
-              {
-                "name": "oppilaitos_sv"
-              },
-              {
-                "name": "tilastokuukausi_sv"
-              },
-              {
-                "name": "toimipaikan_kunta_sv"
-              },
-              {
-                "name": "toimipaikan_maakunta_sv"
-              },
-              {
-                "name": "tutkinto_sv"
-              },
-              {
-                "name": "koulutuksen_jarjestajan_kieli_sv"
-              },
-              {
-                "name": "rahoituskausi"
-              },
-              {
-                "name": "yrityksen_yhteison_kunta_fi"
-              },
-              {
-                "name": "yrityksen_yhteison_maakunta_fi"
-              },
-              {
-                "name": "koodit_koulutuksen_jarjestaja"
-              }
-            ],
-            "measures": [
-              {
-                "name": "korjauskerroin"
-              },
-              {
-                "name": "painotetut_pisteet"
-              },
-              {
-                "name": "pisteet"
-              },
-              {
-                "name": "1_piste_prosentti"
-              },
-              {
-                "name": "1_piste_lkm"
-              },
-              {
-                "name": "2_pistetta_prosentti"
-              },
-              {
-                "name": "2_pistetta_lkm"
-              },
-              {
-                "name": "3_pistetta_prosentti"
-              },
-              {
-                "name": "3_pistetta_lkm"
-              },
-              {
-                "name": "4_pistetta_prosentti"
-              },
-              {
-                "name": "4_pistetta_lkm"
-              },
-              {
-                "name": "5_pistetta_prosentti"
-              },
-              {
-                "name": "5_pistetta_lkm"
-              },
-              {
-                "name": "keskiarvo_painotettu_tyopaikkajaksojen_kestolla"
-              },
-              {
-                "name": "keskihajonta_painotettu_tyopaikkajaksojen_kestolla"
-              },
-              {
-                "name": "kyselyn_kohteet_tyopaikkajaksojen_lkm"
-              },
-              {
-                "name": "kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm"
-              },
-              {
-                "name": "kyselyn_kohteiden_keskimaarainen_kesto"
-              },
-              {
-                "name": "painotetut_pisteet_prosentti"
-              },
-              {
-                "name": "vastattu_tyopaikkajaksojen_lkm"
-              },
-              {
-                "name": "vastattu_tyopaikkajaksojen_paivien_lkm"
-              },
-              {
-                "name": "vastattujen_tyopaikkajaksojen_keskimaarainen_kesto"
-              },
-              {
-                "name": "vastausosuus_tyopaikkajaksojen_lkm"
-              },
-              {
-                "name": "vastausosuus_tyopaikkajaksojen_paivien_lkm"
-              }
-            ]
-          },
-          {
-            "name": "Sarakeleveys",
-            "columns": [
-              {
-                "name": "leveys"
-              },
-              {
-                "name": "Sarakeleveys"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "name": "imputoitu_rahoitus_fi",
         "tables": [
           {
@@ -9656,9 +9362,6 @@
             "measures": [
               {
                 "name": "Katokorjauskerroin (Rahoitus)"
-              },
-              {
-                "name": "Keskiarvo (Rahoitus)"
               },
               {
                 "name": "Keskiarvo (Rahoitus), imputoitu"
@@ -9701,6 +9404,12 @@
               },
               {
                 "name": "Pisteet % (Rahoitus), imputoitu / ei imputoitu"
+              },
+              {
+                "name": "Keskiarvo (painotettu työpaikkajaksojen kestolla)"
+              },
+              {
+                "name": "Keskiarvo (Rahoitus)"
               }
             ]
           },
@@ -9753,9 +9462,6 @@
                 "name": "Katokorjauskerroin (Rahoitus)"
               },
               {
-                "name": "Keskiarvo (Rahoitus)"
-              },
-              {
                 "name": "Kyselyn kohteet (Rahoitus)"
               },
               {
@@ -9775,6 +9481,12 @@
               },
               {
                 "name": "Vastausosuus (Rahoitus)"
+              },
+              {
+                "name": "Keskiarvo (painotettu työpaikkajaksojen kestolla)"
+              },
+              {
+                "name": "Keskiarvo (Rahoitus)"
               }
             ]
           },
@@ -9824,9 +9536,6 @@
             ],
             "measures": [
               {
-                "name": "Keskiarvo (Rahoitus)"
-              },
-              {
                 "name": "Kyselyn kohteet (Rahoitus)"
               },
               {
@@ -9840,6 +9549,12 @@
               },
               {
                 "name": "Vastausosuus (Rahoitus)"
+              },
+              {
+                "name": "Keskiarvo (painotettu työpaikkajaksojen kestolla)"
+              },
+              {
+                "name": "Keskiarvo (Rahoitus)"
               }
             ]
           },
