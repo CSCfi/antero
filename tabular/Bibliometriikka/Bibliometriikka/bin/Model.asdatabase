@@ -7777,7 +7777,23 @@
           },
           {
             "name": "Top10-indeksi (maailma 4v)",
-            "expression": "IF(AND([Julkaisut (Maailma 4v Ositettu, ml. ESCI)]>=50,[Sisäinen kattavuus (maailma 4v, ml. ESCI)]>=0.4),CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 10 Indeksi Maailma 4 vuotta]),[TOP 10 Indeksi Maailma 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 10 Julkaisut Maailma 4 vuotta]),[TOP 10 Julkaisut Maailma 4 vuotta]),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<28)),BLANK())",
+            "expression": [
+              "",
+              "var taulu = ",
+              "CALCULATETABLE(",
+              "\tSUMMARIZE(",
+              "\t\tBibliometriikka,",
+              "\t\tBibliometriikka[IDkoodi],",
+              "\t\tBibliometriikka[TOP 10 Indeksi Maailma 4 vuotta],",
+              "\t\tBibliometriikka[TOP 10 Julkaisut Maailma 4 vuotta]),",
+              "\tBibliometriikka[Vuosikoodi]<28)",
+              "return",
+              "IF(",
+              "\tAND(Bibliometriikka[Julkaisut (Maailma 4v Ositettu, ml. ESCI)]>=50,Bibliometriikka[Sisäinen kattavuus (maailma 4v, ml. ESCI)]>=0.4),",
+              "\tDIVIDE(",
+              "\t\tSUMX(taulu, [TOP 10 Indeksi Maailma 4 vuotta]), SUMX(taulu, [TOP 10 Julkaisut Maailma 4 vuotta])),BLANK())",
+              ""
+            ],
             "formatString": "0.00",
             "displayFolder": "Web of Science Core (vain viittausindeksit)"
           },
@@ -7789,15 +7805,48 @@
           },
           {
             "name": "Top1-indeksi (maailma 4v)",
-            "expression": "IF(AND([Julkaisut (Maailma 4v Ositettu, ml. ESCI)]>=50,[Sisäinen kattavuus (maailma 4v, ml. ESCI)]>=0.4),CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 1 Indeksi Maailma 4 vuotta]),[TOP 1 Indeksi Maailma 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 1 Julkaisut Maailma 4 vuotta]),[TOP 1 Julkaisut Maailma 4 vuotta]),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<28)),BLANK())",
+            "expression": [
+              "",
+              "",
+              "var taulu = ",
+              "CALCULATETABLE(",
+              "\tSUMMARIZE(",
+              "\t\tBibliometriikka, ",
+              "\t\tBibliometriikka[IDkoodi], ",
+              "\t\tBibliometriikka[TOP 1 Indeksi Maailma 4 vuotta], ",
+              "\t\tBibliometriikka[TOP 1 Julkaisut Maailma 4 vuotta]),",
+              "\tBibliometriikka[Vuosikoodi]<28)",
+              "",
+              "return",
+              "",
+              "IF(",
+              "\tAND([Julkaisut (Maailma 4v Ositettu, ml. ESCI)]>=50,[Sisäinen kattavuus (maailma 4v, ml. ESCI)]>=0.4),",
+              "\tDIVIDE(",
+              "\t\tSUMX(taulu,[TOP 1 Indeksi Maailma 4 vuotta]), SUMX(taulu,[TOP 1 Julkaisut Maailma 4 vuotta])),",
+              "\tBLANK())"
+            ],
             "formatString": "0.00",
             "displayFolder": "Web of Science Core (vain viittausindeksit)"
           },
           {
             "name": "Viittausindeksi (Maailma 4v)",
             "expression": [
-              "IF(AND([Julkaisut (Maailma 4v Ositettu, ml. ESCI)]>=50,[Sisäinen kattavuus (maailma 4v, ml. ESCI)]>=0.4),CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Sitaatiot Maailma 4 vuotta]),[Sitaatiot Maailma 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Analyysijulkaisut Maailma 4 vuotta]),[Analyysijulkaisut Maailma 4 vuotta]),",
-              "FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<28)),BLANK())",
+              "",
+              "",
+              "VAR taulu = ",
+              "CALCULATETABLE(",
+              "\tSUMMARIZE(",
+              "\t\tBibliometriikka, ",
+              "\t\tBibliometriikka[IDkoodi],",
+              "\t\tBibliometriikka[Sitaatiot Maailma 4 vuotta],",
+              "\t\t[Analyysijulkaisut Maailma 4 vuotta]),",
+              "\tBibliometriikka[Vuosikoodi]<28)",
+              "\t",
+              "return",
+              "",
+              "IF(",
+              "\tAND([Julkaisut (Maailma 4v Ositettu, ml. ESCI)]>=50,[Sisäinen kattavuus (maailma 4v, ml. ESCI)]>=0.4),",
+              "\tDIVIDE(SUMX(taulu,[Sitaatiot Maailma 4 vuotta]),SUMX(taulu,[Analyysijulkaisut Maailma 4 vuotta])),BLANK())",
               ""
             ],
             "formatString": "0.00",
@@ -7805,7 +7854,22 @@
           },
           {
             "name": "Top10-indeksi (YT Maat Bilat 4 vuotta)",
-            "expression": "IF([Julkaisut (YT Maat Bilat 4 vuotta, ml. ESCI)]>=50,CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 10 Indeksi YTmaatBilat 4 vuotta]),[TOP 10 Indeksi YTmaatBilat 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 10 Julkaisut YTmaatBilat 4 vuotta]),[TOP 10 Julkaisut YTmaatBilat 4 vuotta]),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<28)),BLANK())",
+            "expression": [
+              "",
+              "",
+              "var taulu = ",
+              "CALCULATETABLE(",
+              "\tSUMMARIZE(",
+              "\t\tBibliometriikka,",
+              "\t\tBibliometriikka[IDkoodi],",
+              "\t\tBibliometriikka[TOP 10 Indeksi YTmaatBilat 4 vuotta],",
+              "\t\tBibliometriikka[TOP 10 Julkaisut YTmaatBilat 4 vuotta]),",
+              "\tBibliometriikka[Vuosikoodi]<28)",
+              "",
+              "return\t\t",
+              "",
+              "IF([Julkaisut (YT Maat Bilat 4 vuotta, ml. ESCI)]>=50,DIVIDE(SUMX(taulu, [TOP 10 Indeksi YTmaatBilat 4 vuotta]),SUMX(taulu,[TOP 10 Julkaisut YTmaatBilat 4 vuotta])),BLANK())"
+            ],
             "formatString": "0.00",
             "displayFolder": "Web of Science Core (vain viittausindeksit)"
           },
@@ -7817,13 +7881,43 @@
           },
           {
             "name": "Viittausindeksi (YT maat Bilat 4 vuotta)",
-            "expression": "IF([Julkaisut (YT Maat Bilat 4 vuotta, ml. ESCI)]>=50,CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Sitaatiot YTmaatBilat 4 vuotta]),[Sitaatiot YTmaatBilat 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Analyysijulkaisut YTmaatBilat 4 vuotta]),[Analyysijulkaisut YTmaatBilat 4 vuotta]),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<28)),BLANK())",
+            "expression": [
+              "",
+              "",
+              "var taulu =",
+              "CALCULATETABLE(",
+              "\tSUMMARIZE(",
+              "\t\tBibliometriikka,",
+              "\t\tBibliometriikka[IDkoodi],",
+              "\t\tBibliometriikka[Sitaatiot YTmaatBilat 4 vuotta],",
+              "\t\tBibliometriikka[Analyysijulkaisut YTmaatBilat 4 vuotta]),",
+              "\tBibliometriikka[Vuosikoodi]<28)",
+              "\t",
+              "return",
+              "\t\t",
+              "IF([Julkaisut (YT Maat Bilat 4 vuotta, ml. ESCI)]>=50,DIVIDE(SUMX(taulu, [Sitaatiot YTmaatBilat 4 vuotta]),SUMX(taulu,[Analyysijulkaisut YTmaatBilat 4 vuotta])),BLANK())"
+            ],
             "formatString": "0.00",
             "displayFolder": "Web of Science Core (vain viittausindeksit)"
           },
           {
             "name": "Top1-indeksi (YT Maat Kaikki 4 vuotta)",
-            "expression": "IF([Julkaisut (YT Maat Kaikki 4 vuotta, ml. ESCI)]>=50,CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 1 Indeksi YTmaatKaikki 4 vuotta]),[TOP 1 Indeksi YTmaatKaikki 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 1 Julkaisut YTmaatKaikki 4 vuotta]),[TOP 1 Julkaisut YTmaatKaikki 4 vuotta]),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<28)),BLANK())",
+            "expression": [
+              "",
+              "",
+              "var taulu =",
+              "CALCULATETABLE(",
+              "\tSUMMARIZE(",
+              "\t\tBibliometriikka,",
+              "\t\tBibliometriikka[IDkoodi],",
+              "\t\tBibliometriikka[TOP 1 Indeksi YTmaatKaikki 4 vuotta],",
+              "\t\tBibliometriikka[TOP 1 Julkaisut YTmaatKaikki 4 vuotta]),",
+              "\tBibliometriikka[Vuosikoodi]<28)",
+              "\t",
+              "return",
+              "",
+              "IF([Julkaisut (YT Maat Kaikki 4 vuotta, ml. ESCI)]>=50,DIVIDE(SUMX(taulu,[TOP 1 Indeksi YTmaatKaikki 4 vuotta]), SUMX(taulu, [TOP 1 Julkaisut YTmaatKaikki 4 vuotta])),BLANK())"
+            ],
             "formatString": "0.00",
             "displayFolder": "Web of Science Core (vain viittausindeksit)"
           },
@@ -7844,18 +7938,6 @@
             "expression": "SUM([Julkaisut Suomi 4 vuotta])",
             "formatString": "#,0",
             "displayFolder": "Web of Science, ml. ESCI"
-          },
-          {
-            "name": "Top10-indeksi(Suomi 4v)",
-            "expression": "IF(AND([Julkaisut (Suomi 4v Ositettu, ml. ESCI)]>=50,[Sisäinen kattavuus (suomi 4v, ml. ESCI)]>=0.4),CALCULATE(DIVIDE((SUM([TOP 10 Indeksi Suomi 4 vuotta])/SUM([TOP 10 Julkaisut Suomi 4 vuotta])),1),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<28)),BLANK())",
-            "formatString": "0.00",
-            "displayFolder": "Web of Science Core (vain viittausindeksit)"
-          },
-          {
-            "name": "Top1-indeksi(Suomi 4v)",
-            "expression": "IF(AND([Julkaisut (Suomi 4v Ositettu, ml. ESCI)]>=50,[Sisäinen kattavuus (suomi 4v, ml. ESCI)]>=0.4),CALCULATE(DIVIDE((SUM([TOP 1 Indeksi Suomi 4 vuotta])/SUM([TOP 1 Julkaisut Suomi 4 vuotta])),1),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<28)),BLANK())",
-            "formatString": "0.00",
-            "displayFolder": "Web of Science Core (vain viittausindeksit)"
           },
           {
             "name": "Sisäinen kattavuus (suomi 4v, ml. ESCI)",
@@ -7883,13 +7965,42 @@
           },
           {
             "name": "Top10-indeksi (YT Maat Kaikki 4 vuotta)",
-            "expression": "IF([Julkaisut (YT Maat Kaikki 4 vuotta, ml. ESCI)]>=50,CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 10 Indeksi YTmaatKaikki 4 vuotta]),[TOP 10 Indeksi YTmaatKaikki 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 10 Julkaisut YTmaatKaikki 4 vuotta]),[TOP 10 Julkaisut YTmaatKaikki 4 vuotta]),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<28)),BLANK())",
+            "expression": [
+              "",
+              "",
+              "var taulu = ",
+              "CALCULATETABLE(",
+              "\tSUMMARIZE(",
+              "\t\tBibliometriikka,",
+              "\t\tBibliometriikka[TOP 10 Indeksi YTmaatKaikki 4 vuotta],",
+              "\t\tBibliometriikka[TOP 10 Julkaisut YTmaatKaikki 4 vuotta]),",
+              "\tBibliometriikka[Vuosikoodi]<28)",
+              "\t",
+              "return",
+              "",
+              "IF([Julkaisut (YT Maat Kaikki 4 vuotta, ml. ESCI)]>=50,",
+              "DIVIDE(SUMX(taulu, [TOP 10 Indeksi YTmaatKaikki 4 vuotta]), SUMX(taulu, [TOP 10 Julkaisut YTmaatKaikki 4 vuotta])),BLANK())"
+            ],
             "formatString": "0.00",
             "displayFolder": "Web of Science Core (vain viittausindeksit)"
           },
           {
             "name": "Viittausindeksi (YT maat Kaikki 4 vuotta)",
-            "expression": "IF([Julkaisut (YT Maat Kaikki 4 vuotta, ml. ESCI)]>=50,CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Sitaatiot YTmaatKaikki 4 vuotta]),[Sitaatiot YTmaatKaikki 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Analyysijulkaisut YTmaatKaikki 4 vuotta]),[Analyysijulkaisut YTmaatKaikki 4 vuotta]),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<28)),BLANK())",
+            "expression": [
+              "",
+              "",
+              "var taulu = ",
+              "CALCULATETABLE(",
+              "\tSUMMARIZE(",
+              "\t\tBibliometriikka,",
+              "\t\tBibliometriikka[Sitaatiot YTmaatKaikki 4 vuotta],",
+              "\t\tBibliometriikka[Analyysijulkaisut YTmaatKaikki 4 vuotta]),",
+              "\tBibliometriikka[Vuosikoodi]<28)",
+              "\t",
+              "return",
+              "",
+              "IF([Julkaisut (YT Maat Kaikki 4 vuotta, ml. ESCI)]>=50,DIVIDE(SUMX(taulu,[Sitaatiot YTmaatKaikki 4 vuotta]),SUMX(taulu,[Analyysijulkaisut YTmaatKaikki 4 vuotta])),BLANK())"
+            ],
             "formatString": "0.00",
             "displayFolder": "Web of Science Core (vain viittausindeksit)"
           },
@@ -7906,21 +8017,69 @@
           },
           {
             "name": "Top10-indeksi (maailma 4v, ml. ESCI)",
-            "expression": "IF(AND([Julkaisut (Maailma 4v Ositettu, ml. ESCI)]>=50,[Sisäinen kattavuus (maailma 4v, ml. ESCI)]>=0.4),CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 10 Indeksi Maailma 4 vuotta, Kaikki]),[TOP 10 Indeksi Maailma 4 vuotta, Kaikki])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 10 Julkaisut Maailma 4 vuotta, Kaikki]),[TOP 10 Julkaisut Maailma 4 vuotta, Kaikki]),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<28)),BLANK())",
+            "expression": [
+              "",
+              "var taulu = ",
+              "CALCULATETABLE(",
+              "\tSUMMARIZE(",
+              "\t\tBibliometriikka,",
+              "\t\tBibliometriikka[IDkoodi],",
+              "\t\tBibliometriikka[TOP 10 Indeksi Maailma 4 vuotta, Kaikki],",
+              "\t\tBibliometriikka[TOP 10 Julkaisut Maailma 4 vuotta, Kaikki]),",
+              "\tBibliometriikka[Vuosikoodi]<28)",
+              "return",
+              "IF(",
+              "\tAND(Bibliometriikka[Julkaisut (Maailma 4v Ositettu, ml. ESCI)]>=50,Bibliometriikka[Sisäinen kattavuus (maailma 4v, ml. ESCI)]>=0.4),",
+              "\tDIVIDE(",
+              "\t\tSUMX(taulu, [TOP 10 Indeksi Maailma 4 vuotta, Kaikki]), SUMX(taulu, [TOP 10 Julkaisut Maailma 4 vuotta, Kaikki])),BLANK())"
+            ],
             "formatString": "0.00",
             "displayFolder": "Web of Science, ml. ESCI"
           },
           {
             "name": "Top1-indeksi (maailma 4v, ml. ESCI)",
-            "expression": "IF(AND([Julkaisut (Maailma 4v Ositettu, ml. ESCI)]>=50,[Sisäinen kattavuus (maailma 4v, ml. ESCI)]>=0.4),CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 1 Indeksi Maailma 4 vuotta, Kaikki]),[TOP 1 Indeksi Maailma 4 vuotta, Kaikki])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 1 Julkaisut Maailma 4 vuotta, Kaikki]),[TOP 1 Julkaisut Maailma 4 vuotta, Kaikki]),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<28)),BLANK())",
+            "expression": [
+              "",
+              "var taulu = ",
+              "CALCULATETABLE(",
+              "\tSUMMARIZE(",
+              "\t\tBibliometriikka, ",
+              "\t\tBibliometriikka[IDkoodi], ",
+              "\t\tBibliometriikka[TOP 1 Indeksi Maailma 4 vuotta, Kaikki], ",
+              "\t\tBibliometriikka[TOP 1 Julkaisut Maailma 4 vuotta, Kaikki]),",
+              "\tBibliometriikka[Vuosikoodi]<28)",
+              "",
+              "return",
+              "",
+              "IF(",
+              "\tAND([Julkaisut (Maailma 4v Ositettu, ml. ESCI)]>=50,[Sisäinen kattavuus (maailma 4v, ml. ESCI)]>=0.4),",
+              "\tDIVIDE(",
+              "\t\tSUMX(taulu,[TOP 1 Indeksi Maailma 4 vuotta, Kaikki]), SUMX(taulu,[TOP 1 Julkaisut Maailma 4 vuotta, Kaikki])),",
+              "\tBLANK())",
+              ""
+            ],
             "formatString": "0.00",
             "displayFolder": "Web of Science, ml. ESCI"
           },
           {
             "name": "Viittausindeksi (Maailma 4v, ml. ESCI)",
             "expression": [
-              "IF(AND([Julkaisut (Maailma 4v Ositettu, ml. ESCI)]>=50,[Sisäinen kattavuus (maailma 4v, ml. ESCI)]>=0.4),CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Sitaatiot Maailma 4 vuotta, Kaikki]),[Sitaatiot Maailma 4 vuotta, Kaikki])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Analyysijulkaisut Maailma 4 vuotta, Kaikki]),[Analyysijulkaisut Maailma 4 vuotta, Kaikki]),",
-              "FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<28)),BLANK())",
+              "",
+              "",
+              "VAR taulu = ",
+              "CALCULATETABLE(",
+              "\tSUMMARIZE(",
+              "\t\tBibliometriikka, ",
+              "\t\tBibliometriikka[IDkoodi],",
+              "\t\tBibliometriikka[Sitaatiot Maailma 4 vuotta, Kaikki],",
+              "\t\t[Analyysijulkaisut Maailma 4 vuotta, Kaikki]),",
+              "\tBibliometriikka[Vuosikoodi]<28)",
+              "\t",
+              "return",
+              "",
+              "IF(",
+              "\tAND([Julkaisut (Maailma 4v Ositettu, ml. ESCI)]>=50,[Sisäinen kattavuus (maailma 4v, ml. ESCI)]>=0.4),",
+              "\tDIVIDE(SUMX(taulu,[Sitaatiot Maailma 4 vuotta, Kaikki]),SUMX(taulu,[Analyysijulkaisut Maailma 4 vuotta, Kaikki])),BLANK())",
               ""
             ],
             "formatString": "0.00",
@@ -7928,31 +8087,67 @@
           },
           {
             "name": "Top10-indeksi (YT Maat Bilat 4 vuotta, ml. ESCI)",
-            "expression": "IF([Julkaisut (YT Maat Bilat 4 vuotta, ml. ESCI)]>=50,CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 10 Indeksi YTmaatBilat 4 vuotta, Kaikki]),[TOP 10 Indeksi YTmaatBilat 4 vuotta, Kaikki])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 10 Julkaisut YTmaatBilat 4 vuotta, Kaikki]),[TOP 10 Julkaisut YTmaatBilat 4 vuotta, Kaikki]),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<28)),BLANK())",
+            "expression": [
+              "",
+              "",
+              "var taulu = ",
+              "CALCULATETABLE(",
+              "\tSUMMARIZE(",
+              "\t\tBibliometriikka,",
+              "\t\tBibliometriikka[IDkoodi],",
+              "\t\tBibliometriikka[TOP 10 Indeksi YTmaatBilat 4 vuotta, Kaikki],",
+              "\t\tBibliometriikka[TOP 10 Julkaisut YTmaatBilat 4 vuotta, Kaikki]),",
+              "\tBibliometriikka[Vuosikoodi]<28)",
+              "",
+              "return\t\t",
+              "",
+              "IF([Julkaisut (YT Maat Bilat 4 vuotta, ml. ESCI)]>=50,DIVIDE(SUMX(taulu, [TOP 10 Indeksi YTmaatBilat 4 vuotta, Kaikki]),SUMX(taulu,[TOP 10 Julkaisut YTmaatBilat 4 vuotta, Kaikki])),BLANK())",
+              ""
+            ],
             "formatString": "0.00",
             "displayFolder": "Web of Science, ml. ESCI"
           },
           {
             "name": "Viittausindeksi (YT maat Bilat 4 vuotta, ml. ESCI)",
-            "expression": "IF([Julkaisut (YT Maat Bilat 4 vuotta, ml. ESCI)]>=50,CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Sitaatiot YTmaatBilat 4 vuotta, Kaikki]),[Sitaatiot YTmaatBilat 4 vuotta, Kaikki])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Analyysijulkaisut YTmaatBilat 4 vuotta, Kaikki]),[Analyysijulkaisut YTmaatBilat 4 vuotta, Kaikki]),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<28)),BLANK())",
+            "expression": [
+              "",
+              "",
+              "var taulu =",
+              "CALCULATETABLE(",
+              "\tSUMMARIZE(",
+              "\t\tBibliometriikka,",
+              "\t\tBibliometriikka[IDkoodi],",
+              "\t\tBibliometriikka[Sitaatiot YTmaatBilat 4 vuotta, Kaikki],",
+              "\t\tBibliometriikka[Analyysijulkaisut YTmaatBilat 4 vuotta, Kaikki]),",
+              "\tBibliometriikka[Vuosikoodi]<28)",
+              "\t",
+              "return",
+              "\t\t",
+              "IF([Julkaisut (YT Maat Bilat 4 vuotta, ml. ESCI)]>=50,DIVIDE(SUMX(taulu, [Sitaatiot YTmaatBilat 4 vuotta, Kaikki]),SUMX(taulu,[Analyysijulkaisut YTmaatBilat 4 vuotta, Kaikki])),BLANK())",
+              ""
+            ],
             "formatString": "0.00",
             "displayFolder": "Web of Science, ml. ESCI"
           },
           {
             "name": "Top1-indeksi (YT Maat Kaikki 4 vuotta, ml. ESCI)",
-            "expression": "IF([Julkaisut (YT Maat Kaikki 4 vuotta, ml. ESCI)]>=50,CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 1 Indeksi YTmaatKaikki 4 vuotta, Kaikki]),[TOP 1 Indeksi YTmaatKaikki 4 vuotta, Kaikki])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 1 Julkaisut YTmaatKaikki 4 vuotta, Kaikki]),[TOP 1 Julkaisut YTmaatKaikki 4 vuotta, Kaikki]),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<28)),BLANK())",
-            "formatString": "0.00",
-            "displayFolder": "Web of Science, ml. ESCI"
-          },
-          {
-            "name": "Top10-indeksi(Suomi 4v, ml. ESCI)",
-            "expression": "IF(AND([Julkaisut (Suomi 4v Ositettu, ml. ESCI)]>=50,[Sisäinen kattavuus (suomi 4v, ml. ESCI)]>=0.4),CALCULATE(DIVIDE((SUM([TOP 10 Indeksi Suomi 4 vuotta, Kaikki])/SUM([TOP 10 Julkaisut Suomi 4 vuotta, Kaikki])),1),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<28)),BLANK())",
-            "formatString": "0.00",
-            "displayFolder": "Web of Science, ml. ESCI"
-          },
-          {
-            "name": "Top1-indeksi(Suomi 4v, ml. ESCI)",
-            "expression": "IF(AND([Julkaisut (Suomi 4v Ositettu, ml. ESCI)]>=50,[Sisäinen kattavuus (suomi 4v, ml. ESCI)]>=0.4),CALCULATE(DIVIDE((SUM([TOP 1 Indeksi Suomi 4 vuotta, Kaikki])/SUM([TOP 1 Julkaisut Suomi 4 vuotta, Kaikki])),1),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<28)),BLANK())",
+            "expression": [
+              "",
+              "",
+              "var taulu =",
+              "CALCULATETABLE(",
+              "\tSUMMARIZE(",
+              "\t\tBibliometriikka,",
+              "\t\tBibliometriikka[IDkoodi],",
+              "\t\tBibliometriikka[TOP 1 Indeksi YTmaatKaikki 4 vuotta, Kaikki],",
+              "\t\tBibliometriikka[TOP 1 Julkaisut YTmaatKaikki 4 vuotta, Kaikki]),",
+              "\tBibliometriikka[Vuosikoodi]<28)",
+              "\t",
+              "return",
+              "",
+              "IF([Julkaisut (YT Maat Kaikki 4 vuotta, ml. ESCI)]>=50,DIVIDE(SUMX(taulu,[TOP 1 Indeksi YTmaatKaikki 4 vuotta, Kaikki]), SUMX(taulu, [TOP 1 Julkaisut YTmaatKaikki 4 vuotta, Kaikki])),BLANK())",
+              ""
+            ],
             "formatString": "0.00",
             "displayFolder": "Web of Science, ml. ESCI"
           },
@@ -7964,13 +8159,44 @@
           },
           {
             "name": "Top10-indeksi (YT Maat Kaikki 4 vuotta, ml. ESCI)",
-            "expression": "IF([Julkaisut (YT Maat Kaikki 4 vuotta, ml. ESCI)]>=50,CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 10 Indeksi YTmaatKaikki 4 vuotta, Kaikki]),[TOP 10 Indeksi YTmaatKaikki 4 vuotta, Kaikki])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[TOP 10 Julkaisut YTmaatKaikki 4 vuotta, Kaikki]),[TOP 10 Julkaisut YTmaatKaikki 4 vuotta, Kaikki]),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<28)),BLANK())",
+            "expression": [
+              "",
+              "",
+              "var taulu = ",
+              "CALCULATETABLE(",
+              "\tSUMMARIZE(",
+              "\t\tBibliometriikka,",
+              "\t\tBibliometriikka[TOP 10 Indeksi YTmaatKaikki 4 vuotta, Kaikki],",
+              "\t\tBibliometriikka[TOP 10 Julkaisut YTmaatKaikki 4 vuotta, Kaikki]),",
+              "\tBibliometriikka[Vuosikoodi]<28)",
+              "\t",
+              "return",
+              "",
+              "IF([Julkaisut (YT Maat Kaikki 4 vuotta, ml. ESCI)]>=50,",
+              "DIVIDE(SUMX(taulu, [TOP 10 Indeksi YTmaatKaikki 4 vuotta, Kaikki]), SUMX(taulu, [TOP 10 Julkaisut YTmaatKaikki 4 vuotta, Kaikki])),BLANK())",
+              ""
+            ],
             "formatString": "0.00",
             "displayFolder": "Web of Science, ml. ESCI"
           },
           {
             "name": "Viittausindeksi (YT maat Kaikki 4 vuotta, ml. ESCI)",
-            "expression": "IF([Julkaisut (YT Maat Kaikki 4 vuotta, ml. ESCI)]>=50,CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Sitaatiot YTmaatKaikki 4 vuotta, Kaikki]),[Sitaatiot YTmaatKaikki 4 vuotta, Kaikki])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Analyysijulkaisut YTmaatKaikki 4 vuotta, Kaikki]),[Analyysijulkaisut YTmaatKaikki 4 vuotta, Kaikki]),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<28)),BLANK())",
+            "expression": [
+              "",
+              "",
+              "var taulu = ",
+              "CALCULATETABLE(",
+              "\tSUMMARIZE(",
+              "\t\tBibliometriikka,",
+              "\t\tBibliometriikka[Sitaatiot YTmaatKaikki 4 vuotta, Kaikki],",
+              "\t\tBibliometriikka[Analyysijulkaisut YTmaatKaikki 4 vuotta, Kaikki]),",
+              "\tBibliometriikka[Vuosikoodi]<28)",
+              "\t",
+              "return",
+              "",
+              "IF([Julkaisut (YT Maat Kaikki 4 vuotta, ml. ESCI)]>=50,DIVIDE(SUMX(taulu,[Sitaatiot YTmaatKaikki 4 vuotta, Kaikki]),SUMX(taulu,[Analyysijulkaisut YTmaatKaikki 4 vuotta, Kaikki])),BLANK())",
+              ""
+            ],
             "formatString": "0.00",
             "displayFolder": "Web of Science, ml. ESCI"
           },
@@ -7978,6 +8204,30 @@
             "name": "Top 10 Julkaisut (Maailma 4v Ositettu, ml. ESCI)",
             "expression": "CALCULATE(SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Top10 Julkaisut (Maailma 4v Ositettu, Kaikki)]),[Top10 Julkaisut (Maailma 4v Ositettu, Kaikki)]),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<28))",
             "formatString": "#,0",
+            "displayFolder": "Web of Science, ml. ESCI"
+          },
+          {
+            "name": "Top10-indeksi (Suomi 4v)",
+            "expression": "IF(AND([Julkaisut (Suomi 4v Ositettu, ml. ESCI)]>=50,[Sisäinen kattavuus (suomi 4v, ml. ESCI)]>=0.4),CALCULATE(DIVIDE((SUM([TOP 10 Indeksi Suomi 4 vuotta])/SUM([TOP 10 Julkaisut Suomi 4 vuotta])),1),Bibliometriikka[Vuosikoodi]<28),BLANK())",
+            "formatString": "0.00",
+            "displayFolder": "Web of Science Core (vain viittausindeksit)"
+          },
+          {
+            "name": "Top1-indeksi(Suomi 4v)",
+            "expression": "IF(AND([Julkaisut (Suomi 4v Ositettu, ml. ESCI)]>=50,[Sisäinen kattavuus (suomi 4v, ml. ESCI)]>=0.4),CALCULATE(DIVIDE((SUM([TOP 1 Indeksi Suomi 4 vuotta])/SUM([TOP 1 Julkaisut Suomi 4 vuotta])),1),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<28)),BLANK())",
+            "formatString": "0.00",
+            "displayFolder": "Web of Science Core (vain viittausindeksit)"
+          },
+          {
+            "name": "Top10-indeksi (Suomi 4v, ml. ESCI)",
+            "expression": "IF(AND([Julkaisut (Suomi 4v Ositettu, ml. ESCI)]>=50,[Sisäinen kattavuus (suomi 4v, ml. ESCI)]>=0.4),CALCULATE(DIVIDE((SUM([TOP 10 Indeksi Suomi 4 vuotta, Kaikki])/SUM([TOP 10 Julkaisut Suomi 4 vuotta, Kaikki])),1),Bibliometriikka[Vuosikoodi]<28),BLANK())",
+            "formatString": "0.00",
+            "displayFolder": "Web of Science, ml. ESCI"
+          },
+          {
+            "name": "Top1-indeksi(Suomi 4v, ml. ESCI)",
+            "expression": "IF(AND([Julkaisut (Suomi 4v Ositettu, ml. ESCI)]>=50,[Sisäinen kattavuus (suomi 4v, ml. ESCI)]>=0.4),CALCULATE(DIVIDE((SUM([TOP 1 Indeksi Suomi 4 vuotta, Kaikki])/SUM([TOP 1 Julkaisut Suomi 4 vuotta, Kaikki])),1),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<28)),BLANK())",
+            "formatString": "0.00",
             "displayFolder": "Web of Science, ml. ESCI"
           }
         ],
@@ -19622,22 +19872,22 @@
                 "name": "Julkaisut (Suomi 4v Ositettu, ml. ESCI)"
               },
               {
-                "name": "Top10-indeksi(Suomi 4v)"
+                "name": "Viittausindeksi (Suomi 4v)"
+              },
+              {
+                "name": "Viittausindeksi (Suomi 4v, ml. ESCI)"
+              },
+              {
+                "name": "Top10-indeksi (Suomi 4v)"
               },
               {
                 "name": "Top1-indeksi(Suomi 4v)"
               },
               {
-                "name": "Viittausindeksi (Suomi 4v)"
-              },
-              {
-                "name": "Top10-indeksi(Suomi 4v, ml. ESCI)"
+                "name": "Top10-indeksi (Suomi 4v, ml. ESCI)"
               },
               {
                 "name": "Top1-indeksi(Suomi 4v, ml. ESCI)"
-              },
-              {
-                "name": "Viittausindeksi (Suomi 4v, ml. ESCI)"
               }
             ]
           }
@@ -19761,10 +20011,10 @@
                 "name": "Julkaisut (Suomi 4v Ositettu, ml. ESCI)"
               },
               {
-                "name": "Top10-indeksi(Suomi 4v)"
+                "name": "Top10-indeksi (Suomi 4v)"
               },
               {
-                "name": "Top10-indeksi(Suomi 4v, ml. ESCI)"
+                "name": "Top10-indeksi (Suomi 4v, ml. ESCI)"
               }
             ]
           }
@@ -20646,22 +20896,22 @@
                 "name": "Julkaisut (Suomi 4v Ositettu, ml. ESCI)"
               },
               {
-                "name": "Top10-indeksi(Suomi 4v)"
+                "name": "Viittausindeksi (Suomi 4v)"
+              },
+              {
+                "name": "Viittausindeksi (Suomi 4v, ml. ESCI)"
+              },
+              {
+                "name": "Top10-indeksi (Suomi 4v)"
               },
               {
                 "name": "Top1-indeksi(Suomi 4v)"
               },
               {
-                "name": "Viittausindeksi (Suomi 4v)"
-              },
-              {
-                "name": "Top10-indeksi(Suomi 4v, ml. ESCI)"
+                "name": "Top10-indeksi (Suomi 4v, ml. ESCI)"
               },
               {
                 "name": "Top1-indeksi(Suomi 4v, ml. ESCI)"
-              },
-              {
-                "name": "Viittausindeksi (Suomi 4v, ml. ESCI)"
               }
             ]
           },
