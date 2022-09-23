@@ -1,10 +1,10 @@
 USE [ANTERO]
 GO
 
-ALTER TABLE [dw].[d_horizon_projektit] DROP CONSTRAINT [DF__d_horizon_projektit__username__531856C7]
+ALTER TABLE [dw].[d_horizon_projektit] DROP CONSTRAINT IF EXISTS [DF__d_horizon_projektit__username__531856C7]
 GO
 
-ALTER TABLE [dw].[d_horizon_projektit] DROP CONSTRAINT [DF__d_horizon_projektit__loadtime__5224328E]
+ALTER TABLE [dw].[d_horizon_projektit] DROP CONSTRAINT IF EXISTS [DF__d_horizon_projektit__loadtime__5224328E]
 GO
 
 /****** Object:  Table [dw].[d_horizon_projektit]    Script Date: 23.9.2022 14:07:03 ******/
