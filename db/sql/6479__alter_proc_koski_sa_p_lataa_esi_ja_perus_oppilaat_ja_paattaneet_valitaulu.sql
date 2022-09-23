@@ -1,6 +1,6 @@
 USE [Koski_SA]
 GO
-/****** Object:  StoredProcedure [dbo].[p_lataa_esi_ja_perus_oppilaat_ja_paattaneet_valitaulu]    Script Date: 24.8.2022 11:58:40 ******/
+/****** Object:  StoredProcedure [dbo].[p_lataa_esi_ja_perus_oppilaat_ja_paattaneet_valitaulu]    Script Date: 23.9.2022 20:25:46 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -16,6 +16,7 @@ ALTER PROCEDURE [dbo].[p_lataa_esi_ja_perus_oppilaat_ja_paattaneet_valitaulu] AS
 - Lisää tarvittaessa koulutuksia vuosiluokkapäättelyyn ja -dimensioon.
 - Osa tiedoista raportoidaan oppilaille vain kuluvalta lukuvuodelta; rajaukset alustetaan faktalatauksessa ja toteutetaan näkymässä.
 */
+
 
 DECLARE @alkuPvm as date, @loppuPvm as date, @tilastoPvm as date
 
@@ -125,41 +126,41 @@ BEGIN
 			,erityinen_tuki_johdettu = 
 			--TK-dimensio
 				case 
-					when ooa.vaikeasti_vammainen = 1 then 'ertu_v'
-					when ooa.vammainen = 1 or ooa.vammainen_ja_avustaja = 1 then 'ertu_m'
+					when ooa2.vaikeasti_vammainen = 1 or ooa.vaikeasti_vammainen = 1 then 'ertu_v'
+					when ooa2.vammainen = 1 or ooa.vammainen = 1 or ooa.vammainen_ja_avustaja = 1 /*or ooa2.vammainen_ja_avustaja = 1*/ then 'ertu_m'
 					when ooa2.erityisen_tuen_paatos = 1 or ooa.erityinen_tuki = 1 or ooa.hojks = 1 then 'ertu_muu'
 					--tehostettu_tuki -> ertu_teho
 					else 'ertu_eiei'
 				end
 			,ooa.joustava_perusopetus
-			,ooa.koulukoti
+			,koulukoti = case when ooa2.koulukoti = 1 or ooa.koulukoti = 1 then 1 else 0 end 
 			,kotiopetus = 
 				case 
 					when kj.kotiopetus_alku <= @loppuPvm 
-						and kj.kotiopetus_alku <= ooa.loppu
-						and coalesce(kj.kotiopetus_loppu,'9999-12-31') >= @alkuPvm 
-						and coalesce(kj.kotiopetus_loppu,'9999-12-31') >= ooa.alku 
+						and kj.kotiopetus_alku <= coalesce(ooa.loppu, '9999-12-31')
+						and coalesce(kj.kotiopetus_loppu, '9999-12-31') >= @alkuPvm 
+						and coalesce(kj.kotiopetus_loppu, '9999-12-31') >= ooa.alku 
 					then 1
 					else 0
 				end
-			,ooa.kuljetusetu
+			,kuljetusetu = case when ooa2.kuljetusetu = 1 or ooa.kuljetusetu = 1 then 1 else 0 end 
 			,pidennetty_oppivelvollisuus = case when ooa2.pidennetty_oppivelvollisuus = 1 or ooa.pidennetty_oppivelvollisuus = 1 then 1 else 0 end 
-			,ooa.sisaoppilaitosmainen_majoitus
+			,sisaoppilaitosmainen_majoitus = case when ooa2.sisaoppilaitosmainen_majoitus = 1 or ooa.sisaoppilaitosmainen_majoitus = 1 then 1 else 0 end 
 			,tehostettu_tuki = 
 				case 
 					when tj.alku <= @loppuPvm 
-						and tj.alku <= ooa.loppu
-						and coalesce(tj.loppu,'9999-12-31') >= @alkuPvm 
-						and coalesce(tj.loppu,'9999-12-31') >= ooa.alku 
+						and tj.alku <= coalesce(ooa.loppu, '9999-12-31')
+						and coalesce(tj.loppu, '9999-12-31') >= @alkuPvm 
+						and coalesce(tj.loppu, '9999-12-31') >= ooa.alku 
 					then 1
 					else 0
 				end
 			,ulkomailla = 
 				case 
 					when uj.alku <= @loppuPvm 
-						and uj.alku <= ooa.loppu
-						and coalesce(uj.loppu,'9999-12-31') >= @alkuPvm 
-						and coalesce(uj.loppu,'9999-12-31') >= ooa.alku 
+						and uj.alku <= coalesce(ooa.loppu, '9999-12-31')
+						and coalesce(uj.loppu, '9999-12-31') >= @alkuPvm 
+						and coalesce(uj.loppu, '9999-12-31') >= ooa.alku 
 					then 1
 					else 0
 				end
@@ -173,8 +174,10 @@ BEGIN
 			,tilastopaiva_1_0 =	
 				case 
 					when month(@alkuPvm) = 9 
-						and (@tilastoPvm between ooa.alku and ooa.loppu) 
-						and ooa.tila = 'lasna'
+						and (
+							(@tilastoPvm between ooa2.alku and coalesce(ooa2.loppu, '9999-12-31') and ooa2.tila = 'lasna')
+							or (@tilastoPvm between ooa.alku and coalesce(ooa.loppu, '9999-12-31') and ooa.tila = 'lasna')
+						)
 					then 1 
 					else 0 
 				end	
@@ -191,14 +194,14 @@ BEGIN
 		
 		LEFT JOIN sa.sa_koski_opiskeluoikeus oo on oo.opiskeluoikeus_oid = ps.opiskeluoikeus_oid 
 		LEFT JOIN sa.sa_koski_opiskeluoikeus_aikajakso ooa on ooa.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
-		LEFT JOIN sa.sa_koski_esiopetus_opiskeluoikeus_aikajakso ooa2 on ooa2.opiskeluoikeus_oid = oo.opiskeluoikeus_oid --osa esiopetuksen erityisopetustiedoista eri taulussa
+		LEFT JOIN sa.sa_koski_esiopetus_opiskeluoikeus_aikajakso ooa2 on ooa2.opiskeluoikeus_oid = oo.opiskeluoikeus_oid --and koulutusmuoto = 'esiopetus'
 		LEFT JOIN sa.sa_koski_tehostetun_tuen_jaksot tj on tj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
 		LEFT JOIN sa.sa_koski_ulkomaanjaksot uj on uj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
 		LEFT JOIN sa.sa_koski_perusopetuksen_kotiopetusjaksot kj on kj.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
 		LEFT JOIN sa.sa_koski_henkilo h on h.oppija_oid = oo.oppija_oid
 		
 		WHERE 1=1 --@alkupvm >= '2020-08-01' 
-		AND coalesce(ps.vahvistus_paiva,'9999-12-31') >= @alkuPvm
+		AND coalesce(ps.vahvistus_paiva, '9999-12-31') >= @alkuPvm
 		AND (
 			ps.suorituksen_tyyppi in (
 				'esiopetuksensuoritus',
@@ -226,9 +229,11 @@ BEGIN
 				and ps.suorituksen_tyyppi = 'tuvakoulutuksensuoritus'
 			)*/
 		)		 
-		AND (ooa.alku <= @loppuPvm and coalesce(ooa.loppu,'9999-12-31') >= @alkuPvm)
-		AND ooa.tila = 'lasna'
-
+		AND (
+			(ooa2.alku <= @loppuPvm and coalesce(ooa2.loppu, '9999-12-31') >= @alkuPvm AND ooa2.tila = 'lasna')
+			OR (ooa.alku <= @loppuPvm and coalesce(ooa.loppu, '9999-12-31') >= @alkuPvm AND ooa.tila = 'lasna')
+		)
+		
 
 		UNION ALL
 
