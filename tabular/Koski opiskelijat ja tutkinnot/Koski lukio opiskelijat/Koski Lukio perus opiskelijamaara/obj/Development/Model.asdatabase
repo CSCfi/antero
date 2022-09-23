@@ -651,7 +651,21 @@
           {
             "name": "kansalaisuus_tarkka_fi",
             "dataType": "string",
-            "sourceColumn": "kansalaisuus_tarkka_fi"
+            "sourceColumn": "kansalaisuus_tarkka_fi",
+            "sourceProviderType": "Char",
+            "displayFolder": "Henkilömuuttujat"
+          },
+          {
+            "name": "Aloitusajankohta",
+            "dataType": "string",
+            "sourceColumn": "Aloitusajankohta",
+            "displayFolder": "Aikamuuttujat"
+          },
+          {
+            "name": "Aloitus kuukauden aikana",
+            "dataType": "string",
+            "sourceColumn": "Aloitus kuukauden aikana",
+            "displayFolder": "Aikamuuttujat"
           }
         ],
         "partitions": [
@@ -1411,6 +1425,22 @@
                   "        <int>169</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Aloitusajankohta</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>135</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Aloitus kuukauden aikana</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>188</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -2149,6 +2179,22 @@
                   "        <int>91</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Aloitusajankohta</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>92</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Aloitus kuukauden aikana</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>93</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -2384,6 +2430,22 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Aloitusajankohta</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Aloitus kuukauden aikana</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -2573,10 +2635,12 @@
           {
             "name": "Eronnut, vaihtoi oppimäärää",
             "expression": [
-              "",
-              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[eronnut_opiskelija]=1, Muuttujat[jatkaa_oppimaara] = 0, Muuttujat[jatkaa_aikuistenops] = 1 || Muuttujat[jatkaa_nuortenops] =1)",
-              "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))",
-              ""
+              " --visual studio valitti tai-ehdosta, tarvittaessa grouppaus jos käyttöä raportoinnissa",
+              "var lkm1 = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[eronnut_opiskelija]=1, Muuttujat[jatkaa_oppimaara] = 0, Muuttujat[jatkaa_aikuistenops] = 1, Muuttujat[jatkaa_nuortenops] = 0)",
+              "var lkm2 = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]),Muuttujat[eronnut_opiskelija]=1, Muuttujat[jatkaa_oppimaara] = 0, Muuttujat[jatkaa_aikuistenops] = 0, Muuttujat[jatkaa_nuortenops] = 1)",
+              "--var lkm3 = CALCULATE(DISTINCTCOUNT(Muuttujat[oppija_oid]);Muuttujat[eronnut_opiskelija]=1; Muuttujat[jatkaa_oppimaara] = 0; Muuttujat[jatkaa_aikuistenops] = 1; Muuttujat[jatkaa_nuortenops] = 1)",
+              "var lkm = lkm1 + lkm2 --+lkm3",
+              "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
             ],
             "formatString": "#,0"
           },
@@ -3417,6 +3481,22 @@
               "        <int>169</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Aloitusajankohta</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>135</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Aloitus kuukauden aikana</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>188</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -4155,6 +4235,22 @@
               "        <int>91</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Aloitusajankohta</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>92</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Aloitus kuukauden aikana</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>93</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -4390,6 +4486,22 @@
               "        <boolean>true</boolean>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Aloitusajankohta</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Aloitus kuukauden aikana</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
               "  </ColumnChecked>",
               "  <ColumnFilter />",
               "  <SelectionFilter />",
@@ -4399,6 +4511,29 @@
             ]
           }
         ]
+      }
+    ],
+    "cultures": [
+      {
+        "name": "fi-FI",
+        "translations": {
+          "model": {
+            "name": "Model",
+            "tables": [
+              {
+                "name": "Muuttujat",
+                "translatedCaption": "Muuttujat",
+                "columns": [
+                  {
+                    "name": "kansalaisuus_tarkka_fi",
+                    "translatedCaption": "Kansalaisuus (tarkka)",
+                    "translatedDisplayFolder": "Henkilömuuttujat"
+                  }
+                ]
+              }
+            ]
+          }
+        }
       }
     ],
     "perspectives": [
@@ -4784,6 +4919,72 @@
               },
               {
                 "name": "Eronnut, vaihtoi lukiota samalla koulutuksen järjestäjällä"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "kansalaisuus_fi",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Kansalaisuuden maanosa"
+              },
+              {
+                "name": "Kansalaisuus"
+              },
+              {
+                "name": "Koulutus"
+              },
+              {
+                "name": "Kuukausi"
+              },
+              {
+                "name": "Lukukausi"
+              },
+              {
+                "name": "Lukuvuosi"
+              },
+              {
+                "name": "Oppilaitoksen AVI"
+              },
+              {
+                "name": "Oppilaitoksen ELY"
+              },
+              {
+                "name": "Oppilaitoksen maakunta"
+              },
+              {
+                "name": "Oppimäärä"
+              },
+              {
+                "name": "Tavoitetutkinto"
+              },
+              {
+                "name": "Vuosi"
+              },
+              {
+                "name": "kansalaisuus_tarkka_fi"
+              },
+              {
+                "name": "Aloituskuukausi"
+              },
+              {
+                "name": "Aloitusvuosi"
+              },
+              {
+                "name": "Aloitusajankohta"
+              },
+              {
+                "name": "Aloitus kuukauden aikana"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Opiskelijat"
               }
             ]
           }

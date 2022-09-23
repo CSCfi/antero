@@ -1350,6 +1350,26 @@
             "name": "jarjestys_koulutuksen_jarjestajan_kunta",
             "dataType": "string",
             "sourceColumn": "jarjestys_koulutuksen_jarjestajan_kunta"
+          },
+          {
+            "name": "opiskeluoikeuden_alkamisajankohta",
+            "dataType": "string",
+            "sourceColumn": "opiskeluoikeuden_alkamisajankohta"
+          },
+          {
+            "name": "opiskeluoikeus_alkanut_tilastokuukauden_aikana_fi",
+            "dataType": "string",
+            "sourceColumn": "opiskeluoikeus_alkanut_tilastokuukauden_aikana_fi"
+          },
+          {
+            "name": "opiskeluoikeus_alkanut_tilastokuukauden_aikana_sv",
+            "dataType": "string",
+            "sourceColumn": "opiskeluoikeus_alkanut_tilastokuukauden_aikana_sv"
+          },
+          {
+            "name": "opiskeluoikeus_alkanut_tilastokuukauden_aikana_en",
+            "dataType": "string",
+            "sourceColumn": "opiskeluoikeus_alkanut_tilastokuukauden_aikana_en"
           }
         ],
         "partitions": [
@@ -2312,6 +2332,49 @@
               ""
             ],
             "formatString": "#,0"
+          },
+          {
+            "name": "Netto-opiskelijamäärä_s",
+            "expression": [
+              "",
+              "--2-desimaalinen suojaamaton versio rahoitusperusteluonnokselle ainakin tuvan tuomisen ajaksi. JS 23.9.2022",
+              "",
+              "--nettomäärä kuukausitasolla, saa suodattua",
+              "var taulu1 =",
+              "ADDCOLUMNS(",
+              "\tSUMMARIZE(Muuttujat, [tilastovuosi_fi],[tilastokuukausi_fi],[apusarake_pv_kk])",
+              "\t,\"summa\"",
+              "\t,CALCULATE(SUM([apusarake_opiskelijat_netto]))",
+              ")",
+              "",
+              "--tarkasteltavan kalenteriajanjakson päivien määrä, ei saa suodattua",
+              "var taulu2 =",
+              "ADDCOLUMNS(        ",
+              "\tCALCULATETABLE(",
+              "\t\tSUMMARIZE(Muuttujat, [tilastovuosi_fi],[tilastokuukausi_fi])",
+              "\t\t,ALLEXCEPT(Muuttujat, Muuttujat[tilastovuosi_fi],Muuttujat[tilastokuukausi_fi])",
+              "\t)",
+              "\t,\"paivat\"",
+              "\t,CALCULATE(MAX([apusarake_pv_kk]), ALLEXCEPT(Muuttujat, Muuttujat[tilastovuosi_fi],Muuttujat[tilastokuukausi_fi]))",
+              ")",
+              "",
+              "var lkm1 = SUMX(taulu1, [summa] * [apusarake_pv_kk])",
+              "var lkm2 = CALCULATE(SUMX(taulu2, [paivat]), ALLEXCEPT(Muuttujat, Muuttujat[tilastovuosi_fi],Muuttujat[tilastokuukausi_fi]))",
+              "",
+              "var nettolkm = DIVIDE(lkm1, lkm2)",
+              "",
+              "return IF(nettolkm=0, BLANK(), nettolkm)",
+              "",
+              "/*var taulu =",
+              "ADDCOLUMNS(",
+              "\tSUMMARIZE(Muuttujat;[tilastovuosi_fi];[tilastokuukausi_fi];[apusarake_pv_kk])",
+              "\t;\"summa\"",
+              "\t;CALCULATE(SUM([apusarake_opiskelijat_netto]))",
+              ")",
+              "var lkm = SUMX(taulu; [summa] * [apusarake_pv_kk]) / SUMX(taulu; [apusarake_pv_kk])",
+              "return IF(lkm=0;BLANK();IF(lkm<5;\"1-4\";MROUND(lkm;3)))*/"
+            ],
+            "formatString": "#,0.00"
           }
         ],
         "annotations": [
@@ -4203,6 +4266,38 @@
               "        <int>284</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>opiskeluoikeuden_alkamisajankohta</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>250</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>opiskeluoikeus_alkanut_tilastokuukauden_aikana_fi</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>344</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>opiskeluoikeus_alkanut_tilastokuukauden_aikana_sv</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>352</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>opiskeluoikeus_alkanut_tilastokuukauden_aikana_en</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>353</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -6069,6 +6164,38 @@
               "        <int>232</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>opiskeluoikeuden_alkamisajankohta</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>233</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>opiskeluoikeus_alkanut_tilastokuukauden_aikana_fi</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>234</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>opiskeluoikeus_alkanut_tilastokuukauden_aikana_sv</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>235</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>opiskeluoikeus_alkanut_tilastokuukauden_aikana_en</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>236</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -6099,6 +6226,38 @@
               "    <item>",
               "      <key>",
               "        <string>jarjestys_koulutuksen_jarjestajan_kunta</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>opiskeluoikeuden_alkamisajankohta</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>opiskeluoikeus_alkanut_tilastokuukauden_aikana_fi</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>opiskeluoikeus_alkanut_tilastokuukauden_aikana_sv</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>opiskeluoikeus_alkanut_tilastokuukauden_aikana_en</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -6458,6 +6617,21 @@
                     "name": "ika_oppisopimusjakson_alkamishetkella_fi",
                     "translatedCaption": "Ikä oppisopimusjakson alkamishetkellä",
                     "translatedDisplayFolder": "Henkilömuuttujat"
+                  },
+                  {
+                    "name": "kansalaisuus_tarkka_fi",
+                    "translatedCaption": "Kansalaisuus (tarkka)",
+                    "translatedDisplayFolder": "Henkilömuuttujat"
+                  },
+                  {
+                    "name": "opiskeluoikeuden_alkamisajankohta",
+                    "translatedCaption": "Opiskeluoikeuden alkamisajankohta",
+                    "translatedDisplayFolder": "Aikamuuttujat"
+                  },
+                  {
+                    "name": "opiskeluoikeus_alkanut_tilastokuukauden_aikana_fi",
+                    "translatedCaption": "Opiskeluoikeus alkanut tilastokuukauden aikana",
+                    "translatedDisplayFolder": "Aikamuuttujat"
                   }
                 ],
                 "measures": [
@@ -6854,6 +7028,21 @@
                     "name": "ika_oppisopimusjakson_alkamishetkella_sv",
                     "translatedCaption": "Ålder i början av läroavtalsperioden",
                     "translatedDisplayFolder": "Personvariabler"
+                  },
+                  {
+                    "name": "kansalaisuus_tarkka_sv",
+                    "translatedCaption": "Medborgarskap (exakt)",
+                    "translatedDisplayFolder": "Personvariabler"
+                  },
+                  {
+                    "name": "opiskeluoikeuden_alkamisajankohta",
+                    "translatedCaption": "Studierätts begynnelsetid",
+                    "translatedDisplayFolder": "Tidsvariabler"
+                  },
+                  {
+                    "name": "opiskeluoikeus_alkanut_tilastokuukauden_aikana_sv",
+                    "translatedCaption": "Studierätt börjat under statistikmonad",
+                    "translatedDisplayFolder": "Tidsvariabler"
                   }
                 ],
                 "measures": [
@@ -7249,6 +7438,11 @@
                   {
                     "name": "ika_oppisopimusjakson_alkamishetkella_en",
                     "translatedCaption": "Age at start of apprenticeship period",
+                    "translatedDisplayFolder": "Person variables"
+                  },
+                  {
+                    "name": "kansalaisuus_tarkka_en",
+                    "translatedCaption": "Nationality (exact)",
                     "translatedDisplayFolder": "Person variables"
                   }
                 ],
@@ -7805,9 +7999,6 @@
                 "name": "oppisopimus_koulutussopimus_fi"
               },
               {
-                "name": "osa_aikaisuus_fi"
-              },
-              {
                 "name": "koodit_osaamisala"
               },
               {
@@ -7902,6 +8093,9 @@
               },
               {
                 "name": "koodit_tutkinto"
+              },
+              {
+                "name": "rahoitusmuoto_fi"
               }
             ],
             "measures": [
@@ -9750,9 +9944,6 @@
                 "name": "oppisopimus_koulutussopimus_en"
               },
               {
-                "name": "osa_aikaisuus_en"
-              },
-              {
                 "name": "koodit_osaamisala"
               },
               {
@@ -9847,6 +10038,9 @@
               },
               {
                 "name": "koodit_tutkinto"
+              },
+              {
+                "name": "rahoitusmuoto_en"
               }
             ],
             "measures": [
@@ -10347,9 +10541,6 @@
                 "name": "oppisopimus_koulutussopimus_sv"
               },
               {
-                "name": "osa_aikaisuus_sv"
-              },
-              {
                 "name": "koodit_osaamisala"
               },
               {
@@ -10444,6 +10635,9 @@
               },
               {
                 "name": "koodit_tutkinto"
+              },
+              {
+                "name": "rahoitusmuoto_sv"
               }
             ],
             "measures": [
@@ -11102,6 +11296,330 @@
               },
               {
                 "name": "koulutuksen_jarjestajien_lukumaara"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "kansalaisuus_fi",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "kansalaisuus_fi"
+              },
+              {
+                "name": "kansalaisuus_maanosa_fi"
+              },
+              {
+                "name": "kansalaisuus_tarkka_fi"
+              },
+              {
+                "name": "oppilaitoksen_avi_fi"
+              },
+              {
+                "name": "oppilaitoksen_ely_fi"
+              },
+              {
+                "name": "oppilaitoksen_maakunta_fi"
+              },
+              {
+                "name": "suorituksen_tyyppi_fi"
+              },
+              {
+                "name": "tilastokuukausi_fi"
+              },
+              {
+                "name": "tilastovuosi_fi"
+              },
+              {
+                "name": "tutkintotyyppi_fi"
+              },
+              {
+                "name": "opiskeluoikeuden_alkamiskuukausi_fi"
+              },
+              {
+                "name": "opiskeluoikeuden_alkamisvuosi_fi"
+              },
+              {
+                "name": "opiskeluoikeuden_alkamisajankohta"
+              },
+              {
+                "name": "opiskeluoikeus_alkanut_tilastokuukauden_aikana_fi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "opiskelijat"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "kansalaisuus_sv",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "kansalaisuus_maanosa_sv"
+              },
+              {
+                "name": "kansalaisuus_sv"
+              },
+              {
+                "name": "kansalaisuus_tarkka_sv"
+              },
+              {
+                "name": "opiskeluoikeuden_alkamisajankohta"
+              },
+              {
+                "name": "opiskeluoikeuden_alkamiskuukausi_sv"
+              },
+              {
+                "name": "opiskeluoikeuden_alkamisvuosi_sv"
+              },
+              {
+                "name": "opiskeluoikeus_alkanut_tilastokuukauden_aikana_sv"
+              },
+              {
+                "name": "oppilaitoksen_avi_sv"
+              },
+              {
+                "name": "oppilaitoksen_ely_sv"
+              },
+              {
+                "name": "oppilaitoksen_maakunta_sv"
+              },
+              {
+                "name": "suorituksen_tyyppi_sv"
+              },
+              {
+                "name": "tilastokuukausi_sv"
+              },
+              {
+                "name": "tilastovuosi_sv"
+              },
+              {
+                "name": "tutkintotyyppi_sv"
+              }
+            ],
+            "measures": [
+              {
+                "name": "opiskelijat"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Netto_tuvaesimerkki",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "aidinkieli_fi"
+              },
+              {
+                "name": "erityisopetus_fi"
+              },
+              {
+                "name": "ika_fi"
+              },
+              {
+                "name": "ika_opiskeluoikeuden_alkamishetkella_fi"
+              },
+              {
+                "name": "ika_opiskeluoikeuden_alkamisvuonna_fi"
+              },
+              {
+                "name": "ika_oppisopimusjakson_alkamishetkella_fi"
+              },
+              {
+                "name": "ika_oppisopimusjakson_alkamisvuonna_fi"
+              },
+              {
+                "name": "ikaryhma_fi"
+              },
+              {
+                "name": "kansalaisuus_fi"
+              },
+              {
+                "name": "kansalaisuus_maanosa_fi"
+              },
+              {
+                "name": "koodit_koulutuksen_jarjestaja"
+              },
+              {
+                "name": "koodit_oppilaitos"
+              },
+              {
+                "name": "koodit_osaamisala"
+              },
+              {
+                "name": "koodit_tutkinto"
+              },
+              {
+                "name": "koulutuksen_jarjestaja_fi"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_avi_fi"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_ely_fi"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_kunta_fi"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_maakunta_fi"
+              },
+              {
+                "name": "koulutuksen_jarjestajan_omistajatyyppi_fi"
+              },
+              {
+                "name": "koulutusala_taso_1_fi"
+              },
+              {
+                "name": "koulutusala_taso_2_fi"
+              },
+              {
+                "name": "koulutusala_taso_3_fi"
+              },
+              {
+                "name": "koulutussopimuksen_suoritusosuus_fi"
+              },
+              {
+                "name": "koulutussopimus_fi"
+              },
+              {
+                "name": "kustannusryhma_fi"
+              },
+              {
+                "name": "majoitus_fi"
+              },
+              {
+                "name": "opiskeluoikeuden_alkamiskuukausi_fi"
+              },
+              {
+                "name": "opiskeluoikeuden_alkamisvuosi_fi"
+              },
+              {
+                "name": "oppilaitoksen_avi_fi"
+              },
+              {
+                "name": "oppilaitoksen_ely_fi"
+              },
+              {
+                "name": "oppilaitoksen_kunta_fi"
+              },
+              {
+                "name": "oppilaitoksen_maakunta_fi"
+              },
+              {
+                "name": "oppilaitoksen_opetuskieli_fi"
+              },
+              {
+                "name": "oppilaitos_fi"
+              },
+              {
+                "name": "oppilaitostyyppi_fi"
+              },
+              {
+                "name": "oppisopimuksen_suoritusosuus_fi"
+              },
+              {
+                "name": "oppisopimus_koulutussopimus_fi"
+              },
+              {
+                "name": "oppisopimusjakson_alkamiskuukausi_fi"
+              },
+              {
+                "name": "oppisopimusjakson_alkamisvuosi_fi"
+              },
+              {
+                "name": "oppisopimuskoulutus_fi"
+              },
+              {
+                "name": "rahoitusmuoto_fi"
+              },
+              {
+                "name": "sukupuoli_fi"
+              },
+              {
+                "name": "suorituksen_tyyppi_fi"
+              },
+              {
+                "name": "suorituskieli_fi"
+              },
+              {
+                "name": "tilastokuukausi_fi"
+              },
+              {
+                "name": "tilastovuosi_fi"
+              },
+              {
+                "name": "toimipiste_fi"
+              },
+              {
+                "name": "tutkinto_fi"
+              },
+              {
+                "name": "tutkintotyypin_ryhma_fi"
+              },
+              {
+                "name": "tutkintotyyppi_fi"
+              },
+              {
+                "name": "tyovoimakoulutus_fi"
+              },
+              {
+                "name": "vankilaopetus_fi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "netto_opiskelijamaara_fi"
+              },
+              {
+                "name": "Netto-opiskelijamäärä_s"
               }
             ]
           },
