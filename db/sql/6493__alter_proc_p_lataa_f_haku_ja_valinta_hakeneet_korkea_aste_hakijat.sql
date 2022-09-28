@@ -30,6 +30,7 @@ INSERT INTO dw.f_haku_ja_valinta_hakeneet_korkea_aste_hakijat (
 	,[hakemus_oid]
 	,[d_haku_id]
 	,[d_hakuaika_id]
+	,[d_hakuaika_kouta_id]
 	,[hakuaikaId]
 	,[koulutuksen_alkamisvuosi]
 	,[d_kausi_koulutuksen_alkamiskausi_id]
