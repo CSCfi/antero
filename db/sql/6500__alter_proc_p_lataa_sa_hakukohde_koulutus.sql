@@ -91,8 +91,10 @@ SELECT DISTINCT
 	  ,[koulutuksetKoodi]
 	  ,s4.koulutustyyppi_koodi
       ,[opintojenLaajuusKoodi]
-	  ,COALESCE(h.PohjakoulutusvaatimusKoodi, case when pilkotut.value like '%_pk%' then 'PK'
+	  ,COALESCE(h.PohjakoulutusvaatimusKoodi, case when pilkotut.value like '%_pk%' and pilkotut.value like '%_yo%' then 'PK/YO'
+			when pilkotut.value like '%_pk%' then 'PK'
 			when pilkotut.value like '%_yo%' then 'YO'
+			when pilkotut.value like '%_er%' then 'ER'
 	   end) as hakukelpoisuusvaatimus
       ,s2.tarjoaja
 	  ,ROW_NUMBER() OVER(PARTITION BY s2.hakukohdeOid ORDER BY s2.hakukohdeOid, s.koulutusOid) as hakukohdekoulutus_nro
@@ -116,8 +118,10 @@ s2.hakukohdeOid
 ,[opintojenLaajuusKoodi]
 ,s4.koulutustyyppi_koodi
 ,coalesce(s3.alkamisvuosi, coalesce(s2.koulutuksenAlkamisvuosi, s.alkamisvuosi))
-,COALESCE(h.PohjakoulutusvaatimusKoodi, case when pilkotut.value like '%_pk%' then 'PK'
+,COALESCE(h.PohjakoulutusvaatimusKoodi, case when pilkotut.value like '%_pk%' and pilkotut.value like '%_yo%' then 'PK/YO'
+			when pilkotut.value like '%_pk%' then 'PK'
 			when pilkotut.value like '%_yo%' then 'YO'
+			when pilkotut.value like '%_er%' then 'ER'
 	   end)
 ,s2.tarjoaja
 
@@ -128,6 +132,11 @@ CREATE NONCLUSTERED INDEX [NC_hakukohde_koulutus] ON [sa].[sa_hakukohde_koulutus
 )
 INCLUDE ( 	[hakukohde_oid],
 	[hakukohdekoulutus_koodi]) WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+
+
+
+
+
 
 
 GO
