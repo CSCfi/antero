@@ -348,7 +348,10 @@ def load(secure,hostname,url,schema,table,verbose=False):
 
           if "kieletUris" in i and i["kieletUris"]:
             # todo what if many?
-            row["oppilaitoksenopetuskieli"] = i["kieletUris"][0].replace("oppilaitoksenopetuskieli_","").replace("#1","")
+            # fix 6.19.2022 , replacing #! didn't work anymore
+            kieli_tmp= i["kieletUris"][0].split("#")
+            row["oppilaitoksenopetuskieli"] = kieli_tmp[1]
+            #row["oppilaitoksenopetuskieli"] = i["kieletUris"][0].replace("oppilaitoksenopetuskieli_","").replace("#1","")
             # => just code, text values separately
 
           # address, first kayntiosoite and if not exists then postiosoite
