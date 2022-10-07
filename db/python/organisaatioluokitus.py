@@ -349,8 +349,9 @@ def load(secure,hostname,url,schema,table,verbose=False):
           if "kieletUris" in i and i["kieletUris"]:
             # todo what if many?
             # fix 6.19.2022 , replacing #! didn't work anymore
-            kieli_tmp= i["kieletUris"][0].split("#")
-            row["oppilaitoksenopetuskieli"] = kieli_tmp[1]
+            kieli_tmp= i["kieletUris"][0].replace("oppilaitoksenopetuskieli_","")
+            kieli_tmp=kieli_tmp.split("#")
+            row["oppilaitoksenopetuskieli"] = kieli_tmp[0]
             #row["oppilaitoksenopetuskieli"] = i["kieletUris"][0].replace("oppilaitoksenopetuskieli_","").replace("#1","")
             # => just code, text values separately
 
