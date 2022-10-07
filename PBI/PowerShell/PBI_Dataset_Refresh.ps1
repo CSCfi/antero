@@ -1,4 +1,3 @@
-
 $SecPasswd = ConvertTo-SecureString $env:PBIPW -AsPlainText -Force
 
 $Cred = New-Object System.Management.Automation.PSCredential($env:PBIUN,$SecPasswd)
@@ -36,42 +35,58 @@ $error.clear()
 
 $startTime = Get-Date
 
-# Refresh dataset and error handling
-Invoke-PowerBIRestMethod -Url $RefreshDS -Method Post -Body $MailFailureNotify
-if (!$error) {
-	# Refresh status of dataset
-	$RefreshStatus = "Unknown"
-	$RefreshError = "No errors"
+# Refresh status of dataset
+$RefreshStatus = "Unknown"
+$RefreshError = "No errors"
 
-	$limit = (Get-Date).AddMinutes(60)
+# Number of times the refresh failed
+$errors = 0
 
-	# While loop runs until dataset refresh has been completed or failed. Time limit for the loop is 60 minutes. 
+ECHO "################################################"
 
-	ECHO "################################################"
+ECHO $Dataset
 
-	ECHO $Dataset
+# While loop ensures that the refresh is attempted two times in case of error
+while(($errors -lt 2) -and ($RefreshStatus -ne "Completed")) {
+	
+	# Refresh dataset and error handling
+	Invoke-PowerBIRestMethod -Url $RefreshDS -Method Post -Body $MailFailureNotify
+	if (!$error) {
+		
+		$limit = (Get-Date).AddMinutes(60)
 
-	while ($RefreshStatus -eq "Unknown" -and (Get-Date) -le $limit) {	
-		$RefreshStatus = (ConvertFrom-Json (Invoke-PowerBIRestMethod -Url $RefreshDSCheck -Method Get)).value.status
-		ECHO "Inspecting refresh status..."
-		Start-Sleep -s 30
-	}
+		# While loop runs until dataset refresh has been completed or failed. Time limit for the loop is 60 minutes. 
 
-	if ($RefreshStatus -eq "Completed") {
-		ECHO "Refresh was completed successfully"
-	} elseif ($RefreshStatus -eq "Failed") {
-		ECHO "Refresh failed"
-		$RefreshError = (ConvertFrom-Json (Invoke-PowerBIRestMethod -Url $RefreshDSCheck -Method Get)).value.serviceExceptionJson
-		ECHO $RefreshError
+		while ($RefreshStatus -eq "Unknown" -and (Get-Date) -le $limit) {	
+			$RefreshStatus = (ConvertFrom-Json (Invoke-PowerBIRestMethod -Url $RefreshDSCheck -Method Get)).value.status
+			ECHO "Inspecting refresh status..."
+			Start-Sleep -s 30
+		}
+
+		if ($RefreshStatus -eq "Completed") {
+			ECHO "Refresh was completed successfully"
+		} elseif ($RefreshStatus -eq "Failed") {
+			ECHO "Refresh attempt failed"
+			$RefreshError = (ConvertFrom-Json (Invoke-PowerBIRestMethod -Url $RefreshDSCheck -Method Get)).value.serviceExceptionJson
+			$errors = $errors + 1
+			ECHO $RefreshError
+		} else {
+			ECHO "Something unexpected happened"
+			$errors = $errors + 1
+		}
+
 	} else {
-		ECHO "Something unexpected happened"
+		ECHO "Refresh attempt failed immediately"
+		$RefreshStatus = "Failed"
+		$errors = $errors + 1
 	}
-
-	ECHO "################################################"
-} else {
-	ECHO "Refresh failed immediately"
-	$RefreshStatus = "Failed"
 }
+
+if ($RefreshStatus -ne "Completed") {
+	ECHO "Refresh failed"
+}
+
+ECHO "################################################"
 
 $endTime = Get-Date
 
