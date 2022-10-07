@@ -7,8 +7,7 @@
       {
         "name": "SqlServer dwitestvipusql VipunenTK",
         "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=VipunenTK;Integrated Security=SSPI;Persist Security Info=false",
-        "impersonationMode": "impersonateAccount",
-        "account": "dwi\\T_VIPUTK_KUUTIO",
+        "impersonationMode": "impersonateServiceAccount",
         "annotations": [
           {
             "name": "ConnectionEditUISource",
@@ -2800,6 +2799,12 @@
             "sourceColumn": "Subfield of ed. (2002)",
             "sortByColumn": "jarjestys_opintoala2002",
             "displayFolder": "Education variables"
+          },
+          {
+            "name": "Kansainvälinen opiskelija",
+            "dataType": "string",
+            "sourceColumn": "Kansainvälinen opiskelija",
+            "displayFolder": "Henkilömuuttujat"
           }
         ],
         "partitions": [
@@ -4220,6 +4225,70 @@
               ""
             ],
             "formatString": "#,0.0"
+          },
+          {
+            "name": "Kansainväliset opiskelijat FTE",
+            "expression": [
+              "",
+              "var summa = ",
+              "CALCULATE(",
+              "\tSUM([opiskelijat_fte])",
+              "\t, KEEPFILTERS(Muuttujat[Kansainvälinen opiskelija]=\"Kyllä\")",
+              "\t, KEEPFILTERS(Muuttujat[Aineisto]=\"Lopullinen\")",
+              "\t, KEEPFILTERS(Muuttujat[Koulutuslaji]<>\"Lääkärien erikoistumiskoulutus\")",
+              ")",
+              "return IF(summa=0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Uudet kansainväliset opiskelijat",
+            "expression": [
+              "",
+              "var summa = ",
+              "CALCULATE(",
+              "\tSUM([Aloit2])",
+              "\t, KEEPFILTERS(Muuttujat[Kansainvälinen opiskelija]=\"Kyllä\")",
+              "\t, KEEPFILTERS(Muuttujat[Aineisto]=\"Lopullinen\")",
+              "\t, KEEPFILTERS(Muuttujat[Koulutuslaji]<>\"Lääkärien erikoistumiskoulutus\")",
+              ")",
+              "return IF(summa=0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Kansainväliset opiskelijat",
+            "expression": [
+              "",
+              "var summa = ",
+              "CALCULATE(",
+              "\tSUM([Opisk2])",
+              "\t, KEEPFILTERS(Muuttujat[Kansainvälinen opiskelija]=\"Kyllä\")",
+              "\t, KEEPFILTERS(Muuttujat[Aineisto]=\"Lopullinen\")",
+              "\t, KEEPFILTERS(Muuttujat[Koulutuslaji]<>\"Lääkärien erikoistumiskoulutus\")",
+              ")",
+              "return IF(summa=0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Kansainvälisten opiskelijoiden suorittamat tutkinnot",
+            "expression": [
+              "",
+              "var summa = ",
+              "CALCULATE(",
+              "\tSUM([Tutk2])",
+              "\t, KEEPFILTERS(Muuttujat[Kansainvälinen opiskelija]=\"Kyllä\")",
+              "\t, KEEPFILTERS(Muuttujat[Aineisto]=\"Lopullinen\")",
+              "\t, KEEPFILTERS(Muuttujat[Koulutuslaji]<>\"Lääkärien erikoistumiskoulutus\")",
+              ")",
+              "return IF(summa=0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))",
+              ""
+            ],
+            "formatString": "#,0"
           }
         ],
         "annotations": [
@@ -4233,7 +4302,7 @@
           },
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": " SELECT [dbo].[v_f_tab_otv_korkeakoulut_yhteiset].* FROM [dbo].[v_f_tab_otv_korkeakoulut_yhteiset] "
+            "value": " SELECT [dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Tilastovuosi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Päätieteenala],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Tieteenala],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Aineisto],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Aineisto_OTV],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Kaikkien asteiden koulutus],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[OTV_Tilv],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Äidinkieli],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Äidinkieli (väestörakenne)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Äidinkieli (suomi/muu)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Asuinalueen AVI],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Asuinalueen ELY],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Asuinkunnan kielisuhde],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Asuinmaakunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Asuinkunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Til.v:tta edeltävä AVI],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Til.v:tta edeltävä ELY],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Til.v:tta ed. asuinkunnan kielisuhde],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Til.v:tta ed. asuinmaakunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Til.v:tta ed. asuinkunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[2v til.v:tta ed. AVI],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[2v til.v:tta ed. ELY],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[2v til.v:tta ed. asuinkunnan kielisuhde],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[2v til.v:tta ed. asuinmaakunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[2v til.v:tta ed. asuinkunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Sukupuoli],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Ikä],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Ikäryhmä],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Syntymävuosi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Syntymäkuukausi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Tutkinto (amk)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Tutkinto (yo)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koulutustyyppi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Kansalaisuus],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Kansalaisuus (väestörakenne)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Kansainvälinen opiskelija],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Tutkinto-oikeusvuosi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Kansalaisuus (suomi/muu)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Oppilaitos],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Yliopisto],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Ammattikorkeakoulu],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Opetuskieli],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Oppil. omistajatyyppi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Oppilaitostyyppi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koulutuksen järjestäjä],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koul. järj. omistajatyyppi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Oppilaitos (tilastovuosi)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koulutuksen järjestäjä (tilastovuosi)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Lähde],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koulutusohjelma],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Kirjoillaolo (syys)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Kirjoillaolo (tammi)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Rahoituslähde],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Suuntautumisvaihtoehto],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koulutuksen kieli],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Ensisijainen opinto-oikeus],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Tilauskoulutuksen sijaintimaa],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koulutussektori],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Hallinnonala],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koulutusaste (2002)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koulutusala (2002)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koulutusala (1995)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Opintoala (2002)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koulutusnimike],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koulutuslaji],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koulutuslaji2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koulutuksen AVI],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koulutuksen ELY],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koulutuksen maakunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koul. kunnan kielisuhde],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koulutuksen kunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Maakunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Kunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koul. järjestäjän AVI],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koul. järjestäjän ELY],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koul. järjestäjän maakunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koul. järj. kunnan kielisuhde],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koul. järjestäjän kunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Oppilaitoksen AVI],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Oppilaitoksen ELY],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Oppilaitoksen maakunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Oppil. kunnan kielisuhde],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Oppilaitoksen kunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Kirjoihintulovuosi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Kirjoihintulokausi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Kirjoihintulovuosi (kk-sek.)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Kirjoihintulovuosi (kk-sek. läsna)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Kirjoihintulovuosi (sek.)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Kirjoihintulovuosi (sek. läsnä)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Kirjoihintulovuosi (kk)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Kirjoihintulokausi (kk)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Kirjoihintulovuosi (kk läsnä)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Kirjoihintulovuosi (op.ala)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Kirjoihintulovuosi (op.ala läsnä)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Kirjoihintulovuosi (tutk.)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Kirjoihintulokausi (tutk.)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Kirjoihintulovuosi (TK määritelmä)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Suorittanut väh. 55 op],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Opiskelijan FTE-tieto],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Yliopistotunnus],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Tiedekunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Uusi/vanha opiskelija],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Opettajankelpoisuus],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Hyväksytty avoimen yliop. suoritusten kautta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Tutkinnon suoritusvuosi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Tutk. suorituslukukausi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Tutk. suorituskuukausi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Kansalaisuus (maanosa)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[EU-maan kansalainen],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[ETA-maan kansalainen],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Pohjoismaan kansalainen],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[aineisto_otv_jarj],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_aidinkieli],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_aidinkieli2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_aidinkieli3],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_as_avi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_as_ely],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_as_kielisuhde],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_as_maakunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_as_kunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_as_avi1x],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_as_ely1x],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_as_kielisuhde1x],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_as_maakunta1x],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_as_kunta1x],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_as_avi2x],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_as_ely2x],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_as_kielisuhde2x],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_as_maakunta2x],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_as_kunta2x],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_ika],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_ika5v],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_syntv],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_tutk_amk],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_tutk_yo],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_koultyyppi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_kansalaisuus],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_kansalaisuus2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_kansalaisuus3],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_paatieteenala2010],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_tieteenala2010],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_oppilaitos],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_opetuskieli],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_omistajatyyppi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_oppilaitostyyppi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_oppilaitos_tilv],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_koulohjelma_amk],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_kirjolosyys],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_kirjolotammi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_rahoitus],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_suunnvaiht],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_koulkiel],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_koulkiel2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_ensop],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_tilauskoul],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_koulsek],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_hallinnonala],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_koulutusaste2002],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_koulutusala2002],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_opintoala1995],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_opintoala2002],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_koulnimike],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_koullaji],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_koullaji2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_avi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_ely],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_maakunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_kielisuhde],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_kunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_kmaakunta2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_kkunta2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_avi2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_ely2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_maakunta2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_kielisuhde2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_kunta2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_avi3],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_ely3],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_maakunta3],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_kielisuhde3],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_kunta3],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_lukukausi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_lukukausi_kk],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_vah55],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_op_fte],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_tiedekunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_uusivanha],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_opettajankelpoisuus],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_avoinvayla],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_suor_kk],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_kans_maanosa],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_eumaa],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarjestys_etamaa],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_pohj_kans],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[aineisto_koodi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[ainesto_koodi_otv],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[aidinkieli_koodi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[aidinkieli2_koodi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[aidinkieli3_koodi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Asuinmaakunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Asuinkunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[asmaak1xmk],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[asmaak1xk],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[syntk],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Tutkinto (amk)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Tutkinto (yo)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Koulutustyyppi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[kansalaisuus_koodi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[kansalaisuus2_koodi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[kansalaisuus3_koodi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Oppilaitos],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Koulutuksen järjestäjä],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[lahde_koodi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Koulutusohjelma],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[kirjoillaolosyys_koodi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[kirjoillaolotammi_koodi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[ensiop],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Koulutusaste 2002],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Koulutusala 2002],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Koulutusala 1995],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Opintoala 2002],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Koulutusnimike],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Koulutuksen maakunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Koulutuksen kunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Maakunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Kunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Koul. järj. maakunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Koul. järj. kunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Oppil. maakunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Oppil. kunta],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[alvv],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[alkk],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[alvv_kksek],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[alvv_kksek_lasna],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[alvv_sek],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[alvv_sek_lasna],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[alvv_kk],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[alkk_kk],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[alvv_kk_lasna],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[alvv_opa],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[alvv_opa_lasna],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[kirtu1v],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[kirtu1k],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[op55_koodi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[suorv],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[suor_lk],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[suor_kk],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Statistikår],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Huvudsakligt vetenskapsområde],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Vetenskapsområde],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Modersmål],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Modersmål (utbildningsstruktur)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Modersmål (finska/andra)SV],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Bostadslandskap],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Bostadskommun],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Kön],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Ålder],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Åldersgrupp],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Födelseår],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Examen (yrkehögskola)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Examen (universitet)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Typ av utbildning],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Medborgarskap],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Medborgarskap (utbildningsstruktur)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Medborgarskap (finska/andra)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Läroanstalt],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Universitet],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Yrkeshögskola],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Utbildningsprogram],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Inskrivning (september)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Inskrivning (januari)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Finansieringskälla],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Utbildningssektor],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Utbildningsnivå (2002)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Utbildningsområde (2002)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Utbildningsområde (1995)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Studieområde (2002)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Utbildningsbenämning],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Utbildningsslag],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Utbildningsslag2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Utbildningens landskap],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Utbildningens kommun],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Landskap],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Kommun],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[År då utbildningen avlagts],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Medborgarskap (världsdel)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Medborgare i ett EU-land],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Medborgare i ett EES-land],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Medborgare i ett nordiskt land],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Statistical year],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Main discipline],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Discipline],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Mother tongue],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Mother tongue (ed. structure)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Mother tongue (Finnish/Other)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Region of residence],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Municipality of residence],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Gender],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Age],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Agegroup],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Year of birth],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Degree (polytechnic)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Degree (university)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Type of education],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Nationality],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Nationality (ed. structure)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Nationality (Finn/Other)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Educational institution],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[University],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Polytechnic],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Degree programme],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Enrollment status (sept.)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Enrollment status (jan.)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Source of funding],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Sector of education],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Level of education (2002)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Field of education (2002)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Field of education (1995)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Subfield of ed. (2002)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Name of education],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Form of education],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Form of education2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Region of education],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Municipality of education],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Region],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Municipality],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Year of enrollment],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Term of enrollment],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Year of enrollment (HE sec.)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Year of enrollment (HE sec. present)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Year of enrollment (sec.)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Year of enrollment (sec. present)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Year of enrollment (ed. inst.)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Term of enrollment (ed. inst.)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Year of enrollment (ed. inst. present)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Year of enrollment (subfield of ed.)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Year of enrollment (subfield of ed. present)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Year of enrollment (degree)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Term of enrollment (degree)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Year of enrollment (Statistic Finland's definition)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Year of graduation],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Term of graduation],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Month of graduation],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Nationality (continent)],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Citizen of EU nation],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Citizen of EEA nation],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Citizen of a nordic nation],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koulutusaste, taso 1],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koulutusaste, taso 2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koulutusala, taso 1],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koulutusala, taso 2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koulutusala, taso 3],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[OKM ohjauksen ala, korkeak.],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Utbildn.nivå, nivå 1],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Utbildn.nivå, nivå 2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Utbildn.område, nivå 1],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Utbildn.område, nivå 2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Utbildn.område, nivå 3],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[UKM-styrningsområde, högskolor],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Level of ed., tier 1],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Level of ed., tier 2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Field of education, tier 1],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Field of education, tier 2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Field of education, tier 3],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Field of ed., HE steering],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_isced_koulast1],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_isced_koulast2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_isced_koulala1],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_isced_koulala2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_isced_koulala3],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_isced_okmohjaus1],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Koulutusaste, taso 1],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Koulutusaste, taso 2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Koulutusala, taso 1],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Koulutusala, taso 2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit Koulutusala, taso 3],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Koodit OKM ohjauksen ala, korkeak.],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Rahoitusmallialat yo 2017-2020],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Rahoitusmallialat amk 2017-2020],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Rahoitusmallialat yo 2021-2024],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Rahoitusmallialat amk 2021-2024],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_rahoitusala2016_yo],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_rahoitusala2016_amk],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[jarj_rahoitusala2021_yo],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Opisk2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Aloit2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Aloit3],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[lkm_op55],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[lkm_op0],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[lkm_op1_14],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[lkm_op15_29],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[lkm_op30_44],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[lkm_op45_59],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[lkm_op60_74],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[lkm_op75_89],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[lkm_op90_104],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[lkm_op105_119],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[lkm_op120_],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[aloittaneet_kirjoihintulovuosi],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[aloittaneet_korkeakoulusektori],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[aloittaneet_korkeakoulusektori_lasnaoleva],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[aloittaneet_sektori],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[aloittaneet_sektori_lasnaoleva],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[aloittaneet_korkeakoulu],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[aloittaneet_korkeakoulu_lasnaoleva],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[aloittaneet_opintoala],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[aloittaneet_opintoala_lasnaoleva],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[opiskelijat_lasna],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[opiskelijat_fte],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[lkm_lasnalk],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[lkm_poissalk],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[op_suoritettavien_laajuus],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[op_edellinen_syksy],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[op_edellinen_kevat],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[op_kertyma_edel_lkv_loppu],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[Tutk2],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[op_amk_yhteensa],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[op_amk_yleissiv_amm_opplait],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[op_amk_muualla],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[op_amk_oma_amk],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[op_amk_muu_amk],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[op_amk_yliopistoissa],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[op_amk_ulkomailla],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[op_yo_yhteensa],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[op_yo_ulkomailla],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[op_yo_muualla],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[op_yo_oma_yo],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[op_yo_avoimessa],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[op_yo_muu_yo],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[op_yo_ammattikorkeakouluissa],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[ika19_21_lkm],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[ika20_24_lkm],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[ika25_34_lkm],[dbo].[v_f_tab_otv_korkeakoulut_yhteiset].[ika25_64_lkm] FROM [dbo].[v_f_tab_otv_korkeakoulut_yhteiset] "
           },
           {
             "name": "TableWidgetSerialization",
@@ -7711,6 +7780,22 @@
               "        <int>68</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Kansalaisuus (ennakko)</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>176</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Kansainvälinen opiskelija</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>180</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -11177,6 +11262,22 @@
               "        <int>432</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Kansalaisuus (ennakko)</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>433</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Kansainvälinen opiskelija</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>434</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -11327,6 +11428,22 @@
               "    <item>",
               "      <key>",
               "        <string>Aloit3</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Kansalaisuus (ennakko)</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>false</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Kansainvälinen opiskelija</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -11845,6 +11962,9 @@
               },
               {
                 "name": "Opintoala (2002) "
+              },
+              {
+                "name": "Kansainvälinen opiskelija"
               }
             ],
             "measures": [
@@ -12114,20 +12234,9 @@
               },
               {
                 "name": "Koulutusaste (2002) "
-              }
-            ],
-            "measures": [
-              {
-                "name": "Uudet ulkomaalaiset opiskelijat"
               },
               {
-                "name": "Ulkomaalaiset opiskelijat"
-              },
-              {
-                "name": "Ulkomaalaiset opiskelijat FTE"
-              },
-              {
-                "name": "Ulkomaalaisten opiskelijoiden suorittamat tutkinnot"
+                "name": "Kansainvälinen opiskelija"
               }
             ]
           },
@@ -12173,6 +12282,9 @@
               },
               {
                 "name": "Kunta"
+              },
+              {
+                "name": "Kansainvälinen opiskelija"
               }
             ],
             "measures": [
@@ -13318,6 +13430,9 @@
               },
               {
                 "name": "Opintoala (2002) "
+              },
+              {
+                "name": "Kansainvälinen opiskelija"
               }
             ],
             "measures": [
@@ -13905,6 +14020,182 @@
               },
               {
                 "name": "Opiskelijat FTE lkm_s"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Kansainväliset",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Asuinkunta"
+              },
+              {
+                "name": "Asuinmaakunta"
+              },
+              {
+                "name": "Ikä"
+              },
+              {
+                "name": "Ikäryhmä"
+              },
+              {
+                "name": "Kansalaisuus"
+              },
+              {
+                "name": "Kirjoillaolo (syys)"
+              },
+              {
+                "name": "Kirjoillaolo (tammi)"
+              },
+              {
+                "name": "Koodit Asuinkunta"
+              },
+              {
+                "name": "Koodit Asuinmaakunta"
+              },
+              {
+                "name": "Koodit Koulutuksen kunta"
+              },
+              {
+                "name": "Koodit Koulutuksen maakunta"
+              },
+              {
+                "name": "Koodit Koulutusala (1995)"
+              },
+              {
+                "name": "Koodit Koulutusala (2002)"
+              },
+              {
+                "name": "Koodit Koulutusala taso 1"
+              },
+              {
+                "name": "Koodit Koulutusala taso 2"
+              },
+              {
+                "name": "Koodit Koulutusala taso 3"
+              },
+              {
+                "name": "Koodit Koulutusaste (2002)"
+              },
+              {
+                "name": "Koodit Koulutusaste taso 1"
+              },
+              {
+                "name": "Koodit Koulutusaste taso 2"
+              },
+              {
+                "name": "Koodit Koulutusnimike"
+              },
+              {
+                "name": "Koodit Koulutusohjelma"
+              },
+              {
+                "name": "Koodit Koulutustyyppi"
+              },
+              {
+                "name": "Koodit OKM ohjauksen ala korkeak"
+              },
+              {
+                "name": "Koodit Opintoala (2002)"
+              },
+              {
+                "name": "Koodit Oppilaitos"
+              },
+              {
+                "name": "Koulutuksen kunta"
+              },
+              {
+                "name": "Koulutuksen maakunta"
+              },
+              {
+                "name": "Koulutusala (1995) "
+              },
+              {
+                "name": "Koulutusala (2002) "
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste (2002) "
+              },
+              {
+                "name": "Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "Koulutuslaji"
+              },
+              {
+                "name": "Koulutusnimike"
+              },
+              {
+                "name": "Koulutusohjelma"
+              },
+              {
+                "name": "Koulutussektori"
+              },
+              {
+                "name": "Koulutustyyppi"
+              },
+              {
+                "name": "OKM ohjauksen ala korkeak."
+              },
+              {
+                "name": "Opintoala (2002) "
+              },
+              {
+                "name": "Oppilaitos"
+              },
+              {
+                "name": "Oppilaitos (tilastovuosi)"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Syntymävuosi"
+              },
+              {
+                "name": "Tilastovuosi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Uudet kansainväliset opiskelijat"
+              },
+              {
+                "name": "Kansainväliset opiskelijat"
+              },
+              {
+                "name": "Kansainväliset opiskelijat FTE"
+              },
+              {
+                "name": "Kansainvälisten opiskelijoiden suorittamat tutkinnot"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
               }
             ]
           }
