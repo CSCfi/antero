@@ -347,11 +347,22 @@ def load(secure,hostname,url,schema,table,verbose=False):
             # => just code, text values separately
 
           if "kieletUris" in i and i["kieletUris"]:
-            # todo what if many?
-            # fix 6.19.2022 , replacing #! didn't work anymore
-            kieli_tmp= i["kieletUris"][0].replace("oppilaitoksenopetuskieli_","")
-            kieli_tmp=kieli_tmp.split("#")
-            row["oppilaitoksenopetuskieli"] = kieli_tmp[0]
+            # fix 7.10.2022 , replacing #1 didn't work anymore
+            # if many fix
+            uri_cnt=0
+            for uri in  i["kieletUris"]:
+                uri_cnt=uri_cnt+1
+
+            if uri_cnt>1:
+                row["oppilaitoksenopetuskieli"] = "3"
+            else:
+                kieli_tmp= i["kieletUris"][0].replace("oppilaitoksenopetuskieli_","")
+                kieli_tmp=kieli_tmp.split("#")
+                row["oppilaitoksenopetuskieli"] = kieli_tmp[0]
+
+            # this is just for debugging with spyder
+            # row["oppilaitoksenopetuskieliUris"]=i["kieletUris"]
+
             #row["oppilaitoksenopetuskieli"] = i["kieletUris"][0].replace("oppilaitoksenopetuskieli_","").replace("#1","")
             # => just code, text values separately
 
