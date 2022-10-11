@@ -31,8 +31,6 @@ $RefreshDSCheck = 'groups/' + $WSID + '/datasets/' + $DSID + '/refreshes?$top=1'
 
 $MailFailureNotify = @{"notifyOption"="MailOnFailure"}
 
-$error.clear()
-
 $startTime = Get-Date
 
 # Refresh status of dataset
@@ -48,6 +46,9 @@ ECHO $Dataset
 
 # While loop ensures that the refresh is attempted two times in case of error
 while(($errors -lt 2) -and ($RefreshStatus -ne "Completed")) {
+	
+	$error.clear()
+	$RefreshStatus = "Unknown"
 	
 	# Refresh dataset and error handling
 	Invoke-PowerBIRestMethod -Url $RefreshDS -Method Post -Body $MailFailureNotify
