@@ -1188,6 +1188,108 @@
               "osa / kaikki)))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "kytkin",
+            "expression": "IF(LEFT(USERNAME(), 4) = \"DWI\\\", 1, 0)",
+            "formatString": "0",
+            "isHidden": true
+          },
+          {
+            "name": "Uudet opiskelijat_s",
+            "expression": [
+              "",
+              "var lkm = ",
+              "CALCULATE(",
+              "\tSUM(Muuttujat[apusarake_uopisk])",
+              "\t, KEEPFILTERS(Muuttujat[Koodit Koulutusaste, taso 2] <> \"73\")",
+              "\t, KEEPFILTERS(Muuttujat[Koodit Koulutusaste, taso 2] <> \"91\")",
+              ")",
+              "return IF([kytkin] = 0, BLANK(), lkm)"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Opiskelijat_s",
+            "expression": [
+              "",
+              "var lkm = ",
+              "CALCULATE(",
+              "\tSUM(Muuttujat[apusarake_opisk])",
+              "\t, KEEPFILTERS(Muuttujat[Koodit Koulutusaste, taso 2] <> \"73\")",
+              "\t, KEEPFILTERS(Muuttujat[Koodit Koulutusaste, taso 2] <> \"91\")",
+              ")",
+              "return IF([kytkin] = 0, BLANK(), lkm)",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnot_s",
+            "expression": [
+              "",
+              "var lkm = ",
+              "CALCULATE(",
+              "\tSUM(Muuttujat[apusarake_tutk])",
+              "\t, KEEPFILTERS(Muuttujat[Koodit Koulutusaste, taso 2] <> \"73\")",
+              "\t, KEEPFILTERS(Muuttujat[Koodit Koulutusaste, taso 2] <> \"91\")",
+              ")",
+              "return IF([kytkin] = 0, BLANK(), lkm)",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Uudet ulkomaalaistaustaiset opiskelijat_s",
+            "expression": "CALCULATE([Uudet opiskelijat_s], Muuttujat[apusarake_syntypera] = \"21\" || Muuttujat[apusarake_syntypera] = \"22\")",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ulkomaalaistaustaiset opiskelijat_s",
+            "expression": [
+              "CALCULATE([Opiskelijat_s], Muuttujat[apusarake_syntypera] = \"21\" || Muuttujat[apusarake_syntypera] = \"22\")",
+              "",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ulkomaalaistaustaisten opiskelijoiden suorittamat tutkinnot_s",
+            "expression": [
+              "CALCULATE([Tutkinnot_s], Muuttujat[apusarake_syntypera] = \"21\" || Muuttujat[apusarake_syntypera] = \"22\")",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Uudet ulkomaalaistaustaiset opiskelijat %_s",
+            "expression": [
+              "",
+              "var osa = [Uudet ulkomaalaistaustaiset opiskelijat_s]",
+              "var kaikki = [Uudet opiskelijat_s]",
+              "return IF([kytkin] = 0, BLANK(), DIVIDE(osa, kaikki))"
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Ulkomaalaistaustaiset opiskelijat %_s",
+            "expression": [
+              "",
+              "var osa = [Ulkomaalaistaustaiset opiskelijat_s]",
+              "var kaikki = [Opiskelijat_s]",
+              "return IF([kytkin] = 0, BLANK(), DIVIDE(osa, kaikki))"
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Ulkomaalaistaustaisten opiskelijoiden suorittamat tutkinnot %_s",
+            "expression": [
+              "",
+              "var osa = [Ulkomaalaistaustaisten opiskelijoiden suorittamat tutkinnot_s]",
+              "var kaikki = [Tutkinnot_s]",
+              "return IF([kytkin] = 0, BLANK(), DIVIDE(osa, kaikki))"
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
           }
         ],
         "annotations": [
@@ -2041,6 +2143,10 @@
           {
             "memberName": "NT AUTHORITY\\IUSR",
             "memberId": "S-1-5-17"
+          },
+          {
+            "memberName": "DWI\\Z_P_Antero_Full_Read_TAB",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-2272"
           }
         ]
       }
