@@ -2281,7 +2281,11 @@
         "measures": [
           {
             "name": "Hakijat",
-            "expression": " SUM([hakijat2])",
+            "expression": [
+              " ",
+              "var lkm = SUM([hakijat2])",
+              "return IF(AND(lkm < 5, lkm > 0), \"1-4\", MROUND(lkm,3))"
+            ],
             "formatString": "#,0",
             "displayFolder": "Hakijat"
           },
@@ -2290,7 +2294,9 @@
             "expression": [
               " ",
               "",
-              "CALCULATE(DISTINCTCOUNT([hakuavain]), Muuttujat[aineisto] = \"Valitut\")",
+              "var lkm = CALCULATE(DISTINCTCOUNT([hakuavain]), Muuttujat[aineisto] = \"Valitut\")",
+              "",
+              "return IF(AND(lkm < 5, lkm > 0), \"1-4\", MROUND(lkm,3))",
               ""
             ],
             "formatString": "#,0",
@@ -2298,7 +2304,11 @@
           },
           {
             "name": "Ulkomaalaiset hakijat",
-            "expression": " CALCULATE([Hakijat], Muuttujat[Kansalaisuus (Suomi)] =\"Ei\")",
+            "expression": [
+              " ",
+              "CALCULATE([Hakijat], Muuttujat[Kansalaisuus (Suomi)] =\"Ei\")",
+              ""
+            ],
             "formatString": "#,0",
             "displayFolder": "Hakijat"
           },
@@ -2307,32 +2317,67 @@
             "expression": [
               "",
               "",
-              "DIVIDE([Ulkomaalaiset hakijat], [Hakijat],BLANK())"
+              "",
+              "var osa = [Ulkomaalaiset hakijat]",
+              "var kaikki = [Hakijat]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Hakijat"
           },
           {
             "name": "Naishakijat",
-            "expression": " CALCULATE([Hakijat], Muuttujat[Sukupuoli] = \"Nainen\")",
+            "expression": [
+              " ",
+              "CALCULATE([Hakijat], Muuttujat[Sukupuoli] = \"Nainen\")",
+              ""
+            ],
             "formatString": "#,0",
             "displayFolder": "Hakijat"
           },
           {
             "name": "Mieshakijat",
-            "expression": " CALCULATE([Hakijat], Muuttujat[Sukupuoli] = \"Mies\")",
+            "expression": [
+              " ",
+              "CALCULATE([Hakijat], Muuttujat[Sukupuoli] = \"Mies\")",
+              ""
+            ],
             "formatString": "#,0",
             "displayFolder": "Hakijat"
           },
           {
             "name": "Naishakijoiden osuus",
-            "expression": " DIVIDE([Naishakijat], [Hakijat],BLANK())",
+            "expression": [
+              " ",
+              "var osa = [Naishakijat]",
+              "var kaikki = [Hakijat]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
+              ""
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Hakijat"
           },
           {
             "name": "Mieshakijoiden osuus",
-            "expression": " DIVIDE([Mieshakijat], [Hakijat],BLANK())",
+            "expression": [
+              "",
+              "var osa = [Mieshakijat]",
+              "var kaikki = [Hakijat]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
+              ""
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Hakijat"
           },
@@ -2341,57 +2386,57 @@
             "expression": [
               "",
               "",
-              "var taulu = CALCULATETABLE(SUMMARIZE(Muuttujat, [hakunumero], [Koodit Korkeakoulu], \"h\", SWITCH([Hakijat],BLANK(),0,[Hakijat]), \"v\", [Valitut]), Muuttujat[mittari_avain] = 1)",
+              "var taulu = CALCULATETABLE(SUMMARIZE(Muuttujat, [hakunumero], [Koodit Korkeakoulu], \"h\", SWITCH([Hakijat_s],BLANK(),0,[Hakijat_s]), \"v\", [Valitut_s]), Muuttujat[mittari_avain] = 1)",
               "",
               "",
               "",
               "return",
               "",
-              "MEDIANX(taulu, DIVIDE([h],[v],0))"
+              "IF(OR([Valitut] = \"1-4\", [Hakijat] = \"1-4\"), BLANK(), MEDIANX(taulu, DIVIDE([h],[v],0)))"
             ],
-            "formatString": "0.0"
+            "formatString": "#,0.0"
           },
           {
             "name": "Mediaani ulk. hakijoita per valittu",
             "expression": [
               "",
               "",
-              "var taulu = CALCULATETABLE(SUMMARIZE(Muuttujat, [hakunumero], [Koodit Korkeakoulu], \"h\", SWITCH([Ulkomaalaiset hakijat],BLANK(),0,[Ulkomaalaiset hakijat]), \"v\", [Valitut]), Muuttujat[mittari_avain] = 1)",
+              "var taulu = CALCULATETABLE(SUMMARIZE(Muuttujat, [hakunumero], [Koodit Korkeakoulu], \"h\", SWITCH([Ulkomaalaiset hakijat_s],BLANK(),0,[Ulkomaalaiset hakijat_s]), \"v\", [Valitut_s]), Muuttujat[mittari_avain] = 1)",
               "",
               "return",
               "",
-              "MEDIANX(taulu, DIVIDE([h],[v],0))",
+              "IF(OR([Valitut] = \"1-4\", [Ulkomaalaiset hakijat] = \"1-4\"),BLANK(),MEDIANX(taulu, DIVIDE([h],[v],0)))",
               ""
             ],
-            "formatString": "0.0"
+            "formatString": "#,0.0"
           },
           {
             "name": "Keskihajonta hakijoita per valittu",
             "expression": [
               "",
               "",
-              "var taulu = CALCULATETABLE(SUMMARIZE(Muuttujat, [hakunumero], [Koodit Korkeakoulu], \"h\", SWITCH([Hakijat],BLANK(),0,[Hakijat]), \"v\", [Valitut]), Muuttujat[mittari_avain] = 1)",
+              "var taulu = CALCULATETABLE(SUMMARIZE(Muuttujat, [hakunumero], [Koodit Korkeakoulu], \"h\", SWITCH([Hakijat_s],BLANK(),0,[Hakijat_s]), \"v\", [Valitut_s]), Muuttujat[mittari_avain] = 1)",
               "",
               "return",
               "",
-              "STDEVX.P(taulu, DIVIDE([h],[v],0))",
+              "IF(OR([Hakijat] = \"1-4\", [Valitut] = \"1-4\"), BLANK(), STDEVX.P(taulu, DIVIDE([h],[v],0)))",
               ""
             ],
-            "formatString": "0.0"
+            "formatString": "#,0.0"
           },
           {
             "name": "Keskihajonta ulk. hakijoita per valittu",
             "expression": [
               "",
               "",
-              "var taulu = CALCULATETABLE(SUMMARIZE(Muuttujat, [hakunumero], [Koodit Korkeakoulu], \"h\", SWITCH([Ulkomaalaiset hakijat],BLANK(),0,[Ulkomaalaiset hakijat]), \"v\", [Valitut]), Muuttujat[mittari_avain] = 1)",
+              "var taulu = CALCULATETABLE(SUMMARIZE(Muuttujat, [hakunumero], [Koodit Korkeakoulu], \"h\", SWITCH([Ulkomaalaiset hakijat_s],BLANK(),0,[Ulkomaalaiset hakijat_s]), \"v\", [Valitut_s]), Muuttujat[mittari_avain] = 1)",
               "",
               "return",
               "",
-              "STDEVX.P(taulu,DIVIDE([h],[v],0))",
+              "IF(OR([Hakijat] = \"1-4\", [Valitut] = \"1-4\"), BLANK(), STDEVX.P(taulu,DIVIDE([h],[v],0)))",
               ""
             ],
-            "formatString": "0.0"
+            "formatString": "#,0.0"
           },
           {
             "name": "Ulkomaalaiset valitut",
@@ -2401,8 +2446,17 @@
           },
           {
             "name": "Ulkomaalaisten osuus valituista",
-            "expression": " DIVIDE([Ulkomaalaiset valitut],[Valitut],BLANK())",
-            "formatString": "0.0 %;-0.0 %;0.0 %",
+            "expression": [
+              " ",
+              "var osa = [Ulkomaalaiset valitut]",
+              "var kaikki = [Valitut]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Valitut"
           },
           {
@@ -2419,14 +2473,34 @@
           },
           {
             "name": "Naisten osuus valituista",
-            "expression": " DIVIDE([Valitut naiset],[Valitut],BLANK())",
+            "expression": [
+              " ",
+              "var osa = [Valitut naiset]",
+              "var kaikki = [Valitut]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
+              ""
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Valitut"
           },
           {
             "name": "Miesten osuus valituista",
-            "expression": " DIVIDE([Valitut miehet],[Valitut],BLANK())",
-            "formatString": "0.0 %;-0.0 %;0.0 %",
+            "expression": [
+              " ",
+              "var osa = [Valitut miehet]",
+              "var kaikki = [Valitut]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
+              ""
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Valitut"
           },
           {
@@ -2434,9 +2508,14 @@
             "expression": [
               " ",
               "",
-              "DIVIDE(",
-              "\tCALCULATE([Hakijat], Muuttujat[Kansalaisuus (Suomi)] = \"Kyllä\"),",
-              "\t[Hakijat], BLANK())",
+              "var osa = CALCULATE([Hakijat], Muuttujat[Kansalaisuus (Suomi)] = \"Kyllä\")",
+              "var kaikki = [Hakijat]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
+              "",
               "\t"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
@@ -2447,9 +2526,15 @@
             "expression": [
               " ",
               "",
-              "DIVIDE(",
-              "\tCALCULATE([Hakijat], Muuttujat[Kansalaisuus (Suomi)] = \"Ei\"),",
-              "\t[Hakijat], BLANK())",
+              "var osa = CALCULATE([Hakijat], Muuttujat[Kansalaisuus (Suomi)] = \"Ei\")",
+              "var kaikki = [Hakijat]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
+              "",
+              "\t",
               ""
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
@@ -2460,10 +2545,13 @@
             "expression": [
               " ",
               "",
-              "DIVIDE(",
-              "\tCALCULATE([Hakijat], Muuttujat[Kansalaisuus (Suomi)] = \"Tieto puuttuu\"),",
-              "\t[Hakijat], BLANK())",
-              ""
+              "var osa = CALCULATE([Hakijat], Muuttujat[Kansalaisuus (Suomi)] = \"Tieto puuttuu\")",
+              "var kaikki = [Hakijat]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Hakijat"
@@ -2479,7 +2567,12 @@
           },
           {
             "name": "Uudet työntekijät",
-            "expression": " CALCULATE(DISTINCTCOUNT([henkilonumero]), Muuttujat[henkilonumero] <> BLANK())",
+            "expression": [
+              " ",
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT([henkilonumero]), Muuttujat[henkilonumero] <> BLANK())",
+              "return IF(AND(lkm < 5, lkm > 0), \"1-4\", MROUND(lkm,3))"
+            ],
             "formatString": "#,0"
           },
           {
@@ -2494,8 +2587,13 @@
             "name": "Tohtorintutkinto samassa yliopistossa (%)",
             "expression": [
               "",
-              "DIVIDE([Tohtorintutkinto samassa yliopistossa], [Uudet työntekijät],BLANK())",
-              ""
+              "var osa = [Tohtorintutkinto samassa yliopistossa]",
+              "var kaikki = [Uudet työntekijät]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
@@ -2512,7 +2610,13 @@
             "name": "Tohtorintutkinto muussa suomalaisessa yliopistossa (%)",
             "expression": [
               "",
-              "DIVIDE([Tohtorintutkinto muussa suomalaisessa yliopistossa], [Uudet työntekijät],BLANK())",
+              "var osa = [Tohtorintutkinto muussa suomalaisessa yliopistossa]",
+              "var kaikki = [Uudet työntekijät]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
               ""
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
@@ -2530,8 +2634,13 @@
             "name": "Tohtorintutkinto ulkomaisessa yliopistossa (%)",
             "expression": [
               "",
-              "DIVIDE([Tohtorintutkinto ulkomaisessa yliopistossa], [Uudet työntekijät], BLANK())",
-              ""
+              "var osa = [Tohtorintutkinto ulkomaisessa yliopistossa]",
+              "var kaikki = [Uudet työntekijät]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
@@ -2540,7 +2649,9 @@
             "expression": [
               "",
               "",
-              "[Uudet työntekijät] - ([Tohtorintutkinto muussa suomalaisessa yliopistossa] + [Tohtorintutkinto samassa yliopistossa] + [Tohtorintutkinto ulkomaisessa yliopistossa])"
+              "var lkm = [Uudet työntekijät_s] - ([Tohtorintutkinto muussa suomalaisessa yliopistossa_s] + [Tohtorintutkinto samassa yliopistossa_s] + [Tohtorintutkinto ulkomaisessa yliopistossa_s])",
+              "return IF(AND(lkm < 5, lkm > 0), \"1-4\", MROUND(lkm,3))",
+              ""
             ],
             "formatString": "#,0"
           },
@@ -2549,8 +2660,13 @@
             "expression": [
               "",
               "",
-              "DIVIDE([Tohtorintutkinto - Tieto puuttuu], [Uudet työntekijät], BLANK())",
-              ""
+              "var osa = [Tohtorintutkinto - Tieto puuttuu]",
+              "var kaikki = [Uudet työntekijät]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
@@ -2558,7 +2674,8 @@
             "name": "Vastanneet työkokemus",
             "expression": [
               " ",
-              "CALCULATE(DISTINCTCOUNT([henkilonumero]),Muuttujat[työkokemus_vastanneet]=1)"
+              "var lkm = CALCULATE(DISTINCTCOUNT([henkilonumero]),Muuttujat[työkokemus_vastanneet]=1)",
+              "return IF(AND(lkm < 5, lkm > 0), \"1-4\", MROUND(lkm,3))"
             ],
             "formatString": "#,0"
           },
@@ -2566,7 +2683,13 @@
             "name": "Työkokemusta julkisessa hallinnossa Suomessa tai ulkomailla",
             "expression": [
               "",
-              "DIVIDE(CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[kokemus_julk_hallinto]=1),[Vastanneet työkokemus],BLANK())"
+              "var osa = CALCULATE([Vastanneet työkokemus], Muuttujat[kokemus_julk_hallinto] = 1)",
+              "var kaikki = [Vastanneet työkokemus]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
@@ -2574,7 +2697,13 @@
             "name": "Työkokemusta muussa amk:ssa Suomessa",
             "expression": [
               "",
-              "DIVIDE(CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[kokemus_muu_amk]=1),[Vastanneet työkokemus],BLANK())"
+              "var osa = CALCULATE([Vastanneet työkokemus], Muuttujat[kokemus_muu_amk] = 1)",
+              "var kaikki = [Vastanneet työkokemus]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
@@ -2582,7 +2711,14 @@
             "name": "Työkokemusta muussa organisaatiossa (toimipaikka Suomessa)",
             "expression": [
               "",
-              "DIVIDE(CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[kokemus_muu_org]=1),[Vastanneet työkokemus],BLANK())"
+              "var osa = CALCULATE([Vastanneet työkokemus], Muuttujat[kokemus_muu_org] = 1)",
+              "var kaikki = [Vastanneet työkokemus]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
+              ""
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
@@ -2590,7 +2726,13 @@
             "name": "Työkokemusta muussa organisaatiossa (toimipaikka ulkomailla)",
             "expression": [
               "",
-              "DIVIDE(CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[kokemus_muu_org_ulk]=1),[Vastanneet työkokemus],BLANK())"
+              "var osa = CALCULATE([Vastanneet työkokemus], Muuttujat[kokemus_muu_org_ulk] = 1)",
+              "var kaikki = [Vastanneet työkokemus]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
@@ -2598,7 +2740,14 @@
             "name": "Työkokemusta muussa yliopistossa Suomessa",
             "expression": [
               "",
-              "DIVIDE(CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[kokemus_muu_yo]=1),[Vastanneet työkokemus],BLANK())"
+              "var osa = CALCULATE([Vastanneet työkokemus], Muuttujat[kokemus_muu_yo] = 1)",
+              "var kaikki = [Vastanneet työkokemus]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
+              ""
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
@@ -2606,7 +2755,13 @@
             "name": "Työkokemusta nykyisessä korkeakoulussa",
             "expression": [
               "",
-              "DIVIDE(CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[kokemus_sama_yo_amk]=1),[Vastanneet työkokemus], BLANK())"
+              "var osa = CALCULATE([Vastanneet työkokemus], Muuttujat[kokemus_sama_yo_amk] = 1)",
+              "var kaikki = [Vastanneet työkokemus]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
@@ -2614,7 +2769,13 @@
             "name": "Työkokemusta tutkimuslaitoksessa Suomessa",
             "expression": [
               "",
-              "DIVIDE(CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[kokemus_tutklaitos]=1),[Vastanneet työkokemus],BLANK())"
+              "var osa = CALCULATE([Vastanneet työkokemus], Muuttujat[kokemus_tutklaitos] = 1)",
+              "var kaikki = [Vastanneet työkokemus]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
@@ -2622,7 +2783,13 @@
             "name": "Työkokemusta ulkomaisessa korkeakoulussa/tutkimuslaitoksessa",
             "expression": [
               "",
-              "DIVIDE(CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[kokemus_ulk_kk_tutklaitos]=1),[Vastanneet työkokemus],BLANK())"
+              "var osa = CALCULATE([Vastanneet työkokemus], Muuttujat[kokemus_ulk_kk_tutklaitos] = 1)",
+              "var kaikki = [Vastanneet työkokemus]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
@@ -2630,7 +2797,13 @@
             "name": "Työkokemusta vähintään yhdessä muussa oppilaitoksessa (ei korkeakoulu) Suomessa tai ulkomailla",
             "expression": [
               "",
-              "DIVIDE(CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[kokemus_muu_oppil]=1),[Vastanneet työkokemus],BLANK())"
+              "var osa = CALCULATE([Vastanneet työkokemus], Muuttujat[kokemus_muu_oppil] = 1)",
+              "var kaikki = [Vastanneet työkokemus]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
@@ -2638,7 +2811,13 @@
             "name": "Työkokemusta yrityksessä (toimipaikka Suomessa)",
             "expression": [
               "",
-              "DIVIDE(CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[kokemus_yritys]=1),[Vastanneet työkokemus],BLANK())"
+              "var osa = CALCULATE([Vastanneet työkokemus], Muuttujat[kokemus_yritys] = 1)",
+              "var kaikki = [Vastanneet työkokemus]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
@@ -2646,7 +2825,13 @@
             "name": "Työkokemusta yrityksessä (toimipaikka ulkomailla)",
             "expression": [
               "",
-              "DIVIDE(CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[kokemus_yritys_ulk]=1),[Vastanneet työkokemus],BLANK())"
+              "var osa = CALCULATE([Vastanneet työkokemus], Muuttujat[kokemus_yritys_ulk] = 1)",
+              "var kaikki = [Vastanneet työkokemus]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
@@ -2654,7 +2839,13 @@
             "name": "Vastanneiden osuus",
             "expression": [
               "",
-              "IF(ISBLANK(DIVIDE([Vastanneet ed työpaikka],[Uudet työntekijät],0)),0,DIVIDE([Vastanneet ed työpaikka],[Uudet työntekijät],0))"
+              "var osa = [Vastanneet ed työpaikka]",
+              "var kaikki = [Uudet työntekijät]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
@@ -2662,7 +2853,8 @@
             "name": "Vastanneet ed työpaikka",
             "expression": [
               "",
-              "CALCULATE(DISTINCTCOUNT([henkilonumero]),Muuttujat[ed_tyopaikka_vastanneet]=1)"
+              "var lkm = CALCULATE(DISTINCTCOUNT([henkilonumero]),Muuttujat[ed_tyopaikka_vastanneet]=1)",
+              "return IF(AND(lkm < 5, lkm > 0), \"1-4\", MROUND(lkm,3))"
             ],
             "formatString": "#,0"
           },
@@ -2670,7 +2862,13 @@
             "name": "Edeltävä työpaikka julkisessa hallinnossa Suomessa tai ulkomailla",
             "expression": [
               "",
-              "DIVIDE(CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[ed_julk_hallinto]=1),[Vastanneet ed työpaikka],BLANK())"
+              "var osa = CALCULATE([Vastanneet ed työpaikka], Muuttujat[ed_julk_hallinto] = 1)",
+              "var kaikki = [Vastanneet ed työpaikka]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
@@ -2678,7 +2876,13 @@
             "name": "Edeltävä työpaikka muussa amk:ssa Suomessa",
             "expression": [
               "",
-              "DIVIDE(CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[ed_muu_amk]=1),[Vastanneet ed työpaikka],BLANK())"
+              "var osa = CALCULATE([Vastanneet ed työpaikka], Muuttujat[ed_muu_amk] = 1)",
+              "var kaikki = [Vastanneet ed työpaikka]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
@@ -2686,7 +2890,13 @@
             "name": "Edeltävä työpaikka muussa oppilaitoksessa (ei korkeakoulu) Suomessa tai ulkomailla",
             "expression": [
               "",
-              "DIVIDE(CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[ed_muu_oppil]=1),[Vastanneet ed työpaikka],BLANK())"
+              "var osa = CALCULATE([Vastanneet ed työpaikka], Muuttujat[ed_muu_oppil] = 1)",
+              "var kaikki = [Vastanneet ed työpaikka]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
@@ -2694,7 +2904,13 @@
             "name": "Edeltävä työpaikka muussa organisaatiossa (toimipaikka Suomessa)",
             "expression": [
               "",
-              "DIVIDE(CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[ed_muu_org]=1),[Vastanneet ed työpaikka],BLANK())"
+              "var osa = CALCULATE([Vastanneet ed työpaikka], Muuttujat[ed_muu_org] = 1)",
+              "var kaikki = [Vastanneet ed työpaikka]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
@@ -2702,7 +2918,13 @@
             "name": "Edeltävä työpaikka muussa organisaatiossa (toimipaikka ulkomailla)",
             "expression": [
               "",
-              "DIVIDE(CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[ed_muu_org_ulk]=1),[Vastanneet ed työpaikka],BLANK())"
+              "var osa = CALCULATE([Vastanneet ed työpaikka], Muuttujat[ed_muu_org_ulk] = 1)",
+              "var kaikki = [Vastanneet ed työpaikka]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
@@ -2710,20 +2932,41 @@
             "name": "Edeltävä työpaikka muussa yliopistossa Suomessa",
             "expression": [
               "",
-              "DIVIDE(CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[ed_muu_yo]=1),[Vastanneet ed työpaikka],BLANK())"
+              "var osa = CALCULATE([Vastanneet ed työpaikka], Muuttujat[ed_muu_yo] = 1)",
+              "var kaikki = [Vastanneet ed työpaikka]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Edeltävä työpaikka nykyisessä korkeakoulussa",
-            "expression": "DIVIDE(CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[ed_sama_yo_amk]=1),[Vastanneet ed työpaikka],BLANK())",
+            "expression": [
+              "",
+              "var osa = CALCULATE([Vastanneet ed työpaikka], Muuttujat[ed_sama_yo_amk] = 1)",
+              "var kaikki = [Vastanneet ed työpaikka]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "Edeltävä työpaikka tutkimuslaitoksessa Suomessa",
             "expression": [
               "",
-              "DIVIDE(CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[ed_tutklaitos]=1),[Vastanneet ed työpaikka],BLANK())"
+              "var osa = CALCULATE([Vastanneet ed työpaikka], Muuttujat[ed_tutklaitos] = 1)",
+              "var kaikki = [Vastanneet ed työpaikka]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
@@ -2731,7 +2974,13 @@
             "name": "Edeltävä työpaikka ulkomaisessa korkeakoulussa/tutkimuslaitoksessa",
             "expression": [
               "",
-              "DIVIDE(CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[ed_ulk_kk_tutklaitos]=1),[Vastanneet ed työpaikka],BLANK())"
+              "var osa = CALCULATE([Vastanneet ed työpaikka], Muuttujat[ed_ulk_kk_tutklaitos] = 1)",
+              "var kaikki = [Vastanneet ed työpaikka]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
@@ -2739,7 +2988,13 @@
             "name": "Edeltävä työpaikka yrityksessä (toimipaikka Suomessa)",
             "expression": [
               "",
-              "DIVIDE(CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[ed_yritys]=1),[Vastanneet ed työpaikka],BLANK())"
+              "var osa = CALCULATE([Vastanneet ed työpaikka], Muuttujat[ed_yritys] = 1)",
+              "var kaikki = [Vastanneet ed työpaikka]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
@@ -2747,7 +3002,508 @@
             "name": "Edeltävä työpaikka yrityksessä (toimipaikka ulkomailla)",
             "expression": [
               "",
-              "DIVIDE(CALCULATE(DISTINCTCOUNT([henkilonumero]),'Muuttujat'[ed_yritys_ulk]=1),[Vastanneet ed työpaikka],BLANK())"
+              "var osa = CALCULATE([Vastanneet ed työpaikka], Muuttujat[ed_yritys_ulk] = 1)",
+              "var kaikki = [Vastanneet ed työpaikka]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Hakijat_s",
+            "expression": " SUM([hakijat2])",
+            "formatString": "#,0",
+            "displayFolder": "Hakijat"
+          },
+          {
+            "name": "Valitut_s",
+            "expression": [
+              " ",
+              "",
+              "CALCULATE(DISTINCTCOUNT([hakuavain]), Muuttujat[aineisto] = \"Valitut\")",
+              ""
+            ],
+            "formatString": "#,0",
+            "displayFolder": "Valitut"
+          },
+          {
+            "name": "Ulkomaalaiset hakijat_s",
+            "expression": " CALCULATE([Hakijat_s], Muuttujat[Kansalaisuus (Suomi)] =\"Ei\")",
+            "formatString": "#,0",
+            "displayFolder": "Hakijat"
+          },
+          {
+            "name": "Ulkomaalaisten osuus hakijoista_s",
+            "expression": [
+              "",
+              "",
+              "DIVIDE([Ulkomaalaiset hakijat_s], [Hakijat_s],BLANK())",
+              ""
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %",
+            "displayFolder": "Hakijat"
+          },
+          {
+            "name": "Naishakijat_s",
+            "expression": " CALCULATE([Hakijat_s], Muuttujat[Sukupuoli] = \"Nainen\")",
+            "formatString": "#,0",
+            "displayFolder": "Hakijat"
+          },
+          {
+            "name": "Mieshakijat_s",
+            "expression": " CALCULATE([Hakijat_s], Muuttujat[Sukupuoli] = \"Mies\")",
+            "formatString": "#,0",
+            "displayFolder": "Hakijat"
+          },
+          {
+            "name": "Naishakijoiden osuus_s",
+            "expression": " DIVIDE([Naishakijat_s], [Hakijat_s],BLANK())",
+            "formatString": "0.0 %;-0.0 %;0.0 %",
+            "displayFolder": "Hakijat"
+          },
+          {
+            "name": "Mieshakijoiden osuus_s",
+            "expression": " DIVIDE([Mieshakijat_s], [Hakijat_s],BLANK())",
+            "formatString": "0.0 %;-0.0 %;0.0 %",
+            "displayFolder": "Hakijat"
+          },
+          {
+            "name": "Mediaani hakijoita per valittu_s",
+            "expression": [
+              "",
+              "",
+              "var taulu = CALCULATETABLE(SUMMARIZE(Muuttujat, [hakunumero], [Koodit Korkeakoulu], \"h\", SWITCH([Hakijat_s],BLANK(),0,[Hakijat_s]), \"v\", [Valitut_s]), Muuttujat[mittari_avain] = 1)",
+              "",
+              "",
+              "",
+              "return",
+              "",
+              "MEDIANX(taulu, DIVIDE([h],[v],0))",
+              ""
+            ],
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Sukupuolitieto puuttuu_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE([Hakijat_s], Muuttujat[Sukupuoli] = \"Tieto puuttuu\"),[Hakijat_s],BLANK())",
+              ""
+            ]
+          },
+          {
+            "name": "Mediaani ulk. hakijoita per valittu_s",
+            "expression": [
+              "",
+              "",
+              "var taulu = CALCULATETABLE(SUMMARIZE(Muuttujat, [hakunumero], [Koodit Korkeakoulu], \"h\", SWITCH([Ulkomaalaiset hakijat_s],BLANK(),0,[Ulkomaalaiset hakijat_s]), \"v\", [Valitut_s]), Muuttujat[mittari_avain] = 1)",
+              "",
+              "return",
+              "",
+              "MEDIANX(taulu, DIVIDE([h],[v],0))",
+              ""
+            ],
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Keskihajonta hakijoita per valittu_s",
+            "expression": [
+              "",
+              "",
+              "var taulu = CALCULATETABLE(SUMMARIZE(Muuttujat, [hakunumero], [Koodit Korkeakoulu], \"h\", SWITCH([Hakijat_s],BLANK(),0,[Hakijat_s]), \"v\", [Valitut_s]), Muuttujat[mittari_avain] = 1)",
+              "",
+              "return",
+              "",
+              "STDEVX.P(taulu, DIVIDE([h],[v],0))",
+              ""
+            ],
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Keskihajonta ulk. hakijoita per valittu_s",
+            "expression": [
+              "",
+              "",
+              "var taulu = CALCULATETABLE(SUMMARIZE(Muuttujat, [hakunumero], [Koodit Korkeakoulu], \"h\", SWITCH([Ulkomaalaiset hakijat_s],BLANK(),0,[Ulkomaalaiset hakijat_s]), \"v\", [Valitut_s]), Muuttujat[mittari_avain] = 1)",
+              "",
+              "return",
+              "",
+              "STDEVX.P(taulu,DIVIDE([h],[v],0))",
+              ""
+            ],
+            "formatString": "#,0.0"
+          },
+          {
+            "name": "Ulkomaalaiset valitut_s",
+            "expression": " CALCULATE([Valitut_s], Muuttujat[Kansalaisuus (Suomi)] = \"Ei\")",
+            "formatString": "#,0",
+            "displayFolder": "Valitut"
+          },
+          {
+            "name": "Ulkomaalaisten osuus valituista_s",
+            "expression": [
+              "",
+              "DIVIDE([Ulkomaalaiset valitut_s],[Valitut_s],BLANK())"
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
+            "displayFolder": "Valitut"
+          },
+          {
+            "name": "Valitut naiset_s",
+            "expression": " CALCULATE([Valitut_s], Muuttujat[Sukupuoli] = \"Nainen\")",
+            "formatString": "#,0",
+            "displayFolder": "Valitut"
+          },
+          {
+            "name": "Valitut miehet_s",
+            "expression": " CALCULATE([Valitut_s], Muuttujat[Sukupuoli] = \"Mies\")",
+            "formatString": "#,0",
+            "displayFolder": "Valitut"
+          },
+          {
+            "name": "Naisten osuus valituista_s",
+            "expression": " DIVIDE([Valitut naiset_s],[Valitut_s],BLANK())",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
+            "displayFolder": "Valitut"
+          },
+          {
+            "name": "Miesten osuus valituista_s",
+            "expression": " DIVIDE([Valitut miehet_s],[Valitut_s],BLANK())",
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
+            "displayFolder": "Valitut"
+          },
+          {
+            "name": "Suomalaisten hakijoiden osuus_s",
+            "expression": [
+              " ",
+              "",
+              "DIVIDE(",
+              "\tCALCULATE([Hakijat_s], Muuttujat[Kansalaisuus (Suomi)] = \"Kyllä\"),",
+              "\t[Hakijat_s], BLANK())",
+              "\t",
+              ""
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
+            "displayFolder": "Hakijat"
+          },
+          {
+            "name": "Ulkomaalaisten hakijoiden osuus_s",
+            "expression": [
+              " ",
+              "",
+              "DIVIDE(",
+              "\tCALCULATE([Hakijat_s], Muuttujat[Kansalaisuus (Suomi)] = \"Ei\"),",
+              "\t[Hakijat_s], BLANK())",
+              ""
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
+            "displayFolder": "Hakijat"
+          },
+          {
+            "name": "Kansalaisuustieto puuttuu_s",
+            "expression": [
+              " ",
+              "",
+              "DIVIDE(",
+              "\tCALCULATE([Hakijat_s], Muuttujat[Kansalaisuus (Suomi)] = \"Tieto puuttuu\"),",
+              "\t[Hakijat_s], BLANK())",
+              ""
+            ]
+          },
+          {
+            "name": "Uudet työntekijät_s",
+            "expression": [
+              " ",
+              "",
+              "CALCULATE(DISTINCTCOUNT([henkilonumero]), Muuttujat[henkilonumero] <> BLANK())",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tohtorintutkinto samassa yliopistossa_s",
+            "expression": [
+              "",
+              "CALCULATE([Uudet työntekijät_s], Muuttujat[tohtori_sama_yo] = 1)",
+              ""
+            ]
+          },
+          {
+            "name": "Tohtorintutkinto samassa yliopistossa (%)_s",
+            "expression": [
+              " ",
+              "",
+              "DIVIDE([Tohtorintutkinto samassa yliopistossa_s], [Uudet työntekijät_s],BLANK())",
+              ""
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Tohtorintutkinto muussa suomalaisessa yliopistossa_s",
+            "expression": [
+              "",
+              "CALCULATE([Uudet työntekijät_s], Muuttujat[tohtori_eri_yo] = 1)",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tohtorintutkinto muussa suomalaisessa yliopistossa (%)_s",
+            "expression": [
+              "",
+              "DIVIDE([Tohtorintutkinto muussa suomalaisessa yliopistossa_s], [Uudet työntekijät_s],BLANK())",
+              ""
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Tohtorintutkinto ulkomaisessa yliopistossa_s",
+            "expression": [
+              "",
+              "CALCULATE([Uudet työntekijät_s], Muuttujat[tohtori_ulk_yo] = 1)",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tohtorintutkinto ulkomaisessa yliopistossa (%)_s",
+            "expression": [
+              "",
+              "DIVIDE([Tohtorintutkinto ulkomaisessa yliopistossa_s], [Uudet työntekijät_s], BLANK())",
+              ""
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Tohtorintutkinto - Tieto puuttuu_s",
+            "expression": [
+              "",
+              "",
+              "[Uudet työntekijät_s] - ([Tohtorintutkinto muussa suomalaisessa yliopistossa_s] + [Tohtorintutkinto samassa yliopistossa_s] + [Tohtorintutkinto ulkomaisessa yliopistossa_s])",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tohtorintutkinto - Tieto puuttuu (%)_s",
+            "expression": [
+              "",
+              "",
+              "DIVIDE([Tohtorintutkinto - Tieto puuttuu_s], [Uudet työntekijät_s], BLANK())",
+              ""
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Vastanneet työkokemus_s",
+            "expression": [
+              " ",
+              "CALCULATE(DISTINCTCOUNT([henkilonumero]),Muuttujat[työkokemus_vastanneet]=1)",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Työkokemusta julkisessa hallinnossa Suomessa tai ulkomailla_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE([Vastanneet työkokemus_s], Muuttujat[kokemus_julk_hallinto] = 1), [Vastanneet työkokemus_s],BLANK())"
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Työkokemusta muussa amk:ssa Suomessa_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE([Vastanneet työkokemus_s], Muuttujat[kokemus_muu_amk] = 1), [Vastanneet työkokemus_s],BLANK())",
+              ""
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Työkokemusta muussa organisaatiossa (toimipaikka Suomessa)_s",
+            "expression": [
+              " ",
+              "DIVIDE(CALCULATE([Vastanneet työkokemus_s], Muuttujat[kokemus_muu_org] = 1), [Vastanneet työkokemus_s],BLANK())",
+              ""
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Työkokemusta muussa organisaatiossa (toimipaikka ulkomailla)_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE([Vastanneet työkokemus_s], Muuttujat[kokemus_muu_org_ulk] = 1), [Vastanneet työkokemus_s],BLANK())"
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Työkokemusta muussa yliopistossa Suomessa_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE([Vastanneet työkokemus_s], Muuttujat[kokemus_muu_yo] = 1), [Vastanneet työkokemus_s],BLANK())",
+              ""
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Työkokemusta nykyisessä korkeakoulussa_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE([Vastanneet työkokemus_s], Muuttujat[kokemus_sama_yo_amk] = 1), [Vastanneet työkokemus_s],BLANK())"
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Työkokemusta tutkimuslaitoksessa Suomessa_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE([Vastanneet työkokemus_s], Muuttujat[kokemus_tutklaitos] = 1), [Vastanneet työkokemus_s],BLANK())"
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Työkokemusta ulkomaisessa korkeakoulussa/tutkimuslaitoksessa_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE([Vastanneet työkokemus_s], Muuttujat[kokemus_ulk_kk_tutklaitos] = 1), [Vastanneet työkokemus_s],BLANK())",
+              ""
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Työkokemusta vähintään yhdessä muussa oppilaitoksessa (ei korkeakoulu) Suomessa tai ulkomailla_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE([Vastanneet työkokemus_s], Muuttujat[kokemus_muu_oppil] = 1), [Vastanneet työkokemus_s],BLANK())"
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Työkokemusta yrityksessä (toimipaikka Suomessa)_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE([Vastanneet työkokemus_s], Muuttujat[kokemus_yritys] = 1), [Vastanneet työkokemus_s],BLANK())"
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Työkokemusta yrityksessä (toimipaikka ulkomailla)_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE([Vastanneet työkokemus_s], Muuttujat[kokemus_yritys_ulk] = 1), [Vastanneet työkokemus_s],BLANK())"
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Vastanneet ed työpaikka_s",
+            "expression": [
+              "",
+              "CALCULATE(DISTINCTCOUNT([henkilonumero]),Muuttujat[ed_tyopaikka_vastanneet]=1)",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Vastanneiden osuus_s",
+            "expression": [
+              "",
+              "DIVIDE( [Vastanneet ed työpaikka], [Uudet työntekijät],BLANK())",
+              ""
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Edeltävä työpaikka julkisessa hallinnossa Suomessa tai ulkomailla_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE([Vastanneet ed työpaikka_s], Muuttujat[ed_julk_hallinto] = 1), [Vastanneet ed työpaikka_s], BLANK())",
+              ""
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Edeltävä työpaikka muussa amk:ssa Suomessa_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE([Vastanneet ed työpaikka_s], Muuttujat[ed_muu_amk] = 1), [Vastanneet ed työpaikka_s], BLANK())"
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Edeltävä työpaikka muussa oppilaitoksessa (ei korkeakoulu) Suomessa tai ulkomailla_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE([Vastanneet ed työpaikka_s], Muuttujat[ed_muu_oppil] = 1), [Vastanneet ed työpaikka_s], BLANK())"
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Edeltävä työpaikka muussa organisaatiossa (toimipaikka Suomessa)_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE([Vastanneet ed työpaikka_s], Muuttujat[ed_muu_org] = 1), [Vastanneet ed työpaikka_s], BLANK())"
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Edeltävä työpaikka muussa organisaatiossa (toimipaikka ulkomailla)_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE([Vastanneet ed työpaikka_s], Muuttujat[ed_muu_org_ulk] = 1), [Vastanneet ed työpaikka_s], BLANK())"
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Edeltävä työpaikka muussa yliopistossa Suomessa_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE([Vastanneet ed työpaikka_s], Muuttujat[ed_muu_yo] = 1), [Vastanneet ed työpaikka_s], BLANK())",
+              ""
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Edeltävä työpaikka nykyisessä korkeakoulussa_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE([Vastanneet ed työpaikka_s], Muuttujat[ed_sama_yo_amk] = 1), [Vastanneet ed työpaikka_s], BLANK())",
+              ""
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Edeltävä työpaikka tutkimuslaitoksessa Suomessa_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE([Vastanneet ed työpaikka_s], Muuttujat[ed_tutklaitos] = 1), [Vastanneet ed työpaikka_s], BLANK())"
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Edeltävä työpaikka ulkomaisessa korkeakoulussa/tutkimuslaitoksessa_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE([Vastanneet ed työpaikka_s], Muuttujat[ed_ulk_kk_tutklaitos] = 1), [Vastanneet ed työpaikka_s], BLANK())"
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Edeltävä työpaikka yrityksessä (toimipaikka Suomessa)_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE([Vastanneet ed työpaikka_s], Muuttujat[ed_yritys] = 1), [Vastanneet ed työpaikka_s], BLANK())"
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Edeltävä työpaikka yrityksessä (toimipaikka ulkomailla)_s",
+            "expression": [
+              "",
+              "DIVIDE(CALCULATE([Vastanneet ed työpaikka_s], Muuttujat[ed_yritys_ulk] = 1), [Vastanneet ed työpaikka_s], BLANK())"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           }
