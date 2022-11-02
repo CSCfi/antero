@@ -453,6 +453,18 @@
             "dataType": "string",
             "sourceColumn": "Koulutuksen aloituslukukausi",
             "displayFolder": "Koulutusmuuttujat"
+          },
+          {
+            "name": "Ikä tutkinnon suoritusvuonna",
+            "dataType": "string",
+            "sourceColumn": "Ikä tutkinnon suoritusvuonna",
+            "displayFolder": "Henkilömuuttujat"
+          },
+          {
+            "name": "Ikä tilastovuonna",
+            "dataType": "string",
+            "sourceColumn": "Ikä tilastovuonna",
+            "displayFolder": "Henkilömuuttujat"
           }
         ],
         "partitions": [
@@ -972,6 +984,22 @@
                   "        <int>207</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Ikä tutkinnon suoritusvuonna</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>215</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Ikä tilastovuonna</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>139</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -1470,6 +1498,22 @@
                   "        <int>61</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Ikä tutkinnon suoritusvuonna</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>62</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Ikä tilastovuonna</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>63</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -1513,6 +1557,22 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Ikä tutkinnon suoritusvuonna</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Ikä tilastovuonna</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -1546,17 +1606,30 @@
           },
           {
             "name": "Työllistyneet",
-            "expression": " CALCULATE(SUM(Muuttujat[v Työlliset]), Muuttujat[Koulutuksen tavoite] = \"Koko tutkinto\")",
+            "expression": [
+              " ",
+              "var summa = CALCULATE(SUM(Muuttujat[v Työlliset]), Muuttujat[Koulutuksen tavoite] = \"Koko tutkinto\")",
+              "return IF(summa=0,BLANK(),summa)"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Jatko-opiskelijat",
-            "expression": " CALCULATE(SUM(Muuttujat[v Opiskelijat]), Muuttujat[Koulutuksen tavoite] = \"Koko tutkinto\")",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Opiskelijat]), Muuttujat[Koulutuksen tavoite] = \"Koko tutkinto\")",
+              "return IF(lkm=0,BLANK(),lkm)",
+              ""
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Työllistyneet ja jatko-opiskelijat",
-            "expression": " CALCULATE(SUM(Muuttujat[v Työlliset ja opiskelijat]), Muuttujat[Koulutuksen tavoite] = \"Koko tutkinto\")",
+            "expression": [
+              " ",
+              "var summa = CALCULATE(SUM(Muuttujat[v Työlliset ja opiskelijat]), Muuttujat[Koulutuksen tavoite] = \"Koko tutkinto\")",
+              "return IF(summa=0,BLANK(),summa)"
+            ],
             "formatString": "#,0"
           },
           {
@@ -1585,52 +1658,64 @@
           {
             "name": "Jatko-opiskelija, ennen koulutusta työllinen",
             "expression": [
-              " IF(SUM(Muuttujat[v Jatko-opiskelija, koko tutkinnon suorittanut, ennen koulutusta työllinen]) = 0, 0,",
-              "\t\t\t\t\tIF(SUM(Muuttujat[v Jatko-opiskelija, koko tutkinnon suorittanut, ennen koulutusta työllinen]) < 5, \"1 - 4\", ",
-              "\t\t\t\t\tMROUND(SUM(Muuttujat[v Jatko-opiskelija, koko tutkinnon suorittanut, ennen koulutusta työllinen]), 3)))"
+              "",
+              "var lkm = SUM(Muuttujat[v Jatko-opiskelija, koko tutkinnon suorittanut, ennen koulutusta työllinen])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
             ],
             "formatString": "#,0"
           },
           {
             "name": "Jatko-opiskelija, ennen koulutusta ei-työllinen",
             "expression": [
-              " IF(SUM(Muuttujat[v Jatko-opiskelija, koko tutkinnon suorittanut, ennen koulutusta ei-työllinen]) = 0, 0,",
-              "\t\t\t\t\tIF(SUM(Muuttujat[v Jatko-opiskelija, koko tutkinnon suorittanut, ennen koulutusta ei-työllinen]) < 5, \"1 - 4\", ",
-              "\t\t\t\t\t\tMROUND(SUM(Muuttujat[v Jatko-opiskelija, koko tutkinnon suorittanut, ennen koulutusta ei-työllinen]), 3) ))"
+              "",
+              "var lkm = SUM(Muuttujat[v Jatko-opiskelija, koko tutkinnon suorittanut, ennen koulutusta ei-työllinen])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
             ],
             "formatString": "#,0"
           },
           {
             "name": "Työllinen, ennen koulutusta työllinen",
             "expression": [
-              " IF(SUM(Muuttujat[v Työllinen, koko tutkinnon suorittanut, ennen koulutusta työllinen]) = 0, 0,",
-              "\t\t\t\tIF(SUM(Muuttujat[v Työllinen, koko tutkinnon suorittanut, ennen koulutusta työllinen]) < 5, \"1 - 4\", ",
-              "\t\t\t\t\tROUND(SUM(Muuttujat[v Työllinen, koko tutkinnon suorittanut, ennen koulutusta työllinen]), 3 ) ))"
+              "",
+              "var lkm = SUM(Muuttujat[v Työllinen, koko tutkinnon suorittanut, ennen koulutusta työllinen])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
             ],
             "formatString": "#,0"
           },
           {
             "name": "Työllinen, ennen koulutusta ei-työllinen",
             "expression": [
-              " IF(SUM([v Työllinen, koko tutkinnon suorittanut, ennen koulutusta ei-työllinen]) = 0, 0,",
-              "\t\t\t\t\tIF(SUM([v Työllinen, koko tutkinnon suorittanut, ennen koulutusta ei-työllinen]) < 5, \"1 -4\", ",
-              "\t\t\t\t\t\tMROUND(SUM([v Työllinen, koko tutkinnon suorittanut, ennen koulutusta ei-työllinen]), 3 ) ))"
+              "",
+              "var lkm = SUM([v Työllinen, koko tutkinnon suorittanut, ennen koulutusta ei-työllinen])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
             ],
             "formatString": "#,0"
           },
           {
             "name": "Lukumäärä",
-            "expression": " IF(SUM(Muuttujat[v lkm]) = 0,0, IF(SUM(Muuttujat[v lkm]) <5, \"1 - 4\", MROUND(SUM(Muuttujat[v lkm]), 3)))",
+            "expression": [
+              "",
+              "var lkm = SUM(Muuttujat[v lkm])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Koko tutkinnon suorittaneet",
-            "expression": " IF(SUM(Muuttujat[v Suoritetut tutkinnot]) < 5, \"1 - 4\", SUM(Muuttujat[v Suoritetut tutkinnot]))",
+            "expression": [
+              "",
+              "var lkm = SUM(Muuttujat[v Suoritetut tutkinnot])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Tutkinnon osan suorittaneet",
-            "expression": " IF(SUM(Muuttujat[v Suoritetut tutkinnon osat]) < 5, \"1 - 4\", SUM(Muuttujat[v Suoritetut tutkinnon osat]))",
+            "expression": [
+              "",
+              "var lkm = SUM(Muuttujat[v Suoritetut tutkinnon osat])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
             "formatString": "#,0"
           },
           {
@@ -1671,12 +1756,20 @@
           },
           {
             "name": "Tutkinnon osia suorittaneet työllistyneet",
-            "expression": "CALCULATE(SUM(Muuttujat[v Työlliset]), Muuttujat[Koulutuksen tavoite] = \"Tutkinnon osa tai osia\")",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Työlliset]), Muuttujat[Koulutuksen tavoite] = \"Tutkinnon osa tai osia\")",
+              "return IF(lkm=0,BLANK(),lkm)"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Tutkinnon osia suorittaneet jatko-opiskelijat",
-            "expression": "CALCULATE(SUM(Muuttujat[v Opiskelijat]), Muuttujat[Koulutuksen tavoite] = \"Tutkinnon osa tai osia\")",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Opiskelijat]), Muuttujat[Koulutuksen tavoite] = \"Tutkinnon osa tai osia\")",
+              "return IF(lkm=0,BLANK(),lkm)"
+            ],
             "formatString": "#,0"
           },
           {
@@ -1690,7 +1783,11 @@
           },
           {
             "name": "Tutkinnon osia suorittaneet jatko-opiskelijat, painotetut pisteet",
-            "expression": "CALCULATE(SUM(Muuttujat[v Opiskelijoiden painotetut pisteet]), Muuttujat[Koulutuksen tavoite] = \"Tutkinnon osa tai osia\")",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Opiskelijoiden painotetut pisteet]), Muuttujat[Koulutuksen tavoite] = \"Tutkinnon osa tai osia\")",
+              "return IF(lkm=0,BLANK(),lkm)"
+            ],
             "formatString": "#,0.00"
           },
           {
@@ -1717,7 +1814,8 @@
               "",
               "var lkm = CALCULATE(SUM(Muuttujat[v Työllinen, koko tutkinnon suorittanut, ennen koulutusta ei-työllinen]))",
               "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
-            ]
+            ],
+            "formatString": "#,0"
           },
           {
             "name": "Tutk. suor. työllinen; ennen koulutusta työllinen",
@@ -1725,7 +1823,8 @@
               "",
               "var lkm = CALCULATE(SUM(Muuttujat[v Työllinen, koko tutkinnon suorittanut, ennen koulutusta työllinen]))",
               "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
-            ]
+            ],
+            "formatString": "#,0"
           },
           {
             "name": "Tutk. suor. jatko-opiskelija; ennen koulutusta ei-työllinen",
@@ -1733,7 +1832,8 @@
               "",
               "var lkm = CALCULATE(SUM(Muuttujat[v Jatko-opiskelija, koko tutkinnon suorittanut, ennen koulutusta ei-työllinen]))",
               "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
-            ]
+            ],
+            "formatString": "#,0"
           },
           {
             "name": "Tutk. suor. jatko-opiskelija; ennen koulutusta työllinen",
@@ -1741,7 +1841,8 @@
               "",
               "var lkm = CALCULATE(SUM(Muuttujat[v Jatko-opiskelija, koko tutkinnon suorittanut, ennen koulutusta työllinen]))",
               "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
-            ]
+            ],
+            "formatString": "#,0"
           },
           {
             "name": "Tutk. osan suor. työllinen; ennen koulutusta ei-työllinen",
@@ -1749,7 +1850,8 @@
               "",
               "var lkm = CALCULATE(SUM(Muuttujat[v Työllinen, tutkinnon osia suorittanut, ennen koulutusta ei-työllinen]))",
               "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
-            ]
+            ],
+            "formatString": "#,0"
           },
           {
             "name": "Tutk. osan suor. työllinen; ennen koulutusta työllinen",
@@ -1757,7 +1859,8 @@
               "",
               "var lkm = CALCULATE(SUM(Muuttujat[v Työllinen, tutkinnon osia suorittanut, ennen koulutusta työllinen]))",
               "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
-            ]
+            ],
+            "formatString": "#,0"
           },
           {
             "name": "Tutk. osan suor. jatko-opiskelija; ennen koulutusta ei-työllinen",
@@ -1765,7 +1868,8 @@
               "",
               "var lkm = CALCULATE(SUM(Muuttujat[v Jatko-opiskelija, tutkinnon osia suorittanut, ennen koulutusta ei-työllinen]))",
               "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
-            ]
+            ],
+            "formatString": "#,0"
           },
           {
             "name": "Tutk. osan suor. jatko-opiskelija; ennen koulutusta työllinen",
@@ -1773,7 +1877,177 @@
               "",
               "var lkm = CALCULATE(SUM(Muuttujat[v Jatko-opiskelija, tutkinnon osia suorittanut, ennen koulutusta työllinen]))",
               "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
-            ]
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinto, yhteensä",
+            "expression": [
+              "",
+              "var lkm = SUM(Muuttujat[v Suoritetut tutkinnot])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
+            "formatString": "#,0",
+            "displayFolder": "Tutkinnon suorittaneet"
+          },
+          {
+            "name": "Tutkinnon osia; jatko-opiskelijat, ennen koulutusta työllinen",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Jatko-opiskelija, tutkinnon osia suorittanut, ennen koulutusta työllinen]))",
+              "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
+            ],
+            "formatString": "#,0",
+            "displayFolder": "Tutkinnon osia suorittaneet"
+          },
+          {
+            "name": "Tutkinto; työllistyneet, ennen koulutusta ei-työllinen",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Työllinen, koko tutkinnon suorittanut, ennen koulutusta ei-työllinen]))",
+              "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
+            ],
+            "formatString": "#,0",
+            "displayFolder": "Tutkinnon suorittaneet"
+          },
+          {
+            "name": "Tutkinto; työllistyneet, ennen koulutusta työllinen",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Työllinen, koko tutkinnon suorittanut, ennen koulutusta työllinen]))",
+              "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
+            ],
+            "formatString": "#,0",
+            "displayFolder": "Tutkinnon suorittaneet"
+          },
+          {
+            "name": "Tutkinto; jatko-opiskelijat, ennen koulutusta ei-työllinen",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Jatko-opiskelija, koko tutkinnon suorittanut, ennen koulutusta ei-työllinen]))",
+              "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
+            ],
+            "formatString": "#,0",
+            "displayFolder": "Tutkinnon suorittaneet"
+          },
+          {
+            "name": "Tutkinto; jatko-opiskelijat, ennen koulutusta työllinen",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Jatko-opiskelija, koko tutkinnon suorittanut, ennen koulutusta työllinen]))",
+              "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
+            ],
+            "formatString": "#,0",
+            "displayFolder": "Tutkinnon suorittaneet"
+          },
+          {
+            "name": "Tutkinnon osia; työllistyneet, ennen koulutusta ei-työllinen",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Työllinen, tutkinnon osia suorittanut, ennen koulutusta ei-työllinen]))",
+              "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
+            ],
+            "formatString": "#,0",
+            "displayFolder": "Tutkinnon osia suorittaneet"
+          },
+          {
+            "name": "Tutkinnon osia; työllistyneet, ennen koulutusta työllinen",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Työllinen, tutkinnon osia suorittanut, ennen koulutusta työllinen]))",
+              "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
+            ],
+            "formatString": "#,0",
+            "displayFolder": "Tutkinnon osia suorittaneet"
+          },
+          {
+            "name": "Tutkinnon osia; jatko-opiskelijat, ennen koulutusta ei-työllinen",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Jatko-opiskelija, tutkinnon osia suorittanut, ennen koulutusta ei-työllinen]))",
+              "return if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
+            ],
+            "formatString": "#,0",
+            "displayFolder": "Tutkinnon osia suorittaneet"
+          },
+          {
+            "name": "Tutkinnon osia, yhteensä",
+            "expression": [
+              "",
+              "var lkm = SUM(Muuttujat[v Suoritetut tutkinnon osat])",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
+            "formatString": "#,0",
+            "displayFolder": "Tutkinnon osia suorittaneet"
+          },
+          {
+            "name": "Painotetut pisteet; tutkinto, työllistyneet",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Työllisten painotetut pisteet]), Muuttujat[Koulutuksen tavoite] = \"Koko tutkinto\")",
+              "return IF(lkm=0,BLANK(),lkm)"
+            ],
+            "formatString": "#,0.00",
+            "displayFolder": "Painotetut pisteet ja kertoimet"
+          },
+          {
+            "name": "Painotetut pisteet; tutkinto, jatko-opiskelijat",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([v Opiskelijoiden painotetut pisteet]),Muuttujat[Koulutuksen tavoite] = \"Koko tutkinto\")",
+              "return IF(lkm=0,BLANK(),lkm)"
+            ],
+            "formatString": "#,0.00",
+            "displayFolder": "Painotetut pisteet ja kertoimet"
+          },
+          {
+            "name": "Painotetut pisteet; tutkinnon osia, jatko-opiskelijat",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Opiskelijoiden painotetut pisteet]), Muuttujat[Koulutuksen tavoite] = \"Tutkinnon osa tai osia\")",
+              "return IF(lkm=0,BLANK(),lkm)"
+            ],
+            "formatString": "#,0.00",
+            "displayFolder": "Painotetut pisteet ja kertoimet"
+          },
+          {
+            "name": "Painotetut pisteet; tutkinnon osia, työllistyneet",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Työllisten painotetut pisteet]), Muuttujat[Koulutuksen tavoite] = \"Tutkinnon osa tai osia\")",
+              "return IF(lkm=0,BLANK(),lkm)"
+            ],
+            "formatString": "#,0.00",
+            "displayFolder": "Painotetut pisteet ja kertoimet"
+          },
+          {
+            "name": "Kertoimet, aluekerroin",
+            "expression": " MAX([v Aluekerroin])",
+            "formatString": "0.00000",
+            "displayFolder": "Painotetut pisteet ja kertoimet"
+          },
+          {
+            "name": "Kertoimet, järjestäjäkerroin",
+            "expression": " MAX(Muuttujat[v Järjestäjäkerroin])",
+            "formatString": "0.00000",
+            "displayFolder": "Painotetut pisteet ja kertoimet"
+          },
+          {
+            "name": "Painotetut pisteet, yhteensä",
+            "expression": " SUM([v Opiskelijoiden painotetut pisteet]) + SUM([v Työllisten painotetut pisteet])",
+            "formatString": "#,0.00",
+            "displayFolder": "Painotetut pisteet ja kertoimet"
+          },
+          {
+            "name": "Painotetut pisteet; työllistyneet ja opiskelijat, %-osuus järjestäjittäin",
+            "expression": [
+              " ",
+              "DIVIDE([Painotetut pisteet yhteensä]",
+              ", CALCULATE([Painotetut pisteet yhteensä], ALLEXCEPT(Muuttujat, Muuttujat[Tilastovuosi],Muuttujat[Suoritepäätös]))",
+              ")"
+            ],
+            "formatString": "0.00 %;-0.00 %;0.00 %",
+            "displayFolder": "Painotetut pisteet ja kertoimet"
           }
         ],
         "annotations": [
@@ -2297,6 +2571,22 @@
               "        <int>207</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Ikä tutkinnon suoritusvuonna</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>215</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Ikä tilastovuonna</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>139</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -2795,6 +3085,22 @@
               "        <int>61</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Ikä tutkinnon suoritusvuonna</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>62</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Ikä tilastovuonna</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>63</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -2833,6 +3139,22 @@
               "    <item>",
               "      <key>",
               "        <string>Koulutuksen aloituslukukausi</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Ikä tutkinnon suoritusvuonna</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Ikä tilastovuonna</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -3085,6 +3407,96 @@
               },
               {
                 "name": "Tutkinnon osan suorittaneet"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Kehityshanke",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Ikä tilastovuonna"
+              },
+              {
+                "name": "Ikä tutkinnon suoritusvuonna"
+              },
+              {
+                "name": "Koulutuksen aloitusvuosi"
+              },
+              {
+                "name": "Koulutuksen järjestäjä"
+              },
+              {
+                "name": "Koulutuksen suoritusvuosi"
+              },
+              {
+                "name": "Koulutuksen tavoite"
+              },
+              {
+                "name": "Suoritepäätös"
+              },
+              {
+                "name": "Tilastovuosi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Painotetut pisteet; työllistyneet ja opiskelijat, %-osuus järjestäjittäin"
+              },
+              {
+                "name": "Painotetut pisteet; tutkinto, työllistyneet"
+              },
+              {
+                "name": "Painotetut pisteet; tutkinto, jatko-opiskelijat"
+              },
+              {
+                "name": "Kertoimet, aluekerroin"
+              },
+              {
+                "name": "Painotetut pisteet; tutkinnon osia, työllistyneet"
+              },
+              {
+                "name": "Painotetut pisteet; tutkinnon osia, jatko-opiskelijat"
+              },
+              {
+                "name": "Painotetut pisteet, yhteensä"
+              },
+              {
+                "name": "Kertoimet, järjestäjäkerroin"
+              },
+              {
+                "name": "Tutkinnon osia, yhteensä"
+              },
+              {
+                "name": "Tutkinnon osia; jatko-opiskelijat, ennen koulutusta ei-työllinen"
+              },
+              {
+                "name": "Tutkinnon osia; jatko-opiskelijat, ennen koulutusta työllinen"
+              },
+              {
+                "name": "Tutkinnon osia; työllistyneet, ennen koulutusta ei-työllinen"
+              },
+              {
+                "name": "Tutkinnon osia; työllistyneet, ennen koulutusta työllinen"
+              },
+              {
+                "name": "Tutkinto, yhteensä"
+              },
+              {
+                "name": "Tutkinto; jatko-opiskelijat, ennen koulutusta ei-työllinen"
+              },
+              {
+                "name": "Tutkinto; jatko-opiskelijat, ennen koulutusta työllinen"
+              },
+              {
+                "name": "Tutkinto; työllistyneet, ennen koulutusta ei-työllinen"
+              },
+              {
+                "name": "Tutkinto; työllistyneet, ennen koulutusta työllinen"
               }
             ]
           }
