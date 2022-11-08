@@ -18,6 +18,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+
 CREATE TABLE [dw].[d_amos_spl_jarjestaja_linkki](
 	[id] [int] IDENTITY(0,1) NOT NULL,
 	[oid_avain] [varchar](max) NULL,
