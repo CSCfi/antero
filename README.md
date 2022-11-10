@@ -6,3 +6,4 @@ Antero Data Platform aims to support decision making in Finnish educational admi
 - combine and enrich data
 - analyze data with advanced analytics
 - provide data to national educational administration, educational organizations and public audience via a REST API
+ 
