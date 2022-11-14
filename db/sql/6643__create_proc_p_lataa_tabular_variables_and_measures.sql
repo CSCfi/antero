@@ -10,7 +10,7 @@ GO
 
 
 
-CREATE PROCEDURE [dw].[p_lataa_tabular_variables_and_measures] AS
+CREATE PROCEDURE OR ALTER [dw].[p_lataa_tabular_variables_and_measures] AS
 
 DROP TABLE IF EXISTS #temp
 
