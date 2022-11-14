@@ -13,13 +13,9 @@ CREATE TABLE [dbo].[vipunen_raportit_perspektiivit](
 	[username] [varchar](30) NULL
 ) ON [PRIMARY]
 
-GO
-
 ALTER TABLE [dbo].[vipunen_raportit_perspektiivit] ADD  CONSTRAINT [DF__vipunen_raportit_perspektiivit__loadtime__5224328E]  DEFAULT (getdate()) FOR [loadtime]
-GO
 
 ALTER TABLE [dbo].[vipunen_raportit_perspektiivit] ADD  CONSTRAINT [DF__vipunen_raportit_perspektiivit__username__531856C7]  DEFAULT (suser_sname()) FOR [username]
-GO
 
 
 END

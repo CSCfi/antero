@@ -14,13 +14,10 @@ CREATE TABLE [dbo].[vipunen_raportit_en](
 	[username] [varchar](30) NULL
 ) ON [PRIMARY]
 
-GO
 
 ALTER TABLE [dbo].[vipunen_raportit_en] ADD  CONSTRAINT [DF__vipunen_raportit_en__loadtime__5224328E]  DEFAULT (getdate()) FOR [loadtime]
-GO
 
 ALTER TABLE [dbo].[vipunen_raportit_en] ADD  CONSTRAINT [DF__vipunen_raportit_en__username__531856C7]  DEFAULT (suser_sname()) FOR [username]
-GO
 
 END
 
