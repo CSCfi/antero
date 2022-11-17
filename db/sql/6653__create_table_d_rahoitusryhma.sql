@@ -1,11 +1,9 @@
 USE [ANTERO]
 GO
-ALTER TABLE [dw].[d_rahoitusryhma] DROP CONSTRAINT [DF_d_rahoitusryhma_username]
-GO
-ALTER TABLE [dw].[d_rahoitusryhma] DROP CONSTRAINT [DF_d_rahoitusryhma_loadtime]
-GO
+
+
 /****** Object:  Table [dw].[d_rahoitusryhma]    Script Date: 17.11.2022 11:16:11 ******/
-DROP TABLE [dw].[d_rahoitusryhma]
+DROP TABLE IF EXISTS [dw].[d_rahoitusryhma]
 GO
 /****** Object:  Table [dw].[d_rahoitusryhma]    Script Date: 17.11.2022 11:16:11 ******/
 SET ANSI_NULLS ON
