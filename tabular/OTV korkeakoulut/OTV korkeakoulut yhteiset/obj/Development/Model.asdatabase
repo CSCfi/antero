@@ -4111,7 +4111,9 @@
           {
             "name": "Uudet opiskelijat lkm_s",
             "expression": [
-              " --suojaamattomaan raporttiin, saa suodattua vain muuttujilla jotka api-taulussa opiskelijat_ja_tutkinnot",
+              " ",
+              "--suojaamattomiin raportteihin, saa suodattua vain muuttujilla jotka api-taulussa opiskelijat_ja_tutkinnot sekä ilman sukupuolta myös kirjoihintulovuodella",
+              "var ehto = ISFILTERED(Muuttujat[Sukupuoli]) && ISFILTERED(Muuttujat[Kirjoihintulovuosi])",
               "var lkm =  CALCULATE(SUM([Aloit3]) --huom. ei Aloit2, josta rajattu näkymässä 8-aste\t\t",
               "\t, ALLEXCEPT(Muuttujat",
               "\t\t, Muuttujat[Tilastovuosi]",
@@ -4121,6 +4123,7 @@
               "\t\t, Muuttujat[Oppilaitos (tilastovuosi)]",
               "\t\t, Muuttujat[Koulutusnimike], Muuttujat[Koodit Koulutusnimike]",
               "\t\t, Muuttujat[Sukupuoli]",
+              "\t\t, Muuttujat[Kirjoihintulovuosi]",
               "\t\t, Muuttujat[Koulutusaste, taso 1], Muuttujat[Koodit Koulutusaste taso 1]",
               "\t\t, Muuttujat[Koulutusaste, taso 2], Muuttujat[Koodit Koulutusaste taso 2]",
               "\t\t, Muuttujat[Koulutusala, taso 1], Muuttujat[Koodit Koulutusala taso 1]",
@@ -4133,14 +4136,16 @@
               "\t, FILTER(Muuttujat, [Koodit Koulutusaste taso 2] <> \"73\" && [Koodit Koulutusaste taso 2] <> \"91\")",
               "\t, FILTER(Muuttujat, [Tilastovuosi] <> \"2000\" && [Tilastovuosi] <> \"2001\" && [Tilastovuosi] <> \"2002\"  && [Tilastovuosi] <> \"2003\" && [Tilastovuosi] <> \"2004\" && [Tilastovuosi] <> \"2005\" && [Tilastovuosi] <> \"2006\" && [Tilastovuosi] <> \"2007\" && [Tilastovuosi] <> \"2008\" && [Tilastovuosi] <> \"2009\"))",
               "\t",
-              "return IF(lkm = 0, BLANK(), lkm)"
+              "return IF(ehto || lkm = 0, BLANK(), lkm)"
             ],
             "formatString": "#,0"
           },
           {
             "name": "Opiskelijat lkm_s",
             "expression": [
-              " --suojaamattomaan raporttiin, saa suodattua vain muuttujilla jotka api-taulussa opiskelijat_ja_tutkinnot",
+              " ",
+              "--suojaamattomiin raportteihin, saa suodattua vain muuttujilla jotka api-taulussa opiskelijat_ja_tutkinnot sekä ilman sukupuolta myös kirjoihintulovuodella",
+              "var ehto = ISFILTERED(Muuttujat[Sukupuoli]) && ISFILTERED(Muuttujat[Kirjoihintulovuosi])",
               "var lkm =  CALCULATE(SUM([Opisk2])",
               "\t, ALLEXCEPT(Muuttujat",
               "\t\t, Muuttujat[Tilastovuosi]",
@@ -4150,6 +4155,7 @@
               "\t\t, Muuttujat[Oppilaitos (tilastovuosi)]",
               "\t\t, Muuttujat[Koulutusnimike], Muuttujat[Koodit Koulutusnimike]",
               "\t\t, Muuttujat[Sukupuoli]",
+              "\t\t, Muuttujat[Kirjoihintulovuosi]",
               "\t\t, Muuttujat[Koulutusaste, taso 1], Muuttujat[Koodit Koulutusaste taso 1]",
               "\t\t, Muuttujat[Koulutusaste, taso 2], Muuttujat[Koodit Koulutusaste taso 2]",
               "\t\t, Muuttujat[Koulutusala, taso 1], Muuttujat[Koodit Koulutusala taso 1]",
@@ -4162,14 +4168,16 @@
               "\t, FILTER(Muuttujat, [Koodit Koulutusaste taso 2] <> \"73\" && [Koodit Koulutusaste taso 2] <> \"91\")",
               "\t, FILTER(Muuttujat, [Tilastovuosi] <> \"2000\" && [Tilastovuosi] <> \"2001\" && [Tilastovuosi] <> \"2002\"  && [Tilastovuosi] <> \"2003\" && [Tilastovuosi] <> \"2004\" && [Tilastovuosi] <> \"2005\" && [Tilastovuosi] <> \"2006\" && [Tilastovuosi] <> \"2007\" && [Tilastovuosi] <> \"2008\" && [Tilastovuosi] <> \"2009\"))",
               "",
-              "return IF(lkm = 0, BLANK(), lkm)"
+              "return IF(ehto || lkm = 0, BLANK(), lkm)"
             ],
             "formatString": "#,0"
           },
           {
             "name": "Tutkinnot lkm_s",
             "expression": [
-              " --suojaamattomaan raporttiin, saa suodattua vain muuttujilla jotka api-taulussa opiskelijat_ja_tutkinnot",
+              " ",
+              "--suojaamattomiin raportteihin, saa suodattua vain muuttujilla jotka api-taulussa opiskelijat_ja_tutkinnot sekä ilman sukupuolta myös kirjoihintulovuodella",
+              "var ehto = ISFILTERED(Muuttujat[Sukupuoli]) && ISFILTERED(Muuttujat[Kirjoihintulovuosi])",
               "var lkm =  CALCULATE(SUM([Tutk2])",
               "\t, ALLEXCEPT(Muuttujat",
               "\t\t, Muuttujat[Tilastovuosi]",
@@ -4179,6 +4187,7 @@
               "\t\t, Muuttujat[Oppilaitos (tilastovuosi)]",
               "\t\t, Muuttujat[Koulutusnimike], Muuttujat[Koodit Koulutusnimike]",
               "\t\t, Muuttujat[Sukupuoli]",
+              "\t\t, Muuttujat[Kirjoihintulovuosi]",
               "\t\t, Muuttujat[Koulutusaste, taso 1], Muuttujat[Koodit Koulutusaste taso 1]",
               "\t\t, Muuttujat[Koulutusaste, taso 2], Muuttujat[Koodit Koulutusaste taso 2]",
               "\t\t, Muuttujat[Koulutusala, taso 1], Muuttujat[Koodit Koulutusala taso 1]",
@@ -4191,14 +4200,16 @@
               "\t, FILTER(Muuttujat, [Koodit Koulutusaste taso 2] <> \"73\" && [Koodit Koulutusaste taso 2] <> \"91\")",
               "\t, FILTER(Muuttujat, [Tilastovuosi] <> \"2000\" && [Tilastovuosi] <> \"2001\" && [Tilastovuosi] <> \"2002\"  && [Tilastovuosi] <> \"2003\" && [Tilastovuosi] <> \"2004\" && [Tilastovuosi] <> \"2005\" && [Tilastovuosi] <> \"2006\" && [Tilastovuosi] <> \"2007\" && [Tilastovuosi] <> \"2008\" && [Tilastovuosi] <> \"2009\"))",
               "\t",
-              "return IF(lkm = 0, BLANK(), lkm)"
+              "return IF(ehto || lkm = 0, BLANK(), lkm)"
             ],
             "formatString": "#,0"
           },
           {
             "name": "Opiskelijat FTE lkm_s",
             "expression": [
-              " --suojaamattomaan raporttiin, saa suodattua vain muuttujilla jotka api-taulussa opiskelijat_ja_tutkinnot",
+              " ",
+              "--suojaamattomiin raportteihin, saa suodattua vain muuttujilla jotka api-taulussa opiskelijat_ja_tutkinnot sekä ilman sukupuolta myös kirjoihintulovuodella",
+              "var ehto = ISFILTERED(Muuttujat[Sukupuoli]) && ISFILTERED(Muuttujat[Kirjoihintulovuosi])",
               "var lkm =  CALCULATE(SUM([opiskelijat_fte])",
               "\t, ALLEXCEPT(Muuttujat",
               "\t\t, Muuttujat[Tilastovuosi]",
@@ -4208,6 +4219,7 @@
               "\t\t, Muuttujat[Oppilaitos (tilastovuosi)]",
               "\t\t, Muuttujat[Koulutusnimike], Muuttujat[Koodit Koulutusnimike]",
               "\t\t, Muuttujat[Sukupuoli]",
+              "\t\t, Muuttujat[Kirjoihintulovuosi]",
               "\t\t, Muuttujat[Koulutusaste, taso 1], Muuttujat[Koodit Koulutusaste taso 1]",
               "\t\t, Muuttujat[Koulutusaste, taso 2], Muuttujat[Koodit Koulutusaste taso 2]",
               "\t\t, Muuttujat[Koulutusala, taso 1], Muuttujat[Koodit Koulutusala taso 1]",
@@ -4220,7 +4232,7 @@
               "\t, FILTER(Muuttujat, [Koodit Koulutusaste taso 2] <> \"73\" && [Koodit Koulutusaste taso 2] <> \"91\")",
               "\t, FILTER(Muuttujat, [Tilastovuosi] <> \"2000\" && [Tilastovuosi] <> \"2001\" && [Tilastovuosi] <> \"2002\"  && [Tilastovuosi] <> \"2003\" && [Tilastovuosi] <> \"2004\" && [Tilastovuosi] <> \"2005\" && [Tilastovuosi] <> \"2006\" && [Tilastovuosi] <> \"2007\" && [Tilastovuosi] <> \"2008\" && [Tilastovuosi] <> \"2009\"))",
               "",
-              "return IF(lkm = 0, BLANK(), lkm)",
+              "return IF(ehto || lkm = 0, BLANK(), lkm)",
               "",
               ""
             ],
@@ -14210,6 +14222,105 @@
               },
               {
                 "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Opiskelijat_ja_tutkinnot_kirjoihintulovuosi",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Aineisto"
+              },
+              {
+                "name": "Kirjoihintulovuosi"
+              },
+              {
+                "name": "Koodit Koulutusala taso 1"
+              },
+              {
+                "name": "Koodit Koulutusala taso 2"
+              },
+              {
+                "name": "Koodit Koulutusala taso 3"
+              },
+              {
+                "name": "Koodit Koulutusaste taso 1"
+              },
+              {
+                "name": "Koodit Koulutusaste taso 2"
+              },
+              {
+                "name": "Koodit Koulutusnimike"
+              },
+              {
+                "name": "Koodit OKM ohjauksen ala korkeak"
+              },
+              {
+                "name": "Koodit Oppilaitos"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "Koulutusnimike"
+              },
+              {
+                "name": "Koulutussektori"
+              },
+              {
+                "name": "OKM ohjauksen ala korkeak."
+              },
+              {
+                "name": "Oppilaitos"
+              },
+              {
+                "name": "Oppilaitos (tilastovuosi)"
+              },
+              {
+                "name": "Rahoitusmallialat amk 2017-2020"
+              },
+              {
+                "name": "Rahoitusmallialat amk 2021-2024"
+              },
+              {
+                "name": "Rahoitusmallialat yo 2017-2020"
+              },
+              {
+                "name": "Rahoitusmallialat yo 2021-2024"
+              },
+              {
+                "name": "Tilastovuosi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Opiskelijat FTE lkm_s"
+              },
+              {
+                "name": "Opiskelijat lkm_s"
+              },
+              {
+                "name": "Tutkinnot lkm_s"
+              },
+              {
+                "name": "Uudet opiskelijat lkm_s"
               }
             ]
           }
