@@ -16,11 +16,11 @@ SELECT --top 1000
 	f.[tilastovuosi] as 'Tilastovuosi'
 	,d11.kuukausi_fi as 'Tilastokuukausi'
 
-	-- Henkilˆmuuttujat
-	,d2.ikaryhma6_fi as 'Ik‰'
+	-- Henkil√∂muuttujat
+	,d2.ikaryhma6_fi as 'Ik√§'
 	,d1.sukupuoli_fi as 'Sukupuoli'
-	,d4.kieliryhma1_fi as 'ƒidinkieli (ryhm‰)'
-	,d3.maanosa1_fi as 'Kansalaisuus (ryhm‰)'
+	,d4.kieliryhma1_fi as '√Ñidinkieli (ryhm√§)'
+	,d3.maanosa1_fi as 'Kansalaisuus (ryhm√§)'
 
 	-- Koulutusmuuttujat
 	,d11.lukuvuosi as 'Lukuvuosi'
@@ -34,13 +34,13 @@ SELECT --top 1000
 	,d9.maakunta_fi as 'Oppilaitoksen maakunta'
 	,d9.kunta_fi as 'Oppilaitoksen kunta'
 	,d7.oppilaitoksenopetuskieli_fi as 'Oppilaitoksen opetuskieli'
-	,d6.organisaatio_fi as 'Koulutuksen j‰rjest‰j‰'
-	,d6.koulutuksen_jarjestajan_yritysmuoto as 'Koulutuksen j‰rjest‰j‰n yrtysmuoto'
+	,d6.organisaatio_fi as 'Koulutuksen j√§rjest√§j√§'
+	,d6.koulutuksen_jarjestajan_yritysmuoto as 'Koulutuksen j√§rjest√§j√§n yrtysmuoto'
 	,CASE
-		WHEN f.[tuva_jarjestamislupa] = 'ammatillinen' THEN 'Ammatillisen koulutuksen rahoitusj‰rjestelm‰ (TUVA)'
-		WHEN f.[tuva_jarjestamislupa] = 'lukio' THEN 'Lukiokoulutuksen rahoitusj‰rjestelm‰ (TUVA)'
-		WHEN f.[tuva_jarjestamislupa] = 'perusopetus' THEN 'Perusopetuksen rahoitusj‰rjestelm‰ (TUVA)' END
-		as 'Rahoitusj‰rjestelm‰'
+		WHEN f.[tuva_jarjestamislupa] = 'ammatillinen' THEN 'Ammatillisen koulutuksen rahoitusj√§rjestelm√§ (TUVA)'
+		WHEN f.[tuva_jarjestamislupa] = 'lukio' THEN 'Lukiokoulutuksen rahoitusj√§rjestelm√§ (TUVA)'
+		WHEN f.[tuva_jarjestamislupa] = 'perusopetus' THEN 'Perusopetuksen rahoitusj√§rjestelm√§ (TUVA)' END
+		as 'Rahoitusj√§rjestelm√§'
 	,d8.organisaatio_fi as 'Toimipiste'
 	,d9.avi_fi as 'Oppilaitoksen AVI'
 	,d9.ely_fi as 'Oppilaitoksen ELY'
@@ -49,12 +49,12 @@ SELECT --top 1000
     ,f.[oppija_oid] as 'apusarake_oppija_oid'
 	,f.tila_20_9 as 'apusarake_tila_20_9'
 
-	-- J‰rjestysmuuttujat
+	-- J√§rjestysmuuttujat
 	,d11.kuukausi as 'Jarjestys Tilastokuukausi'
-	,d2.jarjestys_ikaryhma6 as 'Jarjestys Ik‰'
-	,d4.jarjestys_kieliryhma1 as 'Jarjestys ƒidinkieliryhm‰'
-	,d3.jarjestys_maatjavaltiot2_koodi as 'J‰rjestys Kansalaisuusryhm‰'
-	,d5.jarjestys_erityisopetus_koodi  as 'J‰rjestys Erityisopetus'
+	,d2.jarjestys_ikaryhma6 as 'Jarjestys Ik√§'
+	,d4.jarjestys_kieliryhma1 as 'Jarjestys √Ñidinkieliryhm√§'
+	,d3.jarjestys_maatjavaltiot2_koodi as 'J√§rjestys Kansalaisuusryhm√§'
+	,d5.jarjestys_erityisopetus_koodi  as 'J√§rjestys Erityisopetus'
 	,d7.jarjestys_oppilaitoksenopetuskieli_koodi as 'Jarjestys Oppilaitoksen opetuskieli'
 	,d9.jarjestys_maakunta_koodi as 'Jarjestys Oppilaitoksen maakunta'
 	,d9.jarjestys_kunta_koodi as 'Jarjestys Oppilaitoksen kunta'
