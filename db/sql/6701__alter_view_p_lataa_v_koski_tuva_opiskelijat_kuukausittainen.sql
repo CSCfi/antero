@@ -74,3 +74,5 @@ LEFT JOIN [ANTERO].[dw].[d_kalenteri] d11 on d11.id = d_kalenteri_id
 LEFT JOIN [ANTERO].[dw].[d_kieli] d12 on d12.id = f.d_suorituskieli_id
 
 GO
+
+USE [ANTERO]
