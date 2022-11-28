@@ -1,12 +1,13 @@
 USE [ANTERO]
 GO
 
-/****** Object:  View [dw].[v_koski_tuva_opiskelijat_kuukausittainen]    Script Date: 28.11.2022 10:28:02 ******/
+/****** Object:  View [dw].[v_koski_tuva_opiskelijat_kuukausittainen]    Script Date: 28.11.2022 16:03:00 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 ALTER   VIEW [dw].[v_koski_tuva_opiskelijat_kuukausittainen] AS
 
@@ -35,7 +36,7 @@ SELECT --top 1000
 	,d9.kunta_fi as 'Oppilaitoksen kunta'
 	,d7.oppilaitoksenopetuskieli_fi as 'Oppilaitoksen opetuskieli'
 	,d6.organisaatio_fi as 'Koulutuksen järjestäjä'
-	,d6.koulutuksen_jarjestajan_yritysmuoto as 'Koulutuksen järjestäjän yrtysmuoto'
+	,d6.koulutuksen_jarjestajan_yritysmuoto as 'Koulutuksen järjestäjän yritysmuoto'
 	,CASE
 	WHEN f.[tuva_jarjestamislupa] = 'ammatillinen' THEN 'Ammatillisen koulutuksen rahoitusjärjestelmä (TUVA)'
 	WHEN f.[tuva_jarjestamislupa] = 'lukio' THEN 'Lukiokoulutuksen rahoitusjärjestelmä (TUVA)'
@@ -75,4 +76,4 @@ LEFT JOIN [ANTERO].[dw].[d_kieli] d12 on d12.id = f.d_suorituskieli_id
 
 GO
 
-USE [ANTERO]
+
