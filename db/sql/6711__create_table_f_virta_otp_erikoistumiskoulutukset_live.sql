@@ -1,12 +1,6 @@
 USE [ANTERO]
 GO
 
-ALTER TABLE [dw].[f_virta_otp_erikoistumiskoulutukset_live] DROP CONSTRAINT IF EXISTS [DF_f_virta_otp_erikoistumiskoulutukset_live_username]
-GO
-
-ALTER TABLE [dw].[f_virta_otp_erikoistumiskoulutukset_live] DROP CONSTRAINT IF EXISTS [DF_f_virta_otp_erikoistumiskoulutukset_live_loadtime]
-GO
-
 /****** Object:  Table [dw].[f_virta_otp_erikoistumiskoulutukset_live]    Script Date: 1.12.2022 12:39:21 ******/
 DROP TABLE IF EXISTS [dw].[f_virta_otp_erikoistumiskoulutukset_live]
 GO
