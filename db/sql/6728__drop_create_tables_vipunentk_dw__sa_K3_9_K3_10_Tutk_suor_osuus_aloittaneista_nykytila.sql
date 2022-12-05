@@ -1,0 +1,14 @@
+use vipunentk_dw
+go
+
+DROP TABLE VipunenTK_DW.dbo.[_sa_K3_9_Tutk_suor_osuus_aloittaneista_toinen_aste_nykytila]
+Select top 0 * into VipunenTK_DW.dbo.[_sa_K3_9_Tutk_suor_osuus_aloittaneista_toinen_aste_nykytila]
+from VipunenTK_SA.dbo.[v_sa_K3_9_Tutk_suor_osuus_aloittaneista_toinen_aste_nykytila]
+
+DROP TABLE VipunenTK_DW.dbo.[_sa_K3_10_Tutk_suor_osuus_aloittaneista_korkeakoulut_nykytila_1]
+Select top 0 * into VipunenTK_DW.dbo.[_sa_K3_10_Tutk_suor_osuus_aloittaneista_korkeakoulut_nykytila_1] 
+from VipunenTK_SA.dbo.[v_sa_K3_10_Tutk_suor_osuus_aloittaneista_korkeakoulut_nykytila_1]
+
+DROP TABLE VipunenTK_DW.dbo.[_sa_K3_10_Tutk_suor_osuus_aloittaneista_korkeakoulut_nykytila_2]
+Select top 0 * into VipunenTK_DW.dbo.[_sa_K3_10_Tutk_suor_osuus_aloittaneista_korkeakoulut_nykytila_2] 
+from VipunenTK_SA.dbo.[v_sa_K3_10_Tutk_suor_osuus_aloittaneista_korkeakoulut_nykytila_2]
