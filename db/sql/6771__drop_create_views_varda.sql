@@ -158,15 +158,6 @@ CREATE VIEW [dw].[v_varda_vakajarjestajat_toimipaikat] AS
 
 
 
-GO
-/****** Object:  View [dw].[v_varda_varhaiskasvatustiedot]    Script Date: 20.12.2022 10:40:38 ******/
-SET ANSI_NULLS ON
-GO
-SET QUOTED_IDENTIFIER ON
-GO
-
-
-
 --exec [dbo].[tarkista_kaannokset2] 'v_varda_varhaiskasvatustiedot_test'
 
 CREATE VIEW [dw].[v_varda_varhaiskasvatustiedot] AS
