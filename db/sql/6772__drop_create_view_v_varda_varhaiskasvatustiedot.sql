@@ -383,21 +383,3 @@ select
 			when va.ika = 6				then  3
 			when va.ika > 6				then  4
 	end) a
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-GO
