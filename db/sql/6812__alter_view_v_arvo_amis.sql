@@ -261,7 +261,7 @@ LEFT JOIN dw.f_arvo_luodut_vastaajatunnukset f2 ON f2.kyselykertaid = d5.kyselyk
 												and coalesce(f2.oppilaitoskoodi, f2.ytunnus) = coalesce(nullif(o2.organisaatio_koodi, '-1'), d12.ytunnus_avain)
 												and coalesce(f2.tutkintokoodi,'-1') = d7.koulutusluokitus_koodi
 												and YEAR(f2.kuukausi) = d3.vuosi and MONTH(f2.kuukausi) = d3.kuukausi
-												and coalesce(f2.rahoitusryhma,'-1') = d11.koodi
+												--and coalesce(f2.rahoitusryhma,'-1') = d11.koodi
 LEFT JOIN [ANTERO].[dw].[f_amos_opiskelijapalaute_vastaajamäärä_vahvistettu] f3 ON (f3.rahoituskausi = d3.rahoituskausi_amm and f3.[Koulutuksen järjestäjän Y-tunnus] = d1.organisaatio_koodi)
 
 WHERE 1=1
