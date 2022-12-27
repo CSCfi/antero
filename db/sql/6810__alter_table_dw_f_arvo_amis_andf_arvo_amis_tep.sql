@@ -14,6 +14,6 @@ IF  EXISTS (
   and COLUMN_NAME='d_rahoitusryhma_id' and DATA_TYPE='int'
 )
 BEGIN
-	ALTER TABLE [Antero].[dw].[f_arvo_amis] DROP COLUMN [d_rahoitusryhma_id]
+	ALTER TABLE [Antero].[dw].[f_arvo_amis_tep] DROP COLUMN [d_rahoitusryhma_id]
 END
 GO
