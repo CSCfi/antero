@@ -119,7 +119,8 @@ SELECT
 	, av4.selite_sv								AS 'Läroavtalsutbildning'
 	, av.vastaus_sv								AS 'Ansökan'
 	, av5.vastaus_sv							AS 'Bedömning av situationen'
-	, d11.selite_sv								AS 'Finansiering grupp'
+	--poistettu ks. CSCVIPUNEN-3260
+  --, d11.selite_sv								AS 'Finansiering grupp'
 
 	--Englanti
 	, d3.vuosi									AS 'Statistical year'
@@ -166,7 +167,8 @@ SELECT
 	, av4.selite_en								AS 'Apprenticeship training'
 	, av.vastaus_en								AS 'Application route'
 	, av5.vastaus_en							AS 'Expectations for the future'
-	, d11.selite_en								AS 'Financing group'
+	--poistettu ks. CSCVIPUNEN-3260
+  --, d11.selite_en								AS 'Financing group'
 
 															--KOODIMUUTTUJAT
 	, d7.koulutusluokitus_koodi					AS 'Koodit Tutkinto'
