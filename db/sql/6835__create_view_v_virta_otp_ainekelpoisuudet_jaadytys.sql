@@ -1,14 +1,17 @@
 USE [ANTERO]
 GO
 
-/****** Object:  View [dw].[v_virta_otp_ainekelpoisuudet]    Script Date: 4.1.2023 15:10:34 ******/
+/****** Object:  View [dw].[v_virta_otp_ainekelpoisuudet_jaadytys]    Script Date: 4.1.2023 15:16:58 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE OR ALTER VIEW [dw].[v_virta_otp_ainekelpoisuudet] AS
+
+
+
+CREATE OR ALTER VIEW [dw].[v_virta_otp_ainekelpoisuudet_jaadytys] AS
 
 SELECT		
 	 [Kelpoisuuden suoritusvuosi] = f.kelpoisuuden_vuosi
@@ -76,7 +79,7 @@ SELECT
 	,f.henkilo
 	,case when f.aine_sektori = 2 then 'Ammatillinen' else 'Perusopetus ja lukio' end as raportti
 
-FROM dw.f_virta_otp_ainekelpoisuudet f
+FROM dw.f_virta_otp_ainekelpoisuudet_jaadytys f
 
 LEFT JOIN dw.d_sukupuoli d1 on d1.id = f.d_sukupuoli_id		
 LEFT JOIN dw.d_ika d2 on d2.id = f.d_ika_id
@@ -88,7 +91,6 @@ LEFT JOIN dw.d_organisaatioluokitus d5a on d5a.id = f.d_organisaatioluokitus_kel
 LEFT JOIN dw.d_organisaatioluokitus d5b on d5b.id = f.d_organisaatioluokitus_kelpoisuus2_id
 LEFT JOIN dw.d_organisaatioluokitus d5c on d5c.id = f.d_organisaatioluokitus_kelpoisuus3_id
 LEFT JOIN dw.d_organisaatioluokitus d6 on d6.id = f.d_organisaatioluokitus_korkein_tutkinto_id
-
 
 GO
 
