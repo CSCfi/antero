@@ -82,14 +82,3 @@ GO
 
 ALTER TABLE [dbo].[f_korkeakoulujen_tutkimus_kehitys_5_1_henkilot_5_2_tyovuodet] CHECK CONSTRAINT [FK_f_korkeakoulujen_tutkimus_kehitys_5_1_henkilot_5_2_tyovuodet_d_virkaryhma]
 GO
-
-/*
-ALTER TABLE [dbo].[f_korkeakoulujen_tutkimus_kehitys_5_1_henkilot_5_2_tyovuodet]  WITH CHECK ADD  CONSTRAINT [FK_f_korkeakoulujen_tutkimus_kehitys_5_1_henkilot_5_2_tyovuodet_d_tutkijanuraporras] FOREIGN KEY([tutkijanuraporras_id])
-REFERENCES [dbo].[d_tutkijanuraporras] ([id])
-GO
-
-ALTER TABLE [dbo].[f_korkeakoulujen_tutkimus_kehitys_5_1_henkilot_5_2_tyovuodet] CHECK CONSTRAINT [FK_f_korkeakoulujen_tutkimus_kehitys_5_1_henkilot_5_2_tyovuodet_d_tutkijanuraporras]
-GO
-*/
-
-
