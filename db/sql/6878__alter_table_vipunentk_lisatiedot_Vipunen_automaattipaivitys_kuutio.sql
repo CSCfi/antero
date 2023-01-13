@@ -3,7 +3,7 @@ GO
 
 IF NOT EXISTS (
   SELECT * FROM sys.columns 
-  WHERE object_id = OBJECT_ID(N'[dbo].[[Vipunen_automaattipaivitys_kuutio]]') 
+  WHERE object_id = OBJECT_ID(N'[dbo].[Vipunen_automaattipaivitys_kuutio]') 
 	AND name = 'skip'
 )
 ALTER TABLE [dbo].[Vipunen_automaattipaivitys_kuutio]
