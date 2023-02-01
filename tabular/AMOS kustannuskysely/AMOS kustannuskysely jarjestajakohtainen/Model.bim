@@ -50,6 +50,7 @@
             "name": "Tyyppi",
             "dataType": "string",
             "sourceColumn": "Taso 0",
+            "sortByColumn": "jarj_taso0",
             "sourceProviderType": "Char",
             "displayFolder": "Kyselymuuttujat"
           },
@@ -127,6 +128,18 @@
             "dataType": "string",
             "sourceColumn": "Koodit Koulutuksen järjestäjä",
             "displayFolder": "Koodimuuttujat"
+          },
+          {
+            "name": "jarj_taso0",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "jarj_taso0"
+          },
+          {
+            "name": "yksikko",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "yksikko"
           }
         ],
         "partitions": [
@@ -262,6 +275,22 @@
                   "        <int>245</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>jarj_taso0</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>110</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>yksikko</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>91</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -376,6 +405,22 @@
                   "        <int>13</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>jarj_taso0</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>14</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>yksikko</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>15</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -390,6 +435,22 @@
                   "    <item>",
                   "      <key>",
                   "        <string>Koodit Koulutuksen järjestäjä</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>jarj_taso0</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>yksikko</string>",
                   "      </key>",
                   "      <value>",
                   "        <boolean>true</boolean>",
@@ -421,24 +482,16 @@
             "name": "Määrä per painottamaton osaamispiste",
             "expression": [
               "",
-              "var kaava = DIVIDE([Määrä] , [Painottamattomat osaamispisteet])",
-              "return IF(kaava=0,BLANK(),kaava)",
-              ""
-            ],
-            "formatString": "#,0 \"€\";-#,0 \"€\";#,0 \"€\"",
-            "annotations": [
-              {
-                "name": "Format",
-                "value": "<Format Format=\"Currency\"><Currency LCID=\"1035\" DisplayName=\"€ Finnish (Finland)\" Symbol=\"€\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
-              }
+              "var mittari = DIVIDE([Määrä_ei_yksikköä] , [Painottamattomat osaamispisteet])",
+              "return IF(mittari=0,BLANK(),IF([yksikko_ehto],FORMAT(mittari,[muotoilu_tunti]),FORMAT(mittari,[muotoilu_euro])))"
             ]
           },
           {
             "name": "Määrä",
             "expression": [
               "",
-              "var summa = CALCULATE(SUM([maara_euroa]))",
-              "return IF(summa=0,BLANK(),summa)"
+              "var mittari = CALCULATE(SUM([maara_euroa]))",
+              "return IF(mittari=0,BLANK(),IF([yksikko_ehto],FORMAT(mittari,[muotoilu_tunti]),FORMAT(mittari,[muotoilu_euro])))"
             ],
             "formatString": "#,0 \"€\";-#,0 \"€\";#,0 \"€\"",
             "annotations": [
@@ -452,15 +505,8 @@
             "name": "Määrä per painotettu osaamispiste",
             "expression": [
               "",
-              "var kaava = DIVIDE([Määrä] , [Painotetut osaamispisteet])",
-              "return IF(kaava=0,BLANK(),kaava)"
-            ],
-            "formatString": "#,0 \"€\";-#,0 \"€\";#,0 \"€\"",
-            "annotations": [
-              {
-                "name": "Format",
-                "value": "<Format Format=\"Currency\"><Currency LCID=\"1035\" DisplayName=\"€ Finnish (Finland)\" Symbol=\"€\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
-              }
+              "var mittari = DIVIDE([Määrä_ei_yksikköä] , [Painotetut osaamispisteet])",
+              "return IF(mittari=0,BLANK(),IF([yksikko_ehto],FORMAT(mittari,[muotoilu_tunti]),FORMAT(mittari,[muotoilu_euro])))"
             ]
           },
           {
@@ -475,25 +521,43 @@
           },
           {
             "name": "Määrä per painottamaton opiskelijavuosi",
-            "expression": "DIVIDE([Määrä] , [Painottamattomat opiskelijavuodet])",
-            "formatString": "#,0 \"€\";-#,0 \"€\";#,0 \"€\"",
-            "annotations": [
-              {
-                "name": "Format",
-                "value": "<Format Format=\"Currency\"><Currency LCID=\"1035\" DisplayName=\"€ Finnish (Finland)\" Symbol=\"€\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
-              }
+            "expression": [
+              "",
+              "var mittari = DIVIDE([Määrä_ei_yksikköä] , [Painottamattomat opiskelijavuodet])",
+              "return IF(mittari=0,BLANK(),IF([yksikko_ehto],FORMAT(mittari,[muotoilu_tunti]),FORMAT(mittari,[muotoilu_euro])))"
             ]
           },
           {
             "name": "Määrä per painotettu opiskelijavuosi",
-            "expression": "DIVIDE([Määrä] , [Painotetut opiskelijavuodet])",
-            "formatString": "#,0 \"€\";-#,0 \"€\";#,0 \"€\"",
-            "annotations": [
-              {
-                "name": "Format",
-                "value": "<Format Format=\"Currency\"><Currency LCID=\"1035\" DisplayName=\"€ Finnish (Finland)\" Symbol=\"€\" PositivePattern=\"3\" NegativePattern=\"8\" /></Format>"
-              }
+            "expression": [
+              "",
+              "var mittari = DIVIDE([Määrä_ei_yksikköä] , [Painotetut opiskelijavuodet])",
+              "return IF(mittari=0,BLANK(),IF([yksikko_ehto],FORMAT(mittari,[muotoilu_tunti]),FORMAT(mittari,[muotoilu_euro])))"
             ]
+          },
+          {
+            "name": "Määrä_ei_yksikköä",
+            "expression": [
+              "",
+              "var summa = CALCULATE(SUM([maara_euroa]))",
+              "return IF(summa=0,BLANK(),summa)"
+            ],
+            "isHidden": true
+          },
+          {
+            "name": "yksikko_ehto",
+            "expression": "FIRSTNONBLANK(Muuttujat[yksikko],1)=\"tunti\"",
+            "isHidden": true
+          },
+          {
+            "name": "muotoilu_tunti",
+            "expression": "\"#,##0 h\"",
+            "isHidden": true
+          },
+          {
+            "name": "muotoilu_euro",
+            "expression": "\"#,##0 €\"",
+            "isHidden": true
           }
         ],
         "annotations": [
@@ -633,6 +697,22 @@
               "        <int>245</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>jarj_taso0</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>110</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>yksikko</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>91</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -747,6 +827,22 @@
               "        <int>13</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>jarj_taso0</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>14</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>yksikko</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>15</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -761,6 +857,22 @@
               "    <item>",
               "      <key>",
               "        <string>Koodit Koulutuksen järjestäjä</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>jarj_taso0</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>yksikko</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
