@@ -4994,11 +4994,11 @@
                   <Type>Member</Type>
                 </Calculation>
                 <Calculation>
-                  <Name>[Measures].[Osallistuneet (netto)]</Name>
+                  <Name>[Measures].[Opiskelijat (netto)]</Name>
                   <Type>Member</Type>
                 </Calculation>
                 <Calculation>
-                  <Name>[Measures].[Osallistuneet]</Name>
+                  <Name>[Measures].[Opiskelijat]</Name>
                   <Type>Member</Type>
                 </Calculation>
               </Calculations>
@@ -5055,11 +5055,11 @@
               </MeasureGroups>
               <Calculations>
                 <Calculation>
-                  <Name>[Measures].[Koulutukseen osallistuneet (netto)]</Name>
+                  <Name>[Measures].[Opiskelijamäärä (netto)]</Name>
                   <Type>Member</Type>
                 </Calculation>
                 <Calculation>
-                  <Name>[Measures].[Koulutukseen osallistuneet]</Name>
+                  <Name>[Measures].[Opiskelijamäärä]</Name>
                   <Type>Member</Type>
                 </Calculation>
               </Calculations>
@@ -5112,7 +5112,7 @@
                   <Type>Member</Type>
                 </Calculation>
                 <Calculation>
-                  <Name>[Measures].[Opintokerhojen osallistuneet]</Name>
+                  <Name>[Measures].[Opintokerhojen opiskelijat]</Name>
                   <Type>Member</Type>
                 </Calculation>
                 <Calculation>
@@ -5173,7 +5173,11 @@
                   <Type>Member</Type>
                 </Calculation>
                 <Calculation>
-                  <Name>[Measures].[Alle 6 tuntia kestäneiden koulutusten osallistuneet]</Name>
+                  <Name>[Measures].[Alle 6 tuntia kestäneiden koulutusten opiskelijat]</Name>
+                  <Type>Member</Type>
+                </Calculation>
+                <Calculation>
+                  <Name>[Measures].[Yksinomaan lapsille ja nuorille järjestettyjen koulutusten opiskelijat]</Name>
                   <Type>Member</Type>
                 </Calculation>
                 <Calculation>
@@ -5182,10 +5186,6 @@
                 </Calculation>
                 <Calculation>
                   <Name>[Measures].[Alle 6 tuntia kestäneet koulutukset]</Name>
-                  <Type>Member</Type>
-                </Calculation>
-                <Calculation>
-                  <Name>[Measures].[Yksinomaan lapsille ja nuorille järjestettyjen koulutusten osallistuneet]</Name>
                   <Type>Member</Type>
                 </Calculation>
               </Calculations>
@@ -7251,8 +7251,7 @@ ALTER CUBE CURRENTCUBE UPDATE DIMENSION Measures, Default_Member = [__No measure
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Koulutukset]=
-CALCULATE(
+CREATE MEASURE 'Muuttujat'[Koulutukset]=CALCULATE(
 	SUM([Koulutukset2])
 	, KEEPFILTERS(Muuttujat[Koulutustyyppi] &lt;&gt; "Alle 6 tuntia kestäneet koulutukset")
 	, KEEPFILTERS(Muuttujat[Koulutustyyppi] &lt;&gt; "Yksinomaan lapsille ja nuorille järjestetyt koulutukset")
@@ -7276,14 +7275,12 @@ CALCULATE(
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Osallistuneet]=
-CALCULATE(
+CREATE MEASURE 'Muuttujat'[Osallistuneet]=CALCULATE(
 	SUM([Osallistuneet2])
 	, KEEPFILTERS(Muuttujat[Koulutustyyppi] &lt;&gt; "Alle 6 tuntia kestäneet koulutukset")
 	, KEEPFILTERS(Muuttujat[Koulutustyyppi] &lt;&gt; "Yksinomaan lapsille ja nuorille järjestetyt koulutukset")
 	, KEEPFILTERS(Muuttujat[Koulutustyyppi] &lt;&gt; "Opintokeskusten opintokerhotoiminta")
-)
-;
+);
 </Text>
                   <Annotations>
                     <Annotation>
@@ -7302,14 +7299,12 @@ CALCULATE(
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Opetustunnit]=
-CALCULATE(
+CREATE MEASURE 'Muuttujat'[Opetustunnit]=CALCULATE(
 	SUM([Opetustunnit2])
 	, KEEPFILTERS(Muuttujat[Koulutustyyppi] &lt;&gt; "Alle 6 tuntia kestäneet koulutukset")
 	, KEEPFILTERS(Muuttujat[Koulutustyyppi] &lt;&gt; "Yksinomaan lapsille ja nuorille järjestetyt koulutukset")
 	, KEEPFILTERS(Muuttujat[Koulutustyyppi] &lt;&gt; "Opintokeskusten opintokerhotoiminta")
-)
-;
+);
 </Text>
                   <Annotations>
                     <Annotation>
@@ -7442,19 +7437,17 @@ CREATE MEASURE 'Muuttujat'[Teaching hours]=[Opetustunnit];
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Osallistuneet (netto)]=
-CALCULATE(
+CREATE MEASURE 'Muuttujat'[Opiskelijat (netto)]=CALCULATE(
 	SUM([OsallistuneetNetto2])
 	, KEEPFILTERS(Muuttujat[Koulutustyyppi] &lt;&gt; "Alle 6 tuntia kestäneet koulutukset")
 	, KEEPFILTERS(Muuttujat[Koulutustyyppi] &lt;&gt; "Yksinomaan lapsille ja nuorille järjestetyt koulutukset")
 	, KEEPFILTERS(Muuttujat[Koulutustyyppi] &lt;&gt; "Opintokeskusten opintokerhotoiminta")
-)
-;
+);
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
-                      <Value>Osallistuneet (netto)</Value>
+                      <Value>Opiskelijat (netto)</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -7468,12 +7461,12 @@ CALCULATE(
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Deltagare (nettoantal)]=[Osallistuneet (netto)];
+CREATE MEASURE 'Muuttujat'[Studerande (nettoantal)]=[Opiskelijat (netto)];
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
-                      <Value>Deltagare (nettoantal)</Value>
+                      <Value>Studerande (nettoantal)</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -7487,12 +7480,12 @@ CREATE MEASURE 'Muuttujat'[Deltagare (nettoantal)]=[Osallistuneet (netto)];
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Participants (net number)]=[Osallistuneet (netto)];
+CREATE MEASURE 'Muuttujat'[Students (net number)]=[Opiskelijat (netto)];
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
-                      <Value>Participants (net number)</Value>
+                      <Value>Students (net number)</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -7506,19 +7499,17 @@ CREATE MEASURE 'Muuttujat'[Participants (net number)]=[Osallistuneet (netto)];
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Koulutukseen osallistuneet]=
-CALCULATE(
+CREATE MEASURE 'Muuttujat'[Opiskelijamäärä]=CALCULATE(
 	SUM([OsallistuneetVst2])
 	, KEEPFILTERS(Muuttujat[Koulutustyyppi] &lt;&gt; "Alle 6 tuntia kestäneet koulutukset")
 	, KEEPFILTERS(Muuttujat[Koulutustyyppi] &lt;&gt; "Yksinomaan lapsille ja nuorille järjestetyt koulutukset")
 	, KEEPFILTERS(Muuttujat[Koulutustyyppi] &lt;&gt; "Opintokeskusten opintokerhotoiminta")
-)
-;
+);
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
-                      <Value>Koulutukseen osallistuneet</Value>
+                      <Value>Opiskelijamäärä</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -7532,12 +7523,12 @@ CALCULATE(
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Antal deltagare]=[Koulutukseen osallistuneet];
+CREATE MEASURE 'Muuttujat'[Antal studerande]=[Opiskelijamäärä];
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
-                      <Value>Antal deltagare</Value>
+                      <Value>Antal studerande</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -7551,12 +7542,12 @@ CREATE MEASURE 'Muuttujat'[Antal deltagare]=[Koulutukseen osallistuneet];
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Number of participants]=[Koulutukseen osallistuneet];
+CREATE MEASURE 'Muuttujat'[Number of students]=[Opiskelijamäärä];
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
-                      <Value>Number of participants</Value>
+                      <Value>Number of students</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -7570,8 +7561,7 @@ CREATE MEASURE 'Muuttujat'[Number of participants]=[Koulutukseen osallistuneet];
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Koulutukseen osallistuneet (netto)]=
-CALCULATE(
+CREATE MEASURE 'Muuttujat'[Opiskelijamäärä (netto)]=CALCULATE(
 	SUM([OsallistuneetVstNetto2])
 	, KEEPFILTERS(Muuttujat[Koulutustyyppi] &lt;&gt; "Alle 6 tuntia kestäneet koulutukset")
 	, KEEPFILTERS(Muuttujat[Koulutustyyppi] &lt;&gt; "Yksinomaan lapsille ja nuorille järjestetyt koulutukset")
@@ -7581,7 +7571,7 @@ CALCULATE(
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
-                      <Value>Koulutukseen osallistuneet (netto)</Value>
+                      <Value>Opiskelijamäärä (netto)</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -7595,12 +7585,12 @@ CALCULATE(
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Nettoantal deltagare]=[Koulutukseen osallistuneet (netto)];
+CREATE MEASURE 'Muuttujat'[Nettoantal studerande]=[Opiskelijamäärä (netto)];
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
-                      <Value>Nettoantal deltagare</Value>
+                      <Value>Nettoantal studerande</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -7614,12 +7604,12 @@ CREATE MEASURE 'Muuttujat'[Nettoantal deltagare]=[Koulutukseen osallistuneet (ne
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Net number of participants]=[Koulutukseen osallistuneet (netto)];
+CREATE MEASURE 'Muuttujat'[Net number of students]=[Opiskelijamäärä (netto)];
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
-                      <Value>Net number of participants</Value>
+                      <Value>Net number of students</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -7652,12 +7642,12 @@ CREATE MEASURE 'Muuttujat'[Opintokerhot]=CALCULATE(SUM([Koulutukset2]), FILTER(V
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Opintokerhojen osallistuneet]=CALCULATE(SUM([Osallistuneet2]), FILTER(VALUES(Muuttujat[Koulutustyyppi]), Muuttujat[Koulutustyyppi]="Opintokeskusten opintokerhotoiminta"));
+CREATE MEASURE 'Muuttujat'[Opintokerhojen opiskelijat]=CALCULATE(SUM([Osallistuneet2]), FILTER(VALUES(Muuttujat[Koulutustyyppi]), Muuttujat[Koulutustyyppi]="Opintokeskusten opintokerhotoiminta"));
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
-                      <Value>Opintokerhojen osallistuneet</Value>
+                      <Value>Opintokerhojen opiskelijat</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -7709,12 +7699,12 @@ CREATE MEASURE 'Muuttujat'[Alle 6 tuntia kestäneet koulutukset]=CALCULATE(SUM([
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Alle 6 tuntia kestäneiden koulutusten osallistuneet]=CALCULATE(SUM([Osallistuneet2]), FILTER(VALUES(Muuttujat[Koulutustyyppi]), Muuttujat[Koulutustyyppi]="Alle 6 tuntia kestäneet koulutukset"));
+CREATE MEASURE 'Muuttujat'[Alle 6 tuntia kestäneiden koulutusten opiskelijat]=CALCULATE(SUM([Osallistuneet2]), FILTER(VALUES(Muuttujat[Koulutustyyppi]), Muuttujat[Koulutustyyppi]="Alle 6 tuntia kestäneet koulutukset"));
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
-                      <Value>Alle 6 tuntia kestäneiden koulutusten osallistuneet</Value>
+                      <Value>Alle 6 tuntia kestäneiden koulutusten opiskelijat</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -7766,12 +7756,12 @@ CREATE MEASURE 'Muuttujat'[Yksinomaan lapsille ja nuorille järjestetyt koulutuk
 ----------------------------------------------------------
 
 
-CREATE MEASURE 'Muuttujat'[Yksinomaan lapsille ja nuorille järjestettyjen koulutusten osallistuneet]=CALCULATE(SUM([Osallistuneet2]), FILTER(VALUES(Muuttujat[Koulutustyyppi]), Muuttujat[Koulutustyyppi]="Yksinomaan lapsille ja nuorille järjestetyt koulutukset"));
+CREATE MEASURE 'Muuttujat'[Yksinomaan lapsille ja nuorille järjestettyjen koulutusten opiskelijat]=CALCULATE(SUM([Osallistuneet2]), FILTER(VALUES(Muuttujat[Koulutustyyppi]), Muuttujat[Koulutustyyppi]="Yksinomaan lapsille ja nuorille järjestetyt koulutukset"));
 </Text>
                   <Annotations>
                     <Annotation>
                       <Name>FullName</Name>
-                      <Value>Yksinomaan lapsille ja nuorille järjestettyjen koulutusten osallistuneet</Value>
+                      <Value>Yksinomaan lapsille ja nuorille järjestettyjen koulutusten opiskelijat</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -7791,6 +7781,63 @@ CREATE MEASURE 'Muuttujat'[Yksinomaan lapsille ja nuorille järjestettyjen koulu
                     <Annotation>
                       <Name>FullName</Name>
                       <Value>Yksinomaan lapsille ja nuorille järjestettyjen koulutusten opetustunnit</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Opiskelijat]=[Osallistuneet];
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Opiskelijat</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Studerande]=[Osallistuneet];
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Studerande</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Table</Name>
+                      <Value>Muuttujat</Value>
+                    </Annotation>
+                  </Annotations>
+                </Command>
+                <Command>
+                  <Text>----------------------------------------------------------
+-- PowerPivot measures command (do not modify manually) --
+----------------------------------------------------------
+
+
+CREATE MEASURE 'Muuttujat'[Students]=[Osallistuneet];
+</Text>
+                  <Annotations>
+                    <Annotation>
+                      <Name>FullName</Name>
+                      <Value>Students</Value>
                     </Annotation>
                     <Annotation>
                       <Name>Table</Name>
@@ -8006,7 +8053,7 @@ CREATE MEASURE 'Muuttujat'[Yksinomaan lapsille ja nuorille järjestettyjen koulu
                       </Value>
                     </Annotation>
                   </Annotations>
-                  <CalculationReference>[Osallistuneet (netto)]</CalculationReference>
+                  <CalculationReference>[Opiskelijat (netto)]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
@@ -8027,7 +8074,7 @@ CREATE MEASURE 'Muuttujat'[Yksinomaan lapsille ja nuorille järjestettyjen koulu
                       </Value>
                     </Annotation>
                   </Annotations>
-                  <CalculationReference>[Deltagare (nettoantal)]</CalculationReference>
+                  <CalculationReference>[Studerande (nettoantal)]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
@@ -8048,7 +8095,7 @@ CREATE MEASURE 'Muuttujat'[Yksinomaan lapsille ja nuorille järjestettyjen koulu
                       </Value>
                     </Annotation>
                   </Annotations>
-                  <CalculationReference>[Participants (net number)]</CalculationReference>
+                  <CalculationReference>[Students (net number)]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
@@ -8069,7 +8116,7 @@ CREATE MEASURE 'Muuttujat'[Yksinomaan lapsille ja nuorille järjestettyjen koulu
                       </Value>
                     </Annotation>
                   </Annotations>
-                  <CalculationReference>[Koulutukseen osallistuneet]</CalculationReference>
+                  <CalculationReference>[Opiskelijamäärä]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
@@ -8090,7 +8137,7 @@ CREATE MEASURE 'Muuttujat'[Yksinomaan lapsille ja nuorille järjestettyjen koulu
                       </Value>
                     </Annotation>
                   </Annotations>
-                  <CalculationReference>[Antal deltagare]</CalculationReference>
+                  <CalculationReference>[Antal studerande]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
@@ -8111,7 +8158,7 @@ CREATE MEASURE 'Muuttujat'[Yksinomaan lapsille ja nuorille järjestettyjen koulu
                       </Value>
                     </Annotation>
                   </Annotations>
-                  <CalculationReference>[Number of participants]</CalculationReference>
+                  <CalculationReference>[Number of students]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
@@ -8132,7 +8179,7 @@ CREATE MEASURE 'Muuttujat'[Yksinomaan lapsille ja nuorille järjestettyjen koulu
                       </Value>
                     </Annotation>
                   </Annotations>
-                  <CalculationReference>[Koulutukseen osallistuneet (netto)]</CalculationReference>
+                  <CalculationReference>[Opiskelijamäärä (netto)]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
@@ -8153,7 +8200,7 @@ CREATE MEASURE 'Muuttujat'[Yksinomaan lapsille ja nuorille järjestettyjen koulu
                       </Value>
                     </Annotation>
                   </Annotations>
-                  <CalculationReference>[Nettoantal deltagare]</CalculationReference>
+                  <CalculationReference>[Nettoantal studerande]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
@@ -8174,7 +8221,7 @@ CREATE MEASURE 'Muuttujat'[Yksinomaan lapsille ja nuorille järjestettyjen koulu
                       </Value>
                     </Annotation>
                   </Annotations>
-                  <CalculationReference>[Net number of participants]</CalculationReference>
+                  <CalculationReference>[Net number of students]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
@@ -8216,7 +8263,7 @@ CREATE MEASURE 'Muuttujat'[Yksinomaan lapsille ja nuorille järjestettyjen koulu
                       </Value>
                     </Annotation>
                   </Annotations>
-                  <CalculationReference>[Opintokerhojen osallistuneet]</CalculationReference>
+                  <CalculationReference>[Opintokerhojen opiskelijat]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
@@ -8279,7 +8326,7 @@ CREATE MEASURE 'Muuttujat'[Yksinomaan lapsille ja nuorille järjestettyjen koulu
                       </Value>
                     </Annotation>
                   </Annotations>
-                  <CalculationReference>[Alle 6 tuntia kestäneiden koulutusten osallistuneet]</CalculationReference>
+                  <CalculationReference>[Alle 6 tuntia kestäneiden koulutusten opiskelijat]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
@@ -8342,7 +8389,7 @@ CREATE MEASURE 'Muuttujat'[Yksinomaan lapsille ja nuorille järjestettyjen koulu
                       </Value>
                     </Annotation>
                   </Annotations>
-                  <CalculationReference>[Yksinomaan lapsille ja nuorille järjestettyjen koulutusten osallistuneet]</CalculationReference>
+                  <CalculationReference>[Yksinomaan lapsille ja nuorille järjestettyjen koulutusten opiskelijat]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>
@@ -8364,6 +8411,69 @@ CREATE MEASURE 'Muuttujat'[Yksinomaan lapsille ja nuorille järjestettyjen koulu
                     </Annotation>
                   </Annotations>
                   <CalculationReference>[Yksinomaan lapsille ja nuorille järjestettyjen koulutusten opetustunnit]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Opiskelijat]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Studerande]</CalculationReference>
+                  <CalculationType>Member</CalculationType>
+                  <FormatString>'#,0'</FormatString>
+                </CalculationProperty>
+                <CalculationProperty>
+                  <Annotations>
+                    <Annotation>
+                      <Name>Type</Name>
+                      <Value>User</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>IsPrivate</Name>
+                      <Value>False</Value>
+                    </Annotation>
+                    <Annotation>
+                      <Name>Format</Name>
+                      <Value>
+                        <Format Format="NumberWhole" ThousandSeparator="True" xmlns="" />
+                      </Value>
+                    </Annotation>
+                  </Annotations>
+                  <CalculationReference>[Students]</CalculationReference>
                   <CalculationType>Member</CalculationType>
                   <FormatString>'#,0'</FormatString>
                 </CalculationProperty>

@@ -1,0 +1,10 @@
+USE [VipunenTK_DW]
+GO
+
+Drop table VipunenTK_DW.dbo.f_5_1_Yliopistojen_tutkimushenkilökunta_yliopistoittain
+Select top 0 * into VipunenTK_DW.dbo.f_5_1_Yliopistojen_tutkimushenkilökunta_yliopistoittain 
+from VipunenTK_DW.dbo.v_f_5_1_Yliopistojen_tutkimushenkilökunta_yliopistoittain
+
+Drop table VipunenTK_DW.dbo.f_5_2_Yliopistojen_tutkimustyovuodet_yliopistoittain
+Select top 0 * into VipunenTK_DW.dbo.f_5_2_Yliopistojen_tutkimustyovuodet_yliopistoittain 
+from VipunenTK_DW.dbo.v_f_5_2_Yliopistojen_tutkimustyovuodet_yliopistoittain
