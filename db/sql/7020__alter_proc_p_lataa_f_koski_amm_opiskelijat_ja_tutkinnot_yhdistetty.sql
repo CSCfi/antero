@@ -10,7 +10,7 @@ GO
 
 
 
-if (@@SERVERNAME = 'DWIPVIPUSQL16') --ajo käynnissä testissä
+
 ALTER PROCEDURE [dw].[p_lataa_f_koski_amm_opiskelijat_ja_tutkinnot_yhdistetty] AS
 
 /*
