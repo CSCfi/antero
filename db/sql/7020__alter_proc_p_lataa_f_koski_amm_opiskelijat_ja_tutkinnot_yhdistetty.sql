@@ -11,8 +11,6 @@ GO
 
 
 if (@@SERVERNAME = 'DWIPVIPUSQL16') --ajo käynnissä testissä
-begin 
-
 ALTER PROCEDURE [dw].[p_lataa_f_koski_amm_opiskelijat_ja_tutkinnot_yhdistetty] AS
 
 /*
@@ -219,5 +217,3 @@ SELECT
 	,ryhma = 'tutkinnot'
 FROM dw.f_koski_amm_tutkinnot
 ;
-
-end
