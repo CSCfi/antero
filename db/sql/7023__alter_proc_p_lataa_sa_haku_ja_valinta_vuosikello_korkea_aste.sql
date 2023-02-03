@@ -40,6 +40,7 @@ select [haku]
 					,min(case when [aloittaneet] > @tanaan then [aloittaneet] end)
 		)
 
+		
 from [ANTERO].[sa].[sa_haku_ja_valinta_vuosikello_korkea_aste_unpvt]
 
 group by haku
