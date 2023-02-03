@@ -19,7 +19,7 @@ GO
 
 
 
-ALTER   VIEW [dw].[v_koski_lukio_amm_opiskelijat_pbi] AS
+CREATE   VIEW [dw].[v_koski_lukio_amm_opiskelijat_pbi] AS
 
 SELECT Tilastovuosi = vuosi
 	,[Koulutuksen järjestäjä] = d2.organisaatio_fi
