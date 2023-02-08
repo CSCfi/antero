@@ -17,7 +17,7 @@ BEGIN
 
     RETURN (SELECT 
 				case 
-					when @Date > cast(concat(cast(@Date  as date), ' 01:36:00:000') as datetime)
+					when @Date > cast(concat(cast(@Date  as date), ' 01:36:30:000') as datetime)
 					then DATEADD(DAY, 1, cast(@Date  as date))
 					else cast(@Date  as date)
 				end
