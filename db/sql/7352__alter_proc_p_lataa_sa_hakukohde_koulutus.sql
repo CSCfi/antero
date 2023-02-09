@@ -82,10 +82,14 @@ left join (
 
 UNION ALL
  
+/****** Script for SelectTopNRows command from SSMS  ******/
+
 SELECT DISTINCT
 	   s2.hakukohdeOid
-	  ,coalesce(s3.alkamisvuosi, s2.koulutuksenAlkamisvuosi) as alkamisvuosi
-	  ,substring(coalesce(s3.alkamiskausiKoodiUri, s2.koulutuksenAlkamiskausiKoodiUri),charindex('_',coalesce(s3.alkamiskausiKoodiUri, s2.koulutuksenAlkamiskausiKoodiUri))+1,1) as kausi  
+	  ,coalesce(s3.alkamisvuosi, coalesce(s2.koulutuksenAlkamisvuosi, year(s2.koulutuksenAlkamispaivamaara))) as alkamisvuosi
+	  ,coalesce(
+		substring(coalesce(s3.alkamiskausiKoodiUri, s2.koulutuksenAlkamiskausiKoodiUri),charindex('_',coalesce(s3.alkamiskausiKoodiUri, s2.koulutuksenAlkamiskausiKoodiUri))+1,1),
+		case when MONTH(CAST(LEFT(s2.koulutuksenAlkamispaivamaara, 10) as date)) < 8 then 'k' else 's' end) as kausi  
       ,s.koulutusOid
 	  ,[koulutuksetKoodi]
 	  ,s4.koulutustyyppi_koodi
@@ -108,15 +112,17 @@ left join (
 	from sa.sa_odw_hakeneet 
 ) h on h.HakukohdeOID = s2.hakukohdeOid
 cross apply string_split(cast(s2.pohjakoulutusvaatimusKoodiUrit as varchar(max)), ',') pilkotut
-WHERE coalesce(s3.alkamisvuosi, s2.koulutuksenAlkamisvuosi) is not null
+WHERE coalesce(s3.alkamisvuosi, s2.koulutuksenAlkamisvuosi) is not null and s2.hakukohdeOid in ('1.2.246.562.20.00000000000000000639')
 GROUP BY 
 s2.hakukohdeOid
-,substring(coalesce(s3.alkamiskausiKoodiUri, s2.koulutuksenAlkamiskausiKoodiUri),charindex('_',coalesce(s3.alkamiskausiKoodiUri, s2.koulutuksenAlkamiskausiKoodiUri))+1,1)
+,coalesce(
+		substring(coalesce(s3.alkamiskausiKoodiUri, s2.koulutuksenAlkamiskausiKoodiUri),charindex('_',coalesce(s3.alkamiskausiKoodiUri, s2.koulutuksenAlkamiskausiKoodiUri))+1,1),
+		case when MONTH(CAST(LEFT(s2.koulutuksenAlkamispaivamaara, 10) as date)) < 8 then 'k' else 's' end)
 ,s.koulutusOid
 ,[koulutuksetKoodi]
 ,[opintojenLaajuusKoodi]
 ,s4.koulutustyyppi_koodi
-,coalesce(s3.alkamisvuosi, s2.koulutuksenAlkamisvuosi)
+,coalesce(s3.alkamisvuosi, coalesce(s2.koulutuksenAlkamisvuosi, year(s2.koulutuksenAlkamispaivamaara))) 
 ,COALESCE(h.PohjakoulutusvaatimusKoodi, case when s2.pohjakoulutusvaatimusKoodiUrit like '%_yo%' and s2.pohjakoulutusvaatimusKoodiUrit like '%_pk%' then 'PK/YO'
 			when pilkotut.value like '%_pk%' then 'PK'
 			when pilkotut.value like '%_yo%' then 'YO'
