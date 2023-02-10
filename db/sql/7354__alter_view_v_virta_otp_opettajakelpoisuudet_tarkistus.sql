@@ -11,7 +11,7 @@ GO
 
 ALTER   VIEW [dw].[v_virta_otp_opettajakelpoisuudet_tarkistus] AS
 
-SELECT
+SELECT DISTINCT
 	f.KelpoisuusID,
 	f.henkilo,
 	d1.selite_fi as Kelpoisuus,
