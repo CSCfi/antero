@@ -1746,7 +1746,7 @@
         ],
         "measures": [
           {
-            "name": "Hakeutumisvelvolliset",
+            "name": "Hakeutumisvelvolliset (haku- ja opiskelutoiminta)",
             "expression": [
               "",
               "var lkm = DISTINCTCOUNT(Muuttujat[oppija_oid])",
@@ -1756,67 +1756,50 @@
           },
           {
             "name": "Hakeneet",
-            "expression": "CALCULATE([Hakeutumisvelvolliset], Muuttujat[hakenut_1_0] = 1)",
+            "expression": "CALCULATE([Hakeutumisvelvolliset (hakutoiminta)], Muuttujat[hakenut_1_0] = 1)",
             "formatString": "#,0"
           },
           {
             "name": "Valitut",
-            "expression": "CALCULATE([Hakeutumisvelvolliset], Muuttujat[valittu_1_0] = 1)",
+            "expression": "CALCULATE([Hakeutumisvelvolliset (hakutoiminta)], Muuttujat[valittu_1_0] = 1)",
             "formatString": "#,0"
           },
           {
             "name": "Paikan vastaanottaneet",
-            "expression": "CALCULATE([Hakeutumisvelvolliset], Muuttujat[vastaanottanut_1_0] = 1)",
+            "expression": "CALCULATE([Hakeutumisvelvolliset (hakutoiminta)], Muuttujat[vastaanottanut_1_0] = 1)",
             "formatString": "#,0"
           },
           {
             "name": "Ilmoittautuneet",
-            "expression": "CALCULATE([Hakeutumisvelvolliset], Muuttujat[ilmoittautunut_1_0] = 1)",
+            "expression": "CALCULATE([Hakeutumisvelvolliset (hakutoiminta)], Muuttujat[ilmoittautunut_1_0] = 1)",
             "formatString": "#,0"
           },
           {
-            "name": "Ei hakeneet",
+            "name": "zzzEi hakeneet",
             "expression": [
               "",
               "CALCULATE(",
-              "\t[Hakeutumisvelvolliset]",
-              "\t, FILTER(VALUES(Muuttujat[Hakutoiminta]), Muuttujat[Hakutoiminta] = \"Ei ole hakenut tilastovuonna alkavaan koulutukseen\")",
-              ")",
-              "/*",
-              "var ehto = ISFILTERED(Muuttujat[Hakutapa])",
-              "\t|| ISFILTERED(Muuttujat[Hakutoive])",
-              "\t|| ISFILTERED(Muuttujat[Hakutyyppi])",
-              "\t|| ISFILTERED(Muuttujat[Hakutoiveen tila])",
-              "\t|| ISFILTERED(Muuttujat[Koul. alkamiskausi (hakukohde)])",
-              "\t|| ISFILTERED(Muuttujat[Koulutustyyppi (hakukohde)])",
-              "\t|| ISFILTERED(Muuttujat[Hakutoiminta])",
-              "\t|| ISFILTERED(Muuttujat[Amm. pt erit.opetuksena (hakukohde)])",
-              "var lkm =",
-              "CALCULATE(",
-              "\t[Hakeutumisvelvolliset]",
-              "\t; Muuttujat[hakenut_1_0] = 0",
-              "\t; ALL(",
-              "\t\tMuuttujat[Hakutapa]",
-              "\t\t; Muuttujat[Hakutoive]",
-              "\t\t; Muuttujat[Hakutyyppi]",
-              "\t\t; Muuttujat[Hakutoiveen tila]",
-              "\t\t; Muuttujat[Koul. alkamiskausi (hakukohde)]",
-              "\t\t; Muuttujat[Koulutustyyppi (hakukohde)]",
-              "\t\t; Muuttujat[Hakutoiminta]",
-              "\t\t; Muuttujat[Amm. pt erit.opetuksena (hakukohde)]",
-              "\t)",
-              ")",
-              "return IF(ehto; BLANK(); lkm)",
-              "*/"
+              "\t[Hakeutumisvelvolliset (hakutoiminta)]",
+              "\t--haku",
+              "\t, ALL(Muuttujat[Koul. alkamiskausi (hakukohde)])",
+              "\t, ALL(Muuttujat[Hakutapa])",
+              "\t, ALL(Muuttujat[Hakutyyppi])",
+              "\t, ALL(Muuttujat[Hakutoiveen tila])",
+              "\t, ALL(Muuttujat[Hakutoivenumero])",
+              "\t, ALL(Muuttujat[Koulutustyyppi (hakukohde)])",
+              "\t, ALL(Muuttujat[Vaativa erityinen tuki (hakukohde)])",
+              "\t, KEEPFILTERS(Muuttujat[Hakutoiminta] = \"Ei ole hakenut tilastovuonna alkavaan koulutukseen\")",
+              ")"
             ],
-            "formatString": "#,0"
+            "formatString": "#,0",
+            "isHidden": true
           },
           {
-            "name": "Opiskelijat oppiv. suor. kelpaavassa koulutuksessa",
+            "name": "Opiskelijat",
             "expression": [
               "",
               "CALCULATE(",
-              "\t[Hakeutumisvelvolliset]",
+              "\t[Hakeutumisvelvolliset (opiskelutoiminta)]",
               "\t, FILTER(VALUES(Muuttujat[Oppiv. suor. kelp. koul. (opiskelun tarkasteluhetki)]), Muuttujat[Oppiv. suor. kelp. koul. (opiskelun tarkasteluhetki)] = \"Kyllä\")",
               ")"
             ],
@@ -1824,22 +1807,26 @@
           },
           {
             "name": "Ensisijaisesti hakeneet",
-            "expression": "CALCULATE([Hakeutumisvelvolliset], Muuttujat[hakenut_ensisijaisesti_1_0] = 1)",
+            "expression": "CALCULATE([Hakeutumisvelvolliset (hakutoiminta)], Muuttujat[hakenut_ensisijaisesti_1_0] = 1)",
             "formatString": "#,0"
           },
           {
-            "name": "Hakeneet opiskelijat hakukohteen koul.tyypin oppiv. suor. kelp. koulutuksessa",
+            "name": "Hakeneista hakukohteen koulutustyypin koulutuksessa",
             "expression": [
               "",
               "var ehto = HASONEVALUE(Muuttujat[Koulutustyyppi (hakukohde)])",
-              "\t&& IF(HASONEVALUE(Muuttujat[Hakutoiminta]), VALUES(Muuttujat[Hakutoiminta]) = \"Hakenut tilastovuonna alkavaan koulutukseen\", 0)",
+              "var kt_hakukohde = VALUES(Muuttujat[Koulutustyyppi (hakukohde)])",
               "return IF(",
               "\tehto",
               "\t, CALCULATE(",
-              "\t\t[Opiskelijat oppiv. suor. kelpaavassa koulutuksessa]",
+              "\t\t[Hakeneet (opiskelutoiminta)]",
+              "\t\t, FILTER(",
+              "\t\t\tVALUES(Muuttujat[Oppiv. suor. kelp. koul. (opiskelun tarkasteluhetki)])",
+              "\t\t\t, Muuttujat[Oppiv. suor. kelp. koul. (opiskelun tarkasteluhetki)] = \"Kyllä\"",
+              "\t\t)",
               "\t\t, FILTER(",
               "\t\t\tVALUES(Muuttujat[Koulutustyyppi (opiskelun tarkasteluhetki)])",
-              "\t\t\t, Muuttujat[Koulutustyyppi (opiskelun tarkasteluhetki)] = VALUES(Muuttujat[Koulutustyyppi (hakukohde)])",
+              "\t\t\t, Muuttujat[Koulutustyyppi (opiskelun tarkasteluhetki)] = kt_hakukohde",
               "\t\t)",
               "\t)",
               "\t, BLANK()",
@@ -1848,10 +1835,10 @@
             "formatString": "#,0"
           },
           {
-            "name": "Opiskelijat oppiv. suor. kelpaavassa koulutuksessa %",
+            "name": "Opiskelijat %",
             "expression": [
               "",
-              "var osa = [Opiskelijat oppiv. suor. kelpaavassa koulutuksessa]",
+              "var osa = [Opiskelijat]",
               "var kaikki = [Hakeutumisvelvolliset]",
               "return IF(osa = BLANK(), BLANK(),",
               "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
@@ -1862,30 +1849,33 @@
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
-            "name": "Hak.velvolliset (ei suodatu haku-/opisk. tark.hetk. muuttujilla pl. hakutoiminta & 18 v. -tarkistus)",
+            "name": "Hakeutumisvelvolliset",
             "expression": [
               "",
               "CALCULATE(",
-              "\t[Hakeutumisvelvolliset]",
+              "\t[Hakeutumisvelvolliset (haku- ja opiskelutoiminta)]",
+              "\t--haku",
+              "\t, ALL(Muuttujat[Hakutoiminta])",
+              "\t, ALL(Muuttujat[Koul. alkamiskausi (hakukohde)])",
               "\t, ALL(Muuttujat[Hakutapa])",
+              "\t, ALL(Muuttujat[Hakutyyppi])",
               "\t, ALL(Muuttujat[Hakutoiveen tila])",
               "\t, ALL(Muuttujat[Hakutoivenumero])",
-              "\t, ALL(Muuttujat[Hakutyyppi])",
-              "\t, ALL(Muuttujat[Koul. alkamiskausi (hakukohde)])",
-              "\t, ALL(Muuttujat[Koulutusmuoto (opiskelun tarkasteluhetki)])",
               "\t, ALL(Muuttujat[Koulutustyyppi (hakukohde)])",
-              "\t, ALL(Muuttujat[Koulutustyyppi (opiskelun tarkasteluhetki)])",
-              "\t, ALL(Muuttujat[Opiskelun tarkasteluhetki])",
+              "\t, ALL(Muuttujat[Vaativa erityinen tuki (hakukohde)])",
+              "\t--opiskelu",
+              "\t--; ALL(Muuttujat[Opiskelun tarkasteluhetki]) --täyttänyt 18 v. riippuu tästä",
               "\t, ALL(Muuttujat[Opiskelutoiminta (opiskelun tarkasteluhetki)])",
               "\t, ALL(Muuttujat[Oppiv. suor. kelp. koul. (opiskelun tarkasteluhetki)])",
+              "\t, ALL(Muuttujat[Koulutustyyppi (opiskelun tarkasteluhetki)])",
+              "\t, ALL(Muuttujat[Koulutusmuoto (opiskelun tarkasteluhetki)])",
               "\t, ALL(Muuttujat[Suorituksen tyyppi (opiskelun tarkasteluhetki)])",
-              "\t, ALL(Muuttujat[Vaativa erityinen tuki (hakukohde)])",
               ")"
             ],
             "formatString": "#,0"
           },
           {
-            "name": "Opiskelijat hakukohteen koul.tyypin oppiv. suor. kelp. koulutuksessa (ei suodatu hakumuuttujilla)",
+            "name": "Opiskelijat hakukohteen koulutustyypin koulutuksessa",
             "expression": [
               "",
               "var ehto = HASONEVALUE(Muuttujat[Koulutustyyppi (hakukohde)])",
@@ -1894,21 +1884,87 @@
               "return IF(",
               "\tehto",
               "\t, CALCULATE(",
-              "\t\t[Opiskelijat oppiv. suor. kelpaavassa koulutuksessa]",
-              "\t\t, ALL(Muuttujat[Hakutapa])",
-              "\t\t, ALL(Muuttujat[Hakutoiminta])",
-              "\t\t, ALL(Muuttujat[Hakutoiveen tila])",
-              "\t\t, ALL(Muuttujat[Hakutoivenumero])",
-              "\t\t, ALL(Muuttujat[Hakutyyppi])",
-              "\t\t, ALL(Muuttujat[Koul. alkamiskausi (hakukohde)])",
-              "\t\t, ALL(Muuttujat[Koulutustyyppi (hakukohde)])",
-              "\t\t, ALL(Muuttujat[Vaativa erityinen tuki (hakukohde)])",
+              "\t\t[Opiskelijat]",
               "\t\t, FILTER(",
               "\t\t\tVALUES(Muuttujat[Koulutustyyppi (opiskelun tarkasteluhetki)])",
               "\t\t\t, Muuttujat[Koulutustyyppi (opiskelun tarkasteluhetki)] = kt_hakukohde",
               "\t\t)",
               "\t)",
               "\t, BLANK()",
+              ")"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Hakeutumisvelvolliset (hakutoiminta)",
+            "expression": [
+              "",
+              "CALCULATE(",
+              "\t[Hakeutumisvelvolliset (haku- ja opiskelutoiminta)]",
+              "\t--opiskelu",
+              "\t--; ALL(Muuttujat[Opiskelun tarkasteluhetki]) --täyttänyt 18 v. riippuu tästä",
+              "\t, ALL(Muuttujat[Opiskelutoiminta (opiskelun tarkasteluhetki)])",
+              "\t, ALL(Muuttujat[Oppiv. suor. kelp. koul. (opiskelun tarkasteluhetki)])",
+              "\t, ALL(Muuttujat[Koulutusmuoto (opiskelun tarkasteluhetki)])",
+              "\t, ALL(Muuttujat[Koulutustyyppi (opiskelun tarkasteluhetki)])",
+              "\t, ALL(Muuttujat[Suorituksen tyyppi (opiskelun tarkasteluhetki)])",
+              ")",
+              ""
+            ],
+            "formatString": "0"
+          },
+          {
+            "name": "Hakeutumisvelvolliset (opiskelutoiminta)",
+            "expression": [
+              "",
+              "CALCULATE(",
+              "\t[Hakeutumisvelvolliset (haku- ja opiskelutoiminta)]",
+              "\t--haku",
+              "\t, ALL(Muuttujat[Hakutoiminta])",
+              "\t, ALL(Muuttujat[Koul. alkamiskausi (hakukohde)])",
+              "\t, ALL(Muuttujat[Hakutapa])",
+              "\t, ALL(Muuttujat[Hakutyyppi])",
+              "\t, ALL(Muuttujat[Hakutoiveen tila])",
+              "\t, ALL(Muuttujat[Hakutoivenumero])",
+              "\t, ALL(Muuttujat[Koulutustyyppi (hakukohde)])",
+              "\t, ALL(Muuttujat[Vaativa erityinen tuki (hakukohde)])",
+              ")",
+              ""
+            ],
+            "formatString": "0"
+          },
+          {
+            "name": "Hakeneet (opiskelutoiminta)",
+            "expression": "CALCULATE([Hakeutumisvelvolliset (haku- ja opiskelutoiminta)], Muuttujat[hakenut_1_0] = 1)",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Opiskelijat (hakutoiminta)",
+            "expression": [
+              "",
+              "CALCULATE(",
+              "\t[Hakeutumisvelvolliset (haku- ja opiskelutoiminta)]",
+              "\t, FILTER(VALUES(Muuttujat[Oppiv. suor. kelp. koul. (opiskelun tarkasteluhetki)]), Muuttujat[Oppiv. suor. kelp. koul. (opiskelun tarkasteluhetki)] = \"Kyllä\")",
+              ")"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ei hakeneet",
+            "expression": [
+              "",
+              "CALCULATE(",
+              "\t[Hakeutumisvelvolliset (hakutoiminta)]",
+              "\t, KEEPFILTERS(Muuttujat[Hakutoiminta] = \"Ei ole hakenut tilastovuonna alkavaan koulutukseen\")",
+              "\t--haku",
+              "\t, ALL(Muuttujat[Hakutoiminta])",
+              "\t, ALL(Muuttujat[Koul. alkamiskausi (hakukohde)])",
+              "\t, ALL(Muuttujat[Hakutapa])",
+              "\t, ALL(Muuttujat[Hakutyyppi])",
+              "\t, ALL(Muuttujat[Hakutoiveen tila])",
+              "\t, ALL(Muuttujat[Hakutoivenumero])",
+              "\t, ALL(Muuttujat[Koulutustyyppi (hakukohde)])",
+              "\t, ALL(Muuttujat[Vaativa erityinen tuki (hakukohde)])",
               ")"
             ],
             "formatString": "#,0"
@@ -3306,13 +3362,10 @@
             ],
             "measures": [
               {
-                "name": "Ei hakeneet"
-              },
-              {
                 "name": "Hakeneet"
               },
               {
-                "name": "Hakeutumisvelvolliset"
+                "name": "Hakeutumisvelvolliset (haku- ja opiskelutoiminta)"
               },
               {
                 "name": "Ilmoittautuneet"
@@ -3327,19 +3380,34 @@
                 "name": "Ensisijaisesti hakeneet"
               },
               {
-                "name": "Opiskelijat oppiv. suor. kelpaavassa koulutuksessa"
+                "name": "Opiskelijat"
               },
               {
-                "name": "Hakeneet opiskelijat hakukohteen koul.tyypin oppiv. suor. kelp. koulutuksessa"
+                "name": "Hakeneista hakukohteen koulutustyypin koulutuksessa"
               },
               {
-                "name": "Opiskelijat oppiv. suor. kelpaavassa koulutuksessa %"
+                "name": "Opiskelijat %"
               },
               {
-                "name": "Hak.velvolliset (ei suodatu haku-/opisk. tark.hetk. muuttujilla pl. hakutoiminta & 18 v. -tarkistus)"
+                "name": "Hakeutumisvelvolliset"
               },
               {
-                "name": "Opiskelijat hakukohteen koul.tyypin oppiv. suor. kelp. koulutuksessa (ei suodatu hakumuuttujilla)"
+                "name": "Opiskelijat hakukohteen koulutustyypin koulutuksessa"
+              },
+              {
+                "name": "Hakeutumisvelvolliset (hakutoiminta)"
+              },
+              {
+                "name": "Hakeutumisvelvolliset (opiskelutoiminta)"
+              },
+              {
+                "name": "Hakeneet (opiskelutoiminta)"
+              },
+              {
+                "name": "Opiskelijat (hakutoiminta)"
+              },
+              {
+                "name": "Ei hakeneet"
               }
             ]
           }
