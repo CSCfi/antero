@@ -4037,7 +4037,11 @@
         "measures": [
           {
             "name": "opiskelijat",
-            "expression": " IF(DISTINCTCOUNT([apusarake_oppija_oid]) < 5, \"1-4\", MROUND(DISTINCTCOUNT([apusarake_oppija_oid]), 3))",
+            "expression": [
+              " var lkm = DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid])",
+              "                  return IF(lkm = 0, BLANK(), IF(lkm<5, \"1-4\", MROUND(lkm, 3)))",
+              ""
+            ],
             "formatString": "#,0"
           },
           {
@@ -4053,7 +4057,11 @@
           {
             "name": "katsottu_eronneeksi",
             "expression": [
-              " IF(CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]), Muuttujat[apusarake_eronnut] = 1) < 5, \"1-4\", MROUND(CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]), Muuttujat[apusarake_eronnut] = 1), 3))",
+              " ",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]), Muuttujat[apusarake_eronnut] = 1)",
+              "return IF(lkm = 0, BLANK(), IF(lkm<5, \"1-4\", MROUND(lkm, 3)))",
+              "",
+              "",
               " "
             ],
             "formatString": "#,0"
@@ -4212,7 +4220,13 @@
           },
           {
             "name": "uudet_opiskelijat",
-            "expression": " CALCULATE(IF(DISTINCTCOUNT([apusarake_oppija_oid]) < 5, \"1-4\", MROUND(DISTINCTCOUNT([apusarake_oppija_oid]), 3)), Muuttujat[apusarake_uusi_opiskelija] = 1)",
+            "expression": [
+              " ",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]), Muuttujat[apusarake_uusi_opiskelija] = 1)",
+              "return IF(lkm = 0, BLANK(), IF(lkm<5, \"1-4\", MROUND(lkm, 3)))",
+              "",
+              ""
+            ],
             "formatString": "#,0"
           },
           {
@@ -4236,7 +4250,12 @@
           },
           {
             "name": "lasnaolleet_opiskelijat",
-            "expression": " IF(DISTINCTCOUNT([apusarake_oppija_oid]) < 5, \"1-4\", MROUND(DISTINCTCOUNT([apusarake_oppija_oid]), 3))",
+            "expression": [
+              " ",
+              "var lkm = DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid])",
+              "return IF(lkm = 0, BLANK(), IF(lkm<5, \"1-4\", MROUND(lkm, 3)))",
+              ""
+            ],
             "formatString": "#,0"
           },
           {
@@ -7951,8 +7970,8 @@
                   },
                   {
                     "name": "opetuskieli_fi",
-                    "translatedCaption": "Opetuskieli",
-                    "translatedDisplayFolder": "Järjestämislupamuuttujat"
+                    "translatedCaption": "Oppilaitoksen opetuskieli",
+                    "translatedDisplayFolder": "Organisaatiomuuttujat"
                   },
                   {
                     "name": "oppilaitoksen_kunta_fi",
@@ -8960,8 +8979,8 @@
                   },
                   {
                     "name": "opetuskieli_sv",
-                    "translatedCaption": "Undervisningsspråk",
-                    "translatedDisplayFolder": "Tillståndsvariabler"
+                    "translatedCaption": "Läroanstaltens undervisningsspråk",
+                    "translatedDisplayFolder": "Organisationsvariabler"
                   },
                   {
                     "name": "oppilaitoksen_kunta_sv",
@@ -10009,6 +10028,9 @@
               },
               {
                 "name": "vuosi_fi"
+              },
+              {
+                "name": "opetuskieli_fi"
               }
             ],
             "measures": [
@@ -10072,6 +10094,9 @@
               },
               {
                 "name": "vuosi_sv"
+              },
+              {
+                "name": "opetuskieli_sv"
               }
             ],
             "measures": [
