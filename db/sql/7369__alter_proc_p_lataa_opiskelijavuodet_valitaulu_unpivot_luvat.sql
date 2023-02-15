@@ -1,6 +1,6 @@
 USE [Koski_SA]
 GO
-/****** Object:  StoredProcedure [dbo].[p_lataa_opiskelijavuodet_valitaulu_unpivot_luvat]    Script Date: 15.2.2023 18:33:14 ******/
+/****** Object:  StoredProcedure [dbo].[p_lataa_opiskelijavuodet_valitaulu_unpivot_luvat]    Script Date: 15.2.2023 21:06:25 ******/
 SET ANSI_NULLS ON
 GO
 SET QUOTED_IDENTIFIER ON
@@ -118,8 +118,8 @@ LEFT JOIN ANTERO.dw.d_kytkin d21 ON d21.kytkin_koodi =
 			or (d11.tutkintotyyppi_koodi in ('19','20') and q.alkamispaiva >= '2019-01-01') 
 			or d11.koulutusluokitus_koodi in ('999901','999903','999908')
 			or (
-				q.kustannusryhma = 'muu' --muulle katsotaan onko amm. järjestämislupaa ylipäätään pl. siirtymäjärjestäjät, joilta luvat puuttuvat. JS 15.2.2023
-				and (vuosi > 2021 or sjl.ytunnus_avain in ('0188756-3','0773744-3','0763403-0','0108023-3','0950895-1','0112038-9','0201789-3','1524361-1','0215382-8','1041090-0')
+				q.kustannusryhma = 'muu' --muulle katsotaan onko amm. järjestämislupaa ylipäätään pl. siirtymäjärjestäjät, joille ei datassa lupia. JS 15.2.2023
+				and (vuosi > 2021 or coalesce(sjl.ytunnus_avain, '') not in ('0188756-3','0773744-3','0763403-0','0108023-3','0950895-1','0112038-9','0201789-3','1524361-1','0215382-8','1041090-0')
 			)
 )
 			then 1
