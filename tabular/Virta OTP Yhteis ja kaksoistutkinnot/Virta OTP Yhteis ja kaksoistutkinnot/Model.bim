@@ -284,17 +284,73 @@
           },
           {
             "name": "Tutkintoja yhteensä",
-            "expression": "CALCULATE(DISTINCTCOUNT([Henkilo_koodi]))",
+            "expression": [
+              "",
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT([Henkilo_koodi]))",
+              "",
+              "RETURN IF(AND(lkm > 0, lkm < 5), \"1-4\", MROUND(lkm,3))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Yhteis- ja kaksoistutkintojen määrä",
-            "expression": "[Yhteistutkintoja]+[Kaksoistutkintoja]",
+            "expression": [
+              "",
+              "",
+              "var lkm = [Yhteistutkintoja]+[Kaksoistutkintoja]",
+              "",
+              "RETURN IF(AND(lkm > 0, lkm < 5), \"1-4\", MROUND(lkm,3))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Yhteis- ja kaksoistutkintojen osuus",
-            "expression": "DIVIDE([Yhteis- ja kaksoistutkintojen määrä],[Tutkintoja yhteensä])",
+            "expression": [
+              "",
+              "",
+              "var osa = [Yhteis- ja kaksoistutkintojen määrä]",
+              "var kaikki = [Tutkintoja yhteensä]",
+              "",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Tutkintoja yhteensä_s",
+            "expression": [
+              "",
+              "",
+              "CALCULATE(DISTINCTCOUNT([Henkilo_koodi]))",
+              "",
+              "",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Yhteis- ja kaksoistutkintojen määrä_s",
+            "expression": [
+              "",
+              "",
+              "[Yhteistutkintoja]+[Kaksoistutkintoja]",
+              "",
+              "",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Yhteis- ja kaksoistutkintojen osuus_s",
+            "expression": [
+              "",
+              "",
+              "DIVIDE([Yhteis- ja kaksoistutkintojen määrä_s], [Tutkintoja yhteensä_s], BLANK())"
+            ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           }
         ],
