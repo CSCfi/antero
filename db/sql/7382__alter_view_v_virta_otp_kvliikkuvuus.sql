@@ -185,6 +185,6 @@ SELECT
   LEFT JOIN dw.d_kalenteri d15 ON d15.id = f.d_kalenteri_alkupvm_id
   LEFT JOIN dw.d_kytkin d16 on d16.id = f.d_kytkin_blended_id
 
-  GO
+GO
 
 USE [ANTERO]
