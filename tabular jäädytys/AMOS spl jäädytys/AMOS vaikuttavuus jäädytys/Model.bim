@@ -470,6 +470,12 @@
             "name": "Tilastovuosi2",
             "dataType": "int64",
             "sourceColumn": "Tilastovuosi2"
+          },
+          {
+            "name": "Koodit Koulutuksen järjestäjä",
+            "dataType": "string",
+            "sourceColumn": "Koodit Koulutuksen järjestäjä",
+            "displayFolder": "Koodimuuttujat"
           }
         ],
         "partitions": [
@@ -1013,6 +1019,14 @@
                   "        <int>113</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koodit Koulutuksen järjestäjä</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>213</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -1535,6 +1549,14 @@
                   "        <int>64</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koodit Koulutuksen järjestäjä</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>65</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -1602,6 +1624,14 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koodit Koulutuksen järjestäjä</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -1637,7 +1667,7 @@
             "name": "Työllistyneet",
             "expression": [
               " ",
-              "var summa = CALCULATE(SUM(Muuttujat[v Työlliset]), Muuttujat[Koulutuksen tavoite] = \"Koko tutkinto\")",
+              "var summa = CALCULATE(SUM(Muuttujat[v Työlliset]), FILTER(VALUES(Muuttujat[Koulutuksen tavoite]), [Koulutuksen tavoite] = \"Koko tutkinto\"))",
               "return IF(summa=0,BLANK(),summa)"
             ],
             "formatString": "#,0"
@@ -1646,7 +1676,7 @@
             "name": "Jatko-opiskelijat",
             "expression": [
               "",
-              "var lkm = CALCULATE(SUM(Muuttujat[v Opiskelijat]), Muuttujat[Koulutuksen tavoite] = \"Koko tutkinto\")",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Opiskelijat]), FILTER(VALUES(Muuttujat[Koulutuksen tavoite]), [Koulutuksen tavoite] = \"Koko tutkinto\"))",
               "return IF(lkm=0,BLANK(),lkm)",
               ""
             ],
@@ -1656,7 +1686,7 @@
             "name": "Työllistyneet ja jatko-opiskelijat",
             "expression": [
               " ",
-              "var summa = CALCULATE(SUM(Muuttujat[v Työlliset ja opiskelijat]), Muuttujat[Koulutuksen tavoite] = \"Koko tutkinto\")",
+              "var summa = CALCULATE(SUM(Muuttujat[v Työlliset ja opiskelijat]), FILTER(VALUES(Muuttujat[Koulutuksen tavoite]), [Koulutuksen tavoite] = \"Koko tutkinto\"))",
               "return IF(summa=0,BLANK(),summa)"
             ],
             "formatString": "#,0"
@@ -1751,7 +1781,7 @@
             "name": "Tutkinnon suorittaneet työllistyneet, painotetut pisteet",
             "expression": [
               "",
-              "var lkm = CALCULATE(SUM(Muuttujat[v Työllisten painotetut pisteet]), Muuttujat[Koulutuksen tavoite] = \"Koko tutkinto\")",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Työllisten painotetut pisteet]), FILTER(VALUES(Muuttujat[Koulutuksen tavoite]), [Koulutuksen tavoite] = \"Koko tutkinto\"))",
               "return IF(lkm=0,BLANK(),lkm)"
             ],
             "formatString": "#,0.00"
@@ -1760,7 +1790,7 @@
             "name": "Tutkinnon osia suorittaneet työllistyneet, painotetut pisteet",
             "expression": [
               "",
-              "var lkm = CALCULATE(SUM(Muuttujat[v Työllisten painotetut pisteet]), Muuttujat[Koulutuksen tavoite] = \"Tutkinnon osa tai osia\")",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Työllisten painotetut pisteet]), FILTER(VALUES(Muuttujat[Koulutuksen tavoite]), [Koulutuksen tavoite] = \"Tutkinnon osa tai osia\"))",
               "return IF(lkm=0,BLANK(),lkm)"
             ],
             "formatString": "#,0.00"
@@ -1769,7 +1799,7 @@
             "name": "Tutkinnon suorittaneet työllistyneet",
             "expression": [
               "",
-              "var lkm = CALCULATE(SUM(Muuttujat[v Työlliset]), Muuttujat[Koulutuksen tavoite] = \"Koko tutkinto\")",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Työlliset]), FILTER(VALUES(Muuttujat[Koulutuksen tavoite]), [Koulutuksen tavoite] = \"Koko tutkinto\"))",
               "return IF(lkm=0,BLANK(),lkm)"
             ],
             "formatString": "#,0"
@@ -1778,7 +1808,7 @@
             "name": "Tutkinnon suorittaneet jatko-opiskelijat",
             "expression": [
               "",
-              "var lkm = CALCULATE(SUM(Muuttujat[v Opiskelijat]), Muuttujat[Koulutuksen tavoite] = \"Koko tutkinto\")",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Opiskelijat]), FILTER(VALUES(Muuttujat[Koulutuksen tavoite]), [Koulutuksen tavoite] = \"Koko tutkinto\"))",
               "return IF(lkm=0,BLANK(),lkm)"
             ],
             "formatString": "#,0"
@@ -1787,7 +1817,7 @@
             "name": "Tutkinnon osia suorittaneet työllistyneet",
             "expression": [
               "",
-              "var lkm = CALCULATE(SUM(Muuttujat[v Työlliset]), Muuttujat[Koulutuksen tavoite] = \"Tutkinnon osa tai osia\")",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Työlliset]), FILTER(VALUES(Muuttujat[Koulutuksen tavoite]), [Koulutuksen tavoite] = \"Tutkinnon osa tai osia\"))",
               "return IF(lkm=0,BLANK(),lkm)"
             ],
             "formatString": "#,0"
@@ -1796,7 +1826,7 @@
             "name": "Tutkinnon osia suorittaneet jatko-opiskelijat",
             "expression": [
               "",
-              "var lkm = CALCULATE(SUM(Muuttujat[v Opiskelijat]), Muuttujat[Koulutuksen tavoite] = \"Tutkinnon osa tai osia\")",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Opiskelijat]), FILTER(VALUES(Muuttujat[Koulutuksen tavoite]), [Koulutuksen tavoite] = \"Tutkinnon osa tai osia\"))",
               "return IF(lkm=0,BLANK(),lkm)"
             ],
             "formatString": "#,0"
@@ -1805,7 +1835,7 @@
             "name": "Tutkinnon suorittaneet jatko-opiskelijat, painotetut pisteet",
             "expression": [
               "",
-              "var lkm = CALCULATE(SUM([v Opiskelijoiden painotetut pisteet]),Muuttujat[Koulutuksen tavoite] = \"Koko tutkinto\")",
+              "var lkm = CALCULATE(SUM([v Opiskelijoiden painotetut pisteet]), FILTER(VALUES(Muuttujat[Koulutuksen tavoite]), [Koulutuksen tavoite] = \"Koko tutkinto\"))",
               "return IF(lkm=0,BLANK(),lkm)"
             ],
             "formatString": "#,0.00"
@@ -1814,7 +1844,7 @@
             "name": "Tutkinnon osia suorittaneet jatko-opiskelijat, painotetut pisteet",
             "expression": [
               "",
-              "var lkm = CALCULATE(SUM(Muuttujat[v Opiskelijoiden painotetut pisteet]), Muuttujat[Koulutuksen tavoite] = \"Tutkinnon osa tai osia\")",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Opiskelijoiden painotetut pisteet]), FILTER(VALUES(Muuttujat[Koulutuksen tavoite]), [Koulutuksen tavoite] = \"Tutkinnon osa tai osia\"))",
               "return IF(lkm=0,BLANK(),lkm)"
             ],
             "formatString": "#,0.00"
@@ -2013,7 +2043,7 @@
             "name": "Painotetut pisteet; tutkinto, työllistyneet",
             "expression": [
               "",
-              "var lkm = CALCULATE(SUM(Muuttujat[v Työllisten painotetut pisteet]), Muuttujat[Koulutuksen tavoite] = \"Koko tutkinto\")",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Työllisten painotetut pisteet]), FILTER(VALUES(Muuttujat[Koulutuksen tavoite]), [Koulutuksen tavoite] = \"Koko tutkinto\"))",
               "return IF(lkm=0,BLANK(),lkm)"
             ],
             "formatString": "#,0.00",
@@ -2023,7 +2053,7 @@
             "name": "Painotetut pisteet; tutkinto, jatko-opiskelijat",
             "expression": [
               "",
-              "var lkm = CALCULATE(SUM([v Opiskelijoiden painotetut pisteet]),Muuttujat[Koulutuksen tavoite] = \"Koko tutkinto\")",
+              "var lkm = CALCULATE(SUM([v Opiskelijoiden painotetut pisteet]), FILTER(VALUES(Muuttujat[Koulutuksen tavoite]), [Koulutuksen tavoite] = \"Koko tutkinto\"))",
               "return IF(lkm=0,BLANK(),lkm)"
             ],
             "formatString": "#,0.00",
@@ -2033,7 +2063,7 @@
             "name": "Painotetut pisteet; tutkinnon osia, jatko-opiskelijat",
             "expression": [
               "",
-              "var lkm = CALCULATE(SUM(Muuttujat[v Opiskelijoiden painotetut pisteet]), Muuttujat[Koulutuksen tavoite] = \"Tutkinnon osa tai osia\")",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Opiskelijoiden painotetut pisteet]), FILTER(VALUES(Muuttujat[Koulutuksen tavoite]), [Koulutuksen tavoite] = \"Tutkinnon osa tai osia\"))",
               "return IF(lkm=0,BLANK(),lkm)"
             ],
             "formatString": "#,0.00",
@@ -2043,7 +2073,7 @@
             "name": "Painotetut pisteet; tutkinnon osia, työllistyneet",
             "expression": [
               "",
-              "var lkm = CALCULATE(SUM(Muuttujat[v Työllisten painotetut pisteet]), Muuttujat[Koulutuksen tavoite] = \"Tutkinnon osa tai osia\")",
+              "var lkm = CALCULATE(SUM(Muuttujat[v Työllisten painotetut pisteet]), FILTER(VALUES(Muuttujat[Koulutuksen tavoite]), [Koulutuksen tavoite] = \"Tutkinnon osa tai osia\"))",
               "return IF(lkm=0,BLANK(),lkm)"
             ],
             "formatString": "#,0.00",
@@ -2624,6 +2654,14 @@
               "        <int>113</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koodit Koulutuksen järjestäjä</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>213</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -3146,6 +3184,14 @@
               "        <int>64</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koodit Koulutuksen järjestäjä</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>65</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -3213,6 +3259,14 @@
               "        <boolean>true</boolean>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koodit Koulutuksen järjestäjä</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
               "  </ColumnChecked>",
               "  <ColumnFilter />",
               "  <SelectionFilter />",
@@ -3248,6 +3302,9 @@
               },
               {
                 "name": "Koulutuksen tavoite"
+              },
+              {
+                "name": "Koodit Koulutuksen järjestäjä"
               }
             ],
             "measures": [
@@ -3329,6 +3386,9 @@
               },
               {
                 "name": "Tilastovuosi"
+              },
+              {
+                "name": "Koodit Koulutuksen järjestäjä"
               }
             ],
             "measures": [
@@ -3449,6 +3509,9 @@
               },
               {
                 "name": "Työvoimakoulutus"
+              },
+              {
+                "name": "Koodit Koulutuksen järjestäjä"
               }
             ],
             "measures": [
@@ -3494,6 +3557,9 @@
               },
               {
                 "name": "Tilastovuosi"
+              },
+              {
+                "name": "Koodit Koulutuksen järjestäjä"
               }
             ],
             "measures": [
@@ -3578,6 +3644,9 @@
               },
               {
                 "name": "Tilastovuosi"
+              },
+              {
+                "name": "Koodit Koulutuksen järjestäjä"
               }
             ],
             "measures": [
