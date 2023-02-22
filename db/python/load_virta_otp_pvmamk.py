@@ -26,7 +26,10 @@ def makerow():
     'vieraskSuoritukset': None, 'kansainvVaihto': None,'kkYhteistyo': None, 'avoinKK': None, 'erillinenOpintoOikeus': None,
     'ulkomailtaHyvLuet': None, 'db': None, 'oppilaitostunnus': None, 'luoja': None, 'luontipaivamaara': None,
     'maahanmValKoulutus': None, 'koulutustyyppi': None, 'tkiToiminnanLaajuus': None, 'tkiMuutLaajuus': None,
-    'tkiHarjoittelunLaajuus': None,'ulkomaaharjoittelu': None, 'erikoistumiskoulutus': None
+    'tkiHarjoittelunLaajuus': None,'ulkomaaharjoittelu': None, 'erikoistumiskoulutus': None,
+    'muunkuinkorkeakoulun':None,'kvsuomivieraana': None, 'kvruotsivieraana': None
+
+
     }
 
 # get value from json
@@ -109,6 +112,9 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
     row["vieraskSuoritukset"] = jv(i,"vieraskSuoritukset")
     row["vuosi"] = jv(i,"vuosi")
     row["erikoistumiskoulutus"] = jv(i,"erikoistumiskoulutus")
+    row["muunkuinkorkeakoulun"]= jv(i,"muunkuinkorkeakoulun")
+    row["kvsuomivieraana"]= jv(i,"kvsuomivieraana")
+    row["kvruotsivieraana"]= jv(i,"kvruotsivieraana")
 
     dboperator.insert(hostname+url,schema,table,row)
      # show some sign of being alive
