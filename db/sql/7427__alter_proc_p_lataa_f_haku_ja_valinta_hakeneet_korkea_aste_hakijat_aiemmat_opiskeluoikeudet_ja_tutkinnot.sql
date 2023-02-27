@@ -75,7 +75,7 @@ LEFT JOIN (
 		,case when (select d from dbo.biginttodate (alkamispaivamaara)) >= '2014-08-01' then 1 else 0 end as op_kytkin
 	FROM [ANTERO].[sa].[sa_virta_otp_korkeakouluhaut_hakijat_opiskeluoikeudet] 
 	
-) AS OP ON OP.henkilo_oid = f.henkilo_oid AND ((OP.opisk_alkamisPvm <= coalesce(d4.loppuPvm, d4b.loppuPvm) and OP.tavoitetutkinto <> d5.koulutusluokitus_koodi) or (DATEDIFF(month, coalesce(d4.loppuPvm, d4b.loppuPvm), OP.opisk_alkamisPvm) <= 2 AND OP.tavoitetutkinto = d5.koulutusluokitus_koodi))
+) AS OP ON OP.henkilo_oid = f.henkilo_oid AND ((OP.opisk_alkamisPvm <= coalesce(d4.loppuPvm, d4b.loppuPvm) and OP.tavoitetutkinto <> d5.koulutusluokitus_koodi) or (OP.opisk_alkamisPvm < coalesce(d4.alkuPvm, d4b.alkuPvm) AND OP.tavoitetutkinto = d5.koulutusluokitus_koodi))
 --tutkinnot
 LEFT JOIN (
 
