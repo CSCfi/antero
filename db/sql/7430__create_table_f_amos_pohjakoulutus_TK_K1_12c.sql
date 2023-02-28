@@ -1,6 +1,9 @@
 USE [ANTERO]
 GO
 
+DROP TABLE IF EXISTS [dw].[f_amos_pohjakoulutus_TK_K1_12c]
+GO
+
 /****** Object:  Table [dw].[f_amos_pohjakoulutus_TK_K1_12c]    Script Date: 28.2.2023 14:32:37 ******/
 SET ANSI_NULLS ON
 GO

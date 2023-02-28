@@ -13,7 +13,7 @@ GO
 
 
 
-CREATE VIEW [dw].[v_TK_K1_12c] AS 
+CREATE OR ALTER VIEW [dw].[v_TK_K1_12c] AS 
 
 	SELECT [tilv]
 		,[jarj]

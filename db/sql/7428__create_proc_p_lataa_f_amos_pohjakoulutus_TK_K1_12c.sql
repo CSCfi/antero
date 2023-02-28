@@ -14,9 +14,7 @@ GO
 
 
 
-
-
-CREATE PROCEDURE [dw].[p_lataa_f_amos_pohjakoulutus_TK_K1_12c] AS
+CREATE OR ALTER PROCEDURE [dw].[p_lataa_f_amos_pohjakoulutus_TK_K1_12c] AS
 
 TRUNCATE TABLE dw.f_amos_pohjakoulutus_TK_K1_12c
 

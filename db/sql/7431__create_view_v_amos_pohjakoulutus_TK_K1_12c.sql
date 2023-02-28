@@ -13,7 +13,7 @@ GO
 
 
 
-CREATE VIEW [dw].[v_amos_pohjakoulutus_TK_K1_12c] 
+CREATE OR ALTER VIEW [dw].[v_amos_pohjakoulutus_TK_K1_12c] 
 AS
 SELECT
 -- AIKAMUUTTUJAT
