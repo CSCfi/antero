@@ -49,7 +49,7 @@ select
 
 from [dw].[f_yo_erillisella_opinto_oikeudella_opiskelevat] f
 join dw.d_yo d6 on d6.id=f.d_yliopisto_id
-where cast((cast((vuosi + 1) as varchar(4)) + '-03-04') as date) <= convert(date, getdate()) 
+where cast((cast((vuosi + 1) as varchar(4)) + '-03-03') as date) <= convert(date, getdate()) 
 and (suorittaneiden_lkm > 0 or opettajakoulutus_suorittaneiden_lkm > 0)
 
 union all
