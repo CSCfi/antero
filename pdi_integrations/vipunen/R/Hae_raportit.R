@@ -54,19 +54,19 @@ hae_raportit <- function(kieli) {
       alaosiot <- data.frame(substr(alaosiot[,1], 1,nchar(alaosiot[,1])-1), stringsAsFactors = FALSE)
       
       # Piilotetut sivut, jotka eivät nay lahdekoodissa
-      if (kieli == "fi" & i == 2){
+      if (kieli == "fi" & i == 3){
         alaosiot[nrow(alaosiot)+1,1] <- "/perus/Sivut/Ainevalinnat-2000-2019.aspx"
       }
-      else if (kieli == "fi" & i == 3){
+      else if (kieli == "fi" & i == 4){
         alaosiot[nrow(alaosiot)+1,1] <- "/lukio/Sivut/Ainevalinnat-2010-2017.aspx"
       }
-      else if (kieli == "fi" & i == 5){
+      else if (kieli == "fi" & i == 6){
         alaosiot[nrow(alaosiot)+1,1] <- "/amk/Sivut/taloustiedot-2014-2018.aspx"
       }
-      else if (kieli == "fi" & i == 6) {
+      else if (kieli == "fi" & i == 7) {
         alaosiot[nrow(alaosiot)+1,1] <- "/yliopisto/Sivut/Taloustiedot-2012-2018.aspx"
       }
-      else if (kieli == "sv" & i == 2) {
+      else if (kieli == "sv" & i == 3) {
         alaosiot[nrow(alaosiot)+1,1] <- "/grundlaggande/Sidor/Ainevalinnat-2000-2019.aspx"
       }
       
