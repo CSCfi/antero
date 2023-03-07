@@ -1,12 +1,13 @@
 USE [ANTERO]
 GO
 
-/****** Object:  View [dw].[v_haku_ja_valinta_aiemmat_opiskeluoikeudet_tutkinnot]    Script Date: 7.3.2023 16:09:50 ******/
+/****** Object:  View [dw].[v_haku_ja_valinta_aiemmat_opiskeluoikeudet_tutkinnot]    Script Date: 7.3.2023 19:20:15 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 ALTER VIEW [dw].[v_haku_ja_valinta_aiemmat_opiskeluoikeudet_tutkinnot] AS
@@ -26,7 +27,7 @@ SELECT
 	,f.[hakemus_oid]
 	,d5.id as d_hakuaika_id
 	,CASE
-		WHEN [Valitut2] = 1 or [Paikan vastaanottaneet2] = 1 THEN d90.selite_fi
+		WHEN [Valitut2] = 1 or [Paikan vastaanottaneet2] = 1 THEN COALESCE(d90.selite_fi, 'Tieto puuttuu')
 		ELSE 'Ei valittu'
 	END as 'Valintatapajonon tyyppi'
 
@@ -242,7 +243,7 @@ SELECT
 
 	/* Järjestys-kentät */
 	,CASE
-		WHEN [Valitut2] = 1 or [Paikan vastaanottaneet2] = 1 THEN d90.jarjestys
+		WHEN [Valitut2] = 1 or [Paikan vastaanottaneet2] = 1 THEN COALESCE(d90.jarjestys, 'öö')
 		ELSE 'zz'
 	END as 'Valintatapajonon tyyppi järjestys'
 	,[Ensikertainen hakija järjestys] = NULL --eft(f.ensikertainen_hakija,2)
