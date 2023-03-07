@@ -268,7 +268,17 @@ BEGIN
 					  ps.suorituksen_tyyppi = 'internationalschoolmypvuosiluokka' and ps.koulutusmoduuli_koodiarvo = '9')
 				GROUP BY oo.oppija_oid
 			) po on po.oppija_oid = ov.oppija_oid
-			LEFT JOIN [Koski_SA].[sa].[sa_valpas_oppivelvollisuudesta_vapautetut] vov on vov.oppija_oid = ov.oppija_oid
+			OUTER APPLY (
+				SELECT * FROM (
+					SELECT 
+						vov.oppija_oid, 
+						vov.vapautettu, 
+						vov.mitatoity, 
+						MAX(vov.vapautettu) OVER (PARTITION BY vov.oppija_oid) as vapautettuMax	
+					FROM [Koski_SA].[sa].[sa_valpas_oppivelvollisuudesta_vapautetut] vov 
+					WHERE vapautettu <= CAST(CONCAT(YEAR(@alkuPvm),'-01-01') as date) and vov.oppija_oid = ov.oppija_oid
+				) vov WHERE vov.vapautettu = vov.vapautettuMax
+			) vov
 			WHERE CAST(CONCAT(YEAR(@alkuPvm),'-01-01') as date) < DATEADD(year, 18, ov.syntymaaika) AND
 				  YEAR(@alkuPvm) >= YEAR(DATEADD(year, 16, ov.syntymaaika)) AND
 				  (ov.tutkinto_suoritettu is null or YEAR(@alkuPvm) <= YEAR(ov.tutkinto_suoritettu)) AND
