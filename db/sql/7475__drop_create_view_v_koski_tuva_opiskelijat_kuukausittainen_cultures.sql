@@ -2,10 +2,6 @@ USE [ANTERO]
 GO
 
 /****** Object:  View [dw].[v_koski_tuva_opiskelijat_kuukausittainen_cultures]    Script Date: 13.3.2023 10:32:11 ******/
-DROP VIEW [dw].[v_koski_tuva_opiskelijat_kuukausittainen_cultures]
-GO
-
-/****** Object:  View [dw].[v_koski_tuva_opiskelijat_kuukausittainen_cultures]    Script Date: 13.3.2023 10:32:11 ******/
 SET ANSI_NULLS ON
 GO
 
