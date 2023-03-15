@@ -7,10 +7,11 @@ todo doc
 """
 import sys,os,getopt
 import base64, http.client
-import requests
+from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
-#import ijson.backends.yajl2_cffi as ijson
+import ijson.backends.yajl2_cffi as ijson
 import json
+import tempfile
 from time import localtime, strftime
 
 import  dboperator
@@ -38,10 +39,19 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
 
   # automatic POST with (post)data
   print("value used for , -r, --rowcount=", rowcount)
-
-
+  request = Request(address, data=postdata, headers=reqheaders)
+  print(request)
   try:
-    response = requests.get(address, data=postdata, headers=reqheaders)
+    with tempfile.NamedTemporaryFile() as tmpfile:
+        response_tmp = urlopen(request)
+        while True:
+            chunk = response_tmp.read(4096)
+            if not chunk:
+                break
+    tmpfile.write(chunk)
+    tmpfile.seek(0)
+    response = tmpfile.read()
+
   except http.client.IncompleteRead as e:
     show('IncompleteRead exception.')
     show('Received: %d'%(e.partial))
