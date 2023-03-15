@@ -48,7 +48,7 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
             chunk = response_tmp.read(4096)
             if not chunk:
                 break
-    tmpfile.write(chunk)
+            tmpfile.write(chunk)
     tmpfile.seek(0)
     response = tmpfile.read()
 
