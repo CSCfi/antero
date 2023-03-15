@@ -538,15 +538,13 @@
 
 SELECT DISTINCT dataset, workspace
 FROM [ANTERO].[dbo].[pbi_dataset_tabular]
-WHERE tabular = '${tabular}' and Refresh = 1
+WHERE tabular = '${tabular}' and Refresh = 1 and (alku_pvm is null or (getdate() >= cast(concat(year(getdate()), alku_pvm) as date) and getdate() &lt;= cast(concat(year(getdate()), loppu_pvm) as date)))
 </sql>
     <limit>0</limit>
     <lookup/>
     <execute_each_row>N</execute_each_row>
     <variables_active>Y</variables_active>
     <lazy_conversion_active>N</lazy_conversion_active>
-    <cached_row_meta_active>N</cached_row_meta_active>
-    <row-meta/>
     <attributes/>
     <cluster_schema/>
     <remotesteps>
