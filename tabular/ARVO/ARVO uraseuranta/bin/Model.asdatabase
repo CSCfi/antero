@@ -768,6 +768,36 @@
             "dataType": "string",
             "sourceColumn": "Koodit Koulutus",
             "displayFolder": "Kodvariabler"
+          },
+          {
+            "name": "Kysymys (rahoitusmalli)",
+            "dataType": "string",
+            "sourceColumn": "Kysymys (rahoitusmalli)",
+            "sortByColumn": "jarjestys_kysymys_rahoitusmalli",
+            "sourceProviderType": "string",
+            "displayFolder": "Kyselymuuttujat"
+          },
+          {
+            "name": "Question (funding model)",
+            "dataType": "string",
+            "sourceColumn": "Question (funding model)",
+            "sortByColumn": "jarjestys_kysymys_rahoitusmalli",
+            "sourceProviderType": "string",
+            "displayFolder": "Survey variables"
+          },
+          {
+            "name": "Fråga (finansieringsmodell)",
+            "dataType": "string",
+            "sourceColumn": "Fråga (finansieringsmodell)",
+            "sortByColumn": "jarjestys_kysymys_rahoitusmalli",
+            "sourceProviderType": "string",
+            "displayFolder": "Frågevariabler"
+          },
+          {
+            "name": "jarjestys_kysymys_rahoitusmalli",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "jarjestys_kysymys_rahoitusmalli"
           }
         ],
         "partitions": [
@@ -3555,7 +3585,7 @@
               "var ka = [ka-ura-mais-tilasto]",
               "RETURN IF([vast-ura-mais-tilasto] < 5, ",
               "          \t BLANK(),",
-              "          \t IF(ISFILTERED('Muuttujat'[Kysymys]),             \t            ",
+              "          \t IF(OR(ISFILTERED('Muuttujat'[Kysymys]),ISFILTERED([Kysymys (rahoitusmalli)])),             \t            ",
               "             \t     IF(ISFILTERED('Muuttujat'[Monivalintavaihtoehto]),",
               "             \t         FORMAT([ka-ura-mais2], \"0%\"),",
               "             \t         IF(ka = 0,  BLANK(), ka)",
@@ -3625,7 +3655,7 @@
               "var ka = [ka-ura-mais-tilasto]",
               "RETURN IF([vast-ura-mais-tilasto] < 5, ",
               "          \t BLANK(),",
-              "          \t IF(ISFILTERED('Muuttujat'[Question]),             \t            ",
+              "          \t IF(OR(ISFILTERED('Muuttujat'[Question]),ISFILTERED(Muuttujat[Question (funding model)])),             \t            ",
               "             \t     IF(ISFILTERED('Muuttujat'[Multiple choice option]),",
               "             \t         FORMAT([ka-ura-mais2], \"0%\"),",
               "             \t         IF(ka = 0,  BLANK(), ka)",
@@ -3679,7 +3709,7 @@
               "var ka = [ka-ura-mais-tilasto]",
               "RETURN IF([vast-ura-mais-tilasto] < 5, ",
               "          \t BLANK(),",
-              "          \t IF(ISFILTERED('Muuttujat'[Fråga]),             \t            ",
+              "          \t IF(OR(ISFILTERED('Muuttujat'[Fråga]),ISFILTERED(Muuttujat[Fråga (finansieringsmodell)])),             \t            ",
               "             \t     IF(ISFILTERED('Muuttujat'[Flervalsalternativ]),",
               "             \t         FORMAT([ka-ura-mais2], \"0%\"),",
               "             \t         IF(ka = 0,  BLANK(), ka)",
@@ -6727,6 +6757,84 @@
         ]
       },
       {
+        "name": "URA_MAISTERI_RAHOITUS_EN",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Field of education, HE steering"
+              },
+              {
+                "name": "Field of education, tier 1"
+              },
+              {
+                "name": "Field of education, tier 2"
+              },
+              {
+                "name": "Field of education, tier 3"
+              },
+              {
+                "name": "Higher education institution"
+              },
+              {
+                "name": "Level of education, tier 2"
+              },
+              {
+                "name": "Multiple choice option"
+              },
+              {
+                "name": "Name of education"
+              },
+              {
+                "name": "Question (funding model)"
+              },
+              {
+                "name": "Question group"
+              },
+              {
+                "name": "Gender"
+              },
+              {
+                "name": "Survey year"
+              },
+              {
+                "name": "Age group"
+              },
+              {
+                "name": "Native language"
+              },
+              {
+                "name": "Level of education, tier 1"
+              },
+              {
+                "name": "Funding model question"
+              },
+              {
+                "name": "Codes Name of education"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Number of respondents (Master's degrees)"
+              },
+              {
+                "name": "Score"
+              },
+              {
+                "name": "Average (Master's degrees)"
+              },
+              {
+                "name": "Distribution of answers (Master's decrees)"
+              },
+              {
+                "name": "Standard deviation (Master's degrees)"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "URA_TOHTORI_EN",
         "tables": [
           {
@@ -6874,6 +6982,81 @@
         ]
       },
       {
+        "name": "URA_MAISTERI_RAHOITUS_SV",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Flervalsalternativ"
+              },
+              {
+                "name": "Fråga (finansieringsmodell)"
+              },
+              {
+                "name": "Frågegrupp"
+              },
+              {
+                "name": "Högskola"
+              },
+              {
+                "name": "UKM-styrningsområde"
+              },
+              {
+                "name": "Utbildningsbenämning"
+              },
+              {
+                "name": "Utbildningsnivå, nivå 2"
+              },
+              {
+                "name": "Utbildningsområde, nivå 1"
+              },
+              {
+                "name": "Utbildningsområde, nivå 2"
+              },
+              {
+                "name": "Utbildningsområde, nivå 3"
+              },
+              {
+                "name": "Finansieringsmodellfråga"
+              },
+              {
+                "name": "Enkätår"
+              },
+              {
+                "name": "Kön"
+              },
+              {
+                "name": "Modersmål"
+              },
+              {
+                "name": "Åldersgrupp"
+              },
+              {
+                "name": "Kod Utbildningsbenämning"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Antal personer som svarat (Magisterexamen)"
+              },
+              {
+                "name": "Poäng"
+              },
+              {
+                "name": "Fördelningen av svar (Magisterexamen)"
+              },
+              {
+                "name": "Medeltal (Magisterexamen)"
+              },
+              {
+                "name": "Standardavvikkelse (Magisterexamen)"
+              }
+            ]
+          }
+        ]
+      },
+      {
         "name": "URA_TOHTORI_SV",
         "tables": [
           {
@@ -6937,6 +7120,110 @@
               },
               {
                 "name": "Antal personer som svarat (Doktorexcamen)"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "URA_MAISTERI_RAHOITUS",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Koodit Koulutus"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "Koulutusnimike"
+              },
+              {
+                "name": "Kysymys (rahoitusmalli)"
+              },
+              {
+                "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Kysymystyyppi"
+              },
+              {
+                "name": "Kyselykerta"
+              },
+              {
+                "name": "Kysymysryhmä"
+              },
+              {
+                "name": "Korkeakoulu"
+              },
+              {
+                "name": "Monivalintavaihtoehto"
+              },
+              {
+                "name": "Ikä (valmistuessa)"
+              },
+              {
+                "name": "Ikäryhmä (valmistuessa)"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "VI suodatin"
+              },
+              {
+                "name": "kyselypohja"
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Äidinkieli"
+              },
+              {
+                "name": "Rahoitusmallikysymys"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Pisteet (maisterit)"
+              },
+              {
+                "name": "Vastaajamäärä (maisterit)"
+              },
+              {
+                "name": "Keskiarvo (maisterit)"
+              },
+              {
+                "name": "Keskihajonta (maisterit)"
+              },
+              {
+                "name": "Vastausjakauma (maisterit)"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
               }
             ]
           }
