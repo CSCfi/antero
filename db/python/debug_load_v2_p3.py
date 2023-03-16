@@ -39,8 +39,8 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
   # automatic POST with (post)data
   print("value used for , -r, --rowcount=", rowcount)
   #request = Request(address, data=postdata, headers=reqheaders)
-  req = Request(address, headers=reqheaders)
-  print(req)
+  request = Request(address, headers=reqheaders)
+  print(request)
   output_file_path = "/var/tmp/virtaotptmp/virtadataa"
   try:
     with open(output_file_path, 'wb') as f:
