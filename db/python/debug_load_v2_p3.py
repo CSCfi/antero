@@ -11,7 +11,6 @@ from urllib.request import Request, urlopen
 from urllib.error import HTTPError, URLError
 import ijson.backends.yajl2_cffi as ijson
 import json
-import tempfile
 from time import localtime, strftime
 
 import  dboperator
@@ -42,25 +41,26 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
   #request = Request(address, data=postdata, headers=reqheaders)
   req = Request(address, headers=reqheaders)
   print(req)
-
+  output_file_path = "/var/tmp/virtaotptmp/virtadataa"
   try:
-    with tempfile.NamedTemporaryFile(dir="/var/tmp/virtaotptmp", delete=False, mode='ab') as tmpfile:
-        #print(tmpfile.name)
-        response_tmp = urlopen(req, timeout=60, stream=True)
-        chunk_size = 1024 * 1024
-        chunks_downloaded = 0
+    with open(output_file_path, 'wb') as f:
+        # download the data in chunks and write it to the file
+        chunk_size = 8192
+        response_tmp = urlopen(request)
         while True:
             chunk = response_tmp.read(chunk_size)
             if not chunk:
                 break
-            tmpfile.write(chunk)
-            chunks_downloaded += 1
-            if chunks_downloaded % 10 == 0:
-                print(".", end='', flush=True)
-        tmpfile.seek(0)
-        with open(tmpfile.name, 'rb') as f:
-            response = f.read()
-             os.unlink(tmpfile.name)
+            f.write(chunk)
+            if f.tell() % 10000000 == 0:
+                print(".", end="")
+            f.flush()
+        print("Done writing data to file.")
+
+    # read the downloaded data from the file
+    with open(output_file_path, 'rb') as f:
+        response= f.read()
+        os.unlink(tmpfile.name)
   except http.client.IncompleteRead as e:
     show('IncompleteRead exception.')
     show('Received: %d'%(e.partial))
