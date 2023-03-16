@@ -60,7 +60,7 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
     # read the downloaded data from the file
     with open(output_file_path, 'rb') as f:
         response= f.read()
-        os.unlink(tmpfile.name)
+        os.unlink(output_file_path)
   except http.client.IncompleteRead as e:
     show('IncompleteRead exception.')
     show('Received: %d'%(e.partial))
