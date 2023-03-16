@@ -40,12 +40,12 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
   # automatic POST with (post)data
   print("value used for , -r, --rowcount=", rowcount)
   #request = Request(address, data=postdata, headers=reqheaders)
-  print(request)
+  req = Request(address, headers=reqheaders)
+  print(req)
 
   try:
     with tempfile.NamedTemporaryFile(dir="/var/tmp/virtaotptmp", delete=False, mode='ab') as tmpfile:
         #print(tmpfile.name)
-        req = Request(address, headers=reqheaders)
         response_tmp = urlopen(req, timeout=60, stream=True)
         chunk_size = 1024 * 1024
         chunks_downloaded = 0
