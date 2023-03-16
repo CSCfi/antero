@@ -43,22 +43,21 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
   print(request)
 
   try:
-    with tempfile.NamedTemporaryFile(dir="/var/tmp/virtaotptmp", delete=False) as tmpfile:
+    with tempfile.NamedTemporaryFile(dir="/var/tmp/virtaotptmp", delete=False, mode='ab') as tmpfile:
         #print(tmpfile.name)
-        chunks_downloaded = 0 
-        with open(tmpfile.name, 'wb') as f:
-            req = Request(address, headers=reqheaders)
-            response_tmp = urlopen(req)
-            chunk_size = 8192
-            while True:
-                chunk = response_tmp.read(chunk_size)
-                chunks_downloaded += 1
-                if chunks_downloaded % 100000 == 0:
-                    print(".", end='', flush=True)
-                if not chunk:
-                    break
-                f.write(chunk)
-                f.seek(0)
+        req = urllib.request.Request(address, headers=headers)
+        response_tmp = urllib.request.urlopen(req, timeout=60, stream=True)
+        chunk_size = 1024 * 1024
+        chunks_downloaded = 0
+        while True:
+            chunk = response_tmp.read(chunk_size)
+            if not chunk:
+                break
+            tmpfile.write(chunk)
+            chunks_downloaded += 1
+            if chunks_downloaded % 10 == 0:
+                print(".", end='', flush=True)
+        tmpfile.seek(0)
         with open(tmpfile.name, 'rb') as f:
             response = f.read()
              os.unlink(tmpfile.name)
