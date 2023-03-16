@@ -41,9 +41,11 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
   print("value used for , -r, --rowcount=", rowcount)
   request = Request(address, data=postdata, headers=reqheaders)
   print(request)
+
   try:
-    with tempfile.NamedTemporaryFile() as tmpfile:
+    with tempfile.TemporaryFile(dir='/var/tmp/virtaotptmp') as tmpfile:
         response_tmp = urlopen(request)
+
         while True:
             chunk = response_tmp.read(4096)
             if not chunk:
