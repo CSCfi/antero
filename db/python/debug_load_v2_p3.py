@@ -45,15 +45,19 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
   try:
     with tempfile.NamedTemporaryFile(dir="/var/tmp/virtaotptmp") as tmpfile:
         print(tmpfile.name)
-        response_tmp = urlopen(request)
-
-        while True:
-            chunk = response_tmp.read(4096)
-            if not chunk:
-                break
-            tmpfile.write(chunk)
-    tmpfile.seek(0)
-    response = tmpfile.read()
+        with open(tmpfile.name, 'wb') as f:
+            req = Request(address, headers=reqheaders)
+            response_tmp = urlopen(req, timeout=60)
+            chunk_size = 8192
+            while True:
+                chunk = response_tmp.read(chunk_size)
+                if not chunk:
+                    break
+                f.write(chunk)
+                f.seek(0)
+        with open(tmpfile.name, 'rb') as f:
+            response = f.read()
+        print(response)
 
   except http.client.IncompleteRead as e:
     show('IncompleteRead exception.')
