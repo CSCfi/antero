@@ -43,7 +43,7 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
   print(request)
 
   try:
-    with tempfile.NamedTemporaryFile(dir=""/var/tmp/virtaotptmp") as tmpfile:
+    with tempfile.NamedTemporaryFile(dir="/var/tmp/virtaotptmp") as tmpfile:
         print(tmpfile.name)
         response_tmp = urlopen(request)
 
