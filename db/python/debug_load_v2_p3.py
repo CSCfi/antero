@@ -84,14 +84,14 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
   rows = []
   # read the downloaded data from the file
 
-  with open(output_file, 'r', encoding='utf-8') as f:
+  with open(output_file, 'rb') as f:
     data = []
     while True:
         chunk = f.read(8192)
         if not chunk:
             break
         data.append(chunk)
-  for row in ijson.items(''.join(data),'item'):
+  for row in ijson.items(data,'item'):
         cnt+=1
         manycount+=1
         # show some sign of being alive
