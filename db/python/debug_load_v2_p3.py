@@ -84,21 +84,15 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
   rows = []
   # read the downloaded data from the file
 
-  with open(output_file, 'rb') as f:
-    data = []
-    while True:
-        chunk = f.read(8192)
-        if not chunk:
-            break
-        data.append(chunk)
-  for row in ijson.items(data,'item'):
+ with open(filename, "rb") as data:
+    for row in ijson.items(data, "item"):
         cnt+=1
         manycount+=1
         # show some sign of being alive
         if cnt%100 == 0:
           sys.stdout.write('.')
           sys.stdout.flush()
-        if cnt%1000 == 0:
+        if cnt%10000 == 0:
           show("-- %d" % (cnt))
         if verbose: show("%d -- %s"%(cnt,row))
 
