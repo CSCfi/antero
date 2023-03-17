@@ -84,7 +84,7 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
   rows = []
   # read the downloaded data from the file
 
-  with open(filename, "rb") as data:
+  with open(output_file, "rb") as data:
      for row in ijson.items(data, "item"):
         cnt+=1
         manycount+=1
@@ -117,7 +117,8 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
       insert(address,schema,table,rows)
       rows = []
       manycount = 0
-  os.unlink(output_file_path)
+  #delete temporary output_file
+  os.unlink(output_file)
   show("wrote %d"%(cnt))
   show("ready")
 
