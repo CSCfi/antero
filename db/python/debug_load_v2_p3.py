@@ -84,8 +84,8 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
   rows = []
   # read the downloaded data from the file
 
- with open(filename, "rb") as data:
-    for row in ijson.items(data, "item"):
+  with open(filename, "rb") as data:
+     for row in ijson.items(data, "item"):
         cnt+=1
         manycount+=1
         # show some sign of being alive
