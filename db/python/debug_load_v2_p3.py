@@ -41,26 +41,18 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
   #request = Request(address, data=postdata, headers=reqheaders)
   request = Request(address, headers=reqheaders)
   print(request)
-  output_file_path = "/var/tmp/virtaotptmp/virtadataa"
+  output_file = "/var/tmp/virtaotptmp/otp_data.json"
   try:
-    with open(output_file_path, 'wb') as f:
+    with open(output_file, 'wb') as f:
         # download the data in chunks and write it to the file
         chunk_size = 8192
-        response_tmp = urlopen(request)
+        data_tmp = urlopen(request)
         while True:
-            chunk = response_tmp.read(chunk_size)
+            chunk = data_tmp.read(chunk_size)
             if not chunk:
                 break
             f.write(chunk)
-            if f.tell() % 10000000 == 0:
-                print(".", end="")
-            f.flush()
         print("Done writing data to file.")
-
-    # read the downloaded data from the file
-    with open(output_file_path, 'rb') as f:
-        response= f.read()
-        os.unlink(output_file_path)
   except http.client.IncompleteRead as e:
     show('IncompleteRead exception.')
     show('Received: %d'%(e.partial))
@@ -90,8 +82,16 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
   cnt=0
   manycount = 0
   rows = []
+  # read the downloaded data from the file
 
-  for row in ijson.items(response,'item'):
+  with open(filename, 'r', encoding='utf-8') as f:
+    data = []
+    while True:
+        chunk = f.read(8192)
+        if not chunk:
+            break
+        data.append(chunk)
+  for row in ijson.items(''.join(data),'item'):
         cnt+=1
         manycount+=1
         # show some sign of being alive
@@ -123,6 +123,7 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
       insert(address,schema,table,rows)
       rows = []
       manycount = 0
+  os.unlink(output_file_path)
   show("wrote %d"%(cnt))
   show("ready")
 
