@@ -84,7 +84,7 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
   rows = []
   # read the downloaded data from the file
 
-  with open(filename, 'r', encoding='utf-8') as f:
+  with open(output_file, 'r', encoding='utf-8') as f:
     data = []
     while True:
         chunk = f.read(8192)
