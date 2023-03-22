@@ -1114,9 +1114,10 @@
             "name": "tutkintoon_johtavaan_koulutukseen_osallistuneet_pros",
             "expression": [
               "",
-              "var osa = CALCULATE(SUM(Muuttujat[apusarake_painoaku]), Muuttujat[apusarake_tutk] = \"1\") --vs \"2\"",
+              "var osa = CALCULATE(SUM(Muuttujat[apusarake_painoaku]), Muuttujat[apusarake_tutk] = \"1\") --k/e <-> \"1\"/\"2\"",
               "var kaikki = SUM(Muuttujat[apusarake_painoaku])",
-              "return DIVIDE(osa, kaikki)"
+              "return DIVIDE(osa, kaikki)",
+              ""
             ],
             "formatString": "0 %;-0 %;0 %"
           },
@@ -1124,9 +1125,10 @@
             "name": "ei_tutkintoon_johtavaan_koulutukseen_osallistuneet_pros",
             "expression": [
               "",
-              "var osa = CALCULATE(SUM(Muuttujat[apusarake_painoaku]), Muuttujat[apusarake_eitutk] = \"1\") --vs \"2\"",
+              "var osa = CALCULATE(SUM(Muuttujat[apusarake_painoaku]), Muuttujat[apusarake_eitutk] = \"1\") --k/e <-> \"1\"/\"2\"",
               "var kaikki = SUM(Muuttujat[apusarake_painoaku])",
-              "return DIVIDE(osa, kaikki)"
+              "return DIVIDE(osa, kaikki)",
+              ""
             ],
             "formatString": "0 %;-0 %;0 %"
           },
@@ -1134,9 +1136,10 @@
             "name": "tyohon_tai_ammattiin_liittyvaan_aikuiskoulutukseen_osallistuneet_pros",
             "expression": [
               "",
-              "var osa = CALCULATE(SUM(Muuttujat[apusarake_painoaku]), Muuttujat[apusarake_ammko] = \"1\") --vs \"2\"",
+              "var osa = CALCULATE(SUM(Muuttujat[apusarake_painoaku]), Muuttujat[apusarake_ammko] = \"1\") --k/e <-> \"1\"/\"2\"",
               "var kaikki = SUM(Muuttujat[apusarake_painoaku])",
-              "return DIVIDE(osa, kaikki)"
+              "return DIVIDE(osa, kaikki)",
+              ""
             ],
             "formatString": "0 %;-0 %;0 %"
           },
@@ -1144,19 +1147,48 @@
             "name": "muuhun_kuin_tyohon_liittyvaan_aikuiskoulutukseen_osallistuneet_pros",
             "expression": [
               "",
-              "var osa = CALCULATE(SUM(Muuttujat[apusarake_painoaku]), Muuttujat[apusarake_muuko] = \"1\") --vs \"2\"",
+              "var osa = CALCULATE(SUM(Muuttujat[apusarake_painoaku]), Muuttujat[apusarake_muuko] = \"1\") --k/e <-> \"1\"/\"2\"",
               "var kaikki = SUM(Muuttujat[apusarake_painoaku])",
-              "return DIVIDE(osa, kaikki)"
+              "return DIVIDE(osa, kaikki)",
+              ""
             ],
             "formatString": "0 %;-0 %;0 %"
           },
           {
-            "name": "henkilostokoulutukseen_osallistuneet_pros",
+            "name": "palkansaajista_henkilostokoulutukseen_osallistuneet_pros",
             "expression": [
               "",
-              "var osa = CALCULATE(SUM(Muuttujat[apusarake_painoaku]), Muuttujat[apusarake_heko] = \"1\") --vs \"2\"",
+              "var osa = ",
+              "CALCULATE(",
+              "\tSUM(Muuttujat[apusarake_painoaku])",
+              "\t, FILTER(VALUES(Muuttujat[palkansaaja_fi]), Muuttujat[palkansaaja_fi] = \"Palkansaaja\")",
+              "\t, Muuttujat[apusarake_heko] = \"1\" --k/e <-> \"1\"/\"2\"",
+              ")",
+              "var kaikki = CALCULATE(SUM(Muuttujat[apusarake_painoaku]), FILTER(VALUES(Muuttujat[palkansaaja_fi]), Muuttujat[palkansaaja_fi] = \"Palkansaaja\"))",
+              "return DIVIDE(osa, kaikki)",
+              ""
+            ],
+            "formatString": "0 %;-0 %;0 %"
+          },
+          {
+            "name": "tutkintoon_ja_tai_ei_tutkintoon_johtavaan_koulutukseen_osallistuneet_pros",
+            "expression": [
+              "",
+              "var osa = CALCULATE(SUM(Muuttujat[apusarake_painoaku]), FILTER(Muuttujat, Muuttujat[apusarake_tutk] = \"1\" || Muuttujat[apusarake_eitutk] = \"1\")) --k/e <-> \"1\"/\"2\"",
               "var kaikki = SUM(Muuttujat[apusarake_painoaku])",
-              "return DIVIDE(osa, kaikki)"
+              "return DIVIDE(osa, kaikki)",
+              ""
+            ],
+            "formatString": "0 %;-0 %;0 %"
+          },
+          {
+            "name": "tyohon_tai_ammattiin_ja_tai_muuhun_kuin_tyohon_liittyvaan_aikuiskoulutukseen_osallistuneet_pros",
+            "expression": [
+              "",
+              "var osa = CALCULATE(SUM(Muuttujat[apusarake_painoaku]), FILTER(Muuttujat, Muuttujat[apusarake_ammko] = \"1\" || Muuttujat[apusarake_muuko] = \"1\")) --k/e <-> \"1\"/\"2\"",
+              "var kaikki = SUM(Muuttujat[apusarake_painoaku])",
+              "return DIVIDE(osa, kaikki)",
+              ""
             ],
             "formatString": "0 %;-0 %;0 %"
           }
@@ -2112,12 +2144,20 @@
                 ],
                 "measures": [
                   {
+                    "name": "tutkintoon_ja_tai_ei_tutkintoon_johtavaan_koulutukseen_osallistuneet_pros",
+                    "translatedCaption": "Tutkintoon ja/tai ei-tutkintoon johtavaan koulutukseen osallistuneet %"
+                  },
+                  {
                     "name": "tutkintoon_johtavaan_koulutukseen_osallistuneet_pros",
                     "translatedCaption": "Tutkintoon johtavaan koulutukseen osallistuneet %"
                   },
                   {
                     "name": "ei_tutkintoon_johtavaan_koulutukseen_osallistuneet_pros",
                     "translatedCaption": "Ei-tutkintoon johtavaan koulutukseen osallistuneet %"
+                  },
+                  {
+                    "name": "tyohon_tai_ammattiin_ja_tai_muuhun_kuin_tyohon_liittyvaan_aikuiskoulutukseen_osallistuneet_pros",
+                    "translatedCaption": "Työhön tai ammattiin ja/tai muuhun kuin työhön liittyvään aikuiskoulutukseen osallistuneet %"
                   },
                   {
                     "name": "tyohon_tai_ammattiin_liittyvaan_aikuiskoulutukseen_osallistuneet_pros",
@@ -2128,8 +2168,8 @@
                     "translatedCaption": "Muuhun kuin työhön liittyvään aikuiskoulutukseen osallistuneet %"
                   },
                   {
-                    "name": "henkilostokoulutukseen_osallistuneet_pros",
-                    "translatedCaption": "Henkilöstökoulutukseen osallistuneet %"
+                    "name": "palkansaajista_henkilostokoulutukseen_osallistuneet_pros",
+                    "translatedCaption": "Palkansaajista henkilöstökoulutukseen osallistuneet %"
                   }
                 ]
               }
@@ -2282,8 +2322,16 @@
                     "translatedCaption": "Deltagare i annan än arbets- eller yrkesinriktad vuxenutbildning %"
                   },
                   {
-                    "name": "henkilostokoulutukseen_osallistuneet_pros",
-                    "translatedCaption": "Deltagare i personalutbildning %"
+                    "name": "palkansaajista_henkilostokoulutukseen_osallistuneet_pros",
+                    "translatedCaption": "Av löntagare deltagit i personalutbildning %"
+                  },
+                  {
+                    "name": "tutkintoon_ja_tai_ei_tutkintoon_johtavaan_koulutukseen_osallistuneet_pros",
+                    "translatedCaption": "Deltagare i utbildning som leder och/eller inte leder till examen %"
+                  },
+                  {
+                    "name": "tyohon_tai_ammattiin_ja_tai_muuhun_kuin_tyohon_liittyvaan_aikuiskoulutukseen_osallistuneet_pros",
+                    "translatedCaption": "Deltagare i arbets- eller yrkesinriktad och/eller annan än arbets- eller yrkesinriktad vuxenutbildning %"
                   }
                 ]
               }
@@ -2432,8 +2480,16 @@
                     "translatedCaption": "Participants in adult education and training not related to work or occupation %"
                   },
                   {
-                    "name": "henkilostokoulutukseen_osallistuneet_pros",
-                    "translatedCaption": "Participants in personnel training %"
+                    "name": "palkansaajista_henkilostokoulutukseen_osallistuneet_pros",
+                    "translatedCaption": "Of employees participants in personnel training %"
+                  },
+                  {
+                    "name": "tutkintoon_ja_tai_ei_tutkintoon_johtavaan_koulutukseen_osallistuneet_pros",
+                    "translatedCaption": "Participants in education leading and/or not leading to a qualification or degree %"
+                  },
+                  {
+                    "name": "tyohon_tai_ammattiin_ja_tai_muuhun_kuin_tyohon_liittyvaan_aikuiskoulutukseen_osallistuneet_pros",
+                    "translatedCaption": "Participants in adult education and training related and/or not related to work or occupation %"
                   }
                 ]
               }
@@ -2444,7 +2500,7 @@
     ],
     "perspectives": [
       {
-        "name": "perus_fi",
+        "name": "analyysi_fi",
         "tables": [
           {
             "name": "Muuttujat",
@@ -2479,7 +2535,7 @@
                 "name": "ei_tutkintoon_johtavaan_koulutukseen_osallistuneet_pros"
               },
               {
-                "name": "henkilostokoulutukseen_osallistuneet_pros"
+                "name": "palkansaajista_henkilostokoulutukseen_osallistuneet_pros"
               },
               {
                 "name": "muuhun_kuin_tyohon_liittyvaan_aikuiskoulutukseen_osallistuneet_pros"
@@ -2489,13 +2545,19 @@
               },
               {
                 "name": "tyohon_tai_ammattiin_liittyvaan_aikuiskoulutukseen_osallistuneet_pros"
+              },
+              {
+                "name": "tutkintoon_ja_tai_ei_tutkintoon_johtavaan_koulutukseen_osallistuneet_pros"
+              },
+              {
+                "name": "tyohon_tai_ammattiin_ja_tai_muuhun_kuin_tyohon_liittyvaan_aikuiskoulutukseen_osallistuneet_pros"
               }
             ]
           }
         ]
       },
       {
-        "name": "perus_sv",
+        "name": "analyysi_sv",
         "tables": [
           {
             "name": "Muuttujat",
@@ -2530,7 +2592,7 @@
                 "name": "ei_tutkintoon_johtavaan_koulutukseen_osallistuneet_pros"
               },
               {
-                "name": "henkilostokoulutukseen_osallistuneet_pros"
+                "name": "palkansaajista_henkilostokoulutukseen_osallistuneet_pros"
               },
               {
                 "name": "muuhun_kuin_tyohon_liittyvaan_aikuiskoulutukseen_osallistuneet_pros"
@@ -2540,13 +2602,19 @@
               },
               {
                 "name": "tyohon_tai_ammattiin_liittyvaan_aikuiskoulutukseen_osallistuneet_pros"
+              },
+              {
+                "name": "tutkintoon_ja_tai_ei_tutkintoon_johtavaan_koulutukseen_osallistuneet_pros"
+              },
+              {
+                "name": "tyohon_tai_ammattiin_ja_tai_muuhun_kuin_tyohon_liittyvaan_aikuiskoulutukseen_osallistuneet_pros"
               }
             ]
           }
         ]
       },
       {
-        "name": "perus_en",
+        "name": "analyysi_en",
         "tables": [
           {
             "name": "Muuttujat",
@@ -2581,7 +2649,7 @@
                 "name": "ei_tutkintoon_johtavaan_koulutukseen_osallistuneet_pros"
               },
               {
-                "name": "henkilostokoulutukseen_osallistuneet_pros"
+                "name": "palkansaajista_henkilostokoulutukseen_osallistuneet_pros"
               },
               {
                 "name": "muuhun_kuin_tyohon_liittyvaan_aikuiskoulutukseen_osallistuneet_pros"
@@ -2591,6 +2659,390 @@
               },
               {
                 "name": "tyohon_tai_ammattiin_liittyvaan_aikuiskoulutukseen_osallistuneet_pros"
+              },
+              {
+                "name": "tutkintoon_ja_tai_ei_tutkintoon_johtavaan_koulutukseen_osallistuneet_pros"
+              },
+              {
+                "name": "tyohon_tai_ammattiin_ja_tai_muuhun_kuin_tyohon_liittyvaan_aikuiskoulutukseen_osallistuneet_pros"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "tutk_eitutk_fi",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "asuinkunnan_kuntaryhma_fi"
+              },
+              {
+                "name": "ikaryhma_fi"
+              },
+              {
+                "name": "koulutustaso_fi"
+              },
+              {
+                "name": "paaasiallinen_toiminta_fi"
+              },
+              {
+                "name": "palkansaaja_fi"
+              },
+              {
+                "name": "sosioekonominen_asema_fi"
+              },
+              {
+                "name": "sukupuoli_fi"
+              },
+              {
+                "name": "tilastovuosi_fi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "ei_tutkintoon_johtavaan_koulutukseen_osallistuneet_pros"
+              },
+              {
+                "name": "tutkintoon_ja_tai_ei_tutkintoon_johtavaan_koulutukseen_osallistuneet_pros"
+              },
+              {
+                "name": "tutkintoon_johtavaan_koulutukseen_osallistuneet_pros"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "amm_muu_fi",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "asuinkunnan_kuntaryhma_fi"
+              },
+              {
+                "name": "ikaryhma_fi"
+              },
+              {
+                "name": "koulutustaso_fi"
+              },
+              {
+                "name": "paaasiallinen_toiminta_fi"
+              },
+              {
+                "name": "palkansaaja_fi"
+              },
+              {
+                "name": "sosioekonominen_asema_fi"
+              },
+              {
+                "name": "sukupuoli_fi"
+              },
+              {
+                "name": "tilastovuosi_fi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "muuhun_kuin_tyohon_liittyvaan_aikuiskoulutukseen_osallistuneet_pros"
+              },
+              {
+                "name": "tyohon_tai_ammattiin_ja_tai_muuhun_kuin_tyohon_liittyvaan_aikuiskoulutukseen_osallistuneet_pros"
+              },
+              {
+                "name": "tyohon_tai_ammattiin_liittyvaan_aikuiskoulutukseen_osallistuneet_pros"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "heko_fi",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "asuinkunnan_kuntaryhma_fi"
+              },
+              {
+                "name": "ikaryhma_fi"
+              },
+              {
+                "name": "koulutustaso_fi"
+              },
+              {
+                "name": "paaasiallinen_toiminta_fi"
+              },
+              {
+                "name": "sosioekonominen_asema_fi"
+              },
+              {
+                "name": "sukupuoli_fi"
+              },
+              {
+                "name": "tilastovuosi_fi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "palkansaajista_henkilostokoulutukseen_osallistuneet_pros"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "tutk_eitukt_sv",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "asuinkunnan_kuntaryhma_sv"
+              },
+              {
+                "name": "ikaryhma_sv"
+              },
+              {
+                "name": "koulutustaso_sv"
+              },
+              {
+                "name": "paaasiallinen_toiminta_sv"
+              },
+              {
+                "name": "palkansaaja_sv"
+              },
+              {
+                "name": "sosioekonominen_asema_sv"
+              },
+              {
+                "name": "sukupuoli_sv"
+              },
+              {
+                "name": "tilastovuosi_sv"
+              }
+            ],
+            "measures": [
+              {
+                "name": "ei_tutkintoon_johtavaan_koulutukseen_osallistuneet_pros"
+              },
+              {
+                "name": "tutkintoon_ja_tai_ei_tutkintoon_johtavaan_koulutukseen_osallistuneet_pros"
+              },
+              {
+                "name": "tutkintoon_johtavaan_koulutukseen_osallistuneet_pros"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "amm_muu_sv",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "asuinkunnan_kuntaryhma_sv"
+              },
+              {
+                "name": "ikaryhma_sv"
+              },
+              {
+                "name": "koulutustaso_sv"
+              },
+              {
+                "name": "paaasiallinen_toiminta_sv"
+              },
+              {
+                "name": "palkansaaja_sv"
+              },
+              {
+                "name": "sosioekonominen_asema_sv"
+              },
+              {
+                "name": "sukupuoli_sv"
+              },
+              {
+                "name": "tilastovuosi_sv"
+              }
+            ],
+            "measures": [
+              {
+                "name": "muuhun_kuin_tyohon_liittyvaan_aikuiskoulutukseen_osallistuneet_pros"
+              },
+              {
+                "name": "tyohon_tai_ammattiin_ja_tai_muuhun_kuin_tyohon_liittyvaan_aikuiskoulutukseen_osallistuneet_pros"
+              },
+              {
+                "name": "tyohon_tai_ammattiin_liittyvaan_aikuiskoulutukseen_osallistuneet_pros"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "heko_sv",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "asuinkunnan_kuntaryhma_sv"
+              },
+              {
+                "name": "ikaryhma_sv"
+              },
+              {
+                "name": "koulutustaso_sv"
+              },
+              {
+                "name": "paaasiallinen_toiminta_sv"
+              },
+              {
+                "name": "sosioekonominen_asema_sv"
+              },
+              {
+                "name": "sukupuoli_sv"
+              },
+              {
+                "name": "tilastovuosi_sv"
+              }
+            ],
+            "measures": [
+              {
+                "name": "palkansaajista_henkilostokoulutukseen_osallistuneet_pros"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "tutk_eitutk_en",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "asuinkunnan_kuntaryhma_en"
+              },
+              {
+                "name": "ikaryhma_en"
+              },
+              {
+                "name": "koulutustaso_en"
+              },
+              {
+                "name": "paaasiallinen_toiminta_en"
+              },
+              {
+                "name": "palkansaaja_en"
+              },
+              {
+                "name": "sosioekonominen_asema_en"
+              },
+              {
+                "name": "sukupuoli_en"
+              },
+              {
+                "name": "tilastovuosi_en"
+              }
+            ],
+            "measures": [
+              {
+                "name": "ei_tutkintoon_johtavaan_koulutukseen_osallistuneet_pros"
+              },
+              {
+                "name": "tutkintoon_ja_tai_ei_tutkintoon_johtavaan_koulutukseen_osallistuneet_pros"
+              },
+              {
+                "name": "tutkintoon_johtavaan_koulutukseen_osallistuneet_pros"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "amm_muu_en",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "asuinkunnan_kuntaryhma_en"
+              },
+              {
+                "name": "ikaryhma_en"
+              },
+              {
+                "name": "koulutustaso_en"
+              },
+              {
+                "name": "paaasiallinen_toiminta_en"
+              },
+              {
+                "name": "palkansaaja_en"
+              },
+              {
+                "name": "sosioekonominen_asema_en"
+              },
+              {
+                "name": "sukupuoli_en"
+              },
+              {
+                "name": "tilastovuosi_en"
+              }
+            ],
+            "measures": [
+              {
+                "name": "muuhun_kuin_tyohon_liittyvaan_aikuiskoulutukseen_osallistuneet_pros"
+              },
+              {
+                "name": "tyohon_tai_ammattiin_ja_tai_muuhun_kuin_tyohon_liittyvaan_aikuiskoulutukseen_osallistuneet_pros"
+              },
+              {
+                "name": "tyohon_tai_ammattiin_liittyvaan_aikuiskoulutukseen_osallistuneet_pros"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "heko_en",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "asuinkunnan_kuntaryhma_en"
+              },
+              {
+                "name": "ikaryhma_en"
+              },
+              {
+                "name": "koulutustaso_en"
+              },
+              {
+                "name": "paaasiallinen_toiminta_en"
+              },
+              {
+                "name": "sosioekonominen_asema_en"
+              },
+              {
+                "name": "sukupuoli_en"
+              },
+              {
+                "name": "tilastovuosi_en"
+              }
+            ],
+            "measures": [
+              {
+                "name": "palkansaajista_henkilostokoulutukseen_osallistuneet_pros"
               }
             ]
           }
