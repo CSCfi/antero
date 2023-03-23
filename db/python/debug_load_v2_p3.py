@@ -89,7 +89,7 @@ def load(secure,hostname,url,schema,table,postdata,condition,verbose,rowcount):
         cnt+=1
         manycount+=1
         # show some sign of being alive
-        if cnt%100 == 0:
+        if cnt%1000 == 0:
           sys.stdout.write('.')
           sys.stdout.flush()
         if cnt%10000 == 0:
