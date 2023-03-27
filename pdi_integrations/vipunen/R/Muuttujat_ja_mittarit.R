@@ -92,11 +92,11 @@ for (f in folders){
           folders3 <- as.data.frame(list.dirs(j))
           bim_ind <- 0
           for (f2 in unique(folders3[,1])){
-            files2 <- as.data.frame(list.files(f2))
+            files2 <- as.data.frame(list.files(as.character(f2)))
             if (length(files2[endsWith(as.character(files2[, 1]), ".bim"),1]) > 0){
               bim_ind <- bim_ind + 1
-              fileName[bim_ind] <- files2[endsWith(as.character(files2[, 1]), ".bim"),1]
-              bimPath[bim_ind] <- f2
+              fileName[bim_ind] <- as.character(files2[endsWith(as.character(files2[, 1]), ".bim"),1])
+              bimPath[bim_ind] <- as.character(f2)
             }
           }
         }
