@@ -77,7 +77,9 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
 
           row["kuntakoodi"] = o["kotipaikkaUri"].replace("kunta_","")
           # => text values separately
-          row["oppilaitostyyppikoodi"] = o["oppilaitostyyppi"].replace("oppilaitostyyppi_","").replace("#1","")
+          if "oppilaitostyyppi" in o:
+              row["oppilaitostyyppikoodi"] = o["oppilaitostyyppi"].replace("oppilaitostyyppi_","").replace("#1","")
+    
           # => text values separately
 
           # get address
