@@ -93,8 +93,8 @@ SELECT
 		,kansalaisuus_maanosa_fi 							= COALESCE(d1.maanosa_fi, 'Tieto puuttuu')
 		,sukupuoli_fi 										= COALESCE(d3.[sukupuoli_fi], 'Tieto puuttuu') 
 		,ikaryhma_fi 										= d4.[ikaryhma3_fi]
-		,kotikunta_manner_suomessa_fi						= d20.kytkin_fi
-		,oppivelvollinen_fi									= d21.kytkin_fi
+		--,kotikunta_manner_suomessa_fi						= d20.kytkin_fi
+		--,oppivelvollinen_fi								= d21.kytkin_fi
 
 	-- ORGANISAATIOMUUTTUJAT
 		-- Koulutuksen järjestäjä
@@ -169,8 +169,8 @@ SELECT
 		,kansalaisuus_maanosa_sv 							= COALESCE(d1.maanosa_sv, 'Information saknas')
 		,sukupuoli_sv 										= COALESCE(d3.[sukupuoli_sv], 'Information saknas') 
 		,ikaryhma_sv 										= CASE WHEN d4.[ikaryhma3_sv] IS NULL THEN 'Okänd' ELSE d4.ikaryhma3_sv END
-		,kotikunta_manner_suomessa_sv						= d20.kytkin_sv
-		,oppivelvollinen_sv									= d21.kytkin_sv
+		--,kotikunta_manner_suomessa_sv						= d20.kytkin_sv
+		--,oppivelvollinen_sv								= d21.kytkin_sv
 		
 	-- ORGANISAATIOMUUTTUJAT
 		-- Koulutuksen järjestäjä
@@ -267,8 +267,8 @@ SELECT
   LEFT JOIN ANTERO.dw.d_kytkin AS d17 ON COALESCE(f.majoitus,0) = d17.kytkin_koodi
   LEFT JOIN ANTERO.dw.d_kytkin AS d18 ON COALESCE(f.sisaoppilaitosmainen_majoitus,0) = d18.kytkin_koodi
   LEFT JOIN dw.d_kytkin d19 ON d19.kytkin_koodi = f.aloitus_kuukauden_aikana_1_0
-  LEFT JOIN ANTERO.dw.d_kytkin AS d20 ON COALESCE(f.kotikunta_manner_suomessa,-1) = d20.kytkin_koodi
-  LEFT JOIN ANTERO.dw.d_kytkin AS d21 ON COALESCE(f.oppivelvollinen,-1) = d21.kytkin_koodi
+  --LEFT JOIN ANTERO.dw.d_kytkin AS d20 ON COALESCE(f.kotikunta_manner_suomessa,-1) = d20.kytkin_koodi
+  --LEFT JOIN ANTERO.dw.d_kytkin AS d21 ON COALESCE(f.oppivelvollinen,-1) = d21.kytkin_koodi
 
  -- WHERE aloitusvuosi >= YEAR(GETDATE())
 
