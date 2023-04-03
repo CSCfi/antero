@@ -23,7 +23,7 @@ GO
 
 
 
-ALTER PROCEDURE [dw].[p_lataa_f_koski_amm_opiskelijat] AS
+ALTER PROCEDURE [dw].[p_lataa_f_koski_amm_opiskelijat] AS 
 
 
 DROP TABLE IF EXISTS dw.f_koski_amm_opiskelijat

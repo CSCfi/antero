@@ -21,7 +21,7 @@ DECLARE @maxKk int = (select max(kuukausi) FROM Koski_SA.dbo.esi_ja_perus_oppila
 DECLARE @kuluvaLvAlku varchar(8) = case when @maxKk > 7 then datefromparts(@maxTilv, 8, 1) else datefromparts(@maxTilv-1, 8, 1) end
 
 
---kuukausittain
+--kuukausittain 
 DROP TABLE IF EXISTS dw.f_koski_esi_ja_perus_oppilaat_ja_paattaneet_kuukausittain
 
 SELECT 

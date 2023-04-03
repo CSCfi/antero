@@ -29,7 +29,7 @@ Siirrytty skeeman tarkempaan m‰‰rittelyyn, koska nettoluku olikin t‰ss‰ jo keski
 
 --HUOM! Kolme erillist‰ inserti‰.
 
-TRUNCATE TABLE dw.f_koski_amm_opiskelijat_ja_tutkinnot_yhdistetty
+TRUNCATE TABLE dw.f_koski_amm_opiskelijat_ja_tutkinnot_yhdistetty 
 
 --netto
 INSERT dw.f_koski_amm_opiskelijat_ja_tutkinnot_yhdistetty
