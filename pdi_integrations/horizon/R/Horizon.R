@@ -46,7 +46,7 @@ tf3 <- tempfile()
 td3 <- tempdir()
 download.file("https://cordis.europa.eu/data/cordis-h2020projects-csv.zip",tf3, mode = "wb")
 file.names <- unzip(tf3, exdir = td3)
-Projects = read.csv(file.names[4], header = TRUE, sep = ",", encoding="UTF-8")
+Projects = read.csv(file.names[4], header = TRUE, sep = ";", encoding="UTF-8")
 names(Projects)[19] <- "projectRcn"
 
 # Organisations and EC contribution
