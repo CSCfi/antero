@@ -70,7 +70,7 @@ public class ApiControllerTest {
     }
 
     @Test
-    public void testGetDataWithWhiteSpaceFilter() throws Exception {  // FIXME
+    public void testGetDataWithWhiteSpaceFilter() throws Exception {
         final String result = makeQuery("/resources/test_data/data?filter=" + encodeValue("whiteSpace==") + "'true'",
                 200)
                 .getBody();
@@ -133,7 +133,7 @@ public class ApiControllerTest {
             scripts = {"/sql/init.sql", "/sql/sort_test_data.sql"})
     @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD,
             scripts = "/sql/clear.sql")
-    public void testGetDataWithSortAsc() throws Exception {  // FIXME
+    public void testGetDataWithSortAsc() throws Exception {
         // Basic ascending sort
         String result = makeQuery("/resources/test_data/data?sort=(%2BtestText)", 200)
                 .getBody();
@@ -145,7 +145,7 @@ public class ApiControllerTest {
             scripts = {"/sql/init.sql", "/sql/sort_test_data.sql"})
     @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD,
             scripts = "/sql/clear.sql")
-    public void testGetDataWithSortMultiProps() throws Exception {  // FIXME
+    public void testGetDataWithSortMultiProps() throws Exception {
         // Two property sorting
         final String result = makeQuery("/resources/test_data/data?sort=(%2BwhiteSpace,-testDate)", 200)
                 .getBody();
@@ -228,15 +228,6 @@ public class ApiControllerTest {
         assertEquals("Content-type should match!", MediaType.APPLICATION_JSON,
                 responseEntity.getHeaders().getContentType());
         return responseEntity;
-    }
-
-    @Bean
-    public HttpFirewall getHttpFirewall() {
-        StrictHttpFirewall strictHttpFirewall = new StrictHttpFirewall();
-        strictHttpFirewall.setAllowSemicolon(true);
-        strictHttpFirewall.setAllowUrlEncodedPercent(true);
-        strictHttpFirewall.setAllowedHostnames(hostname -> hostname.startsWith("127.0.0.1"));
-        return strictHttpFirewall;
     }
 
     private String encodeValue(String value) throws UnsupportedEncodingException {
