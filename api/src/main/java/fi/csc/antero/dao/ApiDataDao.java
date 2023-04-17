@@ -12,10 +12,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
-import java.sql.DatabaseMetaData;
-import java.sql.JDBCType;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -50,11 +47,16 @@ public class ApiDataDao {
 
     @Cacheable("tables")
     public Set<String> queryTableNames() throws SQLException {
-        final DatabaseMetaData metaData = jdbcTemplate.getDataSource().getConnection().getMetaData();
-        final ResultSet resultSet = metaData.getTables(null, configService.getSchema(), "%", new String[]{"TABLE", "VIEW"});
-        Set<String> tableNames = new HashSet<>();
-        while (resultSet.next()) {
-            tableNames.add(resultSet.getString("TABLE_NAME"));
+        Set<String> tableNames = null;
+        try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
+            final DatabaseMetaData metaData = connection.getMetaData();
+            final ResultSet resultSet = metaData.getTables(null, configService.getSchema(), "%", new String[]{"TABLE", "VIEW"});
+            tableNames = new HashSet<>();
+            while (resultSet.next()) {
+                tableNames.add(resultSet.getString("TABLE_NAME"));
+            }
+        } catch (NullPointerException np) {
+            log.error("Database connection failed!", np);
         }
         return tableNames;
     }
@@ -62,13 +64,16 @@ public class ApiDataDao {
     @Cacheable("columns")
     public List<ApiProperty> queryTableColumns(String table) throws SQLException {
         final List<ApiProperty> columns = new ArrayList<>();
-        final DatabaseMetaData metaData = jdbcTemplate.getDataSource().getConnection().getMetaData();
-        final ResultSet resultSet = metaData.getColumns(null, configService.getSchema(), table, "%");
-        while (resultSet.next()) {
-            final int dataType = resultSet.getInt("DATA_TYPE");
-            final String sqlName = resultSet.getString("COLUMN_NAME");
-            columns.add(new ApiProperty(Utils.convertToCamelCase(sqlName), sqlName,
-                    PropType.valueOf(JDBCType.valueOf(dataType)), sqlName.equals(configService.getDefaultOrderColumn())));
+        try (Connection connection = jdbcTemplate.getDataSource().getConnection()) {
+            final ResultSet resultSet = connection.getMetaData().getColumns(null, configService.getSchema(), table, "%");
+            while (resultSet.next()) {
+                final int dataType = resultSet.getInt("DATA_TYPE");
+                final String sqlName = resultSet.getString("COLUMN_NAME");
+                columns.add(new ApiProperty(Utils.convertToCamelCase(sqlName), sqlName,
+                        PropType.valueOf(JDBCType.valueOf(dataType)), sqlName.equals(configService.getDefaultOrderColumn())));
+            }
+        } catch (NullPointerException np) {
+            log.error("Database connection failed!", np);
         }
         return columns;
     }

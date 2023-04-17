@@ -1,7 +1,9 @@
 package fi.csc.antero.controller;
 
 import io.swagger.annotations.ApiParam;
+import org.springframework.stereotype.Component;
 
+@Component
 public class ApiQuery {
 
     @ApiParam(value = "FIQL query filter. Example: prop1=='text*' and prop2>3")

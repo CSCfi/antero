@@ -26,7 +26,7 @@ public class ApiExceptionHandler {
 
     private HttpHeaders getHttpHeaders() {
         final HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON_UTF8);
+        headers.setContentType(MediaType.APPLICATION_JSON);
         return headers;
     }
 }
