@@ -8,11 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestComponent;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.web.firewall.HttpFirewall;
-import org.springframework.security.web.firewall.StrictHttpFirewall;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.jdbc.Sql;
 
@@ -218,7 +215,7 @@ public class ApiControllerTest {
         configService.setDefaultOrderColumn(oldConfig);
     }
 
-    private ResponseEntity<String> makeQuery(String url, int expectedStatus) throws URISyntaxException, UnsupportedEncodingException {
+    private ResponseEntity<String> makeQuery(String url, int expectedStatus) throws URISyntaxException {
         URI uri = new URI(url);
         final ResponseEntity<String> responseEntity = restTemplate
                 .getForEntity(uri,
