@@ -1,12 +1,13 @@
 USE [ANTERO]
 GO
 
-/****** Object:  StoredProcedure [dw].[p_lataa_d_ainekelpoisuus]    Script Date: 18.4.2023 15:34:44 ******/
+/****** Object:  StoredProcedure [dw].[p_lataa_d_ainekelpoisuus]    Script Date: 18.4.2023 15:49:36 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 ALTER PROCEDURE [dw].[p_lataa_d_ainekelpoisuus]
@@ -78,7 +79,7 @@ USING (
 			WHEN left(d.patevyys_fi, len(d.patevyys_fi) - charindex(',', reverse(d.patevyys_fi))) = 'Käsityö (tekninen työ)' THEN 'Slöjd (teknisk)'
 			WHEN left(d.patevyys_fi, len(d.patevyys_fi) - charindex(',', reverse(d.patevyys_fi))) = 'Käsityö (tekstiilityö)' THEN 'Slöjd (textil)'
 			WHEN left(d.patevyys_fi, len(d.patevyys_fi) - charindex(',', reverse(d.patevyys_fi))) = 'Maantieto tai maantiede' THEN 'Geografi'
-			WHEN left(d.patevyys_fi, len(d.patevyys_fi) - charindex(',', reverse(d.patevyys_fi))) = 'Teatteri ja tanssi' THEN 'Teateroch dans'
+			WHEN left(d.patevyys_fi, len(d.patevyys_fi) - charindex(',', reverse(d.patevyys_fi))) = 'Teatteri ja tanssi' THEN 'Teater och dans'
 			WHEN left(d.patevyys_fi, len(d.patevyys_fi) - charindex(',', reverse(d.patevyys_fi))) = 'Teologia' THEN 'Teologi'
 			WHEN left(d.patevyys_fi, len(d.patevyys_fi) - charindex(',', reverse(d.patevyys_fi))) = 'Tietotekniikka' THEN 'Informationsteknologi'
 			WHEN left(d.patevyys_fi, len(d.patevyys_fi) - charindex(',', reverse(d.patevyys_fi))) = 'Uskonto (buddhalaisuus)' THEN 'Religion (buddhism)'
@@ -96,11 +97,11 @@ USING (
 			WHEN left(d.patevyys_fi, len(d.patevyys_fi) - charindex(',', reverse(d.patevyys_fi))) = 'Saksan kieli' THEN 'Tysk'
 			WHEN left(d.patevyys_fi, len(d.patevyys_fi) - charindex(',', reverse(d.patevyys_fi))) = 'Venäjän kieli' THEN 'Ryska'
 			WHEN left(d.patevyys_fi, len(d.patevyys_fi) - charindex(',', reverse(d.patevyys_fi))) = 'Viron kieli' THEN 'Estniska'
-			WHEN left(d.patevyys_fi, len(d.patevyys_fi) - charindex(',', reverse(d.patevyys_fi))) = 'Saamen kieli, äidinkieli ja kirjallisuus' THEN 'Samiskaoch litteratur'
-			WHEN left(d.patevyys_fi, len(d.patevyys_fi) - charindex(',', reverse(d.patevyys_fi))) = 'Suomen kieli, äidinkieli ja kirjallisuus' THEN 'Finskaoch litteratur'
-			WHEN left(d.patevyys_fi, len(d.patevyys_fi) - charindex(',', reverse(d.patevyys_fi))) = 'Ruotsin kieli, äidinkieli ja kirjallisuus' THEN 'Svenskaoch litteratur'
-			WHEN left(d.patevyys_fi, len(d.patevyys_fi) - charindex(',', reverse(d.patevyys_fi))) = 'Äidinkieli ja kirjallisuus, suomi toisena kielenä' THEN 'Finska som andraspråkoch litteratur'
-			WHEN left(d.patevyys_fi, len(d.patevyys_fi) - charindex(',', reverse(d.patevyys_fi))) = 'Äidinkieli ja kirjallisuus, ruotsi toisena kielenä' THEN 'Svenska som andraspråkoch litteratur'
+			WHEN left(d.patevyys_fi, len(d.patevyys_fi) - charindex(',', reverse(d.patevyys_fi))) = 'Saamen kieli, äidinkieli ja kirjallisuus' THEN 'Samiska och litteratur'
+			WHEN left(d.patevyys_fi, len(d.patevyys_fi) - charindex(',', reverse(d.patevyys_fi))) = 'Suomen kieli, äidinkieli ja kirjallisuus' THEN 'Finska och litteratur'
+			WHEN left(d.patevyys_fi, len(d.patevyys_fi) - charindex(',', reverse(d.patevyys_fi))) = 'Ruotsin kieli, äidinkieli ja kirjallisuus' THEN 'Svenska och litteratur'
+			WHEN left(d.patevyys_fi, len(d.patevyys_fi) - charindex(',', reverse(d.patevyys_fi))) = 'Äidinkieli ja kirjallisuus, suomi toisena kielenä' THEN 'Finska som andraspråk och litteratur'
+			WHEN left(d.patevyys_fi, len(d.patevyys_fi) - charindex(',', reverse(d.patevyys_fi))) = 'Äidinkieli ja kirjallisuus, ruotsi toisena kielenä' THEN 'Svenska som andraspråk och litteratur'
 			ELSE left(d.patevyys_fi, len(d.patevyys_fi) - charindex(',', reverse(d.patevyys_fi))) 
 		END as aine_sv,
 		'*EN' as aine_en,
@@ -132,7 +133,7 @@ USING (
 		CASE 
 			WHEN d.patevyys_fi like '%biologia%' or d.patevyys_fi like '%maantiede%' THEN 'Biologi, geografi'
 			WHEN d.patevyys_fi like '%elämänkatsomustieto%' or d.patevyys_fi like '%uskonto%' or d.patevyys_fi like '%filosofia%' or d.patevyys_fi like '%teologia%' THEN 'Livsåskådningskunskap, religion, filosofi'
-			WHEN d.patevyys_fi like '%äidinkieli%' THEN 'Modersmåletoch litteratur'
+			WHEN d.patevyys_fi like '%äidinkieli%' THEN 'Modersmålet och litteratur'
 			WHEN d.patevyys_fi like '%englan%' THEN 'Engelska'
 			WHEN d.patevyys_fi like 'suomen%' or d.patevyys_fi like '%toinen kotimainen kieli suomi%' THEN 'Andra inhemska språket finska'
 			WHEN d.patevyys_fi like 'ruotsin%' or d.patevyys_fi like '%toinen kotimainen kieli ruotsi%' THEN 'Andra inhemska språket svenska'
@@ -184,7 +185,7 @@ INSERT INTO ANTERO.dw.d_ainekelpoisuus
 (aine_fi, aine_sv,aine_en,aineryhma_1_fi,aineryhma_1_sv,aineryhma_1_en,aineryhma_2_fi,aineryhma_2_sv,aineryhma_2_en, loadtime,username,source)
 VALUES
 ('Musiikkipedagogiikka', 'Musikpedagogik', '*EN', 'Muut kuin perusopetuksen ja lukion opetettavat aineet', 'Andra ämnen än de som undervisas i grundläggande utbildning och gymnasieutbildning', '*EN', 'Musiikkipedagogiikka', 'Musikpedagogik', '*EN', getdate(), user_name(), 'ETL: p_lataa_d_ainekelpoisuus'),
-('Teatteri- ja tanssipedagogiikka', 'Teateroch danspedagogik', '*EN', 'Muut kuin perusopetuksen ja lukion opetettavat aineet', 'Andra ämnen än de som undervisas i grundläggande utbildning och gymnasieutbildning', '*EN', 'Teatteri- ja tanssipedagogiikka', 'Teateroch danspedagogik', '*EN', getdate(), user_name(), 'ETL: p_lataa_d_ainekelpoisuus')
+('Teatteri- ja tanssipedagogiikka', 'Teater och danspedagogik', '*EN', 'Muut kuin perusopetuksen ja lukion opetettavat aineet', 'Andra ämnen än de som undervisas i grundläggande utbildning och gymnasieutbildning', '*EN', 'Teatteri- ja tanssipedagogiikka', 'Teateroch danspedagogik', '*EN', getdate(), user_name(), 'ETL: p_lataa_d_ainekelpoisuus')
 
 UPDATE ANTERO.dw.d_ainekelpoisuus
 SET aineryhma_2_sv = aine_sv
