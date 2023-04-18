@@ -39,8 +39,8 @@ Check projects current version:
     `spring.datasource.username={username}`
     
     `spring.datasource.password={password}`
-
-4. Run application with following command with correct values.
+4. Use `application.properties` and `application-prod.properties` as base configuration.
+5. Run application with following command with correct values.
     
     db.host is database host name/ip (default=localhost)
     
