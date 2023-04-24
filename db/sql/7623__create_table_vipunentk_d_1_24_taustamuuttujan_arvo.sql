@@ -47,15 +47,8 @@ CREATE TABLE [dbo].[d_1_24_taustamuuttujan_arvo](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY]
 
-GO
-
-
-
 ALTER TABLE [dbo].[d_1_24_taustamuuttujan_arvo] ADD  CONSTRAINT [DF__d_1_24_taustamuuttujan_arvo__alkaa]  DEFAULT ('1900-01-01') FOR [alkaa]
-GO
 
 ALTER TABLE [dbo].[d_1_24_taustamuuttujan_arvo] ADD  CONSTRAINT [DF__d_1_24_taustamuuttujan_arvo__paattyy]  DEFAULT ('9999-01-01') FOR [paattyy]
-GO
 
 ALTER TABLE [dbo].[d_1_24_taustamuuttujan_arvo] ADD  CONSTRAINT [DF__d_1_24_taustamuuttujan_arvo__tietolahde]  DEFAULT ('Tilastokeskus') FOR [tietolahde]
-GO
