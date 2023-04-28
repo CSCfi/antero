@@ -44,4 +44,12 @@ public class ApiQuery {
     public void setLimit(Long limit) {
         this.limit = limit;
     }
+
+    @Override
+    public String toString() {
+        return "filter='" + filter + '\'' +
+                ";sort='" + sort + '\'' +
+                ";offset=" + offset +
+                ";limit=" + limit;
+    }
 }

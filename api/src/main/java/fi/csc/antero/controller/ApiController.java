@@ -1,5 +1,6 @@
 package fi.csc.antero.controller;
 
+import fi.csc.antero.annotations.EnableAnalytics;
 import fi.csc.antero.exception.NotFoundException;
 import fi.csc.antero.repository.ApiDataService;
 import fi.csc.antero.repository.ApiProperty;
@@ -29,9 +30,10 @@ public class ApiController {
     public ApiController(ApiDataService service) {
         this.service = service;
     }
-
     @RequestMapping(value = "/resources/{resource}/data", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @EnableAnalytics(
+            path = "/resources/{resource}/data")
     @ApiOperation(value = "Get resource data",
             notes = "You can query resource data with filters and use paging. " +
                     "Filtering uses [FIQL](https://tools.ietf.org/html/draft-nottingham-atompub-fiql-00) query syntax. " +
@@ -43,6 +45,7 @@ public class ApiController {
                                                  ApiQuery query,
                                                  HttpServletResponse response) throws SQLException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+
         checkResource(resource);
         return outputStream -> {
             try {
@@ -55,6 +58,9 @@ public class ApiController {
 
     @RequestMapping(value = "/resources/{resource}/data/count", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @EnableAnalytics(
+            path = "/resources/{resource}/data/count",
+            query = -1)
     @ApiOperation(value = "Get count of resource data",
             notes = "Counts total amount of results that query will return. " +
                     "Can be used as pre-check if paging is need when actual data is loaded.")
@@ -68,17 +74,21 @@ public class ApiController {
 
     @RequestMapping(value = "/resources/{resource}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @EnableAnalytics(
+            path = "/resources/{resource}")
     @ApiOperation(value = "Describes structure of specified resource")
     public List<ApiProperty> getResource(@ApiParam(value = "Name of the resource", required = true)
-                                         @PathVariable("resource") String resource) throws SQLException, IOException {
+                                         @PathVariable("resource") String resource) throws SQLException {
         checkResource(resource);
         return service.listResourceProperties(resource);
     }
 
     @RequestMapping(value = "/resources", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @EnableAnalytics(
+            path = "/resources")
     @ApiOperation(value = "Lists available resource names")
-    public Set<String> getResources() throws SQLException, IOException {
+    public Set<String> getResources() throws SQLException {
         return service.listResources();
     }
 
