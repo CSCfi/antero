@@ -42,8 +42,8 @@ public class AnalyticsProcessor {
         try {
             return pjp.proceed();
         } finally {
-            double durationMs = (double)(System.currentTimeMillis() - start) / 1000L;
-            double duration = BigDecimal.valueOf(durationMs)
+            double durationSeconds = (System.currentTimeMillis() - start) / 1000d;
+            double duration = BigDecimal.valueOf(durationSeconds)
                     .setScale(3, RoundingMode.HALF_UP).doubleValue();
             Object[] args = pjp.getArgs();
             String resource = getOrEmpty(args, enableAnalytics.resource());
