@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 
 
 @Aspect
@@ -40,7 +42,9 @@ public class AnalyticsProcessor {
         try {
             return pjp.proceed();
         } finally {
-            long duration = (System.currentTimeMillis() - start) / 1000;
+            double durationMs = (double)(System.currentTimeMillis() - start) / 1000L;
+            double duration = BigDecimal.valueOf(durationMs)
+                    .setScale(3, RoundingMode.HALF_UP).doubleValue();
             Object[] args = pjp.getArgs();
             String resource = getOrEmpty(args, enableAnalytics.resource());
             String filter = getOrEmpty(args, enableAnalytics.filter());
