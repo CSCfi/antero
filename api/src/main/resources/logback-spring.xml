@@ -5,6 +5,7 @@
     <include resource="org/springframework/boot/logging/logback/console-appender.xml" />
     <springProperty scope="system" name="LOG_FILE_ANALYTICS" source="api.analytics.logging.file.name" />
     <springProperty scope="system" name="LOG_FILE_PATH_ANALYTICS" source="api.analytics.logging.file.path" />
+    <springProperty scope="context" name="LOG_DELIMITER_ANALYTICS" source="api.analytics.logging.delimiter" />
 
     <appender name="ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <file>${LOG_FILE}</file>
@@ -30,8 +31,8 @@
         </rollingPolicy>
         <encoder class="ch.qos.logback.core.encoder.LayoutWrappingEncoder">
             <layout class="fi.csc.antero.log.LogFileHeaderPatternLayout">
-                <header>timestamp,ip,api_params,path,duration</header>
-                <pattern>${timestamp},%msg%n</pattern>
+                <header>timestamp${LOG_DELIMITER_ANALYTICS}ip${LOG_DELIMITER_ANALYTICS}api_params${LOG_DELIMITER_ANALYTICS}path${LOG_DELIMITER_ANALYTICS}duration</header>
+                <pattern>${timestamp}${LOG_DELIMITER_ANALYTICS}%msg%n</pattern>
             </layout>
         </encoder>
     </appender>

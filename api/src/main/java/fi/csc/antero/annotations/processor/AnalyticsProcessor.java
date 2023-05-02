@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,8 +18,10 @@ import javax.servlet.http.HttpServletRequest;
 @Component
 public class AnalyticsProcessor {
 
-    private final static String DELIMITER = "|~";
-    private final static String QUERY_DELIMITER = "|~|";
+    @Value("${api.analytics.logging.delimiter}")
+    private String DELIMITER;
+    @Value("${api.analytics.logging.query.delimiter}")
+    private String QUERY_DELIMITER;
     private final AnalyticsLogger analyticsLogger;
     @Autowired
     private HttpServletRequest request;
@@ -55,8 +58,12 @@ public class AnalyticsProcessor {
     private String getOrEmpty(Object[] arr, int index) {
         try {
             Object obj = arr[index];
-            if (obj.getClass() == String.class || obj.getClass() == ApiQuery.class) {
+            if (obj.getClass() == String.class) {
                 return obj.toString();
+            } else if (obj.getClass() == ApiQuery.class) {
+                return  "sort='" + ((ApiQuery) obj).getSort() + '\'' +
+                        QUERY_DELIMITER+ "offset=" + ((ApiQuery) obj).getOffset() +
+                        QUERY_DELIMITER + "limit=" + ((ApiQuery) obj).getLimit();
             }
         } catch (Exception ignored) {}
         return "";
