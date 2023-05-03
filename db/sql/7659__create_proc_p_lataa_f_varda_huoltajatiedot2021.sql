@@ -12,7 +12,7 @@ GO
 
 
 
-CREATE PROCEDURE  [dw].[p_lataa_f_varda_huoltajatiedot2021]
+CREATE OR ALTER PROCEDURE  [dw].[p_lataa_f_varda_huoltajatiedot2021]
 AS
 
 DECLARE @alkuVuosi as int

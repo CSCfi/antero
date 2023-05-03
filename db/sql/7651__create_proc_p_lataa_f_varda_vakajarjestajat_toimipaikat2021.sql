@@ -10,7 +10,7 @@ GO
 
 
 
-CREATE PROCEDURE [dw].[p_lataa_f_varda_vakajarjestajat_toimipaikat2021]
+CREATE OR ALTER PROCEDURE [dw].[p_lataa_f_varda_vakajarjestajat_toimipaikat2021]
 AS
 
 DECLARE @alkuVuosi as int
