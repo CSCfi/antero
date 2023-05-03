@@ -228,6 +228,6 @@ public class ApiControllerTest {
     }
 
     private String encodeValue(String value) throws UnsupportedEncodingException {
-        return URLEncoder.encode(value, StandardCharsets.UTF_8.toString());
+        return URLEncoder.encode(value, StandardCharsets.UTF_8);
     }
 }

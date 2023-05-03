@@ -65,6 +65,7 @@ while(($errors -lt 2) -and ($RefreshStatus -ne "Completed")) {
 		}
 
 		if ($RefreshStatus -eq "Completed") {
+			$RefreshError = "No errors"
 			ECHO "Refresh was completed successfully"
 		} elseif ($RefreshStatus -eq "Failed") {
 			ECHO "Refresh attempt failed"
