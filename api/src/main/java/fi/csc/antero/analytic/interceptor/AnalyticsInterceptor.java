@@ -1,6 +1,8 @@
 package fi.csc.antero.analytic.interceptor;
 
 import fi.csc.antero.analytic.service.AnalyticService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.servlet.HandlerInterceptor;
 
 import javax.servlet.DispatcherType;
@@ -9,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.UUID;
 
 public class AnalyticsInterceptor implements HandlerInterceptor {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
     AnalyticService analyticService;
     public AnalyticsInterceptor(AnalyticService analyticService) {
         this.analyticService = analyticService;
@@ -17,6 +21,7 @@ public class AnalyticsInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         if (request.getDispatcherType() == DispatcherType.REQUEST) {
+            logger.debug("preHandle");
             request.setAttribute("UUID", UUID.randomUUID().toString());
         }
         return true;
@@ -24,6 +29,7 @@ public class AnalyticsInterceptor implements HandlerInterceptor {
 
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+        logger.debug("afterCompletion");
         analyticService.process(request);
     }
 }

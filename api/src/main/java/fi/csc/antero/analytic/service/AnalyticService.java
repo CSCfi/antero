@@ -1,5 +1,7 @@
 package fi.csc.antero.analytic.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,8 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class AnalyticService {
 
+    private final Logger logger = LoggerFactory.getLogger(getClass());
+
     Map<String,Runnable> tasks;
     TaskExecutor taskExecutor;
 
@@ -21,14 +25,17 @@ public class AnalyticService {
     }
 
     public void process(HttpServletRequest request) {
+        logger.debug("process");
         String uuid = (String) request.getAttribute("UUID");
         Runnable task = tasks.get(uuid);
         taskExecutor.execute(task);
         tasks.remove(uuid);
     }
     public void submit(HttpServletRequest request, Runnable task) {
+        logger.debug("submit");
         String uuid = (String) request.getAttribute("UUID");
         if (isAsync(request)) {
+            logger.debug("submit async start");
             tasks.put(uuid, task);
             Executors.newSingleThreadScheduledExecutor().schedule(() -> tasks.remove(uuid), 1, TimeUnit.MINUTES);
         } else  {

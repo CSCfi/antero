@@ -8,6 +8,8 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -20,6 +22,8 @@ import java.math.RoundingMode;
 @Aspect
 @Component
 public class AnalyticProcessor {
+
+    private final Logger logger = LoggerFactory.getLogger(getClass());
 
     @Value("${api.analytics.logging.delimiter}")
     private String DELIMITER;
@@ -42,11 +46,14 @@ public class AnalyticProcessor {
     @Around(value = "apiCall(enableAnalytics)", argNames = "pjp,enableAnalytics")
     public Object logApiCall(ProceedingJoinPoint pjp, EnableAnalytics enableAnalytics) throws Throwable {
         final long start = System.currentTimeMillis();
+        logger.debug("logApiCall");
         try {
             return pjp.proceed();
         } finally {
+            logger.debug("logApiCall finally");
             String ip = request.getRemoteAddr();
             analyticService.submit(request, () -> {
+                logger.debug("logApiCall task started");
                 double durationSeconds = (System.currentTimeMillis() - start) / 1000d;
                 double duration = BigDecimal.valueOf(durationSeconds)
                         .setScale(3, RoundingMode.HALF_UP).doubleValue();
@@ -61,6 +68,7 @@ public class AnalyticProcessor {
                         + (query.isEmpty() ? "" : QUERY_DELIMITER + query)
                         + DELIMITER + enableAnalytics.path()
                         + DELIMITER + duration);
+                logger.debug("logApiCall task stopped");
             });
         }
     }

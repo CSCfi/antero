@@ -61,6 +61,7 @@ public class ApiDataService {
 
     public void streamToJsonArray(String table, OutputStream out, ApiQuery query)
             throws IOException, SQLException {
+        log.debug("streamToJsonArray start");
         final JsonGenerator jg = om.getFactory().createGenerator(out);
         jg.writeStartArray();
         final StringTemplate path = getFromExpression(table);
@@ -75,6 +76,7 @@ public class ApiDataService {
         dataDao.queryForStream(queryString, rowHandler);
         jg.writeEndArray();
         jg.flush();
+        log.debug("streamToJsonArray end");
     }
 
     public Long getCount(String table, String filter) throws SQLException {
