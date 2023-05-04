@@ -1,4 +1,4 @@
-package fi.csc.antero.log;
+package fi.csc.antero.analytic.log;
 
 import ch.qos.logback.classic.PatternLayout;
 import org.slf4j.Logger;

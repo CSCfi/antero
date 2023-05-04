@@ -1,4 +1,4 @@
-package fi.csc.antero.annotations;
+package fi.csc.antero.analytic.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

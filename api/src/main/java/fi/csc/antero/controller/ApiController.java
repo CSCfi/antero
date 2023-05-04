@@ -1,6 +1,6 @@
 package fi.csc.antero.controller;
 
-import fi.csc.antero.annotations.EnableAnalytics;
+import fi.csc.antero.analytic.annotation.EnableAnalytics;
 import fi.csc.antero.exception.NotFoundException;
 import fi.csc.antero.repository.ApiDataService;
 import fi.csc.antero.repository.ApiProperty;
@@ -32,6 +32,9 @@ public class ApiController {
     }
     @RequestMapping(value = "/resources/{resource}/data", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
+    @EnableAnalytics(
+            path = "/resources/{resource}/data",
+            filter = -1)
     @ApiOperation(value = "Get resource data",
             notes = "You can query resource data with filters and use paging. " +
                     "Filtering uses [FIQL](https://tools.ietf.org/html/draft-nottingham-atompub-fiql-00) query syntax. " +

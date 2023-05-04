@@ -17,7 +17,6 @@ import com.querydsl.core.types.dsl.NumberPath;
 import com.querydsl.core.types.dsl.StringTemplate;
 import com.querydsl.sql.SQLQuery;
 import com.querydsl.sql.SQLQueryFactory;
-import fi.csc.antero.annotations.EnableAnalytics;
 import fi.csc.antero.config.ConfigService;
 import fi.csc.antero.controller.ApiQuery;
 import fi.csc.antero.dao.ApiDataDao;
@@ -60,10 +59,6 @@ public class ApiDataService {
         this.configService = configService;
     }
 
-    @EnableAnalytics(
-            path = "/resources/{resource}/data",
-            query = 2,
-            filter = -1)
     public void streamToJsonArray(String table, OutputStream out, ApiQuery query)
             throws IOException, SQLException {
         final JsonGenerator jg = om.getFactory().createGenerator(out);

@@ -1,8 +1,9 @@
-package fi.csc.antero.annotations.processor;
+package fi.csc.antero.analytic.annotation.processor;
 
-import fi.csc.antero.annotations.EnableAnalytics;
+import fi.csc.antero.analytic.annotation.EnableAnalytics;
+import fi.csc.antero.analytic.service.AnalyticService;
 import fi.csc.antero.controller.ApiQuery;
-import fi.csc.antero.log.AnalyticsLogger;
+import fi.csc.antero.analytic.log.AnalyticsLogger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -18,19 +19,21 @@ import java.math.RoundingMode;
 
 @Aspect
 @Component
-public class AnalyticsProcessor {
+public class AnalyticProcessor {
 
     @Value("${api.analytics.logging.delimiter}")
     private String DELIMITER;
     @Value("${api.analytics.logging.query.delimiter}")
     private String QUERY_DELIMITER;
     private final AnalyticsLogger analyticsLogger;
+    private final AnalyticService analyticService;
     @Autowired
     private HttpServletRequest request;
 
     @Autowired
-    public AnalyticsProcessor(AnalyticsLogger analyticsLogger) {
+    public AnalyticProcessor(AnalyticsLogger analyticsLogger, AnalyticService analyticService) {
         this.analyticsLogger = analyticsLogger;
+        this.analyticService = analyticService;
     }
 
     @Pointcut("@annotation(enableAnalytics)")
@@ -42,20 +45,23 @@ public class AnalyticsProcessor {
         try {
             return pjp.proceed();
         } finally {
-            double durationSeconds = (System.currentTimeMillis() - start) / 1000d;
-            double duration = BigDecimal.valueOf(durationSeconds)
-                    .setScale(3, RoundingMode.HALF_UP).doubleValue();
-            Object[] args = pjp.getArgs();
-            String resource = getOrEmpty(args, enableAnalytics.resource());
-            String filter = getOrEmpty(args, enableAnalytics.filter());
-            String query = getOrEmpty(args, enableAnalytics.query());
+            String ip = request.getRemoteAddr();
+            analyticService.submit(request, () -> {
+                double durationSeconds = (System.currentTimeMillis() - start) / 1000d;
+                double duration = BigDecimal.valueOf(durationSeconds)
+                        .setScale(3, RoundingMode.HALF_UP).doubleValue();
+                Object[] args = pjp.getArgs();
+                String resource = getOrEmpty(args, enableAnalytics.resource());
+                String filter = getOrEmpty(args, enableAnalytics.filter());
+                String query = getOrEmpty(args, enableAnalytics.query());
 
-            analyticsLogger.log(request.getRemoteAddr()
-                    + (resource.isEmpty() ? DELIMITER : DELIMITER + "resource=" + resource)
-                    + (filter.isEmpty() ? "" : QUERY_DELIMITER + "filter=" + filter)
-                    + (query.isEmpty() ? "" : QUERY_DELIMITER + query)
-                    + DELIMITER + enableAnalytics.path()
-                    + DELIMITER + duration);
+                analyticsLogger.log(ip
+                        + (resource.isEmpty() ? DELIMITER : DELIMITER + "resource=" + resource)
+                        + (filter.isEmpty() ? "" : QUERY_DELIMITER + "filter=" + filter)
+                        + (query.isEmpty() ? "" : QUERY_DELIMITER + query)
+                        + DELIMITER + enableAnalytics.path()
+                        + DELIMITER + duration);
+            });
         }
     }
 
@@ -67,6 +73,7 @@ public class AnalyticsProcessor {
             } else if (obj.getClass() == ApiQuery.class) {
                 return  "sort='" + ((ApiQuery) obj).getSort() + '\'' +
                         QUERY_DELIMITER+ "offset=" + ((ApiQuery) obj).getOffset() +
+                        QUERY_DELIMITER + "filter=" + ((ApiQuery) obj).getFilter() +
                         QUERY_DELIMITER + "limit=" + ((ApiQuery) obj).getLimit();
             }
         } catch (Exception ignored) {}
