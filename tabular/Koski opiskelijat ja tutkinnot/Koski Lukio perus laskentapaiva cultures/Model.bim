@@ -83,13 +83,6 @@
             "sourceProviderType": "Integer"
           },
           {
-            "name": "tilastopaiva_fi",
-            "dataType": "dateTime",
-            "sourceColumn": "tilastopaiva_fi",
-            "formatString": "General Date",
-            "sourceProviderType": "DBDate"
-          },
-          {
             "name": "oppimaara_fi",
             "dataType": "string",
             "sourceColumn": "oppimaara_fi",
@@ -302,13 +295,6 @@
             "sourceColumn": "aloituskuukausi_sv",
             "sortByColumn": "jarjestys_aloituskuukausi",
             "sourceProviderType": "Integer"
-          },
-          {
-            "name": "tilastopaiva_sv",
-            "dataType": "dateTime",
-            "sourceColumn": "tilastopaiva_sv",
-            "formatString": "General Date",
-            "sourceProviderType": "DBDate"
           },
           {
             "name": "oppimaara_sv",
@@ -684,6 +670,28 @@
             "dataType": "string",
             "isHidden": true,
             "sourceColumn": "jarjestys_toimipisteen_maakunta"
+          },
+          {
+            "name": "tilastovuosi_fi",
+            "dataType": "int64",
+            "sourceColumn": "tilastovuosi_fi",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "tilastovuosi_sv",
+            "dataType": "int64",
+            "sourceColumn": "tilastovuosi_sv",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "apusarake_tilastopaiva_20_1",
+            "dataType": "int64",
+            "sourceColumn": "apusarake_tilastopaiva_20_1"
+          },
+          {
+            "name": "apusarake_tilastopaiva_20_9",
+            "dataType": "int64",
+            "sourceColumn": "apusarake_tilastopaiva_20_9"
           }
         ],
         "partitions": [
@@ -733,7 +741,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>tilastopaiva_fi</string>",
+                  "        <string>tilastovuosi_fi</string>",
                   "      </key>",
                   "      <value>",
                   "        <int>136</int>",
@@ -1029,7 +1037,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>tilastopaiva_sv</string>",
+                  "        <string>tilastovuosi_sv</string>",
                   "      </key>",
                   "      <value>",
                   "        <int>142</int>",
@@ -1491,6 +1499,22 @@
                   "        <int>188</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>apusarake_tilastopaiva_20_1</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>212</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>apusarake_tilastopaiva_20_9</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>212</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -1519,7 +1543,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>tilastopaiva_fi</string>",
+                  "        <string>tilastovuosi_fi</string>",
                   "      </key>",
                   "      <value>",
                   "        <int>3</int>",
@@ -1815,7 +1839,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>tilastopaiva_sv</string>",
+                  "        <string>tilastovuosi_sv</string>",
                   "      </key>",
                   "      <value>",
                   "        <int>40</int>",
@@ -2277,6 +2301,22 @@
                   "        <int>97</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>apusarake_tilastopaiva_20_1</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>98</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>apusarake_tilastopaiva_20_9</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>99</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -2320,6 +2360,22 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>apusarake_tilastopaiva_20_1</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>apusarake_tilastopaiva_20_9</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -2333,25 +2389,21 @@
         ],
         "measures": [
           {
-            "name": "opiskelijat",
+            "name": "opiskelijat_20_9",
             "expression": [
-              "  var lkm = DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid])",
-              "                  return IF(lkm = 0, BLANK(), IF(lkm<5, \"1-4\", MROUND(lkm, 3)))"
+              " ",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]), Muuttujat[apusarake_tilastopaiva_20_9] = 1)",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
             ],
-            "formatString": "#,0"
-          },
-          {
-            "name": "opiskelijat_s",
-            "expression": " DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid])",
             "formatString": "#,0"
           },
           {
             "name": "oppilaitosten_lukumaara",
             "expression": [
               " ",
-              "\tvar lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppilaitos_fi]))",
-              "             \tvar ehto = ISFILTERED(Muuttujat[oppilaitos_fi]) || ISFILTERED(Muuttujat[oppilaitos_sv]) --|| \tISFILTERED(Muuttujat[oppilaitos_en]);",
-              "             \treturn IF(ehto, BLANK(), lkm)"
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[oppilaitos_fi]))",
+              "var ehto = ISFILTERED(Muuttujat[oppilaitos_fi]) || ISFILTERED(Muuttujat[oppilaitos_sv]) --|| \tISFILTERED(Muuttujat[oppilaitos_en]);",
+              "return IF(ehto, BLANK(), lkm)"
             ],
             "formatString": "#,0"
           },
@@ -2359,9 +2411,18 @@
             "name": "koulutuksen_jarjestajien_lukumaara",
             "expression": [
               " ",
-              "\tvar lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[koulutuksen_jarjestaja_fi]))",
-              "             \tvar ehto = ISFILTERED(Muuttujat[koulutuksen_jarjestaja_fi]) || \tISFILTERED(Muuttujat[koulutuksen_jarjestaja_sv]) -- || ISFILTERED(Muuttujat[koulutuksen_jarjestaja_en]);",
-              "             \treturn IF(ehto, BLANK(), lkm)"
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[koulutuksen_jarjestaja_fi]))",
+              "var ehto = ISFILTERED(Muuttujat[koulutuksen_jarjestaja_fi]) || ISFILTERED(Muuttujat[koulutuksen_jarjestaja_sv]) -- || ISFILTERED(Muuttujat[koulutuksen_jarjestaja_en]);",
+              "return IF(ehto, BLANK(), lkm)"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "opiskelijat_20_1",
+            "expression": [
+              " ",
+              "var lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]), Muuttujat[apusarake_tilastopaiva_20_1] = 1)",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
             ],
             "formatString": "#,0"
           }
@@ -2417,7 +2478,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>tilastopaiva_fi</string>",
+              "        <string>tilastovuosi_fi</string>",
               "      </key>",
               "      <value>",
               "        <int>136</int>",
@@ -2713,7 +2774,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>tilastopaiva_sv</string>",
+              "        <string>tilastovuosi_sv</string>",
               "      </key>",
               "      <value>",
               "        <int>142</int>",
@@ -3175,6 +3236,22 @@
               "        <int>188</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>apusarake_tilastopaiva_20_1</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>212</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>apusarake_tilastopaiva_20_9</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>212</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -3203,7 +3280,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>tilastopaiva_fi</string>",
+              "        <string>tilastovuosi_fi</string>",
               "      </key>",
               "      <value>",
               "        <int>3</int>",
@@ -3499,7 +3576,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>tilastopaiva_sv</string>",
+              "        <string>tilastovuosi_sv</string>",
               "      </key>",
               "      <value>",
               "        <int>40</int>",
@@ -3961,6 +4038,22 @@
               "        <int>97</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>apusarake_tilastopaiva_20_1</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>98</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>apusarake_tilastopaiva_20_9</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>99</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -4004,6 +4097,22 @@
               "        <boolean>true</boolean>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>apusarake_tilastopaiva_20_1</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>apusarake_tilastopaiva_20_9</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
               "  </ColumnChecked>",
               "  <ColumnFilter />",
               "  <SelectionFilter />",
@@ -4034,11 +4143,6 @@
                   {
                     "name": "aloituskuukausi_fi",
                     "translatedCaption": "Aloituskuukausi",
-                    "translatedDisplayFolder": "Aikamuuttujat"
-                  },
-                  {
-                    "name": "tilastopaiva_fi",
-                    "translatedCaption": "Tilastopäivä",
                     "translatedDisplayFolder": "Aikamuuttujat"
                   },
                   {
@@ -4208,11 +4312,6 @@
                   },
                   {
                     "name": "aloituskuukausi_sv",
-                    "translatedCaption": ".",
-                    "translatedDisplayFolder": "Organisaatiomuuttujat"
-                  },
-                  {
-                    "name": "tilastopaiva_sv",
                     "translatedCaption": ".",
                     "translatedDisplayFolder": "Organisaatiomuuttujat"
                   },
@@ -4445,16 +4544,22 @@
                     "name": "toimipisteen_maakunta_sv",
                     "translatedCaption": ".",
                     "translatedDisplayFolder": "Organisaatiomuuttujat"
+                  },
+                  {
+                    "name": "tilastovuosi_fi",
+                    "translatedCaption": "Tilastovuosi",
+                    "translatedDisplayFolder": "Aikamuuttujat"
+                  },
+                  {
+                    "name": "tilastovuosi_sv",
+                    "translatedCaption": ".",
+                    "translatedDisplayFolder": "Organisaatiomuuttujat"
                   }
                 ],
                 "measures": [
                   {
-                    "name": "opiskelijat",
-                    "translatedCaption": "Opiskelijat"
-                  },
-                  {
-                    "name": "opiskelijat_s",
-                    "translatedCaption": "Opiskelijat_s"
+                    "name": "opiskelijat_20_9",
+                    "translatedCaption": "Opiskelijat 20.9."
                   },
                   {
                     "name": "oppilaitosten_lukumaara",
@@ -4463,6 +4568,10 @@
                   {
                     "name": "koulutuksen_jarjestajien_lukumaara",
                     "translatedCaption": "Koulutuksen järjestäjien lukumäärä"
+                  },
+                  {
+                    "name": "opiskelijat_20_1",
+                    "translatedCaption": "Opiskelijat 20.1."
                   }
                 ]
               }
@@ -4486,10 +4595,6 @@
                   },
                   {
                     "name": "aloituskuukausi_fi",
-                    "translatedCaption": "."
-                  },
-                  {
-                    "name": "tilastopaiva_fi",
                     "translatedCaption": "."
                   },
                   {
@@ -4628,11 +4733,6 @@
                   {
                     "name": "aloituskuukausi_sv",
                     "translatedCaption": "Begynnelsemånad",
-                    "translatedDisplayFolder": "Tidsvariabler"
-                  },
-                  {
-                    "name": "tilastopaiva_sv",
-                    "translatedCaption": "Statistik dag",
                     "translatedDisplayFolder": "Tidsvariabler"
                   },
                   {
@@ -4860,16 +4960,21 @@
                     "name": "toimipisteen_maakunta_sv",
                     "translatedCaption": "Verksamhetsställets landskap",
                     "translatedDisplayFolder": "Organisationsvariabler"
+                  },
+                  {
+                    "name": "tilastovuosi_fi",
+                    "translatedCaption": "."
+                  },
+                  {
+                    "name": "tilastovuosi_sv",
+                    "translatedCaption": "Statistikår",
+                    "translatedDisplayFolder": "Tidsvariabler"
                   }
                 ],
                 "measures": [
                   {
-                    "name": "opiskelijat",
-                    "translatedCaption": "Studerande"
-                  },
-                  {
-                    "name": "opiskelijat_s",
-                    "translatedCaption": "Studerande_s"
+                    "name": "opiskelijat_20_9",
+                    "translatedCaption": "Studerande 20.9."
                   },
                   {
                     "name": "oppilaitosten_lukumaara",
@@ -4878,6 +4983,10 @@
                   {
                     "name": "koulutuksen_jarjestajien_lukumaara",
                     "translatedCaption": "Antal utbildningsanordnare"
+                  },
+                  {
+                    "name": "opiskelijat_20_1",
+                    "translatedCaption": "Studerande 20.1."
                   }
                 ]
               }
@@ -5011,18 +5120,21 @@
                 "name": "suorituskieliryhma_fi"
               },
               {
-                "name": "tilastopaiva_fi"
-              },
-              {
                 "name": "toimipisteen_kunta_fi"
               },
               {
                 "name": "toimipisteen_maakunta_fi"
+              },
+              {
+                "name": "tilastovuosi_fi"
               }
             ],
             "measures": [
               {
-                "name": "opiskelijat"
+                "name": "opiskelijat_20_9"
+              },
+              {
+                "name": "opiskelijat_20_1"
               }
             ]
           }
@@ -5155,9 +5267,6 @@
                 "name": "tavoitetutkinto_sv"
               },
               {
-                "name": "tilastopaiva_sv"
-              },
-              {
                 "name": "toimipiste_sv"
               },
               {
@@ -5165,11 +5274,17 @@
               },
               {
                 "name": "toimipisteen_maakunta_sv"
+              },
+              {
+                "name": "tilastovuosi_sv"
               }
             ],
             "measures": [
               {
-                "name": "opiskelijat"
+                "name": "opiskelijat_20_9"
+              },
+              {
+                "name": "opiskelijat_20_1"
               }
             ]
           }
@@ -5284,18 +5399,21 @@
                 "name": "tavoitetutkinto_fi"
               },
               {
-                "name": "tilastopaiva_fi"
+                "name": "toimipiste_fi"
               },
               {
-                "name": "toimipiste_fi"
+                "name": "tilastovuosi_fi"
               }
             ],
             "measures": [
               {
-                "name": "opiskelijat"
+                "name": "opiskelijat_20_9"
               },
               {
                 "name": "oppilaitosten_lukumaara"
+              },
+              {
+                "name": "opiskelijat_20_1"
               }
             ]
           }
@@ -5410,18 +5528,21 @@
                 "name": "tavoitetutkinto_sv"
               },
               {
-                "name": "tilastopaiva_sv"
+                "name": "toimipiste_sv"
               },
               {
-                "name": "toimipiste_sv"
+                "name": "tilastovuosi_sv"
               }
             ],
             "measures": [
               {
-                "name": "opiskelijat"
+                "name": "opiskelijat_20_9"
               },
               {
                 "name": "oppilaitosten_lukumaara"
+              },
+              {
+                "name": "opiskelijat_20_1"
               }
             ]
           }
