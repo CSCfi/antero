@@ -2,7 +2,6 @@ package fi.csc.antero.analytic.annotation.processor;
 
 import fi.csc.antero.analytic.annotation.EnableAnalytics;
 import fi.csc.antero.analytic.service.AnalyticService;
-import fi.csc.antero.controller.ApiQuery;
 import fi.csc.antero.analytic.log.AnalyticsLogger;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -27,8 +26,7 @@ public class AnalyticProcessor {
 
     @Value("${api.analytics.logging.delimiter}")
     private String DELIMITER;
-    @Value("${api.analytics.logging.query.delimiter}")
-    private String QUERY_DELIMITER;
+
     private final AnalyticsLogger analyticsLogger;
     private final AnalyticService analyticService;
     @Autowired
@@ -46,45 +44,36 @@ public class AnalyticProcessor {
     @Around(value = "apiCall(enableAnalytics)", argNames = "pjp,enableAnalytics")
     public Object logApiCall(ProceedingJoinPoint pjp, EnableAnalytics enableAnalytics) throws Throwable {
         final long start = System.currentTimeMillis();
+        String requestURI = request.getRequestURI();
         logger.debug("logApiCall");
+        String queryString = request.getQueryString();
         try {
             return pjp.proceed();
         } finally {
             logger.debug("logApiCall finally");
-            String ip = request.getRemoteAddr();
+            String ip = getClientIp(request);
             analyticService.submit(request, () -> {
                 logger.debug("logApiCall task started");
                 double durationSeconds = (System.currentTimeMillis() - start) / 1000d;
                 double duration = BigDecimal.valueOf(durationSeconds)
                         .setScale(3, RoundingMode.HALF_UP).doubleValue();
-                Object[] args = pjp.getArgs();
-                String resource = getOrEmpty(args, enableAnalytics.resource());
-                String filter = getOrEmpty(args, enableAnalytics.filter());
-                String query = getOrEmpty(args, enableAnalytics.query());
 
                 analyticsLogger.log(ip
-                        + (resource.isEmpty() ? DELIMITER : DELIMITER + "resource=" + resource)
-                        + (filter.isEmpty() ? "" : QUERY_DELIMITER + "filter=" + filter)
-                        + (query.isEmpty() ? "" : QUERY_DELIMITER + query)
-                        + DELIMITER + enableAnalytics.path()
+                        + DELIMITER + requestURI
+                        + DELIMITER + queryString
                         + DELIMITER + duration);
                 logger.debug("logApiCall task stopped");
             });
         }
     }
-
-    private String getOrEmpty(Object[] arr, int index) {
-        try {
-            Object obj = arr[index];
-            if (obj.getClass() == String.class) {
-                return obj.toString();
-            } else if (obj.getClass() == ApiQuery.class) {
-                return  "sort='" + ((ApiQuery) obj).getSort() + '\'' +
-                        QUERY_DELIMITER+ "offset=" + ((ApiQuery) obj).getOffset() +
-                        QUERY_DELIMITER + "filter=" + ((ApiQuery) obj).getFilter() +
-                        QUERY_DELIMITER + "limit=" + ((ApiQuery) obj).getLimit();
-            }
-        } catch (Exception ignored) {}
-        return "";
+    private String getClientIp(HttpServletRequest request) {
+        String ip = request.getHeader("X-Forwarded-For");
+        if (ip == null) {
+            return request.getRemoteAddr();
+        }
+        if (ip.contains(",")) {
+            return ip.split(",")[0];
+        }
+        return ip;
     }
 }

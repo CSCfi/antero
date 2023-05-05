@@ -28,8 +28,10 @@ public class AnalyticService {
         logger.debug("process");
         String uuid = (String) request.getAttribute("UUID");
         Runnable task = tasks.get(uuid);
-        taskExecutor.execute(task);
-        tasks.remove(uuid);
+        if (task != null) {
+            taskExecutor.execute(task);
+            tasks.remove(uuid);
+        }
     }
     public void submit(HttpServletRequest request, Runnable task) {
         logger.debug("submit");
@@ -37,7 +39,7 @@ public class AnalyticService {
         if (isAsync(request)) {
             logger.debug("submit async start");
             tasks.put(uuid, task);
-            Executors.newSingleThreadScheduledExecutor().schedule(() -> tasks.remove(uuid), 1, TimeUnit.MINUTES);
+            Executors.newSingleThreadScheduledExecutor().schedule(() -> tasks.remove(uuid), 5, TimeUnit.MINUTES);
         } else  {
             taskExecutor.execute(task);
         }
