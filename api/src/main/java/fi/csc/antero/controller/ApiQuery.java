@@ -8,9 +8,9 @@ public class ApiQuery {
     private String filter;
     @ApiParam(value = "Sorting '+' asc and '-' desc. Example: (+prop1,-prop2)")
     private String sort;
-    @ApiParam(value = "Offset of returned results")
+    @ApiParam(value = "Offset of returned results", example = "0")
     private Long offset;
-    @ApiParam(value = "Number of returned results")
+    @ApiParam(value = "Number of returned results", example = "5")
     private Long limit;
 
     public String getFilter() {
