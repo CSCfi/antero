@@ -45,6 +45,13 @@ public class AnalyticProcessor {
     public Object logApiCall(ProceedingJoinPoint pjp, EnableAnalytics enableAnalytics) throws Throwable {
         final long start = System.currentTimeMillis();
         String requestURI = request.getRequestURI();
+        String referer = request.getHeader("Referer");
+        boolean isSwaggerReq;
+        if (referer != null) {
+            isSwaggerReq = referer.contains("swagger");
+        } else {
+            isSwaggerReq = false;
+        }
         logger.debug("logApiCall");
         String queryString = request.getQueryString();
         try {
@@ -61,7 +68,8 @@ public class AnalyticProcessor {
                 analyticsLogger.log(ip
                         + DELIMITER + requestURI
                         + DELIMITER + queryString
-                        + DELIMITER + duration);
+                        + DELIMITER + duration
+                        + DELIMITER + isSwaggerReq);
                 logger.debug("logApiCall task stopped");
             });
         }
