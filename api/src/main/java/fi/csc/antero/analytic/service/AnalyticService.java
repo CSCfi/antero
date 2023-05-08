@@ -8,8 +8,6 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 @Service
 public class AnalyticService {
@@ -39,8 +37,7 @@ public class AnalyticService {
         if (isAsync(request)) {
             logger.debug("submit async start");
             tasks.put(uuid, task);
-            Executors.newSingleThreadScheduledExecutor().schedule(() -> tasks.remove(uuid), 5, TimeUnit.MINUTES);
-        } else  {
+        } else {
             taskExecutor.execute(task);
         }
     }

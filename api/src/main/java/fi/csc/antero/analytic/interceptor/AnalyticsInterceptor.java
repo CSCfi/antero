@@ -20,8 +20,8 @@ public class AnalyticsInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        logger.debug("AnalyticsInterceptor#preHandle");
         if (request.getDispatcherType() == DispatcherType.REQUEST) {
-            logger.debug("preHandle");
             request.setAttribute("UUID", UUID.randomUUID().toString());
         }
         return true;
@@ -31,5 +31,6 @@ public class AnalyticsInterceptor implements HandlerInterceptor {
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
         logger.debug("afterCompletion");
         analyticService.process(request);
+        request.removeAttribute("UUID");
     }
 }
