@@ -65,7 +65,8 @@ public class AnalyticProcessor {
                 double duration = BigDecimal.valueOf(durationSeconds)
                         .setScale(3, RoundingMode.HALF_UP).doubleValue();
 
-                analyticsLogger.log(ip
+                analyticsLogger.log(start
+                        + DELIMITER + ip
                         + DELIMITER + requestURI
                         + DELIMITER + queryString
                         + DELIMITER + duration
