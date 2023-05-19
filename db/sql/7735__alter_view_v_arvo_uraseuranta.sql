@@ -13,25 +13,25 @@ ALTER VIEW [dw].[v_arvo_uraseuranta] AS
 
 SELECT --TOP 0
 f.kysymysid
-----henkilˆmuuttujat
-, d7.ika_fi											AS 'Ik‰ (valmistuessa)'
+----henkil√∂muuttujat
+, d7.ika_fi											AS 'Ik√§ (valmistuessa)'
 
 ,CASE WHEN d7.ika_fi in ('20','21','22','23','24') 
-THEN '20ñ24-vuotiaat' ELSE d7.ikaryhma1_fi END		AS 'Ik‰ryhm‰ (valmistuessa)'
+THEN '20‚Äì24-vuotiaat' ELSE d7.ikaryhma1_fi END		AS 'Ik√§ryhm√§ (valmistuessa)'
 
 ,d8.sukupuoli_fi									AS 'Sukupuoli'
-,d9.kieliryhma1_fi									AS 'ƒidinkieli'
+,d9.kieliryhma1_fi									AS '√Ñidinkieli'
 ,d10.maatjavaltiot2_fi								AS 'Kansalaisuus'
 ,d10.maanosa_fi										AS 'Kansalaisuus (maanosa)'
 ,d11.kunta_fi										AS 'Asuinkunta'
 ,d11.maakunta_fi									AS 'Asuinmaakunta'
 ,laajuus											AS 'Laajuus'
-,paaaine											AS 'P‰‰aine'
+,paaaine											AS 'P√§√§aine'
 ,arvosana											AS 'Arvosana'
 ,asteikko											AS 'Asteikko'
 ,valintavuosi										AS 'Valintavuosi'
 ,valmistumisvuosi									AS 'Valmistumisvuosi'
-,lasnaolo_lukukausia								AS 'L‰sn‰olo (lukukausia)'
+,lasnaolo_lukukausia								AS 'L√§sn√§olo (lukukausia)'
 ,kirjoilla_olo_kuukausia							AS 'Kirjoillaolo (kuukausia)'
 ----koulutusmuuttujat
 ,d_koulutusluokitus.koulutusastetaso1_fi			AS 'Koulutusaste, taso 1'
@@ -47,34 +47,34 @@ THEN '20ñ24-vuotiaat' ELSE d7.ikaryhma1_fi END		AS 'Ik‰ryhm‰ (valmistuessa)'
 ----kyselymuuttujat
 ,d_arvokyselykerta.kysely_fi						AS 'Kysely'
 ,d_arvokyselykerta.kyselykerta						AS 'Kyselykerta'
-,f.kysymysryhma										AS 'Kysymysryhm‰'
+,f.kysymysryhma										AS 'Kysymysryhm√§'
 ,f.kysymys											AS 'Kysymys'
 ,CASE 
-	WHEN f.kysymysid = 2922 THEN '1. Koulutus antoi riitt‰v‰t valmiudet tyˆel‰m‰‰n.'
-	WHEN f.kysymysid = 2924 THEN '2. Miten tyytyv‰inen olet kokonaisuudessaan vuonna x suorittamaasi tutkintoon tyˆurasi kannalta?'
-	WHEN f.kysymysid = 2953 THEN '3. Pystyn hyˆdynt‰m‰‰n yliopistossa oppimiani tietoja ja taitoja nykyisess‰ tyˆss‰ni hyvin.'
-	WHEN f.kysymysid = 2954 THEN '4. Tyˆni vastaa t‰ll‰ hetkell‰ vaativuustasoltaan hyvin yliopistollista koulutustani.'
+	WHEN f.kysymysid = 2922 THEN '1. Koulutus antoi riitt√§v√§t valmiudet ty√∂el√§m√§√§n.'
+	WHEN f.kysymysid = 2924 THEN '2. Miten tyytyv√§inen olet kokonaisuudessaan vuonna x suorittamaasi tutkintoon ty√∂urasi kannalta?'
+	WHEN f.kysymysid = 2953 THEN '3. Pystyn hy√∂dynt√§m√§√§n yliopistossa oppimiani tietoja ja taitoja nykyisess√§ ty√∂ss√§ni hyvin.'
+	WHEN f.kysymysid = 2954 THEN '4. Ty√∂ni vastaa t√§ll√§ hetkell√§ vaativuustasoltaan hyvin yliopistollista koulutustani.'
 	WHEN f.kysymysid = 3060 THEN '1) analyyttiset, systemaattisen ajattelun taidot'
 	WHEN f.kysymysid = 3061 THEN '2) tiedonhankintataidot'
 	WHEN f.kysymysid = 3079 THEN '3) kyky oppia ja omaksua uutta'
-	WHEN f.kysymysid = 3081 THEN '4) tieteidenv‰lisyys/moniammatillisissa ryhmiss‰ toimiminen'
+	WHEN f.kysymysid = 3081 THEN '4) tieteidenv√§lisyys/moniammatillisissa ryhmiss√§ toimiminen'
 	WHEN f.kysymysid = 3084 THEN '5) itseohjautuvuus/oma-aloitteisuus'
-	WHEN f.kysymysid = 3085 THEN '6) yritt‰jyystaidot'
+	WHEN f.kysymysid = 3085 THEN '6) yritt√§jyystaidot'
 	ELSE NULL
 END as 'Kysymys (rahoitusmalli)'
 ,CASE 
-	WHEN f.kysymysid = 2922 THEN '1. Utbildningen gav tillr‰ckliga f‰rdigheter fˆr arbetslivet.'
-	WHEN f.kysymysid = 2924 THEN '2. Med tanke pÂ din karri‰r, hur nˆjd ‰r du med den examen du avlade Âr x i sin helhet?'
-	WHEN f.kysymysid = 2953 THEN '3. Jag kan i mitt nuvarande arbete utnyttja v‰l de kunskaper och f‰rdigheter som jag l‰rt mig vid universitetet.'
-	WHEN f.kysymysid = 2954 THEN '4. KravnivÂn pÂ mitt arbete motsvarar v‰l min universitetsutbildning.'
-	WHEN f.kysymysid = 3060 THEN '1) f‰rdigheter fˆr analytiskt och systematiskt t‰nkande'
-	WHEN f.kysymysid = 3061 THEN '2) f‰rdigheter i informationssˆkning'
-	WHEN f.kysymysid = 3079 THEN '3) fˆrmÂga att l‰ra sig och till‰gna sig nytt'
-	WHEN f.kysymysid = 3081 THEN '4) tv‰rvetenskaplighet/fungera i mÂngprofessionella grupper'
-	WHEN f.kysymysid = 3084 THEN '5) sj‰lvstyrande/eget initiativtagande'
-	WHEN f.kysymysid = 3085 THEN '6) entreprenˆrs-/fˆretagarfˆrmÂga'
+	WHEN f.kysymysid = 2922 THEN '1. Utbildningen gav tillr√§ckliga f√§rdigheter f√∂r arbetslivet.'
+	WHEN f.kysymysid = 2924 THEN '2. Med tanke p√• din karri√§r, hur n√∂jd √§r du med den examen du avlade √•r x i sin helhet?'
+	WHEN f.kysymysid = 2953 THEN '3. Jag kan i mitt nuvarande arbete utnyttja v√§l de kunskaper och f√§rdigheter som jag l√§rt mig vid universitetet.'
+	WHEN f.kysymysid = 2954 THEN '4. Kravniv√•n p√• mitt arbete motsvarar v√§l min universitetsutbildning.'
+	WHEN f.kysymysid = 3060 THEN '1) f√§rdigheter f√∂r analytiskt och systematiskt t√§nkande'
+	WHEN f.kysymysid = 3061 THEN '2) f√§rdigheter i informationss√∂kning'
+	WHEN f.kysymysid = 3079 THEN '3) f√∂rm√•ga att l√§ra sig och till√§gna sig nytt'
+	WHEN f.kysymysid = 3081 THEN '4) tv√§rvetenskaplighet/fungera i m√•ngprofessionella grupper'
+	WHEN f.kysymysid = 3084 THEN '5) sj√§lvstyrande/eget initiativtagande'
+	WHEN f.kysymysid = 3085 THEN '6) entrepren√∂rs-/f√∂retagarf√∂rm√•ga'
 	ELSE NULL
-END as 'FrÂga (finansieringsmodell)'
+END as 'Fr√•ga (finansieringsmodell)'
 ,CASE 
 	WHEN f.kysymysid = 2922 THEN '1. The studies equipped me sufficiently for the working life.'
 	WHEN f.kysymysid = 2924 THEN '2. How satisfied are you overall with the degree you completed in year x in terms of your career?'
@@ -94,140 +94,140 @@ END as 'Question (funding model)'
 
 
 ,CASE WHEN 	f.kysymysid in (2922, 2924, 2953, 2954, 3060, 3061, 3079, 3081, 3084, 3085) 
-		THEN 'Kyll‰' 
+		THEN 'Kyll√§' 
 		ELSE 'Ei' END								AS 'Rahoitusmallikysymys'
 ,CASE WHEN 	f.kysymysid in (2922, 2924, 2953, 2954, 3060, 3061, 3079, 3081, 3084, 3085) 
 		THEN 'Ja' 
-		ELSE 'Nej' END								AS 'FinansieringsmodellfrÂga'
+		ELSE 'Nej' END								AS 'Finansieringsmodellfr√•ga'
 ,CASE WHEN 	f.kysymysid in (2922, 2924, 2953, 2954, 3060, 3061, 3079, 3081, 3084, 3085) 
 		THEN 'Yes' 
 		ELSE 'No' END								AS 'Funding modell question'
 
-,CASE WHEN f.kysymysryhma = 'VI  TY÷ JA OSAAMINEN (3/3)' 
+,CASE WHEN f.kysymysryhma = 'VI  TY√ñ JA OSAAMINEN (3/3)' 
 		THEN 1 / 6.0 ELSE 1.0 END					AS rahoituskysymys_paino
 
 ,LOWER(coalesce(monivalintavaihtoehto_fi,CASE 
 
 --- Muutettu Luokitteluun ---
-WHEN (vapaateksti is null or vapaateksti='.') AND Kysymys='6.  Kuinka monen tyˆnantajan palveluksessa olet ollut valmistumisesi j‰lkeen (ml. nykyinen tyˆnantajasi)?'	THEN 'Ei vastannut mit‰‰n'
-WHEN vapaateksti='0' AND Kysymys='6.  Kuinka monen tyˆnantajan palveluksessa olet ollut valmistumisesi j‰lkeen (ml. nykyinen tyˆnantajasi)?'							THEN 'Ei yht‰‰n'
-WHEN (vapaateksti='1' OR  vapaateksti='1.0') AND Kysymys='6.  Kuinka monen tyˆnantajan palveluksessa olet ollut valmistumisesi j‰lkeen (ml. nykyinen tyˆnantajasi)?'	THEN 'Yksi'
-WHEN (vapaateksti='2'  OR  vapaateksti='2.0') AND Kysymys='6.  Kuinka monen tyˆnantajan palveluksessa olet ollut valmistumisesi j‰lkeen (ml. nykyinen tyˆnantajasi)?'	THEN 'Kaksi'
-WHEN (vapaateksti='3'  OR  vapaateksti='3.0') AND Kysymys='6.  Kuinka monen tyˆnantajan palveluksessa olet ollut valmistumisesi j‰lkeen (ml. nykyinen tyˆnantajasi)?'	THEN 'Kolme'
-WHEN (vapaateksti='4'  OR  vapaateksti='4.0') AND Kysymys='6.  Kuinka monen tyˆnantajan palveluksessa olet ollut valmistumisesi j‰lkeen (ml. nykyinen tyˆnantajasi)?'	THEN 'Nelj‰'
-WHEN (vapaateksti<>'0'OR vapaateksti<>'1' OR  vapaateksti<>'1.0' OR vapaateksti<>'2' OR  vapaateksti<>'2.0' OR vapaateksti<>'3' OR  vapaateksti<>'3.0' OR vapaateksti<>'4' OR  vapaateksti<>'4.0') AND Kysymys='6.  Kuinka monen tyˆnantajan palveluksessa olet ollut valmistumisesi j‰lkeen (ml. nykyinen tyˆnantajasi)?' THEN 'V‰hint‰‰n viisi'
+WHEN (vapaateksti is null or vapaateksti='.') AND Kysymys='6.  Kuinka monen ty√∂nantajan palveluksessa olet ollut valmistumisesi j√§lkeen (ml. nykyinen ty√∂nantajasi)?'	THEN 'Ei vastannut mit√§√§n'
+WHEN vapaateksti='0' AND Kysymys='6.  Kuinka monen ty√∂nantajan palveluksessa olet ollut valmistumisesi j√§lkeen (ml. nykyinen ty√∂nantajasi)?'							THEN 'Ei yht√§√§n'
+WHEN (vapaateksti='1' OR  vapaateksti='1.0') AND Kysymys='6.  Kuinka monen ty√∂nantajan palveluksessa olet ollut valmistumisesi j√§lkeen (ml. nykyinen ty√∂nantajasi)?'	THEN 'Yksi'
+WHEN (vapaateksti='2'  OR  vapaateksti='2.0') AND Kysymys='6.  Kuinka monen ty√∂nantajan palveluksessa olet ollut valmistumisesi j√§lkeen (ml. nykyinen ty√∂nantajasi)?'	THEN 'Kaksi'
+WHEN (vapaateksti='3'  OR  vapaateksti='3.0') AND Kysymys='6.  Kuinka monen ty√∂nantajan palveluksessa olet ollut valmistumisesi j√§lkeen (ml. nykyinen ty√∂nantajasi)?'	THEN 'Kolme'
+WHEN (vapaateksti='4'  OR  vapaateksti='4.0') AND Kysymys='6.  Kuinka monen ty√∂nantajan palveluksessa olet ollut valmistumisesi j√§lkeen (ml. nykyinen ty√∂nantajasi)?'	THEN 'Nelj√§'
+WHEN (vapaateksti<>'0'OR vapaateksti<>'1' OR  vapaateksti<>'1.0' OR vapaateksti<>'2' OR  vapaateksti<>'2.0' OR vapaateksti<>'3' OR  vapaateksti<>'3.0' OR vapaateksti<>'4' OR  vapaateksti<>'4.0') AND Kysymys='6.  Kuinka monen ty√∂nantajan palveluksessa olet ollut valmistumisesi j√§lkeen (ml. nykyinen ty√∂nantajasi)?' THEN 'V√§hint√§√§n viisi'
 
-WHEN (vapaateksti is null or vapaateksti='.') AND Kysymys='8.  Jos olet toiminut yritt‰j‰n‰, kuinka monessa yrityksess‰ olet ollut perustajana/osakkaana valmistumisesi j‰lkeen?' THEN 'Ei vastannut mit‰‰n'
-WHEN vapaateksti='0' AND Kysymys='8.  Jos olet toiminut yritt‰j‰n‰, kuinka monessa yrityksess‰ olet ollut perustajana/osakkaana valmistumisesi j‰lkeen?' THEN 'Ei yht‰‰n'
-WHEN vapaateksti='1' AND Kysymys='8.  Jos olet toiminut yritt‰j‰n‰, kuinka monessa yrityksess‰ olet ollut perustajana/osakkaana valmistumisesi j‰lkeen?' THEN 'Yksi'
-WHEN vapaateksti='2' AND Kysymys='8.  Jos olet toiminut yritt‰j‰n‰, kuinka monessa yrityksess‰ olet ollut perustajana/osakkaana valmistumisesi j‰lkeen?' THEN 'Kaksi'
-WHEN (vapaateksti<>'0'OR vapaateksti<>'1' OR vapaateksti<>'2') AND Kysymys='8.  Jos olet toiminut yritt‰j‰n‰, kuinka monessa yrityksess‰ olet ollut perustajana/osakkaana valmistumisesi j‰lkeen?' THEN 'V‰hint‰‰n kolme'
+WHEN (vapaateksti is null or vapaateksti='.') AND Kysymys='8.  Jos olet toiminut yritt√§j√§n√§, kuinka monessa yrityksess√§ olet ollut perustajana/osakkaana valmistumisesi j√§lkeen?' THEN 'Ei vastannut mit√§√§n'
+WHEN vapaateksti='0' AND Kysymys='8.  Jos olet toiminut yritt√§j√§n√§, kuinka monessa yrityksess√§ olet ollut perustajana/osakkaana valmistumisesi j√§lkeen?' THEN 'Ei yht√§√§n'
+WHEN vapaateksti='1' AND Kysymys='8.  Jos olet toiminut yritt√§j√§n√§, kuinka monessa yrityksess√§ olet ollut perustajana/osakkaana valmistumisesi j√§lkeen?' THEN 'Yksi'
+WHEN vapaateksti='2' AND Kysymys='8.  Jos olet toiminut yritt√§j√§n√§, kuinka monessa yrityksess√§ olet ollut perustajana/osakkaana valmistumisesi j√§lkeen?' THEN 'Kaksi'
+WHEN (vapaateksti<>'0'OR vapaateksti<>'1' OR vapaateksti<>'2') AND Kysymys='8.  Jos olet toiminut yritt√§j√§n√§, kuinka monessa yrityksess√§ olet ollut perustajana/osakkaana valmistumisesi j√§lkeen?' THEN 'V√§hint√§√§n kolme'
 
-WHEN (vapaateksti is null or vapaateksti='.') AND Kysymys='Ent‰ kuinka monta henkilˆ‰ yrityksesi ovat yhteens‰ tyˆllist‰neet itsesi lis‰ksi?' THEN 'Ei vastannut mit‰‰n'
-WHEN vapaateksti='0' AND Kysymys='Ent‰ kuinka monta henkilˆ‰ yrityksesi ovat yhteens‰ tyˆllist‰neet itsesi lis‰ksi?' THEN 'Ei yht‰‰n'
-WHEN (vapaateksti='1' OR  vapaateksti='1.0' OR vapaateksti='0.5') AND Kysymys='Ent‰ kuinka monta henkilˆ‰ yrityksesi ovat yhteens‰ tyˆllist‰neet itsesi lis‰ksi?' THEN 'Yksi'
-WHEN (vapaateksti='2' OR  vapaateksti='2.0' OR vapaateksti='1.5') AND Kysymys='Ent‰ kuinka monta henkilˆ‰ yrityksesi ovat yhteens‰ tyˆllist‰neet itsesi lis‰ksi?' THEN 'Kaksi'
-WHEN (vapaateksti='3'  OR  vapaateksti='3.0') AND Kysymys='Ent‰ kuinka monta henkilˆ‰ yrityksesi ovat yhteens‰ tyˆllist‰neet itsesi lis‰ksi?' THEN 'Kolme'
-WHEN (vapaateksti='4' OR  vapaateksti='4.0') AND Kysymys='Ent‰ kuinka monta henkilˆ‰ yrityksesi ovat yhteens‰ tyˆllist‰neet itsesi lis‰ksi?' THEN 'Nelj‰'
-WHEN (vapaateksti<>'0' OR vapaateksti<>'0.5' OR vapaateksti<>'1' OR vapaateksti<>'1.5' OR  vapaateksti<>'1.0' OR vapaateksti<>'2' OR  vapaateksti<>'2.0' OR vapaateksti<>'3' OR  vapaateksti<>'3.0' OR vapaateksti<>'4' OR  vapaateksti<>'4.0') AND Kysymys='Ent‰ kuinka monta henkilˆ‰ yrityksesi ovat yhteens‰ tyˆllist‰neet itsesi lis‰ksi?' THEN 'V‰hint‰‰n viisi'
+WHEN (vapaateksti is null or vapaateksti='.') AND Kysymys='Ent√§ kuinka monta henkil√∂√§ yrityksesi ovat yhteens√§ ty√∂llist√§neet itsesi lis√§ksi?' THEN 'Ei vastannut mit√§√§n'
+WHEN vapaateksti='0' AND Kysymys='Ent√§ kuinka monta henkil√∂√§ yrityksesi ovat yhteens√§ ty√∂llist√§neet itsesi lis√§ksi?' THEN 'Ei yht√§√§n'
+WHEN (vapaateksti='1' OR  vapaateksti='1.0' OR vapaateksti='0.5') AND Kysymys='Ent√§ kuinka monta henkil√∂√§ yrityksesi ovat yhteens√§ ty√∂llist√§neet itsesi lis√§ksi?' THEN 'Yksi'
+WHEN (vapaateksti='2' OR  vapaateksti='2.0' OR vapaateksti='1.5') AND Kysymys='Ent√§ kuinka monta henkil√∂√§ yrityksesi ovat yhteens√§ ty√∂llist√§neet itsesi lis√§ksi?' THEN 'Kaksi'
+WHEN (vapaateksti='3'  OR  vapaateksti='3.0') AND Kysymys='Ent√§ kuinka monta henkil√∂√§ yrityksesi ovat yhteens√§ ty√∂llist√§neet itsesi lis√§ksi?' THEN 'Kolme'
+WHEN (vapaateksti='4' OR  vapaateksti='4.0') AND Kysymys='Ent√§ kuinka monta henkil√∂√§ yrityksesi ovat yhteens√§ ty√∂llist√§neet itsesi lis√§ksi?' THEN 'Nelj√§'
+WHEN (vapaateksti<>'0' OR vapaateksti<>'0.5' OR vapaateksti<>'1' OR vapaateksti<>'1.5' OR  vapaateksti<>'1.0' OR vapaateksti<>'2' OR  vapaateksti<>'2.0' OR vapaateksti<>'3' OR  vapaateksti<>'3.0' OR vapaateksti<>'4' OR  vapaateksti<>'4.0') AND Kysymys='Ent√§ kuinka monta henkil√∂√§ yrityksesi ovat yhteens√§ ty√∂llist√§neet itsesi lis√§ksi?' THEN 'V√§hint√§√§n viisi'
 
 
-WHEN 	Vapaateksti='1'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p‰‰asiallisinta tyˆteht‰v‰‰si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'1  tutkimus'
-WHEN 	Vapaateksti='10'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p‰‰asiallisinta tyˆteht‰v‰‰si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'10  taiteellinen tyˆ'
-WHEN 	Vapaateksti='11'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p‰‰asiallisinta tyˆteht‰v‰‰si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'11  lainopillinen tyˆ'
-WHEN 	Vapaateksti='12'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p‰‰asiallisinta tyˆteht‰v‰‰si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'12  kirkollinen tyˆ'
-WHEN 	Vapaateksti='13'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p‰‰asiallisinta tyˆteht‰v‰‰si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'13  rahoituksen ja taloushallinnon teht‰v‰t'
-WHEN 	Vapaateksti='14'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p‰‰asiallisinta tyˆteht‰v‰‰si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'14  muu'
-WHEN 	Vapaateksti='2'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p‰‰asiallisinta tyˆteht‰v‰‰si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'2  opetus tai kasvatus'
-WHEN 	Vapaateksti='3'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p‰‰asiallisinta tyˆteht‰v‰‰si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'3  johto- ja esimiesteht‰v‰t'
-WHEN 	Vapaateksti='4'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p‰‰asiallisinta tyˆteht‰v‰‰si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'4  konsultointi tai koulutus'
-WHEN 	Vapaateksti='5'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p‰‰asiallisinta tyˆteht‰v‰‰si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'5  asiakastyˆ/potilastyˆ'
-WHEN 	Vapaateksti='6'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p‰‰asiallisinta tyˆteht‰v‰‰si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'6  markkinointi ja myynti'
-WHEN 	Vapaateksti='7'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p‰‰asiallisinta tyˆteht‰v‰‰si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'7  suunnittelu-, kehitys- tai hallintoteht‰v‰t'
-WHEN 	Vapaateksti='8'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p‰‰asiallisinta tyˆteht‰v‰‰si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'8  viestint‰- ja mediatyˆ'
-WHEN 	Vapaateksti='9'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p‰‰asiallisinta tyˆteht‰v‰‰si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'9  toimistoteht‰v‰t'
-WHEN 	(Vapaateksti='0' OR Vapaateksti='15' OR Vapaateksti=NULL)	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p‰‰asiallisinta tyˆteht‰v‰‰si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'Ei vastannut'
+WHEN 	Vapaateksti='1'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p√§√§asiallisinta ty√∂teht√§v√§√§si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'1  tutkimus'
+WHEN 	Vapaateksti='10'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p√§√§asiallisinta ty√∂teht√§v√§√§si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'10  taiteellinen ty√∂'
+WHEN 	Vapaateksti='11'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p√§√§asiallisinta ty√∂teht√§v√§√§si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'11  lainopillinen ty√∂'
+WHEN 	Vapaateksti='12'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p√§√§asiallisinta ty√∂teht√§v√§√§si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'12  kirkollinen ty√∂'
+WHEN 	Vapaateksti='13'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p√§√§asiallisinta ty√∂teht√§v√§√§si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'13  rahoituksen ja taloushallinnon teht√§v√§t'
+WHEN 	Vapaateksti='14'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p√§√§asiallisinta ty√∂teht√§v√§√§si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'14  muu'
+WHEN 	Vapaateksti='2'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p√§√§asiallisinta ty√∂teht√§v√§√§si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'2  opetus tai kasvatus'
+WHEN 	Vapaateksti='3'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p√§√§asiallisinta ty√∂teht√§v√§√§si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'3  johto- ja esimiesteht√§v√§t'
+WHEN 	Vapaateksti='4'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p√§√§asiallisinta ty√∂teht√§v√§√§si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'4  konsultointi tai koulutus'
+WHEN 	Vapaateksti='5'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p√§√§asiallisinta ty√∂teht√§v√§√§si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'5  asiakasty√∂/potilasty√∂'
+WHEN 	Vapaateksti='6'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p√§√§asiallisinta ty√∂teht√§v√§√§si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'6  markkinointi ja myynti'
+WHEN 	Vapaateksti='7'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p√§√§asiallisinta ty√∂teht√§v√§√§si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'7  suunnittelu-, kehitys- tai hallintoteht√§v√§t'
+WHEN 	Vapaateksti='8'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p√§√§asiallisinta ty√∂teht√§v√§√§si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'8  viestint√§- ja mediaty√∂'
+WHEN 	Vapaateksti='9'	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p√§√§asiallisinta ty√∂teht√§v√§√§si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'9  toimistoteht√§v√§t'
+WHEN 	(Vapaateksti='0' OR Vapaateksti='15' OR Vapaateksti=NULL)	 AND 	Kysymys='14.  Valitse edellisen kysymyksen vaihtoehdoista se, joka kuvaa parhaiten p√§√§asiallisinta ty√∂teht√§v√§√§si.  Merkitse vain yhden vaihtoehdon numero.'	 THEN 	'Ei vastannut'
 
-WHEN vaihtoehto=1 THEN 'Kyll‰' 
+WHEN vaihtoehto=1 THEN 'Kyll√§' 
 when vaihtoehto=0 THEN 'Ei' 
 
-WHEN f.kysymysryhma in ('VI  TY÷ JA OSAAMINEN (2/3)','VI  TY÷ JA OSAAMINEN (3/3)') and numerovalinta=1 THEN '1 = Ei lainkaan'
-WHEN f.kysymysryhma in ('VI  TY÷ JA OSAAMINEN (2/3)','VI  TY÷ JA OSAAMINEN (3/3)') and numerovalinta=2 THEN '2 = Vain v‰h‰n'
-WHEN f.kysymysryhma in ('VI  TY÷ JA OSAAMINEN (2/3)','VI  TY÷ JA OSAAMINEN (3/3)') and numerovalinta=3 THEN '3 = Jonkin verran'
-WHEN f.kysymysryhma in ('VI  TY÷ JA OSAAMINEN (2/3)','VI  TY÷ JA OSAAMINEN (3/3)') and numerovalinta=4 THEN '4 = Melko paljon'
-WHEN f.kysymysryhma in ('VI  TY÷ JA OSAAMINEN (2/3)','VI  TY÷ JA OSAAMINEN (3/3)') and numerovalinta=5 THEN '5 = Paljon'
-WHEN f.kysymysryhma in ('VI  TY÷ JA OSAAMINEN (2/3)','VI  TY÷ JA OSAAMINEN (3/3)') and numerovalinta=6 THEN '6 = Eritt‰in paljon'
+WHEN f.kysymysryhma in ('VI  TY√ñ JA OSAAMINEN (2/3)','VI  TY√ñ JA OSAAMINEN (3/3)') and numerovalinta=1 THEN '1 = Ei lainkaan'
+WHEN f.kysymysryhma in ('VI  TY√ñ JA OSAAMINEN (2/3)','VI  TY√ñ JA OSAAMINEN (3/3)') and numerovalinta=2 THEN '2 = Vain v√§h√§n'
+WHEN f.kysymysryhma in ('VI  TY√ñ JA OSAAMINEN (2/3)','VI  TY√ñ JA OSAAMINEN (3/3)') and numerovalinta=3 THEN '3 = Jonkin verran'
+WHEN f.kysymysryhma in ('VI  TY√ñ JA OSAAMINEN (2/3)','VI  TY√ñ JA OSAAMINEN (3/3)') and numerovalinta=4 THEN '4 = Melko paljon'
+WHEN f.kysymysryhma in ('VI  TY√ñ JA OSAAMINEN (2/3)','VI  TY√ñ JA OSAAMINEN (3/3)') and numerovalinta=5 THEN '5 = Paljon'
+WHEN f.kysymysryhma in ('VI  TY√ñ JA OSAAMINEN (2/3)','VI  TY√ñ JA OSAAMINEN (3/3)') and numerovalinta=6 THEN '6 = Eritt√§in paljon'
 
 --TOHTORIKYSYMYKSET
-		WHEN (f.kysymysid =3108 and vapaateksti in ('1','1.0'))			THEN '1 - Suomen Akatemian/opetus- ja kulttuuriministeriˆn rahoittaman paikallisen tutkijakoulutuspaikan kautta'
+		WHEN (f.kysymysid =3108 and vapaateksti in ('1','1.0'))			THEN '1 - Suomen Akatemian/opetus- ja kulttuuriministeri√∂n rahoittaman paikallisen tutkijakoulutuspaikan kautta'
 		WHEN (f.kysymysid =3108 and vapaateksti in('2','2.0'))			THEN '2 - muun paikallisen tutkijakoulutuspaikan kautta'
-		WHEN (f.kysymysid =3108 and vapaateksti in('3','3.0','3.'))		THEN '3 - tutkimus- ja/tai opetusteht‰viss‰ yliopistolla' 
-		WHEN (f.kysymysid =3108 and vapaateksti='4')					THEN '4 - muu tyˆsuhde yliopistolla'
-		WHEN (f.kysymysid =3108 and vapaateksti in ('5','5.0'))			THEN '5 - tutkimus- ja/tai opetusteht‰viss‰ ammattikorkeakoulussa tai muussa tutkimuslaitoksessa kuin yliopistossa'
-		WHEN (f.kysymysid =3108 and vapaateksti in ('6','6.0','6.'))	THEN '6 - ansiotyˆss‰ yliopiston ulkopuolella'
+		WHEN (f.kysymysid =3108 and vapaateksti in('3','3.0','3.'))		THEN '3 - tutkimus- ja/tai opetusteht√§viss√§ yliopistolla' 
+		WHEN (f.kysymysid =3108 and vapaateksti='4')					THEN '4 - muu ty√∂suhde yliopistolla'
+		WHEN (f.kysymysid =3108 and vapaateksti in ('5','5.0'))			THEN '5 - tutkimus- ja/tai opetusteht√§viss√§ ammattikorkeakoulussa tai muussa tutkimuslaitoksessa kuin yliopistossa'
+		WHEN (f.kysymysid =3108 and vapaateksti in ('6','6.0','6.'))	THEN '6 - ansioty√∂ss√§ yliopiston ulkopuolella'
 		WHEN (f.kysymysid =3108 and vapaateksti in ('7','7.0'))			THEN '7 - rahoitus Akatemian projektin kautta'
 		WHEN (f.kysymysid =3108 and vapaateksti in ('8','8.0','8.'))	THEN '8 - rahoitus muun kuin Akatemian projektin kautta'
-		WHEN (f.kysymysid =3108 and vapaateksti in ('9','9.0','9.'))	THEN '9 - henkilˆkohtainen apuraha'
+		WHEN (f.kysymysid =3108 and vapaateksti in ('9','9.0','9.'))	THEN '9 - henkil√∂kohtainen apuraha'
 		WHEN (f.kysymysid =3108 and vapaateksti in ('10','10.0'))		THEN '10 - opintotuki'
-		WHEN (f.kysymysid =3108 and vapaateksti in ('11','11.0'))		THEN '11 - muu rahoitusl‰hde'
+		WHEN (f.kysymysid =3108 and vapaateksti in ('11','11.0'))		THEN '11 - muu rahoitusl√§hde'
 
-		WHEN (f.kysymysid in(3208,3209) and vapaateksti in ('1','1.0', '1.'))	THEN '1 = vakituinen kokop‰iv‰tyˆ'
-		WHEN (f.kysymysid in(3208,3209) and vapaateksti in('2','2.0', '2.'))	THEN '2 = m‰‰r‰aikainen kokop‰iv‰tyˆ'
-		WHEN (f.kysymysid in(3208,3209) and vapaateksti in('3','3.0','3.'))		THEN '3 = vakituinen osa-aikatyˆ' 
-		WHEN (f.kysymysid in(3208,3209) and vapaateksti in ('4','4.0'))			THEN '4 = m‰‰r‰aikainen osa-aikatyˆ'
-		WHEN (f.kysymysid in(3208,3209) and vapaateksti in ('5','5.0'))			THEN '5 = itsen‰inen yritt‰j‰, ammatinharjoittaja tai freelancer'
+		WHEN (f.kysymysid in(3208,3209) and vapaateksti in ('1','1.0', '1.'))	THEN '1 = vakituinen kokop√§iv√§ty√∂'
+		WHEN (f.kysymysid in(3208,3209) and vapaateksti in('2','2.0', '2.'))	THEN '2 = m√§√§r√§aikainen kokop√§iv√§ty√∂'
+		WHEN (f.kysymysid in(3208,3209) and vapaateksti in('3','3.0','3.'))		THEN '3 = vakituinen osa-aikaty√∂' 
+		WHEN (f.kysymysid in(3208,3209) and vapaateksti in ('4','4.0'))			THEN '4 = m√§√§r√§aikainen osa-aikaty√∂'
+		WHEN (f.kysymysid in(3208,3209) and vapaateksti in ('5','5.0'))			THEN '5 = itsen√§inen yritt√§j√§, ammatinharjoittaja tai freelancer'
 		WHEN (f.kysymysid in(3208,3209) and vapaateksti in ('6','6.0','6.'))	THEN '6 = apurahatutkija tai apurahataiteilija'
-		WHEN (f.kysymysid in(3208,3209) and vapaateksti in ('7','7.0'))			THEN '7 = tyˆllistetty tai tyˆharjoittelija'
-		WHEN (f.kysymysid in(3208,3209) and vapaateksti in ('8','8.0','8.'))	THEN '8 = tyˆtˆn tyˆnhakija'
-		WHEN (f.kysymysid in(3208,3209) and vapaateksti in ('9','9.0','9.2'))	THEN '9 = tyˆvoimakoulutus tai vastaava'
-		WHEN (f.kysymysid in(3208,3209) and vapaateksti in ('10','10.0'))		THEN '10 = p‰‰toiminen opiskelu (johtaa tutkintoon tai arvosanaan)'
-		WHEN (f.kysymysid in(3208,3209) and vapaateksti in ('11','11.0'))		THEN '11 = perhevapaa(ei tyˆsuhdetta)'
-		WHEN (f.kysymysid in(3208,3209) and vapaateksti in ('12','12.0'))		THEN '12 = perhevapaalla(ei tyˆsuhdetta)'
+		WHEN (f.kysymysid in(3208,3209) and vapaateksti in ('7','7.0'))			THEN '7 = ty√∂llistetty tai ty√∂harjoittelija'
+		WHEN (f.kysymysid in(3208,3209) and vapaateksti in ('8','8.0','8.'))	THEN '8 = ty√∂t√∂n ty√∂nhakija'
+		WHEN (f.kysymysid in(3208,3209) and vapaateksti in ('9','9.0','9.2'))	THEN '9 = ty√∂voimakoulutus tai vastaava'
+		WHEN (f.kysymysid in(3208,3209) and vapaateksti in ('10','10.0'))		THEN '10 = p√§√§toiminen opiskelu (johtaa tutkintoon tai arvosanaan)'
+		WHEN (f.kysymysid in(3208,3209) and vapaateksti in ('11','11.0'))		THEN '11 = perhevapaa(ei ty√∂suhdetta)'
+		WHEN (f.kysymysid in(3208,3209) and vapaateksti in ('12','12.0'))		THEN '12 = perhevapaalla(ei ty√∂suhdetta)'
 		WHEN (f.kysymysid in(3208,3209) and vapaateksti in ('13','13.0'))		THEN '13 = muu'
 
 		WHEN f.kysymysid in (3087,3088,3089,3090,3091,3092,3093,3094,3095,3096,3097,3098,3099,3100) and numerovalinta=1 THEN '1 =  ei lainkaan'
-		WHEN f.kysymysid in (3087,3088,3089,3090,3091,3092,3093,3094,3095,3096,3097,3098,3099,3100) and numerovalinta=2 THEN '2 =  vain v‰h‰n'
-		WHEN f.kysymysid in (3087,3088,3089,3090,3091,3092,3093,3094,3095,3096,3097,3098,3099,3100) and numerovalinta=3 THEN '3 =  v‰h‰n'
+		WHEN f.kysymysid in (3087,3088,3089,3090,3091,3092,3093,3094,3095,3096,3097,3098,3099,3100) and numerovalinta=2 THEN '2 =  vain v√§h√§n'
+		WHEN f.kysymysid in (3087,3088,3089,3090,3091,3092,3093,3094,3095,3096,3097,3098,3099,3100) and numerovalinta=3 THEN '3 =  v√§h√§n'
 		WHEN f.kysymysid in (3087,3088,3089,3090,3091,3092,3093,3094,3095,3096,3097,3098,3099,3100) and numerovalinta=4 THEN '4 =  jonkun verran'
 		WHEN f.kysymysid in (3087,3088,3089,3090,3091,3092,3093,3094,3095,3096,3097,3098,3099,3100) and numerovalinta=5 THEN '5 =  paljon'
-		WHEN f.kysymysid in (3087,3088,3089,3090,3091,3092,3093,3094,3095,3096,3097,3098,3099,3100) and numerovalinta=6 THEN '6 =  eritt‰in paljon'
+		WHEN f.kysymysid in (3087,3088,3089,3090,3091,3092,3093,3094,3095,3096,3097,3098,3099,3100) and numerovalinta=6 THEN '6 =  eritt√§in paljon'
 
 		WHEN f.kysymysid in (3124,3125,3126,3127,3128,3129,3130,3131,3132) and numerovalinta=1 THEN '1 = ei lainkaan'
-		WHEN f.kysymysid in (3124,3125,3126,3127,3128,3129,3130,3131,3132) and numerovalinta=2 THEN '2 = vain v‰h‰n'
-		WHEN f.kysymysid in (3124,3125,3126,3127,3128,3129,3130,3131,3132) and numerovalinta=3 THEN '3 = v‰h‰n'
+		WHEN f.kysymysid in (3124,3125,3126,3127,3128,3129,3130,3131,3132) and numerovalinta=2 THEN '2 = vain v√§h√§n'
+		WHEN f.kysymysid in (3124,3125,3126,3127,3128,3129,3130,3131,3132) and numerovalinta=3 THEN '3 = v√§h√§n'
 		WHEN f.kysymysid in (3124,3125,3126,3127,3128,3129,3130,3131,3132) and numerovalinta=4 THEN '4 = jonkin verran'
 		WHEN f.kysymysid in (3124,3125,3126,3127,3128,3129,3130,3131,3132) and numerovalinta=5 THEN '5 = paljon'
-		WHEN f.kysymysid in (3124,3125,3126,3127,3128,3129,3130,3131,3132) and numerovalinta=6 THEN '6 = eritt‰in paljon'
+		WHEN f.kysymysid in (3124,3125,3126,3127,3128,3129,3130,3131,3132) and numerovalinta=6 THEN '6 = eritt√§in paljon'
 
 		WHEN (f.kysymysid = 3143 and vapaateksti='1')		THEN '1 tutkimus'
 		WHEN (f.kysymysid = 3143 and vapaateksti='2')		THEN '2 opetus ja kasvatus'
-		WHEN (f.kysymysid = 3143 and vapaateksti='3')		THEN '3 hallintoteht‰v‰t'
-		WHEN (f.kysymysid = 3143 and vapaateksti='4')		THEN '4 johto- ja esimiesteht‰v‰t'
+		WHEN (f.kysymysid = 3143 and vapaateksti='3')		THEN '3 hallintoteht√§v√§t'
+		WHEN (f.kysymysid = 3143 and vapaateksti='4')		THEN '4 johto- ja esimiesteht√§v√§t'
 		WHEN (f.kysymysid = 3143 and vapaateksti='5')		THEN '5 konsultointi ja koulutus'
-		WHEN (f.kysymysid = 3143 and vapaateksti='6')		THEN '6 asiakastyˆ/potilastyˆ'
+		WHEN (f.kysymysid = 3143 and vapaateksti='6')		THEN '6 asiakasty√∂/potilasty√∂'
 		WHEN (f.kysymysid = 3143 and vapaateksti='7')		THEN '7 markkinointi ja myynti'
-		WHEN (f.kysymysid = 3143 and vapaateksti='8')		THEN '8 suunnittelu ja kehitysteht‰v‰t'
-		WHEN (f.kysymysid = 3143 and vapaateksti='9')		THEN '9 viestint‰- ja mediatyˆ'
-		WHEN (f.kysymysid = 3143 and vapaateksti='10')		THEN '10 toimistoteht‰v‰t'
-		WHEN (f.kysymysid = 3143 and vapaateksti='11')		THEN '11 taiteellinen tyˆ'
-		WHEN (f.kysymysid = 3143 and vapaateksti='12')		THEN '12 lainopillinen tyˆ'
-		WHEN (f.kysymysid = 3143 and vapaateksti='13')		THEN '13 kirkollinen tyˆ'
-		WHEN (f.kysymysid = 3143 and vapaateksti='14')		THEN '14 rahoituksen ja taloushallinnon teht‰v‰t'
+		WHEN (f.kysymysid = 3143 and vapaateksti='8')		THEN '8 suunnittelu ja kehitysteht√§v√§t'
+		WHEN (f.kysymysid = 3143 and vapaateksti='9')		THEN '9 viestint√§- ja mediaty√∂'
+		WHEN (f.kysymysid = 3143 and vapaateksti='10')		THEN '10 toimistoteht√§v√§t'
+		WHEN (f.kysymysid = 3143 and vapaateksti='11')		THEN '11 taiteellinen ty√∂'
+		WHEN (f.kysymysid = 3143 and vapaateksti='12')		THEN '12 lainopillinen ty√∂'
+		WHEN (f.kysymysid = 3143 and vapaateksti='13')		THEN '13 kirkollinen ty√∂'
+		WHEN (f.kysymysid = 3143 and vapaateksti='14')		THEN '14 rahoituksen ja taloushallinnon teht√§v√§t'
 		WHEN (f.kysymysid = 3143 and vapaateksti='15')		THEN '15 muu'
 
 		WHEN f.kysymysid in (3144,3145,3146,3147,3148,3149,3150) and numerovalinta = 1 THEN '1 = ei lainkaan'
-		WHEN f.kysymysid in (3144,3145,3146,3147,3148,3149,3150) and numerovalinta = 2 THEN '2 = vain v‰h‰n'
-		WHEN f.kysymysid in (3144,3145,3146,3147,3148,3149,3150) and numerovalinta = 3 THEN '3 = v‰h‰n'
+		WHEN f.kysymysid in (3144,3145,3146,3147,3148,3149,3150) and numerovalinta = 2 THEN '2 = vain v√§h√§n'
+		WHEN f.kysymysid in (3144,3145,3146,3147,3148,3149,3150) and numerovalinta = 3 THEN '3 = v√§h√§n'
 		WHEN f.kysymysid in (3144,3145,3146,3147,3148,3149,3150) and numerovalinta = 4 THEN '4 = jonkin verran'
 		WHEN f.kysymysid in (3144,3145,3146,3147,3148,3149,3150) and numerovalinta = 5 THEN '5 = paljon'
-		WHEN f.kysymysid in (3144,3145,3146,3147,3148,3149,3150) and numerovalinta = 6 THEN '6 = eritt‰in paljon'
+		WHEN f.kysymysid in (3144,3145,3146,3147,3148,3149,3150) and numerovalinta = 6 THEN '6 = eritt√§in paljon'
 
 		WHEN f.kysymysid in (3160,3161,3162,3163,3164,3165,3166,3167,3168,3169,3170,3171,3172,3173,3174,3175,3176) and numerovalinta=1 THEN '1 = ei lainkaan'
-		WHEN f.kysymysid in (3160,3161,3162,3163,3164,3165,3166,3167,3168,3169,3170,3171,3172,3173,3174,3175,3176) and numerovalinta=2 THEN '2 = vain v‰h‰n'
-		WHEN f.kysymysid in (3160,3161,3162,3163,3164,3165,3166,3167,3168,3169,3170,3171,3172,3173,3174,3175,3176) and numerovalinta=3 THEN '3 = v‰h‰n'
+		WHEN f.kysymysid in (3160,3161,3162,3163,3164,3165,3166,3167,3168,3169,3170,3171,3172,3173,3174,3175,3176) and numerovalinta=2 THEN '2 = vain v√§h√§n'
+		WHEN f.kysymysid in (3160,3161,3162,3163,3164,3165,3166,3167,3168,3169,3170,3171,3172,3173,3174,3175,3176) and numerovalinta=3 THEN '3 = v√§h√§n'
 		WHEN f.kysymysid in (3160,3161,3162,3163,3164,3165,3166,3167,3168,3169,3170,3171,3172,3173,3174,3175,3176) and numerovalinta=4 THEN '4 = jonkin verran'
 		WHEN f.kysymysid in (3160,3161,3162,3163,3164,3165,3166,3167,3168,3169,3170,3171,3172,3173,3174,3175,3176) and numerovalinta=5 THEN '5 = paljon'
-		WHEN f.kysymysid in (3160,3161,3162,3163,3164,3165,3166,3167,3168,3169,3170,3171,3172,3173,3174,3175,3176) and numerovalinta=6 THEN '6 = eritt‰in paljon'
+		WHEN f.kysymysid in (3160,3161,3162,3163,3164,3165,3166,3167,3168,3169,3170,3171,3172,3173,3174,3175,3176) and numerovalinta=6 THEN '6 = eritt√§in paljon'
 
 
 ELSE  convert(VARCHAR(3),numerovalinta) 
@@ -241,7 +241,7 @@ END,vapaateksti)) AS 'Monivalintavaihtoehto'
 			THEN numerovalinta+1 ELSE numerovalinta END												AS 'numerovalinta'
 
 ,CASE	
-			WHEN f.kysymysryhma in ('II  TYYTYVƒISYYS TUTKINTOON','V  TY÷LLISTYMISEN LAATU') 
+			WHEN f.kysymysryhma in ('II  TYYTYV√ÑISYYS TUTKINTOON','V  TY√ñLLISTYMISEN LAATU') 
 			THEN 'arvosana6' ELSE f.vastaustyyppi  END												AS 'vastaustyyppi'
 
 
@@ -254,44 +254,44 @@ END,vapaateksti)) AS 'Monivalintavaihtoehto'
 ,lukumaara
 
 --RUOTSI
-, f.kyselyvuosi							AS 'Enk‰tÂr'
+, f.kyselyvuosi							AS 'Enk√§t√•r'
 ,CASE WHEN d7.ika_fi in ('20','21','22','23','24') 
-THEN '20ñ24 Âr' ELSE d7.ikaryhma1_sv END as '≈ldersgrupp'
-,d8.sukupuoli_sv						as 'Kˆn'
-,d9.kieliryhma1_sv						as 'ModersmÂl'
-,d_organisaatioluokitus.organisaatio_sv AS 'Hˆgskola'
-,d_kieli.kieli_sv						AS 'Utbildningens sprÂk'
+THEN '20‚Äì24 √•r' ELSE d7.ikaryhma1_sv END as '√Öldersgrupp'
+,d8.sukupuoli_sv						as 'K√∂n'
+,d9.kieliryhma1_sv						as 'Modersm√•l'
+,d_organisaatioluokitus.organisaatio_sv AS 'H√∂gskola'
+,d_kieli.kieli_sv						AS 'Utbildningens spr√•k'
 ,d_alueluokitus.kunta_sv				AS 'Utbildningens kommun'
 ,d_alueluokitus.maakunta_sv				AS 'Utbildningens landskap'
 ,d_arvokyselykerta.kysely_sv
-,d_arvokysymys.kysymysryhma_sv			AS 'FrÂgegrupp'
-,d_arvokysymys.kysymys_sv				AS 'FrÂga'
+,d_arvokysymys.kysymysryhma_sv			AS 'Fr√•gegrupp'
+,d_arvokysymys.kysymys_sv				AS 'Fr√•ga'
 
 --,coalesce(monivalintavaihtoehto_sv,case when vaihtoehto=1 then 'Ja' when vaihtoehto=0 then 'Nej' end) as 'Flervalsalternativ'
 ,LOWER(coalesce(monivalintavaihtoehto_en,CASE 
-WHEN f.kysymysryhma in ('VI  TY÷ JA OSAAMINEN (2/3)','VI  TY÷ JA OSAAMINEN (3/3)') and numerovalinta=1 THEN '1 = Inte alls'
-WHEN f.kysymysryhma in ('VI  TY÷ JA OSAAMINEN (2/3)','VI  TY÷ JA OSAAMINEN (3/3)') and numerovalinta=2 THEN '2 = Bara lite'
-WHEN f.kysymysryhma in ('VI  TY÷ JA OSAAMINEN (2/3)','VI  TY÷ JA OSAAMINEN (3/3)') and numerovalinta=3 THEN '3 = NÂgra'
-WHEN f.kysymysryhma in ('VI  TY÷ JA OSAAMINEN (2/3)','VI  TY÷ JA OSAAMINEN (3/3)') and numerovalinta=4 THEN '4 = Ganska mycket'
-WHEN f.kysymysryhma in ('VI  TY÷ JA OSAAMINEN (2/3)','VI  TY÷ JA OSAAMINEN (3/3)') and numerovalinta=5 THEN '5 = Mycket'
-WHEN f.kysymysryhma in ('VI  TY÷ JA OSAAMINEN (2/3)','VI  TY÷ JA OSAAMINEN (3/3)') and numerovalinta=6 THEN '6 = Verkligen mycket'
+WHEN f.kysymysryhma in ('VI  TY√ñ JA OSAAMINEN (2/3)','VI  TY√ñ JA OSAAMINEN (3/3)') and numerovalinta=1 THEN '1 = Inte alls'
+WHEN f.kysymysryhma in ('VI  TY√ñ JA OSAAMINEN (2/3)','VI  TY√ñ JA OSAAMINEN (3/3)') and numerovalinta=2 THEN '2 = Bara lite'
+WHEN f.kysymysryhma in ('VI  TY√ñ JA OSAAMINEN (2/3)','VI  TY√ñ JA OSAAMINEN (3/3)') and numerovalinta=3 THEN '3 = N√•gra'
+WHEN f.kysymysryhma in ('VI  TY√ñ JA OSAAMINEN (2/3)','VI  TY√ñ JA OSAAMINEN (3/3)') and numerovalinta=4 THEN '4 = Ganska mycket'
+WHEN f.kysymysryhma in ('VI  TY√ñ JA OSAAMINEN (2/3)','VI  TY√ñ JA OSAAMINEN (3/3)') and numerovalinta=5 THEN '5 = Mycket'
+WHEN f.kysymysryhma in ('VI  TY√ñ JA OSAAMINEN (2/3)','VI  TY√ñ JA OSAAMINEN (3/3)') and numerovalinta=6 THEN '6 = Verkligen mycket'
 ELSE  convert(VARCHAR(3),numerovalinta) 
 
 END,vapaateksti)) AS  'Flervalsalternativ'
 
 
-,d_koulutusluokitus.koulutusastetaso1_sv	AS 'UtbildningsnivÂ, nivÂ 1'
-,d_koulutusluokitus.koulutusastetaso2_sv	AS 'UtbildningsnivÂ, nivÂ 2'
-,d_koulutusluokitus.koulutusalataso1_sv		AS 'UtbildningsomrÂde, nivÂ 1'
-,d_koulutusluokitus.koulutusalataso2_sv		AS 'UtbildningsomrÂde, nivÂ 2'
-,d_koulutusluokitus.koulutusalataso3_sv		AS 'UtbildningsomrÂde, nivÂ 3'
-,d_koulutusluokitus.okmohjauksenala_sv		AS 'UKM-styrningsomrÂde'
-,d_koulutusluokitus.koulutusluokitus_sv		AS 'Utbildningsben‰mning'
+,d_koulutusluokitus.koulutusastetaso1_sv	AS 'Utbildningsniv√•, niv√• 1'
+,d_koulutusluokitus.koulutusastetaso2_sv	AS 'Utbildningsniv√•, niv√• 2'
+,d_koulutusluokitus.koulutusalataso1_sv		AS 'Utbildningsomr√•de, niv√• 1'
+,d_koulutusluokitus.koulutusalataso2_sv		AS 'Utbildningsomr√•de, niv√• 2'
+,d_koulutusluokitus.koulutusalataso3_sv		AS 'Utbildningsomr√•de, niv√• 3'
+,d_koulutusluokitus.okmohjauksenala_sv		AS 'UKM-styrningsomr√•de'
+,d_koulutusluokitus.koulutusluokitus_sv		AS 'Utbildningsben√§mning'
 
 --ENGLANTI
 ,f.kyselyvuosi								AS 'Survey year'
 ,CASE WHEN d7.ika_fi in ('20','21','22','23','24') 
-THEN 'Aged 20ñ24' ELSE d7.ikaryhma1_en END as 'Age group'
+THEN 'Aged 20‚Äì24' ELSE d7.ikaryhma1_en END as 'Age group'
 ,d8.sukupuoli_en								as 'Gender'
 ,d9.kieliryhma1_en								as 'Native language'
 ,d_organisaatioluokitus.organisaatio_en		AS 'Higher education institution'
@@ -304,12 +304,12 @@ THEN 'Aged 20ñ24' ELSE d7.ikaryhma1_en END as 'Age group'
 
 --,coalesce(monivalintavaihtoehto_en,CASE WHEN vaihtoehto=1 THEN 'Yes' WHEN vaihtoehto=0 THEN 'No' END) AS 'Multiple choice option'
 ,LOWER(coalesce(monivalintavaihtoehto_en,CASE 
-WHEN f.kysymysryhma in ('VI  TY÷ JA OSAAMINEN (2/3)','VI  TY÷ JA OSAAMINEN (3/3)') and numerovalinta=1 THEN '1 = Not at all'
-WHEN f.kysymysryhma in ('VI  TY÷ JA OSAAMINEN (2/3)','VI  TY÷ JA OSAAMINEN (3/3)') and numerovalinta=2 THEN '2 = Just a little'
-WHEN f.kysymysryhma in ('VI  TY÷ JA OSAAMINEN (2/3)','VI  TY÷ JA OSAAMINEN (3/3)') and numerovalinta=3 THEN '3 = Some'
-WHEN f.kysymysryhma in ('VI  TY÷ JA OSAAMINEN (2/3)','VI  TY÷ JA OSAAMINEN (3/3)') and numerovalinta=4 THEN '4 = Quite a lot'
-WHEN f.kysymysryhma in ('VI  TY÷ JA OSAAMINEN (2/3)','VI  TY÷ JA OSAAMINEN (3/3)') and numerovalinta=5 THEN '5 = A lot'
-WHEN f.kysymysryhma in ('VI  TY÷ JA OSAAMINEN (2/3)','VI  TY÷ JA OSAAMINEN (3/3)') and numerovalinta=6 THEN '6 = Very much'
+WHEN f.kysymysryhma in ('VI  TY√ñ JA OSAAMINEN (2/3)','VI  TY√ñ JA OSAAMINEN (3/3)') and numerovalinta=1 THEN '1 = Not at all'
+WHEN f.kysymysryhma in ('VI  TY√ñ JA OSAAMINEN (2/3)','VI  TY√ñ JA OSAAMINEN (3/3)') and numerovalinta=2 THEN '2 = Just a little'
+WHEN f.kysymysryhma in ('VI  TY√ñ JA OSAAMINEN (2/3)','VI  TY√ñ JA OSAAMINEN (3/3)') and numerovalinta=3 THEN '3 = Some'
+WHEN f.kysymysryhma in ('VI  TY√ñ JA OSAAMINEN (2/3)','VI  TY√ñ JA OSAAMINEN (3/3)') and numerovalinta=4 THEN '4 = Quite a lot'
+WHEN f.kysymysryhma in ('VI  TY√ñ JA OSAAMINEN (2/3)','VI  TY√ñ JA OSAAMINEN (3/3)') and numerovalinta=5 THEN '5 = A lot'
+WHEN f.kysymysryhma in ('VI  TY√ñ JA OSAAMINEN (2/3)','VI  TY√ñ JA OSAAMINEN (3/3)') and numerovalinta=6 THEN '6 = Very much'
 ELSE  convert(VARCHAR(3),numerovalinta) 
 
 END,vapaateksti)) AS 'Multiple choice option'
@@ -339,7 +339,7 @@ END,vapaateksti)) AS 'Multiple choice option'
 ,d_alueluokitus.kunta_koodi					AS 'Koodit Koulutuksen kunta'
 ,d_alueluokitus.maakunta_koodi				AS 'Koodit Koulutuksen maakunta'
 
---J‰rjestys
+--J√§rjestys
 ,d7.jarjestys_ikaryhma1				AS jarjestys_ika
 ,d8.jarjestys_sukupuoli_koodi		AS jarjestys_sukupuoli
 ,d9.jarjestys_kieliryhma1			AS jarjestys_kieli
@@ -357,7 +357,7 @@ END,vapaateksti)) AS 'Multiple choice option'
 ,jarjestys_koulutusalataso2_koodi	AS jarjestys_koulutusala2
 ,jarjestys_koulutusalataso3_koodi	AS jarjestys_koulutusala3
 
-,convert(int,	case when f.kysymysid in (2942,2946)							---VASTAUSTEN JƒRJESTYSNUMEROT
+,convert(int,	case when f.kysymysid in (2942,2946)							---VASTAUSTEN J√ÑRJESTYSNUMEROT
 				then (numerovalinta+1)
 
 		WHEN (f.kysymysid =3108 and vapaateksti in ('1','1.0'))					THEN 1
@@ -436,47 +436,47 @@ LEFT JOIN dw.d_alueluokitus d11		ON d11.id=f.d_alueluokitus_asuinkunta_id
 where 1=1
 and f.kysymysryhma not like '%vastauksistasi!%'
 and f.kysymys not in																										--poistetaan seuraavat kysymykset
-('Kesto yhteens‰ (ilmoita kesto kuukausina)'
-,'Kesto yhteens‰ (ilmoita kesto kuukausina):'
-,'11.  Mik‰ on keskim‰‰r‰inen bruttopalkkasi tai kuukausitulosi (s‰‰nnˆlliset lis‰t, luontoisetujen verotusarvot ja ylityˆkorvaukset mukaan lukien)?'
-,'21. Mik‰ on keskim‰‰r‰inen bruttopalkkasi tai kuukausitulosi (s‰‰nnˆlliset lis‰t, luontoisetujen verotusarvot ja ylityˆkorvaukset mukaan lukien)?'
-,'Tyˆttˆmyysjaksojen lukum‰‰r‰'
+('Kesto yhteens√§ (ilmoita kesto kuukausina)'
+,'Kesto yhteens√§ (ilmoita kesto kuukausina):'
+,'11.  Mik√§ on keskim√§√§r√§inen bruttopalkkasi tai kuukausitulosi (s√§√§nn√∂lliset lis√§t, luontoisetujen verotusarvot ja ylity√∂korvaukset mukaan lukien)?'
+,'21. Mik√§ on keskim√§√§r√§inen bruttopalkkasi tai kuukausitulosi (s√§√§nn√∂lliset lis√§t, luontoisetujen verotusarvot ja ylity√∂korvaukset mukaan lukien)?'
+,'Ty√∂tt√∂myysjaksojen lukum√§√§r√§'
 ,'Kesto kuukausina'
-,'Kesto yhteens‰ kuukausina'
-,'Jos vastasit osa-aikaisesti, niin paljonko v‰itˆskirjatutkimukseen / tohtorin opinn‰ytteeseen tyˆajasta k‰ytetty % -osuus oli:'
+,'Kesto yhteens√§ kuukausina'
+,'Jos vastasit osa-aikaisesti, niin paljonko v√§it√∂skirjatutkimukseen / tohtorin opinn√§ytteeseen ty√∂ajasta k√§ytetty % -osuus oli:'
 ,'Kuinka monta kertaa?')
 and f.kysymysid not in (3194,3190)																							--poistetaan tohtorikysymykset (c) Suorittamisvuosi, c)  Suorittamisvuosi)
-and f.kysymysryhma <>'Tyˆn kansainv‰lisyys'																					--poistetaan kysymysryhm‰ "Tyˆn kansainv‰lisyys"
-and coalesce(f.monivalintavaihtoehto_fi,convert(varchar(3),f.numerovalinta),convert(varchar(3),vapaateksti)) is not null	--poistetaan rivit joissa numerovalinta, monivalinta ja vapaateksti ovat tyhji‰ (=tyhj‰ vastaus)
---and f.kysymysid not in (3141, 3206,3106, 3108)  --aiheuttavat sen ett‰ monivalintanumeron j‰rjestyslukua ei voi asettaa tabulaarissa
+and f.kysymysryhma <>'Ty√∂n kansainv√§lisyys'																					--poistetaan kysymysryhm√§ "Ty√∂n kansainv√§lisyys"
+and coalesce(f.monivalintavaihtoehto_fi,convert(varchar(3),f.numerovalinta),convert(varchar(3),vapaateksti)) is not null	--poistetaan rivit joissa numerovalinta, monivalinta ja vapaateksti ovat tyhji√§ (=tyhj√§ vastaus)
+--and f.kysymysid not in (3141, 3206,3106, 3108)  --aiheuttavat sen ett√§ monivalintanumeron j√§rjestyslukua ei voi asettaa tabulaarissa
 --and numerovalinta is not null
 UNION ALL
 
 SELECT  
 		null as kysymysid
-	  , [Ik‰ (valmistuessa)]
+	  , [Ik√§ (valmistuessa)]
       ,CASE 
-			WHEN [Ik‰ryhm‰ (valmistuessa)] in ('20','21','22','23','24') Then '20ñ24-vuotiaat'
-			ELSE [Ik‰ryhm‰ (valmistuessa)]
-	   END AS [Ik‰ryhm‰ (valmistuessa)]
+			WHEN [Ik√§ryhm√§ (valmistuessa)] in ('20','21','22','23','24') Then '20‚Äì24-vuotiaat'
+			ELSE [Ik√§ryhm√§ (valmistuessa)]
+	   END AS [Ik√§ryhm√§ (valmistuessa)]
       ,[Sukupuoli]
       ,CASE 
-			WHEN ƒidinkieli = 'suomi' OR ƒidinkieli = 'pohjoissaame' THEN 'suomi (sis. saame)'
-			WHEN ƒidinkieli = 'ruotsi' THEN 'ruotsi'
-			WHEN ƒidinkieli = 'Tieto puuttuu' THEN 'Tieto puuttuu'
+			WHEN √Ñidinkieli = 'suomi' OR √Ñidinkieli = 'pohjoissaame' THEN 'suomi (sis. saame)'
+			WHEN √Ñidinkieli = 'ruotsi' THEN 'ruotsi'
+			WHEN √Ñidinkieli = 'Tieto puuttuu' THEN 'Tieto puuttuu'
 			ELSE 'muut kielet' 
-		END AS [ƒidinkieli]
+		END AS [√Ñidinkieli]
       ,[Kansalaisuus]
       ,[Kansalaisuus (maanosa)]
       ,[Asuinkunta]
      ,[Asuinmaakunta]
      ,[Laajuus]
-      ,[P‰‰aine]
+      ,[P√§√§aine]
      ,[Arvosana]
       ,[Asteikko]
       ,[Valintavuosi]
       ,[Valmistumisvuosi]
-      ,[L‰sn‰olo (lukukausia)]
+      ,[L√§sn√§olo (lukukausia)]
      ,[Kirjoillaolo (kuukausia)]
      ,[Koulutusaste, taso 1]
      ,[Koulutusaste, taso 2]
@@ -490,55 +490,55 @@ SELECT
       ,[Koulutuksen maakunta]
       ,[Kysely]
      ,[Kyselykerta]
-     ,[Kysymysryhm‰]
+     ,[Kysymysryhm√§]
       ,[Kysymys]
 	 , CASE 
-		WHEN Rahoitusmallikysymys = 'Kyll‰' THEN
+		WHEN Rahoitusmallikysymys = 'Kyll√§' THEN
 		CASE
-			WHEN Kysymys like '%Koulutus antoi riitt‰v‰t valmiudet tyˆel‰m‰‰n%' THEN '1. Koulutus antoi riitt‰v‰t valmiudet tyˆel‰m‰‰n.'
-			WHEN Kysymys like '%Miten tyytyv‰inen olet kokonaisuudessaan vuonna%' THEN '2. Miten tyytyv‰inen olet kokonaisuudessaan vuonna x suorittamaasi tutkintoon tyˆurasi kannalta?'
-			WHEN Kysymys like '%Pystyn hyˆdynt‰m‰‰n yliopistossa oppimiani tietoja ja taitoja nykyisess‰ tyˆss‰ni hyvin%' THEN '3. Pystyn hyˆdynt‰m‰‰n yliopistossa oppimiani tietoja ja taitoja nykyisess‰ tyˆss‰ni hyvin.'
-			WHEN Kysymys like '%Tyˆni vastaa vaativuustasoltaan hyvin yliopistollista koulutustani%' THEN '4. Tyˆni vastaa t‰ll‰ hetkell‰ vaativuustasoltaan hyvin yliopistollista koulutustani.'
+			WHEN Kysymys like '%Koulutus antoi riitt√§v√§t valmiudet ty√∂el√§m√§√§n%' THEN '1. Koulutus antoi riitt√§v√§t valmiudet ty√∂el√§m√§√§n.'
+			WHEN Kysymys like '%Miten tyytyv√§inen olet kokonaisuudessaan vuonna%' THEN '2. Miten tyytyv√§inen olet kokonaisuudessaan vuonna x suorittamaasi tutkintoon ty√∂urasi kannalta?'
+			WHEN Kysymys like '%Pystyn hy√∂dynt√§m√§√§n yliopistossa oppimiani tietoja ja taitoja nykyisess√§ ty√∂ss√§ni hyvin%' THEN '3. Pystyn hy√∂dynt√§m√§√§n yliopistossa oppimiani tietoja ja taitoja nykyisess√§ ty√∂ss√§ni hyvin.'
+			WHEN Kysymys like '%Ty√∂ni vastaa vaativuustasoltaan hyvin yliopistollista koulutustani%' THEN '4. Ty√∂ni vastaa t√§ll√§ hetkell√§ vaativuustasoltaan hyvin yliopistollista koulutustani.'
 			WHEN Kysymys like '%analyyttiset%' THEN '1) analyyttiset, systemaattisen ajattelun taidot'
 			WHEN Kysymys like '%tiedonhankinta%' THEN '2) tiedonhankintataidot'
 			WHEN Kysymys like '%kyky oppia%' THEN '3) kyky oppia ja omaksua uutta'
-			WHEN Kysymys like '%tieteiden%' THEN '4) tieteidenv‰lisyys/moniammatillisissa ryhmiss‰ toimiminen'
+			WHEN Kysymys like '%tieteiden%' THEN '4) tieteidenv√§lisyys/moniammatillisissa ryhmiss√§ toimiminen'
 			WHEN Kysymys like '%itseohjautuvuus%' THEN '5) itseohjautuvuus/oma-aloitteisuus'
-			WHEN Kysymys like '%yritt‰jyys%' THEN '6) yritt‰jyystaidot'
+			WHEN Kysymys like '%yritt√§jyys%' THEN '6) yritt√§jyystaidot'
 			ELSE NULL
 		END
 		ELSE NULL
 	END as 'Kysymys (rahoitusmalli)'
 	,CASE 
-		WHEN Rahoitusmallikysymys = 'Kyll‰' THEN
+		WHEN Rahoitusmallikysymys = 'Kyll√§' THEN
 		CASE 
-			WHEN Kysymys like '%Koulutus antoi riitt‰v‰t valmiudet tyˆel‰m‰‰n%' THEN '1. Utbildningen gav tillr‰ckliga f‰rdigheter fˆr arbetslivet.'
-			WHEN Kysymys like '%Miten tyytyv‰inen olet kokonaisuudessaan vuonna%' THEN '2. Med tanke pÂ din karri‰r, hur nˆjd ‰r du med den examen du avlade Âr x i sin helhet?'
-			WHEN Kysymys like '%Pystyn hyˆdynt‰m‰‰n yliopistossa oppimiani tietoja ja taitoja nykyisess‰ tyˆss‰ni hyvin%' THEN '3. Jag kan i mitt nuvarande arbete utnyttja v‰l de kunskaper och f‰rdigheter som jag l‰rt mig vid universitetet.'
-			WHEN Kysymys like '%Tyˆni vastaa vaativuustasoltaan hyvin yliopistollista koulutustani%' THEN '4. KravnivÂn pÂ mitt arbete motsvarar v‰l min universitetsutbildning.'
-			WHEN Kysymys like '%analyyttiset%' THEN '1) f‰rdigheter fˆr analytiskt och systematiskt t‰nkande'
-			WHEN Kysymys like '%tiedonhankinta%' THEN '2) f‰rdigheter i informationssˆkning'
-			WHEN Kysymys like '%kyky oppia%' THEN '3) fˆrmÂga att l‰ra sig och till‰gna sig nytt'
-			WHEN Kysymys like '%tieteiden%' THEN '4) tv‰rvetenskaplighet/fungera i mÂngprofessionella grupper'
-			WHEN Kysymys like '%itseohjautuvuus%' THEN '5) sj‰lvstyrande/eget initiativtagande'
-			WHEN Kysymys like '%yritt‰jyys%' THEN '6) entreprenˆrs-/fˆretagarfˆrmÂga'
+			WHEN Kysymys like '%Koulutus antoi riitt√§v√§t valmiudet ty√∂el√§m√§√§n%' THEN '1. Utbildningen gav tillr√§ckliga f√§rdigheter f√∂r arbetslivet.'
+			WHEN Kysymys like '%Miten tyytyv√§inen olet kokonaisuudessaan vuonna%' THEN '2. Med tanke p√• din karri√§r, hur n√∂jd √§r du med den examen du avlade √•r x i sin helhet?'
+			WHEN Kysymys like '%Pystyn hy√∂dynt√§m√§√§n yliopistossa oppimiani tietoja ja taitoja nykyisess√§ ty√∂ss√§ni hyvin%' THEN '3. Jag kan i mitt nuvarande arbete utnyttja v√§l de kunskaper och f√§rdigheter som jag l√§rt mig vid universitetet.'
+			WHEN Kysymys like '%Ty√∂ni vastaa vaativuustasoltaan hyvin yliopistollista koulutustani%' THEN '4. Kravniv√•n p√• mitt arbete motsvarar v√§l min universitetsutbildning.'
+			WHEN Kysymys like '%analyyttiset%' THEN '1) f√§rdigheter f√∂r analytiskt och systematiskt t√§nkande'
+			WHEN Kysymys like '%tiedonhankinta%' THEN '2) f√§rdigheter i informationss√∂kning'
+			WHEN Kysymys like '%kyky oppia%' THEN '3) f√∂rm√•ga att l√§ra sig och till√§gna sig nytt'
+			WHEN Kysymys like '%tieteiden%' THEN '4) tv√§rvetenskaplighet/fungera i m√•ngprofessionella grupper'
+			WHEN Kysymys like '%itseohjautuvuus%' THEN '5) sj√§lvstyrande/eget initiativtagande'
+			WHEN Kysymys like '%yritt√§jyys%' THEN '6) entrepren√∂rs-/f√∂retagarf√∂rm√•ga'
 			ELSE NULL
 		END
 		ELSE NULL
-	END as 'FrÂga (finansieringsmodell)'
+	END as 'Fr√•ga (finansieringsmodell)'
 	,CASE 
-		WHEN Rahoitusmallikysymys = 'Kyll‰' THEN
+		WHEN Rahoitusmallikysymys = 'Kyll√§' THEN
 		CASE 
-			WHEN Kysymys like '%Koulutus antoi riitt‰v‰t valmiudet tyˆel‰m‰‰n%' THEN '1. The studies equipped me sufficiently for the working life.'
-			WHEN Kysymys like '%Miten tyytyv‰inen olet kokonaisuudessaan vuonna%' THEN '2. How satisfied are you overall with the degree you completed in year x in terms of your career?'
-			WHEN Kysymys like '%Pystyn hyˆdynt‰m‰‰n yliopistossa oppimiani tietoja ja taitoja nykyisess‰ tyˆss‰ni hyvin%' THEN '3. The skills and knowledge I learned at the university can be applied well in my current job.'
-			WHEN Kysymys like '%Tyˆni vastaa vaativuustasoltaan hyvin yliopistollista koulutustani%' THEN '4. The requirements of my current job correspond well with my academic qualifications.'
+			WHEN Kysymys like '%Koulutus antoi riitt√§v√§t valmiudet ty√∂el√§m√§√§n%' THEN '1. The studies equipped me sufficiently for the working life.'
+			WHEN Kysymys like '%Miten tyytyv√§inen olet kokonaisuudessaan vuonna%' THEN '2. How satisfied are you overall with the degree you completed in year x in terms of your career?'
+			WHEN Kysymys like '%Pystyn hy√∂dynt√§m√§√§n yliopistossa oppimiani tietoja ja taitoja nykyisess√§ ty√∂ss√§ni hyvin%' THEN '3. The skills and knowledge I learned at the university can be applied well in my current job.'
+			WHEN Kysymys like '%Ty√∂ni vastaa vaativuustasoltaan hyvin yliopistollista koulutustani%' THEN '4. The requirements of my current job correspond well with my academic qualifications.'
 			WHEN Kysymys like '%analyyttiset%' THEN '1) analytical and systematic thinking skills'
 			WHEN Kysymys like '%tiedonhankinta%' THEN '2) information retrieval skills'
 			WHEN Kysymys like '%kyky oppia%' THEN '3) ability to learn and adopt new things'
 			WHEN Kysymys like '%tieteiden%' THEN '4) interdisciplinary/multi-professional teamwork'
 			WHEN Kysymys like '%itseohjautuvuus%' THEN '5) self-direction/initiative'
-			WHEN Kysymys like '%yritt‰jyys%' THEN '6) entrepreneurship skills'
+			WHEN Kysymys like '%yritt√§jyys%' THEN '6) entrepreneurship skills'
 			ELSE NULL
 		END
 		ELSE NULL
@@ -547,20 +547,20 @@ SELECT
      ,[Kyselyvuosi]
 	 ,[Kyselyvuosi] as 'Tilastovuosi'
       ,[Rahoitusmallikysymys]
-	  ,CASE WHEN [Rahoitusmallikysymys] = 'Kyll‰' THEN 'Ja' ELSE 'Nej' END 	AS 'FinansieringsmodellfrÂga'
-	  ,CASE WHEN [Rahoitusmallikysymys] = 'Kyll‰' THEN 'Yes' ELSE 'No' END  AS 'Funding modell question'
+	  ,CASE WHEN [Rahoitusmallikysymys] = 'Kyll√§' THEN 'Ja' ELSE 'Nej' END 	AS 'Finansieringsmodellfr√•ga'
+	  ,CASE WHEN [Rahoitusmallikysymys] = 'Kyll√§' THEN 'Yes' ELSE 'No' END  AS 'Funding modell question'
 	  ,[Rahoituskysymys_paino]
 
 	  -- CSCVIPUNEN-3471
       ,CASE 
-		WHEN Kysymys = '5. Mik‰ seuraavista vaihtoehdoista kuvaa parhaiten t‰h‰nastisen tyˆurasi kokonaisuutta?'  and Kyselyvuosi IN (2021, 2022) THEN 'Vastauksia ei ker‰tty vuosina 2021 ja 2022'
+		WHEN Kysymys = '5. Mik√§ seuraavista vaihtoehdoista kuvaa parhaiten t√§h√§nastisen ty√∂urasi kokonaisuutta?'  and Kyselyvuosi IN (2021, 2022) THEN 'Vastauksia ei ker√§tty vuosina 2021 ja 2022'
 		ELSE [Monivalintavaihtoehto]
 	  END as Monivalintavaihtoehto
       ,CASE 
-		WHEN Kysymys = '5. Mik‰ seuraavista vaihtoehdoista kuvaa parhaiten t‰h‰nastisen tyˆurasi kokonaisuutta?'  and Kyselyvuosi IN (2021, 2022) THEN NULL
+		WHEN Kysymys = '5. Mik√§ seuraavista vaihtoehdoista kuvaa parhaiten t√§h√§nastisen ty√∂urasi kokonaisuutta?'  and Kyselyvuosi IN (2021, 2022) THEN NULL
 		ELSE numerovalinta
 	  END as numerovalinta
-      ,case when Kysymysryhm‰ in ('III  TOHTORIKOULUTUS JA SEN MERKITYS (4/4). Arvioi, miten seuraavat tekij‰t ovat vaikuttaneet tyˆllistymiseesi valmistumisen j‰lkeen?', 'VI TY÷ JA OSAAMINEN (1/3). Arvioi, miten seuraavat tekij‰t ovat vaikuttaneet tyˆllistymiseesi valmitumisen j‰lkeen?')
+      ,case when Kysymysryhm√§ in ('III  TOHTORIKOULUTUS JA SEN MERKITYS (4/4). Arvioi, miten seuraavat tekij√§t ovat vaikuttaneet ty√∂llistymiseesi valmistumisen j√§lkeen?', 'VI TY√ñ JA OSAAMINEN (1/3). Arvioi, miten seuraavat tekij√§t ovat vaikuttaneet ty√∂llistymiseesi valmitumisen j√§lkeen?')
 			then 'arvosana6'
 			else [vastaustyyppi]
 			end
@@ -571,48 +571,48 @@ SELECT
      ,[Korkeakoulu]
      ,[vastaajaid]
      ,[lukumaara]
-    ,[Kyselyvuosi] as 'Enk‰tÂr'
+    ,[Kyselyvuosi] as 'Enk√§t√•r'
 	,CASE 
-			WHEN [≈ldersgrupp] in ('20','21','22','23','24') Then '20ñ24 Âr'
-			ELSE [≈ldersgrupp]
-	END AS [≈ldersgrupp]
-	,[Kˆn]
+			WHEN [√Öldersgrupp] in ('20','21','22','23','24') Then '20‚Äì24 √•r'
+			ELSE [√Öldersgrupp]
+	END AS [√Öldersgrupp]
+	,[K√∂n]
 	,CASE 
-			WHEN ƒidinkieli = 'suomi' OR ƒidinkieli = 'pohjoissaame' THEN 'finska (inkl. samiska)'
-			WHEN ƒidinkieli = 'ruotsi' THEN 'svenska'
-			WHEN ƒidinkieli = 'Tieto puuttuu' THEN 'Information saknas'
-			ELSE 'ˆvriga sprÂk' 
-		END AS [ModersmÂl]
-	  ,[Hˆgskola]
-      ,[Utbildningens sprÂk]
+			WHEN √Ñidinkieli = 'suomi' OR √Ñidinkieli = 'pohjoissaame' THEN 'finska (inkl. samiska)'
+			WHEN √Ñidinkieli = 'ruotsi' THEN 'svenska'
+			WHEN √Ñidinkieli = 'Tieto puuttuu' THEN 'Information saknas'
+			ELSE '√∂vriga spr√•k' 
+		END AS [Modersm√•l]
+	  ,[H√∂gskola]
+      ,[Utbildningens spr√•k]
       ,[Utbildningens kommun]
       ,[Utbildningens landskap]
       ,[kysely_sv]
-      ,[FrÂgegrupp]
-      ,[FrÂga]
+      ,[Fr√•gegrupp]
+      ,[Fr√•ga]
 	  -- CSCVIPUNEN-3471
       ,CASE 
-		WHEN Kysymys = '5. Mik‰ seuraavista vaihtoehdoista kuvaa parhaiten t‰h‰nastisen tyˆurasi kokonaisuutta?'  and Kyselyvuosi IN (2021, 2022) THEN 'Svar har inte samlats in Âren 2021 och 2022'
+		WHEN Kysymys = '5. Mik√§ seuraavista vaihtoehdoista kuvaa parhaiten t√§h√§nastisen ty√∂urasi kokonaisuutta?'  and Kyselyvuosi IN (2021, 2022) THEN 'Svar har inte samlats in √•ren 2021 och 2022'
 		ELSE [Flervalsalternativ]
 	  END as Flervalsalternativ
-      ,[UtbildningsnivÂ, nivÂ 1]
-      ,[UtbildningsnivÂ, nivÂ 2]
-      ,[UtbildningsomrÂde, nivÂ 1]
-      ,[UtbildningsomrÂde, nivÂ 2]
-      ,[UtbildningsomrÂde, nivÂ 3]
-      ,[UKM-styrningsomrÂde]
-      ,[Utbildningsben‰mning]
+      ,[Utbildningsniv√•, niv√• 1]
+      ,[Utbildningsniv√•, niv√• 2]
+      ,[Utbildningsomr√•de, niv√• 1]
+      ,[Utbildningsomr√•de, niv√• 2]
+      ,[Utbildningsomr√•de, niv√• 3]
+      ,[UKM-styrningsomr√•de]
+      ,[Utbildningsben√§mning]
      --ENGLANTI
 	  ,[Kyselyvuosi] as 'Survey year'
 	  ,CASE 
-			WHEN [Age group] in ('20','21','22','23','24') Then 'Aged 20ñ24'
+			WHEN [Age group] in ('20','21','22','23','24') Then 'Aged 20‚Äì24'
 			ELSE [Age group] 
 	  END AS [Age group]
 	  ,[Gender] 
 	  ,CASE 
-			WHEN ƒidinkieli = 'suomi' OR ƒidinkieli = 'pohjoissaame' THEN 'Finnish (incl. S·mi)'
-			WHEN ƒidinkieli = 'ruotsi' THEN 'Swedish'
-			WHEN ƒidinkieli = 'Tieto puuttuu' THEN 'Missing data'
+			WHEN √Ñidinkieli = 'suomi' OR √Ñidinkieli = 'pohjoissaame' THEN 'Finnish (incl. S√°mi)'
+			WHEN √Ñidinkieli = 'ruotsi' THEN 'Swedish'
+			WHEN √Ñidinkieli = 'Tieto puuttuu' THEN 'Missing data'
 			ELSE 'other languages' 
 		END AS [Native language]
 	  ,[Higher education institution]
@@ -624,7 +624,7 @@ SELECT
       ,[Question]
 	  -- CSCVIPUNEN-3471
       ,CASE 
-		WHEN Kysymys = '5. Mik‰ seuraavista vaihtoehdoista kuvaa parhaiten t‰h‰nastisen tyˆurasi kokonaisuutta?'  and Kyselyvuosi IN (2021, 2022) THEN 'Answers were not collected in years 2021 and 2022'
+		WHEN Kysymys = '5. Mik√§ seuraavista vaihtoehdoista kuvaa parhaiten t√§h√§nastisen ty√∂urasi kokonaisuutta?'  and Kyselyvuosi IN (2021, 2022) THEN 'Answers were not collected in years 2021 and 2022'
 		ELSE [Multiple choice option]
 	  END as [Multiple choice option]
       ,[Level of education, tier 1]
@@ -648,9 +648,9 @@ SELECT
       ,[jarjestys_ika]
       ,[jarjestys_sukupuoli]
 	  ,CASE 
-			WHEN ƒidinkieli = 'suomi' OR ƒidinkieli = 'pohjoissaame' THEN 1
-			WHEN ƒidinkieli = 'ruotsi' THEN 2
-			WHEN ƒidinkieli = 'Tieto puuttuu' THEN 99999
+			WHEN √Ñidinkieli = 'suomi' OR √Ñidinkieli = 'pohjoissaame' THEN 1
+			WHEN √Ñidinkieli = 'ruotsi' THEN 2
+			WHEN √Ñidinkieli = 'Tieto puuttuu' THEN 99999
 			ELSE 3 
 		END AS [jarjestys_kieli]
       ,[jarjestys_kansalaisuus]
@@ -664,30 +664,30 @@ SELECT
       ,[jarjestys_koulutusala2]
       ,[jarjestys_koulutusala3]
       , CASE
-		WHEN Kysymys = '5. Mik‰ seuraavista vaihtoehdoista kuvaa parhaiten t‰h‰nastisen tyˆurasi kokonaisuutta?'  and Kyselyvuosi IN (2021, 2022) THEN 99
-		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.kysymys='8. Jos olet toiminut yritt‰j‰n‰, a) kuinka monessa yrityksess‰ olet ollut perustajana/osakkaana valmistumisesi j‰lkeen?'   AND numerovalinta > 2	THEN 3
-		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.kysymys='6. Kuinka monen tyˆnantajan palveluksessa olet ollut valmistumisesi j‰lkeen (ml. nykyinen tyˆnantajasi)?'					AND numerovalinta>4		THEN 5
-		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.Kysymys='b) Kuinka monta henkilˆ‰ yrityksesi ovat yhteens‰ tyˆllist‰neet itsesi lis‰ksi?'											AND numerovalinta >4	THEN 5 
+		WHEN Kysymys = '5. Mik√§ seuraavista vaihtoehdoista kuvaa parhaiten t√§h√§nastisen ty√∂urasi kokonaisuutta?'  and Kyselyvuosi IN (2021, 2022) THEN 99
+		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.kysymys='8. Jos olet toiminut yritt√§j√§n√§, a) kuinka monessa yrityksess√§ olet ollut perustajana/osakkaana valmistumisesi j√§lkeen?'   AND numerovalinta > 2	THEN 3
+		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.kysymys='6. Kuinka monen ty√∂nantajan palveluksessa olet ollut valmistumisesi j√§lkeen (ml. nykyinen ty√∂nantajasi)?'					AND numerovalinta>4		THEN 5
+		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.Kysymys='b) Kuinka monta henkil√∂√§ yrityksesi ovat yhteens√§ ty√∂llist√§neet itsesi lis√§ksi?'											AND numerovalinta >4	THEN 5 
 		
 		--kysymys 18.  Kuinka rahoitit tohtoriopintosi?(vuodet 2018&2019)
 		
-		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.monivalintavaihtoehto ='1  v‰itˆskirjatyˆhˆn liittyv‰ tyˆsuhde yliopistolla (esim. tohtorikoulutettava, v‰itˆskirjatutkija, projektitutkija tms.)' then 1
-		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.monivalintavaihtoehto ='2  muu tyˆsuhde yliopistolla'	THEN 2
-		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.monivalintavaihtoehto ='3  tyˆsuhde tutkimuslaitoksessa' THEN 3
-		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.monivalintavaihtoehto ='4  tutkimus- ja/tai opetusteht‰viss‰ ammattikorkeakoulussa' THEN 4
-		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.monivalintavaihtoehto ='5  henkilˆkohtainen apuraha' THEN 5
-		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.monivalintavaihtoehto ='6  ansiotyˆss‰ yliopiston ulkopuolella' THEN 6
+		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.monivalintavaihtoehto ='1  v√§it√∂skirjaty√∂h√∂n liittyv√§ ty√∂suhde yliopistolla (esim. tohtorikoulutettava, v√§it√∂skirjatutkija, projektitutkija tms.)' then 1
+		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.monivalintavaihtoehto ='2  muu ty√∂suhde yliopistolla'	THEN 2
+		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.monivalintavaihtoehto ='3  ty√∂suhde tutkimuslaitoksessa' THEN 3
+		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.monivalintavaihtoehto ='4  tutkimus- ja/tai opetusteht√§viss√§ ammattikorkeakoulussa' THEN 4
+		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.monivalintavaihtoehto ='5  henkil√∂kohtainen apuraha' THEN 5
+		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.monivalintavaihtoehto ='6  ansioty√∂ss√§ yliopiston ulkopuolella' THEN 6
 		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.monivalintavaihtoehto ='7  opintotuki' THEN 7
-		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.monivalintavaihtoehto ='8  muu rahoitusl‰hde,' then 8
+		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.monivalintavaihtoehto ='8  muu rahoitusl√§hde,' then 8
 		
 		--kysymys 20.  Suorititko tohtorin tutkinnon ensisijaisesti
-		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.monivalintavaihtoehto ='1  kokop‰iv‰isesti' then 1
+		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.monivalintavaihtoehto ='1  kokop√§iv√§isesti' then 1
 		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.monivalintavaihtoehto ='2  osa-aikaisesti' then 2
-		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.monivalintavaihtoehto ='3  vapaa-ajalla muun p‰‰tyˆn ohella' then 3
+		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.monivalintavaihtoehto ='3  vapaa-ajalla muun p√§√§ty√∂n ohella' then 3
 
-		--kysymys 13. Mitk‰ seuraavista kuvaavat parhaiten t‰m‰nhetkisten tyˆteht‰viesi luonnetta? (2018)
+		--kysymys 13. Mitk√§ seuraavista kuvaavat parhaiten t√§m√§nhetkisten ty√∂teht√§viesi luonnetta? (2018)
 
-		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.kysymys='13. Mitk‰ seuraavista kuvaavat parhaiten t‰m‰nhetkisten tyˆteht‰viesi luonnetta?' and [ANTERO].dw.f_arvo_yo_uraseuranta_2018.kyselyvuosi = 2018 THEN
+		WHEN [ANTERO].dw.f_arvo_yo_uraseuranta_2018.kysymys='13. Mitk√§ seuraavista kuvaavat parhaiten t√§m√§nhetkisten ty√∂teht√§viesi luonnetta?' and [ANTERO].dw.f_arvo_yo_uraseuranta_2018.kyselyvuosi = 2018 THEN
 			CASE WHEN SUBSTRING([ANTERO].dw.f_arvo_yo_uraseuranta_2018.monivalintavaihtoehto,1,2) not in ('10', '11', '12', '13', '14') THEN CAST(SUBSTRING([ANTERO].dw.f_arvo_yo_uraseuranta_2018.monivalintavaihtoehto,1,1) as int)
 			ELSE CAST(SUBSTRING([ANTERO].dw.f_arvo_yo_uraseuranta_2018.monivalintavaihtoehto,1,2) as int) END
 
@@ -695,18 +695,18 @@ SELECT
 		
 		END  AS [jarjestys_monivalinta],
 		CASE 
-		WHEN Rahoitusmallikysymys = 'Kyll‰' THEN
+		WHEN Rahoitusmallikysymys = 'Kyll√§' THEN
 		CASE
-			WHEN Kysymys like '%Koulutus antoi riitt‰v‰t valmiudet tyˆel‰m‰‰n%' THEN 1
-			WHEN Kysymys like '%Miten tyytyv‰inen olet kokonaisuudessaan vuonna%' THEN 2
-			WHEN Kysymys like '%Pystyn hyˆdynt‰m‰‰n yliopistossa oppimiani tietoja ja taitoja nykyisess‰ tyˆss‰ni hyvin%' THEN 3
-			WHEN Kysymys like '%Tyˆni vastaa vaativuustasoltaan hyvin yliopistollista koulutustani%' THEN 4
+			WHEN Kysymys like '%Koulutus antoi riitt√§v√§t valmiudet ty√∂el√§m√§√§n%' THEN 1
+			WHEN Kysymys like '%Miten tyytyv√§inen olet kokonaisuudessaan vuonna%' THEN 2
+			WHEN Kysymys like '%Pystyn hy√∂dynt√§m√§√§n yliopistossa oppimiani tietoja ja taitoja nykyisess√§ ty√∂ss√§ni hyvin%' THEN 3
+			WHEN Kysymys like '%Ty√∂ni vastaa vaativuustasoltaan hyvin yliopistollista koulutustani%' THEN 4
 			WHEN Kysymys like '%analyyttiset%' THEN 5
 			WHEN Kysymys like '%tiedonhankinta%' THEN 6
 			WHEN Kysymys like '%kyky oppia%' THEN 7
 			WHEN Kysymys like '%tieteiden%' THEN 8
 			WHEN Kysymys like '%itseohjautuvuus%' THEN 9
-			WHEN Kysymys like '%yritt‰jyys%' THEN 10
+			WHEN Kysymys like '%yritt√§jyys%' THEN 10
 			ELSE NULL
 		END
 		ELSE NULL
