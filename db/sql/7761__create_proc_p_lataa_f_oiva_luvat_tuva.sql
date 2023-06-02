@@ -1,7 +1,11 @@
 USE [ANTERO]
 GO
 
-/****** Object:  StoredProcedure [dw].[p_lataa_f_oiva_luvat_tuva]    Script Date: 2.6.2023 9:37:44 ******/
+/****** Object:  StoredProcedure [dw].[p_lataa_f_oiva_luvat_tuva]    Script Date: 2.6.2023 9:56:29 ******/
+DROP PROCEDURE IF EXISTS [dw].[p_lataa_f_oiva_luvat_tuva]
+GO
+
+/****** Object:  StoredProcedure [dw].[p_lataa_f_oiva_luvat_tuva]    Script Date: 2.6.2023 9:56:29 ******/
 SET ANSI_NULLS ON
 GO
 
