@@ -1,3 +1,4 @@
+USE ARVO_SA
 IF NOT EXISTS (
     SELECT *
     FROM INFORMATION_SCHEMA.COLUMNS
@@ -32,3 +33,5 @@ BEGIN
     ALTER TABLE sa.sa_arvo_monivalintavaihtoehdot
     ADD kysymysversio INT;
 END
+
+USE ANTERO
