@@ -2,7 +2,7 @@ USE [ANTERO]
 GO
 
 /****** Object:  Table [dw].[f_koski_hoivaavustajat]    Script Date: 29.6.2023 21:59:42 ******/
-DROP TABLE [dw].[f_koski_hoivaavustajat]
+DROP TABLE IF EXISTS [dw].[f_koski_hoivaavustajat]
 GO
 
 /****** Object:  Table [dw].[f_koski_hoivaavustajat]    Script Date: 29.6.2023 21:59:42 ******/
@@ -54,5 +54,3 @@ CREATE TABLE [dw].[f_koski_hoivaavustajat](
 ) ON [PRIMARY]
 
 GO
-
-
