@@ -8,7 +8,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-CREATE VIEW [dbo].[v_f_Tutkintoennusteaineisto_tyovoimaosuus] AS
+CREATE VIEW OR ALTER [dbo].[v_f_Tutkintoennusteaineisto_tyovoimaosuus] AS
 
 SELECT 
 	Tilastovuosi,
