@@ -109,7 +109,7 @@ Country <- subset(Country, language == 'en', select=names(Country))
 oTypes <- subset(oTypes, language == 'en', select=names(oTypes))
 Progs <- subset(Progs, language == 'en', select=names(Progs))
 Topics <- subset(Topics, language == 'en', select=names(Topics))
-fSchemes <- subset(fSchemes, language == 'en', select=names(fSchemes))
+fSchemes <- subset(fSchemes, Available.languages == 'en', select=names(fSchemes))
 
 ProjectsHE <- merge(ProjectsHE, LegalBasisHE[,1:2], by.x = "id", by.y = "projectID")
 ProjectsHE$legalBasis <-  as.character(ProjectsHE$legalBasis.x)
