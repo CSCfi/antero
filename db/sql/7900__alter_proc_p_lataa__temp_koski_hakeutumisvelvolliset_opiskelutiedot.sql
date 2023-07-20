@@ -1,0 +1,114 @@
+USE [ANTERO]
+GO
+
+/****** Object:  StoredProcedure [dw].[p_lataa__temp_koski_hakeutumisvelvolliset_opiskelutiedot]    Script Date: 20.7.2023 16:48:35 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+
+
+
+
+
+
+
+
+
+--exec [dw].[p_lataa__temp_koski_hakeutumisvelvolliset_opiskelutiedot] 
+
+ALTER PROCEDURE [dw].[p_lataa__temp_koski_hakeutumisvelvolliset_opiskelutiedot] AS
+
+declare @max_ajankohta date = (select max([ajankohta]) as max_ajankohta from [dw].[f_koski_oppivelvolliset])
+
+drop table if exists dw._temp_koski_hakeutumisvelvolliset_opiskelutiedot
+
+select * into dw._temp_koski_hakeutumisvelvolliset_opiskelutiedot
+from
+(
+	select distinct
+		f.oppija_oid
+		--,[koodit_koulutusnimike_hv_opiskelutiedot] = coalesce(d6.koulutusluokitus_koodi, '-1')
+		,f.oppivelvollisuuden_suorittamiseen_kelpaava_hv
+
+		,max_ajankohta = @max_ajankohta
+		,f.tilastovuosi
+		
+		--FI
+		,opiskelun_tarkasteluhetki_fi = 
+			case 
+				when f.ajankohta = @max_ajankohta then 'Viimeisin / Ei vielä tarkastelua tilastovuonna'
+				else concat(d11.kuukausi_fi, 'n ', day(f.ajankohta), '.') 
+			end 
+		,tayttanyt_18_v_opiskelun_tarkasteluhetki_fi = 
+			case f.ika_18_tarkasteluhetkella_hv 
+				when 1 then 'Kyllä' 
+				when 0 then 'Ei / Ei vielä tarkastelua tilastovuonna' 
+			end
+		,opiskelutoiminta_opiskelun_tarkasteluhetki_fi = 
+			case 
+				when f.oppivelvollisuuden_suorittamiseen_kelpaava_hv = 1 then 'Opiskelee oppiv. suor. kelp. koulutuksessa'
+				else 'Ei opiskele oppiv. suor. kelp. koulutuksessa / Ei vielä tarkastelua tilastovuonna'
+			end
+		,koulutustyyppi_opiskelun_tarkasteluhetki_fi = 
+			coalesce(
+				case
+					when koulutusmoduuli_koodiarvo_hv = '301101' then 'Lukiokoulutus'
+					when koulutusmoduuli_koodiarvo_hv in (/*'301101',*/'301102','301103','301104') then d6.koulutusluokitus_fi
+					else d9.selite_fi			
+				end
+				,'Tieto puuttuu'
+			)
+		,koulutusmuoto_opiskelun_tarkasteluhetki_fi = d7.selite_fi
+		,suorituksen_tyyppi_opiskelun_tarkasteluhetki_fi = d8.selite_fi
+		
+		--SV
+		,opiskelun_tarkasteluhetki_sv = 
+			case 
+				when f.ajankohta = @max_ajankohta then 'Senaste / Har inte ännu granskats under statistikåret'
+				else concat(day(f.ajankohta), ' ', d11.kuukausi_sv)
+			end 
+		,tayttanyt_18_v_opiskelun_tarkasteluhetki_sv = 
+			case f.ika_18_tarkasteluhetkella_hv 
+				when 1 then 'Ja' 
+				when 0 then 'Nej / Har inte ännu granskats under statistikåret'
+			end
+		,opiskelutoiminta_opiskelun_tarkasteluhetki_sv = 
+			case 
+				when f.oppivelvollisuuden_suorittamiseen_kelpaava_hv = 1 then 'Studerar i utb. som är godtagbar för fullgörande av läroplikten'
+				else 'Studerar inte i utb. som är godtagbar för fullgörande av läroplikten / Har inte ännu granskats under statistikåret'
+			end
+		,koulutustyyppi_opiskelun_tarkasteluhetki_sv = 
+			coalesce(
+				case
+					when koulutusmoduuli_koodiarvo_hv = '301101' then 'Gymnasieutbildning'
+					when koulutusmoduuli_koodiarvo_hv in (/*'301101',*/'301102','301103','301104') then d6.koulutusluokitus_sv
+					else d9.selite_sv			
+				end
+				,'Information saknas'
+			)
+		,koulutusmuoto_opiskelun_tarkasteluhetki_sv = d7.selite_sv
+		,suorituksen_tyyppi_opiskelun_tarkasteluhetki_sv = d8.selite_sv
+
+		--JARJESTYS
+		,[jarjestys_opiskelun_tarkasteluhetki] = concat(10+month(f.ajankohta), 10+day(f.ajankohta))
+		,[jarjestys_koulutusmuoto_opiskelun_tarkasteluhetki] = d7.jarjestys
+		,[jarjestys_suorituksen_tyyppi_opiskelun_tarkasteluhetki] = d8.jarjestys
+
+	FROM [dw].[f_koski_oppivelvolliset] f 
+	LEFT JOIN [dw].[d_koulutusluokitus] d6 on d6.koulutusluokitus_koodi = f.koulutusmoduuli_koodiarvo_hv
+	LEFT JOIN [dw].[d_koski_koulutusmuoto] d7 on d7.koodi = f.koulutusmuoto_hv
+	LEFT JOIN [dw].[d_koski_suorituksen_tyyppi] d8 on d8.koodi = f.suorituksen_tyyppi_hv
+	LEFT JOIN [dw].[d_koulutustyyppi] d9 on d9.koodi = d6.koulutustyyppi_koodi
+	LEFT JOIN [dw].[d_kalenteri] d11 on d11.kalenteri_avain = f.ajankohta
+
+	WHERE f.tilastokuukausi between 9 and 12 
+	OR f.ov_kuutioon = 0 --syyslukukauden livetieto
+
+) q
+
+GO
