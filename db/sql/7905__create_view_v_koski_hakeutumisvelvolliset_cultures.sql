@@ -21,7 +21,7 @@ GO
 
 
 
-ALTER VIEW [dw].[v_koski_hakeutumisvelvolliset_cultures] AS
+CREATE OR ALTER VIEW [dw].[v_koski_hakeutumisvelvolliset_cultures] AS
 
 /*
 Tiedot selkokielisinä jo lähdetaulussa, koska siihen yhdistetty eri aikoina ladattavia lähteitä. Tarvittaessa ks. lähdetaulun lähdetaulujen lataukset.
