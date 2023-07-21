@@ -1,6 +1,10 @@
 USE [ANTERO]
 GO
 
+EXEC [Koski_SA].[sa].[p_lataa_sa_ytr_update]
+
+GO
+
 /****** Object:  StoredProcedure [dw].[p_lataa_f_koski_kaksois_ja_kolmoistutkinnot]    Script Date: 21.7.2023 15:30:42 ******/
 SET ANSI_NULLS ON
 GO
