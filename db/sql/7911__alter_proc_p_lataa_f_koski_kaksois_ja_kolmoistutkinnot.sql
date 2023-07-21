@@ -1,7 +1,7 @@
 USE [ANTERO]
 GO
 
-EXEC [Koski_SA].[sa].[p_lataa_sa_ytr_update]
+EXEC [Koski_SA].[sa].[p_lataa_ytr_update]
 
 GO
 
