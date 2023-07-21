@@ -29,7 +29,7 @@ LEFT JOIN [ANTERO].[dw].[d_organisaatioluokitus] d1 on d1.organisaatio_oid = tks
 LEFT JOIN [ANTERO].[dw].[d_organisaatioluokitus] d2 on d1.ylaorganisaatio_oid = d2.organisaatio_oid and d2.organisaatio_avain like 'koulutustoimija%'
 LEFT JOIN [Koski_SA].[sa].[sa_koski_ytr_kokeen_suoritus] ks on ks.opiskeluoikeus_oid = tks.opiskeluoikeus_oid and ks.arviointi_hyvaksytty = 1
 LEFT JOIN [Koski_SA].[sa].[sa_koski_opiskeluoikeus] oo on oo.opiskeluoikeus_oid = tks.opiskeluoikeus_oid
-LEFT JOIN [Koski_SA].[sa].[sa_koski_opiskeluoikeus_ytr] ooy on oo.oppija_oid = ooy.oppija_oid and ooy.opiskeluoikeusjaksot_tila_koodiarvo = 'valmistunut'
+LEFT JOIN [Koski_SA].[sa].[sa_koski_opiskeluoikeus_ytr] ooy on oo.oppija_oid = ooy.oppija_oid and ooy.tila_koodiarvo = 'valmistunut'
 LEFT JOIN [ANTERO].[dw].[d_kalenteri] d3 on d3.kalenteri_avain = ooy.alku
 WHERE d3.vuosi >= 2018 and tks2.tutkintokerta_koodiarvo <= CONCAT(YEAR(ooy.alku), LEFT(d3.lukukausi_fi,1))
 
