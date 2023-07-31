@@ -1,1 +1,1 @@
-"c:\Program Files\R\R-3.5.1\bin\x64\R.exe" CMD BATCH D:\antero\pdi_integrations\vipunen\R\Hae_raportit.R 
+"c:\Program Files\R\R-4.3.1patched\bin\x64\R.exe" CMD BATCH D:\antero\pdi_integrations\vipunen\R\Hae_raportit.R 

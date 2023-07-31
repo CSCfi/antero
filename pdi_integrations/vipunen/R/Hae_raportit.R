@@ -1,10 +1,3 @@
-# Asennettavat kirjastot ----------------------------------------------------------------------
-
-#install.packages('stringr')
-#install.packages('sjmisc')
-#install.packages('dplyr')
-#install.packages('BBmisc')
-#install.packages('qdapRegex')
 
 # Funktio ----------------------------------------------------------------------
 
@@ -40,7 +33,8 @@ hae_raportit <- function(kieli) {
     Encoding(osiot[[1]]) <- "UTF-8"
     
     # Luodaan tyhja dataframe raporteille
-    raportit <- data.frame()
+    raportit <- as.data.frame(matrix(ncol = 3))
+    names(raportit) <- c("Raportti","Osio", "Alaosio")
     
     # For-looppi kay lapi kaikki paaosiot
     for (i in 1:nrow(osiot)) {
@@ -76,7 +70,7 @@ hae_raportit <- function(kieli) {
       for (j in 1:nrow(alaosiot)){
         
         # Alasivun lahdekoodi
-        osoite <- readLines(textConnection(paste0('https://vipunen.fi/', kieli_viittaus, alaosiot[j,1])))
+        osoite <- readLines(textConnection(gsub(" ", "%20", paste0('https://vipunen.fi/', kieli_viittaus, alaosiot[j,1]))))
         Encoding(osoite) <- "UTF-8"
         alaosiorL <- readLines(osoite)
         
@@ -95,7 +89,8 @@ hae_raportit <- function(kieli) {
             names(rivi)[1] <- "Raportti"
             names(rivi)[2] <- "Osio"
             names(rivi)[3] <- "Alaosio"
-            raportit <- union_all(rivi, raportit)
+            raportit <- union_all(rivi[,1:3], raportit)
+            raportit <- raportit[!is.na(raportit$Raportti),]
           }
         }
       }
@@ -103,7 +98,6 @@ hae_raportit <- function(kieli) {
     
     # Poistetaan duplikaattiraportit
     raportit <- unique(raportit)
-    
     
     # Selvitetaan ja siistitaan raporttien nakokulmat
     for (n in 1:nrow(raportit)){
@@ -191,31 +185,21 @@ hae_raportit <- function(kieli) {
 
 Alku <- Sys.time()
 
-setwd("D:/antero/pdi_integrations/vipunen/R")
-
-if(require("renv") == FALSE) {
-  install.packages("renv", version = "1.4.1" ,repos = "http://cran.us.r-project.org")
-  library("renv")
-}
-
-renv::init(force = TRUE)
-renv::restore()
-
 if(require("stringr") == FALSE) {
-  install.packages("stringr", version = "1.4.1" ,repos = "http://cran.us.r-project.org")
+  install.packages("stringr", repos = "http://cran.us.r-project.org")
   library("stringr")
 }
 if(require("dplyr") == FALSE) {
- install.packages("dplyr",repos = "http://cran.us.r-project.org")
+ install.packages("dplyr", repos = "http://cran.us.r-project.org")
  library("dplyr")
 }
 
 if(require("BBmisc") == FALSE) {
-  install.packages("BBmisc", version = "1.11" ,repos = "http://cran.us.r-project.org")
+  install.packages("BBmisc", repos = "http://cran.us.r-project.org")
   library("BBmisc")
 }
 if(require("qdapRegex") == FALSE) {
-  install.packages("qdapRegex", version = "0.7.5", repos = "http://cran.us.r-project.org")
+  install.packages("qdapRegex", repos = "http://cran.us.r-project.org")
   library("qdapRegex")
 }
 

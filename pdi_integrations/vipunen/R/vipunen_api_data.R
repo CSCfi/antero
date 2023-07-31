@@ -1,10 +1,10 @@
 
 if(require("httr") == FALSE){
-  install.packages("httr")
+  install.packages("httr", repos = "http://cran.us.r-project.org")
   library("httr")
 }
 if(require("jsonlite") == FALSE){
-  install.packages("jsonlite")
+  install.packages("jsonlite", repos = "http://cran.us.r-project.org")
   library("jsonlite")
 }
 
