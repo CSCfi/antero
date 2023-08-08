@@ -116,7 +116,7 @@ FROM (
 		LEFT JOIN ANTERO.dw.d_organisaatioluokitus AS org2 ON oo.oppilaitos_oid = org2.organisaatio_oid
 		LEFT JOIN Koski_SA.sa.sa_koski_henkilo AS henk ON oo.oppija_oid = henk.oppija_oid
 		WHERE ooa.tila = 'lasna'
-		AND YEAR(COALESCE(alku.alku, oo.alkamispaiva)) >= 2018
+		AND oo.alkamispaiva >= 2018
 		AND oo.sisaltyy_opiskeluoikeuteen_oid IS NULL
 	  
 	) q1
