@@ -50,6 +50,7 @@ hae_raportit <- function(kieli) {
       # Piilotetut sivut, jotka eivät nay lahdekoodissa
       if (kieli == "fi" & i == 3){
         alaosiot[nrow(alaosiot)+1,1] <- "/perus/Sivut/Ainevalinnat-2000-2019.aspx"
+        alaosiot[nrow(alaosiot)+1,1] <- "/perus/Sivut/Perusopetuksen-lisäopetuksen-päättäneiden-sijoittuminen-2009-2018.aspx"
       }
       else if (kieli == "fi" & i == 4){
         alaosiot[nrow(alaosiot)+1,1] <- "/lukio/Sivut/Ainevalinnat-2010-2017.aspx"
