@@ -8,30 +8,33 @@ Alku <- Sys.time() # Start time
 #---------------------------#
 
 if(require("httr") == FALSE){
-  install.packages("httr")
+  install.packages("httr", repos = "http://cran.us.r-project.org")
   library("httr")
 }
 if(require("jsonlite") == FALSE){
-  install.packages("jsonlite")
+  install.packages("jsonlite", repos = "http://cran.us.r-project.org")
   library("jsonlite")
 }
 if(require("plyr") == FALSE){
-  install.packages("plyr")
+  install.packages("plyr", repos = "http://cran.us.r-project.org")
   library("plyr")
 }
 if(require("purrr") == FALSE){
-  install.packages("purrr")
+  install.packages("purrr", repos = "http://cran.us.r-project.org")
   library("purrr")
 }
 if(require("tidyr") == FALSE){
-  install.packages("tidyr")
+  install.packages("tidyr", repos = "http://cran.us.r-project.org")
   library("tidyr")
 }
 if(require("dplyr") == FALSE){
-  install.packages("dplyr")
+  install.packages("dplyr", repos = "http://cran.us.r-project.org")
   library("dplyr")
 }
 
+# Set max timeout time
+
+options(timeout = max(500, getOption("timeout")))
 
 #---------------------------#
 
@@ -44,7 +47,7 @@ if(require("dplyr") == FALSE){
 # Projects 
 tf3 <- tempfile()
 td3 <- tempdir()
-download.file("https://cordis.europa.eu/data/cordis-h2020projects-csv.zip",tf3, mode = "wb")
+download.file("https://cordis.europa.eu/data/cordis-h2020projects-csv.zip",tf3, mode = "wb", method = "libcurl")
 file.names <- unzip(tf3, exdir = td3)
 Projects = read.csv(file.names[4], header = TRUE, sep = ";", encoding="UTF-8")
 names(Projects)[19] <- "projectRcn"
@@ -63,14 +66,14 @@ oTypes = read.csv("http://cordis.europa.eu/data/reference/cordisref-organization
 # programmes
 tf <- tempfile()
 td <- tempdir()
-download.file("https://cordis.europa.eu/data/reference/cordisref-H2020programmes-csv.zip",tf, mode = "wb")
+download.file("https://cordis.europa.eu/data/reference/cordisref-H2020programmes-csv.zip",tf, mode = "wb", method = "libcurl")
 file.names <- unzip(tf, exdir = td)
 Progs <- read.csv(file.names, header = TRUE, sep = ";", encoding="UTF-8")
 
 # topics
 tf2 <- tempfile()
 td2 <- tempdir()
-download.file("https://cordis.europa.eu/data/reference/cordisref-H2020topics-csv.zip",tf2, mode = "wb")
+download.file("https://cordis.europa.eu/data/reference/cordisref-H2020topics-csv.zip",tf2, mode = "wb", method = "libcurl")
 file.names <- unzip(tf2, exdir = td2)
 Topics = read.csv(file.names, header = TRUE, sep = ";", encoding="UTF-8")
 
@@ -80,7 +83,7 @@ fSchemes <- read.csv("https://cordis.europa.eu/data/reference/cordisref-projectF
 ## Horizon europe
 tfHE <- tempfile()
 tdHE <- tempdir()
-download.file("https://cordis.europa.eu/data/cordis-HORIZONprojects-csv.zip",tfHE, mode = "wb")
+download.file("https://cordis.europa.eu/data/cordis-HORIZONprojects-csv.zip",tfHE, mode = "wb", method = "libcurl")
 file.names <- unzip(tfHE, exdir = tdHE)
 
 ProjectsHE <- read.csv(file.names[1], header = TRUE, sep = ";", encoding="UTF-8")
@@ -89,13 +92,13 @@ LegalBasisHE <- read.csv(file.names[3], header = TRUE, sep = ";", encoding="UTF-
 
 tfHE2 <- tempfile()
 tdHE2 <- tempdir()
-download.file("https://cordis.europa.eu/data/reference/cordisref-HORIZONprogrammes-csv.zip",tfHE2, mode = "wb")
+download.file("https://cordis.europa.eu/data/reference/cordisref-HORIZONprogrammes-csv.zip",tfHE2, mode = "wb", method = "libcurl")
 file.names <- unzip(tfHE2, exdir = tdHE2)
 ProgsHE <- read.csv(file.names, header = TRUE, sep = ";", encoding="UTF-8")
 
 tfHE3 <- tempfile()
 tdHE3 <- tempdir()
-download.file("https://cordis.europa.eu/data/reference/cordisref-HORIZONtopics-csv.zip",tfHE3, mode = "wb")
+download.file("https://cordis.europa.eu/data/reference/cordisref-HORIZONtopics-csv.zip",tfHE3, mode = "wb", method = "libcurl")
 file.names <- unzip(tfHE3, exdir = tdHE3)
 TopicsHE <- read.csv(file.names, header = TRUE, sep = ";", encoding="UTF-8")
 
@@ -115,7 +118,8 @@ ProjectsHE <- merge(ProjectsHE, LegalBasisHE[,1:2], by.x = "id", by.y = "project
 ProjectsHE$legalBasis <-  as.character(ProjectsHE$legalBasis.x)
 ProjectsHE$legalBasis[ProjectsHE$legalBasis == ""] <-  as.character(ProjectsHE$legalBasis.y[ProjectsHE$legalBasis == ""])
 ProjectsHE = ProjectsHE[,!(names(ProjectsHE) %in% c("legalBasis.y", "legalBasis.x"))]
-
+names(ProjectsHE)[names(ProjectsHE) == "rcn"] <- "projectRcn"
+ProjectsHE <- ProjectsHE[, names(Projects)]
 
 # Horizon 2020 and Horizon Europe data is combined 
 
@@ -123,7 +127,7 @@ Projects <- union_all(Projects, ProjectsHE)
 Orgs <- union_all(Orgs, OrgsHE)
 Progs <- union_all(Progs, ProgsHE)
 Topics <- union_all(Topics, TopicsHE)
- 
+
 ##### Write csv files #####
 
 options(scipen = 999)
