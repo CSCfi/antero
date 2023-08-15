@@ -69,35 +69,13 @@
             "name": "Query",
             "dataView": "full",
             "source": {
-              "query": [
-                "SELECT DISTINCT",
-                "\t\t[Koulutusala, taso 3]",
-                "\t\t,[koulutusala_koodi]",
-                "\t\t,[Ennusteen koulutusaste]",
-                "\t\t,CASE\t",
-                "\t\t\tWHEN [Ennusteen koulutusaste] = 'Ammatillinen koulutus' THEN 1",
-                "\t\t\tWHEN[Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' THEN 2",
-                "\t\t\tELSE 3",
-                "\t\tEND as ennusteen_koulutusaste_koodi",
-                "FROM [VipunenTK].[dbo].[f_Tutkintoennuste]"
-              ],
+              "query": "SELECT * FROM [VipunenTK].[dbo].[v_f_Tutkintoennusteaineisto]",
               "dataSource": "SqlServer dwitvipusql16 ANTERO"
             },
             "annotations": [
               {
                 "name": "QueryEditorSerialization",
-                "value": [
-                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT DISTINCT",
-                  "\t\t[Koulutusala, taso 3]",
-                  "\t\t,[koulutusala_koodi]",
-                  "\t\t,[Ennusteen koulutusaste]",
-                  "\t\t,CASE\t",
-                  "\t\t\tWHEN [Ennusteen koulutusaste] = 'Ammatillinen koulutus' THEN 1",
-                  "\t\t\tWHEN[Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' THEN 2",
-                  "\t\t\tELSE 3",
-                  "\t\tEND as ennusteen_koulutusaste_koodi",
-                  "FROM [VipunenTK].[dbo].[f_Tutkintoennuste]</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-                ]
+                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT * FROM [VipunenTK].[dbo].[v_f_Tutkintoennusteaineisto]</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
               }
             ]
           }
@@ -113,13 +91,13 @@
               "",
               "RETURN",
               "",
-              "IF([kytkin], IF(AND(lkm2 < 5, lkm2 > 0), \"1-4\", MROUND(lkm2,3)), BLANK())",
+              "IF([kytkin2], IF(AND(lkm2 < 5, lkm2 > 0), \"1-4\", MROUND(lkm2,3)), BLANK())",
               ""
             ],
             "formatString": "#,0"
           },
           {
-            "name": "kytkin",
+            "name": "kytkin2",
             "expression": " IF(CALCULATE(HASONEVALUE(Ennuste[Ennusteen koulutusaste]), ALLEXCEPT(Ennuste, Ennuste[Ennusteen koulutusaste])), TRUE,FALSE)",
             "isHidden": true
           },
@@ -133,10 +111,11 @@
               "",
               "RETURN",
               "",
-              "lkm2",
+              "IF([kytkin] = 0, blank(), IF([kytkin2], lkm2))",
+              "",
               ""
             ],
-            "isHidden": true
+            "formatString": "#,0"
           },
           {
             "name": "Tutkintojen määrä (ennuste)",
@@ -149,7 +128,7 @@
               "",
               "RETURN",
               "",
-              "IF([kytkin], IF(AND(lkm < 5, lkm > 0), \"1-4\", MROUND(lkm,3)), BLANK())",
+              "IF([kytkin2], IF(AND(lkm < 5, lkm > 0), \"1-4\", MROUND(lkm,3)), BLANK())",
               ""
             ],
             "formatString": "#,0"
@@ -165,10 +144,11 @@
               "",
               "RETURN",
               "",
-              "lkm",
+              "IF([kytkin] = 0, blank(), IF([kytkin2], lkm))",
+              "",
               ""
             ],
-            "isHidden": true
+            "formatString": "#,0"
           },
           {
             "name": "Tutkintojen määrä (ennuste, kaikki alat)_s",
@@ -181,7 +161,7 @@
               "",
               "RETURN",
               "",
-              "IF([kytkin], lkm, BLANK())",
+              "IF([kytkin2], lkm, BLANK())",
               ""
             ],
             "isHidden": true
@@ -197,7 +177,7 @@
               "",
               "RETURN",
               "",
-              "IF([kytkin], IF(AND(lkm<5,lkm>0), \"1-4\", MROUND(lkm,3)),BLANK())",
+              "IF([kytkin2], IF(AND(lkm<5,lkm>0), \"1-4\", MROUND(lkm,3)),BLANK())",
               ""
             ],
             "formatString": "#,0"
@@ -213,9 +193,9 @@
               "",
               "RETURN",
               "",
-              "IF([kytkin], lkm, blank())"
+              "IF([kytkin] = 0, blank(), IF([kytkin2], lkm, blank()))"
             ],
-            "isHidden": true
+            "formatString": "0"
           },
           {
             "name": "Tutkintojen määrä, opintojaan jatkavat vähennetty (ennuste, kaikki alat)_s",
@@ -228,7 +208,7 @@
               "",
               "RETURN",
               "",
-              "IF([kytkin], lkm, blank())",
+              "IF([kytkin2], lkm, blank())",
               ""
             ],
             "isHidden": true
@@ -241,7 +221,7 @@
               "var lkm = [Tutkintojen määrä, opintojaan jatkavat vähennetty (ennuste)_s] * kerroin",
               "RETURN",
               "",
-              "IF([kytkin], IF(AND(lkm < 5, lkm > 0), \"1-4\", MROUND(lkm,3)), BLANK())",
+              "IF([kytkin2], IF(AND(lkm < 5, lkm > 0), \"1-4\", MROUND(lkm,3)), BLANK())",
               ""
             ],
             "formatString": "#,0"
@@ -255,7 +235,39 @@
               "",
               "RETURN",
               "",
-              "IF([kytkin], IF(AND(lkm > 0, lkm < 5),\"1-4\", MROUND(lkm,3)), BLANK())",
+              "IF([kytkin2], IF(AND(lkm > 0, lkm < 5),\"1-4\", MROUND(lkm,3)), BLANK())",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "kytkin",
+            "expression": "IF(LEFT(USERNAME(), 4) = \"DWI\\\", 1, 0)",
+            "isHidden": true
+          },
+          {
+            "name": "Tarjonta (ennuste)_s",
+            "expression": [
+              "",
+              "var kerroin = IF(OR(ISBLANK([Tutkinnon suorittaneen väestön työvoimaosuus_s]), [Tutkinnon suorittaneen väestön työvoimaosuus_s] > 1), [Tutkinnon suorittaneen väestön työvoimaosuus (kaikki alat)_s], [Tutkinnon suorittaneen väestön työvoimaosuus_s])",
+              "var lkm = [Tutkintojen määrä (ennuste)_s] * kerroin",
+              "",
+              "RETURN",
+              "",
+              "IF([kytkin] = 0, blank(), IF([kytkin2], lkm))",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Työmarkkinoille tulevat tutkinnon suorittaneet (ennuste)_s",
+            "expression": [
+              "",
+              "var kerroin = IF(OR(ISBLANK([Tutkinnon suorittaneen väestön työvoimaosuus_s]), [Tutkinnon suorittaneen väestön työvoimaosuus_s] > 1), [Tutkinnon suorittaneen väestön työvoimaosuus (kaikki alat)_s], [Tutkinnon suorittaneen väestön työvoimaosuus_s])",
+              "var lkm = [Tutkintojen määrä, opintojaan jatkavat vähennetty (ennuste)_s] * kerroin",
+              "RETURN",
+              "",
+              "IF([kytkin] = 0,blank(), IF([kytkin2], lkm, blank()))",
               ""
             ],
             "formatString": "#,0"
@@ -264,18 +276,7 @@
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": [
-              "SELECT DISTINCT",
-              "\t\t[Koulutusala, taso 3]",
-              "\t\t,[koulutusala_koodi]",
-              "\t\t,[Ennusteen koulutusaste]",
-              "\t\t,CASE\t",
-              "\t\t\tWHEN [Ennusteen koulutusaste] = 'Ammatillinen koulutus' THEN 1",
-              "\t\t\tWHEN[Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' THEN 2",
-              "\t\t\tELSE 3",
-              "\t\tEND as ennusteen_koulutusaste_koodi",
-              "FROM [VipunenTK].[dbo].[f_Tutkintoennuste]"
-            ]
+            "value": "SELECT * FROM [VipunenTK].[dbo].[v_f_Tutkintoennusteaineisto]"
           },
           {
             "name": "_TM_ExtProp_DbTableName",
@@ -283,18 +284,7 @@
           },
           {
             "name": "QueryEditorSerialization",
-            "value": [
-              "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT DISTINCT",
-              "\t\t[Koulutusala, taso 3]",
-              "\t\t,[koulutusala_koodi]",
-              "\t\t,[Ennusteen koulutusaste]",
-              "\t\t,CASE\t",
-              "\t\t\tWHEN [Ennusteen koulutusaste] = 'Ammatillinen koulutus' THEN 1",
-              "\t\t\tWHEN[Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' THEN 2",
-              "\t\t\tELSE 3",
-              "\t\tEND as ennusteen_koulutusaste_koodi",
-              "FROM [VipunenTK].[dbo].[f_Tutkintoennuste]</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-            ]
+            "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT * FROM [VipunenTK].[dbo].[v_f_Tutkintoennusteaineisto]</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
           }
         ]
       },
@@ -377,47 +367,13 @@
             "name": "Aloittaneet",
             "dataView": "full",
             "source": {
-              "query": [
-                "SELECT ",
-                "Tilastovuosi",
-                ",[Koulutusala, taso 3]",
-                ",[koulutusala_koodi]",
-                ",[Ennusteen koulutusaste]",
-                ",CASE\t",
-                "\tWHEN [Ennusteen koulutusaste] = 'Ammatillinen koulutus' THEN 1",
-                "\tWHEN[Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' THEN 2",
-                "\tELSE 3",
-                "END as ennusteen_koulutusaste_koodi",
-                ",koulutustyyppi as Koulutustyyppi",
-                ",[Ikä] as 'Ikäryhmä'",
-                ",Aloit2",
-                ",Koulutusaste_taso2 as [Koulutusaste, taso 2]",
-                "FROM [VipunenTK].[dbo].[f_Tutkintoennuste]",
-                "WHERE Aloit2 is not null"
-              ],
+              "query": "SELECT * FROM [VipunenTK].[dbo].[v_f_Tutkintoennusteaineisto_aloittaneet]",
               "dataSource": "SqlServer dwitvipusql16 ANTERO 2"
             },
             "annotations": [
               {
                 "name": "QueryEditorSerialization",
-                "value": [
-                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT ",
-                  "Tilastovuosi",
-                  ",[Koulutusala, taso 3]",
-                  ",[koulutusala_koodi]",
-                  ",[Ennusteen koulutusaste]",
-                  ",CASE\t",
-                  "\tWHEN [Ennusteen koulutusaste] = 'Ammatillinen koulutus' THEN 1",
-                  "\tWHEN[Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' THEN 2",
-                  "\tELSE 3",
-                  "END as ennusteen_koulutusaste_koodi",
-                  ",koulutustyyppi as Koulutustyyppi",
-                  ",[Ikä] as 'Ikäryhmä'",
-                  ",Aloit2",
-                  ",Koulutusaste_taso2 as [Koulutusaste, taso 2]",
-                  "FROM [VipunenTK].[dbo].[f_Tutkintoennuste]",
-                  "WHERE Aloit2 is not null</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-                ]
+                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT * FROM [VipunenTK].[dbo].[v_f_Tutkintoennusteaineisto_aloittaneet]</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
               }
             ]
           }
@@ -435,36 +391,20 @@
           {
             "name": "Aloittaneet_s",
             "expression": [
-              " SUM(Aloittaneet[Aloit2])",
+              " ",
+              "",
+              "IF([kytkin] = 0, blank(), SUM(Aloittaneet[Aloit2]))",
               "",
               "",
               ""
             ],
-            "formatString": "#,0",
-            "isHidden": true
+            "formatString": "#,0"
           }
         ],
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": [
-              "SELECT ",
-              "Tilastovuosi",
-              ",[Koulutusala, taso 3]",
-              ",[koulutusala_koodi]",
-              ",[Ennusteen koulutusaste]",
-              ",CASE\t",
-              "\tWHEN [Ennusteen koulutusaste] = 'Ammatillinen koulutus' THEN 1",
-              "\tWHEN[Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' THEN 2",
-              "\tELSE 3",
-              "END as ennusteen_koulutusaste_koodi",
-              ",koulutustyyppi as Koulutustyyppi",
-              ",[Ikä] as 'Ikäryhmä'",
-              ",Aloit2",
-              ",Koulutusaste_taso2 as [Koulutusaste, taso 2]",
-              "FROM [VipunenTK].[dbo].[f_Tutkintoennuste]",
-              "WHERE Aloit2 is not null"
-            ]
+            "value": "SELECT * FROM [VipunenTK].[dbo].[v_f_Tutkintoennusteaineisto_aloittaneet]"
           },
           {
             "name": "_TM_ExtProp_DbTableName",
@@ -472,24 +412,7 @@
           },
           {
             "name": "QueryEditorSerialization",
-            "value": [
-              "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT ",
-              "Tilastovuosi",
-              ",[Koulutusala, taso 3]",
-              ",[koulutusala_koodi]",
-              ",[Ennusteen koulutusaste]",
-              ",CASE\t",
-              "\tWHEN [Ennusteen koulutusaste] = 'Ammatillinen koulutus' THEN 1",
-              "\tWHEN[Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' THEN 2",
-              "\tELSE 3",
-              "END as ennusteen_koulutusaste_koodi",
-              ",koulutustyyppi as Koulutustyyppi",
-              ",[Ikä] as 'Ikäryhmä'",
-              ",Aloit2",
-              ",Koulutusaste_taso2 as [Koulutusaste, taso 2]",
-              "FROM [VipunenTK].[dbo].[f_Tutkintoennuste]",
-              "WHERE Aloit2 is not null</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-            ]
+            "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT * FROM [VipunenTK].[dbo].[v_f_Tutkintoennusteaineisto_aloittaneet]</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
           }
         ]
       },
@@ -572,49 +495,13 @@
             "name": "Kohorttipohjainen läpäisy",
             "dataView": "full",
             "source": {
-              "query": [
-                "SELECT ",
-                "Lukuvuosi",
-                ",[Koulutusala, taso 3]",
-                ",[koulutusala_koodi]",
-                ",[Ennusteen koulutusaste]",
-                ",CASE\t",
-                "\tWHEN [Ennusteen koulutusaste] = 'Ammatillinen koulutus' THEN 1",
-                "\tWHEN[Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' THEN 2",
-                "\tELSE 3",
-                "END as ennusteen_koulutusaste_koodi",
-                ",koulutustyyppi as Koulutustyyppi",
-                ",coalesce([Alkuperäinen/muu tutkintolaji], 'Alkuperäinen tutkintolaji') as 'Suoritetun tutkinnon tutkintolaji'",
-                ",alkuperaisen_tutkinnon_aloittaneet",
-                ",suoritetut_tutkinnot",
-                ",Koulutusaste_taso2 as [Koulutusaste, taso 2]",
-                "FROM [VipunenTK].[dbo].[f_Tutkintoennuste]",
-                "WHERE suoritetut_tutkinnot is not null or alkuperaisen_tutkinnon_aloittaneet is not null"
-              ],
+              "query": "SELECT * FROM [VipunenTK].[dbo].[v_f_Tutkintoennusteaineisto_kohorttipohjainen_lapaisy]",
               "dataSource": "SqlServer dwitvipusql16 ANTERO"
             },
             "annotations": [
               {
                 "name": "QueryEditorSerialization",
-                "value": [
-                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT ",
-                  "Lukuvuosi",
-                  ",[Koulutusala, taso 3]",
-                  ",[koulutusala_koodi]",
-                  ",[Ennusteen koulutusaste]",
-                  ",CASE\t",
-                  "\tWHEN [Ennusteen koulutusaste] = 'Ammatillinen koulutus' THEN 1",
-                  "\tWHEN[Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' THEN 2",
-                  "\tELSE 3",
-                  "END as ennusteen_koulutusaste_koodi",
-                  ",koulutustyyppi as Koulutustyyppi",
-                  ",coalesce([Alkuperäinen/muu tutkintolaji], 'Alkuperäinen tutkintolaji') as 'Suoritetun tutkinnon tutkintolaji'",
-                  ",alkuperaisen_tutkinnon_aloittaneet",
-                  ",suoritetut_tutkinnot",
-                  ",Koulutusaste_taso2 as [Koulutusaste, taso 2]",
-                  "FROM [VipunenTK].[dbo].[f_Tutkintoennuste]",
-                  "WHERE suoritetut_tutkinnot is not null or alkuperaisen_tutkinnon_aloittaneet is not null</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-                ]
+                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT * FROM [VipunenTK].[dbo].[v_f_Tutkintoennusteaineisto_kohorttipohjainen_lapaisy]</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
               }
             ]
           }
@@ -666,34 +553,16 @@
               "var osuus = DIVIDE(lkm2,lkm1,blank())",
               "return ",
               "",
-              "IF(ISBLANK(osuus), [Tutkinnon suorittaneiden osuus kaikista aloittaneista (kaikki alat)_s], osuus)",
+              "IF([kytkin] = 0, blank(), IF(ISBLANK(osuus), [Tutkinnon suorittaneiden osuus kaikista aloittaneista (kaikki alat)_s], osuus))",
               ""
             ],
-            "isHidden": true
+            "formatString": "0.0 %;-0.0 %;0.0 %"
           }
         ],
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": [
-              "SELECT ",
-              "Lukuvuosi",
-              ",[Koulutusala, taso 3]",
-              ",[koulutusala_koodi]",
-              ",[Ennusteen koulutusaste]",
-              ",CASE\t",
-              "\tWHEN [Ennusteen koulutusaste] = 'Ammatillinen koulutus' THEN 1",
-              "\tWHEN[Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' THEN 2",
-              "\tELSE 3",
-              "END as ennusteen_koulutusaste_koodi",
-              ",koulutustyyppi as Koulutustyyppi",
-              ",coalesce([Alkuperäinen/muu tutkintolaji], 'Alkuperäinen tutkintolaji') as 'Suoritetun tutkinnon tutkintolaji'",
-              ",alkuperaisen_tutkinnon_aloittaneet",
-              ",suoritetut_tutkinnot",
-              ",Koulutusaste_taso2 as [Koulutusaste, taso 2]",
-              "FROM [VipunenTK].[dbo].[f_Tutkintoennuste]",
-              "WHERE suoritetut_tutkinnot is not null or alkuperaisen_tutkinnon_aloittaneet is not null"
-            ]
+            "value": "SELECT * FROM [VipunenTK].[dbo].[v_f_Tutkintoennusteaineisto_kohorttipohjainen_lapaisy]"
           },
           {
             "name": "_TM_ExtProp_DbTableName",
@@ -701,25 +570,7 @@
           },
           {
             "name": "QueryEditorSerialization",
-            "value": [
-              "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT ",
-              "Lukuvuosi",
-              ",[Koulutusala, taso 3]",
-              ",[koulutusala_koodi]",
-              ",[Ennusteen koulutusaste]",
-              ",CASE\t",
-              "\tWHEN [Ennusteen koulutusaste] = 'Ammatillinen koulutus' THEN 1",
-              "\tWHEN[Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' THEN 2",
-              "\tELSE 3",
-              "END as ennusteen_koulutusaste_koodi",
-              ",koulutustyyppi as Koulutustyyppi",
-              ",coalesce([Alkuperäinen/muu tutkintolaji], 'Alkuperäinen tutkintolaji') as 'Suoritetun tutkinnon tutkintolaji'",
-              ",alkuperaisen_tutkinnon_aloittaneet",
-              ",suoritetut_tutkinnot",
-              ",Koulutusaste_taso2 as [Koulutusaste, taso 2]",
-              "FROM [VipunenTK].[dbo].[f_Tutkintoennuste]",
-              "WHERE suoritetut_tutkinnot is not null or alkuperaisen_tutkinnon_aloittaneet is not null</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-            ]
+            "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT * FROM [VipunenTK].[dbo].[v_f_Tutkintoennusteaineisto_kohorttipohjainen_lapaisy]</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
           }
         ]
       },
@@ -803,49 +654,13 @@
             "name": "Moninkertainen koulutus",
             "dataView": "full",
             "source": {
-              "query": [
-                "SELECT ",
-                "Tilastovuosi",
-                ",[Koulutusala, taso 3]",
-                ",[koulutusala_koodi]",
-                ",[Ennusteen koulutusaste]",
-                ",CASE\t",
-                "\tWHEN [Ennusteen koulutusaste] = 'Ammatillinen koulutus' THEN 1",
-                "\tWHEN[Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' THEN 2",
-                "\tELSE 3",
-                "END as ennusteen_koulutusaste_koodi",
-                ",koulutustyyppi as Koulutustyyppi",
-                ",[Myöhempi tutkinto]",
-                ",alkuperaisen_tutkinnon_suorittaneet",
-                ",myohemman_tutkinnon_suorittaneet",
-                ",Koulutusaste_taso2 as [Koulutusaste, taso 2]",
-                "FROM [VipunenTK].[dbo].[f_Tutkintoennuste]",
-                "WHERE alkuperaisen_tutkinnon_suorittaneet is not null or myohemman_tutkinnon_suorittaneet is not null"
-              ],
+              "query": "SELECT * FROM [VipunenTK].[dbo].[v_f_Tutkintoennusteaineisto_moninkertainen_koulutus]",
               "dataSource": "SqlServer dwitvipusql16 ANTERO"
             },
             "annotations": [
               {
                 "name": "QueryEditorSerialization",
-                "value": [
-                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT ",
-                  "Tilastovuosi",
-                  ",[Koulutusala, taso 3]",
-                  ",[koulutusala_koodi]",
-                  ",[Ennusteen koulutusaste]",
-                  ",CASE\t",
-                  "\tWHEN [Ennusteen koulutusaste] = 'Ammatillinen koulutus' THEN 1",
-                  "\tWHEN[Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' THEN 2",
-                  "\tELSE 3",
-                  "END as ennusteen_koulutusaste_koodi",
-                  ",koulutustyyppi as Koulutustyyppi",
-                  ",[Myöhempi tutkinto]",
-                  ",alkuperaisen_tutkinnon_suorittaneet",
-                  ",myohemman_tutkinnon_suorittaneet",
-                  ",Koulutusaste_taso2 as [Koulutusaste, taso 2]",
-                  "FROM [VipunenTK].[dbo].[f_Tutkintoennuste]",
-                  "WHERE alkuperaisen_tutkinnon_suorittaneet is not null or myohemman_tutkinnon_suorittaneet is not null</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-                ]
+                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT * FROM [VipunenTK].[dbo].[v_f_Tutkintoennusteaineisto_moninkertainen_koulutus]</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
               }
             ]
           }
@@ -874,10 +689,10 @@
               "",
               "RETURN",
               "",
-              "lkm",
+              "IF([kytkin] = 0, blank(),  lkm)",
               ""
             ],
-            "isHidden": true
+            "formatString": "#,0"
           },
           {
             "name": "Myöhemmän tutkinnon suorittaneiden osuus",
@@ -913,10 +728,10 @@
               "var osuus =  DIVIDE(osa,kaikki, blank())",
               "",
               "",
-              "RETURN IF(ISBLANK(osuus), [Myöhemmän tutkinnon suorittaneiden osuus (kaikki alat)_s], osuus)",
+              "RETURN IF([kytkin] = 0, blank(), IF(ISBLANK(osuus), [Myöhemmän tutkinnon suorittaneiden osuus (kaikki alat)_s], osuus))",
               ""
             ],
-            "isHidden": true
+            "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Myöhemmän tutkinnon suorittaneiden osuus (kaikki alat)_s",
@@ -938,25 +753,7 @@
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": [
-              "SELECT ",
-              "Tilastovuosi",
-              ",[Koulutusala, taso 3]",
-              ",[koulutusala_koodi]",
-              ",[Ennusteen koulutusaste]",
-              ",CASE\t",
-              "\tWHEN [Ennusteen koulutusaste] = 'Ammatillinen koulutus' THEN 1",
-              "\tWHEN[Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' THEN 2",
-              "\tELSE 3",
-              "END as ennusteen_koulutusaste_koodi",
-              ",koulutustyyppi as Koulutustyyppi",
-              ",[Myöhempi tutkinto]",
-              ",alkuperaisen_tutkinnon_suorittaneet",
-              ",myohemman_tutkinnon_suorittaneet",
-              ",Koulutusaste_taso2 as [Koulutusaste, taso 2]",
-              "FROM [VipunenTK].[dbo].[f_Tutkintoennuste]",
-              "WHERE alkuperaisen_tutkinnon_suorittaneet is not null or myohemman_tutkinnon_suorittaneet is not null"
-            ]
+            "value": "SELECT * FROM [VipunenTK].[dbo].[v_f_Tutkintoennusteaineisto_moninkertainen_koulutus]"
           },
           {
             "name": "_TM_ExtProp_DbTableName",
@@ -964,25 +761,7 @@
           },
           {
             "name": "QueryEditorSerialization",
-            "value": [
-              "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT ",
-              "Tilastovuosi",
-              ",[Koulutusala, taso 3]",
-              ",[koulutusala_koodi]",
-              ",[Ennusteen koulutusaste]",
-              ",CASE\t",
-              "\tWHEN [Ennusteen koulutusaste] = 'Ammatillinen koulutus' THEN 1",
-              "\tWHEN[Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' THEN 2",
-              "\tELSE 3",
-              "END as ennusteen_koulutusaste_koodi",
-              ",koulutustyyppi as Koulutustyyppi",
-              ",[Myöhempi tutkinto]",
-              ",alkuperaisen_tutkinnon_suorittaneet",
-              ",myohemman_tutkinnon_suorittaneet",
-              ",Koulutusaste_taso2 as [Koulutusaste, taso 2]",
-              "FROM [VipunenTK].[dbo].[f_Tutkintoennuste]",
-              "WHERE alkuperaisen_tutkinnon_suorittaneet is not null or myohemman_tutkinnon_suorittaneet is not null</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-            ]
+            "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT * FROM [VipunenTK].[dbo].[v_f_Tutkintoennusteaineisto_moninkertainen_koulutus]</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
           }
         ]
       },
@@ -1065,49 +844,13 @@
             "name": "Työvoimaosuus",
             "dataView": "full",
             "source": {
-              "query": [
-                "SELECT ",
-                "Tilastovuosi",
-                ",[Koulutusala, taso 3]",
-                ",[koulutusala_koodi]",
-                ",[Ennusteen koulutusaste]",
-                ",CASE\t",
-                "\tWHEN [Ennusteen koulutusaste] = 'Ammatillinen koulutus' THEN 1",
-                "\tWHEN[Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' THEN 2",
-                "\tELSE 3",
-                "END as ennusteen_koulutusaste_koodi",
-                ",[Ikä] as [Ikäryhmä]",
-                ",CASE WHEN [Pääasiallinen toiminta] = 'Työllinen opiskelija' THEN 'Työllinen opiskelija (vain lääkärit)' ELSE COALESCE([Pääasiallinen toiminta], 'Päätoiminen työllinen') END AS [Pääasiallinen toiminta]",
-                ",tutkinnon_suorittaneet",
-                ",tyovoima_yhteensa",
-                ",Koulutusaste_taso2 as [Koulutusaste, taso 2]",
-                "FROM [VipunenTK].[dbo].[f_Tutkintoennuste]",
-                "WHERE tutkinnon_suorittaneet is not null or tyovoima_yhteensa is not null"
-              ],
+              "query": "SELECT * FROM [VipunenTK].[dbo].[v_f_Tutkintoennusteaineisto_tyovoimaosuus]",
               "dataSource": "SqlServer dwitvipusql16 ANTERO"
             },
             "annotations": [
               {
                 "name": "QueryEditorSerialization",
-                "value": [
-                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT ",
-                  "Tilastovuosi",
-                  ",[Koulutusala, taso 3]",
-                  ",[koulutusala_koodi]",
-                  ",[Ennusteen koulutusaste]",
-                  ",CASE\t",
-                  "\tWHEN [Ennusteen koulutusaste] = 'Ammatillinen koulutus' THEN 1",
-                  "\tWHEN[Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' THEN 2",
-                  "\tELSE 3",
-                  "END as ennusteen_koulutusaste_koodi",
-                  ",[Ikä] as [Ikäryhmä]",
-                  ",CASE WHEN [Pääasiallinen toiminta] = 'Työllinen opiskelija' THEN 'Työllinen opiskelija (vain lääkärit)' ELSE COALESCE([Pääasiallinen toiminta], 'Päätoiminen työllinen') END AS [Pääasiallinen toiminta]",
-                  ",tutkinnon_suorittaneet",
-                  ",tyovoima_yhteensa",
-                  ",Koulutusaste_taso2 as [Koulutusaste, taso 2]",
-                  "FROM [VipunenTK].[dbo].[f_Tutkintoennuste]",
-                  "WHERE tutkinnon_suorittaneet is not null or tyovoima_yhteensa is not null</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-                ]
+                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT * FROM [VipunenTK].[dbo].[v_f_Tutkintoennusteaineisto_tyovoimaosuus]</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
               }
             ]
           }
@@ -1136,10 +879,10 @@
               "",
               "RETURN",
               "",
-              "lkm",
+              "IF([kytkin] = 0,blank(),  lkm)",
               ""
             ],
-            "isHidden": true
+            "formatString": "#,0"
           },
           {
             "name": "Työvoima yhteensä",
@@ -1164,9 +907,9 @@
               "",
               "RETURN",
               "",
-              "lkm"
+              "IF([kytkin] = 0,blank(),  lkm)"
             ],
-            "isHidden": true
+            "formatString": "#,0"
           },
           {
             "name": "Tutkinnon suorittaneen väestön työvoimaosuus",
@@ -1197,10 +940,11 @@
               "var osuus =  DIVIDE(osa,kaikki,blank())",
               "",
               "return",
-              "IF(ISBLANK(osa), [Tutkinnon suorittaneen väestön työvoimaosuus (kaikki alat)_s], osuus)",
+              "",
+              "IF([kytkin] = 0, blank(), IF(ISBLANK(osa), [Tutkinnon suorittaneen väestön työvoimaosuus (kaikki alat)_s], osuus))",
               ""
             ],
-            "isHidden": true
+            "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Tutkinnon suorittaneen väestön työvoimaosuus (kaikki alat)_s",
@@ -1221,25 +965,7 @@
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": [
-              "SELECT ",
-              "Tilastovuosi",
-              ",[Koulutusala, taso 3]",
-              ",[koulutusala_koodi]",
-              ",[Ennusteen koulutusaste]",
-              ",CASE\t",
-              "\tWHEN [Ennusteen koulutusaste] = 'Ammatillinen koulutus' THEN 1",
-              "\tWHEN[Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' THEN 2",
-              "\tELSE 3",
-              "END as ennusteen_koulutusaste_koodi",
-              ",[Ikä] as [Ikäryhmä]",
-              ",CASE WHEN [Pääasiallinen toiminta] = 'Työllinen opiskelija' THEN 'Työllinen opiskelija (vain lääkärit)' ELSE COALESCE([Pääasiallinen toiminta], 'Päätoiminen työllinen') END AS [Pääasiallinen toiminta]",
-              ",tutkinnon_suorittaneet",
-              ",tyovoima_yhteensa",
-              ",Koulutusaste_taso2 as [Koulutusaste, taso 2]",
-              "FROM [VipunenTK].[dbo].[f_Tutkintoennuste]",
-              "WHERE tutkinnon_suorittaneet is not null or tyovoima_yhteensa is not null"
-            ]
+            "value": "SELECT * FROM [VipunenTK].[dbo].[v_f_Tutkintoennusteaineisto_tyovoimaosuus]"
           },
           {
             "name": "_TM_ExtProp_DbTableName",
@@ -1247,25 +973,7 @@
           },
           {
             "name": "QueryEditorSerialization",
-            "value": [
-              "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT ",
-              "Tilastovuosi",
-              ",[Koulutusala, taso 3]",
-              ",[koulutusala_koodi]",
-              ",[Ennusteen koulutusaste]",
-              ",CASE\t",
-              "\tWHEN [Ennusteen koulutusaste] = 'Ammatillinen koulutus' THEN 1",
-              "\tWHEN[Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' THEN 2",
-              "\tELSE 3",
-              "END as ennusteen_koulutusaste_koodi",
-              ",[Ikä] as [Ikäryhmä]",
-              ",CASE WHEN [Pääasiallinen toiminta] = 'Työllinen opiskelija' THEN 'Työllinen opiskelija (vain lääkärit)' ELSE COALESCE([Pääasiallinen toiminta], 'Päätoiminen työllinen') END AS [Pääasiallinen toiminta]",
-              ",tutkinnon_suorittaneet",
-              ",tyovoima_yhteensa",
-              ",Koulutusaste_taso2 as [Koulutusaste, taso 2]",
-              "FROM [VipunenTK].[dbo].[f_Tutkintoennuste]",
-              "WHERE tutkinnon_suorittaneet is not null or tyovoima_yhteensa is not null</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-            ]
+            "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT * FROM [VipunenTK].[dbo].[v_f_Tutkintoennusteaineisto_tyovoimaosuus]</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
           }
         ]
       }
@@ -1300,6 +1008,192 @@
         "toColumn": "avain"
       }
     ],
+    "perspectives": [
+      {
+        "name": "Suojaamaton",
+        "tables": [
+          {
+            "name": "Aloittaneet",
+            "columns": [
+              {
+                "name": "Ennusteen koulutusaste"
+              },
+              {
+                "name": "Ikäryhmä"
+              },
+              {
+                "name": "Ikäryhmä ja koulutustyyppi"
+              },
+              {
+                "name": "Koodit Ennusteen koulutusaste"
+              },
+              {
+                "name": "Koodit Koulutusala"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "Koulutustyyppi"
+              },
+              {
+                "name": "Tilastovuosi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Aloittaneet_s"
+              }
+            ]
+          },
+          {
+            "name": "Ennuste",
+            "columns": [
+              {
+                "name": "Ennusteen koulutusaste"
+              },
+              {
+                "name": "Koodit Ennusteen koulutusaste"
+              },
+              {
+                "name": "Koodit Koulutusala"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Aloittaneet (ennuste)_s"
+              },
+              {
+                "name": "Tarjonta (ennuste)_s"
+              },
+              {
+                "name": "Tutkintojen määrä (ennuste)_s"
+              },
+              {
+                "name": "Tutkintojen määrä, opintojaan jatkavat vähennetty (ennuste)_s"
+              },
+              {
+                "name": "Työmarkkinoille tulevat tutkinnon suorittaneet (ennuste)_s"
+              }
+            ]
+          },
+          {
+            "name": "Kohorttipohjainen läpäisy",
+            "columns": [
+              {
+                "name": "Ennusteen koulutusaste"
+              },
+              {
+                "name": "Koodit Ennusteen koulutusaste"
+              },
+              {
+                "name": "Koodit Koulutusala"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "Koulutustyyppi"
+              },
+              {
+                "name": "Lukuvuosi"
+              },
+              {
+                "name": "Suoritetun tutkinnon tutkintolaji"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Tutkinnon suorittaneiden osuus kaikista aloittaneista_s"
+              }
+            ]
+          },
+          {
+            "name": "Moninkertainen koulutus",
+            "columns": [
+              {
+                "name": "Ennusteen koulutusaste"
+              },
+              {
+                "name": "Koodit Ennusteen koulutusaste"
+              },
+              {
+                "name": "Koodit Koulutusala"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "Myöhempi tutkinto"
+              },
+              {
+                "name": "Tilastovuosi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Myöhemmän tutkinnon suorittaneet_s"
+              },
+              {
+                "name": "Myöhemmän tutkinnon suorittaneiden osuus_s"
+              }
+            ]
+          },
+          {
+            "name": "Työvoimaosuus",
+            "columns": [
+              {
+                "name": "Ennusteen koulutusaste"
+              },
+              {
+                "name": "Ikäryhmä"
+              },
+              {
+                "name": "Koodit Ennusteen koulutusaste"
+              },
+              {
+                "name": "Koodit Koulutusala"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "Pääasiallinen toiminta"
+              },
+              {
+                "name": "Tilastovuosi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Tutkinnon suorittaneen väestön työvoimaosuus_s"
+              },
+              {
+                "name": "Tutkinnon suorittaneet_s"
+              },
+              {
+                "name": "Työvoima yhteensä_s"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "roles": [
       {
         "name": "Luku",
@@ -1308,6 +1202,10 @@
           {
             "memberName": "NT AUTHORITY\\IUSR",
             "memberId": "S-1-5-17"
+          },
+          {
+            "memberName": "DWI\\Z_P_Antero_Full_Read_TAB",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-2272"
           }
         ]
       }

@@ -91,13 +91,13 @@
               "",
               "RETURN",
               "",
-              "IF([kytkin], IF(AND(lkm2 < 5, lkm2 > 0), \"1-4\", MROUND(lkm2,3)), BLANK())",
+              "IF([kytkin2], IF(AND(lkm2 < 5, lkm2 > 0), \"1-4\", MROUND(lkm2,3)), BLANK())",
               ""
             ],
             "formatString": "#,0"
           },
           {
-            "name": "kytkin",
+            "name": "kytkin2",
             "expression": " IF(CALCULATE(HASONEVALUE(Ennuste[Ennusteen koulutusaste]), ALLEXCEPT(Ennuste, Ennuste[Ennusteen koulutusaste])), TRUE,FALSE)",
             "isHidden": true
           },
@@ -111,10 +111,11 @@
               "",
               "RETURN",
               "",
-              "lkm2",
+              "IF([kytkin] = 0, blank(), IF([kytkin2], lkm2))",
+              "",
               ""
             ],
-            "isHidden": true
+            "formatString": "#,0"
           },
           {
             "name": "Tutkintojen määrä (ennuste)",
@@ -127,7 +128,7 @@
               "",
               "RETURN",
               "",
-              "IF([kytkin], IF(AND(lkm < 5, lkm > 0), \"1-4\", MROUND(lkm,3)), BLANK())",
+              "IF([kytkin2], IF(AND(lkm < 5, lkm > 0), \"1-4\", MROUND(lkm,3)), BLANK())",
               ""
             ],
             "formatString": "#,0"
@@ -143,10 +144,11 @@
               "",
               "RETURN",
               "",
-              "lkm",
+              "IF([kytkin] = 0, blank(), IF([kytkin2], lkm))",
+              "",
               ""
             ],
-            "isHidden": true
+            "formatString": "#,0"
           },
           {
             "name": "Tutkintojen määrä (ennuste, kaikki alat)_s",
@@ -159,7 +161,7 @@
               "",
               "RETURN",
               "",
-              "IF([kytkin], lkm, BLANK())",
+              "IF([kytkin2], lkm, BLANK())",
               ""
             ],
             "isHidden": true
@@ -175,7 +177,7 @@
               "",
               "RETURN",
               "",
-              "IF([kytkin], IF(AND(lkm<5,lkm>0), \"1-4\", MROUND(lkm,3)),BLANK())",
+              "IF([kytkin2], IF(AND(lkm<5,lkm>0), \"1-4\", MROUND(lkm,3)),BLANK())",
               ""
             ],
             "formatString": "#,0"
@@ -191,9 +193,9 @@
               "",
               "RETURN",
               "",
-              "IF([kytkin], lkm, blank())"
+              "IF([kytkin] = 0, blank(), IF([kytkin2], lkm, blank()))"
             ],
-            "isHidden": true
+            "formatString": "0"
           },
           {
             "name": "Tutkintojen määrä, opintojaan jatkavat vähennetty (ennuste, kaikki alat)_s",
@@ -206,7 +208,7 @@
               "",
               "RETURN",
               "",
-              "IF([kytkin], lkm, blank())",
+              "IF([kytkin2], lkm, blank())",
               ""
             ],
             "isHidden": true
@@ -219,7 +221,7 @@
               "var lkm = [Tutkintojen määrä, opintojaan jatkavat vähennetty (ennuste)_s] * kerroin",
               "RETURN",
               "",
-              "IF([kytkin], IF(AND(lkm < 5, lkm > 0), \"1-4\", MROUND(lkm,3)), BLANK())",
+              "IF([kytkin2], IF(AND(lkm < 5, lkm > 0), \"1-4\", MROUND(lkm,3)), BLANK())",
               ""
             ],
             "formatString": "#,0"
@@ -233,7 +235,39 @@
               "",
               "RETURN",
               "",
-              "IF([kytkin], IF(AND(lkm > 0, lkm < 5),\"1-4\", MROUND(lkm,3)), BLANK())",
+              "IF([kytkin2], IF(AND(lkm > 0, lkm < 5),\"1-4\", MROUND(lkm,3)), BLANK())",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "kytkin",
+            "expression": "IF(LEFT(USERNAME(), 4) = \"DWI\\\", 1, 0)",
+            "isHidden": true
+          },
+          {
+            "name": "Tarjonta (ennuste)_s",
+            "expression": [
+              "",
+              "var kerroin = IF(OR(ISBLANK([Tutkinnon suorittaneen väestön työvoimaosuus_s]), [Tutkinnon suorittaneen väestön työvoimaosuus_s] > 1), [Tutkinnon suorittaneen väestön työvoimaosuus (kaikki alat)_s], [Tutkinnon suorittaneen väestön työvoimaosuus_s])",
+              "var lkm = [Tutkintojen määrä (ennuste)_s] * kerroin",
+              "",
+              "RETURN",
+              "",
+              "IF([kytkin] = 0, blank(), IF([kytkin2], lkm))",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Työmarkkinoille tulevat tutkinnon suorittaneet (ennuste)_s",
+            "expression": [
+              "",
+              "var kerroin = IF(OR(ISBLANK([Tutkinnon suorittaneen väestön työvoimaosuus_s]), [Tutkinnon suorittaneen väestön työvoimaosuus_s] > 1), [Tutkinnon suorittaneen väestön työvoimaosuus (kaikki alat)_s], [Tutkinnon suorittaneen väestön työvoimaosuus_s])",
+              "var lkm = [Tutkintojen määrä, opintojaan jatkavat vähennetty (ennuste)_s] * kerroin",
+              "RETURN",
+              "",
+              "IF([kytkin] = 0,blank(), IF([kytkin2], lkm, blank()))",
               ""
             ],
             "formatString": "#,0"
@@ -357,13 +391,14 @@
           {
             "name": "Aloittaneet_s",
             "expression": [
-              " SUM(Aloittaneet[Aloit2])",
+              " ",
+              "",
+              "IF([kytkin] = 0, blank(), SUM(Aloittaneet[Aloit2]))",
               "",
               "",
               ""
             ],
-            "formatString": "#,0",
-            "isHidden": true
+            "formatString": "#,0"
           }
         ],
         "annotations": [
@@ -518,10 +553,10 @@
               "var osuus = DIVIDE(lkm2,lkm1,blank())",
               "return ",
               "",
-              "IF(ISBLANK(osuus), [Tutkinnon suorittaneiden osuus kaikista aloittaneista (kaikki alat)_s], osuus)",
+              "IF([kytkin] = 0, blank(), IF(ISBLANK(osuus), [Tutkinnon suorittaneiden osuus kaikista aloittaneista (kaikki alat)_s], osuus))",
               ""
             ],
-            "isHidden": true
+            "formatString": "0.0 %;-0.0 %;0.0 %"
           }
         ],
         "annotations": [
@@ -654,10 +689,10 @@
               "",
               "RETURN",
               "",
-              "lkm",
+              "IF([kytkin] = 0, blank(),  lkm)",
               ""
             ],
-            "isHidden": true
+            "formatString": "#,0"
           },
           {
             "name": "Myöhemmän tutkinnon suorittaneiden osuus",
@@ -693,10 +728,10 @@
               "var osuus =  DIVIDE(osa,kaikki, blank())",
               "",
               "",
-              "RETURN IF(ISBLANK(osuus), [Myöhemmän tutkinnon suorittaneiden osuus (kaikki alat)_s], osuus)",
+              "RETURN IF([kytkin] = 0, blank(), IF(ISBLANK(osuus), [Myöhemmän tutkinnon suorittaneiden osuus (kaikki alat)_s], osuus))",
               ""
             ],
-            "isHidden": true
+            "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Myöhemmän tutkinnon suorittaneiden osuus (kaikki alat)_s",
@@ -844,10 +879,10 @@
               "",
               "RETURN",
               "",
-              "lkm",
+              "IF([kytkin] = 0,blank(),  lkm)",
               ""
             ],
-            "isHidden": true
+            "formatString": "#,0"
           },
           {
             "name": "Työvoima yhteensä",
@@ -872,9 +907,9 @@
               "",
               "RETURN",
               "",
-              "lkm"
+              "IF([kytkin] = 0,blank(),  lkm)"
             ],
-            "isHidden": true
+            "formatString": "#,0"
           },
           {
             "name": "Tutkinnon suorittaneen väestön työvoimaosuus",
@@ -905,10 +940,11 @@
               "var osuus =  DIVIDE(osa,kaikki,blank())",
               "",
               "return",
-              "IF(ISBLANK(osa), [Tutkinnon suorittaneen väestön työvoimaosuus (kaikki alat)_s], osuus)",
+              "",
+              "IF([kytkin] = 0, blank(), IF(ISBLANK(osa), [Tutkinnon suorittaneen väestön työvoimaosuus (kaikki alat)_s], osuus))",
               ""
             ],
-            "isHidden": true
+            "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Tutkinnon suorittaneen väestön työvoimaosuus (kaikki alat)_s",
@@ -972,6 +1008,192 @@
         "toColumn": "avain"
       }
     ],
+    "perspectives": [
+      {
+        "name": "Suojaamaton",
+        "tables": [
+          {
+            "name": "Aloittaneet",
+            "columns": [
+              {
+                "name": "Ennusteen koulutusaste"
+              },
+              {
+                "name": "Ikäryhmä"
+              },
+              {
+                "name": "Ikäryhmä ja koulutustyyppi"
+              },
+              {
+                "name": "Koodit Ennusteen koulutusaste"
+              },
+              {
+                "name": "Koodit Koulutusala"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "Koulutustyyppi"
+              },
+              {
+                "name": "Tilastovuosi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Aloittaneet_s"
+              }
+            ]
+          },
+          {
+            "name": "Ennuste",
+            "columns": [
+              {
+                "name": "Ennusteen koulutusaste"
+              },
+              {
+                "name": "Koodit Ennusteen koulutusaste"
+              },
+              {
+                "name": "Koodit Koulutusala"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Aloittaneet (ennuste)_s"
+              },
+              {
+                "name": "Tarjonta (ennuste)_s"
+              },
+              {
+                "name": "Tutkintojen määrä (ennuste)_s"
+              },
+              {
+                "name": "Tutkintojen määrä, opintojaan jatkavat vähennetty (ennuste)_s"
+              },
+              {
+                "name": "Työmarkkinoille tulevat tutkinnon suorittaneet (ennuste)_s"
+              }
+            ]
+          },
+          {
+            "name": "Kohorttipohjainen läpäisy",
+            "columns": [
+              {
+                "name": "Ennusteen koulutusaste"
+              },
+              {
+                "name": "Koodit Ennusteen koulutusaste"
+              },
+              {
+                "name": "Koodit Koulutusala"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "Koulutustyyppi"
+              },
+              {
+                "name": "Lukuvuosi"
+              },
+              {
+                "name": "Suoritetun tutkinnon tutkintolaji"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Tutkinnon suorittaneiden osuus kaikista aloittaneista_s"
+              }
+            ]
+          },
+          {
+            "name": "Moninkertainen koulutus",
+            "columns": [
+              {
+                "name": "Ennusteen koulutusaste"
+              },
+              {
+                "name": "Koodit Ennusteen koulutusaste"
+              },
+              {
+                "name": "Koodit Koulutusala"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "Myöhempi tutkinto"
+              },
+              {
+                "name": "Tilastovuosi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Myöhemmän tutkinnon suorittaneet_s"
+              },
+              {
+                "name": "Myöhemmän tutkinnon suorittaneiden osuus_s"
+              }
+            ]
+          },
+          {
+            "name": "Työvoimaosuus",
+            "columns": [
+              {
+                "name": "Ennusteen koulutusaste"
+              },
+              {
+                "name": "Ikäryhmä"
+              },
+              {
+                "name": "Koodit Ennusteen koulutusaste"
+              },
+              {
+                "name": "Koodit Koulutusala"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "Pääasiallinen toiminta"
+              },
+              {
+                "name": "Tilastovuosi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Tutkinnon suorittaneen väestön työvoimaosuus_s"
+              },
+              {
+                "name": "Tutkinnon suorittaneet_s"
+              },
+              {
+                "name": "Työvoima yhteensä_s"
+              }
+            ]
+          }
+        ]
+      }
+    ],
     "roles": [
       {
         "name": "Luku",
@@ -980,6 +1202,10 @@
           {
             "memberName": "NT AUTHORITY\\IUSR",
             "memberId": "S-1-5-17"
+          },
+          {
+            "memberName": "DWI\\Z_P_Antero_Full_Read_TAB",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-2272"
           }
         ]
       }
