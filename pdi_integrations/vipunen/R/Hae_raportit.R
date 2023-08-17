@@ -104,7 +104,7 @@ hae_raportit <- function(kieli) {
         visualisoinnit_rivit <- alaosiorL[which(str_detect(alaosiorL, nimiV))]
         
         # For-looppi kay lapi kaikki valitut rivit
-        for (k in 1:length(raportit_rivit)){
+        for (k in 1:length(visualisoinnit_rivit)){
           
           # Lisataan visualisoinnit-dataframeen, alasivun lahdekoodissa nakyvat visualisoinnit
           rivi <- data.frame(strsplit(visualisoinnit_rivit[k], nimiV))
