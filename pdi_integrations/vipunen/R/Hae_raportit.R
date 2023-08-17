@@ -11,16 +11,19 @@ hae_raportit <- function(kieli) {
       kieli_viittaus <- "fi-fi"
       sivu = "Sivut"
       nimi = "Raportit"
+      nimiV <- "app.powerbi.com"
     }
     if (kieli == "sv") {
       kieli_viittaus <- "sv-fi"
       sivu = "Sidor"
       nimi = "Rapporter"
+      nimiV <- "app.powerbi.com"
     }
     if (kieli == "en") {
       kieli_viittaus <- "en-gb"
       sivu = "Pages"
       nimi = "Reports"
+      nimiV <- "app.powerbi.com"
     }
     
     # Etusivun lahdekoodi
@@ -32,9 +35,11 @@ hae_raportit <- function(kieli) {
     osiot <- data.frame(substr(osiot[,1], 1,nchar(osiot[,1])-1), stringsAsFactors = FALSE)
     Encoding(osiot[[1]]) <- "UTF-8"
     
-    # Luodaan tyhja dataframe raporteille
+    # Luodaan tyhja dataframet
     raportit <- as.data.frame(matrix(ncol = 3))
     names(raportit) <- c("Raportti","Osio", "Alaosio")
+    visualisoinnit <- as.data.frame(matrix(ncol = 3))
+    names(visualisoinnit) <- c("Url", "Osio", "Alaosio")
     
     # For-looppi kay lapi kaikki paaosiot
     for (i in 1:nrow(osiot)) {
@@ -65,7 +70,7 @@ hae_raportit <- function(kieli) {
         alaosiot[nrow(alaosiot)+1,1] <- "/grundlaggande/Sidor/Ainevalinnat-2000-2019.aspx"
       }
       
-      Encoding(alaosiot[[1]]) <- "UTF-8"
+      Encoding(alaosiot[,1]) <- "UTF-8"
       
       # For-looppi kay lapi kaikki alasivut
       for (j in 1:nrow(alaosiot)){
@@ -94,13 +99,32 @@ hae_raportit <- function(kieli) {
             raportit <- raportit[!is.na(raportit$Raportti),]
           }
         }
+        
+        # Valitaan lahdekoodista ne rivit joissa on viittaus visualisointiin
+        visualisoinnit_rivit <- alaosiorL[which(str_detect(alaosiorL, nimiV))]
+        
+        # For-looppi kay lapi kaikki valitut rivit
+        for (k in 1:length(raportit_rivit)){
+          
+          # Lisataan visualisoinnit-dataframeen, alasivun lahdekoodissa nakyvat visualisoinnit
+          rivi <- data.frame(strsplit(visualisoinnit_rivit[k], nimiV))
+          if (nrow(rivi) > 0){
+            rivi[,2] <- osiot[i,1]
+            rivi[,3] <- alaosiot[j,1]
+            names(rivi)[1] <- "Url"
+            names(rivi)[2] <- "Osio"
+            names(rivi)[3] <- "Alaosio"
+            visualisoinnit <- union_all(rivi[,1:3], visualisoinnit)
+            visualisoinnit <- visualisoinnit[!is.na(visualisoinnit$Url),]
+          }
+        }
       }
     }
     
-    # Poistetaan duplikaattiraportit
+    # Poistetaan duplikaattiraportit ja -visualisoinnit
     raportit <- unique(raportit)
     
-    # Selvitetaan ja siistitaan raporttien nakokulmat
+    # Selvitetaan ja siistitaan raporttien ja visualisointien nakokulmat
     for (n in 1:nrow(raportit)){
       raportit[n,4] <- rm_between(raportit[n,1], '>', '</a>', extract=TRUE)[[1]][1]
     }
@@ -108,13 +132,29 @@ hae_raportit <- function(kieli) {
     raportit[,4] <- sub('<.*', '', raportit[,4])
     names(raportit)[4] <- "Näkökulma"
     Encoding(raportit[,4]) <- "UTF-8"
-
+    
     raportit[,4] <- str_replace_all(raportit[,4], "&#160;", " ")
     raportit[,4] <- str_replace_all(raportit[,4], "&quot;", "")
     
-    # Poistetaan turhat rivit ja muotoillaan raportit yhdenmukaisiksi
+    visualisoinnit <- visualisoinnit[substr(visualisoinnit$Url,2, 5) == "view", ]
+    for (n in 1:nrow(visualisoinnit)){
+      visualisoinnit[n,4] <- rm_between(visualisoinnit[n,1], '>', '</a>', extract=TRUE)[[1]][1]
+    }
+    visualisoinnit[,4] <- sub('.*">', '', visualisoinnit[,4])
+    visualisoinnit[,5] <- sub('.*>', '', visualisoinnit[,4])
+    visualisoinnit[visualisoinnit[,5] == "",5] <- visualisoinnit[visualisoinnit[,5] == "",4]
+    visualisoinnit <- visualisoinnit[,c(1:3,5)]
+    visualisoinnit[,4] <- sub('<.*', '', visualisoinnit[,4])
+    names(visualisoinnit)[4] <- "Nimi portaalissa"
+    Encoding(visualisoinnit[,4]) <- "UTF-8"
+    visualisoinnit[,4] <- str_replace_all(visualisoinnit[,4], "&#160;", " ")
+    
+    # Poistetaan turhat rivit ja muotoillaan yhdenmukaisiksi
     raportit <- raportit[substr(raportit[,1],1,nchar(nimi)) == nimi,]
     raportit$Raportti <- gsub("web", "Web", raportit$Raportti)
+    visualisoinnit[,1] <- paste0(nimiV,visualisoinnit$Url)
+    visualisoinnit[,1] <- sub('".*', '', visualisoinnit[,1])
+    visualisoinnit[,1] <- sub('&.*', '', visualisoinnit[,1])
     
     # Jaetaan raportit kahteen osaan: ("?Web=1" ja "")
     raportit1 <- raportit[grep("Web", raportit$Raportti) ,]
@@ -159,7 +199,11 @@ hae_raportit <- function(kieli) {
     Vipunen_raportit$Osio <- substr(Vipunen_raportit$Osio, 2,nchar(Vipunen_raportit$Osio))
     Vipunen_raportit$Alaosio <- gsub(".aspx", "", Vipunen_raportit$Alaosio)
     Vipunen_raportit$Alaosio <- substr(Vipunen_raportit$Alaosio, str_locate(Vipunen_raportit$Alaosio, sivu)+6, nchar(Vipunen_raportit$Alaosio))
-
+    visualisoinnit$Osio <- substr(visualisoinnit$Osio, 2,nchar(visualisoinnit$Osio))
+    visualisoinnit$Alaosio <- gsub(".aspx", "", visualisoinnit$Alaosio)
+    visualisoinnit$Alaosio <- substr(visualisoinnit$Alaosio, str_locate(visualisoinnit$Alaosio, sivu)+6, nchar(visualisoinnit$Alaosio))
+    
+    
     # Poistetaan duplikaattiraportit
     Nakokulmat <- Vipunen_raportit[!is.na(Vipunen_raportit[,4]) & Vipunen_raportit[,4] != "",]
     Vipunen_raportit <- unique(Vipunen_raportit[,1:3])
@@ -172,9 +216,13 @@ hae_raportit <- function(kieli) {
     Vipunen_raportit <- Vipunen_raportit[,c(2:5)]
     Encoding(Vipunen_raportit$Osio) <- "unknown"
     Encoding(Vipunen_raportit$Alaosio) <- "unknown"
+    visualisoinnit <- unique(visualisoinnit)
+    Encoding(visualisoinnit$Osio) <- "unknown"
+    Encoding(visualisoinnit$Alaosio) <- "unknown"
     
     # Tallennetaan tiedot exceliin
     write.csv2(Vipunen_raportit[,c(1:4)], paste0("D:/pdi_integrations/data/vipunen/raportit/Raportit_", kieli, ".csv"), row.names = FALSE)
+    write.csv2(visualisoinnit[,c(1:4)], paste0("D:/pdi_integrations/data/vipunen/raportit/Visualisoinnit_", kieli, ".csv"), row.names = FALSE)
     return(Vipunen_raportit)
   }
   else {
