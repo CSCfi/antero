@@ -20,7 +20,7 @@ GO
 
 
 
-CREATE VIEW [dbo].[v_sa_4_1_Perusopetuksen_lis‰opetuksen_p‰‰tt‰neiden_sijoittuminen] AS
+ALTER VIEW [dbo].[v_sa_4_1_Perusopetuksen_lis‰opetuksen_p‰‰tt‰neiden_sijoittuminen] AS
 
 /*
 Drop table [VipunenTK_DW].[dbo].[sa_4_1_Perusopetuksen_lis‰opetuksen_p‰‰tt‰neiden_sijoittuminen]
