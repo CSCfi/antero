@@ -1,7 +1,7 @@
 USE [ANTERO]
 GO
 
-/****** Object:  StoredProcedure [dw].[p_lataa_f_koski_esi_ja_perus_yksilollistaminen]    Script Date: 7.8.2023 16:01:17 ******/
+/****** Object:  StoredProcedure [dw].[p_lataa_f_koski_esi_ja_perus_yksilollistaminen]    Script Date: 25.8.2023 11:47:19 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -16,7 +16,9 @@ GO
 
 
 
---exec [dw].[p_lataa_f_koski_esi_ja_perus_yksilollistaminen] 
+
+
+
 
 CREATE OR ALTER PROCEDURE [dw].[p_lataa_f_koski_esi_ja_perus_yksilollistaminen] AS
 
@@ -58,7 +60,7 @@ LEFT JOIN dw.d_sukupuoli d1 ON d1.sukupuoli_koodi = t1.sukupuoli
 LEFT JOIN dw.d_ika d2 ON d2.ika_avain = t1.ika
 LEFT JOIN dw.d_kieli d3 ON d3.kieli_koodi = t1.aidinkieli
 LEFT JOIN dw.d_maatjavaltiot2 d4 ON d4.maatjavaltiot2_koodi = t1.kansalaisuus
-LEFT JOIN VipunenTK.dbo.d_perusopetuksen_tehostettu_tuki d5 ON d5.d_perusopetuksen_tehostettu_tuki_koodi = t1.erityinen_tuki_johdettu
+LEFT JOIN VipunenTK.dbo.d_perusopetuksen_tehostettu_tuki d5 ON d5.perusopetuksen_tehostettu_tuki_koodi = t1.erityinen_tuki_johdettu
 LEFT JOIN dw.d_kytkin d6 ON d6.kytkin_koodi = t1.erityisen_tuen_paatos
 LEFT JOIN dw.d_kytkin d7 ON d7.kytkin_koodi = t1.pidennetty_oppivelvollisuus
 LEFT JOIN dw.d_kytkin d8 ON d8.kytkin_koodi = t1.opiskelee_toiminta_alueittain
@@ -79,4 +81,8 @@ LEFT JOIN VipunenTK.dbo.d_perusopetuksen_oppimaaran_yksilollistaminen d14
 		end
 LEFT JOIN dw.d_organisaatioluokitus d15 ON d15.organisaatio_oid = t1.oppilaitos_oid
 
+
+
 GO
+
+
