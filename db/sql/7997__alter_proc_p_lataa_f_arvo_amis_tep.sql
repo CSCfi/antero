@@ -19,7 +19,7 @@ GO
 
 ALTER PROCEDURE [dw].[p_lataa_f_arvo_amis_tep] AS
 
---Lisätty loppuun "tyhjien" rivien generointi, jotta työpaikkakyselyn rahoitusraportilla näkyy myös järjestäjät, joilla kohteita vain yrittäjien oppisopimusjaksoja ohjaajakyselystä.
+--Lisätty "tyhjien" rivien generointi, jotta työpaikkakyselyn rahoitusraportilla näkyy myös järjestäjät, joilla kohteina vain yrittäjien oppisopimusjaksoja ohjaajakyselystä. JS 31.8.2023
 --Yhdistetty vastaajatunnisteita yhteisiä mittareita varten, lisätty myös kyselykohtaiset muuttujat tarvittavaa erottelua varten. JS 13.4.2022
 
 DROP TABLE IF EXISTS dw.f_arvo_amis_tep
