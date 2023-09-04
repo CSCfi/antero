@@ -80,6 +80,7 @@ while(($errors -lt 2) -and ($RefreshStatus -ne "Completed")) {
 	} else {
 		ECHO "Refresh attempt failed immediately"
 		$RefreshStatus = "Failed"
+		$RefreshError = ((Resolve-PowerBIError).Message)[0]
 		$errors = $errors + 1
 	}
 }

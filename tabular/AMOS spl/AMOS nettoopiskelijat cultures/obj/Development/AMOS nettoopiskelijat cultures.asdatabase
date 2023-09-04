@@ -4038,11 +4038,11 @@
             "name": "netto_opiskelijamaara_fi",
             "expression": [
               "",
-              "",
+              "/*",
               "--2020 poiminta oli ehditty tehdä ennen mittarituunausta",
               "var ehto_montavuotta = NOT(HASONEVALUE(Muuttujat[tilastovuosi_fi]))",
-              "var ehto_2020 = IF(HASONEVALUE(Muuttujat[tilastovuosi_fi]), IF(VALUES(Muuttujat[tilastovuosi_fi]) = 2020, 1, 0), 0)",
-              "",
+              "var ehto_2020 = IF(HASONEVALUE(Muuttujat[tilastovuosi_fi]); IF(VALUES(Muuttujat[tilastovuosi_fi]) = 2020; 1; 0); 0)",
+              "*/",
               "--nettomäärä kuukausitasolla, saa suodattua",
               "var taulu1 =",
               "ADDCOLUMNS(",
@@ -4064,11 +4064,12 @@
               "",
               "var lkm1 = SUMX(taulu1, [summa] * [apusarake_pv_kk])",
               "var lkm2 = CALCULATE(SUMX(taulu2, [paivat]), ALLEXCEPT(Muuttujat, Muuttujat[tilastovuosi_fi],Muuttujat[tilastokuukausi_fi]))",
-              "var nettolkm_perus = DIVIDE(lkm1, lkm2)",
+              "var nettolkm/*_perus*/ = DIVIDE(lkm1, lkm2)",
+              "/*",
               "var nettolkm_2020 = [netto_opiskelijamaara_2020]",
-              "var nettolkm = IF(ehto_montavuotta, BLANK(), IF(ehto_2020, nettolkm_2020, nettolkm_perus))",
-              "return IF(ISFILTERED([tilastokuukausi_fi]), ROUND(nettolkm, 1), ROUND(nettolkm, 2)) --tietosuoja toteutuu tällä tarkkuudella, koska suojattavana yksikkönä opiskelupäivä",
-              ""
+              "var nettolkm = IF(ehto_montavuotta; BLANK(); IF(ehto_2020; nettolkm_2020; nettolkm_perus))",
+              "*/",
+              "return IF(ISFILTERED([tilastokuukausi_fi]), ROUND(nettolkm, 1), ROUND(nettolkm, 2))"
             ],
             "formatString": "#,0.00"
           },
@@ -4257,7 +4258,8 @@
               ")",
               "return SUMX(taulu, [netto])"
             ],
-            "formatString": "0.00"
+            "formatString": "0.00",
+            "isHidden": true
           },
           {
             "name": "netto_opiskelijamaara_2020_test",
@@ -4288,7 +4290,8 @@
               "return IF(ISFILTERED([tilastokuukausi_fi]), ROUND(lkm, 1), ROUND(lkm, 2))",
               ""
             ],
-            "formatString": "0.00"
+            "formatString": "0.00",
+            "isHidden": true
           }
         ],
         "annotations": [

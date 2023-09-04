@@ -385,12 +385,6 @@
             "displayFolder": "Organisaatiomuuttujat"
           },
           {
-            "name": "Koulutusaste (2002)",
-            "dataType": "string",
-            "sourceColumn": "Koulutusaste 2002",
-            "displayFolder": "Koulutusmuuttujat"
-          },
-          {
             "name": "OKM ohjauksen ala",
             "dataType": "string",
             "sourceColumn": "OKM ohjauksen ala",
@@ -788,6 +782,12 @@
             "sourceColumn": "hakukohde_id"
           },
           {
+            "name": "alpa",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "alpa"
+          },
+          {
             "type": "calculated",
             "name": "alpa_key",
             "dataType": "string",
@@ -809,12 +809,6 @@
             "sourceColumn": "jarj. rahoitusmalliala yo 2017-2020"
           },
           {
-            "name": "alpa",
-            "dataType": "int64",
-            "isHidden": true,
-            "sourceColumn": "alpa"
-          },
-          {
             "name": "Rahoitusmalliala, yo 2021-2024",
             "dataType": "string",
             "sourceColumn": "Rahoitusmalliala, yo 2021-2024",
@@ -826,6 +820,12 @@
             "dataType": "int64",
             "isHidden": true,
             "sourceColumn": "jarj. rahoitusmalliala yo 2021-2024"
+          },
+          {
+            "name": "Koulutusaste (2002)",
+            "dataType": "string",
+            "sourceColumn": "Koulutusaste 2002",
+            "displayFolder": "Koulutusmuuttujat"
           }
         ],
         "partitions": [
@@ -3175,6 +3175,42 @@
             "displayFolder": "Tutkinnot\\Asemointi"
           },
           {
+            "name": "7v suorittaneet",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM(Muuttujat[7v_suorittaneet_lkm]))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
+            "displayFolder": "Läpäisy\\Asemointi"
+          },
+          {
+            "name": "7v aloittaneet",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([Yo 7v aloittaneet lkm]))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
+            "displayFolder": "Läpäisy\\Asemointi"
+          },
+          {
+            "name": "5v aloittaneet",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([5v_Aloittaneet_lkm]))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
+            "displayFolder": "Läpäisy\\Asemointi"
+          },
+          {
+            "name": "5v suorittaneet",
+            "expression": [
+              "",
+              "var lkm = CALCULATE(SUM([5v_suorittaneet_lkm]))",
+              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            ],
+            "displayFolder": "Läpäisy\\Asemointi"
+          },
+          {
             "name": "Kilpailtu tki-rahoitus",
             "expression": " SUM([Kilpailtu tutkimusrahoitus])",
             "formatString": "### ### ### ###.###",
@@ -3205,24 +3241,6 @@
             "name": "Amk tki htv",
             "expression": " SUM([Ammattikorkeakoulun TKI-henkilökunta])",
             "displayFolder": "Henkilöstö\\Asemointi"
-          },
-          {
-            "name": "7v suorittaneet",
-            "expression": [
-              "",
-              "var lkm = CALCULATE(SUM(Muuttujat[7v_suorittaneet_lkm]))",
-              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
-            ],
-            "displayFolder": "Läpäisy\\Asemointi"
-          },
-          {
-            "name": "7v aloittaneet",
-            "expression": [
-              "",
-              "var lkm = CALCULATE(SUM([Yo 7v aloittaneet lkm]))",
-              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
-            ],
-            "displayFolder": "Läpäisy\\Asemointi"
           },
           {
             "name": "AMK tutkinnot 2015-2017 KA",
@@ -3483,24 +3501,6 @@
             "formatString": "0.0 %;-0.0 %;0.0 %",
             "isHidden": true,
             "displayFolder": "Työllisyys\\Rakenteellinen kehittäminen"
-          },
-          {
-            "name": "5v suorittaneet",
-            "expression": [
-              "",
-              "var lkm = CALCULATE(SUM([5v_suorittaneet_lkm]))",
-              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
-            ],
-            "displayFolder": "Läpäisy\\Asemointi"
-          },
-          {
-            "name": "5v aloittaneet",
-            "expression": [
-              "",
-              "var lkm = CALCULATE(SUM([5v_Aloittaneet_lkm]))",
-              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
-            ],
-            "displayFolder": "Läpäisy\\Asemointi"
           },
           {
             "name": "Tutkijanuraporras II-IV henkilötyövuodet",
@@ -4711,55 +4711,6 @@
             "displayFolder": "Opiskelijapalaute\\Rakenteellinen kehittäminen"
           },
           {
-            "name": "5v aloittaneet_s",
-            "expression": "IF([kytkin] = 0, BLANK(), SUM(Muuttujat[5v_Aloittaneet_lkm]))"
-          },
-          {
-            "name": "5v suorittaneet_s",
-            "expression": "IF([kytkin] = 0, BLANK(), SUM(Muuttujat[5v_suorittaneet_lkm]))"
-          },
-          {
-            "name": "7v aloittaneet_s",
-            "expression": "IF([kytkin] = 0, BLANK(), SUM(Muuttujat[Yo 7v aloittaneet lkm]))"
-          },
-          {
-            "name": "7v suorittaneet_s",
-            "expression": "IF([kytkin] = 0, BLANK(), SUM(Muuttujat[7v_suorittaneet_lkm]))"
-          },
-          {
-            "name": "Seitsemän vuoden läpäisy (yo)_s",
-            "expression": " IF([kytkin] = 0, BLANK(), DIVIDE([7v suorittaneet_s], [7v aloittaneet_s]))",
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "Viiden vuoden läpäisy (amk)_s",
-            "expression": [
-              " IF([kytkin] = 0, BLANK(), DIVIDE([5v suorittaneet_s], [5v aloittaneet_s]))",
-              ""
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "sijoittuminen perusjoukko 1v tutkinnon jälkeen_s",
-            "expression": " IF([kytkin] = 0, BLANK(), CALCULATE(SUM(Muuttujat[sijoittuminen_1v_tutkinnon_jalkeen])))",
-            "formatString": "### ### ###.###"
-          },
-          {
-            "name": "sijoittuminen perusjoukko 3v tutkinnon jälkeen_s",
-            "expression": " IF([kytkin] = 0, BLANK(), CALCULATE(SUM(Muuttujat[sijoittuminen_3v_tutkinnon_jalkeen])))",
-            "formatString": "### ### ###.###"
-          },
-          {
-            "name": "Työlliset (1v tutkinnon jälkeen)_s",
-            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM(Muuttujat[työlliset 1v tutkinnon jälkeen])))",
-            "formatString": "### ### ###.###"
-          },
-          {
-            "name": "Työlliset (3v tutkinnon jälkeen)_s",
-            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM(Muuttujat[Työlliset 3v tutkinnon jälkeen])))",
-            "formatString": "### ### ###.###"
-          },
-          {
             "name": "Työllistyminen 1v (AMK-tutkinto) KA 2015-2017",
             "expression": [
               "",
@@ -5040,6 +4991,55 @@
             ],
             "formatString": "0.0",
             "displayFolder": "Haku ja valinta"
+          },
+          {
+            "name": "5v aloittaneet_s",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM(Muuttujat[5v_Aloittaneet_lkm]))"
+          },
+          {
+            "name": "5v suorittaneet_s",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM(Muuttujat[5v_suorittaneet_lkm]))"
+          },
+          {
+            "name": "7v aloittaneet_s",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM(Muuttujat[Yo 7v aloittaneet lkm]))"
+          },
+          {
+            "name": "7v suorittaneet_s",
+            "expression": "IF([kytkin] = 0, BLANK(), SUM(Muuttujat[7v_suorittaneet_lkm]))"
+          },
+          {
+            "name": "Seitsemän vuoden läpäisy (yo)_s",
+            "expression": " IF([kytkin] = 0, BLANK(), DIVIDE([7v suorittaneet_s], [7v aloittaneet_s]))",
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Viiden vuoden läpäisy (amk)_s",
+            "expression": [
+              " IF([kytkin] = 0, BLANK(), DIVIDE([5v suorittaneet_s], [5v aloittaneet_s]))",
+              ""
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "sijoittuminen perusjoukko 1v tutkinnon jälkeen_s",
+            "expression": " IF([kytkin] = 0, BLANK(), CALCULATE(SUM(Muuttujat[sijoittuminen_1v_tutkinnon_jalkeen])))",
+            "formatString": "### ### ###.###"
+          },
+          {
+            "name": "sijoittuminen perusjoukko 3v tutkinnon jälkeen_s",
+            "expression": " IF([kytkin] = 0, BLANK(), CALCULATE(SUM(Muuttujat[sijoittuminen_3v_tutkinnon_jalkeen])))",
+            "formatString": "### ### ###.###"
+          },
+          {
+            "name": "Työlliset (1v tutkinnon jälkeen)_s",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM(Muuttujat[työlliset 1v tutkinnon jälkeen])))",
+            "formatString": "### ### ###.###"
+          },
+          {
+            "name": "Työlliset (3v tutkinnon jälkeen)_s",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM(Muuttujat[Työlliset 3v tutkinnon jälkeen])))",
+            "formatString": "### ### ###.###"
           },
           {
             "name": "kytkin",
@@ -7785,19 +7785,19 @@
         "columns": [
           {
             "type": "calculatedTableColumn",
-            "name": "alpa_key",
-            "dataType": "string",
-            "isNameInferred": true,
-            "isDataTypeInferred": true,
-            "sourceColumn": "Muuttujat[alpa_key]"
-          },
-          {
-            "type": "calculatedTableColumn",
             "name": "alpa",
             "dataType": "int64",
             "isNameInferred": true,
             "isDataTypeInferred": true,
             "sourceColumn": "Muuttujat[alpa]"
+          },
+          {
+            "type": "calculatedTableColumn",
+            "name": "alpa_key",
+            "dataType": "string",
+            "isNameInferred": true,
+            "isDataTypeInferred": true,
+            "sourceColumn": "Muuttujat[alpa_key]"
           }
         ],
         "partitions": [
@@ -8124,10 +8124,6 @@
           {
             "memberName": "DWI\\T_SP_Excel_S_Read",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1732"
-          },
-          {
-            "memberName": "NT AUTHORITY\\IUSR",
-            "memberId": "S-1-5-17"
           },
           {
             "memberName": "DWI\\Z_P_Antero_Full_Read_TAB",
