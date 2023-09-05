@@ -7926,13 +7926,11 @@
           },
           {
             "name": "Julkaisut (YT Maat Kaikki Whole, ml. ESCI)",
-            "expression": "CALCULATE(DISTINCTCOUNT([PID YT maat Kaikki Whole]),not(ISBLANK('Bibliometriikka'[PID YT maat Kaikki Whole])))",
-            "formatString": "0",
-            "displayFolder": "Web of Science, ml. ESCI"
-          },
-          {
-            "name": "Julkaisut (Suomi 4v Ositettu, ml. ESCI)",
-            "expression": "SUM([Julkaisut Suomi 4 vuotta])",
+            "expression": [
+              "",
+              "",
+              "IF([yksi_maa], CALCULATE(DISTINCTCOUNT([PID YT maat Kaikki Whole]),not(ISBLANK('Bibliometriikka'[PID YT maat Kaikki Whole]))), \"NA\")"
+            ],
             "formatString": "#,0",
             "displayFolder": "Web of Science, ml. ESCI"
           },
@@ -7956,7 +7954,11 @@
           },
           {
             "name": "Julkaisut (YT Maat Kaikki 4 vuotta, ml. ESCI)",
-            "expression": "sumx(summarize('Bibliometriikka',[IDkoodi],[Julkaisut YTmaatKaikki 4 vuotta]),[Julkaisut YTmaatKaikki 4 vuotta])",
+            "expression": [
+              "",
+              "",
+              "IF([yksi_maa], sumx(summarize('Bibliometriikka',[IDkoodi],[Julkaisut YTmaatKaikki 4 vuotta]),[Julkaisut YTmaatKaikki 4 vuotta]), \"NA\")"
+            ],
             "formatString": "#,0",
             "displayFolder": "Web of Science, ml. ESCI"
           },
@@ -7976,8 +7978,8 @@
               "\t",
               "return",
               "",
-              "IF([Julkaisut (YT Maat Kaikki 4 vuotta, ml. ESCI)]>=50,",
-              "DIVIDE(SUMX(taulu, [TOP 10 Indeksi YTmaatKaikki 4 vuotta]), SUMX(taulu, [TOP 10 Julkaisut YTmaatKaikki 4 vuotta])),BLANK())"
+              "IF([apumittari_vuosi] >= 29, BLANK(), IF([yksi_maa],  IF([Julkaisut (YT maat Kaikki 4 vuotta, ml. ESCI)_rajaus]>=50,",
+              "DIVIDE(SUMX(taulu, [TOP 10 Indeksi YTmaatKaikki 4 vuotta]), SUMX(taulu, [TOP 10 Julkaisut YTmaatKaikki 4 vuotta])),BLANK()), \"NA\"))"
             ],
             "formatString": "0.00",
             "displayFolder": "Web of Science Core (vain viittausindeksit)"
@@ -7998,7 +8000,7 @@
               "\t",
               "return",
               "",
-              "IF([Julkaisut (YT Maat Kaikki 4 vuotta, ml. ESCI)]>=50,DIVIDE(SUMX(taulu,[Sitaatiot YTmaatKaikki 4 vuotta]),SUMX(taulu,[Analyysijulkaisut YTmaatKaikki 4 vuotta])),BLANK())"
+              "IF([apumittari_vuosi] >= 29, BLANK(), IF([yksi_maa], IF([Julkaisut (YT maat Kaikki 4 vuotta, ml. ESCI)_rajaus]>=50,DIVIDE(SUMX(taulu,[Sitaatiot YTmaatKaikki 4 vuotta]),SUMX(taulu,[Analyysijulkaisut YTmaatKaikki 4 vuotta])),BLANK()), BLANK()))"
             ],
             "formatString": "0.00",
             "displayFolder": "Web of Science Core (vain viittausindeksit)"
@@ -8144,7 +8146,7 @@
               "\t",
               "return",
               "",
-              "IF([Julkaisut (YT Maat Kaikki 4 vuotta, ml. ESCI)]>=50,DIVIDE(SUMX(taulu,[TOP 1 Indeksi YTmaatKaikki 4 vuotta, Kaikki]), SUMX(taulu, [TOP 1 Julkaisut YTmaatKaikki 4 vuotta, Kaikki])),BLANK())",
+              "IF([apumittari_vuosi] >= 29, BLANK(), IF([yksi_maa],  IF([Julkaisut (YT maat Kaikki 4 vuotta, ml. ESCI)_rajaus]>=50,DIVIDE(SUMX(taulu,[TOP 1 Indeksi YTmaatKaikki 4 vuotta, Kaikki]), SUMX(taulu, [TOP 1 Julkaisut YTmaatKaikki 4 vuotta, Kaikki])),BLANK()), \"NA\"))",
               ""
             ],
             "formatString": "0.00",
@@ -8172,8 +8174,7 @@
               "\t",
               "return",
               "",
-              "IF([Julkaisut (YT Maat Kaikki 4 vuotta, ml. ESCI)]>=50,",
-              "DIVIDE(SUMX(taulu, [TOP 10 Indeksi YTmaatKaikki 4 vuotta, Kaikki]), SUMX(taulu, [TOP 10 Julkaisut YTmaatKaikki 4 vuotta, Kaikki])),BLANK())",
+              "IF([apumittari_vuosi] >= 29, BLANK(), IF(HASONEVALUE(Bibliometriikka[Maa]), IF([Julkaisut (YT Maat Kaikki 4 vuotta, ml. ESCI)]>=50, DIVIDE(SUMX(taulu, [TOP 10 Indeksi YTmaatKaikki 4 vuotta, Kaikki]), SUMX(taulu, [TOP 10 Julkaisut YTmaatKaikki 4 vuotta, Kaikki])), BLANK()), \"NA\"))",
               ""
             ],
             "formatString": "0.00",
@@ -8195,7 +8196,7 @@
               "\t",
               "return",
               "",
-              "IF([Julkaisut (YT Maat Kaikki 4 vuotta, ml. ESCI)]>=50,DIVIDE(SUMX(taulu,[Sitaatiot YTmaatKaikki 4 vuotta, Kaikki]),SUMX(taulu,[Analyysijulkaisut YTmaatKaikki 4 vuotta, Kaikki])),BLANK())",
+              "IF([apumittari_vuosi] >= 29, BLANK(), IF([yksi_maa], IF([Julkaisut (YT Maat Kaikki 4 vuotta, ml. ESCI)]>=50,DIVIDE(SUMX(taulu,[Sitaatiot YTmaatKaikki 4 vuotta, Kaikki]),SUMX(taulu,[Analyysijulkaisut YTmaatKaikki 4 vuotta, Kaikki])),BLANK())))",
               ""
             ],
             "formatString": "0.00",
@@ -8230,6 +8231,37 @@
             "expression": "IF(AND([Julkaisut (Suomi 4v Ositettu, ml. ESCI)]>=50,[Sisäinen kattavuus (suomi 4v, ml. ESCI)]>=0.4),CALCULATE(DIVIDE((SUM([TOP 1 Indeksi Suomi 4 vuotta, Kaikki])/SUM([TOP 1 Julkaisut Suomi 4 vuotta, Kaikki])),1),FILTER('Bibliometriikka','Bibliometriikka'[Vuosikoodi]<29)),BLANK())",
             "formatString": "0.00",
             "displayFolder": "Web of Science, ml. ESCI"
+          },
+          {
+            "name": "Julkaisut (Suomi 4v Ositettu, ml. ESCI)",
+            "expression": "SUM([Julkaisut Suomi 4 vuotta])",
+            "formatString": "#,0",
+            "displayFolder": "Web of Science, ml. ESCI"
+          },
+          {
+            "name": "apumittari_vuosi",
+            "expression": " MIN(Bibliometriikka[Vuosikoodi])",
+            "isHidden": true
+          },
+          {
+            "name": "yksi_maa",
+            "expression": " HASONEVALUE(Bibliometriikka[Maa])",
+            "isHidden": true
+          },
+          {
+            "name": "Julkaisut (YT maat Kaikki 4 vuotta, ml. ESCI)_rajaus",
+            "expression": " sumx(summarize('Bibliometriikka',[IDkoodi],[Julkaisut YTmaatKaikki 4 vuotta]),[Julkaisut YTmaatKaikki 4 vuotta])",
+            "isHidden": true
+          },
+          {
+            "name": "Julkaisut (YT Maat Kaikki Whole, ml. ESCI)_rajaus",
+            "expression": [
+              "",
+              "",
+              "CALCULATE(DISTINCTCOUNT([PID YT maat Kaikki Whole]),not(ISBLANK('Bibliometriikka'[PID YT maat Kaikki Whole])))",
+              ""
+            ],
+            "isHidden": true
           }
         ],
         "annotations": [
@@ -20972,9 +21004,6 @@
                 "name": "Julkaisut (Suomi 1v Osittamaton, ml. ESCI)"
               },
               {
-                "name": "Julkaisut (Suomi 4v Ositettu, ml. ESCI)"
-              },
-              {
                 "name": "Viittausindeksi (Suomi 4v)"
               },
               {
@@ -20991,6 +21020,9 @@
               },
               {
                 "name": "Top1-indeksi (Suomi 4v, ml. ESCI)"
+              },
+              {
+                "name": "Julkaisut (Suomi 4v Ositettu, ml. ESCI)"
               }
             ]
           }
@@ -21111,13 +21143,13 @@
             ],
             "measures": [
               {
-                "name": "Julkaisut (Suomi 4v Ositettu, ml. ESCI)"
-              },
-              {
                 "name": "Top10-indeksi (Suomi 4v)"
               },
               {
                 "name": "Top10-indeksi (Suomi 4v, ml. ESCI)"
+              },
+              {
+                "name": "Julkaisut (Suomi 4v Ositettu, ml. ESCI)"
               }
             ]
           }
@@ -21996,9 +22028,6 @@
                 "name": "Julkaisut (Suomi 1v Osittamaton, ml. ESCI)"
               },
               {
-                "name": "Julkaisut (Suomi 4v Ositettu, ml. ESCI)"
-              },
-              {
                 "name": "Viittausindeksi (Suomi 4v)"
               },
               {
@@ -22015,6 +22044,9 @@
               },
               {
                 "name": "Top1-indeksi (Suomi 4v, ml. ESCI)"
+              },
+              {
+                "name": "Julkaisut (Suomi 4v Ositettu, ml. ESCI)"
               }
             ]
           },
@@ -23436,9 +23468,6 @@
                 "name": "Julkaisut (Suomi 1v Osittamaton, ml. ESCI)"
               },
               {
-                "name": "Julkaisut (Suomi 4v Ositettu, ml. ESCI)"
-              },
-              {
                 "name": "Top10-indeksi (Suomi 4v)"
               },
               {
@@ -23455,6 +23484,9 @@
               },
               {
                 "name": "Top1-indeksi (Suomi 4v)"
+              },
+              {
+                "name": "Julkaisut (Suomi 4v Ositettu, ml. ESCI)"
               }
             ]
           }
