@@ -5974,6 +5974,18 @@
             "dataType": "int64",
             "isHidden": true,
             "sourceColumn": "Open Access jarjestys"
+          },
+          {
+            "name": "Sisäinen kattavuus YTmaatKaikki 4 vuotta",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "Sisäinen kattavuus YTmaatKaikki 4 vuotta"
+          },
+          {
+            "name": "Sisäinen kattavuus YTmaatBilat 4 vuotta",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "Sisäinen kattavuus YTmaatBilat 4 vuotta"
           }
         ],
         "partitions": [
@@ -6765,6 +6777,22 @@
                   "        <int>193</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Sisäinen kattavuus YTmaatKaikki 4 vuotta</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>333</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Sisäinen kattavuus YTmaatBilat 4 vuotta</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>322</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -7535,6 +7563,22 @@
                   "        <int>95</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Sisäinen kattavuus YTmaatKaikki 4 vuotta</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>96</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Sisäinen kattavuus YTmaatBilat 4 vuotta</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>97</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -7754,6 +7798,22 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Sisäinen kattavuus YTmaatKaikki 4 vuotta</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Sisäinen kattavuus YTmaatBilat 4 vuotta</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -7865,7 +7925,7 @@
               "",
               "return\t\t",
               "",
-              "IF([Julkaisut (YT Maat Bilat 4 vuotta, ml. ESCI)]>=50,DIVIDE(SUMX(taulu, [TOP 10 Indeksi YTmaatBilat 4 vuotta]),SUMX(taulu,[TOP 10 Julkaisut YTmaatBilat 4 vuotta])),BLANK())"
+              "IF(AND([Julkaisut (YT Maat Bilat 4 vuotta, ml. ESCI)]>=50,[Sisäinen kattavuus (YT maat Bilat 4 vuotta, ml. ESCI)] >= 0.4),DIVIDE(SUMX(taulu, [TOP 10 Indeksi YTmaatBilat 4 vuotta]),SUMX(taulu,[TOP 10 Julkaisut YTmaatBilat 4 vuotta])),BLANK())"
             ],
             "formatString": "0.00",
             "displayFolder": "Web of Science Core (vain viittausindeksit)"
@@ -7892,7 +7952,7 @@
               "\t",
               "return",
               "\t\t",
-              "IF([Julkaisut (YT Maat Bilat 4 vuotta, ml. ESCI)]>=50,DIVIDE(SUMX(taulu, [Sitaatiot YTmaatBilat 4 vuotta]),SUMX(taulu,[Analyysijulkaisut YTmaatBilat 4 vuotta])),BLANK())"
+              "IF(AND([Julkaisut (YT Maat Bilat 4 vuotta, ml. ESCI)]>=50,[Sisäinen kattavuus (YT maat Bilat 4 vuotta, ml. ESCI)] >= 0.4),DIVIDE(SUMX(taulu, [Sitaatiot YTmaatBilat 4 vuotta]),SUMX(taulu,[Analyysijulkaisut YTmaatBilat 4 vuotta])),BLANK())"
             ],
             "formatString": "0.00",
             "displayFolder": "Web of Science Core (vain viittausindeksit)"
@@ -7957,7 +8017,8 @@
             "expression": [
               "",
               "",
-              "IF([yksi_maa], sumx(summarize('Bibliometriikka',[IDkoodi],[Julkaisut YTmaatKaikki 4 vuotta]),[Julkaisut YTmaatKaikki 4 vuotta]), \"NA\")"
+              "IF([yksi_maa], sumx(summarize('Bibliometriikka',[IDkoodi],[Julkaisut YTmaatKaikki 4 vuotta]),[Julkaisut YTmaatKaikki 4 vuotta]), \"NA\")",
+              ""
             ],
             "formatString": "#,0",
             "displayFolder": "Web of Science, ml. ESCI"
@@ -7978,8 +8039,7 @@
               "\t",
               "return",
               "",
-              "IF([apumittari_vuosi] >= 29, BLANK(), IF([yksi_maa],  IF([Julkaisut (YT maat Kaikki 4 vuotta, ml. ESCI)_rajaus]>=50,",
-              "DIVIDE(SUMX(taulu, [TOP 10 Indeksi YTmaatKaikki 4 vuotta]), SUMX(taulu, [TOP 10 Julkaisut YTmaatKaikki 4 vuotta])),BLANK()), \"NA\"))"
+              "IF([apumittari_vuosi] >= 29, BLANK(), IF([yksi_maa],  IF(AND([Julkaisut (YT maat Kaikki 4 vuotta, ml. ESCI)_rajaus]>=50,[Sisäinen kattavuus (YT maat Kaikki 4 vuotta, ml. ESCI)]>=0.4),DIVIDE(SUMX(taulu, [TOP 10 Indeksi YTmaatKaikki 4 vuotta]), SUMX(taulu, [TOP 10 Julkaisut YTmaatKaikki 4 vuotta])),BLANK()), \"NA\"))"
             ],
             "formatString": "0.00",
             "displayFolder": "Web of Science Core (vain viittausindeksit)"
@@ -8000,7 +8060,7 @@
               "\t",
               "return",
               "",
-              "IF([apumittari_vuosi] >= 29, BLANK(), IF([yksi_maa], IF([Julkaisut (YT maat Kaikki 4 vuotta, ml. ESCI)_rajaus]>=50,DIVIDE(SUMX(taulu,[Sitaatiot YTmaatKaikki 4 vuotta]),SUMX(taulu,[Analyysijulkaisut YTmaatKaikki 4 vuotta])),BLANK()), BLANK()))"
+              "IF([apumittari_vuosi] >= 29, BLANK(), IF([yksi_maa], IF(AND([Julkaisut (YT maat Kaikki 4 vuotta, ml. ESCI)_rajaus]>=50,[Sisäinen kattavuus (YT maat Kaikki 4 vuotta, ml. ESCI)]>=0.4),DIVIDE(SUMX(taulu,[Sitaatiot YTmaatKaikki 4 vuotta]),SUMX(taulu,[Analyysijulkaisut YTmaatKaikki 4 vuotta])),BLANK()), BLANK()))"
             ],
             "formatString": "0.00",
             "displayFolder": "Web of Science Core (vain viittausindeksit)"
@@ -8102,7 +8162,7 @@
               "",
               "return\t\t",
               "",
-              "IF([Julkaisut (YT Maat Bilat 4 vuotta, ml. ESCI)]>=50,DIVIDE(SUMX(taulu, [TOP 10 Indeksi YTmaatBilat 4 vuotta, Kaikki]),SUMX(taulu,[TOP 10 Julkaisut YTmaatBilat 4 vuotta, Kaikki])),BLANK())",
+              "IF(AND([Julkaisut (YT Maat Bilat 4 vuotta, ml. ESCI)]>=50,[Sisäinen kattavuus (YT maat Bilat 4 vuotta, ml. ESCI)] >= 0.4),DIVIDE(SUMX(taulu, [TOP 10 Indeksi YTmaatBilat 4 vuotta, Kaikki]),SUMX(taulu,[TOP 10 Julkaisut YTmaatBilat 4 vuotta, Kaikki])),BLANK())",
               ""
             ],
             "formatString": "0.00",
@@ -8124,7 +8184,7 @@
               "\t",
               "return",
               "\t\t",
-              "IF([Julkaisut (YT Maat Bilat 4 vuotta, ml. ESCI)]>=50,DIVIDE(SUMX(taulu, [Sitaatiot YTmaatBilat 4 vuotta, Kaikki]),SUMX(taulu,[Analyysijulkaisut YTmaatBilat 4 vuotta, Kaikki])),BLANK())",
+              "IF(AND([Julkaisut (YT Maat Bilat 4 vuotta, ml. ESCI)]>=50,[Sisäinen kattavuus (YT maat Bilat 4 vuotta, ml. ESCI)] >= 0.4),DIVIDE(SUMX(taulu, [Sitaatiot YTmaatBilat 4 vuotta, Kaikki]),SUMX(taulu,[Analyysijulkaisut YTmaatBilat 4 vuotta, Kaikki])),BLANK())",
               ""
             ],
             "formatString": "0.00",
@@ -8146,7 +8206,7 @@
               "\t",
               "return",
               "",
-              "IF([apumittari_vuosi] >= 29, BLANK(), IF([yksi_maa],  IF([Julkaisut (YT maat Kaikki 4 vuotta, ml. ESCI)_rajaus]>=50,DIVIDE(SUMX(taulu,[TOP 1 Indeksi YTmaatKaikki 4 vuotta, Kaikki]), SUMX(taulu, [TOP 1 Julkaisut YTmaatKaikki 4 vuotta, Kaikki])),BLANK()), \"NA\"))",
+              "IF([apumittari_vuosi] >= 29, BLANK(), IF([yksi_maa],  IF(AND([Julkaisut (YT maat Kaikki 4 vuotta, ml. ESCI)_rajaus]>=50,[Sisäinen kattavuus (YT maat Kaikki 4 vuotta, ml. ESCI)]>=0.4),DIVIDE(SUMX(taulu,[TOP 1 Indeksi YTmaatKaikki 4 vuotta, Kaikki]), SUMX(taulu, [TOP 1 Julkaisut YTmaatKaikki 4 vuotta, Kaikki])),BLANK()), \"NA\"))",
               ""
             ],
             "formatString": "0.00",
@@ -8174,7 +8234,7 @@
               "\t",
               "return",
               "",
-              "IF([apumittari_vuosi] >= 29, BLANK(), IF(HASONEVALUE(Bibliometriikka[Maa]), IF([Julkaisut (YT Maat Kaikki 4 vuotta, ml. ESCI)]>=50, DIVIDE(SUMX(taulu, [TOP 10 Indeksi YTmaatKaikki 4 vuotta, Kaikki]), SUMX(taulu, [TOP 10 Julkaisut YTmaatKaikki 4 vuotta, Kaikki])), BLANK()), \"NA\"))",
+              "IF([apumittari_vuosi] >= 29, BLANK(), IF(HASONEVALUE(Bibliometriikka[Maa]), IF(AND([Julkaisut (YT maat Kaikki 4 vuotta, ml. ESCI)_rajaus]>=50,[Sisäinen kattavuus (YT maat Kaikki 4 vuotta, ml. ESCI)]>=0.4), DIVIDE(SUMX(taulu, [TOP 10 Indeksi YTmaatKaikki 4 vuotta, Kaikki]), SUMX(taulu, [TOP 10 Julkaisut YTmaatKaikki 4 vuotta, Kaikki])), BLANK()), \"NA\"))",
               ""
             ],
             "formatString": "0.00",
@@ -8196,7 +8256,7 @@
               "\t",
               "return",
               "",
-              "IF([apumittari_vuosi] >= 29, BLANK(), IF([yksi_maa], IF([Julkaisut (YT Maat Kaikki 4 vuotta, ml. ESCI)]>=50,DIVIDE(SUMX(taulu,[Sitaatiot YTmaatKaikki 4 vuotta, Kaikki]),SUMX(taulu,[Analyysijulkaisut YTmaatKaikki 4 vuotta, Kaikki])),BLANK())))",
+              "IF([apumittari_vuosi] >= 29, BLANK(), IF([yksi_maa], IF(AND([Julkaisut (YT maat Kaikki 4 vuotta, ml. ESCI)_rajaus]>=50,[Sisäinen kattavuus (YT maat Kaikki 4 vuotta, ml. ESCI)]>=0.4),DIVIDE(SUMX(taulu,[Sitaatiot YTmaatKaikki 4 vuotta, Kaikki]),SUMX(taulu,[Analyysijulkaisut YTmaatKaikki 4 vuotta, Kaikki])),BLANK())))",
               ""
             ],
             "formatString": "0.00",
@@ -8262,6 +8322,16 @@
               ""
             ],
             "isHidden": true
+          },
+          {
+            "name": "Sisäinen kattavuus (YT maat Kaikki 4 vuotta, ml. ESCI)",
+            "expression": "SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Sisäinen kattavuus YTmaatKaikki 4 vuotta]),[Sisäinen kattavuus YTmaatKaikki 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],Bibliometriikka[Julkaisut YTmaatKaikki 4 vuotta]),[Julkaisut YTmaatKaikki 4 vuotta])",
+            "formatString": "0.00"
+          },
+          {
+            "name": "Sisäinen kattavuus (YT maat Bilat 4 vuotta, ml. ESCI)",
+            "expression": "SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],[Sisäinen kattavuus YTmaatBilat 4 vuotta]),[Sisäinen kattavuus YTmaatBilat 4 vuotta])/SUMX(SUMMARIZE('Bibliometriikka',[IDkoodi],Bibliometriikka[Julkaisut YTmaatBilat 4 vuotta]),[Julkaisut YTmaatBilat 4 vuotta])",
+            "formatString": "0.00"
           }
         ],
         "annotations": [
@@ -9057,6 +9127,22 @@
               "        <int>193</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Sisäinen kattavuus YTmaatKaikki 4 vuotta</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>333</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Sisäinen kattavuus YTmaatBilat 4 vuotta</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>322</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -9827,6 +9913,22 @@
               "        <int>95</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Sisäinen kattavuus YTmaatKaikki 4 vuotta</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>96</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Sisäinen kattavuus YTmaatBilat 4 vuotta</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>97</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -10041,6 +10143,22 @@
               "    <item>",
               "      <key>",
               "        <string>Open Access jarjestys</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Sisäinen kattavuus YTmaatKaikki 4 vuotta</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Sisäinen kattavuus YTmaatBilat 4 vuotta</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
