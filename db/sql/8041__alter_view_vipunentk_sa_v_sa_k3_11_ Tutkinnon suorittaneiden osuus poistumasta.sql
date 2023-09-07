@@ -11,7 +11,6 @@ GO
 
 
 
-
 --parsittu muoto tiedoston nimeksi:
 --v_sa_K3_11_Tutkinnon_suorittaneiden_osuus_poistumasta
 

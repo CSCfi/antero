@@ -11,7 +11,6 @@ GO
 
 
 
-
 ALTER VIEW [dbo].[v_sa_2_7_ammatillisen_koulutuksen_erityisopetuksen_opiskelijat_ja_tutkinnon_suorittaneet_jarjestajittain] AS
 SELECT [tilv] = CAST(tilv as nvarchar(4))
       ,[lahde] = CAST(COALESCE(NULLIF(lahde , ''), '-1') as nvarchar(2))
