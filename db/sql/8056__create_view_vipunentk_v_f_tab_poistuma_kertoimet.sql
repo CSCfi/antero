@@ -8,7 +8,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-ALTER VIEW [dbo].[v_f_tab_poistuma_kertoimet] AS
+CREATE OR ALTER VIEW [dbo].[v_f_tab_poistuma_kertoimet] AS
 
 SELECT
 	f.tilastovuosi as Tilastovuosi,
