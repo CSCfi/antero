@@ -86,9 +86,9 @@ tdHE <- tempdir()
 download.file("https://cordis.europa.eu/data/cordis-HORIZONprojects-csv.zip",tfHE, mode = "wb", method = "libcurl")
 file.names <- unzip(tfHE, exdir = tdHE)
 
-ProjectsHE <- read.csv(file.names[1], header = TRUE, sep = ";", encoding="UTF-8")
-OrgsHE <- read.csv(file.names[2], header = TRUE, sep = ";", encoding="UTF-8")
-LegalBasisHE <- read.csv(file.names[3], header = TRUE, sep = ";", encoding="UTF-8")
+ProjectsHE <- read.csv(file.names[4], header = TRUE, sep = ";", encoding="UTF-8")
+OrgsHE <- read.csv(file.names[3], header = TRUE, sep = ";", encoding="UTF-8")
+LegalBasisHE <- read.csv(file.names[2], header = TRUE, sep = ";", encoding="UTF-8")
 
 tfHE2 <- tempfile()
 tdHE2 <- tempdir()
