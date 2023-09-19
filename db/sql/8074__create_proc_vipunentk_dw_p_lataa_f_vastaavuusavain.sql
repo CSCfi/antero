@@ -52,14 +52,14 @@ BEGIN
 			[Koulutusala, taso 2] = case f.koulutusala_taso3_id when -1 then d6b.iscfinarrow2013 else d6c.iscfinarrow2013 end,
 			[Koulutusala, taso 3] = d6c.iscfi2013
 		FROM [VipunenTK].[dbo].[f_alueella_tyossakayvat_toimialoittain] f
-		LEFT JOIN dbo.d_mitenna_ammatti d1 on d1.id=f.mitenna_ammatti_id
+		LEFT JOIN VipunenTK.dbo.d_mitenna_ammatti d1 on d1.id=f.mitenna_ammatti_id
 		--LEFT JOIN dbo.d_toimiala_tk d2 on d2.id=f.tol2008_id
-		LEFT JOIN dbo.d_ika d3 on d3.id=f.ika_id
-		LEFT JOIN dbo.d_koulutusluokitus d4 on d4.id=f.koulutusaste_id
-		LEFT JOIN dbo.d_koulutusluokitus d4b on d4b.id=f.koulutusaste_taso2_id
-		LEFT JOIN dbo.d_koulutusluokitus d6b on d6b.id=f.koulutusala_taso2_id
-		LEFT JOIN dbo.d_koulutusluokitus d6c on d6c.id=f.koulutusala_taso3_id
-		LEFT JOIN dbo.d_mitenna_toimiala d8 on d8.id=f.mitenna_toimiala_id
+		LEFT JOIN VipunenTK.dbo.d_ika d3 on d3.id=f.ika_id
+		LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d4 on d4.id=f.koulutusaste_id
+		LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d4b on d4b.id=f.koulutusaste_taso2_id
+		LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d6b on d6b.id=f.koulutusala_taso2_id
+		LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d6c on d6c.id=f.koulutusala_taso3_id
+		LEFT JOIN VipunenTK.dbo.d_mitenna_toimiala d8 on d8.id=f.mitenna_toimiala_id
 		WHERE	d3.ika5v in ('25–29-vuotiaat', '30–34-vuotiaat', '35–39-vuotiaat', '40–44-vuotiaat') AND 
 				tilv between @alkuVuosi -2 AND @alkuVuosi AND
 				d4b.Koulutusaste_taso2_koodi IN (-1,31,32,33,41,51,61,62,71,3,72,73,81,82)
