@@ -1,0 +1,126 @@
+{
+  "name": "SemanticModel",
+  "compatibilityLevel": 1200,
+  "model": {
+    "culture": "fi-FI",
+    "dataSources": [
+      {
+        "name": "SqlServer dwitvipusql16 VipunenTK",
+        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=VipunenTK;Integrated Security=SSPI;Persist Security Info=false",
+        "impersonationMode": "impersonateServiceAccount",
+        "annotations": [
+          {
+            "name": "ConnectionEditUISource",
+            "value": "SqlServer"
+          }
+        ]
+      }
+    ],
+    "tables": [
+      {
+        "name": "Muuttujat",
+        "columns": [
+          {
+            "name": "Tilastovuosi",
+            "dataType": "int64",
+            "sourceColumn": "Tilastovuosi",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "lkm",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "lkm",
+            "sourceProviderType": "Double"
+          },
+          {
+            "name": "Koulutusaste",
+            "dataType": "string",
+            "sourceColumn": "Koulutusaste",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "Koulutusala, taso 1",
+            "dataType": "string",
+            "sourceColumn": "Koulutusala, taso 1",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Koulutusala, taso 2",
+            "dataType": "string",
+            "sourceColumn": "Koulutusala, taso 2",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Koulutusala, taso 3",
+            "dataType": "string",
+            "sourceColumn": "Koulutusala, taso 3",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Ammattiryhmä 1. taso",
+            "dataType": "string",
+            "sourceColumn": "Ammattiryhmä 1. taso",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Ammattiryhmä 2. taso",
+            "dataType": "string",
+            "sourceColumn": "Ammattiryhmä 2. taso",
+            "sourceProviderType": "WChar"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Muuttujat",
+            "dataView": "full",
+            "source": {
+              "query": " SELECT [dbo].[v_f_tab_toimiala_koulutusala_vastaavuusavain].* FROM [dbo].[v_f_tab_toimiala_koulutusala_vastaavuusavain] ",
+              "dataSource": "SqlServer dwitvipusql16 VipunenTK"
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Lukumäärä",
+            "expression": " SUM(Muuttujat[lkm])",
+            "formatString": "#,0.00"
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [dbo].[v_f_tab_toimiala_koulutusala_vastaavuusavain].* FROM [dbo].[v_f_tab_toimiala_koulutusala_vastaavuusavain] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "v_f_tab_toimiala_koulutusala_vastaavuusavain"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dbo"
+          }
+        ]
+      }
+    ],
+    "roles": [
+      {
+        "name": "Luku",
+        "modelPermission": "read",
+        "members": [
+          {
+            "memberName": "DWI\\Z_P_Antero_Full_Read_TAB",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-2272"
+          }
+        ]
+      }
+    ],
+    "annotations": [
+      {
+        "name": "ClientCompatibilityLevel",
+        "value": "400"
+      }
+    ]
+  },
+  "id": "SemanticModel"
+}
