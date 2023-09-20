@@ -1,7 +1,7 @@
 USE [ANTERO]
 GO
 
-/****** Object:  StoredProcedure [dw].[p_lataa_f_arvo_kandi]    Script Date: 20.9.2023 8:17:49 ******/
+/****** Object:  StoredProcedure [dw].[p_lataa_f_arvo_kandi]    Script Date: 18.9.2023 22:30:27 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -12,7 +12,17 @@ GO
 ALTER PROCEDURE [dw].[p_lataa_f_arvo_kandi] AS
 
 DROP TABLE IF EXISTS [dw].[f_arvo_kandi_MAIN_QUERY]
+DROP TABLE IF EXISTS [sa].temp_arvo_kandi_uudetkysymykset
 DROP TABLE IF EXISTS [sa].temp_arvo_kandi_taustat
+
+--uudet kysymykset
+select distinct f.kysymysid, f.kysymysversio, f3.kysymysryhmaid, f4.jarjestys, f3.kysymys_fi, f3.kysymys_sv, f3.kysymys_en
+into [sa].temp_arvo_kandi_uudetkysymykset 
+from Arvo_SA.sa.sa_arvo_vastaukset_kandi f
+inner join Arvo_SA.sa.sa_arvo_kysymykset f3 on f3.kysymysid = f.kysymysid and f3.kysymysversio = f.kysymysversio
+inner join Arvo_SA.sa.sa_arvo_kysely_kysymysryhma f4 on f4.kysymysryhmaid = f3.kysymysryhmaid and f4.kyselyid = f.kyselyid
+inner join Arvo_SA.sa.sa_arvo_kyselykerrat f5 on f5.kyselykertaid = f.kyselykertaid
+where f5.kyselykerta_vuosi = 2021 and f5.tyyppi = 'kandipalaute' AND f3.taustakysymyksen_tyyppi is null
 
 --taustat (indeksointi tarvittaessa)
 select distinct a.kyselykertaid, a.vastaajaid, a.kysymysid, a.kysymysversio, a.numerovalinta as koodi, b.taustakysymyksen_tyyppi 
@@ -45,6 +55,7 @@ SELECT k.oppilaitoskoodi
 	,f.kyselyid
 	,f.kyselykertaid
 	,CASE
+		WHEN uk.kysymysid is not null THEN uk.kysymysid
 		WHEN f3.kysymysid in('1088', '4069') THEN '11238'
 		WHEN f3.kysymysid in('1115', '4084') THEN '11253'
 		WHEN f3.kysymysid in('1117', '4086') THEN '11279'
@@ -52,30 +63,33 @@ SELECT k.oppilaitoskoodi
 		WHEN f3.kysymysid in('1143', '4093') THEN '11257'
 		WHEN f3.kysymysid in('1132', '4111') THEN '11265'
 		ELSE f3.kysymysid
-	END as kysymysid
+		END as kysymysid
 	,CASE
-		WHEN f3.kysymysid in ('1088', '4069','1115', '4084','1117', '4086','1120', '4089','1143', '4093','1132', '4111') THEN '1'
+		WHEN uk.kysymysid is not null THEN uk.kysymysversio
+		WHEN f3.kysymysid in('1088', '4069', '11238', '1115', '4084','1117', '4086','1120', '4089','1143', '4093', '1132', '4111') THEN '1'
 		ELSE f3.kysymysversio
 	END as kysymysversio
 	,f3.kysymysid as kysymysid_rahoitusmalli
 	,f3.kysymysversio as kysymysversio_rahoitusmalli
 	,CASE 
+		WHEN uk.kysymysryhmaid is not null THEN uk.kysymysryhmaid
 		WHEN f3.kysymysid in('1088', '4069') THEN '1185'
 		WHEN f3.kysymysid in('1115', '4084') THEN '1186'
 		WHEN f3.kysymysid in('1117', '4086', '1120', '4089') THEN '1187'
 		WHEN f3.kysymysid in('1143', '4093') THEN '1188'
 		WHEN f3.kysymysid in('1132', '4111') THEN '1189'
 		ELSE f3.kysymysryhmaid
-	END as kysymysryhmaid
+		END as kysymysryhmaid
 	,f3.kysymysryhmaid as kysymysryhmaid_rahoitusmalli
 	,CASE 
+		WHEN uk.kysymysryhmaid is not null THEN uk.jarjestys
 		WHEN f3.kysymysid in('1088', '4069') THEN '1'
 		WHEN f3.kysymysid in('1115', '4084') THEN '2'
 		WHEN f3.kysymysid in('1117', '4086', '1120', '4089') THEN '3'
 		WHEN f3.kysymysid in('1143', '4093') THEN '4'
 		WHEN f3.kysymysid in('1132', '4111') THEN '5'
 		ELSE f4.jarjestys
-	END as kysymysryhmajarjestys
+		END as kysymysryhmajarjestys
 	,f4.jarjestys as kysymysryhma_rahoitusmallijarjestys
 	,k.suorituskieli as suorituskieli
 	,f6.id as teema
@@ -94,6 +108,8 @@ LEFT JOIN  Arvo_SA.sa.sa_arvo_teemat f6 on f6.koodi = f3.teema
 LEFT JOIN [sa].temp_arvo_kandi_taustat tk_sp ON tk_sp.vastaajaid = f.vastaajaid AND tk_sp.kyselykertaid = f.kyselykertaid AND tk_sp.taustakysymyksen_tyyppi = 'sukupuoli'
 LEFT JOIN [sa].temp_arvo_kandi_taustat tk_ika ON tk_ika.vastaajaid = f.vastaajaid AND tk_ika.kyselykertaid = f.kyselykertaid AND tk_ika.taustakysymyksen_tyyppi = 'ika'
 LEFT JOIN [sa].temp_arvo_kandi_taustat tk_pk ON tk_pk.vastaajaid = f.vastaajaid AND tk_pk.kyselykertaid = f.kyselykertaid AND tk_pk.taustakysymyksen_tyyppi = 'pohjakoulutus'
+--uudet kysymykset 
+LEFT JOIN [sa].temp_arvo_kandi_uudetkysymykset uk ON uk.kysymys_fi = f3.kysymys_fi AND uk.kysymys_sv = f3.kysymys_sv AND uk.kysymys_en = f3.kysymys_en
 
 WHERE f5.tyyppi = 'kandipalaute' 
 AND f3.valtakunnallinen = 1 
@@ -179,6 +195,7 @@ ALTER TABLE [dw].[f_arvo_kandi] ADD  CONSTRAINT [PK__f_arvo_kandi] PRIMARY KEY C
 DROP TABLE IF EXISTS [dw].[f_arvo_kandi_MAIN_QUERY]
 DROP TABLE IF EXISTS [sa].temp_arvo_kandi_uudetkysymykset
 DROP TABLE IF EXISTS [sa].temp_arvo_kandi_taustat
+
 
 GO
 
