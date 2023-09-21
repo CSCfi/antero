@@ -2116,13 +2116,18 @@
               "var max_vuosi = MAX(Ammattirakenne[Tilastovuosi])",
               "var min_vuosi = MIN(Ammattirakenne[Tilastovuosi])",
               "var max_e_vuosi = MAX(Ennustevuosi[Vuosi])",
+              "var lg = IF(max_e_vuosi < min_vuosi, BLANK(),",
+              "IF([Trendi_s] <= 0, (LOG10((CALCULATE([Trendi_s], Ennustevuosi[Vuosi] = e_vuosi) * 100) / CALCULATE([Trendi_s], Ennustevuosi[Vuosi] = max_vuosi))),LOG( [Trendi_s] * 100 / CALCULATE([Trendi_s], Ennustevuosi[Vuosi] = max_vuosi))))",
+              "var lkm =  CALCULATE(SUM('Ammattirakenne'[lkm]), 'Ammattirakenne'[Tilastovuosi] = max_e_vuosi)",
               "",
               "",
               "RETURN",
-              "IF(max_e_vuosi < min_vuosi, BLANK(),",
-              "IF([Trendi_s] <= 0, (LOG10((CALCULATE([Trendi_s], Ennustevuosi[Vuosi] = e_vuosi) * 100) / CALCULATE([Trendi_s], Ennustevuosi[Vuosi] = max_vuosi))),LOG( [Trendi_s] * 100 / CALCULATE([Trendi_s], Ennustevuosi[Vuosi] = max_vuosi))))"
+              "",
+              "IF(max_e_vuosi > max_vuosi, CALCULATE(SUM(Ammattirakenne[lkm]), Ammattirakenne[Tilastovuosi] = max_vuosi) / 100 *  (((lg - 2) * 100) / 2) + CALCULATE(SUM(Ammattirakenne[lkm]), Ammattirakenne[Tilastovuosi] = max_vuosi),",
+              "IF(min_vuosi > max_e_vuosi,BLANK(), lkm))",
+              ""
             ],
-            "formatString": "0.00"
+            "formatString": "#,0"
           }
         ],
         "annotations": [
