@@ -41,7 +41,11 @@ test -z "$DATABASE_PASS" && "ERROR Database password missing. Exiting" && exit 1
 # Database hosts are chosen based on environment
 if [ "$env" == "dev22" ]; then
   export DATABASE_HOST="dwitvipusql22.csc.fi:1433"
-  export TABULAR_HOST="dwitviputab122"
+  export TABULAR_HOST="dwitviputab22"
+fi
+if [ "$env" == "prod22" ]; then
+  export DATABASE_HOST="dwipvipusql22.csc.fi:1433"
+  export TABULAR_HOST="dwipviputab22"
 fi
 if [ "$env" == "test" ]; then
   export DATABASE_HOST="dwitvipusql16.csc.fi:1433"
