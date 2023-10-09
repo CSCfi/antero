@@ -8,6 +8,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+
 ALTER   VIEW [dw].[v_koski_oppivelvollisten_opintojen kulku] AS 
 
 SELECT 
