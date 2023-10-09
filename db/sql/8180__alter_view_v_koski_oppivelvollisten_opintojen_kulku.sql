@@ -9,7 +9,6 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 DROP VIEW IF EXISTS [dw].[v_koski_oppivelvollisten_opintojen kulku]
-
 GO
 
 CREATE OR ALTER  VIEW [dw].[v_koski_oppivelvollisten_opintojen_kulku] AS 
