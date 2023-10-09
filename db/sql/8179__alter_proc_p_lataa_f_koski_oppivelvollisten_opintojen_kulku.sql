@@ -8,6 +8,14 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+DROP TABLE IF EXISTS Koski_SA.sa.temp_oppivelvollisten_opintojen_kulku_tilanne
+DROP TABLE IF EXISTS Koski_SA.sa.temp_oppivelvollisten_opintojen_kulku_B
+DROP TABLE IF EXISTS Koski_SA.sa.temp_oppivelvollisten_opintojen_kulku_rajaukset
+DROP TABLE IF EXISTS Koski_SA.sa.temp_oppivelvollisten_opintojen_kulku
+DROP TABLE IF EXISTS Koski_SA.sa.temp_oppivelvolliset_esirajaukset_opintojen_kulku
+
+GO
+
 
 ALTER PROCEDURE [dw].[p_lataa_f_koski_oppivelvollisten_opintojen_kulku] AS
 
