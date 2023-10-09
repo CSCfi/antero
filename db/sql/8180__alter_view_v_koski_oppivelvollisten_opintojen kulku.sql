@@ -1,13 +1,12 @@
 USE [ANTERO]
 GO
 
-/****** Object:  View [dw].[v_koski_oppivelvollisten_opintojen kulku]    Script Date: 9.10.2023 13:34:42 ******/
+/****** Object:  View [dw].[v_koski_oppivelvollisten_opintojen kulku]    Script Date: 9.10.2023 13:43:04 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
-
 
 ALTER   VIEW [dw].[v_koski_oppivelvollisten_opintojen kulku] AS 
 
@@ -92,5 +91,3 @@ LEFT JOIN ANTERO.dw.d_kytkin d28 on d28.id = f.d_kytkin_ei_koul_id
 LEFT JOIN ANTERO.dw.d_kytkin d29 on d29.id = f.d_kytkin_kesk_ov_suor_val_id
 
 GO
-
-USE [ANTERO]
