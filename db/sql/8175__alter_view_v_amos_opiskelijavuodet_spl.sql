@@ -1,4 +1,4 @@
-USE [ANTERO_02102023]
+USE [ANTERO]
 GO
 
 /****** Object:  View [dw].[v_amos_opiskelijavuodet_spl]    Script Date: 9.10.2023 10:26:15 ******/
