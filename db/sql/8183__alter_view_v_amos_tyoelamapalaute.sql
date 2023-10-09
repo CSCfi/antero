@@ -10,10 +10,6 @@ GO
 
 
 
-
-
-
-
 ALTER VIEW [dw].[v_amos_tyoelamapalaute] AS
 
 --Kuutiossa summataan pyöristyserojen takia sellaisenaan alta vain kohteet, vastanneet ja pisteet, loput lasketaan kuutiossa. JS 22.9.2023

@@ -1,4 +1,4 @@
-jäädytysnäkymää vartenUSE [ANTERO]
+USE [ANTERO]
 GO
 
 /****** Object:  View [dw].[v_amos_netto_opiskelijat_cultures]    Script Date: 9.10.2023 17:37:30 ******/
