@@ -196,28 +196,29 @@ ALTER PROCEDURE [dw].[p_lataa_f_lukio_opiskelijat_laskentapaiva] AS
 
 DROP TABLE IF EXISTS ANTERO.dw.f_koski_lukio_opiskelijat_laskentapaiva
 
-SELECT DISTINCT [opiskeluoikeus_oid]
-		  ,YEAR(alkamispaiva) AS Aloitusvuosi
-		  ,laskentapaiva
-		  ,[sisaltyy_opiskeluoikeuteen_oid]
-		  ,[oppija_oid]
-		  ,[oppilaitos_oid]
-		  ,[koulutustoimija_oid]
-		  ,[koulutusmuoto]
-		  ,[koulutusmoduuli_koodiarvo]
-		  ,[alkamispaiva]
-		  ,[paattymispaiva]
-		  ,oppimaara
-		  ,suorituksen_tyyppi
-		  ,[toimipiste_oid]
-		  ,[toimipiste_nimi]
-		  ,Sukupuoli
-		  ,Ika
-		  ,aidinkieli
-		,kansalaisuus
-		,syntymaaika
-		,majoitus
-		,sisaoppilaitosmainen_majoitus
+SELECT DISTINCT 
+	[opiskeluoikeus_oid]
+	,YEAR(alkamispaiva) AS Aloitusvuosi
+	,laskentapaiva
+	,[sisaltyy_opiskeluoikeuteen_oid]
+	,[oppija_oid]
+	,[oppilaitos_oid]
+	,[koulutustoimija_oid]
+	,[koulutusmuoto]
+	,[koulutusmoduuli_koodiarvo]
+	,[alkamispaiva]
+	,[paattymispaiva]
+	,oppimaara
+	,suorituksen_tyyppi
+	,[toimipiste_oid]
+	,[toimipiste_nimi]
+	,Sukupuoli
+	,Ika
+	,aidinkieli
+	,kansalaisuus
+	,syntymaaika
+	,majoitus
+	,sisaoppilaitosmainen_majoitus
 INTO ANTERO.dw.f_koski_lukio_opiskelijat_laskentapaiva
 FROM(
 SELECT [opiskeluoikeus_oid]
@@ -300,7 +301,7 @@ SELECT [opiskeluoikeus_oid]
 		  ,ps.[arviointi_paiva]
 		  ,ps.[toimipiste_oid]
 		  ,ps.[toimipiste_nimi]
-		  ,Sukupuoli = coalesce(h.sukupuoli, '-1')
+		  ,Sukupuoli = coalesce(henk.sukupuoli, '-1')
 --		  ,Ika = YEAR(ooa.tila_alkanut) - YEAR(henk.syntymaaika)
 		  ,temp_table.laskentapaiva
 		  ,CASE 
