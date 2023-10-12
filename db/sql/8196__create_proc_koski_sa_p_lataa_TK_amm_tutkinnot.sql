@@ -13,7 +13,7 @@ GO
 
 
 
-ALTER PROCEDURE [dbo].[p_lataa_TK_amm_tutkinnot] @vuosi int = null AS
+CREATE PROCEDURE [dbo].[p_lataa_TK_amm_tutkinnot] @vuosi int = null AS
 
 DECLARE @vuosi2 as int = case when @vuosi is null then year(getdate())-1 else @vuosi end
 

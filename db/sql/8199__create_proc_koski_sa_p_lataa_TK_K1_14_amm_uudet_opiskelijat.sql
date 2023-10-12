@@ -14,7 +14,7 @@ DROP PROCEDURE IF EXISTS [dbo].[p_lataa_TK_K1_14_amm_uudet_opiskelijat]
 
 --Proseduuri, joka poimii yhden vuoden ammatillisen koulutuksen uusien opiskelijoiden henkilötunnistetiedot. Lopputulos toimitetaan TK:een.
 
-ALTER PROCEDURE [dbo].[p_lataa_TK_K1_14_amm_uudet_opiskelijat] @vuosi int = 2018 AS
+CREATE PROCEDURE [dbo].[p_lataa_TK_K1_14_amm_uudet_opiskelijat] @vuosi int = 2018 AS
 
 DECLARE @vuosi2 as int = @vuosi
 DECLARE @taulu_rahoitus TABLE (koodi int)
