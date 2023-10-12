@@ -9,6 +9,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 DROP PROCEDURE IF EXISTS [dbo].[p_lataa_TK_K1_14_amm_uudet_opiskelijat]
+GO
 
 
 
