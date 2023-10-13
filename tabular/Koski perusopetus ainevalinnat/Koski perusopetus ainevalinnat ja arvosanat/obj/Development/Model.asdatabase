@@ -2736,6 +2736,159 @@
             "name": "Perusopetuksen oppimäärän suorittaneet",
             "expression": "[vuosiluokan_suorittaneet] --keskiarvojen keskiarvo -raportille",
             "formatString": "#,0"
+          },
+          {
+            "name": "Keskiarvojen 1. kvintiili",
+            "expression": [
+              "",
+              "var kvintiili = 1",
+              "var ehto = ISBLANK([vuosiluokan_suorittaneet]) || [vuosiluokan_suorittaneet] = \"1-4\"",
+              "var taulu = ",
+              "ADDCOLUMNS(",
+              "\tSUMMARIZE(Muuttujat, [apusarake_paatason_suoritus_id])",
+              "\t, \"ka\"",
+              "\t, CALCULATE(AVERAGE([jarjestys_arvosana]), Muuttujat[jarjestys_arvosana] < 11, Muuttujat[jarjestys_arvosana] > 4, Muuttujat[pakollinen_valinnainen_fi] = \"Pakollinen\")",
+              ")",
+              "var kvintiili_arvo = PERCENTILEX.INC(taulu, [ka], kvintiili*0.20)",
+              "",
+              "return IF(ehto, BLANK(), kvintiili_arvo)"
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "Lukuaineiden keskiarvojen 1. kvintiili",
+            "expression": [
+              "",
+              "CALCULATE(",
+              "\t[Keskiarvojen 1. kvintiili]",
+              "\t, Muuttujat[oppiaineryhma_fi] <> \"Taide- ja taitoaineet\"",
+              ")"
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "Keskiarvojen 2. kvintiili",
+            "expression": [
+              "",
+              "var kvintiili = 2",
+              "var ehto = ISBLANK([vuosiluokan_suorittaneet]) || [vuosiluokan_suorittaneet] = \"1-4\"",
+              "var taulu = ",
+              "ADDCOLUMNS(",
+              "\tSUMMARIZE(Muuttujat, [apusarake_paatason_suoritus_id])",
+              "\t, \"ka\"",
+              "\t, CALCULATE(AVERAGE([jarjestys_arvosana]), Muuttujat[jarjestys_arvosana] < 11, Muuttujat[jarjestys_arvosana] > 4, Muuttujat[pakollinen_valinnainen_fi] = \"Pakollinen\")",
+              ")",
+              "var kvintiili_arvo = PERCENTILEX.INC(taulu, [ka], kvintiili*0.20)",
+              "",
+              "return IF(ehto, BLANK(), kvintiili_arvo)"
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "Keskiarvojen 3. kvintiili",
+            "expression": [
+              "",
+              "var kvintiili = 3",
+              "var ehto = ISBLANK([vuosiluokan_suorittaneet]) || [vuosiluokan_suorittaneet] = \"1-4\"",
+              "var taulu = ",
+              "ADDCOLUMNS(",
+              "\tSUMMARIZE(Muuttujat, [apusarake_paatason_suoritus_id])",
+              "\t, \"ka\"",
+              "\t, CALCULATE(AVERAGE([jarjestys_arvosana]), Muuttujat[jarjestys_arvosana] < 11, Muuttujat[jarjestys_arvosana] > 4, Muuttujat[pakollinen_valinnainen_fi] = \"Pakollinen\")",
+              ")",
+              "var kvintiili_arvo = PERCENTILEX.INC(taulu, [ka], kvintiili*0.20)",
+              "",
+              "return IF(ehto, BLANK(), kvintiili_arvo)",
+              ""
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "Keskiarvojen 4. kvintiili",
+            "expression": [
+              "",
+              "var kvintiili = 4",
+              "var ehto = ISBLANK([vuosiluokan_suorittaneet]) || [vuosiluokan_suorittaneet] = \"1-4\"",
+              "var taulu = ",
+              "ADDCOLUMNS(",
+              "\tSUMMARIZE(Muuttujat, [apusarake_paatason_suoritus_id])",
+              "\t, \"ka\"",
+              "\t, CALCULATE(AVERAGE([jarjestys_arvosana]), Muuttujat[jarjestys_arvosana] < 11, Muuttujat[jarjestys_arvosana] > 4, Muuttujat[pakollinen_valinnainen_fi] = \"Pakollinen\")",
+              ")",
+              "var kvintiili_arvo = PERCENTILEX.INC(taulu, [ka], kvintiili*0.20)",
+              "",
+              "return IF(ehto, BLANK(), kvintiili_arvo)",
+              ""
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "Lukuaineiden keskiarvojen 2. kvintiili",
+            "expression": [
+              "",
+              "CALCULATE(",
+              "\t[Keskiarvojen 2. kvintiili]",
+              "\t, Muuttujat[oppiaineryhma_fi] <> \"Taide- ja taitoaineet\"",
+              ")",
+              ""
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "Lukuaineiden keskiarvojen 3. kvintiili",
+            "expression": [
+              "",
+              "CALCULATE(",
+              "\t[Keskiarvojen 3. kvintiili]",
+              "\t, Muuttujat[oppiaineryhma_fi] <> \"Taide- ja taitoaineet\"",
+              ")",
+              ""
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "Lukuaineiden keskiarvojen 4. kvintiili",
+            "expression": [
+              "",
+              "CALCULATE(",
+              "\t[Keskiarvojen 4. kvintiili]",
+              "\t, Muuttujat[oppiaineryhma_fi] <> \"Taide- ja taitoaineet\"",
+              ")",
+              ""
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "Keskiarvojen k/n. persentiili",
+            "expression": [
+              "",
+              "var k = MAX('Persentiilin osoittaja'[Osoittaja (k/n. persentiili)])",
+              "var n = MAX('Persentiilin nimittäjä'[Nimittäjä (k/n. persentiili)])",
+              "var ehto = ISBLANK([vuosiluokan_suorittaneet]) || [vuosiluokan_suorittaneet] = \"1-4\" || k > n-1",
+              "var taulu = ",
+              "ADDCOLUMNS(",
+              "\tSUMMARIZE(Muuttujat, [apusarake_paatason_suoritus_id])",
+              "\t, \"ka\"",
+              "\t, CALCULATE(AVERAGE([jarjestys_arvosana]), Muuttujat[jarjestys_arvosana] < 11, Muuttujat[jarjestys_arvosana] > 4, Muuttujat[pakollinen_valinnainen_fi] = \"Pakollinen\")",
+              ")",
+              "var persentiili_arvo = IF(ehto, BLANK(), PERCENTILEX.INC(taulu, [ka], k/n))",
+              "",
+              "return persentiili_arvo",
+              ""
+            ],
+            "formatString": "0.00"
+          },
+          {
+            "name": "Lukuaineiden keskiarvojen k/n. persentiili",
+            "expression": [
+              "",
+              "CALCULATE(",
+              "\t[Keskiarvojen k/n. persentiili]",
+              "\t, Muuttujat[oppiaineryhma_fi] <> \"Taide- ja taitoaineet\"",
+              ")",
+              ""
+            ],
+            "formatString": "0.00"
           }
         ],
         "annotations": [
@@ -4841,6 +4994,76 @@
             ]
           }
         ]
+      },
+      {
+        "name": "Persentiilin osoittaja",
+        "columns": [
+          {
+            "name": "Osoittaja (k/n. persentiili)",
+            "dataType": "int64",
+            "sourceColumn": "n",
+            "sourceProviderType": "Integer"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "k",
+            "dataView": "full",
+            "source": {
+              "query": " SELECT [dbo].[persentiiliparametri].* FROM [dbo].[persentiiliparametri] ",
+              "dataSource": "SqlServer dwitvipusql16 ANTERO 2"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [dbo].[persentiiliparametri].* FROM [dbo].[persentiiliparametri] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "persentiiliparametri"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dbo"
+          }
+        ]
+      },
+      {
+        "name": "Persentiilin nimittäjä",
+        "columns": [
+          {
+            "name": "Nimittäjä (k/n. persentiili)",
+            "dataType": "int64",
+            "sourceColumn": "n",
+            "sourceProviderType": "Integer"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "n_parametri",
+            "dataView": "full",
+            "source": {
+              "query": " SELECT [dbo].[persentiiliparametri].* FROM [dbo].[persentiiliparametri] ",
+              "dataSource": "SqlServer dwitvipusql16 ANTERO 2"
+            }
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " SELECT [dbo].[persentiiliparametri].* FROM [dbo].[persentiiliparametri] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "persentiiliparametri"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dbo"
+          }
+        ]
       }
     ],
     "cultures": [
@@ -6564,6 +6787,118 @@
               },
               {
                 "name": "Perusopetuksen oppimäärän suorittaneet"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "persentiilit_fi",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "aidinkieli_ryhma_fi"
+              },
+              {
+                "name": "ika_fi"
+              },
+              {
+                "name": "kansalaisuus_ryhma_fi"
+              },
+              {
+                "name": "lukuvuosi_fi"
+              },
+              {
+                "name": "opetuksen_jarjestajan_avi_fi"
+              },
+              {
+                "name": "opetuksen_jarjestajan_ely_fi"
+              },
+              {
+                "name": "opetuksen_jarjestajan_maakunta_fi"
+              },
+              {
+                "name": "opetuksen_jarjestajan_yritysmuoto_fi"
+              },
+              {
+                "name": "opiskeltujen_kielten_maara_fi"
+              },
+              {
+                "name": "oppilaitoksen_avi_fi"
+              },
+              {
+                "name": "oppilaitoksen_ely_fi"
+              },
+              {
+                "name": "oppilaitoksen_maakunta_fi"
+              },
+              {
+                "name": "oppilaitoksen_opetuskieli_fi"
+              },
+              {
+                "name": "oppilaitostyyppi_fi"
+              },
+              {
+                "name": "sukupuoli_fi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Keskiarvojen 1. kvintiili"
+              },
+              {
+                "name": "Keskiarvojen 2. kvintiili"
+              },
+              {
+                "name": "Keskiarvojen 3. kvintiili"
+              },
+              {
+                "name": "Keskiarvojen 4. kvintiili"
+              },
+              {
+                "name": "Keskiarvojen k/n. persentiili"
+              },
+              {
+                "name": "Keskiarvojen keskiarvo"
+              },
+              {
+                "name": "Lukuaineiden keskiarvojen 1. kvintiili"
+              },
+              {
+                "name": "Lukuaineiden keskiarvojen 2. kvintiili"
+              },
+              {
+                "name": "Lukuaineiden keskiarvojen 3. kvintiili"
+              },
+              {
+                "name": "Lukuaineiden keskiarvojen 4. kvintiili"
+              },
+              {
+                "name": "Lukuaineiden keskiarvojen k/n. persentiili"
+              },
+              {
+                "name": "Lukuaineiden keskiarvojen keskiarvo"
+              },
+              {
+                "name": "Perusopetuksen oppimäärän suorittaneet"
+              }
+            ]
+          },
+          {
+            "name": "Persentiilin nimittäjä",
+            "columns": [
+              {
+                "name": "Nimittäjä (k/n. persentiili)"
+              }
+            ]
+          },
+          {
+            "name": "Persentiilin osoittaja",
+            "columns": [
+              {
+                "name": "Osoittaja (k/n. persentiili)"
               }
             ]
           }
