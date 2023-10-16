@@ -34,7 +34,7 @@ if(require("dplyr") == FALSE){
 
 # Set max timeout time
 
-options(timeout = max(500, getOption("timeout")))
+options(timeout = max(5000, getOption("timeout")))
 
 #---------------------------#
 
@@ -49,12 +49,12 @@ tf3 <- tempfile()
 td3 <- tempdir()
 download.file("https://cordis.europa.eu/data/cordis-h2020projects-csv.zip",tf3, mode = "wb", method = "libcurl")
 file.names <- unzip(tf3, exdir = td3)
-Projects = read.csv(file.names[4], header = TRUE, sep = ";", encoding="UTF-8")
+Projects = read.csv(file.names[1], header = TRUE, sep = ";", encoding="UTF-8")
 names(Projects)[19] <- "projectRcn"
 
 # Organisations and EC contribution
 
-Orgs = read.csv(file.names[3], header = TRUE, sep = ";", encoding="UTF-8")
+Orgs = read.csv(file.names[2], header = TRUE, sep = ";", encoding="UTF-8")
 
 # country codes
 Country = read.csv("http://cordis.europa.eu/data/reference/cordisref-countries.csv", header = TRUE, sep = ";", encoding="UTF-8")
@@ -86,9 +86,9 @@ tdHE <- tempdir()
 download.file("https://cordis.europa.eu/data/cordis-HORIZONprojects-csv.zip",tfHE, mode = "wb", method = "libcurl")
 file.names <- unzip(tfHE, exdir = tdHE)
 
-ProjectsHE <- read.csv(file.names[4], header = TRUE, sep = ";", encoding="UTF-8")
-OrgsHE <- read.csv(file.names[3], header = TRUE, sep = ";", encoding="UTF-8")
-LegalBasisHE <- read.csv(file.names[2], header = TRUE, sep = ";", encoding="UTF-8")
+ProjectsHE <- read.csv(file.names[1], header = TRUE, sep = ";", encoding="UTF-8")
+OrgsHE <- read.csv(file.names[2], header = TRUE, sep = ";", encoding="UTF-8")
+LegalBasisHE <- read.csv(file.names[3], header = TRUE, sep = ";", encoding="UTF-8")
 
 tfHE2 <- tempfile()
 tdHE2 <- tempdir()
@@ -120,6 +120,15 @@ ProjectsHE$legalBasis[ProjectsHE$legalBasis == ""] <-  as.character(ProjectsHE$l
 ProjectsHE = ProjectsHE[,!(names(ProjectsHE) %in% c("legalBasis.y", "legalBasis.x"))]
 names(ProjectsHE)[names(ProjectsHE) == "rcn"] <- "projectRcn"
 ProjectsHE <- ProjectsHE[, names(Projects)]
+OrgsHE <- OrgsHE[OrgsHE$projectID != "projectID",]
+OrgsHE$projectID <- as.integer(OrgsHE$projectID)
+OrgsHE$organisationID <- as.integer(OrgsHE$organisationID)
+OrgsHE$rcn <- as.integer(OrgsHE$rcn)
+OrgsHE$order <- as.integer(OrgsHE$order)
+OrgsHE$ecContribution <- as.double(OrgsHE$ecContribution)
+OrgsHE$netEcContribution <- as.double(OrgsHE$netEcContribution)
+OrgsHE$activityType <- substr(OrgsHE$activityType,1,3)
+Orgs$activityType <- substr(Orgs$activityType,1,3)
 
 # Horizon 2020 and Horizon Europe data is combined 
 
