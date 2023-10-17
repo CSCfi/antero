@@ -1,0 +1,582 @@
+Sub Refresh()
+
+    
+
+    Dim table As ListObject
+
+    'Datan päivittäminen
+    For Each objConnection In ThisWorkbook.Connections
+        bBackground = objConnection.OLEDBConnection.BackgroundQuery
+        objConnection.OLEDBConnection.BackgroundQuery = False
+        objConnection.Refresh
+        objConnection.OLEDBConnection.BackgroundQuery = bBackground
+    Next
+    
+    Application.ScreenUpdating = False
+    
+    'Välilehtien alustus
+    Sheets("Lukumäärät").Select
+    Cells.Clear
+    Sheets("Vertailu - lkm").Select
+    Cells.Clear
+    Sheets("Osuudet").Select
+    Cells.Clear
+    Sheets("Vertailu - %").Select
+    Cells.Clear
+    Sheets("Ammattiryhmä").Select
+    Cells.Clear
+    For Each btn In ActiveSheet.Shapes
+        If btn.AutoShapeType = msoShapeStyleMixed Then btn.Delete
+    Next
+    Call WhiteSheets
+
+    Worksheets("Data").Visible = True
+    Worksheets("Koulutusasteet").Visible = True
+    Worksheets("Koulutusalat").Visible = True
+    Worksheets("Koulutusalat2").Visible = True
+    
+    If Worksheets("Aloitussivu").CheckBoxes("Painokertoimet").Value <> 1 Then
+        
+        Sheets("Painokertoimet").Select
+        Cells.Clear
+        Call WhiteSheets
+        
+        Set table = Worksheets("Koulutusasteet").ListObjects("Asteet")
+        Set tableData = table.Range
+        
+        For Each rowData In tableData.Rows
+            Worksheets("Painokertoimet").Cells(rowData.Row + 1, 1).Value = Worksheets("Koulutusasteet").Cells(rowData.Row, 1).Value
+            If rowData.Row = 1 Then
+                Worksheets("Painokertoimet").Cells(rowData.Row + 1, 2).Value = "Painokerroin"
+            Else
+                Worksheets("Painokertoimet").Cells(rowData.Row + 1, 2).Value = 1
+            End If
+        Next
+        
+        Worksheets("Painokertoimet").Activate
+        ActiveSheet.ListObjects.Add(xlSrcRange, _
+        Range("A2", Range("A2").End(xlToRight).End(xlDown)), , xlYes).name _
+        = "Asteet_PK"
+        
+        Set table = Worksheets("Painokertoimet").ListObjects("Asteet_PK")
+        table.TableStyle = "TableStyleLight8"
+        Range("Asteet_PK[#Headers]").Select
+        With Selection.Interior
+            .Pattern = xlSolid
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorLight1
+            .TintAndShade = 0
+            .PatternTintAndShade = 0
+        End With
+    
+        Range("B3").Select
+        Range(Selection, Selection.End(xlDown)).Select
+        With Selection.Interior
+            .Pattern = xlSolid
+            .PatternColorIndex = xlAutomatic
+            .Color = 49407
+            .TintAndShade = 0
+            .PatternTintAndShade = 0
+        End With
+        
+        Set table = Worksheets("Koulutusalat").ListObjects("Alat")
+        Set tableData = table.Range
+        
+        For Each rowData In tableData.Rows
+            Worksheets("Painokertoimet").Cells(rowData.Row + 1, 4).Value = Worksheets("Koulutusalat").Cells(rowData.Row, 1).Value
+            If rowData.Row = 1 Then
+                Worksheets("Painokertoimet").Cells(rowData.Row + 1, 5).Value = "Painokerroin"
+            Else
+                Worksheets("Painokertoimet").Cells(rowData.Row + 1, 5).Value = 1
+            End If
+        Next
+        
+        Worksheets("Painokertoimet").Activate
+        ActiveSheet.ListObjects.Add(xlSrcRange, _
+        Range("D2", Range("D2").End(xlToRight).End(xlDown)), , xlYes).name _
+        = "Alat_PK"
+        
+        Set table = Worksheets("Painokertoimet").ListObjects("Alat_PK")
+        table.TableStyle = "TableStyleLight8"
+        Range("Alat_PK[#Headers]").Select
+        With Selection.Interior
+            .Pattern = xlSolid
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorLight1
+            .TintAndShade = 0
+            .PatternTintAndShade = 0
+        End With
+        
+        Range("E3").Select
+        Range(Selection, Selection.End(xlDown)).Select
+        With Selection.Interior
+            .Pattern = xlSolid
+            .PatternColorIndex = xlAutomatic
+            .Color = 49407
+            .TintAndShade = 0
+            .PatternTintAndShade = 0
+        End With
+        
+        Set table = Worksheets("Koulutusalat2").ListObjects("Alat2")
+        Set tableData = table.Range
+        
+        For Each rowData In tableData.Rows
+            Worksheets("Painokertoimet").Cells(rowData.Row + 1, 7).Value = Worksheets("Koulutusalat2").Cells(rowData.Row, 1).Value
+            If rowData.Row = 1 Then
+                Worksheets("Painokertoimet").Cells(rowData.Row + 1, 8).Value = "Painokerroin"
+            Else
+                Worksheets("Painokertoimet").Cells(rowData.Row + 1, 8).Value = 1
+            End If
+        Next
+        
+        Worksheets("Painokertoimet").Activate
+        ActiveSheet.ListObjects.Add(xlSrcRange, _
+        Range("G2", Range("G2").End(xlToRight).End(xlDown)), , xlYes).name _
+        = "Alat_PK2"
+        
+        Set table = Worksheets("Painokertoimet").ListObjects("Alat_PK2")
+        table.TableStyle = "TableStyleLight8"
+        Range("Alat_PK2[#Headers]").Select
+        With Selection.Interior
+            .Pattern = xlSolid
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorLight1
+            .TintAndShade = 0
+            .PatternTintAndShade = 0
+        End With
+        
+        Range("H3").Select
+        Range(Selection, Selection.End(xlDown)).Select
+        With Selection.Interior
+            .Pattern = xlSolid
+            .PatternColorIndex = xlAutomatic
+            .Color = 49407
+            .TintAndShade = 0
+            .PatternTintAndShade = 0
+        End With
+        
+        columns("A:A").EntireColumn.AutoFit
+        columns("B:B").EntireColumn.AutoFit
+        columns("D:D").EntireColumn.AutoFit
+        columns("E:E").EntireColumn.AutoFit
+        columns("G:G").EntireColumn.AutoFit
+        columns("H:H").EntireColumn.AutoFit
+        Range("A1").Select
+    End If
+    
+    Worksheets("Data").Visible = False
+    Worksheets("Koulutusasteet").Visible = False
+    Worksheets("Koulutusalat").Visible = False
+    Worksheets("Koulutusalat2").Visible = False
+    
+    Call CreateTables
+    
+    Call Buttons
+    
+    Sheets("Aloitussivu").Select
+    
+    Application.ScreenUpdating = True
+    
+    MsgBox "Tiedoston alustus on valmis"
+
+End Sub
+
+Sub CreateTables()
+
+    Dim table As ListObject
+    Dim tableData, rowData As Range
+    Dim year As Integer
+    Dim r As Integer
+    Dim nColumn As Integer
+
+    Set table = Worksheets("Data").ListObjects("Data")
+    Set tableData = table.Range
+    
+    year = Worksheets("Aloitussivu").Cells(13, 2).Value
+    nColumn = table.ListColumns.Count
+    
+    r = 1
+    For Each rowData In tableData.Rows
+        If Worksheets("Data").Cells(rowData.Row, 6).Value = year Or rowData.Row = 1 Then
+            Worksheets("Lukumäärät").Cells(r, 1).Value = Worksheets("Data").Cells(rowData.Row, 4).Value
+            Worksheets("Lukumäärät").Cells(r, 2).Value = Worksheets("Data").Cells(rowData.Row, 1).Value
+            If r = 1 Then
+                Worksheets("Lukumäärät").Cells(r, 3).Value = "Avain"
+                Worksheets("Lukumäärät").Cells(r, 4).Value = "Koulutusta järjestetään"
+                Worksheets("Lukumäärät").Cells(r, 5).Value = "Painokerroin"
+            Else
+                Worksheets("Lukumäärät").Cells(r, 3).Value = Worksheets("Data").Cells(rowData.Row, 4).Value & Worksheets("Data").Cells(rowData.Row, 1).Value
+                Worksheets("Lukumäärät").Cells(r, 4).Value = Worksheets("Data").Cells(rowData.Row, 5).Value
+                Worksheets("Lukumäärät").Cells(r, 5).Value = 1
+            End If
+            If r = 1 Then
+                Worksheets("Lukumäärät").Cells(r, 6).Value = "Painokertoimien yhdistelmä"
+            Else
+                Worksheets("Lukumäärät").Cells(r, 6).FormulaLocal = "=E" & r & "*VLOOKUP(A" & r & ";Asteet_PK[#All];2;FALSE)*VLOOKUP(VLOOKUP(B" & r & ";Data[#All];3;FALSE); Alat_PK[#All];2;FALSE)*VLOOKUP(VLOOKUP(B" & r & ";Data[#All];2;FALSE); Alat_PK2[#All];2;FALSE)"
+            End If
+            For c = 7 To nColumn
+                If r = 1 Then
+                    Worksheets("Lukumäärät").Cells(r, c).Value = Worksheets("Data").Cells(rowData.Row, c).Value
+                Else
+                    Worksheets("Lukumäärät").Cells(r, c).FormulaLocal = "=F" & r & " * Data!" & Split(Cells(1, c).Address, "$")(1) & rowData.Row
+                End If
+            Next
+            If Worksheets("Data").Cells(rowData.Row, 5).Value = "Ei" Then
+                If Worksheets("Aloitussivu").CheckBoxes("Check box").Value = 1 Then
+                    Worksheets("Lukumäärät").Cells(r, 5).Value = 0
+                End If
+                Sheets("Lukumäärät").Select
+                Range(Cells(r, 1), Cells(r, nColumn)).Select
+                Call RedBackground
+                Sheets("Vertailu - lkm").Select
+                Range(Cells(r, 1), Cells(r, nColumn * 2 - 7)).Select
+                Call RedBackground
+                Sheets("Osuudet").Select
+                Range(Cells(r, 1), Cells(r, nColumn - 1)).Select
+                Call RedBackground
+                Sheets("Vertailu - %").Select
+                Range(Cells(r, 1), Cells(r, nColumn * 2 - 7)).Select
+                Call RedBackground
+            End If
+            r = r + 1
+        End If
+    Next
+    
+    Call ConvertToTable
+    
+    r = 1
+    For Each rowData In tableData.Rows
+        If Worksheets("Data").Cells(rowData.Row, 6).Value = year Or rowData.Row = 1 Then
+            Worksheets("Vertailu - lkm").Cells(r, 1).Value = Worksheets("Data").Cells(rowData.Row, 4).Value
+            Worksheets("Vertailu - lkm").Cells(r, 2).Value = Worksheets("Data").Cells(rowData.Row, 1).Value
+            If r = 1 Then
+                Worksheets("Vertailu - lkm").Cells(r, 3).Value = "Avain"
+                Worksheets("Vertailu - lkm").Cells(r, 4).Value = "Koulutusta järjestetään"
+            Else
+                Worksheets("Vertailu - lkm").Cells(r, 3).Value = Worksheets("Data").Cells(rowData.Row, 4).Value & Worksheets("Data").Cells(rowData.Row, 1).Value
+                Worksheets("Vertailu - lkm").Cells(r, 4).Value = Worksheets("Data").Cells(rowData.Row, 5).Value
+            End If
+            If r = 1 Then
+                Worksheets("Vertailu - lkm").Cells(r, 5).Value = "Painokertoimien yhdistelmä"
+            Else
+                Worksheets("Vertailu - lkm").Cells(r, 5).FormulaLocal = "=VLOOKUP(A" & r & ";lkm[#All];6;FALSE)"
+            End If
+            For c = 6 To nColumn - 1
+                If r = 1 Then
+                    Worksheets("Vertailu - lkm").Cells(r, 6 + (c - 6) * 2).Value = Worksheets("Data").Cells(rowData.Row, c + 1).Value
+                    Worksheets("Vertailu - lkm").Cells(r, 6 + (c - 6) * 2 + 1).Value = Worksheets("Data").Cells(rowData.Row, c + 1).Value & " (painotettu)"
+                Else
+                    Worksheets("Vertailu - lkm").Cells(r, 6 + (c - 6) * 2).FormulaLocal = "=Data!" & Split(Cells(1, c + 1).Address, "$")(1) & rowData.Row
+                    Worksheets("Vertailu - lkm").Cells(r, 6 + (c - 6) * 2 + 1).FormulaLocal = "=E" & r & " * Data!" & Split(Cells(1, c + 1).Address, "$")(1) & rowData.Row
+                End If
+            Next
+            r = r + 1
+        End If
+    Next
+    
+    Call ConvertToTable3
+    
+    Set table = Worksheets("Lukumäärät").ListObjects("lkm")
+    Set tableData = table.Range
+    nColumn = table.ListColumns.Count
+    
+    r = 1
+    For Each rowData In tableData.Rows
+        
+        Worksheets("Osuudet").Cells(r, 1).Value = Worksheets("Lukumäärät").Cells(rowData.Row, 1).Value
+        Worksheets("Osuudet").Cells(r, 2).Value = Worksheets("Lukumäärät").Cells(rowData.Row, 2).Value
+        If r = 1 Then
+            Worksheets("Osuudet").Cells(r, 3).Value = "Avain"
+            Worksheets("Osuudet").Cells(r, 4).Value = "Koulutusta järjestetään"
+            Worksheets("Osuudet").Cells(r, 5).Value = "Painokertoimien yhdistelmä"
+        Else
+            Worksheets("Osuudet").Cells(r, 3).Value = Worksheets("Lukumäärät").Cells(rowData.Row, 1).Value & Worksheets("Lukumäärät").Cells(rowData.Row, 2).Value
+            Worksheets("Osuudet").Cells(r, 4).Value = Worksheets("Lukumäärät").Cells(rowData.Row, 4).Value
+            Worksheets("Osuudet").Cells(r, 5).FormulaLocal = "=VLOOKUP(C" & r & ";lkm[[#All];[Avain]:[" & Worksheets("Lukumäärät").Cells(1, 5).Value & "]];" & 3 & ";FALSE)"
+        End If
+        For c = 6 To nColumn - 1
+            If r = 1 Then
+                Worksheets("Osuudet").Cells(r, c).Value = Worksheets("Lukumäärät").Cells(rowData.Row, c + 1).Value
+            Else
+                Worksheets("Osuudet").Cells(r, c).FormulaLocal = "=VLOOKUP(C" & r & ";lkm[[#All];[Avain]:[" & Worksheets("Lukumäärät").Cells(1, c + 1).Value & "]];" & c - 1 & ";FALSE) / SUM(Lukumäärät!" & Split(Cells(1, c + 1).Address, "$")(1) & ":" & Split(Cells(1, c + 1).Address, "$")(1) & ")"
+            End If
+        Next
+        r = r + 1
+    Next
+    
+    Call ConvertToTable2
+    
+    r = 1
+    For Each rowData In tableData.Rows
+        
+        Worksheets("Vertailu - %").Cells(r, 1).Value = Worksheets("Lukumäärät").Cells(rowData.Row, 1).Value
+        Worksheets("Vertailu - %").Cells(r, 2).Value = Worksheets("Lukumäärät").Cells(rowData.Row, 2).Value
+        If r = 1 Then
+            Worksheets("Vertailu - %").Cells(r, 3).Value = "Avain"
+            Worksheets("Vertailu - %").Cells(r, 4).Value = "Koulutusta järjestetään"
+            Worksheets("Vertailu - %").Cells(r, 5).Value = "Painokertoimien yhdistelmä"
+        Else
+            Worksheets("Vertailu - %").Cells(r, 3).Value = Worksheets("Lukumäärät").Cells(rowData.Row, 1).Value & Worksheets("Lukumäärät").Cells(rowData.Row, 2).Value
+            Worksheets("Vertailu - %").Cells(r, 4).Value = Worksheets("Lukumäärät").Cells(rowData.Row, 4).Value
+            Worksheets("Vertailu - %").Cells(r, 5).FormulaLocal = "=VLOOKUP(C" & r & ";lkm[[#All];[Avain]:[" & Worksheets("Lukumäärät").Cells(1, 5).Value & "]];" & 3 & ";FALSE)"
+        End If
+        For c = 6 To nColumn - 1
+            If r = 1 Then
+                Worksheets("Vertailu - %").Cells(r, 6 + (c - 6) * 2).Value = Worksheets("Vertailu - lkm").Cells(rowData.Row, 6 + (c - 6) * 2).Value
+                Worksheets("Vertailu - %").Cells(r, 6 + (c - 6) * 2 + 1).Value = Worksheets("Vertailu - lkm").Cells(rowData.Row, 6 + (c - 6) * 2 + 1).Value
+            Else
+                Worksheets("Vertailu - %").Cells(r, 6 + (c - 6) * 2).FormulaLocal = "=VLOOKUP(C" & r & ";vertailuLkm[[#All];[Avain]:[" & Worksheets("Vertailu - lkm").Cells(1, 6 + (c - 6) * 2).Value & "]];" & 6 + (c - 6) * 2 - 2 & ";FALSE) / SUM('Vertailu - lkm'!" & Split(Cells(1, 6 + (c - 6) * 2).Address, "$")(1) & ":" & Split(Cells(1, 6 + (c - 6) * 2).Address, "$")(1) & ")"
+                Worksheets("Vertailu - %").Cells(r, 6 + (c - 6) * 2 + 1).FormulaLocal = "=VLOOKUP(C" & r & ";vertailuLkm[[#All];[Avain]:[" & Worksheets("Vertailu - lkm").Cells(1, 6 + (c - 6) * 2 + 1).Value & "]];" & 6 + (c - 6) * 2 - 1 & ";FALSE) / SUM('Vertailu - lkm'!" & Split(Cells(1, 6 + (c - 6) * 2 + 1).Address, "$")(1) & ":" & Split(Cells(1, 6 + (c - 6) * 2 + 1).Address, "$")(1) & ")"
+            End If
+        Next
+        r = r + 1
+    Next
+    
+    Call ConvertToTable4
+ 
+End Sub
+
+Sub ConvertToTable()
+    Dim tbl As ListObject
+    Dim rng As Range
+    Worksheets("Lukumäärät").Activate
+    Set rng = Range(Range("A1"), Range("A1").SpecialCells(xlLastCell))
+    Set tbl = ActiveSheet.ListObjects.Add(xlSrcRange, rng, , xlYes)
+    tbl.TableStyle = "TableStyleLight8"
+    tbl.name = "lkm"
+    Range("E2").Select
+    Range(Selection, Selection.End(xlDown)).Select
+    With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .Color = 49407
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+    columns("A:A").EntireColumn.AutoFit
+    columns("B:B").EntireColumn.AutoFit
+    ActiveWindow.FreezePanes = False
+    columns("C:C").Select
+    ActiveWindow.FreezePanes = True
+    Range("C:C").EntireColumn.Hidden = True
+    Range("D:D").EntireColumn.Hidden = True
+    Range("A1").Select
+End Sub
+
+Sub ConvertToTable2()
+    Dim tbl As ListObject
+    Dim rng As Range
+    Worksheets("Osuudet").Activate
+    Set rng = Range(Range("A1"), Range("A1").SpecialCells(xlLastCell))
+    Set tbl = ActiveSheet.ListObjects.Add(xlSrcRange, rng, , xlYes)
+    tbl.TableStyle = "TableStyleLight8"
+    tbl.name = "osuus"
+    columns("F:F").Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Selection.Style = "Percent"
+    Selection.NumberFormat = "0.00%"
+    columns("A:A").EntireColumn.AutoFit
+    columns("B:B").EntireColumn.AutoFit
+    columns("D:D").EntireColumn.AutoFit
+    ActiveWindow.FreezePanes = False
+    columns("C:C").Select
+    ActiveWindow.FreezePanes = True
+    Range("C:C").EntireColumn.Hidden = True
+    Range("D:D").EntireColumn.Hidden = True
+    Range("A1").Select
+End Sub
+
+Sub ConvertToTable3()
+    Dim tbl As ListObject
+    Dim rng As Range
+    Worksheets("Vertailu - lkm").Activate
+    Set rng = Range(Range("A1"), Range("A1").SpecialCells(xlLastCell))
+    Set tbl = ActiveSheet.ListObjects.Add(xlSrcRange, rng, , xlYes)
+    tbl.TableStyle = "TableStyleLight8"
+    tbl.name = "vertailuLkm"
+    columns("A:A").EntireColumn.AutoFit
+    columns("B:B").EntireColumn.AutoFit
+    ActiveWindow.FreezePanes = False
+    columns("C:C").Select
+    ActiveWindow.FreezePanes = True
+    Range("C:C").EntireColumn.Hidden = True
+    Range("D:D").EntireColumn.Hidden = True
+    Range("A1").Select
+End Sub
+Sub ConvertToTable4()
+    Dim tbl As ListObject
+    Dim rng As Range
+    Worksheets("Vertailu - %").Activate
+    Set rng = Range(Range("A1"), Range("A1").SpecialCells(xlLastCell))
+    Set tbl = ActiveSheet.ListObjects.Add(xlSrcRange, rng, , xlYes)
+    tbl.TableStyle = "TableStyleLight8"
+    tbl.name = "vertailuOsuus"
+    columns("F:F").Select
+    Range(Selection, Selection.End(xlToRight)).Select
+    Selection.Style = "Percent"
+    Selection.NumberFormat = "0.00%"
+    columns("A:A").EntireColumn.AutoFit
+    columns("B:B").EntireColumn.AutoFit
+    columns("D:D").EntireColumn.AutoFit
+    ActiveWindow.FreezePanes = False
+    columns("C:C").Select
+    ActiveWindow.FreezePanes = True
+    Range("C:C").EntireColumn.Hidden = True
+    Range("D:D").EntireColumn.Hidden = True
+    Range("A1").Select
+End Sub
+Sub WhiteSheets()
+    Cells.Select
+    With Selection.Interior
+        .PatternColorIndex = xlAutomatic
+        .ThemeColor = xlThemeColorDark1
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+End Sub
+
+Sub ClearSheets()
+    Sheets("Lukumäärät").Select
+    Cells.Clear
+    Sheets("Osuudet").Select
+    Cells.Clear
+    Sheets("Painokertoimet").Select
+    Cells.Clear
+    Sheets("Vertailu - lkm").Select
+    Cells.Clear
+    Sheets("Vertailu - %").Select
+    Cells.Clear
+    Sheets("Ammattiryhmä").Select
+    Cells.Clear
+    For Each btn In ActiveSheet.Shapes
+        If btn.AutoShapeType = msoShapeStyleMixed Then btn.Delete
+    Next
+End Sub
+
+Sub RedBackground()
+        With Selection.Interior
+        .Pattern = xlSolid
+        .PatternColorIndex = xlAutomatic
+        .Color = 5263615
+        .TintAndShade = 0
+        .PatternTintAndShade = 0
+    End With
+End Sub
+
+Sub SaveFile()
+
+    Dim InName As String
+    Dim sFileSaveName As Variant
+    InName = "Vastaavuusavain"
+    sFileSaveName = Application.GetSaveAsFilename(InitialFileName:=InName, fileFilter:="Excel Files (*.xlsm), *.xlsm")
+    
+    If sFileSaveName <> False Then
+        ActiveWorkbook.SaveAs sFileSaveName
+    End If
+
+End Sub
+
+Sub Buttons()
+    Dim ind As Integer
+    Set table = Worksheets("Data").ListObjects("Data")
+    Set tableData = table.Range
+    nColumn = table.ListColumns.Count
+    ind = 0
+    For i = 7 To nColumn
+        Call AddOptionButton(ind, Worksheets("Data").Cells(1, i).Value)
+        ind = ind + 1
+    Next
+    Sheets("Ammattiryhmä").Range("A48").Select
+    With Selection.Font
+        .ThemeColor = xlThemeColorDark1
+        .TintAndShade = 0
+    End With
+End Sub
+
+Sub AddOptionButton(i As Integer, name As String)
+    Dim OpBtn As OptionButton
+    Sheets("Ammattiryhmä").Select
+    Set OpBtn = ActiveSheet.OptionButtons.Add(5, 11 * i, 200, 10)
+    OpBtn.name = Left(name, 4)
+    OpBtn.Caption = name
+    OpBtn.LinkedCell = "A48"
+ 
+End Sub
+
+Sub CreateButtonTables()
+
+    Dim table As ListObject
+    Dim tableData, rowData As Range
+    Dim year As Integer
+    Dim r As Integer
+    Dim nColumn As Integer
+    Dim loTable As ListObject
+    Dim sTableName As String
+    Dim oSheetName As Worksheet
+    
+    Application.ScreenUpdating = False
+    
+    
+    For Each tbl In ActiveSheet.ListObjects
+        tbl.Delete
+    Next
+
+    Set table = Worksheets("Vertailu - lkm").ListObjects("vertailuLkm")
+    Set tableData = table.Range
+    nColumn = table.ListColumns.Count
+    c = Worksheets("Ammattiryhmä").Cells(48, 1).Value
+    r = 1
+    For Each rowData In tableData.Rows
+        Worksheets("Ammattiryhmä").Cells(r, 7).Value = Worksheets("Vertailu - lkm").Cells(rowData.Row, 1).Value
+        Worksheets("Ammattiryhmä").Cells(r, 8).Value = Worksheets("Vertailu - lkm").Cells(rowData.Row, 2).Value
+        Worksheets("Ammattiryhmä").Cells(r, 9).Value = Worksheets("Vertailu - lkm").Cells(rowData.Row, 3).Value
+        Worksheets("Ammattiryhmä").Cells(r, 10).Value = Worksheets("Vertailu - lkm").Cells(rowData.Row, 4).Value
+        If r = 1 Then
+            Worksheets("Ammattiryhmä").Cells(r, 11).Value = "Painokertoimien yhdistelmä"
+            Worksheets("Ammattiryhmä").Cells(r, 12).FormulaLocal = "=VLOOKUP(I" & r & ";vertailuLkm[[#All];[Avain]:[" & Worksheets("Vertailu - lkm").Cells(1, 6 + (c - 1) * 2).Value & "]];" & 6 + (c - 1) * 2 - 2 & ";FALSE)"
+            Worksheets("Ammattiryhmä").Cells(r, 13).FormulaLocal = "=VLOOKUP(I" & r & ";vertailuLkm[[#All];[Avain]:[" & Worksheets("Vertailu - lkm").Cells(1, 6 + (c - 1) * 2 + 1).Value & "]];" & 6 + (c - 1) * 2 - 1 & ";FALSE)"
+            Worksheets("Ammattiryhmä").Cells(r, 14).Value = Worksheets("Vertailu - lkm").Cells(rowData.Row, 6 + (c - 1) * 2).Value & " %"
+            Worksheets("Ammattiryhmä").Cells(r, 15).Value = Worksheets("Vertailu - lkm").Cells(rowData.Row, 6 + (c - 1) * 2 + 1).Value & " %"
+        Else
+            Worksheets("Ammattiryhmä").Cells(r, 11).FormulaLocal = "=VLOOKUP(I" & r & ";lkm[[#All];[Avain]:[" & Worksheets("Lukumäärät").Cells(1, 5).Value & "]];" & 3 & ";FALSE)"
+            Worksheets("Ammattiryhmä").Cells(r, 12).FormulaLocal = "=VLOOKUP(I" & r & ";vertailuLkm[[#All];[Avain]:[" & Worksheets("Vertailu - lkm").Cells(1, 6 + (c - 1) * 2).Value & "]];" & 6 + (c - 1) * 2 - 2 & ";FALSE)"
+            Worksheets("Ammattiryhmä").Cells(r, 13).FormulaLocal = "=VLOOKUP(I" & r & ";vertailuLkm[[#All];[Avain]:[" & Worksheets("Vertailu - lkm").Cells(1, 6 + (c - 1) * 2 + 1).Value & "]];" & 6 + (c - 1) * 2 - 1 & ";FALSE)"
+            Worksheets("Ammattiryhmä").Cells(r, 14).FormulaLocal = "=VLOOKUP(I" & r & ";vertailuOsuus[[#All];[Avain]:[" & Worksheets("Vertailu - %").Cells(1, 6 + (c - 1) * 2).Value & "]];" & 6 + (c - 1) * 2 - 2 & ";FALSE)"
+            Worksheets("Ammattiryhmä").Cells(r, 15).FormulaLocal = "=VLOOKUP(I" & r & ";vertailuOsuus[[#All];[Avain]:[" & Worksheets("Vertailu - %").Cells(1, 6 + (c - 1) * 2 + 1).Value & "]];" & 6 + (c - 1) * 2 - 1 & ";FALSE)"
+        End If
+        r = r + 1
+    Next
+    
+    Call ConvertToTable5
+    
+    Application.ScreenUpdating = True
+    
+End Sub
+
+Sub ConvertToTable5()
+    Dim tbl As ListObject
+    Dim rng As Range
+    Worksheets("Ammattiryhmä").Activate
+    Set rng = Range(Range("G1"), Range("G1").SpecialCells(xlLastCell))
+    Set tbl = ActiveSheet.ListObjects.Add(xlSrcRange, rng, , xlYes)
+    tbl.TableStyle = "TableStyleLight8"
+    tbl.name = "AmmattiR"
+    columns("G:G").EntireColumn.AutoFit
+    columns("H:H").EntireColumn.AutoFit
+    Range("I:I").EntireColumn.Hidden = True
+    Range("J:J").EntireColumn.Hidden = True
+    columns("N:O").Select
+    Selection.Style = "Percent"
+    Selection.NumberFormat = "0.00%"
+    Range("AmmattiR[#Headers]").Select
+        With Selection.Interior
+            .Pattern = xlSolid
+            .PatternColorIndex = xlAutomatic
+            .ThemeColor = xlThemeColorLight1
+            .TintAndShade = 0
+            .PatternTintAndShade = 0
+        End With
+    ActiveWindow.FreezePanes = False
+    Range("A1").Select
+End Sub
+
