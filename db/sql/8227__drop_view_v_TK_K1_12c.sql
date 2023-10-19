@@ -1,0 +1,12 @@
+USE [ANTERO]
+GO
+
+/****** Object:  View [dw].[v_TK_K1_12c]    Script Date: 19.10.2023 12:34:03 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+DROP VIEW IF EXISTS [dw].[v_TK_K1_12c]
+GO
