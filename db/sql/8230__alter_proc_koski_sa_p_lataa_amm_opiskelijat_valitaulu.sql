@@ -316,4 +316,4 @@ DROP TABLE IF EXISTS Koski_SA.sa.temp_amm_aiempi_oikeus_sama_jarj
 
 GO
 
-USE [ANTERO}
+USE [ANTERO]

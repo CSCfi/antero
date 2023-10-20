@@ -171,4 +171,4 @@ DROP TABLE IF EXISTS Koski_SA.sa.temp_amm_tutkinnot_opso_koso_paivat
 
 GO
 
-USE [ANTERO}
+USE [ANTERO]
