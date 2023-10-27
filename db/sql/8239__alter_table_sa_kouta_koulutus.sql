@@ -7,6 +7,6 @@ IF NOT EXISTS (
     AND COLUMN_NAME = 'opetuskieliKoodiUrit'
 )
 BEGIN
-    ALTER TABLE sa_kouta_koulutus
+    ALTER TABLE sa.sa_kouta_koulutus
     ADD [opetuskieliKoodiUrit] VARCHAR(250);
 END
