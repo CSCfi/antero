@@ -510,7 +510,7 @@ BEGIN
 						ELSE 0
 					END as koul_jok_ei_kelp_ov_suor,
 					CASE
-						WHEN kesk.peruttu = 0 THEN 1
+						WHEN (ooa.tila = ('valiaikaisestikeskeytynyt') and oo.oppivelvollisuuden_suorittamiseen_kelpaava = 1) or (kesk.peruttu = 0 and ooa.opiskeluoikeus_oid is null) THEN 1
 						ELSE 0
 					END as keskeyttanyt
 				FROM Koski_SA.sa.temp_oppivelvollisten_opintojen_kulku ov
