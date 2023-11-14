@@ -110,7 +110,7 @@ LEFT JOIN dw.d_sukupuoli d6 ON d6.sukupuoli_koodi=vt.sukupuoli
 LEFT JOIN dw.d_kieli d8 on d8.kieli_koodi=vt.aidinkieli
 LEFT JOIN dw.d_ika d9 on d9.ika_avain=vt.ika_valmistuessa
 LEFT JOIN dw.d_kieli d10 on d10.kieli_koodi=k.suorituskieli
-LEFT JOIN dw.d_arvokysymys d11 on d11.kysymysid = f3.kysymysid and d11.kysymysversio = f3.kysymysversio and d11.kysymysryhmaid = f3.kysymysryhmaid and d11.kysymysryhmajarjestys = f5.jarjestys
+LEFT JOIN dw.d_arvokysymys d11 on d11.kysymysid = f3.kysymysid and d11.kysymysversio = f3.kysymysversio and d11.kysymysryhmaid = f5.kysymysryhmaid and d11.kysymysryhmajarjestys = f5.jarjestys
 LEFT JOIN dw.d_arvovastaus_monivalinta d15 ON d15.koodi = f2.numerovalinta and d15.kysymysid = f2.kysymysid and d15.kysymysversio = f2.kysymysversio
 LEFT JOIN dw.d_arvokyselykerta d12 on d12.kyselykertaid = f4.kyselykertaid
 LEFT JOIN (
