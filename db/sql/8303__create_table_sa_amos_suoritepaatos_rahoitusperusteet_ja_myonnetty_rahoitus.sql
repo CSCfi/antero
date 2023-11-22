@@ -11,14 +11,6 @@ IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[sa_
 
 BEGIN
 USE [ANTERO]
-GO
-
-/****** Object:  Table [sa].[sa_amos_suoritepaatos_rahoitusperusteet_ja_myonnetty_rahoitus]    Script Date: 22.11.2023 15.44.55 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
 
 CREATE TABLE [sa].[sa_amos_suoritepaatos_rahoitusperusteet_ja_myonnetty_rahoitus](
 	[Koulutuksen järjestäjä] [varchar](255) NULL,
@@ -63,7 +55,6 @@ CREATE TABLE [sa].[sa_amos_suoritepaatos_rahoitusperusteet_ja_myonnetty_rahoitus
 	[source] [varchar](255) NULL,
 	[imp_date] [datetime2](7) NULL
 ) ON [PRIMARY]
-GO
 
 END
 
