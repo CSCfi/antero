@@ -52,13 +52,6 @@
             "displayFolder": "Henkilömuuttujat"
           },
           {
-            "name": "Kansalaisuus",
-            "dataType": "string",
-            "sourceColumn": "Kansalaisuus",
-            "sourceProviderType": "WChar",
-            "displayFolder": "Henkilömuuttujat"
-          },
-          {
             "name": "Koulutusaste, taso 1",
             "dataType": "string",
             "sourceColumn": "Koulutusaste, taso 1",
@@ -229,24 +222,39 @@
             "sourceColumn": "Aloitusvuosi"
           },
           {
-            "name": "Kansalaisuus (maanosa, suuralue)",
+            "name": "jarj Kansalaisuus maanosa",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "jarj Kansalaisuus maanosa"
+          },
+          {
+            "name": "jarj Kansalaisuus maanosa2",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "jarj Kansalaisuus maanosa2"
+          },
+          {
+            "name": "tutk",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "tutk"
+          },
+          {
+            "name": "Kansalaisuus (korkeakoulun ilmoittama)",
+            "dataType": "string",
+            "sourceColumn": "Kansalaisuus",
+            "sourceProviderType": "WChar",
+            "displayFolder": "Henkilömuuttujat"
+          },
+          {
+            "name": "Kansalaisuus (maanosa, suuralue, korkeakoulun ilmoittama)",
             "dataType": "string",
             "sourceColumn": "Kansalaisuus (maanosa, suuralue)",
             "sortByColumn": "jarj Kansalaisuus maanosa2",
             "displayFolder": "Henkilömuuttujat"
           },
           {
-            "name": "jarj Kansalaisuus maanosa",
-            "dataType": "string",
-            "sourceColumn": "jarj Kansalaisuus maanosa"
-          },
-          {
-            "name": "jarj Kansalaisuus maanosa2",
-            "dataType": "string",
-            "sourceColumn": "jarj Kansalaisuus maanosa2"
-          },
-          {
-            "name": "Kansalaisuus (maanosa)",
+            "name": "Kansalaisuus (maanosa, korkeakoulun ilmoittama)",
             "dataType": "string",
             "sourceColumn": "Kansalaisuus (maanosa)",
             "sortByColumn": "jarj Kansalaisuus maanosa",
@@ -538,6 +546,14 @@
                   "        <int>125</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>tutk</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>66</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -804,6 +820,14 @@
                   "        <int>32</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>tutk</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>33</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -871,6 +895,14 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>tutk</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -885,12 +917,36 @@
         "measures": [
           {
             "name": "Lukuvuosimaksuvelvolliset",
-            "expression": " SUM(Muuttujat[lkm])",
+            "expression": [
+              " ",
+              "",
+              "IF(AND([Lukuvuosimaksuvelvolliset_s] > 0, [Lukuvuosimaksuvelvolliset_s] < 5), \"1-4\", MROUND([Lukuvuosimaksuvelvolliset_s],3))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Uudet lukuvuosimaksuvelvolliset",
+            "expression": " IF(AND([Uudet lukuvuosimaksuvelvolliset_s] > 0, [Uudet lukuvuosimaksuvelvolliset_s] < 5), \"1-4\", MROUND([Uudet lukuvuosimaksuvelvolliset_s],3))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnot",
+            "expression": " IF(AND([Tutkinnot_s] > 0, [Tutkinnot_s] < 5), \"1-4\", MROUND([Tutkinnot_s],3))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Lukuvuosimaksuvelvolliset_s",
+            "expression": " SUM(Muuttujat[lkm])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Uudet lukuvuosimaksuvelvolliset_s",
             "expression": " CALCULATE(SUM(Muuttujat[lkm]),FILTER(Muuttujat,Muuttujat[Aloitusvuosi]=Muuttujat[Tilastovuosi]))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnot_s",
+            "expression": " SUM(Muuttujat[tutk])",
             "formatString": "#,0"
           }
         ],
@@ -1183,6 +1239,14 @@
               "        <int>125</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>tutk</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>66</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -1449,6 +1513,14 @@
               "        <int>32</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>tutk</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>33</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -1511,6 +1583,14 @@
               "    <item>",
               "      <key>",
               "        <string>jarj Kansalaisuus maanosa2</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>tutk</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -1896,10 +1976,10 @@
                 "name": "Tutkintonimike"
               },
               {
-                "name": "Kansalaisuus (maanosa)"
+                "name": "Kansalaisuus (maanosa, korkeakoulun ilmoittama)"
               },
               {
-                "name": "Kansalaisuus (maanosa, suuralue)"
+                "name": "Kansalaisuus (maanosa, suuralue, korkeakoulun ilmoittama)"
               }
             ],
             "measures": [
@@ -1994,6 +2074,86 @@
               },
               {
                 "name": "Uudet lukuvuosimaksuvelvolliset (TK)_s"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "tutkinnot",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Ikä"
+              },
+              {
+                "name": "Ikäryhmä"
+              },
+              {
+                "name": "Koodit Ikä"
+              },
+              {
+                "name": "Koodit Korkeakoulu"
+              },
+              {
+                "name": "Koodit Tutkinto"
+              },
+              {
+                "name": "Korkeakoulu"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Sektori"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Tutkintonimike"
+              },
+              {
+                "name": "Kansalaisuus (maanosa, korkeakoulun ilmoittama)"
+              },
+              {
+                "name": "Kansalaisuus (maanosa, suuralue, korkeakoulun ilmoittama)"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Tutkinnot"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
               }
             ]
           }
