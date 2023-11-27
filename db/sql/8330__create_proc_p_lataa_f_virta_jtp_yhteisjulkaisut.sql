@@ -396,4 +396,6 @@ LEFT JOIN ANTERO.dw.d_tieteenala d21 on d21.id=f.d_tieteenala_id
 LEFT JOIN ANTERO.dw.d_amk_tehtavanjaottelu d22 on d22.id=f.d_tehtavanjaottelu
 LEFT JOIN ANTERO.dw.d_ohjauksenala d25 on d25.id=f.d_ohjauksenala_id
 
+GO
+
 USE [ANTERO]
