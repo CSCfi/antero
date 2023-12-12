@@ -8,8 +8,6 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-DROP TABLE [dbo].[d_oef_ammatti]
-GO
 
 CREATE TABLE [dbo].[d_oef_ammatti](
 	[id] [int] NOT NULL,
