@@ -9,7 +9,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[d_oef_toimiala') AND type in (N'U'))
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[d_oef_toimiala]') AND type in (N'U'))
 BEGIN
 
 CREATE TABLE [dbo].[d_oef_toimiala](
