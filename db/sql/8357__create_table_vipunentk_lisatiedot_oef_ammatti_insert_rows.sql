@@ -6,6 +6,9 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+DROP TABLE IF EXISTS [dbo].[oef_ammatti]
+GO
+
 CREATE TABLE [dbo].[oef_ammatti](
 	[id] [int] NOT NULL,
 	[luotu] [date] NULL,

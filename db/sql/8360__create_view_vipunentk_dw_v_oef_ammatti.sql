@@ -10,7 +10,7 @@ GO
 
 
 
-CREATE VIEW [dbo].[v_oef_ammatti]
+CREATE OR ALTER VIEW [dbo].[v_oef_ammatti]
 AS 
 SELECT [id]
       --,[luotu]
