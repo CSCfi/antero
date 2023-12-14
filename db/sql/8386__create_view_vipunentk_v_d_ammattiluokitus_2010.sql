@@ -42,7 +42,6 @@ SELECT
 FROM [dbo].[d_ammattiluokitus_2010]
 
 
-
 GO
 
 
