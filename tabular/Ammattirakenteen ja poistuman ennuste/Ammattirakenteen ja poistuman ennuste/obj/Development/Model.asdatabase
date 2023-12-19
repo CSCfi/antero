@@ -1863,11 +1863,6 @@
             "name": "Toimiala_koodi",
             "dataType": "string",
             "sourceColumn": "Toimiala_koodi"
-          },
-          {
-            "name": "avain",
-            "dataType": "string",
-            "sourceColumn": "avain"
           }
         ],
         "partitions": [
@@ -1875,7 +1870,7 @@
             "name": "Ammattirakenne2",
             "dataView": "full",
             "source": {
-              "query": " SELECT [dbo].[v_f_tab_ammattirakenne_ennuste].* FROM [dbo].[v_f_tab_ammattirakenne_ennuste] ",
+              "query": " SELECT [dbo].[v_f_tab_ammattirakenne_ennuste].[Tilastovuosi],[dbo].[v_f_tab_ammattirakenne_ennuste].[Ammattiryhmä 1. taso],[dbo].[v_f_tab_ammattirakenne_ennuste].[Ammattiryhmä 2. taso],[dbo].[v_f_tab_ammattirakenne_ennuste].[Toimiala],[dbo].[v_f_tab_ammattirakenne_ennuste].[Toimiala_koodi],[dbo].[v_f_tab_ammattirakenne_ennuste].[Ikä tilastovuonna],[dbo].[v_f_tab_ammattirakenne_ennuste].[lkm],[dbo].[v_f_tab_ammattirakenne_ennuste].[vieraskieliset_lkm] FROM [dbo].[v_f_tab_ammattirakenne_ennuste] ",
               "dataSource": "SqlServer dwitvipusql16 VipunenTK"
             },
             "annotations": [
@@ -2077,7 +2072,7 @@
                   "        <string>avain</string>",
                   "      </key>",
                   "      <value>",
-                  "        <boolean>true</boolean>",
+                  "        <boolean>false</boolean>",
                   "      </value>",
                   "    </item>",
                   "  </ColumnChecked>",
@@ -2246,33 +2241,12 @@
               "CALCULATE([Työlliset_s], Ammattirakenne[Tilastovuosi] = vuosi) "
             ],
             "formatString": "#,0"
-          },
-          {
-            "name": "Toimialaennuste",
-            "expression": [
-              " ",
-              "",
-              "var max_vuosi = MAX(Ammattirakenne[Tilastovuosi])",
-              "var vuosi = MAX(Ennustevuosi[Vuosi])",
-              "",
-              "var taulu = SUMMARIZE(Ammattirakenne, Ammattirakenne[Ammattiryhmä 2. taso], Ammattirakenne[Toimiala_koodi],",
-              "\"tyolliset\", CALCULATE(SUM(Ammattirakenne[lkm]), Ammattirakenne[Tilastovuosi] = max_vuosi),",
-              "\"tyolliset_ammattiryhma\", CALCULATE(SUM(Ammattirakenne[lkm]), ALL(Ammattirakenne[Toimiala_koodi]), Ammattirakenne[Tilastovuosi] = max_vuosi),",
-              "\"trendi_ammattiryhma\", CALCULATE([Trendi_s], ALL(Ammattirakenne[Toimiala_koodi])),",
-              "\"trendi_toimiala\", CALCULATE([Trendi_s], ALL(Ammattirakenne[Ammattiryhmä 2. taso])),",
-              "\"tol\", CALCULATE(SUM(Toimialaennuste[tyolliset]), Toimialaennuste[tilastovuosi] = vuosi, Toimialaennuste[oef_toimiala_koodi] = VALUES(Ammattirakenne[Toimiala_koodi]), Toimialaennuste[Skenaario] = \"Perus\"))",
-              "",
-              "return",
-              "",
-              "SUMX(taulu, DIVIDE(DIVIDE([tyolliset],[tyolliset_ammattiryhma],0)*[trendi_ammattiryhma],[trendi_toimiala],0) *[tol])"
-            ],
-            "formatString": "#,0.00"
           }
         ],
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": " SELECT [dbo].[v_f_tab_ammattirakenne_ennuste].* FROM [dbo].[v_f_tab_ammattirakenne_ennuste] "
+            "value": " SELECT [dbo].[v_f_tab_ammattirakenne_ennuste].[Tilastovuosi],[dbo].[v_f_tab_ammattirakenne_ennuste].[Ammattiryhmä 1. taso],[dbo].[v_f_tab_ammattirakenne_ennuste].[Ammattiryhmä 2. taso],[dbo].[v_f_tab_ammattirakenne_ennuste].[Toimiala],[dbo].[v_f_tab_ammattirakenne_ennuste].[Toimiala_koodi],[dbo].[v_f_tab_ammattirakenne_ennuste].[Ikä tilastovuonna],[dbo].[v_f_tab_ammattirakenne_ennuste].[lkm],[dbo].[v_f_tab_ammattirakenne_ennuste].[vieraskieliset_lkm] FROM [dbo].[v_f_tab_ammattirakenne_ennuste] "
           },
           {
             "name": "_TM_ExtProp_DbTableName",
@@ -2480,7 +2454,7 @@
               "        <string>avain</string>",
               "      </key>",
               "      <value>",
-              "        <boolean>true</boolean>",
+              "        <boolean>false</boolean>",
               "      </value>",
               "    </item>",
               "  </ColumnChecked>",
@@ -2497,29 +2471,35 @@
         "name": "Toimialaennuste",
         "columns": [
           {
-            "name": "oef_toimiala_koodi",
+            "name": "Toimiala_koodi",
             "dataType": "string",
-            "isHidden": true,
-            "sourceColumn": "oef_toimiala_koodi",
+            "sourceColumn": "Toimiala_koodi",
             "sourceProviderType": "WChar"
           },
           {
-            "name": "tilastovuosi",
+            "name": "Toimiala",
+            "dataType": "string",
+            "sourceColumn": "Toimiala",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "Tilastovuosi",
             "dataType": "int64",
-            "isHidden": true,
-            "sourceColumn": "tilastovuosi",
+            "sourceColumn": "Tilastovuosi",
             "sourceProviderType": "Integer"
+          },
+          {
+            "name": "ennuste2",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "ennuste2",
+            "sourceProviderType": "Double"
           },
           {
             "name": "Skenaario",
             "dataType": "string",
             "sourceColumn": "Skenaario",
             "sourceProviderType": "Char"
-          },
-          {
-            "name": "tyolliset",
-            "dataType": "int64",
-            "sourceColumn": "tyolliset"
           }
         ],
         "partitions": [
@@ -2545,26 +2525,34 @@
                   "  <ColumnWidths>",
                   "    <item>",
                   "      <key>",
-                  "        <string>oef_toimiala_koodi</string>",
+                  "        <string>Toimiala_koodi</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>174</int>",
+                  "        <int>148</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>tilastovuosi</string>",
+                  "        <string>Toimiala</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>118</int>",
+                  "        <int>100</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>tyolliset</string>",
+                  "        <string>Tilastovuosi</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>93</int>",
+                  "        <int>123</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>ennuste2</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>103</int>",
                   "      </value>",
                   "    </item>",
                   "    <item>",
@@ -2579,7 +2567,7 @@
                   "  <ColumnDisplayIndex>",
                   "    <item>",
                   "      <key>",
-                  "        <string>oef_toimiala_koodi</string>",
+                  "        <string>Toimiala_koodi</string>",
                   "      </key>",
                   "      <value>",
                   "        <int>0</int>",
@@ -2587,7 +2575,7 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>tilastovuosi</string>",
+                  "        <string>Toimiala</string>",
                   "      </key>",
                   "      <value>",
                   "        <int>1</int>",
@@ -2595,7 +2583,15 @@
                   "    </item>",
                   "    <item>",
                   "      <key>",
-                  "        <string>tyolliset</string>",
+                  "        <string>Tilastovuosi</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>2</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>ennuste2</string>",
                   "      </key>",
                   "      <value>",
                   "        <int>3</int>",
@@ -2606,21 +2602,12 @@
                   "        <string>Skenaario</string>",
                   "      </key>",
                   "      <value>",
-                  "        <int>2</int>",
+                  "        <int>4</int>",
                   "      </value>",
                   "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
-                  "  <ColumnChecked>",
-                  "    <item>",
-                  "      <key>",
-                  "        <string>tyolliset</string>",
-                  "      </key>",
-                  "      <value>",
-                  "        <boolean>true</boolean>",
-                  "      </value>",
-                  "    </item>",
-                  "  </ColumnChecked>",
+                  "  <ColumnChecked />",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
                   "  <FilterParameters />",
@@ -2629,6 +2616,13 @@
                 ]
               }
             ]
+          }
+        ],
+        "measures": [
+          {
+            "name": "Toimialaennuste",
+            "expression": " IF(HASONEVALUE(Toimialaennuste[Skenaario]),  SUM(Toimialaennuste[ennuste2]), BLANK())",
+            "formatString": "#,0"
           }
         ],
         "annotations": [
@@ -2658,26 +2652,34 @@
               "  <ColumnWidths>",
               "    <item>",
               "      <key>",
-              "        <string>oef_toimiala_koodi</string>",
+              "        <string>Toimiala_koodi</string>",
               "      </key>",
               "      <value>",
-              "        <int>174</int>",
+              "        <int>148</int>",
               "      </value>",
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>tilastovuosi</string>",
+              "        <string>Toimiala</string>",
               "      </key>",
               "      <value>",
-              "        <int>118</int>",
+              "        <int>100</int>",
               "      </value>",
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>tyolliset</string>",
+              "        <string>Tilastovuosi</string>",
               "      </key>",
               "      <value>",
-              "        <int>93</int>",
+              "        <int>123</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>ennuste2</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>103</int>",
               "      </value>",
               "    </item>",
               "    <item>",
@@ -2692,7 +2694,7 @@
               "  <ColumnDisplayIndex>",
               "    <item>",
               "      <key>",
-              "        <string>oef_toimiala_koodi</string>",
+              "        <string>Toimiala_koodi</string>",
               "      </key>",
               "      <value>",
               "        <int>0</int>",
@@ -2700,7 +2702,7 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>tilastovuosi</string>",
+              "        <string>Toimiala</string>",
               "      </key>",
               "      <value>",
               "        <int>1</int>",
@@ -2708,7 +2710,15 @@
               "    </item>",
               "    <item>",
               "      <key>",
-              "        <string>tyolliset</string>",
+              "        <string>Tilastovuosi</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>2</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>ennuste2</string>",
               "      </key>",
               "      <value>",
               "        <int>3</int>",
@@ -2719,21 +2729,12 @@
               "        <string>Skenaario</string>",
               "      </key>",
               "      <value>",
-              "        <int>2</int>",
+              "        <int>4</int>",
               "      </value>",
               "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
-              "  <ColumnChecked>",
-              "    <item>",
-              "      <key>",
-              "        <string>tyolliset</string>",
-              "      </key>",
-              "      <value>",
-              "        <boolean>true</boolean>",
-              "      </value>",
-              "    </item>",
-              "  </ColumnChecked>",
+              "  <ColumnChecked />",
               "  <ColumnFilter />",
               "  <SelectionFilter />",
               "  <FilterParameters />",
@@ -2742,124 +2743,6 @@
             ]
           }
         ]
-      },
-      {
-        "name": "Avain",
-        "columns": [
-          {
-            "name": "Ammattiryhmä 2. taso",
-            "dataType": "string",
-            "sourceColumn": "Ammattiryhmä 2. taso",
-            "sourceProviderType": "VarChar"
-          },
-          {
-            "name": "oef_ammattiryhma2_koodi",
-            "dataType": "string",
-            "sourceColumn": "oef_ammattiryhma2_koodi",
-            "sourceProviderType": "VarChar"
-          },
-          {
-            "name": "Toimiala",
-            "dataType": "string",
-            "sourceColumn": "Toimiala",
-            "sourceProviderType": "VarChar"
-          },
-          {
-            "name": "oef_toimiala_koodi",
-            "dataType": "string",
-            "sourceColumn": "oef_toimiala_koodi",
-            "sourceProviderType": "VarChar"
-          },
-          {
-            "name": "avain",
-            "dataType": "string",
-            "sourceColumn": "avain",
-            "sourceProviderType": "VarChar"
-          }
-        ],
-        "partitions": [
-          {
-            "name": "Avain",
-            "dataView": "full",
-            "source": {
-              "query": [
-                "SELECT ",
-                "\tDISTINCT",
-                "\t[Ammattiryhmä 2. taso] = d1.oef_ammattiryhma2,",
-                "\td1.oef_ammattiryhma2_koodi,",
-                "\t[Toimiala] = d2.oef_toimiala,",
-                "\td2.oef_toimiala_koodi,",
-                "\tCONCAT(d1.oef_ammattiryhma2_koodi, '_', d2.oef_toimiala_koodi) as avain",
-                "FROM [VipunenTK].[dbo].[f_ammattirakenne_ennuste] f",
-                "LEFT JOIN dbo.d_oef_ammatti d1 on d1.id=f.oef_ammatti_id",
-                "LEFT JOIN dbo.d_oef_toimiala d2 on d2.id=f.oef_toimiala_id"
-              ],
-              "dataSource": "SqlServer dwitvipusql16 VipunenTK"
-            },
-            "annotations": [
-              {
-                "name": "QueryEditorSerialization",
-                "value": [
-                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT ",
-                  "\tDISTINCT",
-                  "\t[Ammattiryhmä 2. taso] = d1.oef_ammattiryhma2,",
-                  "\td1.oef_ammattiryhma2_koodi,",
-                  "\t[Toimiala] = d2.oef_toimiala,",
-                  "\td2.oef_toimiala_koodi,",
-                  "\tCONCAT(d1.oef_ammattiryhma2_koodi, '_', d2.oef_toimiala_koodi) as avain",
-                  "FROM [VipunenTK].[dbo].[f_ammattirakenne_ennuste] f",
-                  "LEFT JOIN dbo.d_oef_ammatti d1 on d1.id=f.oef_ammatti_id",
-                  "LEFT JOIN dbo.d_oef_toimiala d2 on d2.id=f.oef_toimiala_id</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-                ]
-              }
-            ]
-          }
-        ],
-        "annotations": [
-          {
-            "name": "_TM_ExtProp_QueryDefinition",
-            "value": [
-              "SELECT ",
-              "\tDISTINCT",
-              "\t[Ammattiryhmä 2. taso] = d1.oef_ammattiryhma2,",
-              "\td1.oef_ammattiryhma2_koodi,",
-              "\t[Toimiala] = d2.oef_toimiala,",
-              "\td2.oef_toimiala_koodi,",
-              "\tCONCAT(d1.oef_ammattiryhma2_koodi, '_', d2.oef_toimiala_koodi) as avain",
-              "FROM [VipunenTK].[dbo].[f_ammattirakenne_ennuste] f",
-              "LEFT JOIN dbo.d_oef_ammatti d1 on d1.id=f.oef_ammatti_id",
-              "LEFT JOIN dbo.d_oef_toimiala d2 on d2.id=f.oef_toimiala_id"
-            ]
-          },
-          {
-            "name": "_TM_ExtProp_DbTableName",
-            "value": "Avain"
-          },
-          {
-            "name": "QueryEditorSerialization",
-            "value": [
-              "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT ",
-              "\tDISTINCT",
-              "\t[Ammattiryhmä 2. taso] = d1.oef_ammattiryhma2,",
-              "\td1.oef_ammattiryhma2_koodi,",
-              "\t[Toimiala] = d2.oef_toimiala,",
-              "\td2.oef_toimiala_koodi,",
-              "\tCONCAT(d1.oef_ammattiryhma2_koodi, '_', d2.oef_toimiala_koodi) as avain",
-              "FROM [VipunenTK].[dbo].[f_ammattirakenne_ennuste] f",
-              "LEFT JOIN dbo.d_oef_ammatti d1 on d1.id=f.oef_ammatti_id",
-              "LEFT JOIN dbo.d_oef_toimiala d2 on d2.id=f.oef_toimiala_id</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
-            ]
-          }
-        ]
-      }
-    ],
-    "relationships": [
-      {
-        "name": "da4bca90-66b4-41b9-887f-3aa1127163ad",
-        "fromTable": "Ammattirakenne",
-        "fromColumn": "avain",
-        "toTable": "Avain",
-        "toColumn": "avain"
       }
     ],
     "perspectives": [
@@ -3073,6 +2956,33 @@
               },
               {
                 "name": "Vieraskieliset työlliset KA_s"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Toimialaennuste",
+        "tables": [
+          {
+            "name": "Toimialaennuste",
+            "columns": [
+              {
+                "name": "Skenaario"
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Toimiala"
+              },
+              {
+                "name": "Toimiala_koodi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Toimialaennuste"
               }
             ]
           }
