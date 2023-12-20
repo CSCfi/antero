@@ -1374,7 +1374,7 @@
             "name": "CalculatedTable 1",
             "source": {
               "type": "calculated",
-              "expression": " SELECTCOLUMNS ( CALENDAR (MIN('Ammattirakenne'[Tilastovuosi]), MAX('Ammattirakenne'[Tilastovuosi]) + 20), \"Value\", INT ( [Date] ) )"
+              "expression": " SELECTCOLUMNS ( CALENDAR (MIN('Ammattirakenne'[Tilastovuosi]), MAX('Toimialaennuste'[Tilastovuosi])), \"Value\", INT ( [Date] ) )"
             }
           }
         ]
@@ -2621,7 +2621,15 @@
         "measures": [
           {
             "name": "Toimialaennuste",
-            "expression": " IF(HASONEVALUE(Toimialaennuste[Skenaario]),  SUM(Toimialaennuste[ennuste2]), BLANK())",
+            "expression": [
+              " ",
+              "",
+              "var vuosi = MAX(Ennustevuosi[Vuosi])",
+              "",
+              "RETURN",
+              "",
+              "IF(HASONEVALUE(Toimialaennuste[Skenaario]),  CALCULATE(SUM(Toimialaennuste[ennuste2]), Toimialaennuste[Tilastovuosi] = vuosi), CALCULATE(SUM(Toimialaennuste[ennuste2]), Toimialaennuste[Skenaario] = \"Perus\", Toimialaennuste[Tilastovuosi] = vuosi))"
+            ],
             "formatString": "#,0"
           }
         ],
@@ -2983,6 +2991,14 @@
             "measures": [
               {
                 "name": "Toimialaennuste"
+              }
+            ]
+          },
+          {
+            "name": "Ennustevuosi",
+            "columns": [
+              {
+                "name": "Vuosi"
               }
             ]
           }
