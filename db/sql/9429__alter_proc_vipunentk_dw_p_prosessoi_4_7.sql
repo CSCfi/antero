@@ -9,8 +9,8 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-
-
+DROP PROCEDURE IF EXISTS [dbo].[p_prosessoi_4_7]
+GO
 
 
 CREATE PROCEDURE [dbo].[p_prosessoi_4_7] AS
