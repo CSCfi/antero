@@ -13,7 +13,7 @@ GO
 
 
 
-ALTER PROCEDURE [dbo].[p_prosessoi_4_7] AS
+CREATE PROCEDURE [dbo].[p_prosessoi_4_7] AS
 
 
 TRUNCATE TABLE VipunenTK_DW.dbo.f_4_7_Tutkinnon_suorittaneiden_aiempi_koulutus
