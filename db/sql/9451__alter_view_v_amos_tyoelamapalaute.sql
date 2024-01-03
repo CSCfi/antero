@@ -143,14 +143,14 @@ FROM (
 				,d1.ytunnus_amos_spl
 				,vastaajatunnus
 
-			HAVING sum(tyopaikkajakson_kesto) > 0.0
-
 		) q1
 
 		GROUP BY 
 			rahoituskausi_amm
 			,kyselypohja_tarkenne_fi
 			,ytunnus_amos_spl
+
+		HAVING sum(tyopaikkajakson_kesto) > 0.0
 
 	) q2
 
@@ -162,5 +162,3 @@ LEFT JOIN dw.d_alueluokitus d3 ON d3.alueluokitus_avain like 'kunta%' and d3.kun
 LEFT JOIN dw.d_oiva_amm_jarjestaja_opetuskieli d4 ON d4.organisaatio_koodi = q3.ytunnus_amos_spl
 
 GO
-
-
