@@ -12,9 +12,15 @@ ALTER PROCEDURE [dbo].[p_lataa_f_Tutkintoennuste] AS
 
 -- Määrittelyt: https://wiki.eduuni.fi/pages/viewpage.action?pageId=364592639
 
+	DROP TABLE IF EXISTS #tutkintoennuste_a
+	DROP TABLE IF EXISTS #tutkintoennuste_b
+	DROP TABLE IF EXISTS #tutkintoennuste_c
+	DROP TABLE IF EXISTS #tutkintoennuste_d
+	DROP TABLE IF EXISTS #tutkintoennuste_e
+	DROP TABLE IF EXISTS #tutkintoennuste_f
+	DROP TABLE IF EXISTS #tutkintoennuste_g
+
 	-- Korkeakoulutuksen aloittaneet
-	
-	DROP TABLE IF EXISTS #tutkintoennuste
 
 	SELECT 
 		[Tilastovuosi] = f.[tilastointivuosi]
@@ -38,7 +44,7 @@ ALTER PROCEDURE [dbo].[p_lataa_f_Tutkintoennuste] AS
 			WHEN d7.koulutustyyppi in ('Ammattikorkeakoulututkinto, päivätoteutus', 'Ammattikorkeakoulututkinto, monimuotototeutus') THEN 'Ammattikorkeakoulukoulutus'
 			ELSE 'Yliopistokoulutus'
 		END as 'Ennusteen koulutusaste'
-	INTO #tutkintoennuste
+	INTO #tutkintoennuste_a
 	FROM [VipunenTK].[dbo].[f_OTV_2_8_Korkeakouluopiskelijat] f
 	LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d16 on d16.id=f.koulutusluokitus_id
 	LEFT JOIN [VipunenTK].[dbo].d_oppilaitoksen_taustatiedot d9 ON d9.id = f.oppilaitos_id
@@ -63,23 +69,23 @@ ALTER PROCEDURE [dbo].[p_lataa_f_Tutkintoennuste] AS
 		ELSE 'Yliopistokoulutus'
 	END 
 
-	IF (SELECT COUNT(*) FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus') > 0
+	IF (SELECT COUNT(*) FROM #tutkintoennuste_a WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus') > 0
 	BEGIN
 	DELETE VipunenTK.dbo.f_Tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus' and Aloit2 is not null
 	INSERT INTO VipunenTK.dbo.f_Tutkintoennuste
-	SELECT * FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus'
+	SELECT * FROM #tutkintoennuste_a WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus'
 	END
 
-	IF (SELECT COUNT(*) FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus') > 0
+	IF (SELECT COUNT(*) FROM #tutkintoennuste_a WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus') > 0
 	BEGIN
 	DELETE VipunenTK.dbo.f_Tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' and Aloit2 is not null
 	INSERT INTO VipunenTK.dbo.f_Tutkintoennuste
-	SELECT * FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus'
+	SELECT * FROM #tutkintoennuste_a WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus'
 	END
 	
-	-- Ammatillisen koulutuksen aloittaneet
+	DROP TABLE IF EXISTS #tutkintoennuste_a
 
-	DROP TABLE IF EXISTS #tutkintoennuste
+	-- Ammatillisen koulutuksen aloittaneet
 
 	SELECT 
 		[Tilastovuosi] = f.tilv,
@@ -100,7 +106,7 @@ ALTER PROCEDURE [dbo].[p_lataa_f_Tutkintoennuste] AS
 		,NULL as suoritetut_tutkinnot
 		,NULL as 'alkuperaisen_tutkinnon_aloittaneet'
 		,'Ammatillinen koulutus' as 'Ennusteen koulutusaste'
-	INTO #tutkintoennuste
+	INTO #tutkintoennuste_b
 	FROM VipunenTK.[dbo].[f_OTV_2_3_Lukiokoulutuksen_ja_ammatillisen_koulutuksen_opiskelijat] f
 	LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d16 on d16.id=f.koulutusluokitus_id
 	LEFT JOIN [VipunenTK].[dbo].d_ika d5 ON d5.id = f.ika_1v_id
@@ -110,16 +116,16 @@ ALTER PROCEDURE [dbo].[p_lataa_f_Tutkintoennuste] AS
 	AND d27.koulutuksen_tavoite_toteuma = 'Koko tutkinto'
 	GROUP BY f.tilv,d16.iscfi2013,d16.Koulutusaste_taso2,CASE WHEN d5.ika_int BETWEEN 15 and 34 THEN '15-34' ELSE '35-64' END,d16.iscfi2013_koodi
 	
-	IF (SELECT COUNT(*) FROM #tutkintoennuste) > 0
+	IF (SELECT COUNT(*) FROM #tutkintoennuste_b) > 0
 	BEGIN
 	DELETE VipunenTK.dbo.f_Tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus' and Aloit2 is not null
 	INSERT INTO VipunenTK.dbo.f_Tutkintoennuste
-	SELECT * FROM #tutkintoennuste
+	SELECT * FROM #tutkintoennuste_b
 	END
 
-	-- Tutkinnon suorittaneet (väestö)
+	DROP TABLE IF EXISTS #tutkintoennuste_b
 
-	DROP TABLE IF EXISTS #tutkintoennuste
+	-- Tutkinnon suorittaneet (väestö)
 
 	SELECT
 		[Tilastointivuosi] as Tilastovuosi
@@ -144,7 +150,7 @@ ALTER PROCEDURE [dbo].[p_lataa_f_Tutkintoennuste] AS
 			WHEN Koulutusaste_taso2_koodi = 62 THEN 'Ammattikorkeakoulukoulutus'
 			ELSE 'Yliopistokoulutus'
 		END as 'Ennusteen koulutusaste'
-	INTO #tutkintoennuste
+	INTO #tutkintoennuste_c
 	FROM VipunenTK.dbo.f_VKP_4_2_Vaeston_koulutusrakenne_ja_paaasiallinen_toiminta f
 	LEFT JOIN d_koulutusluokitus d1 on d1.id = koulutusluokitus_id
 	LEFT JOIN d_oppisopimuskoulutus d4 on d4.id = oppisopimuskoulutus_id
@@ -161,30 +167,30 @@ ALTER PROCEDURE [dbo].[p_lataa_f_Tutkintoennuste] AS
 		ELSE 'Yliopistokoulutus'
 	END 
 
-	IF (SELECT COUNT(*) FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus') > 0
+	IF (SELECT COUNT(*) FROM #tutkintoennuste_c WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus') > 0
 	BEGIN
 	DELETE VipunenTK.dbo.f_Tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus' and tutkinnon_suorittaneet is not null
 	INSERT INTO VipunenTK.dbo.f_Tutkintoennuste
-	SELECT * FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus'
+	SELECT * FROM #tutkintoennuste_c WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus'
 	END
 
-	IF (SELECT COUNT(*) FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus') > 0
+	IF (SELECT COUNT(*) FROM #tutkintoennuste_c WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus') > 0
 	BEGIN
 	DELETE VipunenTK.dbo.f_Tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' and tutkinnon_suorittaneet is not null
 	INSERT INTO VipunenTK.dbo.f_Tutkintoennuste
-	SELECT * FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus'
+	SELECT * FROM #tutkintoennuste_c WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus'
 	END
 
-	IF (SELECT COUNT(*) FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus') > 0
+	IF (SELECT COUNT(*) FROM #tutkintoennuste_c WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus') > 0
 	BEGIN
 	DELETE VipunenTK.dbo.f_Tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus' and tutkinnon_suorittaneet is not null
 	INSERT INTO VipunenTK.dbo.f_Tutkintoennuste
-	SELECT * FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus'
+	SELECT * FROM #tutkintoennuste_c WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus'
 	END
 
-	-- Työlliset (väestö)
+	DROP TABLE IF EXISTS #tutkintoennuste_c
 
-	DROP TABLE IF EXISTS #tutkintoennuste
+	-- Työlliset (väestö)
 
 	SELECT
 		 [Tilastointivuosi] as Tilastovuosi
@@ -209,7 +215,7 @@ ALTER PROCEDURE [dbo].[p_lataa_f_Tutkintoennuste] AS
 			WHEN Koulutusaste_taso2_koodi = 62 THEN 'Ammattikorkeakoulukoulutus'
 			ELSE 'Yliopistokoulutus'
 		END as 'Ennusteen koulutusaste'
-	INTO #tutkintoennuste
+	INTO #tutkintoennuste_d
 	FROM VipunenTK.dbo.f_VKP_4_2_Vaeston_koulutusrakenne_ja_paaasiallinen_toiminta f
 	LEFT JOIN d_koulutusluokitus d1 on d1.id = koulutusluokitus_id
 	LEFT JOIN d_oppisopimuskoulutus d4 on d4.id = oppisopimuskoulutus_id
@@ -227,30 +233,30 @@ ALTER PROCEDURE [dbo].[p_lataa_f_Tutkintoennuste] AS
 		ELSE 'Yliopistokoulutus'
 	END
 	
-	IF (SELECT COUNT(*) FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus') > 0
+	IF (SELECT COUNT(*) FROM #tutkintoennuste_d WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus') > 0
 	BEGIN
 	DELETE VipunenTK.dbo.f_Tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus' and tyovoima_yhteensa is not null
 	INSERT INTO VipunenTK.dbo.f_Tutkintoennuste
-	SELECT * FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus'
+	SELECT * FROM #tutkintoennuste_d WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus'
 	END
 
-	IF (SELECT COUNT(*) FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus') > 0
+	IF (SELECT COUNT(*) FROM #tutkintoennuste_d WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus') > 0
 	BEGIN
 	DELETE VipunenTK.dbo.f_Tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' and tyovoima_yhteensa is not null
 	INSERT INTO VipunenTK.dbo.f_Tutkintoennuste
-	SELECT * FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus'
+	SELECT * FROM #tutkintoennuste_d WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus'
 	END
 
-	IF (SELECT COUNT(*) FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus') > 0
+	IF (SELECT COUNT(*) FROM #tutkintoennuste_d WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus') > 0
 	BEGIN
 	DELETE VipunenTK.dbo.f_Tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus' and tyovoima_yhteensa is not null
 	INSERT INTO VipunenTK.dbo.f_Tutkintoennuste
-	SELECT * FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus'
+	SELECT * FROM #tutkintoennuste_d WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus'
 	END
 
-	-- Alkuperäisen ja myöhemmän tutkinnon suorittaneet
+	DROP TABLE IF EXISTS #tutkintoennuste_d
 
-	DROP TABLE IF EXISTS #tutkintoennuste
+	-- Alkuperäisen ja myöhemmän tutkinnon suorittaneet
 
 	SELECT 
 		Tilastovuosi
@@ -271,7 +277,7 @@ ALTER PROCEDURE [dbo].[p_lataa_f_Tutkintoennuste] AS
 		,NULL as 'suoritetut_tutkinnot'
 		,NULL as 'alkuperaisen_tutkinnon_aloittaneet'
 		,[Ennusteen koulutusaste]
-	INTO #tutkintoennuste
+	INTO #tutkintoennuste_e
 	FROM (
 		SELECT 
 			[suorv] as 'Tilastovuosi' 
@@ -310,30 +316,30 @@ ALTER PROCEDURE [dbo].[p_lataa_f_Tutkintoennuste] AS
 		  ([Ammatillinen perustutkinto], Yliopistotutkinto, Ammattikorkeakoulututkinto)  
 	)AS unpvt
 
-	IF (SELECT COUNT(*) FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus') > 0
+	IF (SELECT COUNT(*) FROM #tutkintoennuste_e WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus') > 0
 	BEGIN
 	DELETE VipunenTK.dbo.f_Tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus' and (alkuperaisen_tutkinnon_suorittaneet is not null or myohemman_tutkinnon_suorittaneet is not null)
 	INSERT INTO VipunenTK.dbo.f_Tutkintoennuste
-	SELECT * FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus'
+	SELECT * FROM #tutkintoennuste_e WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus'
 	END
 
-	IF (SELECT COUNT(*) FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus') > 0
+	IF (SELECT COUNT(*) FROM #tutkintoennuste_e WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus') > 0
 	BEGIN
 	DELETE VipunenTK.dbo.f_Tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' and (alkuperaisen_tutkinnon_suorittaneet is not null or myohemman_tutkinnon_suorittaneet is not null)
 	INSERT INTO VipunenTK.dbo.f_Tutkintoennuste
-	SELECT * FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus'
+	SELECT * FROM #tutkintoennuste_e WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus'
 	END
 
-	IF (SELECT COUNT(*) FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus') > 0
+	IF (SELECT COUNT(*) FROM #tutkintoennuste_e WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus') > 0
 	BEGIN
 	DELETE VipunenTK.dbo.f_Tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus' and (alkuperaisen_tutkinnon_suorittaneet is not null or myohemman_tutkinnon_suorittaneet is not null)
 	INSERT INTO VipunenTK.dbo.f_Tutkintoennuste
-	SELECT * FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus'
+	SELECT * FROM #tutkintoennuste_e WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus'
 	END
 
-	-- Aloittaneiden läpäisy (aloittaneet)
+	DROP TABLE IF EXISTS #tutkintoennuste_e
 
-	DROP TABLE IF EXISTS #tutkintoennuste
+	-- Aloittaneiden läpäisy (aloittaneet)
 
 	SELECT  
 		NULL as Tilastovuosi,
@@ -358,7 +364,7 @@ ALTER PROCEDURE [dbo].[p_lataa_f_Tutkintoennuste] AS
 			WHEN d6.koulutuslaji2_koodi = '51b' or COALESCE(NULLIF(d7.iscfi2013_koodi,-1),d7b.iscfi2013_koodi) = '0112' THEN 'Yliopistokoulutus'
 			ELSE 'Ammattikorkeakoulukoulutus'
 		END as 'Ennusteen koulutusaste'
-	INTO #tutkintoennuste
+	INTO #tutkintoennuste_f
 	FROM VipunenTK.dbo.f_aloittaneiden_lapaisy f 
 	LEFT JOIN dbo.d_kausi AS d1 ON d1.kausi_id = f.aloituskausikoodi 
 	LEFT JOIN dbo.d_tarkastelujakso AS d17 ON d17.id = f.tarkastelujakso_id 
@@ -380,30 +386,30 @@ ALTER PROCEDURE [dbo].[p_lataa_f_Tutkintoennuste] AS
 			ELSE 'Ammattikorkeakoulukoulutus'
 		END
 
-	IF (SELECT COUNT(*) FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus') > 0
+	IF (SELECT COUNT(*) FROM #tutkintoennuste_f WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus') > 0
 	BEGIN
 	DELETE VipunenTK.dbo.f_Tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus' and alkuperaisen_tutkinnon_aloittaneet is not null
 	INSERT INTO VipunenTK.dbo.f_Tutkintoennuste
-	SELECT * FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus'
+	SELECT * FROM #tutkintoennuste_f WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus'
 	END
 
-	IF (SELECT COUNT(*) FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus') > 0
+	IF (SELECT COUNT(*) FROM #tutkintoennuste_f WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus') > 0
 	BEGIN
 	DELETE VipunenTK.dbo.f_Tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' and alkuperaisen_tutkinnon_aloittaneet is not null
 	INSERT INTO VipunenTK.dbo.f_Tutkintoennuste
-	SELECT * FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus'
+	SELECT * FROM #tutkintoennuste_f WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus'
 	END
 
-	IF (SELECT COUNT(*) FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus') > 0
+	IF (SELECT COUNT(*) FROM #tutkintoennuste_f WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus') > 0
 	BEGIN
 	DELETE VipunenTK.dbo.f_Tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus' and alkuperaisen_tutkinnon_aloittaneet is not null
 	INSERT INTO VipunenTK.dbo.f_Tutkintoennuste
-	SELECT * FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus'
+	SELECT * FROM #tutkintoennuste_f WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus'
 	END
 
-	-- Aloittaneiden läpäisy (tutkinnon suorittaneet)
+	DROP TABLE IF EXISTS #tutkintoennuste_f
 
-	DROP TABLE IF EXISTS #tutkintoennuste
+	-- Aloittaneiden läpäisy (tutkinnon suorittaneet)
 
 	SELECT
 		Tilastovuosi
@@ -424,7 +430,7 @@ ALTER PROCEDURE [dbo].[p_lataa_f_Tutkintoennuste] AS
 		,COALESCE(unpvt.suoritetut_tutkinnot,0) as 'suoritetut_tutkinnot'
 		,[Alkuperäisen tutkinnon aloittaneet] as alkuperaisen_tutkinnon_aloittaneet
 		,[Ennusteen koulutusaste]
-	INTO #tutkintoennuste
+	INTO #tutkintoennuste_g
 	FROM (
 		SELECT  
 			NULL as Tilastovuosi,
@@ -480,28 +486,34 @@ ALTER PROCEDURE [dbo].[p_lataa_f_Tutkintoennuste] AS
 		  ([Alkuperäinen tutkintolaji], [Muu tutkintolaji])  
 	)AS unpvt
 
-	IF (SELECT COUNT(*) FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus') > 0
+	IF (SELECT COUNT(*) FROM #tutkintoennuste_g WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus') > 0
 	BEGIN
 	DELETE VipunenTK.dbo.f_Tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus' and suoritetut_tutkinnot is not null
 	INSERT INTO VipunenTK.dbo.f_Tutkintoennuste
-	SELECT * FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus'
+	SELECT * FROM #tutkintoennuste_g WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus'
 	END
 
-	IF (SELECT COUNT(*) FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus') > 0
+	IF (SELECT COUNT(*) FROM #tutkintoennuste_g WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus') > 0
 	BEGIN
 	DELETE VipunenTK.dbo.f_Tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus' and suoritetut_tutkinnot is not null
 	INSERT INTO VipunenTK.dbo.f_Tutkintoennuste
-	SELECT * FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus'
+	SELECT * FROM #tutkintoennuste_g WHERE [Ennusteen koulutusaste] = 'Ammattikorkeakoulukoulutus'
 	END
 
-	IF (SELECT COUNT(*) FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus') > 0
+	IF (SELECT COUNT(*) FROM #tutkintoennuste_g WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus') > 0
 	BEGIN
 	DELETE VipunenTK.dbo.f_Tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus' and suoritetut_tutkinnot is not null
 	INSERT INTO VipunenTK.dbo.f_Tutkintoennuste
-	SELECT * FROM #tutkintoennuste WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus'
+	SELECT * FROM #tutkintoennuste_g WHERE [Ennusteen koulutusaste] = 'Yliopistokoulutus'
 	END
 
-	DROP TABLE IF EXISTS #tutkintoennuste
+	DROP TABLE IF EXISTS #tutkintoennuste_a
+	DROP TABLE IF EXISTS #tutkintoennuste_b
+	DROP TABLE IF EXISTS #tutkintoennuste_c
+	DROP TABLE IF EXISTS #tutkintoennuste_d
+	DROP TABLE IF EXISTS #tutkintoennuste_e
+	DROP TABLE IF EXISTS #tutkintoennuste_f
+	DROP TABLE IF EXISTS #tutkintoennuste_g
 
 GO
 
