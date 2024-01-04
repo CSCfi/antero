@@ -23,7 +23,7 @@ SELECT [tilv] AS Tilastovuosi
 	  ,d2.[avi] AS [Opetuksen järjestäjän AVI]
       ,d3.[tiedonantajatyyppi] AS [Opetuksen järjestäjän tiedonantajatyyppi]
       ,[popy] AS [Oppilaat]
-	  ,popyn AS [Oppilaat (tytöt)]
+	  -- ,popyn AS [Oppilaat (tytöt)]
       ,[jmamu]
       ,[psisa]
       ,[jmamusisa]
