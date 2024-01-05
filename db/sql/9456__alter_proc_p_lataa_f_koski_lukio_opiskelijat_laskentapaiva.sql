@@ -130,7 +130,7 @@ FROM (
 		,jarj_tavoitetutkinto
 		,rnk = rank() over (
 			partition by opiskeluoikeus_oid, koulutustoimija_oid, tilastovuosi, tilastopaiva_20_9, tilastopaiva_20_1 
-			order by alkamispaiva, jarj_tavoitetutkinto, suorituksen_tyyppi
+			order by alkamispaiva, jarj_tavoitetutkinto, suorituksen_tyyppi, koulutusmoduuli_koodiarvo
 		)
 		,yhdistelmatutkinto
 
