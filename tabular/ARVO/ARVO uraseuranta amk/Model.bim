@@ -3138,7 +3138,7 @@
             "expression": [
               "",
               "",
-              "IF([Vastanneet] = \"1-4\", BLANK(), CALCULATE(SUMX(Muuttujat,[numerovalinta] * [rahoituskysmys_paino]),Muuttujat[Koodit Rahoitusmallikysymys]=\"1\"))"
+              "IF([ehtoFI], BLANK(), CALCULATE(SUMX(Muuttujat,[numerovalinta] * [rahoituskysmys_paino]),Muuttujat[Koodit Rahoitusmallikysymys]=\"1\"))"
             ],
             "formatString": "#,0"
           },
@@ -3235,7 +3235,11 @@
           },
           {
             "name": "Poäng",
-            "expression": "[Pisteet]",
+            "expression": [
+              "",
+              "",
+              "IF([ehtoSV], BLANK(), CALCULATE(SUMX(Muuttujat,[numerovalinta] * [rahoituskysmys_paino]),Muuttujat[Koodit Rahoitusmallikysymys]=\"1\"))"
+            ],
             "formatString": "#,0"
           },
           {
@@ -3276,7 +3280,11 @@
           },
           {
             "name": "Score",
-            "expression": "[Pisteet]",
+            "expression": [
+              "",
+              "",
+              "IF([ehtoEN], BLANK(), CALCULATE(SUMX(Muuttujat,[numerovalinta] * [rahoituskysmys_paino]),Muuttujat[Koodit Rahoitusmallikysymys]=\"1\"))"
+            ],
             "formatString": "#,0"
           },
           {
@@ -3295,6 +3303,16 @@
               "IF([ehtoFI] = TRUE, BLANK(), (DIVIDE(pro,kaikki) - DIVIDE(dec,kaikki))*100)"
             ],
             "formatString": "0.00"
+          },
+          {
+            "name": "ehtoSV",
+            "expression": "OR([Vastanneet_perus]=\"1-4\",ISFILTERED(Muuttujat[Flervalsalternativ]))",
+            "isHidden": true
+          },
+          {
+            "name": "ehtoEN",
+            "expression": "OR([Vastanneet_perus]=\"1-4\",ISFILTERED(Muuttujat[Multiple choice option]))",
+            "isHidden": true
           }
         ],
         "annotations": [
