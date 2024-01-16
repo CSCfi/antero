@@ -14,12 +14,6 @@ GO
 
 CREATE OR ALTER VIEW [dw].[v_koski_oppivelvollisten_opintojen_kulku_cultures] AS 
 
--- EXEC [dbo].[tarkista_kaannokset2] 'v_koski_oppivelvollisten_opintojen_kulku_cultures'
-
-ALTER VIEW [dw].[v_koski_oppivelvollisten_opintojen_kulku_cultures] AS 
-
--- EXEC [dbo].[tarkista_kaannokset2] 'v_koski_oppivelvollisten_opintojen_kulku_cultures'
-
 SELECT 
 	CONCAT(d1.paiva, '.', d1.kuukausi, '. - ', d2.paiva, '.', d2.kuukausi, '.', d2.vuosi) as aloitusajankohta_fi,
 	CONCAT(d1.paiva, '.', d1.kuukausi, '. - ', d2.paiva, '.', d2.kuukausi, '.', d2.vuosi) as aloitusajankohta_sv,
