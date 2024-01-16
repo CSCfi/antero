@@ -565,7 +565,7 @@ ALTER PROCEDURE [dbo].[p_lataa_f_Tutkintoennuste] AS
 	AND f.tilastointivuosi >= 2017 and d5.ika_int BETWEEN 15 and 64
 	AND ((d7.koulutustyyppi in ('Ammattikorkeakoulututkinto, päivätoteutus', 'Ammattikorkeakoulututkinto, monimuotototeutus') and d16.Koulutusaste_taso2 = 'Ammattikorkeakoulututkinto') or (d16.Koulutusaste_taso2 = 'Ylempi korkeakoulututkinto' or (d16.iscfi2013_koodi = '0112' and d16.Koulutusaste_taso2 = 'Alempi korkeakoulututkinto')))
 	AND f.aineisto = 'L'
-	GROUP BY [tilastointivuosi],CASE WHEN d5.ika_int BETWEEN 15 and 34 THEN '15-34' ELSE '35-64' END 
+	GROUP BY [tilastointivuosi],d5.ika_int,CASE WHEN d5.ika_int BETWEEN 15 and 34 THEN '15-34' ELSE '35-64' END 
 		,d16.iscfi2013 
 		,d16.iscfi2013_koodi
 		,d7.koulutustyyppi
@@ -618,7 +618,7 @@ ALTER PROCEDURE [dbo].[p_lataa_f_Tutkintoennuste] AS
 	LEFT JOIN VipunenTK.dbo.d_koulutuksen_tavoite_toteuma d27 on d27.id=f.koulutuksen_tavoite_toteuma_id
 	WHERE d15.ammatillisen_koulutuksen_koulutuslaji = 'ammatillinen perustutkinto' and f.tilastointivuosi >= 2017 and d5.ika_int BETWEEN 15 and 64
 	AND d27.koulutuksen_tavoite_toteuma = 'Koko tutkinto'
-	GROUP BY f.tilastointivuosi,d16.iscfi2013,d16.Koulutusaste_taso2,CASE WHEN d5.ika_int BETWEEN 15 and 34 THEN '15-34' ELSE '35-64' END,d16.iscfi2013_koodi
+	GROUP BY f.tilastointivuosi,d5.ika_int,d16.iscfi2013,d16.Koulutusaste_taso2,CASE WHEN d5.ika_int BETWEEN 15 and 34 THEN '15-34' ELSE '35-64' END,d16.iscfi2013_koodi
 	
 	IF (SELECT COUNT(*) FROM #tutkintoennuste_i WHERE [Ennusteen koulutusaste] = 'Ammatillinen koulutus') > 0
 	BEGIN
