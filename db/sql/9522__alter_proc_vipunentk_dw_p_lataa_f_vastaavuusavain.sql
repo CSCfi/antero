@@ -225,21 +225,6 @@ SELECT
 	AND d27.koulutuksen_tavoite_toteuma = 'Koko tutkinto'
 	GROUP BY f.tilastointivuosi, d5.ika_int, d16.id
 
-	UNION ALL
-
-	SELECT 
-		tilastovuosi = f.tilv,
-		d16.id,
-		d5.ika_int,
-		COALESCE(SUM(lukumaara),0) as tutkinnot
-	FROM VipunenTK.[dbo].[f_OTV_2_3_Lukiokoulutuksen_ja_ammatillisen_koulutuksen_opiskelijat] f
-	LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d16 on d16.id=f.koulutusluokitus_id
-	LEFT JOIN [VipunenTK].[dbo].d_ika d5 ON d5.id = f.ika_1v_id
-	left join VipunenTK.dbo.d_lukiokoulutuksen_koulutuslaji d6 on d6.id=f.lukiokoulutuksen_koulutuslaji_id
-	left join VipunenTK.dbo.d_tutkinnon_tavoite d8 on d8.id=f.tutkinnon_tavoite_id
-	WHERE d6.lukiokoulutuksen_koulutuslaji = 'lukion koko oppimäärä' and f.tilv >= 2017 and d5.ika_int BETWEEN 15 and 64
-	AND d8.tutkinnon_tavoite = 'Koko tutkinnon suorittaminen'
-	GROUP BY f.tilv, d5.ika_int, d16.id
 
 GO
 
