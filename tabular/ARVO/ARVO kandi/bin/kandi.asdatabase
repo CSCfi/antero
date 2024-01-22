@@ -2773,7 +2773,8 @@
               "",
               "var summa = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1)",
               "var summa_ylataso = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1,ALL(Muuttujat[Monivalintavaihtoehto]))",
-              "return IF(summa_ylataso<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(),[alle5]),MROUND(summa,3))",
+              "",
+              "return IF(summa_ylataso<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(), [alle5]), IF(AND(summa < 5, summa > 0), [alle5],MROUND(summa,3)))",
               ""
             ],
             "formatString": "#,0"
