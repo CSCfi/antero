@@ -10,7 +10,7 @@ GO
 
 
 
-ALTER PROCEDURE EXEC [dw].[p_lataa_f_arvo_kandi] AS
+ALTER PROCEDURE [dw].[p_lataa_f_arvo_kandi] AS
 
 DROP TABLE IF EXISTS [dw].[f_arvo_kandi_MAIN_QUERY]
 DROP TABLE IF EXISTS [sa].temp_arvo_kandi_taustat
