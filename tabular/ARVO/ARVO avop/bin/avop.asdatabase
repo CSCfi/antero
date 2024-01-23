@@ -288,6 +288,7 @@
             "name": "Flervalsalternativ",
             "dataType": "string",
             "sourceColumn": "Flervalsalternativ",
+            "sortByColumn": "Järjestys monivalintavaihtoehto",
             "sourceProviderType": "WChar",
             "displayFolder": "Frågevariabler"
           },
@@ -408,6 +409,7 @@
             "name": "Multiple choice option",
             "dataType": "string",
             "sourceColumn": "Multiple choice option",
+            "sortByColumn": "Järjestys monivalintavaihtoehto",
             "sourceProviderType": "WChar",
             "displayFolder": "Survey variables"
           },
@@ -728,8 +730,7 @@
               "",
               "var summa = CALCULATE(DISTINCTCOUNT([vastaajaid]))",
               "var summa_ylataso = CALCULATE(DISTINCTCOUNT([vastaajaid]),ALL(Muuttujat[Monivalintavaihtoehto]))",
-              "return IF(summa_ylataso<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(),[alle5]),MROUND(summa,3))",
-              ""
+              "return IF(summa_ylataso<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(),[alle5]), IF(AND(summa < 5, summa > 0), [alle5],MROUND(summa,3)))"
             ],
             "formatString": "#,0"
           },
@@ -770,7 +771,7 @@
               "",
               "var summa = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1)",
               "var summa_ylataso = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1,ALL(Muuttujat[Monivalintavaihtoehto]))",
-              "return IF(summa_ylataso<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(),[alle5]),MROUND(summa,3))"
+              "return IF(summa_ylataso<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(),[alle5]), IF(AND(summa < 5, summa > 0), [alle5],MROUND(summa,3)))"
             ],
             "formatString": "#,0"
           },
@@ -812,7 +813,7 @@
               "",
               "var summa = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1)",
               "var summa_ylataso = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1,ALL(Muuttujat[Flervalsalternativ]))",
-              "return IF(summa_ylataso<5,IF(OR(summa=0,ISFILTERED([Flervalsalternativ])),BLANK(),[alle5]),MROUND(summa,3))"
+              "return IF(summa_ylataso<5,IF(OR(summa=0,ISFILTERED([Flervalsalternativ])),BLANK(),[alle5]), IF(AND(summa < 5, summa > 0), [alle5],MROUND(summa,3)))"
             ],
             "formatString": "#,0"
           },
@@ -852,7 +853,7 @@
               "",
               "var summa = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1)",
               "var summa_ylataso = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[vuosi_tilasto]=1,ALL(Muuttujat[Multiple choice option]))",
-              "return IF(summa_ylataso<5,IF(OR(summa=0,ISFILTERED([Multiple choice option])),BLANK(),[alle5]),MROUND(summa,3))"
+              "return IF(summa_ylataso<5,IF(OR(summa=0,ISFILTERED([Multiple choice option])),BLANK(),[alle5]), IF(AND(summa < 5, summa > 0), [alle5],MROUND(summa,3)))"
             ],
             "formatString": "#,0"
           },
@@ -903,7 +904,8 @@
           },
           {
             "name": "alle5",
-            "expression": "\"1-4\""
+            "expression": "\"1-4\"",
+            "isHidden": true
           },
           {
             "name": "ehto2FI",
