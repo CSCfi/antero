@@ -668,12 +668,6 @@
             "sourceColumn": "vuosi_tilasto"
           },
           {
-            "name": "partitioid",
-            "dataType": "int64",
-            "isHidden": true,
-            "sourceColumn": "partitioid"
-          },
-          {
             "type": "calculated",
             "name": "Järjestys kysymys_2",
             "dataType": "string",
@@ -707,29 +701,43 @@
         ],
         "partitions": [
           {
-            "name": "Partitio_0",
+            "name": "0",
             "mode": "import",
             "source": {
-              "query": "SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE partitioid = 0",
+              "query": "SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE Kyselyvuosi >= YEAR(GETDATE()) - 2",
               "dataSource": "SqlServer dwitvipusql16 antero"
             },
             "annotations": [
               {
                 "name": "QueryEditorSerialization",
-                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE partitioid = 0</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE Kyselyvuosi >= YEAR(GETDATE()) - 2</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
               }
             ]
           },
           {
-            "name": "Partitio_1",
+            "name": "1",
             "source": {
-              "query": "SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE partitioid = 1",
+              "query": "SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE Kyselyvuosi BETWEEN 2019 AND YEAR(GETDATE()) - 3",
               "dataSource": "SqlServer dwitvipusql16 antero"
             },
             "annotations": [
               {
                 "name": "QueryEditorSerialization",
-                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE partitioid = 1</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE Kyselyvuosi BETWEEN 2019 AND YEAR(GETDATE()) - 3</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+              }
+            ]
+          },
+          {
+            "name": "2",
+            "mode": "import",
+            "source": {
+              "query": "SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE Kyselyvuosi < 2019",
+              "dataSource": "SqlServer dwitvipusql16 antero"
+            },
+            "annotations": [
+              {
+                "name": "QueryEditorSerialization",
+                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] WHERE Kyselyvuosi < 2019</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
               }
             ]
           }
@@ -962,7 +970,7 @@
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": " SELECT [dw].[v_arvo_avop].* FROM [dw].[v_arvo_avop] "
+            "value": " SELECT [dw].[v_arvo_avop].[Kyselyvuosi],[dw].[v_arvo_avop].[Vastauskuukausi],[dw].[v_arvo_avop].[Kysymys],[dw].[v_arvo_avop].[Kysymysryhmä],[dw].[v_arvo_avop].[Monivalintavaihtoehto],[dw].[v_arvo_avop].[Rahoitusmallikysymys],[dw].[v_arvo_avop].[Kyselypohja],[dw].[v_arvo_avop].[Organisaatio],[dw].[v_arvo_avop].[Hallinnonala],[dw].[v_arvo_avop].[Koulutusnimike],[dw].[v_arvo_avop].[Koulutusaste, taso 1],[dw].[v_arvo_avop].[Koulutusaste, taso 2],[dw].[v_arvo_avop].[Koulutusala, taso 1],[dw].[v_arvo_avop].[Koulutusala, taso 2],[dw].[v_arvo_avop].[Koulutusala, taso 3],[dw].[v_arvo_avop].[OKM ohjauksen ala],[dw].[v_arvo_avop].[Kieli],[dw].[v_arvo_avop].[Sukupuoli],[dw].[v_arvo_avop].[Ikäryhmä],[dw].[v_arvo_avop].[Pohjakoulutus],[dw].[v_arvo_avop].[kyselyid],[dw].[v_arvo_avop].[kyselykertaid],[dw].[v_arvo_avop].[kysymysid],[dw].[v_arvo_avop].[vastaajaid],[dw].[v_arvo_avop].[vastauskoodi],[dw].[v_arvo_avop].[vastaustyyppi],[dw].[v_arvo_avop].[vastaustyyppi_keskiarvo],[dw].[v_arvo_avop].[numerovalinta],[dw].[v_arvo_avop].[vastaajatunnus_id],[dw].[v_arvo_avop].[vastaajatunnukset_lkm],[dw].[v_arvo_avop].[Enkätår],[dw].[v_arvo_avop].[Svarsmånad],[dw].[v_arvo_avop].[Frågeformulär],[dw].[v_arvo_avop].[Fråga],[dw].[v_arvo_avop].[Frågegrupp],[dw].[v_arvo_avop].[Flervalsalternativ],[dw].[v_arvo_avop].[Finansieringsmodellsfråga],[dw].[v_arvo_avop].[Organisation],[dw].[v_arvo_avop].[Förvaltningsområde],[dw].[v_arvo_avop].[Utbildningsbenämning],[dw].[v_arvo_avop].[Utbildningsnivå, nivå 1],[dw].[v_arvo_avop].[Utbildningsnivå, nivå 2],[dw].[v_arvo_avop].[Utbildningsområde, nivå 1],[dw].[v_arvo_avop].[Utbildningsområde, nivå 2],[dw].[v_arvo_avop].[Utbildningsområde, nivå 3],[dw].[v_arvo_avop].[UKM-styrningsområde],[dw].[v_arvo_avop].[Språk],[dw].[v_arvo_avop].[Kön],[dw].[v_arvo_avop].[Åldersgrupp],[dw].[v_arvo_avop].[Grundutbildning],[dw].[v_arvo_avop].[Survey year],[dw].[v_arvo_avop].[Response month],[dw].[v_arvo_avop].[Survey format],[dw].[v_arvo_avop].[Question],[dw].[v_arvo_avop].[Question group],[dw].[v_arvo_avop].[Multiple choice option],[dw].[v_arvo_avop].[Funding model question],[dw].[v_arvo_avop].[Organization],[dw].[v_arvo_avop].[Administrative sector],[dw].[v_arvo_avop].[Name of education],[dw].[v_arvo_avop].[Level of education, tier 1],[dw].[v_arvo_avop].[Level of education, tier 2],[dw].[v_arvo_avop].[Field of education, tier 1],[dw].[v_arvo_avop].[Field of education, tier 2],[dw].[v_arvo_avop].[Field of education, tier 3],[dw].[v_arvo_avop].[Field of education, HE steering],[dw].[v_arvo_avop].[Language],[dw].[v_arvo_avop].[Gender],[dw].[v_arvo_avop].[Age group],[dw].[v_arvo_avop].[Prior education],[dw].[v_arvo_avop].[Koodit Koulutusnimike],[dw].[v_arvo_avop].[Koodit Organisaatio],[dw].[v_arvo_avop].[Koodit Vastauskuukausi],[dw].[v_arvo_avop].[Koodit Rahoitusmallikysymys],[dw].[v_arvo_avop].[Järjestys pohjakoulutus],[dw].[v_arvo_avop].[Järjestys ikäryhmä],[dw].[v_arvo_avop].[Järjestys sukupuoli],[dw].[v_arvo_avop].[Järjestys koulutusaste1],[dw].[v_arvo_avop].[Järjestys koulutusaste2],[dw].[v_arvo_avop].[Järjestys koulutusala1],[dw].[v_arvo_avop].[Järjestys koulutusala2],[dw].[v_arvo_avop].[Järjestys koulutusala3],[dw].[v_arvo_avop].[Järjestys okm ohjauksen ala],[dw].[v_arvo_avop].[Järjestys monivalintavaihtoehto],[dw].[v_arvo_avop].[Järjestys kysymys],[dw].[v_arvo_avop].[Järjestys kysymysryhma],[dw].[v_arvo_avop].[vuosi_tilasto] FROM [dw].[v_arvo_avop] "
           },
           {
             "name": "_TM_ExtProp_DbTableName",
@@ -2490,7 +2498,7 @@
               "        <string>partitioid</string>",
               "      </key>",
               "      <value>",
-              "        <boolean>true</boolean>",
+              "        <boolean>false</boolean>",
               "      </value>",
               "    </item>",
               "    <item>",
