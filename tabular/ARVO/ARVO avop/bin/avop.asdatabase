@@ -7,8 +7,7 @@
       {
         "name": "SqlServer dwitvipusql16 antero",
         "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=antero;Integrated Security=SSPI;Persist Security Info=false",
-        "impersonationMode": "impersonateAccount",
-        "account": "dwi\\t_viputk_kuutio",
+        "impersonationMode": "impersonateServiceAccount",
         "annotations": [
           {
             "name": "ConnectionEditUISource",
@@ -692,6 +691,18 @@
               "CONCATENATE(CONCATENATE(kysymysryhma,kysymys),[Kyselyvuosi])",
               ""
             ]
+          },
+          {
+            "name": "vastaajatunnus_id",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "vastaajatunnus_id"
+          },
+          {
+            "name": "vastaajatunnukset_lkm",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "vastaajatunnukset_lkm"
           }
         ],
         "partitions": [
@@ -728,8 +739,8 @@
             "name": "Vastaajamäärä LIVE",
             "expression": [
               "",
-              "var summa = CALCULATE(DISTINCTCOUNT([vastaajaid]))",
-              "var summa_ylataso = CALCULATE(DISTINCTCOUNT([vastaajaid]),ALL(Muuttujat[Monivalintavaihtoehto]))",
+              "var summa = CALCULATE(DISTINCTCOUNT([vastaajaid]), Muuttujat[vastaajaid] <> BLANK())",
+              "var summa_ylataso = CALCULATE(DISTINCTCOUNT([vastaajaid]),ALL(Muuttujat[Monivalintavaihtoehto]), Muuttujat[vastaajaid] <> BLANK())",
               "return IF(summa_ylataso<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(),[alle5]), IF(AND(summa < 5, summa > 0), [alle5],MROUND(summa,3)))"
             ],
             "formatString": "#,0"
@@ -741,7 +752,7 @@
               "IF(",
               "\tOR([Vastaajamäärä LIVE]=\"1-4\",ISFILTERED(Muuttujat[Monivalintavaihtoehto]))",
               "\t,BLANK()\t",
-              "\t,CALCULATE(AVERAGE([numerovalinta]),Muuttujat[vastaustyyppi_keskiarvo]=1)",
+              "\t,CALCULATE(AVERAGE([numerovalinta]),Muuttujat[vastaustyyppi_keskiarvo]=1, Muuttujat[vastaajaid] <> BLANK())",
               ")",
               ""
             ],
@@ -751,7 +762,7 @@
             "name": "Keskihajonta LIVE",
             "expression": [
               "",
-              "var hajonta = CALCULATE(STDEV.P(Muuttujat[numerovalinta]),Muuttujat[vastaustyyppi_keskiarvo]=1)",
+              "var hajonta = CALCULATE(STDEV.P(Muuttujat[numerovalinta]),Muuttujat[vastaustyyppi_keskiarvo]=1, Muuttujat[vastaajaid] <> BLANK())",
               "return IF(OR([Vastaajamäärä LIVE]=\"1-4\",ISFILTERED(Muuttujat[Monivalintavaihtoehto])),BLANK(),hajonta)"
             ],
             "formatString": "0.0"
@@ -760,7 +771,7 @@
             "name": "Pisteet LIVE",
             "expression": [
               "",
-              "var summa = CALCULATE(SUM(Muuttujat[numerovalinta]),Muuttujat[Koodit Rahoitusmallikysymys]=1)",
+              "var summa = CALCULATE(SUM(Muuttujat[numerovalinta]),Muuttujat[Koodit Rahoitusmallikysymys]=1, Muuttujat[vastaajaid] <> BLANK())",
               "return IF(OR([Vastaajamäärä LIVE]=\"1-4\",ISFILTERED(Muuttujat[Monivalintavaihtoehto])),BLANK(),summa)"
             ],
             "formatString": "#,0"
@@ -920,6 +931,31 @@
           {
             "name": "ehto2EN",
             "expression": "OR([Vastaajamäärä]=\"1-4\",ISFILTERED(Muuttujat[Multiple choice option]))",
+            "isHidden": true
+          },
+          {
+            "name": "Vastaajatunnukset",
+            "expression": [
+              "",
+              "",
+              "var taulu = SUMMARIZE(Muuttujat, Muuttujat[vastaajatunnus_id], \"lkm\", AVERAGE(Muuttujat[vastaajatunnukset_lkm]))",
+              "RETURN",
+              "IF([ehto_vastaajatunnukset]=TRUE(),BLANK(), SUMX(taulu, [lkm]))",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "ehto_vastaajatunnukset",
+            "expression": [
+              "SWITCH(TRUE(),",
+              "ISFILTERED([Ikäryhmä]),TRUE(),",
+              "ISFILTERED([Pohjakoulutus]),TRUE(),",
+              "ISFILTERED([Sukupuoli]),TRUE(),",
+              "ISFILTERED([Kieli]),TRUE()",
+              ")",
+              ""
+            ],
             "isHidden": true
           }
         ],
@@ -1636,6 +1672,22 @@
               "        <int>102</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>vastaajatunnus_id</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>166</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>vastaajatunnukset_lkm</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>200</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -2326,6 +2378,22 @@
               "        <int>85</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>vastaajatunnus_id</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>86</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>vastaajatunnukset_lkm</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>87</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -2420,6 +2488,22 @@
               "    <item>",
               "      <key>",
               "        <string>partitioid</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>vastaajatunnus_id</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>vastaajatunnukset_lkm</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
@@ -2695,6 +2779,9 @@
               },
               {
                 "name": "Vastaajamäärä LIVE"
+              },
+              {
+                "name": "Vastaajatunnukset"
               }
             ]
           },
