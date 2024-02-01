@@ -17,11 +17,11 @@ Select
 ,d17.tarkastelujakso AS Tarkastelujakso
 ,d17.tarkastelujakso2 AS 'Tarkastelujakso II'
 ,d16.sukupuoli AS Sukupuoli
-,d2.aidinkieli_versio1 AS ƒidinkieli
-,d5.ika AS Ik‰
-,d5b.ika5v AS Ik‰ryhm‰
-,d5c.ika AS 'Ik‰ryhm‰ tutkinnon suoritusvuonna'
-,d6.tutkintoryhma AS "Tutkintoryhm‰"
+,d2.aidinkieli_versio1 AS √Ñidinkieli
+,d5.ika AS Ik√§
+,d5b.ika5v AS Ik√§ryhm√§
+,d5c.ika AS 'Ik√§ryhm√§ tutkinnon suoritusvuonna'
+,d6.tutkintoryhma AS "Tutkintoryhm√§"
 ,d7.koulutus AS "Pohjakoulutus"
 ,d8.koulutusaste2002 AS "Koul. sijoittuneen koulutusaste"
 ,d8.koulutusala2002 AS "Koul. sijoittuneen koulutusala"
@@ -33,54 +33,54 @@ Select
 --,d3.ely AS "Asuinpaikan ELY"
 --,d3.seutukunta AS "Asuinpaikan seutukunta"
 --,d3.suuralue AS "Asuinpaikan suuralue"
---,d3.kuntaryhma AS "Asuinpaikan kuntaryhm‰"
---,d3.laani AS "Asuinpaikan l‰‰ni"
+--,d3.kuntaryhma AS "Asuinpaikan kuntaryhm√§"
+--,d3.laani AS "Asuinpaikan l√§√§ni"
 --,d3.kielisuhde AS "Asuinpaikan kunnan kielisuhde"
 ,d4.maakunta AS "Koul. sijoittuneen opiskelumaakunta"
 --,d4.avi AS "Koul. sijoittuneen opiskelupaikan AVI"
 --,d4.ely AS "Koul. sijoittuneen opiskelupaikan ELY"
 --,d4.seutukunta AS "Koul. sijoittuneen opiskelupaikan seutukunta"
 --,d4.suuralue AS "Koul. sijoittuneen opiskelupaikan suuralue"
---,d4.kuntaryhma AS "Koul. sijoittuneen opiskelupaikan kuntaryhm‰"
---,d4.laani AS "Koul. sijoittuneen opiskelupaikan l‰‰ni"
+--,d4.kuntaryhma AS "Koul. sijoittuneen opiskelupaikan kuntaryhm√§"
+--,d4.laani AS "Koul. sijoittuneen opiskelupaikan l√§√§ni"
 ,d4b.maakunta AS "Tutkinnon suoritusmaakunta"
 --,d4b.avi AS "Tutk. suorituspaikan AVI"
 --,d4b.ely AS "Tutk. suorituspaikan ELY"
 --,d4b.seutukunta AS "Tutk. suorituspaikan seutukunta"
 --,d4b.suuralue AS "Tutk. suorituspaikan suuralue"
---,d4b.kuntaryhma AS "Tutk. suorituspaikan kuntaryhm‰"
---,d4b.laani AS "Tutk. suorituspaikan l‰‰ni"
+--,d4b.kuntaryhma AS "Tutk. suorituspaikan kuntaryhm√§"
+--,d4b.laani AS "Tutk. suorituspaikan l√§√§ni"
 ,d13.oppilaitos AS "Oppilaitos"
 ,d13.oppilaitostyyppi AS "Oppilaitostyyppi"
 --,d13.oppilaitoksen_omistajatyyppi AS "Oppil. omistajatyyppi"
 ,d13.opetuskieli AS "Oppil. opetuskieli"
-,d13.koulutuksen_jarjestaja AS "Koulutuksen j‰rjest‰j‰"
---,d13.koulutuksen_jarjestajan_omistajatyyppi AS "Koul. j‰rjest‰j‰n omistajatyyppi"
---,d13.koulutuksen_jarjestajan_kieli AS "Koul. j‰rjest‰j‰n kieli"
+,d13.koulutuksen_jarjestaja AS "Koulutuksen j√§rjest√§j√§"
+--,d13.koulutuksen_jarjestajan_omistajatyyppi AS "Koul. j√§rjest√§j√§n omistajatyyppi"
+--,d13.koulutuksen_jarjestajan_kieli AS "Koul. j√§rjest√§j√§n kieli"
 --,d13.peruskoulujen_ryhmitys AS "Peruskoulujen ryhmitys"
 --,d13.peruskoulujen_vuosilks AS "Peruskoulujen vuosiluokat"
 ,d14.oppilaitos AS "Koul. sijoittuneen oppilaitos"
 --,d14.oppilaitostyyppi AS "Koul. sijoittuneen oppil.tyyppi"
 --,d14.oppilaitoksen_omistajatyyppi AS "Koul. sijoittuneen oppil. omistajatyyppi"
 --,d14.opetuskieli AS "Koul. sijoittuneen oppil. opetuskieli"
-,d14.koulutuksen_jarjestaja AS "Koul. sijoittuneen koul. j‰rjest‰j‰"
---,d14.koulutuksen_jarjestajan_omistajatyyppi AS "Koul. sijoittuneen koul. j‰rjest‰j‰n omistajatyyppi"
---,d14.koulutuksen_jarjestajan_kieli AS "Koul. sijoittuneen koul. j‰rjest‰j‰n kieli"
+,d14.koulutuksen_jarjestaja AS "Koul. sijoittuneen koul. j√§rjest√§j√§"
+--,d14.koulutuksen_jarjestajan_omistajatyyppi AS "Koul. sijoittuneen koul. j√§rjest√§j√§n omistajatyyppi"
+--,d14.koulutuksen_jarjestajan_kieli AS "Koul. sijoittuneen koul. j√§rjest√§j√§n kieli"
 --,d14.peruskoulujen_ryhmitys AS "Koul. sijoittuneen peruskoulujen ryhmitys"
 --,d14.peruskoulujen_vuosilks AS "Koul. sijoittuneen peruskoulujen vuosiluokat"
 ,d15.vuosiselite AS "Tutkinnon suoritusvuosi"
 ,d18.lukukausiselite AS "Tutkinnon suorituslukukausi"
---,d19.vuosiselite AS "Syntym‰vuosi"
+--,d19.vuosiselite AS "Syntym√§vuosi"
 --,d20.pohjoismaa AS "Pohjoismaan kansalainen"
 ,d21.kansalaisuus_versio1 AS "Kansalaisuus"
 --,d22.opetuskieli AS "Opetuskieli"
 ,d23.ammatillisen_koulutuksen_koulutuslaji AS "Tutkintotyyppi"
-,d24.opetussuunnitelmaperusteinen_koulutus_nayttotutkintoon_valmistava_koulutus AS "J‰rjest‰mistapa"
+,d24.opetussuunnitelmaperusteinen_koulutus_nayttotutkintoon_valmistava_koulutus AS "J√§rjest√§mistapa"
 ,d25.nuorten_aikuisten_koulutus AS "Nuoret/aikuiset"
 ,d26.moninkertainen_haku AS "Haut koulutuksiin"
---,d27.paaasiallinen_toiminta AS "P‰‰asiallinen toiminta"
+--,d27.paaasiallinen_toiminta AS "P√§√§asiallinen toiminta"
 --,d28.ammattiasema AS "Ammattiasema"
-,d29.koulutuksen_paattaneiden_toiminta AS "Koul. p‰‰tt‰neiden toiminta"
+,d29.koulutuksen_paattaneiden_toiminta AS "Koul. p√§√§tt√§neiden toiminta"
 --,d30.eumaa AS "EU-maan kansalainen"
 --,d31.etamaa AS "ETA-maan kansalainen"
 
@@ -92,15 +92,15 @@ Select
 ,d32e.kylla_ei as 'Opiskellut ammatillisessa koulutuksessa'--opisk_amm_kyllaei_id
 ,d33.kylla_ei as 'Opiskellut ammattikorkeakoulutuksessa'--opisk_amk_kyllaei_id
 ,d34.kylla_ei as 'Opiskellut yliopistokoulutuksessa'--opisk_yo_kyllaei_id
-,case when d33.kylla_ei_koodi=1 or d34.kylla_ei_koodi=1 then 'Kyll‰' else 'Ei' end as 'Opiskellut korkeakoulutuksessa'
+,case when d33.kylla_ei_koodi=1 or d34.kylla_ei_koodi=1 then 'Kyll√§' else 'Ei' end as 'Opiskellut korkeakoulutuksessa'
 ,d35.kylla_ei as 'Opiskellut kasvatusalat (amk)'--opisk_amk_koulala1_kyllaei_id
 ,d36.kylla_ei as 'Opiskellut humanistiset ja taidealat (amk)'--opisk_amk_koulala2_kyllaei_id
 ,d37.kylla_ei as 'Opiskellut yhteiskunnalliset alat (amk)'--opisk_amk_koulala3_kyllaei_id
 ,d38.kylla_ei as 'Opiskellut kauppa, hallinto ja oikeustieteet (amk)'--opisk_amk_koulala4_kyllaei_id
 ,d39.kylla_ei as 'Opiskellut luonnontieteet (amk)'--opisk_amk_koulala5_kyllaei_id
-,d40.kylla_ei as 'Opiskellut tietojenk‰sittely ja tietoliikenne (ICT) (amk)'--opisk_amk_koulala6_kyllaei_id
+,d40.kylla_ei as 'Opiskellut tietojenk√§sittely ja tietoliikenne (ICT) (amk)'--opisk_amk_koulala6_kyllaei_id
 ,d41.kylla_ei as 'Opiskellut tekniikan alat (amk)'--opisk_amk_koulala7_kyllaei_id
-,d42.kylla_ei as 'Opiskellut maa- ja mets‰talousalat (amk)'--opisk_amk_koulala8_kyllaei_id
+,d42.kylla_ei as 'Opiskellut maa- ja mets√§talousalat (amk)'--opisk_amk_koulala8_kyllaei_id
 ,d43.kylla_ei as 'Opiskellut terveys- ja hyvinvointialat (amk)'--opisk_amk_koulala9_kyllaei_id
 ,d44.kylla_ei as 'Opiskellut palvelualat (amk)'--opisk_amk_koulala10_kyllaei_id
 ,d45.kylla_ei as 'Opiskellut kasvatusalat (yo)'--opisk_yo_koulala1_kyllaei_id
@@ -108,16 +108,16 @@ Select
 ,d47.kylla_ei as 'Opiskellut yhteiskunnalliset alat (yo)'--opisk_yo_koulala3_kyllaei_id
 ,d48.kylla_ei as 'Opiskellut kauppa, hallinto ja oikeustieteet (yo)'--opisk_yo_koulala4_kyllaei_id
 ,d49.kylla_ei as 'Opiskellut luonnontieteet (yo)'--opisk_yo_koulala5_kyllaei_id
-,d50.kylla_ei as 'Opiskellut tietojenk‰sittely ja tietoliikenne (ICT) (yo)'--opisk_yo_koulala6_kyllaei_id
+,d50.kylla_ei as 'Opiskellut tietojenk√§sittely ja tietoliikenne (ICT) (yo)'--opisk_yo_koulala6_kyllaei_id
 ,d51.kylla_ei as 'Opiskellut tekniikan alat (yo)'--opisk_yo_koulala7_kyllaei_id
-,d52.kylla_ei as 'Opiskellut maa- ja mets‰talousalat (yo)'--opisk_yo_koulala8_kyllaei_id
+,d52.kylla_ei as 'Opiskellut maa- ja mets√§talousalat (yo)'--opisk_yo_koulala8_kyllaei_id
 ,d53.kylla_ei as 'Opiskellut terveys- ja hyvinvointialat (yo)'--opisk_yo_koulala9_kyllaei_id
 ,d54.kylla_ei as 'Opiskellut palvelualat (yo)'--opisk_yo_koulala10_kyllaei_id
-,d55.kylla_ei as 'Opiskellut v‰hint‰‰n kahdella koulutusalalla'--opisk_vah2_koulala_kyllaei_id
+,d55.kylla_ei as 'Opiskellut v√§hint√§√§n kahdella koulutusalalla'--opisk_vah2_koulala_kyllaei_id
 ,d56.kylla_ei as 'Hakenut ammatilliseen koulutukseen'--haku_amm_kyllaei_id
 ,d57.kylla_ei as 'Hakenut ammattikorkeakoulutukseen'--haku_amk_kyllaei_id
 ,d58.kylla_ei as 'Hakenut yliopistokoulutukseen'--haku_yo_kyllaei_id
-,case when d57.kylla_ei_koodi=1 OR d58.kylla_ei_koodi=1 then 'Kyll‰' else 'Ei' end as 'Hakenut korkeakoulutukseen'
+,case when d57.kylla_ei_koodi=1 OR d58.kylla_ei_koodi=1 then 'Kyll√§' else 'Ei' end as 'Hakenut korkeakoulutukseen'
 
 ,d59.[Koulutusaste_taso2] as 'Koul. sij. koulutusaste (taso 2) tarkastelujakso I 0v'
 
@@ -142,32 +142,32 @@ Select
 ,[opisk_amkyo]
 
 --ruotsi
-,[tilastovuosi] AS StatistikÂr
+,[tilastovuosi] AS Statistik√•r
 ,d17.tarkastelujakso_SV AS Granskningsperiod
-,d16.sukupuoli_SV AS Kˆn
-,d2.aidinkieli_versio1_SV AS ModersmÂl
-,d5.ika_SV AS ≈lder
-,d5b.ika5v_SV AS ≈ldersgrupp
+,d16.sukupuoli_SV AS K√∂n
+,d2.aidinkieli_versio1_SV AS Modersm√•l
+,d5.ika_SV AS √Ölder
+,d5b.ika5v_SV AS √Öldersgrupp
 ,d6.tutkintoryhma_SV AS Examenskategori
 ,d7.koulutus_SV AS Grundutbildning
-,d8.koulutusaste2002_SV AS "Placering i utbildning ñ utbildningsnivÂ"
-,d8.koulutusala2002_SV AS "Placering i utbildning ñ utbildningsomrÂde"
-,d8.opintoala2002_SV AS "Placering i utbildning ñ studieomrÂde"
-,d8.koulutus_SV AS "Placering i utbildning ñ utbildningsben‰mning"
-,d4.maakunta_SV AS "Placering i utbildning ñ landskapet fˆr studieplatsen"
-,d4b.maakunta_SV AS [Landskap d‰r examen avlagts]
-,d13.oppilaitos_SV AS "L‰roanstalt"
-,d13.oppilaitostyyppi_SV AS L‰roanstaltstyp
-,d13.opetuskieli_SV AS [L‰roanstaltens undervisningssprÂk]
+,d8.koulutusaste2002_SV AS "Placering i utbildning ‚Äì utbildningsniv√•"
+,d8.koulutusala2002_SV AS "Placering i utbildning ‚Äì utbildningsomr√•de"
+,d8.opintoala2002_SV AS "Placering i utbildning ‚Äì studieomr√•de"
+,d8.koulutus_SV AS "Placering i utbildning ‚Äì utbildningsben√§mning"
+,d4.maakunta_SV AS "Placering i utbildning ‚Äì landskapet f√∂r studieplatsen"
+,d4b.maakunta_SV AS [Landskap d√§r examen avlagts]
+,d13.oppilaitos_SV AS "L√§roanstalt"
+,d13.oppilaitostyyppi_SV AS L√§roanstaltstyp
+,d13.opetuskieli_SV AS [L√§roanstaltens undervisningsspr√•k]
 ,d13.koulutuksen_jarjestaja_SV AS Utbildningsanordnare
-,d14.oppilaitos_SV AS "Placering i utbildning ñ l‰roanstalt"
-,d14.koulutuksen_jarjestaja_SV AS "Placering i utbildning ñ utbildningsanordnare"
-,d15.vuosiselite_SV AS [≈r dÂ utbildningen avlagts]
-,d18.lukukausiselite_SV AS [Termin dÂ utbildningen avlagts]
+,d14.oppilaitos_SV AS "Placering i utbildning ‚Äì l√§roanstalt"
+,d14.koulutuksen_jarjestaja_SV AS "Placering i utbildning ‚Äì utbildningsanordnare"
+,d15.vuosiselite_SV AS [√Ör d√• utbildningen avlagts]
+,d18.lukukausiselite_SV AS [Termin d√• utbildningen avlagts]
 ,d21.kansalaisuus_versio1_SV AS Medborgaskap
 ,d25.nuorten_aikuisten_koulutus_SV AS [Ungdoms-/vuxenutbildning]
-,d26.moninkertainen_haku_SV AS [Ansˆkan till utbildningar]
-,d29.koulutuksen_paattaneiden_toiminta_SV AS [Syssels‰ttning av utexaminerade]
+,d26.moninkertainen_haku_SV AS [Ans√∂kan till utbildningar]
+,d29.koulutuksen_paattaneiden_toiminta_SV AS [Syssels√§ttning av utexaminerade]
 
 --englanti
 ,[tilastovuosi] AS [Statistical year]
@@ -205,12 +205,12 @@ Select
 ,d8.iscfi2013 as "Koul. sijoittuneen koulutusala, taso 3"
 ,d8.OKM_ohjauksen_ala as "Koul. sijoittuneen OKM ohjauksen ala, korkeak."
 
-,d8.iscle2011_SV as "Placering i utbildning ñ utb.nivÂ, nivÂ 1"
-,d8.Koulutusaste_taso2_SV as "Placering i utbildning ñ utb.nivÂ, nivÂ 2"
-,d8.iscfibroad2013_SV as "Placering i utbildning ñ utb.omrÂde, nivÂ 1"
-,d8.iscfinarrow2013_SV as "Placering i utbildning ñ utb.omrÂde, nivÂ 2"
-,d8.iscfi2013_SV as "Placering i utbildning ñ utb.omrÂde, nivÂ 3"
-,d8.OKM_ohjauksen_ala_SV as "Placering i utbildning ñ UKM-styrningsomrÂde, hˆgskolor"
+,d8.iscle2011_SV as "Placering i utbildning ‚Äì utb.niv√•, niv√• 1"
+,d8.Koulutusaste_taso2_SV as "Placering i utbildning ‚Äì utb.niv√•, niv√• 2"
+,d8.iscfibroad2013_SV as "Placering i utbildning ‚Äì utb.omr√•de, niv√• 1"
+,d8.iscfinarrow2013_SV as "Placering i utbildning ‚Äì utb.omr√•de, niv√• 2"
+,d8.iscfi2013_SV as "Placering i utbildning ‚Äì utb.omr√•de, niv√• 3"
+,d8.OKM_ohjauksen_ala_SV as "Placering i utbildning ‚Äì UKM-styrningsomr√•de, h√∂gskolor"
 
 ,d8.iscle2011_EN as "Placed in further ed. - level of education, tier 1"
 ,d8.Koulutusaste_taso2_EN as "Placed in further ed. - level of education, tier 2"
@@ -232,9 +232,9 @@ Select
 ,d8.opintoala2002_koodi as "Koodit Opintoala 2002"
 ,d8.koulutus_koodi as "Koodit Koulutusnimike"
 ,d8.koulutusaste2002_koodi as "Koodit Koulutusaste 2002"
-,d14.koulutuksen_jarjestajakoodi as "Koodit Koul. sij. koul. j‰rjest‰j‰"
+,d14.koulutuksen_jarjestajakoodi as "Koodit Koul. sij. koul. j√§rjest√§j√§"
 ,d14.oppilaitoskoodi as "Koodit Koul. sij. oppilaitos"
-,d13.koulutuksen_jarjestajakoodi as "Koodit Koul. j‰rjest‰j‰"
+,d13.koulutuksen_jarjestajakoodi as "Koodit Koul. j√§rjest√§j√§"
 ,d4b.maakunta_koodi as "Koodit Tutk. suor.maakunta"
 ,d4.maakunta_koodi as "Koodit Opiskelumaakunta"
 ,d8.iscle2011_koodi as "Koodit Koulutusaste, taso 1"
@@ -245,7 +245,7 @@ Select
 ,d8.OKM_ohjauksen_ala_koodi as "Koodit OKM ohjauksen ala, korkeak."
 ,d59.Koulutusaste_taso2_koodi as "Koodit Koul. sij. koulutusaste (taso 2) tarkastelujakso I 0v"
 
---j‰rjestys
+--j√§rjestys
 ,d17.jarjestys AS tarkastelujakso_jarjestys
 ,d16.jarjestys AS sukupuoli_jarjestys
 ,d2.jarjestys AS aidinkieli_jarjestys
