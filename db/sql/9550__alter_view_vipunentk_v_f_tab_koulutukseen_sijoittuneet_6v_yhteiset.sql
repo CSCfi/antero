@@ -1,12 +1,13 @@
 USE [VipunenTK]
 GO
 
-/****** Object:  View [dbo].[v_f_tab_koulutukseen_sijoittuneet_6v_yhteiset]    Script Date: 30.1.2024 14:17:19 ******/
+/****** Object:  View [dbo].[v_f_tab_koulutukseen_sijoittuneet_6v_yhteiset]    Script Date: 1.2.2024 13:05:01 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 
@@ -415,6 +416,7 @@ FROM            dbo.f_koulutukseen_sijoittuneet_6v
     LEFT JOIN d_kylla_ei d58 on d58.id = haku_yo_kyllaei_id
 	LEFT JOIN d_koulutusluokitus d59 on d59.id = [tj0_koul_luokitus_id]
 --WHERE (d24.opetussuunnitelmaperusteinen_koulutus_nayttotutkintoon_valmistava_koulutus_koodi in (1, -1))
+
 
 
 
