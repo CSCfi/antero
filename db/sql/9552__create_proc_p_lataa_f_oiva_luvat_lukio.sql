@@ -32,7 +32,6 @@ BEGIN
 				,lupaId
 				,alkupvm = l.alkupvm
 				,loppupvm = cast(coalesce(l.loppupvm,'9999-12-31') as date)
-				--,rivi_nro = row_number() over (partition by jarjestajaYtunnus, alkupvm order by l.paatospvm desc) --3.10.23 Markus Huhta
 			FROM sa.sa_oiva_luvat l
 			WHERE coalesce(l.loppupvm,'9999-12-31') > l.alkupvm
 			and koulutustyyppi = 2
@@ -87,11 +86,11 @@ SELECT distinct
 				,l.lupaId
 				,l.alkupvm
 				,l.loppupvm
-				,tarkastelukuukausi = kk.kk  --voimassa = case when getdate() between l.alkupvm and coalesce(l.loppupvm, '9999-12-31') then 1 else 0 end *****muokkaa näkymä
+				,tarkastelukuukausi = kk.kk 
 				,kunta = m1.koodiarvo
 				,maakunta = a.maakunta_koodi
 				,kielikoodistoopetushallinto = m2.koodiarvo
-				,opetuksen_jarjestamismuoto = m7.koodiarvo --markus
+				,opetuksen_jarjestamismuoto = m7.koodiarvo 
 				,erityinen_koulutustehtava = m3.koodiarvo
 				,muutkoulutuksenjarjestamiseenliittyvatehdot = m4.koodiarvo
 			FROM luvat l 
@@ -100,11 +99,9 @@ SELECT distinct
 			LEFT JOIN maaraykset m2 ON m2.lupaId=l.lupaId AND m2.koodisto='kielikoodistoopetushallinto'
 			LEFT JOIN sa.sa_oiva_maaraykset m3 ON m3.lupaId = l.lupaId AND m3.koodisto = 'lukioerityinenkoulutustehtavauusi'
 			LEFT JOIN sa.sa_oiva_maaraykset m4 ON m4.lupaId = l.lupaId AND m4.koodisto = 'lukiomuutkoulutuksenjarjestamiseenliittyvatehdot'
-			--LEFT JOIN sa.sa_koodistot k4 ON k4.koodisto = m4.koodisto and k4.koodi = m4.koodiarvo
 			LEFT JOIN sa.sa_oiva_alimaaraykset am4 ON am4.maaraysId = m4.maaraysId and am4.koodisto = 'opetustehtava'
 			LEFT JOIN sa.sa_oiva_maaraykset m5 ON m5.lupaId = l.lupaId AND m5.koodisto = 'kujalisamaareet'
 			LEFT JOIN sa.sa_oiva_maaraykset m7 ON m7.lupaId = l.lupaId AND m7.koodisto = 'opetuksenjarjestamismuoto' --markus
-			-- LEFT JOIN datefromparts(@vuosi2, kk, 1) between luvan alku ja coalesce loppu
 
 		    join  (select kk = 1 union select 8) kk on  datefromparts(@vuosi2, kk, 1) between l.alkupvm and   coalesce(l.loppupvm, '9999-12-31')
 			
@@ -116,17 +113,13 @@ SELECT distinct
 
 		) Q1
 
-		--LEFT JOIN dw.d_organisaatioluokitus d1 on d1.organisaatio_koodi=Q1.jarjestajaYtunnus
 		LEFT JOIN dw.d_organisaatioluokitus d1 on d1.organisaatio_oid=Q1.jarjestajaOid
 		LEFT JOIN dw.d_alueluokitus d2a on d2a.kunta_koodi=Q1.kunta
 		LEFT JOIN dw.d_alueluokitus d2b on d2b.maakunta_koodi=Q1.maakunta
 		LEFT JOIN dw.d_kieli d3 on d3.kieli_koodi = Q1.kielikoodistoopetushallinto
 		LEFT JOIN dw.d_kalenteri d4 on d4.kalenteri_avain=Q1.alkupvm
 		LEFT JOIN dw.d_kalenteri d5 on d5.kalenteri_avain=Q1.loppupvm
-		--LEFT JOIN dw.d_kytkin d6 on d6.kytkin_koodi = Q1.voimassa
-		--LEFT JOIN dw.d_erityinen_koulutustehtava d7 on d7.koodi = Q1.erityinen_koulutustehtava
 		 LEFT JOIN dw.d_erityinen_koulutustehtava_lukio d7 on d7.koodi = Q1.erityinen_koulutustehtava
-		 --LEFT JOIN dw.d_oivamuutoikeudetvelvollisuudetehdotjatehtavat d8 on d8.koodi=Q1.oivamuutoikeudetvelvollisuudetehdotjatehtavat
 		 LEFT JOIN dw.d_lukiomuutkoulutuksenjarjestamiseenliittyvatehdot d8 on d8.koodi=Q1.muutkoulutuksenjarjestamiseenliittyvatehdot
 		 LEFT JOIN dw.d_opetuksen_jarjestamismuoto d9 on d9.koodi = Q1.opetuksen_jarjestamismuoto --markus
 
