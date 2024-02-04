@@ -78,7 +78,7 @@ SELECT DISTINCT --TOP 100000
 	,[jarjestys_koulutuksen_jarjestajan_maakunta] = d1a.jarjestys_maakunta_koodi
 	,[jarjestys_toiminta_alueen_maakunta] = d2b.jarjestys_maakunta_koodi
 	,[jarjestys_toiminta_alueen_kunta] = d2a.jarjestys_kunta_koodi
-	,[jarjestys_opetuskieli] = d3.kieliryhma1_koodi --case when d3.kieli_koodi = '-1' then 'öööö' else left(d3.kieli_fi,4) end
+	,[jarjestys_opetuskieli] = d3.kieliryhma1_koodi 
 	,[jarjestys_muut_oikeudet_velvollisuudet_ehdot_ja_tehtavat] = case when d10.selite_fi = ca.puuttuu_fi then 0 else d10.jarjestys end
 
 FROM dw.f_oiva_luvat_lukio f
