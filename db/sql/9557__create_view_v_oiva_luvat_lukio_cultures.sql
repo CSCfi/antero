@@ -96,5 +96,4 @@ LEFT JOIN dw.d_opetuksen_jarjestamismuoto d9 on d9.id = f.d_opetuksen_jarjestami
 LEFT JOIN dw.d_lukiomuutkoulutuksenjarjestamiseenliittyvatehdot d10 on d10.id=f.d_muutkoulutuksenjarjestamiseenliittyvatehdot_id
 CROSS APPLY (select puuttuu_fi = 'Tieto puuttuu', puuttuu_sv = 'Information saknas', puuttuu_en = 'Missing data') ca
 
-
 GO
