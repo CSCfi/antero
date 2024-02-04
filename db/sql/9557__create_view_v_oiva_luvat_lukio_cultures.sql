@@ -1,7 +1,7 @@
 USE [ANTERO]
 GO
 
-/****** Object:  View [dw].[v_oiva_luvat_lukio_cultures]    Script Date: 2.2.2024 11:08:54 ******/
+/****** Object:  View [dw].[v_oiva_luvat_lukio_cultures]    Script Date: 4.2.2024 22:53:48 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -9,7 +9,9 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-CREATE OR ALTER VIEW [dw].[v_oiva_luvat_lukio_cultures] AS
+
+
+CREATE   VIEW [dw].[v_oiva_luvat_lukio_cultures] AS
 
 
 SELECT DISTINCT --TOP 100000
@@ -20,7 +22,7 @@ SELECT DISTINCT --TOP 100000
 	,[luvan_paattymisvuosi_fi] = coalesce(nullif(cast(d6.vuosi as varchar(20)),'-1'),'Ei päättynyt')
 	,[luvan_alkamiskuukausi_fi] = d5.kuukausi_fi
 	,[luvan_paattymiskuukausi_fi] = coalesce(nullif(d6.kuukausi_fi,ca.puuttuu_fi),'Ei päättynyt')
-	,[lupa_voimassa_fi] = case when tarkastelukuukausi is null then 'Ei voimassa 1.1./1.8.' else concat('Voimassa 1.', tarkastelukuukausi, '.') end
+	,[tarkastelupaiva_fi] = case when tarkastelukuukausi is null then 'Ei voimassa 1.1./1.8.' else concat('Voimassa 1.', tarkastelukuukausi, '.') end
 	,[koulutuksen_jarjestaja_fi] = d1.organisaatio_fi
 	,[koulutuksen_jarjestajan_yritysmuoto_fi] = d1.koulutuksen_jarjestajan_yritysmuoto
 	,[koulutuksen_jarjestajan_kunta_fi] = d1a.kunta_fi
@@ -31,14 +33,13 @@ SELECT DISTINCT --TOP 100000
 	,[opetuskieli_fi] = coalesce(nullif(case d3.kieli_fi when 'pohjoissaame' then 'saame' else d3.kieli_fi end, 'Tieto puuttuu'), 'Ei määritelty')
 	,[erityinen_koulutustehtava_fi] = coalesce(nullif(d8.selite_fi, 'Tieto puuttuu'), 'Ei määritelty')
 	,[opetuksen_jarjestamismuoto_fi] = coalesce(nullif(d9.selite_fi, 'Tieto puuttuu'), 'Ei määritelty')
-	--,[muut_oikeudet_velvollisuudet_ehdot_ja_tehtavat_fi] = coalesce(nullif([muutkoulutuksenjarjestamiseenliittyvatehdot],ca.puuttuu_fi),'Ei määritelty')
 	,[muut_oikeudet_velvollisuudet_ehdot_ja_tehtavat_fi] = coalesce(nullif(d10.selite_fi,ca.puuttuu_fi),'Ei määritelty')
 
 	--sv
 	,[luvan_paattymisvuosi_sv] = coalesce(nullif(cast(d6.vuosi as varchar(20)),'-1'),'Ej löpt ut')
 	,[luvan_alkamiskuukausi_sv] = d5.kuukausi_sv
 	,[luvan_paattymiskuukausi_sv] = coalesce(nullif(d6.kuukausi_sv,ca.puuttuu_sv),'Ej löpt ut')
-	,[lupa_voimassa_sv] = case when tarkastelukuukausi is null then 'Ej giltigt 1.1./1.8.' else concat('Giltlig 1.', tarkastelukuukausi, '.') end
+	,[tarkastelupaiva_sv] = case when tarkastelukuukausi is null then 'Ej giltigt 1.1./1.8.' else concat('Giltlig 1.', tarkastelukuukausi, '.') end
 	,[koulutuksen_jarjestaja_sv] = d1.organisaatio_sv
 	,[koulutuksen_jarjestajan_yritysmuoto_sv] = d1.koulutuksen_jarjestajan_yritysmuoto_sv
 	,[koulutuksen_jarjestajan_kunta_sv] = d1a.kunta_sv
@@ -55,7 +56,7 @@ SELECT DISTINCT --TOP 100000
 	,[luvan_paattymisvuosi_en] = coalesce(nullif(cast(d6.vuosi as varchar(20)),'-1'),'Not ended')
 	,[luvan_alkamiskuukausi_en] = d5.kuukausi_en
 	,[luvan_paattymiskuukausi_en] = coalesce(nullif(d6.kuukausi_en,ca.puuttuu_en),'Not ended')
-	,[lupa_voimassa_en] = case when tarkastelukuukausi is null then 'Not valid 1.1./1.8.' else concat('Valid 1.', tarkastelukuukausi, '.') end
+	,[tarkastelupaiva_en] = case when tarkastelukuukausi is null then 'Not valid 1.1./1.8.' else concat('Valid 1.', tarkastelukuukausi, '.') end
 	,[koulutuksen_jarjestaja_en] = d1.organisaatio_en
 	,[koulutuksen_jarjestajan_yritysmuoto_en] = d1.koulutuksen_jarjestajan_yritysmuoto_en
 	,[koulutuksen_jarjestajan_kunta_en] = d1a.kunta_en
@@ -94,32 +95,6 @@ LEFT JOIN dw.d_erityinen_koulutustehtava_lukio d8 on d8.id = f.d_erityinen_koulu
 LEFT JOIN dw.d_opetuksen_jarjestamismuoto d9 on d9.id = f.d_opetuksen_jarjestamismuoto_id
 LEFT JOIN dw.d_lukiomuutkoulutuksenjarjestamiseenliittyvatehdot d10 on d10.id=f.d_muutkoulutuksenjarjestamiseenliittyvatehdot_id
 CROSS APPLY (select puuttuu_fi = 'Tieto puuttuu', puuttuu_sv = 'Information saknas', puuttuu_en = 'Missing data') ca
---OUTER APPLY (select kk = 1 union select 8) oa
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 GO
-
-
