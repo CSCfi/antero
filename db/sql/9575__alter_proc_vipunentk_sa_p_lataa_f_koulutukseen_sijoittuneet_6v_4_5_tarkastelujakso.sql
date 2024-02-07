@@ -1,0 +1,1134 @@
+USE [VipunenTK_SA]
+GO
+
+/****** Object:  StoredProcedure [dbo].[p_lataa_f_koulutukseen_sijoittuneet_6v_4_5_tarkastelujakso]    Script Date: 7.2.2024 10:04:46 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+ALTER PROCEDURE [dbo].[p_lataa_f_koulutukseen_sijoittuneet_6v_4_5_tarkastelujakso] AS
+/*declare @debug_what_to_run tinyint; set @debug_what_to_run=2; -- k‰yt‰ arvoa 3 vain kun teet yhden vuoden
+print '$'+convert(varchar,sysdatetime(),20)+'$ '+'DEBUG (what to run)='+cast(@debug_what_to_run as varchar)+
+': 0=luo vain taulut, ‰l‰ tulosta mit‰‰n; 1=luo taulut ja tulosta joitakin merkitt‰vimpi‰ v‰livaiheita; 2=luo taulut ja tulosta v‰livaiheet; 3=luo taulut, tulosta v‰livaiheet ja tulosta myˆs tulokset, 4=tulosta v‰livaiheet, mutta ‰l‰ tee mit‰‰n';
+
+
+
+
+-- lis‰t‰‰n data
+if @debug_what_to_run not in (4) begin
+if @debug_what_to_run>0 print 'inserting data';
+
+-- parametrimuuttujien arvot
+-- parametrimuuttujat
+DECLARE @ensimmainen_suoritusvuosi int;
+DECLARE @toinen_suoritusvuosi int;
+DECLARE @kolmas_suoritusvuosi int;
+DECLARE @neljas_suoritusvuosi int;
+DECLARE @viides_suoritusvuosi int;
+DECLARE @kuudes_suoritusvuosi int;
+DECLARE @seitsemas_suoritusvuosi int;
+
+
+set @ensimmainen_suoritusvuosi = _5;
+set @toinen_suoritusvuosi = 2005;
+set @kolmas_suoritusvuosi = 2006;
+set @neljas_suoritusvuosi = 2007;
+set @viides_suoritusvuosi = 2008;
+set @kuudes_suoritusvuosi = 2009;
+set @seitsemas_suoritusvuosi = 2010;
+
+*/
+
+INSERT INTO [VipunenTK_DW].[dbo].[_koulutukseen_sijoittuneet_6v_tarkastelu]
+(
+rivinumero
+, tarkastelujakso
+, tilv 
+, tilv_date
+, tutkryh 
+, suorv
+, suorlk 
+, sp 
+, syntv
+, aikielir1 
+, tutkkaskun 
+, kansalr1
+, pohjmaa 
+, eumaa 
+, etamaa 
+, tunn
+, jarj
+, kkielir1 
+, tutklaja 
+, tutktav 
+, aikoul 
+, tutkmaak
+, koulutus_1
+, oppilaitos_1
+, koulutuksen_jarjestaja_1
+, koulutuksen_maakunta_1
+, koulutus_2
+, oppilaitos_2
+, koulutuksen_jarjestaja_2
+, koulutuksen_maakunta_2
+, monihaku
+, paaasiallinen_toiminta
+, ammattiasema
+, lkm
+, pohjkoulk
+, tietolahde
+, aineisto
+, lukiokoulutuksessa
+, ammatillisessa_koulutuksessa
+, ammattikorkeakoulutuksessa
+, yliopistokoulutuksessa
+, lukiokoulutuksessa_ja_ammatillisessa_koulutuksessa
+, toisen_asteen_ammatillisessa_koulutuksessa_ja_korkeakoulutuksessa
+, ammattikorkeakoulutuksessa_ja_yliopistokoulutuksessa
+, koulutuksen_paattaneiden_toiminta
+, ika_1v
+, ika_5v
+, ika_1v_suorv
+, opisk_lu
+, opisk_amm_pk
+, opisk_amm_at
+, opisk_amm_eat
+, opisk_amm
+, opisk_amk
+, opisk_yo
+, opisk_amk_koulala1
+, opisk_amk_koulala2
+, opisk_amk_koulala3
+, opisk_amk_koulala4
+, opisk_amk_koulala5
+, opisk_amk_koulala6
+, opisk_amk_koulala7
+, opisk_amk_koulala8
+, opisk_amk_koulala9
+, opisk_amk_koulala10
+, opisk_yo_koulala1
+, opisk_yo_koulala2
+, opisk_yo_koulala3
+, opisk_yo_koulala4
+, opisk_yo_koulala5
+, opisk_yo_koulala6
+, opisk_yo_koulala7
+, opisk_yo_koulala8
+, opisk_yo_koulala9
+, opisk_yo_koulala10
+, opisk_vah2_koulala
+, haku_amm
+, haku_amk
+, haku_yo
+, eihaku_kk_eiopisk
+, eihaku_kk_eiopisk_kk_opisk_ta
+, eihaku_kk_eiopisk_kk_opisk_lu
+, eihaku_kk_eiopisk_kk_opisk_pk
+, eihaku_kk_eiopisk_kk_opisk_at
+, eihaku_kk_eiopisk_kk_opisk_eat
+, haku_kk_eiopisk_kk
+, haku_kk_eiopisk_kk_eiopisk_ta
+, haku_kk_eiopisk_kk_opisk_ta
+, haku_amk_eiopisk_kk
+, haku_yo_eiopisk_kk
+, haku_amkyo_eiopisk_kk
+, opisk_kk
+, opisk_kk_eiopisk_ta
+, opisk_kk_opisk_ta
+, opisk_vain_amk
+, opisk_vain_yo
+, opisk_amkyo
+)
+SELECT
+ l.rivinumero,
+ '4,5',
+ l.tilv,
+ l.tilv_date,
+ (case 
+	when l.tutkryh=3 and tutklaja=1 then 31
+	when l.tutkryh=3 and tutklaja=2 then 32
+	when l.tutkryh=3 and tutklaja=3 then 33
+	else l.tutkryh
+  end),
+ l.suorv,
+  (case
+	when l.suorlk = '1'  then (l.suorv+'0'+l.suorlk)
+	when l.suorlk = '2'  then (l.suorv+'0'+'8')
+	else ''
+	end),
+ l.sp,
+ l.syntv,
+ l.aikielir1,
+ l.tutkaskun,
+ l.kansalr1,
+ l.pohjmaa,
+ l.eumaa,
+ l.etamaa,
+ l.tunn,
+ l.jarj,
+ l.kkielir1,
+ l.tutklaja,
+ l.tutktav,
+ l.aikoul,
+ l.tutkmaak,
+ -- Koulutus 1
+ (case
+    --lukiokoulutuksessa _6
+	when l.suorlk = '2' and l.luopiskkoulk_6 <> '' and l.ammopiskkoulk_6 = '' and
+	l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' then l.luopiskkoulk_6 
+	-- ammattikoulutuksessa _6
+	when l.suorlk = '2' and l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 <> '' and
+	l.amkopiskkoulk_6 ='' and l.yoopiskkoulk_6 = ''  then l.ammopiskkoulk_6 
+	--lukiokoulutuksessa ja ammattillisessa koulutuksessa, otetaan tieto lukiokoulutuksen _6 ensim. koulutustietoihin
+	when l.suorlk = '2' and l.luopiskkoulk_6 <> '' and l.ammopiskkoulk_6 <> '' and
+	l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' then l.luopiskkoulk_6
+	-- ammattikorkeakoulutuksessa _6
+	when l.suorlk = '2' and l.amkopiskkoulk_6  <> '' and l.yoopiskkoulk_6  = '' and
+	l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 = '' then l.amkopiskkoulk_6
+	-- yliopistokoulutuksessa _6
+	when l.suorlk = '2' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 <> '' and 
+	l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 = ''   then l.yoopiskkoulk_6
+	-- ammattikorkeakoulutuksessa ja yliopistokoulutuksessa, merkit‰‰n ensimm‰iseen koulutustietoihin ammattikorkeakoulutus  
+	when l.suorlk = '2' and l.amkopiskkoulk_6 <> '' and l.yoopiskkoulk_6  <> '' and
+	l.luopiskkoulk_6 = '' and ammopiskkoulk_6 = ''  then l.amkopiskkoulk_6 
+	
+	else ''
+
+	
+	    
+	    end),
+	    
+-- Oppilaitos 1
+	(case
+	-- lukiokoulutuksen oppilaitos _6
+	when l.suorlk = '2' and l.luopisktunn_6 <> '' and l.ammopisktunn_6 = '' and
+	l.amkopisktunn_6 = '' and l.yoopisktunn_6 = '' then l.luopisktunn_6 
+	-- ammattikoulutuksen oppilaitos _6
+	when l.suorlk = '2' and l.luopisktunn_6 = '' and l.ammopisktunn_6 <> '' and
+	l.amkopisktunn_6 ='' and l.yoopisktunn_6 = ''  then l.ammopisktunn_6 
+	-- lukiokoulutuksen oppilaitos ja ammatillisen koulutuksen oppilaitos, merkit‰‰n lukiokoulutuksen oppilaitos _6
+	when l.suorlk = '2' and l.luopisktunn_6 <> '' and l.ammopisktunn_6 <> '' and
+	l.amkopisktunn_6 = '' and l.yoopisktunn_6 = '' then l.luopisktunn_6
+	-- ammattikorkeakoulutuksen oppilaitos _6
+	when l.suorlk = '2' and l.amkopisktunn_6  <> '' and l.yoopisktunn_6  = '' and
+	l.luopisktunn_6 = '' and l.ammopisktunn_6 = '' then l.amkopisktunn_6
+	-- yliopistokoulutuksen oppilaitos _6
+	when l.suorlk = '2' and l.amkopisktunn_6 = '' and l.yoopisktunn_6 <> '' and 
+	l.luopisktunn_6 = '' and l.ammopisktunn_6 = ''   then l.yoopisktunn_6
+	-- ammattikorkeakoulutus ja yliopistokoulutus oppilaitos, merkit‰‰n ammattikorkeakoulutus _6  
+	when l.suorlk = '2' and l.amkopisktunn_6 <> '' and l.yoopisktunn_6  <> '' and
+	l.luopisktunn_6 = '' and l.ammopisktunn_6 = ''  then l.amkopisktunn_6 
+	
+	
+	
+
+	
+	else ''
+	
+	    end),
+  --Koulutuksen j‰rjest‰j‰ 1
+	(case
+	-- lukikoulutuksen j‰rjest‰j‰ _6
+	when l.suorlk = '2' and l.luopiskjarj_6  <> '' and l.ammopiskjarj_6 = '' and
+	l.amkopiskjarj_6 = '' and yoopiskjarj_6 = '' then l.luopiskjarj_6
+	-- ammatillisen koulutuksen j‰rjest‰j‰ _6  
+	when l.suorlk = '2' and l.luopiskjarj_6 = '' and l.ammopiskjarj_6 <> '' and
+	l.amkopiskjarj_6 ='' and l.yoopiskjarj_6 = ''  then l.ammopiskjarj_6
+	-- lukio- ja ammatillisen koulutuksen j‰rjest‰j‰, merkit‰‰n lukiokoulutuksen _6 j‰rjest‰j‰ 
+	when l.suorlk = '2' and l.luopiskjarj_6 <> '' and l.ammopiskjarj_6 <> '' and
+	l.amkopiskjarj_6 = '' and l.yoopiskjarj_6 = '' then l.luopiskjarj_6
+	-- ammattikorkeakoulutuksen j‰rjest‰j‰ _6
+	when l.suorlk = '2' and l.amkopiskjarj_6  <> '' and l.yoopiskjarj_6   = '' and
+	l.luopiskjarj_6 = '' and l.ammopiskjarj_6 = '' then l.amkopiskjarj_6
+	-- yliopistokoulutuksen j‰rjest‰j‰ _6 
+	when l.suorlk = '2' and l.amkopiskjarj_6  = '' and l.yoopiskjarj_6  <> '' and 
+	l.luopiskjarj_6  = '' and l.ammopiskjarj_6 = ''   then l.yoopiskjarj_6
+	-- ammattikorkea- ja yliopistokoulutuksen j‰rjest‰j‰, merkit‰‰n ammattikorkeakoulutuksen _6 j‰rjest‰j‰   
+	when l.suorlk = '2' and l.amkopiskjarj_6  <> '' and l.yoopiskjarj_6   <> '' and
+	l.luopiskjarj_6  = '' and l.ammopiskjarj_6  = ''  then l.amkopiskjarj_6 
+
+	
+	else ''
+	    end),
+ --Koulutuksen maakunta 1
+	(case
+	-- lukioopiskelun maakunta _6
+	when l.suorlk = '2' and l.luopiskmaak_6   <> '' and l.ammopiskmaak_6  = '' and
+	l.amkopiskmaak_6  = '' and l.yoopiskmaak_6  = '' then l.luopiskmaak_6   
+	-- ammatillisen koulutuksen maakunta _6
+	when l.suorlk = '2' and l.luopiskmaak_6  = '' and l.ammopiskmaak_6  <> '' and
+	l.amkopiskmaak_6  ='' and l.yoopiskmaak_6  = ''  then l.ammopiskmaak_6  
+	-- lukiokoulutuksen ja ammatillisen koulutus otetaan lukiokoulutuksen maakunta _6
+	when l.suorlk = '2' and l.luopiskmaak_6  <> '' and l.ammopiskmaak_6  <> '' and
+	l.amkopiskmaak_6  = '' and l.yoopiskmaak_6  = '' then l.luopiskmaak_6 
+    -- ammattikorkeakoulutuksen maakunta _6
+	when l.suorlk = '2' and l.amkopiskmaak_6   <> '' and l.yoopiskmaak_6   = '' and
+	l.luopiskjarj_6 = '' and l.ammopiskmaak_6 = '' then l.amkopiskmaak_6
+	-- yliopistokoulutuksen maakunta _6 
+	when l.suorlk = '2' and l.amkopiskmaak_6  = '' and l.yoopiskmaak_6  <> '' and 
+	l.luopiskjarj_6  = '' and l.ammopiskmaak_6 = ''   then l.yoopiskmaak_6
+	-- ammattikorkekoulutuksen ja yliopistokoulutksen maakunta otetaan ammattikorkeakoulutuksen maakunta _6   
+	when l.suorlk = '2' and l.amkopiskmaak_6  <> '' and l.yoopiskmaak_6   <> '' and
+	l.luopiskjarj_6  = '' and l.ammopiskmaak_6  = ''  then l.amkopiskmaak_6 
+	
+	else ''
+	
+	    end),
+-- Koulutus 2
+(case
+   -- jos lukiokoulutuksessa vain niin j‰tet‰‰n tyhj‰ksi _6
+	when l.suorlk = '2' and l.luopiskkoulk_6 <> '' and l.ammopiskkoulk_6 = '' and
+	l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' then ''
+	-- jos ammattikoulutuksessa vain  j‰tet‰‰n tyhj‰ksi _6 
+	when l.suorlk = '2' and l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 <> '' and
+	l.amkopiskkoulk_6 ='' and l.yoopiskkoulk_6 = ''  then ''
+	-- jos lukiokoulutksessa ja ammattikoulutuksessa merkit‰‰n ammattikoulutus _6 
+	when l.suorlk = '2' and l.luopiskkoulk_6 <> '' and l.ammopiskkoulk_6 <> '' and
+	l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' then l.ammopiskkoulk_6 
+	-- jos vain ammattikorkeakoulutuksessa j‰tet‰‰n tyhj‰ksi
+	when l.suorlk = '2' and l.amkopiskkoulk_6  <> '' and l.yoopiskkoulk_6  = '' and
+	l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 = '' then ''
+	-- jos yliopistokoulutuksessa vain j‰tet‰‰n tyhj‰ksi
+	when l.suorlk = '2' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 <> '' and 
+	l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 = ''   then ''
+	-- jos ammattikorkeakoulutuksessa ja yliopistokoulutuksessa merkit‰‰n yliopistokoulutus _6
+	when l.suorlk = '2' and l.amkopiskkoulk_6 <> '' and l.yoopiskkoulk_6  <> '' and
+	l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 = ''  then l.yoopiskkoulk_6
+	
+	
+	
+	else ''
+	    end),
+-- Oppilaitos 2
+(case
+    -- lukiokoulutuksen oppilaitos vain merkit‰‰n tyhj‰ksi
+	when l.suorlk = '2' and l.luopisktunn_6 <> '' and l.ammopisktunn_6 = '' and
+	l.amkopisktunn_6 = '' and l.yoopisktunn_6 = '' then ''
+	-- ammatillisen koulutuksen oppilaitos _6 merkit‰‰n tyhj‰ksi
+	when l.suorlk = '2' and l.luopisktunn_6 = '' and l.ammopisktunn_6 <> '' and
+	l.amkopisktunn_6 ='' and l.yoopisktunn_6 = ''  then '' 
+	-- lukiokoulutuksen ja ammatillisen koulutuksen oppilaitos merkit‰‰n ammatillisen koulutuksen oppilaitos _6
+	when l.suorlk = '2' and l.luopisktunn_6 <> '' and l.ammopisktunn_6 <> '' and
+	l.amkopisktunn_6 = '' and l.yoopisktunn_6 = '' then l.ammopisktunn_6 
+	-- ammattikorkeakoulutksen oppilaitos vain merkit‰‰n tyhj‰ksi _6
+	when l.suorlk = '2' and l.amkopisktunn_6  <> '' and l.yoopisktunn_6  = '' and
+	l.luopisktunn_6 = '' and l.ammopisktunn_6 = '' then ''
+	-- yliopistokoulutksen oppilaitos vain merkit‰‰n tyhj‰ksi _6
+	when l.suorlk = '2' and l.amkopisktunn_6 = '' and l.yoopisktunn_6 <> '' and 
+	l.luopisktunn_6 = '' and l.ammopisktunn_6 = ''   then ''  
+	--  ammattikorkeakoulutksen oppilaitos ja yliopistokoulutuksen oppilaitos, merkit‰‰n yliopistokoulutuksen oppilaitos _6
+	when l.suorlk = '2' and l.amkopisktunn_6 <> '' and l.yoopisktunn_6  <> '' and
+	l.luopisktunn_6 = '' and l.ammopisktunn_6 = ''  then l.yoopisktunn_6 
+	
+	
+	else ''
+	    end),
+-- Koulutuksen j‰rjest‰j‰ 2
+	(case
+	-- lukiokoulutuksen j‰rjest‰j‰ vain _6, merkit‰‰n tyhj‰ksi
+	when l.suorlk = '2' and l.luopiskjarj_6  <> '' and l.ammopiskjarj_6 = '' and
+	l.amkopiskjarj_6 = '' and l.yoopiskjarj_6 = '' then ''
+	-- ammatillisen koulutuksen j‰rjest‰j‰ vain _6, merkit‰‰n tyhj‰ksi
+	when l.suorlk = '2' and l.luopiskjarj_6 = '' and l.ammopiskjarj_6 <> '' and
+	l.amkopiskjarj_6 ='' and l.yoopiskjarj_6 = ''  then ''
+	-- lukiokoulutuksen ja ammatillisen koulutuksen j‰rjest‰j‰, merkit‰‰n ammatillisen koulutuksen j‰rjest‰j‰ _6
+	when l.suorlk = '2' and l.luopiskjarj_6 <> '' and l.ammopiskjarj_6 <> '' and
+	l.amkopiskjarj_6 = '' and l.yoopiskjarj_6 = '' then l.ammopiskjarj_6 
+	-- vain ammattikorkeakoulutuksen j‰rjest‰j‰ merkit‰‰n tyhj‰ksi
+	when l.suorlk = '2' and l.amkopiskjarj_6  <> '' and l.yoopiskjarj_6   = '' and
+	l.luopiskjarj_6 = '' and l.ammopiskjarj_6 = '' then ''
+	-- vain yliopistokoulutuksen j‰rjest‰j‰, merkit‰‰n tyhj‰ksi
+	when l.suorlk = '2' and l.amkopiskjarj_6  = '' and l.yoopiskjarj_6  <> '' and 
+	l.luopiskjarj_6  = '' and l.ammopiskjarj_6 = ''   then ''
+	-- ammattikorkeakoulutuksen ja yliopistokoulutuksen j‰rjest‰j‰ merkit‰‰n yliopistokoulutuksen j‰rjet‰j‰ _6
+	when l.suorlk = '2' and l.amkopiskjarj_6  <> '' and l.yoopiskjarj_6   <> '' and
+	l.luopiskjarj_6  = '' and l.ammopiskjarj_6  = ''  then l.yoopiskjarj_6 
+	
+
+	else ''
+	    end),
+-- Koulutuksen maakunta 2
+	(case
+	-- vain lukiokoulutuksen maakunta _6, j‰tet‰‰n tyhj‰ksi
+	when l.suorlk = '2' and l.luopiskmaak_6   <> '' and l.ammopiskmaak_6  = '' and
+	l.amkopiskmaak_6  = '' and l.yoopiskmaak_6  = '' then ''
+	-- vain ammatillisen koulutuksen maakunta _6, j‰tet‰‰n tyhj‰ksi   
+	when l.suorlk = '2' and l.luopiskmaak_6  = '' and l.ammopiskmaak_6  <> '' and
+	l.amkopiskmaak_6  ='' and l.yoopiskmaak_6  = ''  then ''  
+	-- lukiokoulutuksen ja ammatillisen koulutuksen maakunta, merkit‰‰n ammatillisen koulutuksen maakunta _6
+	when l.suorlk = '2' and l.luopiskmaak_6  <> '' and l.ammopiskmaak_6  <> '' and
+	l.amkopiskmaak_6  = '' and l.yoopiskmaak_6  = '' then l.ammopiskmaak_6 
+	-- vain ammattikorkeakoulutuksen maakunta _6, j‰tet‰‰n tyhj‰ksi
+	when l.suorlk = '2' and l.amkopiskmaak_6   <> '' and l.yoopiskmaak_6   = '' and
+	l.luopiskmaak_6 = '' and l.ammopiskmaak_6 = '' then '' 
+	-- vain yliopistokoulutuksen maakunta _6, merkit‰‰n tyhj‰ksi
+	when l.suorlk = '2' and l.amkopiskmaak_6  = '' and l.yoopiskmaak_6  <> '' and 
+	l.luopiskmaak_6  = '' and l.ammopiskmaak_6 = ''   then '' 
+	-- ammattikorkeakoulutuksen ja yliopistokoulutuksen maakunta _6, merkit‰‰n yliopistokoulutuksen maakunta _6
+	when l.suorlk = '2' and l.amkopiskmaak_6  <> '' and l.yoopiskmaak_6   <> '' and
+	l.luopiskjarj_6  = '' and l.ammopiskmaak_6  = ''  then l.yoopiskmaak_6
+	
+
+	else ''
+	
+	    end),
+	-- Monihaku
+	(case
+	-- _6
+	when l.monihaku_6 = '' then '90'		
+	else l.monihaku_6
+	end),
+    -- P‰‰asiallinen toiminta
+    (case
+    -- _6
+	when l.suorlk = '2' then l.ptoim1r4_6
+	else ''
+	end),
+	-- Ammattiasema
+	(case
+	-- _6
+	when l.suorlk = '2' then l.amas_6
+	else ''
+	end),
+    l.lkm,
+	l.pohjkoul,
+ l.tietolahde,
+ 'K3.13',
+ -- Lukiokoulutuksessa
+ (case
+	    when (l.suorlk = '2' ) and  l.luopiskkoulk_6 <> '' and l.ammopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk_6 = '' then '1'    
+	    else '0'
+	    end) as lukiokoulutuksessa,
+ -- Ammatillisessa koulutuksessa 
+ (case
+	    when (l.suorlk = '2') and  l.ammopiskkoulk_6  <> '' and l.luopiskkoulk_6 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' then '1' 
+	    else '0'
+	    end) as ammatillisessa_koulutuksessa,
+-- Ammattikorkeakoulutuksessa
+ (case
+	   when (l.suorlk = '2') and  l.amkopiskkoulk_6 <> '' and l.ammopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.luopiskkoulk_6 = '' then  '1'
+	   else '0' 
+	   end) as ammattikorkeakoulutuksessa,
+-- Yliopistokoulutuksessa
+ (case
+	    when (l.suorlk = '2') and  l.yoopiskkoulk_6  <> '' and l.amkopiskkoulk_6 = '' and l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 = '' then '1'   	   
+	    else '0'
+	    end) as yliopistokoulutuksessa,
+-- Lukiokoulutuksessa ja ammatillisessa koulutuksessa
+(case
+	    when (l.suorlk = '2') and  l.luopiskkoulk_6  <> '' and l.ammopiskkoulk_6 <> '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6  = '' then '1'  
+	    else '0'
+	    end) as lukiokoulutuksessa_ja_ammatillisessa_koulutuksessa,
+-- Toisen asteen ammatillisessa koulutuksessa ja korkeakoulutuksessa
+(case
+	    when (l.suorlk = '2') and  l.ammopiskkoulk_6  <> '' and l.amkopiskkoulk_6 <> '' and l.luopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' then '1'  
+	    else '0'
+	    end) as toisen_asteen_ammatillisessa_koulutuksessa_ja_korkeakoulutuksessa,
+-- Ammattikorkeakoulutuksessa ja yliopistokoulutuksessa
+(case
+	    when (l.suorlk = '2') and  l.amkopiskkoulk_6  <> '' and l.yoopiskkoulk_6 <> '' and l.ammopiskkoulk_6  = '' and l.luopiskkoulk_6 = ''  then '1' 
+	    else '0'
+	    end) as ammattikorkekoulutuksessa_ja_yliopistokoulutuksessa,    
+-- Koulutuksen p‰‰tt‰neiden toiminta
+(case
+	   -- Tutkintoon johtavassa koulutuksessa olevat
+	   when (l.suorlk = '2')  and (l.ptoim1r4_6 = '22' or l.ptoim1r4_6 = '13')
+       and	(l.luopiskkoulk_6 <>'' or l.ammopiskkoulk_6 <>'' or l.amkopiskkoulk_6 <>'' or l.yoopiskkoulk_6 <>'')   then '1' 
+	
+	   -- Ei tutkintoon johtavassa koulutuksessa olevat
+	   when (l.suorlk = '2')  and (l.ptoim1r4_6 = '22' or l.ptoim1r4_6 = '13')
+       and	(l.luopiskkoulk_6 ='' and l.ammopiskkoulk_6 ='' and l.amkopiskkoulk_6 ='' and l.yoopiskkoulk_6 ='')   then '2' 
+   
+   
+	   -- Ei opiskelevat tyˆlliset
+	   when (l.suorlk = '2')and  l.ptoim1r4_6  = '10'  then '3' 
+	   -- Ei opiskelevat tyˆttˆm‰t
+	   when (l.suorlk = '2') and  l.ptoim1r4_6  = '12'  then '4' 
+	   -- Ei opiskelevat muut
+		else '5' 
+	   end ) as koulutuksen_paattaneiden_toiminta
+ ,ika_1v = cast((case 
+            when syntv = '' then '-1'
+            when  (cast(tilv as int) - cast(syntv as int)) > 99 then ''
+            else  ((cast(tilv as int) - cast(syntv as int))) end)  as nvarchar(10))
+ ,ika_5v =cast(
+       (
+		case
+		when (cast(tilv as int) - cast(syntv as int)) < 15 then '5v10'
+		when ((cast(tilv as int) - cast(syntv as int)) >= 15 and (cast(tilv as int) - cast(syntv as int)) <= 19) then '5v15'
+		when ((cast(tilv as int) - cast(syntv as int)) >= 20 and (cast(tilv as int) - cast(syntv as int)) <= 24) then '5v20'
+		when ((cast(tilv as int) - cast(syntv as int)) >= 25 and (cast(tilv as int) - cast(syntv as int)) <= 29) then '5v25'
+		when ((cast(tilv as int) - cast(syntv as int)) >= 30 and (cast(tilv as int) - cast(syntv as int)) <= 34) then '5v30'
+		when ((cast(tilv as int) - cast(syntv as int)) >= 35 and (cast(tilv as int) - cast(syntv as int)) <= 39) then '5v35'
+		when ((cast(tilv as int) - cast(syntv as int)) >= 40 and (cast(tilv as int) - cast(syntv as int)) <= 44) then '5v40'
+		when ((cast(tilv as int) - cast(syntv as int)) >= 45 and (cast(tilv as int) - cast(syntv as int)) <= 49) then '5v45'
+		when ((cast(tilv as int) - cast(syntv as int)) >= 50 and (cast(tilv as int) - cast(syntv as int)) <= 54) then '5v50'
+		when ((cast(tilv as int) - cast(syntv as int)) >= 55 and (cast(tilv as int) - cast(syntv as int)) <= 59) then '5v55'
+		when ((cast(tilv as int) - cast(syntv as int)) >= 60 and (cast(tilv as int) - cast(syntv as int)) <= 64) then '5v60'
+		when ((cast(tilv as int) - cast(syntv as int)) >= 65 and (cast(tilv as int) - cast(syntv as int)) <= 69) then '5v65'
+		when ((cast(tilv as int) - cast(syntv as int)) >= 70 and (cast(tilv as int) - cast(syntv as int)) <= 74) then '5v70'
+		when ((cast(tilv as int) - cast(syntv as int)) >= 75 and (cast(tilv as int) - cast(syntv as int)) <= 79) then '5v75'
+		when ((cast(tilv as int) - cast(syntv as int)) >= 80 and (cast(tilv as int) - cast(syntv as int)) <= 84) then '5v80'
+		when ((cast(tilv as int) - cast(syntv as int)) >= 85 and (cast(tilv as int) - cast(syntv as int)) <= 89) then '5v85'
+		when ((cast(tilv as int) - cast(syntv as int)) >= 90 and (cast(tilv as int) - cast(syntv as int)) <= 94) then '5v90'
+		when ((cast(tilv as int) - cast(syntv as int)) >= 95) then '5v95'
+		
+		end
+	   ) as nvarchar (10))
+
+  ,ika_1v_suorv = cast(
+					(case 
+						when syntv = '' then '-1' 
+						else ((cast(suorv as int) - cast(syntv as int))) 
+					end)  
+	as nvarchar(10))
+
+
+
+
+--uudet muuttujat 03/2018
+
+----OPISKELUT KYLLƒ/EI
+--Opiskellut lukiokoulutuksessa
+,case
+	when  l.suorlk = '2' and (l.luopiskkoulk_1 <> '' or l.luopiskkoulk_2 <> '' or l.luopiskkoulk_3 <> '' or l.luopiskkoulk_4 <> '' or l.luopiskkoulk_5 <> '' or l.luopiskkoulk_6 <> '') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (l.luopiskkoulk_2 <> '' or l.luopiskkoulk_3 <> '' or l.luopiskkoulk_4 <> '' or l.luopiskkoulk_5 <> '' or l.luopiskkoulk_6 <> '' or l.luopiskkoulk2010 <> '') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (l.luopiskkoulk_3 <> '' or l.luopiskkoulk_4 <> '' or l.luopiskkoulk_5 <> '' or l.luopiskkoulk_6 <> '' or l.luopiskkoulk2010 <> '' or l.luopiskkoulk2011 <> '') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (l.luopiskkoulk_4 <> '' or l.luopiskkoulk_5 <> '' or l.luopiskkoulk_6 <> '' or l.luopiskkoulk2010 <> '' or l.luopiskkoulk2011 <> '' or l.luopiskkoulk2012 <> '') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (l.luopiskkoulk_5 <> '' or l.luopiskkoulk_6 <> '' or l.luopiskkoulk2010 <> '' or l.luopiskkoulk2011 <> '' or l.luopiskkoulk2012 <> '' or l.luopiskkoulk2013 <> '') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (l.luopiskkoulk_6 <> '' or l.luopiskkoulk2010 <> '' or l.luopiskkoulk2011 <> '' or l.luopiskkoulk2012 <> '' or l.luopiskkoulk2013 <> '' or l.luopiskkoulk2014 <> '') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (l.luopiskkoulk2010 <> '' or l.luopiskkoulk2011 <> '' or l.luopiskkoulk2012 <> '' or l.luopiskkoulk2013 <> '' or l.luopiskkoulk2014 <> '' or l.luopiskkoulk2015 <> '') then 1*/
+	else 0
+end as opisk_lu
+--Opiskellut ammatillisessa peruskoulutuksessa
+,case
+	when  l.suorlk = '2' and (l.ammopiskkoulk_1 <> '' or l.ammopiskkoulk_2 <> '' or l.ammopiskkoulk_3 <> '' or l.ammopiskkoulk_4 <> '' or l.ammopiskkoulk_5 <> '' or l.ammopiskkoulk_6 <> '') and (d1c.Koulutusaste_taso2_koodi = '32' or d2c.Koulutusaste_taso2_koodi = '32' or d3c.Koulutusaste_taso2_koodi = '32' or d4c.Koulutusaste_taso2_koodi = '32' or d5c.Koulutusaste_taso2_koodi = '32' or d6c.Koulutusaste_taso2_koodi = '32') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (l.ammopiskkoulk_2 <> '' or l.ammopiskkoulk_3 <> '' or l.ammopiskkoulk_4 <> '' or l.ammopiskkoulk_5 <> '' or l.ammopiskkoulk_6 <> '' or l.ammopiskkoulk2010 <> '') and (d2c.Koulutusaste_taso2_koodi = '32' or d3c.Koulutusaste_taso2_koodi = '32' or d4c.Koulutusaste_taso2_koodi = '32' or d5c.Koulutusaste_taso2_koodi = '32' or d6c.Koulutusaste_taso2_koodi = '32' or d7c.Koulutusaste_taso2_koodi = '32') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (l.ammopiskkoulk_3 <> '' or l.ammopiskkoulk_4 <> '' or l.ammopiskkoulk_5 <> '' or l.ammopiskkoulk_6 <> '' or l.ammopiskkoulk2010 <> '' or l.ammopiskkoulk2011 <> '') and (d3c.Koulutusaste_taso2_koodi = '32' or d4c.Koulutusaste_taso2_koodi = '32' or d5c.Koulutusaste_taso2_koodi = '32' or d6c.Koulutusaste_taso2_koodi = '32' or d7c.Koulutusaste_taso2_koodi = '32' or d8c.Koulutusaste_taso2_koodi = '32') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (l.ammopiskkoulk_4 <> '' or l.ammopiskkoulk_5 <> '' or l.ammopiskkoulk_6 <> '' or l.ammopiskkoulk2010 <> '' or l.ammopiskkoulk2011 <> '' or l.ammopiskkoulk2012 <> '') and (d4c.Koulutusaste_taso2_koodi = '32' or d5c.Koulutusaste_taso2_koodi = '32' or d6c.Koulutusaste_taso2_koodi = '32' or d7c.Koulutusaste_taso2_koodi = '32' or d8c.Koulutusaste_taso2_koodi = '32' or d9c.Koulutusaste_taso2_koodi = '32') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (l.ammopiskkoulk_5 <> '' or l.ammopiskkoulk_6 <> '' or l.ammopiskkoulk2010 <> '' or l.ammopiskkoulk2011 <> '' or l.ammopiskkoulk2012 <> '' or l.ammopiskkoulk2013 <> '') and (d5c.Koulutusaste_taso2_koodi = '32' or d6c.Koulutusaste_taso2_koodi = '32' or d7c.Koulutusaste_taso2_koodi = '32' or d8c.Koulutusaste_taso2_koodi = '32' or d9c.Koulutusaste_taso2_koodi = '32' or d10c.Koulutusaste_taso2_koodi = '32') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (l.ammopiskkoulk_6 <> '' or l.ammopiskkoulk2010 <> '' or l.ammopiskkoulk2011 <> '' or l.ammopiskkoulk2012 <> '' or l.ammopiskkoulk2013 <> '' or l.ammopiskkoulk2014 <> '') and (d6c.Koulutusaste_taso2_koodi = '32' or d7c.Koulutusaste_taso2_koodi = '32' or d8c.Koulutusaste_taso2_koodi = '32' or d9c.Koulutusaste_taso2_koodi = '32' or d10c.Koulutusaste_taso2_koodi = '32' or d11c.Koulutusaste_taso2_koodi = '32') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (l.ammopiskkoulk2010 <> '' or l.ammopiskkoulk2011 <> '' or l.ammopiskkoulk2012 <> '' or l.ammopiskkoulk2013 <> '' or l.ammopiskkoulk2014 <> '' or l.ammopiskkoulk2015 <> '') and (d7c.Koulutusaste_taso2_koodi = '32' or d8c.Koulutusaste_taso2_koodi = '32' or d9c.Koulutusaste_taso2_koodi = '32' or d10c.Koulutusaste_taso2_koodi = '32' or d11c.Koulutusaste_taso2_koodi = '32' or d12c.Koulutusaste_taso2_koodi = '32') then 1*/
+	else 0
+end as opisk_amm_pk
+--Opiskellut ammattitutkintokoulutuksessa
+,case
+	when  l.suorlk = '2' and (l.ammopiskkoulk_1 <> '' or l.ammopiskkoulk_2 <> '' or l.ammopiskkoulk_3 <> '' or l.ammopiskkoulk_4 <> '' or l.ammopiskkoulk_5 <> '' or l.ammopiskkoulk_6 <> '') and (d1c.Koulutusaste_taso2_koodi = '33' or d2c.Koulutusaste_taso2_koodi = '33' or d3c.Koulutusaste_taso2_koodi = '33' or d4c.Koulutusaste_taso2_koodi = '33' or d5c.Koulutusaste_taso2_koodi = '33' or d6c.Koulutusaste_taso2_koodi = '33') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (l.ammopiskkoulk_2 <> '' or l.ammopiskkoulk_3 <> '' or l.ammopiskkoulk_4 <> '' or l.ammopiskkoulk_5 <> '' or l.ammopiskkoulk_6 <> '' or l.ammopiskkoulk2010 <> '') and (d2c.Koulutusaste_taso2_koodi = '33' or d3c.Koulutusaste_taso2_koodi = '33' or d4c.Koulutusaste_taso2_koodi = '33' or d5c.Koulutusaste_taso2_koodi = '33' or d6c.Koulutusaste_taso2_koodi = '33' or d7c.Koulutusaste_taso2_koodi = '33') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (l.ammopiskkoulk_3 <> '' or l.ammopiskkoulk_4 <> '' or l.ammopiskkoulk_5 <> '' or l.ammopiskkoulk_6 <> '' or l.ammopiskkoulk2010 <> '' or l.ammopiskkoulk2011 <> '') and (d3c.Koulutusaste_taso2_koodi = '33' or d4c.Koulutusaste_taso2_koodi = '33' or d5c.Koulutusaste_taso2_koodi = '33' or d6c.Koulutusaste_taso2_koodi = '33' or d7c.Koulutusaste_taso2_koodi = '33' or d8c.Koulutusaste_taso2_koodi = '33') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (l.ammopiskkoulk_4 <> '' or l.ammopiskkoulk_5 <> '' or l.ammopiskkoulk_6 <> '' or l.ammopiskkoulk2010 <> '' or l.ammopiskkoulk2011 <> '' or l.ammopiskkoulk2012 <> '') and (d4c.Koulutusaste_taso2_koodi = '33' or d5c.Koulutusaste_taso2_koodi = '33' or d6c.Koulutusaste_taso2_koodi = '33' or d7c.Koulutusaste_taso2_koodi = '33' or d8c.Koulutusaste_taso2_koodi = '33' or d9c.Koulutusaste_taso2_koodi = '33') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (l.ammopiskkoulk_5 <> '' or l.ammopiskkoulk_6 <> '' or l.ammopiskkoulk2010 <> '' or l.ammopiskkoulk2011 <> '' or l.ammopiskkoulk2012 <> '' or l.ammopiskkoulk2013 <> '') and (d5c.Koulutusaste_taso2_koodi = '33' or d6c.Koulutusaste_taso2_koodi = '33' or d7c.Koulutusaste_taso2_koodi = '33' or d8c.Koulutusaste_taso2_koodi = '33' or d9c.Koulutusaste_taso2_koodi = '33' or d10c.Koulutusaste_taso2_koodi = '33') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (l.ammopiskkoulk_6 <> '' or l.ammopiskkoulk2010 <> '' or l.ammopiskkoulk2011 <> '' or l.ammopiskkoulk2012 <> '' or l.ammopiskkoulk2013 <> '' or l.ammopiskkoulk2014 <> '') and (d6c.Koulutusaste_taso2_koodi = '33' or d7c.Koulutusaste_taso2_koodi = '33' or d8c.Koulutusaste_taso2_koodi = '33' or d9c.Koulutusaste_taso2_koodi = '33' or d10c.Koulutusaste_taso2_koodi = '33' or d11c.Koulutusaste_taso2_koodi = '33') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (l.ammopiskkoulk2010 <> '' or l.ammopiskkoulk2011 <> '' or l.ammopiskkoulk2012 <> '' or l.ammopiskkoulk2013 <> '' or l.ammopiskkoulk2014 <> '' or l.ammopiskkoulk2015 <> '') and (d7c.Koulutusaste_taso2_koodi = '33' or d8c.Koulutusaste_taso2_koodi = '33' or d9c.Koulutusaste_taso2_koodi = '33' or d10c.Koulutusaste_taso2_koodi = '33' or d11c.Koulutusaste_taso2_koodi = '33' or d12c.Koulutusaste_taso2_koodi = '33') then 1*/
+	else 0
+end as opisk_amm_at
+--Opiskellut erikoisammattitutkintokoulutuksessa
+,case
+	when  l.suorlk = '2' and (l.ammopiskkoulk_1 <> '' or l.ammopiskkoulk_2 <> '' or l.ammopiskkoulk_3 <> '' or l.ammopiskkoulk_4 <> '' or l.ammopiskkoulk_5 <> '' or l.ammopiskkoulk_6 <> '') and (d1c.Koulutusaste_taso2_koodi = '41' or d2c.Koulutusaste_taso2_koodi = '41' or d3c.Koulutusaste_taso2_koodi = '41' or d4c.Koulutusaste_taso2_koodi = '41' or d5c.Koulutusaste_taso2_koodi = '41' or d6c.Koulutusaste_taso2_koodi = '41') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (l.ammopiskkoulk_2 <> '' or l.ammopiskkoulk_3 <> '' or l.ammopiskkoulk_4 <> '' or l.ammopiskkoulk_5 <> '' or l.ammopiskkoulk_6 <> '' or l.ammopiskkoulk2010 <> '') and (d2c.Koulutusaste_taso2_koodi = '41' or d3c.Koulutusaste_taso2_koodi = '41' or d4c.Koulutusaste_taso2_koodi = '41' or d5c.Koulutusaste_taso2_koodi = '41' or d6c.Koulutusaste_taso2_koodi = '41' or d7c.Koulutusaste_taso2_koodi = '41') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (l.ammopiskkoulk_3 <> '' or l.ammopiskkoulk_4 <> '' or l.ammopiskkoulk_5 <> '' or l.ammopiskkoulk_6 <> '' or l.ammopiskkoulk2010 <> '' or l.ammopiskkoulk2011 <> '') and (d3c.Koulutusaste_taso2_koodi = '41' or d4c.Koulutusaste_taso2_koodi = '41' or d5c.Koulutusaste_taso2_koodi = '41' or d6c.Koulutusaste_taso2_koodi = '41' or d7c.Koulutusaste_taso2_koodi = '41' or d8c.Koulutusaste_taso2_koodi = '41') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (l.ammopiskkoulk_4 <> '' or l.ammopiskkoulk_5 <> '' or l.ammopiskkoulk_6 <> '' or l.ammopiskkoulk2010 <> '' or l.ammopiskkoulk2011 <> '' or l.ammopiskkoulk2012 <> '') and (d4c.Koulutusaste_taso2_koodi = '41' or d5c.Koulutusaste_taso2_koodi = '41' or d6c.Koulutusaste_taso2_koodi = '41' or d7c.Koulutusaste_taso2_koodi = '41' or d8c.Koulutusaste_taso2_koodi = '41' or d9c.Koulutusaste_taso2_koodi = '41') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (l.ammopiskkoulk_5 <> '' or l.ammopiskkoulk_6 <> '' or l.ammopiskkoulk2010 <> '' or l.ammopiskkoulk2011 <> '' or l.ammopiskkoulk2012 <> '' or l.ammopiskkoulk2013 <> '') and (d5c.Koulutusaste_taso2_koodi = '41' or d6c.Koulutusaste_taso2_koodi = '41' or d7c.Koulutusaste_taso2_koodi = '41' or d8c.Koulutusaste_taso2_koodi = '41' or d9c.Koulutusaste_taso2_koodi = '41' or d10c.Koulutusaste_taso2_koodi = '41') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (l.ammopiskkoulk_6 <> '' or l.ammopiskkoulk2010 <> '' or l.ammopiskkoulk2011 <> '' or l.ammopiskkoulk2012 <> '' or l.ammopiskkoulk2013 <> '' or l.ammopiskkoulk2014 <> '') and (d6c.Koulutusaste_taso2_koodi = '41' or d7c.Koulutusaste_taso2_koodi = '41' or d8c.Koulutusaste_taso2_koodi = '41' or d9c.Koulutusaste_taso2_koodi = '41' or d10c.Koulutusaste_taso2_koodi = '41' or d11c.Koulutusaste_taso2_koodi = '41') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (l.ammopiskkoulk2010 <> '' or l.ammopiskkoulk2011 <> '' or l.ammopiskkoulk2012 <> '' or l.ammopiskkoulk2013 <> '' or l.ammopiskkoulk2014 <> '' or l.ammopiskkoulk2015 <> '') and (d7c.Koulutusaste_taso2_koodi = '41' or d8c.Koulutusaste_taso2_koodi = '41' or d9c.Koulutusaste_taso2_koodi = '41' or d10c.Koulutusaste_taso2_koodi = '41' or d11c.Koulutusaste_taso2_koodi = '41' or d12c.Koulutusaste_taso2_koodi = '41') then 1*/
+	else 0
+end as opisk_amm_eat
+--Opiskellut ammatillisessa koulutuksessa
+,case
+	when  l.suorlk = '2' and (l.ammopiskkoulk_1 <> '' or l.ammopiskkoulk_2 <> '' or l.ammopiskkoulk_3 <> '' or l.ammopiskkoulk_4 <> '' or l.ammopiskkoulk_5 <> '' or l.ammopiskkoulk_6 <> '') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (l.ammopiskkoulk_2 <> '' or l.ammopiskkoulk_3 <> '' or l.ammopiskkoulk_4 <> '' or l.ammopiskkoulk_5 <> '' or l.ammopiskkoulk_6 <> '' or l.ammopiskkoulk2010 <> '') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (l.ammopiskkoulk_3 <> '' or l.ammopiskkoulk_4 <> '' or l.ammopiskkoulk_5 <> '' or l.ammopiskkoulk_6 <> '' or l.ammopiskkoulk2010 <> '' or l.ammopiskkoulk2011 <> '') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (l.ammopiskkoulk_4 <> '' or l.ammopiskkoulk_5 <> '' or l.ammopiskkoulk_6 <> '' or l.ammopiskkoulk2010 <> '' or l.ammopiskkoulk2011 <> '' or l.ammopiskkoulk2012 <> '') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (l.ammopiskkoulk_5 <> '' or l.ammopiskkoulk_6 <> '' or l.ammopiskkoulk2010 <> '' or l.ammopiskkoulk2011 <> '' or l.ammopiskkoulk2012 <> '' or l.ammopiskkoulk2013 <> '') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (l.ammopiskkoulk_6 <> '' or l.ammopiskkoulk2010 <> '' or l.ammopiskkoulk2011 <> '' or l.ammopiskkoulk2012 <> '' or l.ammopiskkoulk2013 <> '' or l.ammopiskkoulk2014 <> '') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (l.ammopiskkoulk2010 <> '' or l.ammopiskkoulk2011 <> '' or l.ammopiskkoulk2012 <> '' or l.ammopiskkoulk2013 <> '' or l.ammopiskkoulk2014 <> '' or l.ammopiskkoulk2015 <> '') then 1*/
+	else 0
+end as opisk_amm
+--Opiskellut ammattikorkeakoulutuksessa
+,case
+	when  l.suorlk = '2' and (l.amkopiskkoulk_1 <> '' or l.amkopiskkoulk_2 <> '' or l.amkopiskkoulk_3 <> '' or l.amkopiskkoulk_4 <> '' or l.amkopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (l.amkopiskkoulk_2 <> '' or l.amkopiskkoulk_3 <> '' or l.amkopiskkoulk_4 <> '' or l.amkopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (l.amkopiskkoulk_3 <> '' or l.amkopiskkoulk_4 <> '' or l.amkopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (l.amkopiskkoulk_4 <> '' or l.amkopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.amkopiskkoulk2012 <> '') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (l.amkopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.amkopiskkoulk2012 <> '' or l.amkopiskkoulk2013 <> '') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (l.amkopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.amkopiskkoulk2012 <> '' or l.amkopiskkoulk2013 <> '' or l.amkopiskkoulk2014 <> '') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (l.amkopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.amkopiskkoulk2012 <> '' or l.amkopiskkoulk2013 <> '' or l.amkopiskkoulk2014 <> '' or l.amkopiskkoulk2015 <> '') then 1*/
+	else 0
+end as opisk_amk
+--Opiskellut yliopistokoulutuksessa
+,case
+	when  l.suorlk = '2' and (l.yoopiskkoulk_1 <> '' or l.yoopiskkoulk_2 <> '' or l.yoopiskkoulk_3 <> '' or l.yoopiskkoulk_4 <> '' or l.yoopiskkoulk_5 <> '' or l.yoopiskkoulk_6 <> '') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (l.yoopiskkoulk_2 <> '' or l.yoopiskkoulk_3 <> '' or l.yoopiskkoulk_4 <> '' or l.yoopiskkoulk_5 <> '' or l.yoopiskkoulk_6 <> '' or l.yoopiskkoulk2010 <> '') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (l.yoopiskkoulk_3 <> '' or l.yoopiskkoulk_4 <> '' or l.yoopiskkoulk_5 <> '' or l.yoopiskkoulk_6 <> '' or l.yoopiskkoulk2010 <> '' or l.yoopiskkoulk2011 <> '') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (l.yoopiskkoulk_4 <> '' or l.yoopiskkoulk_5 <> '' or l.yoopiskkoulk_6 <> '' or l.yoopiskkoulk2010 <> '' or l.yoopiskkoulk2011 <> '' or l.yoopiskkoulk2012 <> '') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (l.yoopiskkoulk_5 <> '' or l.yoopiskkoulk_6 <> '' or l.yoopiskkoulk2010 <> '' or l.yoopiskkoulk2011 <> '' or l.yoopiskkoulk2012 <> '' or l.yoopiskkoulk2013 <> '') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (l.yoopiskkoulk_6 <> '' or l.yoopiskkoulk2010 <> '' or l.yoopiskkoulk2011 <> '' or l.yoopiskkoulk2012 <> '' or l.yoopiskkoulk2013 <> '' or l.yoopiskkoulk2014 <> '') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (l.yoopiskkoulk2010 <> '' or l.yoopiskkoulk2011 <> '' or l.yoopiskkoulk2012 <> '' or l.yoopiskkoulk2013 <> '' or l.yoopiskkoulk2014 <> '' or l.yoopiskkoulk2015 <> '') then 1*/
+	else 0
+end as opisk_yo
+
+
+
+----KOULUTUSALA, TASO 1 KYLLƒ/EI
+--Opiskellut koulutusala1 (amk) (taso 1) (kyll‰/ei)
+,case
+	when  l.suorlk = '2' and (d1a.iscfibroad2013_koodi = '01' or d2a.iscfibroad2013_koodi = '01' or d3a.iscfibroad2013_koodi = '01' or d4a.iscfibroad2013_koodi = '01' or d5a.iscfibroad2013_koodi = '01' or d6a.iscfibroad2013_koodi = '01') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (d2a.iscfibroad2013_koodi = '01' or d3a.iscfibroad2013_koodi = '01' or d4a.iscfibroad2013_koodi = '01' or d5a.iscfibroad2013_koodi = '01' or d6a.iscfibroad2013_koodi = '01' or d7a.iscfibroad2013_koodi = '01') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (d3a.iscfibroad2013_koodi = '01' or d4a.iscfibroad2013_koodi = '01' or d5a.iscfibroad2013_koodi = '01' or d6a.iscfibroad2013_koodi = '01' or d7a.iscfibroad2013_koodi = '01' or d8a.iscfibroad2013_koodi = '01') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (d4a.iscfibroad2013_koodi = '01' or d5a.iscfibroad2013_koodi = '01' or d6a.iscfibroad2013_koodi = '01' or d7a.iscfibroad2013_koodi = '01' or d8a.iscfibroad2013_koodi = '01' or d9a.iscfibroad2013_koodi = '01') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (d5a.iscfibroad2013_koodi = '01' or d6a.iscfibroad2013_koodi = '01' or d7a.iscfibroad2013_koodi = '01' or d8a.iscfibroad2013_koodi = '01' or d9a.iscfibroad2013_koodi = '01' or d10a.iscfibroad2013_koodi = '01') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (d6a.iscfibroad2013_koodi = '01' or d7a.iscfibroad2013_koodi = '01' or d8a.iscfibroad2013_koodi = '01' or d9a.iscfibroad2013_koodi = '01' or d10a.iscfibroad2013_koodi = '01' or d11a.iscfibroad2013_koodi = '01') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (d7a.iscfibroad2013_koodi = '01' or d8a.iscfibroad2013_koodi = '01' or d9a.iscfibroad2013_koodi = '01' or d10a.iscfibroad2013_koodi = '01' or d11a.iscfibroad2013_koodi = '01' or d12a.iscfibroad2013_koodi = '01') then 1*/
+	else 0
+end as opisk_amk_koulala1
+--Opiskellut koulutusala2 (amk) (taso 1) (kyll‰/ei)
+,case
+	when  l.suorlk = '2' and (d1a.iscfibroad2013_koodi = '02' or d2a.iscfibroad2013_koodi = '02' or d3a.iscfibroad2013_koodi = '02' or d4a.iscfibroad2013_koodi = '02' or d5a.iscfibroad2013_koodi = '02' or d6a.iscfibroad2013_koodi = '02') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (d2a.iscfibroad2013_koodi = '02' or d3a.iscfibroad2013_koodi = '02' or d4a.iscfibroad2013_koodi = '02' or d5a.iscfibroad2013_koodi = '02' or d6a.iscfibroad2013_koodi = '02' or d7a.iscfibroad2013_koodi = '02') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (d3a.iscfibroad2013_koodi = '02' or d4a.iscfibroad2013_koodi = '02' or d5a.iscfibroad2013_koodi = '02' or d6a.iscfibroad2013_koodi = '02' or d7a.iscfibroad2013_koodi = '02' or d8a.iscfibroad2013_koodi = '02') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (d4a.iscfibroad2013_koodi = '02' or d5a.iscfibroad2013_koodi = '02' or d6a.iscfibroad2013_koodi = '02' or d7a.iscfibroad2013_koodi = '02' or d8a.iscfibroad2013_koodi = '02' or d9a.iscfibroad2013_koodi = '02') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (d5a.iscfibroad2013_koodi = '02' or d6a.iscfibroad2013_koodi = '02' or d7a.iscfibroad2013_koodi = '02' or d8a.iscfibroad2013_koodi = '02' or d9a.iscfibroad2013_koodi = '02' or d10a.iscfibroad2013_koodi = '02') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (d6a.iscfibroad2013_koodi = '02' or d7a.iscfibroad2013_koodi = '02' or d8a.iscfibroad2013_koodi = '02' or d9a.iscfibroad2013_koodi = '02' or d10a.iscfibroad2013_koodi = '02' or d11a.iscfibroad2013_koodi = '02') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (d7a.iscfibroad2013_koodi = '02' or d8a.iscfibroad2013_koodi = '02' or d9a.iscfibroad2013_koodi = '02' or d10a.iscfibroad2013_koodi = '02' or d11a.iscfibroad2013_koodi = '02' or d12a.iscfibroad2013_koodi = '02') then 1*/
+	else 0
+end as opisk_amk_koulala2
+--Opiskellut koulutusala3 (amk) (taso 1) (kyll‰/ei)
+,case
+	when  l.suorlk = '2' and (d1a.iscfibroad2013_koodi = '03' or d2a.iscfibroad2013_koodi = '03' or d3a.iscfibroad2013_koodi = '03' or d4a.iscfibroad2013_koodi = '03' or d5a.iscfibroad2013_koodi = '03' or d6a.iscfibroad2013_koodi = '03') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (d2a.iscfibroad2013_koodi = '03' or d3a.iscfibroad2013_koodi = '03' or d4a.iscfibroad2013_koodi = '03' or d5a.iscfibroad2013_koodi = '03' or d6a.iscfibroad2013_koodi = '03' or d7a.iscfibroad2013_koodi = '03') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (d3a.iscfibroad2013_koodi = '03' or d4a.iscfibroad2013_koodi = '03' or d5a.iscfibroad2013_koodi = '03' or d6a.iscfibroad2013_koodi = '03' or d7a.iscfibroad2013_koodi = '03' or d8a.iscfibroad2013_koodi = '03') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (d4a.iscfibroad2013_koodi = '03' or d5a.iscfibroad2013_koodi = '03' or d6a.iscfibroad2013_koodi = '03' or d7a.iscfibroad2013_koodi = '03' or d8a.iscfibroad2013_koodi = '03' or d9a.iscfibroad2013_koodi = '03') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (d5a.iscfibroad2013_koodi = '03' or d6a.iscfibroad2013_koodi = '03' or d7a.iscfibroad2013_koodi = '03' or d8a.iscfibroad2013_koodi = '03' or d9a.iscfibroad2013_koodi = '03' or d10a.iscfibroad2013_koodi = '03') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (d6a.iscfibroad2013_koodi = '03' or d7a.iscfibroad2013_koodi = '03' or d8a.iscfibroad2013_koodi = '03' or d9a.iscfibroad2013_koodi = '03' or d10a.iscfibroad2013_koodi = '03' or d11a.iscfibroad2013_koodi = '03') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (d7a.iscfibroad2013_koodi = '03' or d8a.iscfibroad2013_koodi = '03' or d9a.iscfibroad2013_koodi = '03' or d10a.iscfibroad2013_koodi = '03' or d11a.iscfibroad2013_koodi = '03' or d12a.iscfibroad2013_koodi = '03') then 1*/
+	else 0
+end as opisk_amk_koulala3
+--Opiskellut koulutusala4 (amk) (taso 1) (kyll‰/ei)
+,case
+	when  l.suorlk = '2' and (d1a.iscfibroad2013_koodi = '04' or d2a.iscfibroad2013_koodi = '04' or d3a.iscfibroad2013_koodi = '04' or d4a.iscfibroad2013_koodi = '04' or d5a.iscfibroad2013_koodi = '04' or d6a.iscfibroad2013_koodi = '04') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (d2a.iscfibroad2013_koodi = '04' or d3a.iscfibroad2013_koodi = '04' or d4a.iscfibroad2013_koodi = '04' or d5a.iscfibroad2013_koodi = '04' or d6a.iscfibroad2013_koodi = '04' or d7a.iscfibroad2013_koodi = '04') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (d3a.iscfibroad2013_koodi = '04' or d4a.iscfibroad2013_koodi = '04' or d5a.iscfibroad2013_koodi = '04' or d6a.iscfibroad2013_koodi = '04' or d7a.iscfibroad2013_koodi = '04' or d8a.iscfibroad2013_koodi = '04') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (d4a.iscfibroad2013_koodi = '04' or d5a.iscfibroad2013_koodi = '04' or d6a.iscfibroad2013_koodi = '04' or d7a.iscfibroad2013_koodi = '04' or d8a.iscfibroad2013_koodi = '04' or d9a.iscfibroad2013_koodi = '04') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (d5a.iscfibroad2013_koodi = '04' or d6a.iscfibroad2013_koodi = '04' or d7a.iscfibroad2013_koodi = '04' or d8a.iscfibroad2013_koodi = '04' or d9a.iscfibroad2013_koodi = '04' or d10a.iscfibroad2013_koodi = '04') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (d6a.iscfibroad2013_koodi = '04' or d7a.iscfibroad2013_koodi = '04' or d8a.iscfibroad2013_koodi = '04' or d9a.iscfibroad2013_koodi = '04' or d10a.iscfibroad2013_koodi = '04' or d11a.iscfibroad2013_koodi = '04') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (d7a.iscfibroad2013_koodi = '04' or d8a.iscfibroad2013_koodi = '04' or d9a.iscfibroad2013_koodi = '04' or d10a.iscfibroad2013_koodi = '04' or d11a.iscfibroad2013_koodi = '04' or d12a.iscfibroad2013_koodi = '04') then 1*/
+	else 0
+end as opisk_amk_koulala4
+--Opiskellut koulutusala5 (amk) (taso 1) (kyll‰/ei)
+,case
+	when  l.suorlk = '2' and (d1a.iscfibroad2013_koodi = '05' or d2a.iscfibroad2013_koodi = '05' or d3a.iscfibroad2013_koodi = '05' or d4a.iscfibroad2013_koodi = '05' or d5a.iscfibroad2013_koodi = '05' or d6a.iscfibroad2013_koodi = '05') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (d2a.iscfibroad2013_koodi = '05' or d3a.iscfibroad2013_koodi = '05' or d4a.iscfibroad2013_koodi = '05' or d5a.iscfibroad2013_koodi = '05' or d6a.iscfibroad2013_koodi = '05' or d7a.iscfibroad2013_koodi = '05') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (d3a.iscfibroad2013_koodi = '05' or d4a.iscfibroad2013_koodi = '05' or d5a.iscfibroad2013_koodi = '05' or d6a.iscfibroad2013_koodi = '05' or d7a.iscfibroad2013_koodi = '05' or d8a.iscfibroad2013_koodi = '05') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (d4a.iscfibroad2013_koodi = '05' or d5a.iscfibroad2013_koodi = '05' or d6a.iscfibroad2013_koodi = '05' or d7a.iscfibroad2013_koodi = '05' or d8a.iscfibroad2013_koodi = '05' or d9a.iscfibroad2013_koodi = '05') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (d5a.iscfibroad2013_koodi = '05' or d6a.iscfibroad2013_koodi = '05' or d7a.iscfibroad2013_koodi = '05' or d8a.iscfibroad2013_koodi = '05' or d9a.iscfibroad2013_koodi = '05' or d10a.iscfibroad2013_koodi = '05') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (d6a.iscfibroad2013_koodi = '05' or d7a.iscfibroad2013_koodi = '05' or d8a.iscfibroad2013_koodi = '05' or d9a.iscfibroad2013_koodi = '05' or d10a.iscfibroad2013_koodi = '05' or d11a.iscfibroad2013_koodi = '05') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (d7a.iscfibroad2013_koodi = '05' or d8a.iscfibroad2013_koodi = '05' or d9a.iscfibroad2013_koodi = '05' or d10a.iscfibroad2013_koodi = '05' or d11a.iscfibroad2013_koodi = '05' or d12a.iscfibroad2013_koodi = '05') then 1*/
+	else 0
+end as opisk_amk_koulala5
+--Opiskellut koulutusala6 (amk) (taso 1) (kyll‰/ei)
+,case
+	when  l.suorlk = '2' and (d1a.iscfibroad2013_koodi = '06' or d2a.iscfibroad2013_koodi = '06' or d3a.iscfibroad2013_koodi = '06' or d4a.iscfibroad2013_koodi = '06' or d5a.iscfibroad2013_koodi = '06' or d6a.iscfibroad2013_koodi = '06') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (d2a.iscfibroad2013_koodi = '06' or d3a.iscfibroad2013_koodi = '06' or d4a.iscfibroad2013_koodi = '06' or d5a.iscfibroad2013_koodi = '06' or d6a.iscfibroad2013_koodi = '06' or d7a.iscfibroad2013_koodi = '06') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (d3a.iscfibroad2013_koodi = '06' or d4a.iscfibroad2013_koodi = '06' or d5a.iscfibroad2013_koodi = '06' or d6a.iscfibroad2013_koodi = '06' or d7a.iscfibroad2013_koodi = '06' or d8a.iscfibroad2013_koodi = '06') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (d4a.iscfibroad2013_koodi = '06' or d5a.iscfibroad2013_koodi = '06' or d6a.iscfibroad2013_koodi = '06' or d7a.iscfibroad2013_koodi = '06' or d8a.iscfibroad2013_koodi = '06' or d9a.iscfibroad2013_koodi = '06') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (d5a.iscfibroad2013_koodi = '06' or d6a.iscfibroad2013_koodi = '06' or d7a.iscfibroad2013_koodi = '06' or d8a.iscfibroad2013_koodi = '06' or d9a.iscfibroad2013_koodi = '06' or d10a.iscfibroad2013_koodi = '06') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (d6a.iscfibroad2013_koodi = '06' or d7a.iscfibroad2013_koodi = '06' or d8a.iscfibroad2013_koodi = '06' or d9a.iscfibroad2013_koodi = '06' or d10a.iscfibroad2013_koodi = '06' or d11a.iscfibroad2013_koodi = '06') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (d7a.iscfibroad2013_koodi = '06' or d8a.iscfibroad2013_koodi = '06' or d9a.iscfibroad2013_koodi = '06' or d10a.iscfibroad2013_koodi = '06' or d11a.iscfibroad2013_koodi = '06' or d12a.iscfibroad2013_koodi = '06') then 1*/
+	else 0
+end as opisk_amk_koulala6
+--Opiskellut koulutusala7 (amk) (taso 1) (kyll‰/ei)
+,case
+	when  l.suorlk = '2' and (d1a.iscfibroad2013_koodi = '07' or d2a.iscfibroad2013_koodi = '07' or d3a.iscfibroad2013_koodi = '07' or d4a.iscfibroad2013_koodi = '07' or d5a.iscfibroad2013_koodi = '07' or d6a.iscfibroad2013_koodi = '07') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (d2a.iscfibroad2013_koodi = '07' or d3a.iscfibroad2013_koodi = '07' or d4a.iscfibroad2013_koodi = '07' or d5a.iscfibroad2013_koodi = '07' or d6a.iscfibroad2013_koodi = '07' or d7a.iscfibroad2013_koodi = '07') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (d3a.iscfibroad2013_koodi = '07' or d4a.iscfibroad2013_koodi = '07' or d5a.iscfibroad2013_koodi = '07' or d6a.iscfibroad2013_koodi = '07' or d7a.iscfibroad2013_koodi = '07' or d8a.iscfibroad2013_koodi = '07') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (d4a.iscfibroad2013_koodi = '07' or d5a.iscfibroad2013_koodi = '07' or d6a.iscfibroad2013_koodi = '07' or d7a.iscfibroad2013_koodi = '07' or d8a.iscfibroad2013_koodi = '07' or d9a.iscfibroad2013_koodi = '07') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (d5a.iscfibroad2013_koodi = '07' or d6a.iscfibroad2013_koodi = '07' or d7a.iscfibroad2013_koodi = '07' or d8a.iscfibroad2013_koodi = '07' or d9a.iscfibroad2013_koodi = '07' or d10a.iscfibroad2013_koodi = '07') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (d6a.iscfibroad2013_koodi = '07' or d7a.iscfibroad2013_koodi = '07' or d8a.iscfibroad2013_koodi = '07' or d9a.iscfibroad2013_koodi = '07' or d10a.iscfibroad2013_koodi = '07' or d11a.iscfibroad2013_koodi = '07') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (d7a.iscfibroad2013_koodi = '07' or d8a.iscfibroad2013_koodi = '07' or d9a.iscfibroad2013_koodi = '07' or d10a.iscfibroad2013_koodi = '07' or d11a.iscfibroad2013_koodi = '07' or d12a.iscfibroad2013_koodi = '07') then 1*/
+	else 0
+end as opisk_amk_koulala7
+--Opiskellut koulutusala8 (amk) (taso 1) (kyll‰/ei)
+,case
+	when  l.suorlk = '2' and (d1a.iscfibroad2013_koodi = '08' or d2a.iscfibroad2013_koodi = '08' or d3a.iscfibroad2013_koodi = '08' or d4a.iscfibroad2013_koodi = '08' or d5a.iscfibroad2013_koodi = '08' or d6a.iscfibroad2013_koodi = '08') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (d2a.iscfibroad2013_koodi = '08' or d3a.iscfibroad2013_koodi = '08' or d4a.iscfibroad2013_koodi = '08' or d5a.iscfibroad2013_koodi = '08' or d6a.iscfibroad2013_koodi = '08' or d7a.iscfibroad2013_koodi = '08') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (d3a.iscfibroad2013_koodi = '08' or d4a.iscfibroad2013_koodi = '08' or d5a.iscfibroad2013_koodi = '08' or d6a.iscfibroad2013_koodi = '08' or d7a.iscfibroad2013_koodi = '08' or d8a.iscfibroad2013_koodi = '08') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (d4a.iscfibroad2013_koodi = '08' or d5a.iscfibroad2013_koodi = '08' or d6a.iscfibroad2013_koodi = '08' or d7a.iscfibroad2013_koodi = '08' or d8a.iscfibroad2013_koodi = '08' or d9a.iscfibroad2013_koodi = '08') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (d5a.iscfibroad2013_koodi = '08' or d6a.iscfibroad2013_koodi = '08' or d7a.iscfibroad2013_koodi = '08' or d8a.iscfibroad2013_koodi = '08' or d9a.iscfibroad2013_koodi = '08' or d10a.iscfibroad2013_koodi = '08') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (d6a.iscfibroad2013_koodi = '08' or d7a.iscfibroad2013_koodi = '08' or d8a.iscfibroad2013_koodi = '08' or d9a.iscfibroad2013_koodi = '08' or d10a.iscfibroad2013_koodi = '08' or d11a.iscfibroad2013_koodi = '08') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (d7a.iscfibroad2013_koodi = '08' or d8a.iscfibroad2013_koodi = '08' or d9a.iscfibroad2013_koodi = '08' or d10a.iscfibroad2013_koodi = '08' or d11a.iscfibroad2013_koodi = '08' or d12a.iscfibroad2013_koodi = '08') then 1*/
+	else 0
+end as opisk_amk_koulala8
+--Opiskellut koulutusala9 (amk) (taso 1) (kyll‰/ei)
+,case
+	when  l.suorlk = '2' and (d1a.iscfibroad2013_koodi = '09' or d2a.iscfibroad2013_koodi = '09' or d3a.iscfibroad2013_koodi = '09' or d4a.iscfibroad2013_koodi = '09' or d5a.iscfibroad2013_koodi = '09' or d6a.iscfibroad2013_koodi = '09') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (d2a.iscfibroad2013_koodi = '09' or d3a.iscfibroad2013_koodi = '09' or d4a.iscfibroad2013_koodi = '09' or d5a.iscfibroad2013_koodi = '09' or d6a.iscfibroad2013_koodi = '09' or d7a.iscfibroad2013_koodi = '09') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (d3a.iscfibroad2013_koodi = '09' or d4a.iscfibroad2013_koodi = '09' or d5a.iscfibroad2013_koodi = '09' or d6a.iscfibroad2013_koodi = '09' or d7a.iscfibroad2013_koodi = '09' or d8a.iscfibroad2013_koodi = '09') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (d4a.iscfibroad2013_koodi = '09' or d5a.iscfibroad2013_koodi = '09' or d6a.iscfibroad2013_koodi = '09' or d7a.iscfibroad2013_koodi = '09' or d8a.iscfibroad2013_koodi = '09' or d9a.iscfibroad2013_koodi = '09') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (d5a.iscfibroad2013_koodi = '09' or d6a.iscfibroad2013_koodi = '09' or d7a.iscfibroad2013_koodi = '09' or d8a.iscfibroad2013_koodi = '09' or d9a.iscfibroad2013_koodi = '09' or d10a.iscfibroad2013_koodi = '09') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (d6a.iscfibroad2013_koodi = '09' or d7a.iscfibroad2013_koodi = '09' or d8a.iscfibroad2013_koodi = '09' or d9a.iscfibroad2013_koodi = '09' or d10a.iscfibroad2013_koodi = '09' or d11a.iscfibroad2013_koodi = '09') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (d7a.iscfibroad2013_koodi = '09' or d8a.iscfibroad2013_koodi = '09' or d9a.iscfibroad2013_koodi = '09' or d10a.iscfibroad2013_koodi = '09' or d11a.iscfibroad2013_koodi = '09' or d12a.iscfibroad2013_koodi = '09') then 1*/
+	else 0
+end as opisk_amk_koulala9
+--Opiskellut koulutusala10 (amk) (taso 1) (kyll‰/ei)
+,case
+	when  l.suorlk = '2' and (d1a.iscfibroad2013_koodi = '10' or d2a.iscfibroad2013_koodi = '10' or d3a.iscfibroad2013_koodi = '10' or d4a.iscfibroad2013_koodi = '10' or d5a.iscfibroad2013_koodi = '10' or d6a.iscfibroad2013_koodi = '10') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (d2a.iscfibroad2013_koodi = '10' or d3a.iscfibroad2013_koodi = '10' or d4a.iscfibroad2013_koodi = '10' or d5a.iscfibroad2013_koodi = '10' or d6a.iscfibroad2013_koodi = '10' or d7a.iscfibroad2013_koodi = '10') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (d3a.iscfibroad2013_koodi = '10' or d4a.iscfibroad2013_koodi = '10' or d5a.iscfibroad2013_koodi = '10' or d6a.iscfibroad2013_koodi = '10' or d7a.iscfibroad2013_koodi = '10' or d8a.iscfibroad2013_koodi = '10') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (d4a.iscfibroad2013_koodi = '10' or d5a.iscfibroad2013_koodi = '10' or d6a.iscfibroad2013_koodi = '10' or d7a.iscfibroad2013_koodi = '10' or d8a.iscfibroad2013_koodi = '10' or d9a.iscfibroad2013_koodi = '10') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (d5a.iscfibroad2013_koodi = '10' or d6a.iscfibroad2013_koodi = '10' or d7a.iscfibroad2013_koodi = '10' or d8a.iscfibroad2013_koodi = '10' or d9a.iscfibroad2013_koodi = '10' or d10a.iscfibroad2013_koodi = '10') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (d6a.iscfibroad2013_koodi = '10' or d7a.iscfibroad2013_koodi = '10' or d8a.iscfibroad2013_koodi = '10' or d9a.iscfibroad2013_koodi = '10' or d10a.iscfibroad2013_koodi = '10' or d11a.iscfibroad2013_koodi = '10') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (d7a.iscfibroad2013_koodi = '10' or d8a.iscfibroad2013_koodi = '10' or d9a.iscfibroad2013_koodi = '10' or d10a.iscfibroad2013_koodi = '10' or d11a.iscfibroad2013_koodi = '10' or d12a.iscfibroad2013_koodi = '10') then 1*/
+	else 0
+end as opisk_amk_koulala10
+
+
+
+--Opiskellut koulutusala1 (yo) (taso 1) (kyll‰/ei)
+,case
+	when  l.suorlk = '2' and (d1b.iscfibroad2013_koodi = '01' or d2b.iscfibroad2013_koodi = '01' or d3b.iscfibroad2013_koodi = '01' or d4b.iscfibroad2013_koodi = '01' or d5b.iscfibroad2013_koodi = '01' or d6b.iscfibroad2013_koodi = '01') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (d2b.iscfibroad2013_koodi = '01' or d3b.iscfibroad2013_koodi = '01' or d4b.iscfibroad2013_koodi = '01' or d5b.iscfibroad2013_koodi = '01' or d6b.iscfibroad2013_koodi = '01' or d7b.iscfibroad2013_koodi = '01') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (d3b.iscfibroad2013_koodi = '01' or d4b.iscfibroad2013_koodi = '01' or d5b.iscfibroad2013_koodi = '01' or d6b.iscfibroad2013_koodi = '01' or d7b.iscfibroad2013_koodi = '01' or d8b.iscfibroad2013_koodi = '01') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (d4b.iscfibroad2013_koodi = '01' or d5b.iscfibroad2013_koodi = '01' or d6b.iscfibroad2013_koodi = '01' or d7b.iscfibroad2013_koodi = '01' or d8b.iscfibroad2013_koodi = '01' or d9b.iscfibroad2013_koodi = '01') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (d5b.iscfibroad2013_koodi = '01' or d6b.iscfibroad2013_koodi = '01' or d7b.iscfibroad2013_koodi = '01' or d8b.iscfibroad2013_koodi = '01' or d9b.iscfibroad2013_koodi = '01' or d10b.iscfibroad2013_koodi = '01') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (d6b.iscfibroad2013_koodi = '01' or d7b.iscfibroad2013_koodi = '01' or d8b.iscfibroad2013_koodi = '01' or d9b.iscfibroad2013_koodi = '01' or d10b.iscfibroad2013_koodi = '01' or d11b.iscfibroad2013_koodi = '01') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (d7b.iscfibroad2013_koodi = '01' or d8b.iscfibroad2013_koodi = '01' or d9b.iscfibroad2013_koodi = '01' or d10b.iscfibroad2013_koodi = '01' or d11b.iscfibroad2013_koodi = '01' or d12b.iscfibroad2013_koodi = '01') then 1*/
+	else 0
+end as opisk_yo_koulala1
+--Opiskellut koulutusala2 (yo) (taso 1) (kyll‰/ei)
+,case
+	when  l.suorlk = '2' and (d1b.iscfibroad2013_koodi = '02' or d2b.iscfibroad2013_koodi = '02' or d3b.iscfibroad2013_koodi = '02' or d4b.iscfibroad2013_koodi = '02' or d5b.iscfibroad2013_koodi = '02' or d6b.iscfibroad2013_koodi = '02') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (d2b.iscfibroad2013_koodi = '02' or d3b.iscfibroad2013_koodi = '02' or d4b.iscfibroad2013_koodi = '02' or d5b.iscfibroad2013_koodi = '02' or d6b.iscfibroad2013_koodi = '02' or d7b.iscfibroad2013_koodi = '02') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (d3b.iscfibroad2013_koodi = '02' or d4b.iscfibroad2013_koodi = '02' or d5b.iscfibroad2013_koodi = '02' or d6b.iscfibroad2013_koodi = '02' or d7b.iscfibroad2013_koodi = '02' or d8b.iscfibroad2013_koodi = '02') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (d4b.iscfibroad2013_koodi = '02' or d5b.iscfibroad2013_koodi = '02' or d6b.iscfibroad2013_koodi = '02' or d7b.iscfibroad2013_koodi = '02' or d8b.iscfibroad2013_koodi = '02' or d9b.iscfibroad2013_koodi = '02') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (d5b.iscfibroad2013_koodi = '02' or d6b.iscfibroad2013_koodi = '02' or d7b.iscfibroad2013_koodi = '02' or d8b.iscfibroad2013_koodi = '02' or d9b.iscfibroad2013_koodi = '02' or d10b.iscfibroad2013_koodi = '02') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (d6b.iscfibroad2013_koodi = '02' or d7b.iscfibroad2013_koodi = '02' or d8b.iscfibroad2013_koodi = '02' or d9b.iscfibroad2013_koodi = '02' or d10b.iscfibroad2013_koodi = '02' or d11b.iscfibroad2013_koodi = '02') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (d7b.iscfibroad2013_koodi = '02' or d8b.iscfibroad2013_koodi = '02' or d9b.iscfibroad2013_koodi = '02' or d10b.iscfibroad2013_koodi = '02' or d11b.iscfibroad2013_koodi = '02' or d12b.iscfibroad2013_koodi = '02') then 1*/
+	else 0
+end as opisk_yo_koulala2
+--Opiskellut koulutusala3 (yo) (taso 1) (kyll‰/ei)
+,case
+	when  l.suorlk = '2' and (d1b.iscfibroad2013_koodi = '03' or d2b.iscfibroad2013_koodi = '03' or d3b.iscfibroad2013_koodi = '03' or d4b.iscfibroad2013_koodi = '03' or d5b.iscfibroad2013_koodi = '03' or d6b.iscfibroad2013_koodi = '03') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (d2b.iscfibroad2013_koodi = '03' or d3b.iscfibroad2013_koodi = '03' or d4b.iscfibroad2013_koodi = '03' or d5b.iscfibroad2013_koodi = '03' or d6b.iscfibroad2013_koodi = '03' or d7b.iscfibroad2013_koodi = '03') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (d3b.iscfibroad2013_koodi = '03' or d4b.iscfibroad2013_koodi = '03' or d5b.iscfibroad2013_koodi = '03' or d6b.iscfibroad2013_koodi = '03' or d7b.iscfibroad2013_koodi = '03' or d8b.iscfibroad2013_koodi = '03') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (d4b.iscfibroad2013_koodi = '03' or d5b.iscfibroad2013_koodi = '03' or d6b.iscfibroad2013_koodi = '03' or d7b.iscfibroad2013_koodi = '03' or d8b.iscfibroad2013_koodi = '03' or d9b.iscfibroad2013_koodi = '03') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (d5b.iscfibroad2013_koodi = '03' or d6b.iscfibroad2013_koodi = '03' or d7b.iscfibroad2013_koodi = '03' or d8b.iscfibroad2013_koodi = '03' or d9b.iscfibroad2013_koodi = '03' or d10b.iscfibroad2013_koodi = '03') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (d6b.iscfibroad2013_koodi = '03' or d7b.iscfibroad2013_koodi = '03' or d8b.iscfibroad2013_koodi = '03' or d9b.iscfibroad2013_koodi = '03' or d10b.iscfibroad2013_koodi = '03' or d11b.iscfibroad2013_koodi = '03') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (d7b.iscfibroad2013_koodi = '03' or d8b.iscfibroad2013_koodi = '03' or d9b.iscfibroad2013_koodi = '03' or d10b.iscfibroad2013_koodi = '03' or d11b.iscfibroad2013_koodi = '03' or d12b.iscfibroad2013_koodi = '03') then 1*/
+	else 0
+end as opisk_yo_koulala3
+--Opiskellut koulutusala4 (yo) (taso 1) (kyll‰/ei)
+,case
+	when  l.suorlk = '2' and (d1b.iscfibroad2013_koodi = '04' or d2b.iscfibroad2013_koodi = '04' or d3b.iscfibroad2013_koodi = '04' or d4b.iscfibroad2013_koodi = '04' or d5b.iscfibroad2013_koodi = '04' or d6b.iscfibroad2013_koodi = '04') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (d2b.iscfibroad2013_koodi = '04' or d3b.iscfibroad2013_koodi = '04' or d4b.iscfibroad2013_koodi = '04' or d5b.iscfibroad2013_koodi = '04' or d6b.iscfibroad2013_koodi = '04' or d7b.iscfibroad2013_koodi = '04') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (d3b.iscfibroad2013_koodi = '04' or d4b.iscfibroad2013_koodi = '04' or d5b.iscfibroad2013_koodi = '04' or d6b.iscfibroad2013_koodi = '04' or d7b.iscfibroad2013_koodi = '04' or d8b.iscfibroad2013_koodi = '04') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (d4b.iscfibroad2013_koodi = '04' or d5b.iscfibroad2013_koodi = '04' or d6b.iscfibroad2013_koodi = '04' or d7b.iscfibroad2013_koodi = '04' or d8b.iscfibroad2013_koodi = '04' or d9b.iscfibroad2013_koodi = '04') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (d5b.iscfibroad2013_koodi = '04' or d6b.iscfibroad2013_koodi = '04' or d7b.iscfibroad2013_koodi = '04' or d8b.iscfibroad2013_koodi = '04' or d9b.iscfibroad2013_koodi = '04' or d10b.iscfibroad2013_koodi = '04') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (d6b.iscfibroad2013_koodi = '04' or d7b.iscfibroad2013_koodi = '04' or d8b.iscfibroad2013_koodi = '04' or d9b.iscfibroad2013_koodi = '04' or d10b.iscfibroad2013_koodi = '04' or d11b.iscfibroad2013_koodi = '04') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (d7b.iscfibroad2013_koodi = '04' or d8b.iscfibroad2013_koodi = '04' or d9b.iscfibroad2013_koodi = '04' or d10b.iscfibroad2013_koodi = '04' or d11b.iscfibroad2013_koodi = '04' or d12b.iscfibroad2013_koodi = '04') then 1*/
+	else 0
+end as opisk_yo_koulala4
+--Opiskellut koulutusala5 (yo) (taso 1) (kyll‰/ei)
+,case
+	when  l.suorlk = '2' and (d1b.iscfibroad2013_koodi = '05' or d2b.iscfibroad2013_koodi = '05' or d3b.iscfibroad2013_koodi = '05' or d4b.iscfibroad2013_koodi = '05' or d5b.iscfibroad2013_koodi = '05' or d6b.iscfibroad2013_koodi = '05') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (d2b.iscfibroad2013_koodi = '05' or d3b.iscfibroad2013_koodi = '05' or d4b.iscfibroad2013_koodi = '05' or d5b.iscfibroad2013_koodi = '05' or d6b.iscfibroad2013_koodi = '05' or d7b.iscfibroad2013_koodi = '05') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (d3b.iscfibroad2013_koodi = '05' or d4b.iscfibroad2013_koodi = '05' or d5b.iscfibroad2013_koodi = '05' or d6b.iscfibroad2013_koodi = '05' or d7b.iscfibroad2013_koodi = '05' or d8b.iscfibroad2013_koodi = '05') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (d4b.iscfibroad2013_koodi = '05' or d5b.iscfibroad2013_koodi = '05' or d6b.iscfibroad2013_koodi = '05' or d7b.iscfibroad2013_koodi = '05' or d8b.iscfibroad2013_koodi = '05' or d9b.iscfibroad2013_koodi = '05') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (d5b.iscfibroad2013_koodi = '05' or d6b.iscfibroad2013_koodi = '05' or d7b.iscfibroad2013_koodi = '05' or d8b.iscfibroad2013_koodi = '05' or d9b.iscfibroad2013_koodi = '05' or d10b.iscfibroad2013_koodi = '05') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (d6b.iscfibroad2013_koodi = '05' or d7b.iscfibroad2013_koodi = '05' or d8b.iscfibroad2013_koodi = '05' or d9b.iscfibroad2013_koodi = '05' or d10b.iscfibroad2013_koodi = '05' or d11b.iscfibroad2013_koodi = '05') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (d7b.iscfibroad2013_koodi = '05' or d8b.iscfibroad2013_koodi = '05' or d9b.iscfibroad2013_koodi = '05' or d10b.iscfibroad2013_koodi = '05' or d11b.iscfibroad2013_koodi = '05' or d12b.iscfibroad2013_koodi = '05') then 1*/
+	else 0
+end as opisk_yo_koulala5
+--Opiskellut koulutusala6 (yo) (taso 1) (kyll‰/ei)
+,case
+	when  l.suorlk = '2' and (d1b.iscfibroad2013_koodi = '06' or d2b.iscfibroad2013_koodi = '06' or d3b.iscfibroad2013_koodi = '06' or d4b.iscfibroad2013_koodi = '06' or d5b.iscfibroad2013_koodi = '06' or d6b.iscfibroad2013_koodi = '06') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (d2b.iscfibroad2013_koodi = '06' or d3b.iscfibroad2013_koodi = '06' or d4b.iscfibroad2013_koodi = '06' or d5b.iscfibroad2013_koodi = '06' or d6b.iscfibroad2013_koodi = '06' or d7b.iscfibroad2013_koodi = '06') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (d3b.iscfibroad2013_koodi = '06' or d4b.iscfibroad2013_koodi = '06' or d5b.iscfibroad2013_koodi = '06' or d6b.iscfibroad2013_koodi = '06' or d7b.iscfibroad2013_koodi = '06' or d8b.iscfibroad2013_koodi = '06') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (d4b.iscfibroad2013_koodi = '06' or d5b.iscfibroad2013_koodi = '06' or d6b.iscfibroad2013_koodi = '06' or d7b.iscfibroad2013_koodi = '06' or d8b.iscfibroad2013_koodi = '06' or d9b.iscfibroad2013_koodi = '06') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (d5b.iscfibroad2013_koodi = '06' or d6b.iscfibroad2013_koodi = '06' or d7b.iscfibroad2013_koodi = '06' or d8b.iscfibroad2013_koodi = '06' or d9b.iscfibroad2013_koodi = '06' or d10b.iscfibroad2013_koodi = '06') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (d6b.iscfibroad2013_koodi = '06' or d7b.iscfibroad2013_koodi = '06' or d8b.iscfibroad2013_koodi = '06' or d9b.iscfibroad2013_koodi = '06' or d10b.iscfibroad2013_koodi = '06' or d11b.iscfibroad2013_koodi = '06') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (d7b.iscfibroad2013_koodi = '06' or d8b.iscfibroad2013_koodi = '06' or d9b.iscfibroad2013_koodi = '06' or d10b.iscfibroad2013_koodi = '06' or d11b.iscfibroad2013_koodi = '06' or d12b.iscfibroad2013_koodi = '06') then 1*/
+	else 0
+end as opisk_yo_koulala6
+--Opiskellut koulutusala7 (yo) (taso 1) (kyll‰/ei)
+,case
+	when  l.suorlk = '2' and (d1b.iscfibroad2013_koodi = '07' or d2b.iscfibroad2013_koodi = '07' or d3b.iscfibroad2013_koodi = '07' or d4b.iscfibroad2013_koodi = '07' or d5b.iscfibroad2013_koodi = '07' or d6b.iscfibroad2013_koodi = '07') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (d2b.iscfibroad2013_koodi = '07' or d3b.iscfibroad2013_koodi = '07' or d4b.iscfibroad2013_koodi = '07' or d5b.iscfibroad2013_koodi = '07' or d6b.iscfibroad2013_koodi = '07' or d7b.iscfibroad2013_koodi = '07') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (d3b.iscfibroad2013_koodi = '07' or d4b.iscfibroad2013_koodi = '07' or d5b.iscfibroad2013_koodi = '07' or d6b.iscfibroad2013_koodi = '07' or d7b.iscfibroad2013_koodi = '07' or d8b.iscfibroad2013_koodi = '07') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (d4b.iscfibroad2013_koodi = '07' or d5b.iscfibroad2013_koodi = '07' or d6b.iscfibroad2013_koodi = '07' or d7b.iscfibroad2013_koodi = '07' or d8b.iscfibroad2013_koodi = '07' or d9b.iscfibroad2013_koodi = '07') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (d5b.iscfibroad2013_koodi = '07' or d6b.iscfibroad2013_koodi = '07' or d7b.iscfibroad2013_koodi = '07' or d8b.iscfibroad2013_koodi = '07' or d9b.iscfibroad2013_koodi = '07' or d10b.iscfibroad2013_koodi = '07') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (d6b.iscfibroad2013_koodi = '07' or d7b.iscfibroad2013_koodi = '07' or d8b.iscfibroad2013_koodi = '07' or d9b.iscfibroad2013_koodi = '07' or d10b.iscfibroad2013_koodi = '07' or d11b.iscfibroad2013_koodi = '07') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (d7b.iscfibroad2013_koodi = '07' or d8b.iscfibroad2013_koodi = '07' or d9b.iscfibroad2013_koodi = '07' or d10b.iscfibroad2013_koodi = '07' or d11b.iscfibroad2013_koodi = '07' or d12b.iscfibroad2013_koodi = '07') then 1*/
+	else 0
+end as opisk_yo_koulala7
+--Opiskellut koulutusala8 (yo) (taso 1) (kyll‰/ei)
+,case
+	when  l.suorlk = '2' and (d1b.iscfibroad2013_koodi = '08' or d2b.iscfibroad2013_koodi = '08' or d3b.iscfibroad2013_koodi = '08' or d4b.iscfibroad2013_koodi = '08' or d5b.iscfibroad2013_koodi = '08' or d6b.iscfibroad2013_koodi = '08') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (d2b.iscfibroad2013_koodi = '08' or d3b.iscfibroad2013_koodi = '08' or d4b.iscfibroad2013_koodi = '08' or d5b.iscfibroad2013_koodi = '08' or d6b.iscfibroad2013_koodi = '08' or d7b.iscfibroad2013_koodi = '08') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (d3b.iscfibroad2013_koodi = '08' or d4b.iscfibroad2013_koodi = '08' or d5b.iscfibroad2013_koodi = '08' or d6b.iscfibroad2013_koodi = '08' or d7b.iscfibroad2013_koodi = '08' or d8b.iscfibroad2013_koodi = '08') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (d4b.iscfibroad2013_koodi = '08' or d5b.iscfibroad2013_koodi = '08' or d6b.iscfibroad2013_koodi = '08' or d7b.iscfibroad2013_koodi = '08' or d8b.iscfibroad2013_koodi = '08' or d9b.iscfibroad2013_koodi = '08') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (d5b.iscfibroad2013_koodi = '08' or d6b.iscfibroad2013_koodi = '08' or d7b.iscfibroad2013_koodi = '08' or d8b.iscfibroad2013_koodi = '08' or d9b.iscfibroad2013_koodi = '08' or d10b.iscfibroad2013_koodi = '08') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (d6b.iscfibroad2013_koodi = '08' or d7b.iscfibroad2013_koodi = '08' or d8b.iscfibroad2013_koodi = '08' or d9b.iscfibroad2013_koodi = '08' or d10b.iscfibroad2013_koodi = '08' or d11b.iscfibroad2013_koodi = '08') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (d7b.iscfibroad2013_koodi = '08' or d8b.iscfibroad2013_koodi = '08' or d9b.iscfibroad2013_koodi = '08' or d10b.iscfibroad2013_koodi = '08' or d11b.iscfibroad2013_koodi = '08' or d12b.iscfibroad2013_koodi = '08') then 1*/
+	else 0
+end as opisk_yo_koulala8
+--Opiskellut koulutusala9 (yo) (taso 1) (kyll‰/ei)
+,case
+	when  l.suorlk = '2' and (d1b.iscfibroad2013_koodi = '09' or d2b.iscfibroad2013_koodi = '09' or d3b.iscfibroad2013_koodi = '09' or d4b.iscfibroad2013_koodi = '09' or d5b.iscfibroad2013_koodi = '09' or d6b.iscfibroad2013_koodi = '09') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (d2b.iscfibroad2013_koodi = '09' or d3b.iscfibroad2013_koodi = '09' or d4b.iscfibroad2013_koodi = '09' or d5b.iscfibroad2013_koodi = '09' or d6b.iscfibroad2013_koodi = '09' or d7b.iscfibroad2013_koodi = '09') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (d3b.iscfibroad2013_koodi = '09' or d4b.iscfibroad2013_koodi = '09' or d5b.iscfibroad2013_koodi = '09' or d6b.iscfibroad2013_koodi = '09' or d7b.iscfibroad2013_koodi = '09' or d8b.iscfibroad2013_koodi = '09') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (d4b.iscfibroad2013_koodi = '09' or d5b.iscfibroad2013_koodi = '09' or d6b.iscfibroad2013_koodi = '09' or d7b.iscfibroad2013_koodi = '09' or d8b.iscfibroad2013_koodi = '09' or d9b.iscfibroad2013_koodi = '09') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (d5b.iscfibroad2013_koodi = '09' or d6b.iscfibroad2013_koodi = '09' or d7b.iscfibroad2013_koodi = '09' or d8b.iscfibroad2013_koodi = '09' or d9b.iscfibroad2013_koodi = '09' or d10b.iscfibroad2013_koodi = '09') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (d6b.iscfibroad2013_koodi = '09' or d7b.iscfibroad2013_koodi = '09' or d8b.iscfibroad2013_koodi = '09' or d9b.iscfibroad2013_koodi = '09' or d10b.iscfibroad2013_koodi = '09' or d11b.iscfibroad2013_koodi = '09') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (d7b.iscfibroad2013_koodi = '09' or d8b.iscfibroad2013_koodi = '09' or d9b.iscfibroad2013_koodi = '09' or d10b.iscfibroad2013_koodi = '09' or d11b.iscfibroad2013_koodi = '09' or d12b.iscfibroad2013_koodi = '09') then 1*/
+	else 0
+end as opisk_yo_koulala9
+--Opiskellut koulutusala10 (yo) (taso 1) (kyll‰/ei)
+,case
+	when  l.suorlk = '2' and (d1b.iscfibroad2013_koodi = '10' or d2b.iscfibroad2013_koodi = '10' or d3b.iscfibroad2013_koodi = '10' or d4b.iscfibroad2013_koodi = '10' or d5b.iscfibroad2013_koodi = '10' or d6b.iscfibroad2013_koodi = '10') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (d2b.iscfibroad2013_koodi = '10' or d3b.iscfibroad2013_koodi = '10' or d4b.iscfibroad2013_koodi = '10' or d5b.iscfibroad2013_koodi = '10' or d6b.iscfibroad2013_koodi = '10' or d7b.iscfibroad2013_koodi = '10') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (d3b.iscfibroad2013_koodi = '10' or d4b.iscfibroad2013_koodi = '10' or d5b.iscfibroad2013_koodi = '10' or d6b.iscfibroad2013_koodi = '10' or d7b.iscfibroad2013_koodi = '10' or d8b.iscfibroad2013_koodi = '10') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (d4b.iscfibroad2013_koodi = '10' or d5b.iscfibroad2013_koodi = '10' or d6b.iscfibroad2013_koodi = '10' or d7b.iscfibroad2013_koodi = '10' or d8b.iscfibroad2013_koodi = '10' or d9b.iscfibroad2013_koodi = '10') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (d5b.iscfibroad2013_koodi = '10' or d6b.iscfibroad2013_koodi = '10' or d7b.iscfibroad2013_koodi = '10' or d8b.iscfibroad2013_koodi = '10' or d9b.iscfibroad2013_koodi = '10' or d10b.iscfibroad2013_koodi = '10') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (d6b.iscfibroad2013_koodi = '10' or d7b.iscfibroad2013_koodi = '10' or d8b.iscfibroad2013_koodi = '10' or d9b.iscfibroad2013_koodi = '10' or d10b.iscfibroad2013_koodi = '10' or d11b.iscfibroad2013_koodi = '10') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (d7b.iscfibroad2013_koodi = '10' or d8b.iscfibroad2013_koodi = '10' or d9b.iscfibroad2013_koodi = '10' or d10b.iscfibroad2013_koodi = '10' or d11b.iscfibroad2013_koodi = '10' or d12b.iscfibroad2013_koodi = '10') then 1*/
+	else 0
+end as opisk_yo_koulala10
+
+
+--Opiskellut useampaa kuin yht‰ alaa (taso 1) (kyll‰/ei)
+,case --ensimm‰isen‰ vuotena on mahdollista olla vain yksi ala
+	when  l.suorlk = '2' and m1.MinValue <> m1.MaxValue then 1 
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and m2.MinValue <> m2.MaxValue then 1 
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and m3.MinValue <> m3.MaxValue then 1 
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and m4.MinValue <> m4.MaxValue then 1 
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and m5.MinValue <> m5.MaxValue then 1 
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and m6.MinValue <> m6.MaxValue then 1 
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and m7.MinValue <> m7.MaxValue then 1 */
+	else 0
+end as opisk_vah2_koulala
+
+
+----HAUT KYLLƒ/EI
+--Hakenut ammatilliseen koulutukseen
+,case
+	when  l.suorlk = '2' and (l.monihaku_1 in (2,3,5,0,8,9) or l.monihaku_2 in (2,3,5,0,8,9) or l.monihaku_3 in (2,3,5,0,8,9) or l.monihaku_4 in (2,3,5,0,8,9) or l.monihaku_5 in (2,3,5,0,8,9) or l.monihaku_6 in (2,3,5,0,8,9)) then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (l.monihaku_2 in (2,3,5,0,8,9) or l.monihaku_3 in (2,3,5,0,8,9) or l.monihaku_4 in (2,3,5,0,8,9) or l.monihaku_5 in (2,3,5,0,8,9) or l.monihaku_6 in (2,3,5,0,8,9) or l.monihaku2010 in (2,3,5,0,8,9)) then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (l.monihaku_3 in (2,3,5,0,8,9) or l.monihaku_4 in (2,3,5,0,8,9) or l.monihaku_5 in (2,3,5,0,8,9) or l.monihaku_6 in (2,3,5,0,8,9) or l.monihaku2010 in (2,3,5,0,8,9) or l.monihaku2011 in (2,3,5,0,8,9)) then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (l.monihaku_4 in (2,3,5,0,8,9) or l.monihaku_5 in (2,3,5,0,8,9) or l.monihaku_6 in (2,3,5,0,8,9) or l.monihaku2010 in (2,3,5,0,8,9) or l.monihaku2011 in (2,3,5,0,8,9) or l.monihaku2012 in (2,3,5,0,8,9)) then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (l.monihaku_5 in (2,3,5,0,8,9) or l.monihaku_6 in (2,3,5,0,8,9) or l.monihaku2010 in (2,3,5,0,8,9) or l.monihaku2011 in (2,3,5,0,8,9) or l.monihaku2012 in (2,3,5,0,8,9) or l.monihaku2013 in (2,3,5,0,8,9)) then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (l.monihaku_6 in (2,3,5,0,8,9) or l.monihaku2010 in (2,3,5,0,8,9) or l.monihaku2011 in (2,3,5,0,8,9) or l.monihaku2012 in (2,3,5,0,8,9) or l.monihaku2013 in (2,3,5,0,8,9) or l.monihaku2014 in (2,3,5,0,8,9)) then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (l.monihaku2010 in (2,3,5,0,8,9) or l.monihaku2011 in (2,3,5,0,8,9) or l.monihaku2012 in (2,3,5,0,8,9) or l.monihaku2013 in (2,3,5,0,8,9) or l.monihaku2014 in (2,3,5,0,8,9) or l.monihaku2015 in (2,3,5,0,8,9)) then 1*/
+	else 0
+end as haku_amm
+--Hakenut ammattikorkeakoulutukseen
+,case
+	when  l.suorlk = '2' and (l.monihaku_1 in (4,6,0,8) or l.monihaku_2 in (4,6,0,8) or l.monihaku_3 in (4,6,0,8) or l.monihaku_4 in (4,6,0,8) or l.monihaku_5 in (4,6,0,8) or l.monihaku_6 in (4,6,0,8)) then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (l.monihaku_2 in (4,6) or l.monihaku_3 in (4,6) or l.monihaku_4 in (4,6) or l.monihaku_5 in (4,6) or l.monihaku_6 in (4,6) or l.monihaku2010 in (4,6)) then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (l.monihaku_3 in (4,6) or l.monihaku_4 in (4,6) or l.monihaku_5 in (4,6) or l.monihaku_6 in (4,6) or l.monihaku2010 in (4,6) or l.monihaku2011 in (4,6)) then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (l.monihaku_4 in (4,6) or l.monihaku_5 in (4,6) or l.monihaku_6 in (4,6) or l.monihaku2010 in (4,6) or l.monihaku2011 in (4,6) or l.monihaku2012 in (4,6)) then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (l.monihaku_5 in (4,6) or l.monihaku_6 in (4,6) or l.monihaku2010 in (4,6) or l.monihaku2011 in (4,6) or l.monihaku2012 in (4,6) or l.monihaku2013 in (4,6)) then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (l.monihaku_6 in (4,6) or l.monihaku2010 in (4,6) or l.monihaku2011 in (4,6) or l.monihaku2012 in (4,6) or l.monihaku2013 in (4,6) or l.monihaku2014 in (4,6)) then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (l.monihaku2010 in (4,6) or l.monihaku2011 in (4,6) or l.monihaku2012 in (4,6) or l.monihaku2013 in (4,6) or l.monihaku2014 in (4,6) or l.monihaku2015 in (4,6)) then 1*/
+	else 0
+end as haku_amk
+--Hakenut yliopistokoulutukseen
+,case
+	when  l.suorlk = '2' and (l.monihaku_1 in (6,7,0,9) or l.monihaku_2 in (6,7,0,9) or l.monihaku_3 in (6,7,0,9) or l.monihaku_4 in (6,7,0,9) or l.monihaku_5 in (6,7,0,9) or l.monihaku_6 in (6,7,0,9)) then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (l.monihaku_2 in (6,7) or l.monihaku_3 in (6,7) or l.monihaku_4 in (6,7) or l.monihaku_5 in (6,7) or l.monihaku_6 in (6,7) or l.monihaku2010 in (6,7)) then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (l.monihaku_3 in (6,7) or l.monihaku_4 in (6,7) or l.monihaku_5 in (6,7) or l.monihaku_6 in (6,7) or l.monihaku2010 in (6,7) or l.monihaku2011 in (6,7)) then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (l.monihaku_4 in (6,7) or l.monihaku_5 in (6,7) or l.monihaku_6 in (6,7) or l.monihaku2010 in (6,7) or l.monihaku2011 in (6,7) or l.monihaku2012 in (6,7)) then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (l.monihaku_5 in (6,7) or l.monihaku_6 in (6,7) or l.monihaku2010 in (6,7) or l.monihaku2011 in (6,7) or l.monihaku2012 in (6,7) or l.monihaku2013 in (6,7)) then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (l.monihaku_6 in (6,7) or l.monihaku2010 in (6,7) or l.monihaku2011 in (6,7) or l.monihaku2012 in (6,7) or l.monihaku2013 in (6,7) or l.monihaku2014 in (6,7)) then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (l.monihaku2010 in (6,7) or l.monihaku2011 in (6,7) or l.monihaku2012 in (6,7) or l.monihaku2013 in (6,7) or l.monihaku2014 in (6,7) or l.monihaku2015 in (6,7)) then 1*/
+	else 0
+end as haku_yo
+
+
+
+
+----MITTARIT
+--Ei hakenut eik‰ opiskellut mit‰‰n
+,case
+	when  l.suorlk = '2' and monihaku_1 not in (4,5,6,7,0,8,9) and monihaku_2 not in (4,5,6,7,0,8,9) and monihaku_3 not in (4,5,6,7,0,8,9) and monihaku_4 not in (4,5,6,7,0,8,9) and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and l.luopiskkoulk_1 = '' and l.ammopiskkoulk_1 = '' and l.amkopiskkoulk_1 = '' and l.yoopiskkoulk_1 = '' and l.luopiskkoulk_2 = '' and l.ammopiskkoulk_2 = '' and l.amkopiskkoulk_2 = '' and l.yoopiskkoulk_2 = '' and l.luopiskkoulk_3 = '' and l.ammopiskkoulk_3 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.luopiskkoulk_4 = '' and l.ammopiskkoulk_4 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.luopiskkoulk_5 = '' and l.ammopiskkoulk_5 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and monihaku_2 not in (4,5,6,7,0,8,9) and monihaku_3 not in (4,5,6,7,0,8,9) and monihaku_4 not in (4,5,6,7,0,8,9) and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and l.luopiskkoulk_2 = '' and l.ammopiskkoulk_2 = '' and l.amkopiskkoulk_2 = '' and l.yoopiskkoulk_2 = '' and l.luopiskkoulk_3 = '' and l.ammopiskkoulk_3 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.luopiskkoulk_4 = '' and l.ammopiskkoulk_4 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.luopiskkoulk_5 = '' and l.ammopiskkoulk_5 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.luopiskkoulk2010 = '' and l.ammopiskkoulk2010 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and monihaku_3 not in (4,5,6,7,0,8,9) and monihaku_4 not in (4,5,6,7,0,8,9) and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and l.luopiskkoulk_3 = '' and l.ammopiskkoulk_3 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.luopiskkoulk_4 = '' and l.ammopiskkoulk_4 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.luopiskkoulk_5 = '' and l.ammopiskkoulk_5 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.luopiskkoulk2010 = '' and l.ammopiskkoulk2010 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.luopiskkoulk2011 = '' and l.ammopiskkoulk2011 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and monihaku_4 not in (4,5,6,7,0,8,9) and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and monihaku2012 not in (4,5,6,7,0,8,9) and l.luopiskkoulk_4 = '' and l.ammopiskkoulk_4 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.luopiskkoulk_5 = '' and l.ammopiskkoulk_5 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.luopiskkoulk2010 = '' and l.ammopiskkoulk2010 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.luopiskkoulk2011 = '' and l.ammopiskkoulk2011 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.luopiskkoulk2012 = '' and l.ammopiskkoulk2012 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and monihaku2012 not in (4,5,6,7,0,8,9) and monihaku2013 not in (4,5,6,7,0,8,9) and l.luopiskkoulk_5 = '' and l.ammopiskkoulk_5 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.luopiskkoulk2010 = '' and l.ammopiskkoulk2010 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.luopiskkoulk2011 = '' and l.ammopiskkoulk2011 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.luopiskkoulk2012 = '' and l.ammopiskkoulk2012 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.luopiskkoulk2013 = '' and l.ammopiskkoulk2013 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and monihaku2012 not in (4,5,6,7,0,8,9) and monihaku2013 not in (4,5,6,7,0,8,9) and monihaku2014 not in (4,5,6,7,0,8,9) and l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.luopiskkoulk2010 = '' and l.ammopiskkoulk2010 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.luopiskkoulk2011 = '' and l.ammopiskkoulk2011 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.luopiskkoulk2012 = '' and l.ammopiskkoulk2012 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.luopiskkoulk2013 = '' and l.ammopiskkoulk2013 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' and l.luopiskkoulk2014 = '' and l.ammopiskkoulk2014 = '' and l.amkopiskkoulk2014 = '' and l.yoopiskkoulk2014 = '' then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and monihaku2012 not in (4,5,6,7,0,8,9) and monihaku2013 not in (4,5,6,7,0,8,9) and monihaku2014 not in (4,5,6,7,0,8,9) and monihaku2015 not in (4,5,6,7,0,8,9) and l.luopiskkoulk2010 = '' and l.ammopiskkoulk2010 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.luopiskkoulk2011 = '' and l.ammopiskkoulk2011 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.luopiskkoulk2012 = '' and l.ammopiskkoulk2012 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.luopiskkoulk2013 = '' and l.ammopiskkoulk2013 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' and l.luopiskkoulk2014 = '' and l.ammopiskkoulk2014 = '' and l.amkopiskkoulk2014 = '' and l.yoopiskkoulk2014 = '' and l.luopiskkoulk2015 = '' and l.ammopiskkoulk2015 = '' and l.amkopiskkoulk2015 = '' and l.yoopiskkoulk2015 = '' then 1*/
+	else 0
+end eihaku_kk_eiopisk
+
+--Ei hakenut eik‰ opiskellut korkea-asteella, opiskellut toisen asteen koulutuksessa
+,case 
+	when  l.suorlk = '2' and monihaku_1 not in (4,5,6,7,0,8,9) and monihaku_2 not in (4,5,6,7,0,8,9) and monihaku_3 not in (4,5,6,7,0,8,9) and monihaku_4 not in (4,5,6,7,0,8,9) and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and (l.luopiskkoulk_1 <> '' or l.ammopiskkoulk_1 <> '' or l.luopiskkoulk_2 <> '' or l.ammopiskkoulk_2 <> '' or l.luopiskkoulk_3 <> '' or l.ammopiskkoulk_3 <> '' or l.luopiskkoulk_4 <> '' or l.ammopiskkoulk_4 <> '' or l.luopiskkoulk_5 <> '' or l.ammopiskkoulk_5 <> '' or l.luopiskkoulk_6 <> '' or l.ammopiskkoulk_6 <> '') and l.amkopiskkoulk_1 = '' and l.yoopiskkoulk_1 = '' and l.amkopiskkoulk_2 = '' and l.yoopiskkoulk_2 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and monihaku_2 not in (4,5,6,7,0,8,9) and monihaku_3 not in (4,5,6,7,0,8,9) and monihaku_4 not in (4,5,6,7,0,8,9) and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and (l.luopiskkoulk_2 <> '' or l.ammopiskkoulk_2 <> '' or l.luopiskkoulk_3 <> '' or l.ammopiskkoulk_3 <> '' or l.luopiskkoulk_4 <> '' or l.ammopiskkoulk_4 <> '' or l.luopiskkoulk_5 <> '' or l.ammopiskkoulk_5 <> '' or l.luopiskkoulk_6 <> '' or l.ammopiskkoulk_6 <> '' or l.luopiskkoulk2010 <> '' or l.ammopiskkoulk2010 <> '') and l.amkopiskkoulk_2 = '' and l.yoopiskkoulk_2 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and monihaku_3 not in (4,5,6,7,0,8,9) and monihaku_4 not in (4,5,6,7,0,8,9) and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and (l.luopiskkoulk_3 <> '' or l.ammopiskkoulk_3 <> '' or l.luopiskkoulk_4 <> '' or l.ammopiskkoulk_4 <> '' or l.luopiskkoulk_5 <> '' or l.ammopiskkoulk_5 <> '' or l.luopiskkoulk_6 <> '' or l.ammopiskkoulk_6 <> '' or l.luopiskkoulk2010 <> '' or l.ammopiskkoulk2010 <> '' or l.luopiskkoulk2011 <> '' or l.ammopiskkoulk2011 <> '') and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and monihaku_4 not in (4,5,6,7,0,8,9) and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and monihaku2012 not in (4,5,6,7,0,8,9) and (l.luopiskkoulk_4 <> '' or l.ammopiskkoulk_4 <> '' or l.luopiskkoulk_5 <> '' or l.ammopiskkoulk_5 <> '' or l.luopiskkoulk_6 <> '' or l.ammopiskkoulk_6 <> '' or l.luopiskkoulk2010 <> '' or l.ammopiskkoulk2010 <> '' or l.luopiskkoulk2011 <> '' or l.ammopiskkoulk2011 <> '' or l.luopiskkoulk2012 <> '' or l.ammopiskkoulk2012 <> '') and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and monihaku2012 not in (4,5,6,7,0,8,9) and monihaku2013 not in (4,5,6,7,0,8,9) and (l.luopiskkoulk_5 <> '' or l.ammopiskkoulk_5 <> '' or l.luopiskkoulk_6 <> '' or l.ammopiskkoulk_6 <> '' or l.luopiskkoulk2010 <> '' or l.ammopiskkoulk2010 <> '' or l.luopiskkoulk2011 <> '' or l.ammopiskkoulk2011 <> '' or l.luopiskkoulk2012 <> '' or l.ammopiskkoulk2012 <> '' or l.luopiskkoulk2013 <> '' or l.ammopiskkoulk2013 <> '') and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and monihaku2012 not in (4,5,6,7,0,8,9) and monihaku2013 not in (4,5,6,7,0,8,9) and monihaku2014 not in (4,5,6,7,0,8,9) and (l.luopiskkoulk_6 <> '' or l.ammopiskkoulk_6 <> '' or l.luopiskkoulk2010 <> '' or l.ammopiskkoulk2010 <> '' or l.luopiskkoulk2011 <> '' or l.ammopiskkoulk2011 <> '' or l.luopiskkoulk2012 <> '' or l.ammopiskkoulk2012 <> '' or l.luopiskkoulk2013 <> '' or l.ammopiskkoulk2013 <> '' or l.luopiskkoulk2014 <> '' or l.ammopiskkoulk2014 <> '') and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' and l.amkopiskkoulk2014 = '' and l.yoopiskkoulk2014 = '' then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and monihaku2012 not in (4,5,6,7,0,8,9) and monihaku2013 not in (4,5,6,7,0,8,9) and monihaku2014 not in (4,5,6,7,0,8,9) and monihaku2015 not in (4,5,6,7,0,8,9) and (l.luopiskkoulk2010 <> '' or l.ammopiskkoulk2010 <> '' or l.luopiskkoulk2011 <> '' or l.ammopiskkoulk2011 <> '' or l.luopiskkoulk2012 <> '' or l.ammopiskkoulk2012 <> '' or l.luopiskkoulk2013 <> '' or l.ammopiskkoulk2013 <> '' or l.luopiskkoulk2014 <> '' or l.ammopiskkoulk2014 <> '' or l.luopiskkoulk2015 <> '' or l.ammopiskkoulk2015 <> '') and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' and l.amkopiskkoulk2014 = '' and l.yoopiskkoulk2014 = '' and l.amkopiskkoulk2015 = '' and l.yoopiskkoulk2015 = '' then 1*/
+	else 0
+end eihaku_kk_eiopisk_kk_opisk_ta
+
+----Ei hakenut eik‰ opiskellut korkea-asteella, opiskellut toisen asteen koulutuksessa, opiskellut lukiokoulutuksessa
+,case 
+	when  l.suorlk = '2' and monihaku_1 not in (4,5,6,7,0,8,9) and monihaku_2 not in (4,5,6,7,0,8,9) and monihaku_3 not in (4,5,6,7,0,8,9) and monihaku_4 not in (4,5,6,7,0,8,9) and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and (l.luopiskkoulk_1 <> '' or l.luopiskkoulk_2 <> '' or l.luopiskkoulk_3 <> '' or l.luopiskkoulk_4 <> '' or l.luopiskkoulk_5 <> '' or l.luopiskkoulk_6 <> '') and l.amkopiskkoulk_1 = '' and l.yoopiskkoulk_1 = '' and l.amkopiskkoulk_2 = '' and l.yoopiskkoulk_2 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and monihaku_2 not in (4,5,6,7,0,8,9) and monihaku_3 not in (4,5,6,7,0,8,9) and monihaku_4 not in (4,5,6,7,0,8,9) and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and (l.luopiskkoulk_2 <> '' or l.luopiskkoulk_3 <> '' or l.luopiskkoulk_4 <> '' or l.luopiskkoulk_5 <> '' or l.luopiskkoulk_6 <> '' or l.luopiskkoulk2010 <> '') and l.amkopiskkoulk_2 = '' and l.yoopiskkoulk_2 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and monihaku_3 not in (4,5,6,7,0,8,9) and monihaku_4 not in (4,5,6,7,0,8,9) and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and (l.luopiskkoulk_3 <> '' or l.luopiskkoulk_4 <> '' or l.luopiskkoulk_5 <> '' or l.luopiskkoulk_6 <> '' or l.luopiskkoulk2010 <> '' or l.luopiskkoulk2011 <> '') and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and monihaku_4 not in (4,5,6,7,0,8,9) and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and monihaku2012 not in (4,5,6,7,0,8,9) and (l.luopiskkoulk_4 <> '' or l.luopiskkoulk_5 <> '' or l.luopiskkoulk_6 <> '' or l.luopiskkoulk2010 <> '' or l.luopiskkoulk2011 <> '' or l.luopiskkoulk2012 <> '') and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and monihaku2012 not in (4,5,6,7,0,8,9) and monihaku2013 not in (4,5,6,7,0,8,9) and (l.luopiskkoulk_5 <> '' or l.luopiskkoulk_6 <> '' or l.luopiskkoulk2010 <> '' or l.luopiskkoulk2011 <> '' or l.luopiskkoulk2012 <> '' or l.luopiskkoulk2013 <> '') and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and monihaku2012 not in (4,5,6,7,0,8,9) and monihaku2013 not in (4,5,6,7,0,8,9) and monihaku2014 not in (4,5,6,7,0,8,9) and (l.luopiskkoulk_6 <> '' or l.luopiskkoulk2010 <> '' or l.luopiskkoulk2011 <> '' or l.luopiskkoulk2012 <> '' or l.luopiskkoulk2013 <> '' or l.luopiskkoulk2014 <> '') and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' and l.amkopiskkoulk2014 = '' and l.yoopiskkoulk2014 = '' then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and monihaku2012 not in (4,5,6,7,0,8,9) and monihaku2013 not in (4,5,6,7,0,8,9) and monihaku2014 not in (4,5,6,7,0,8,9) and monihaku2015 not in (4,5,6,7,0,8,9) and (l.luopiskkoulk2010 <> '' or l.luopiskkoulk2011 <> '' or l.luopiskkoulk2012 <> '' or l.luopiskkoulk2013 <> '' or l.luopiskkoulk2014 <> '' or l.luopiskkoulk2015 <> '') and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' and l.amkopiskkoulk2014 = '' and l.yoopiskkoulk2014 = '' and l.amkopiskkoulk2015 = '' and l.yoopiskkoulk2015 = '' then 1*/
+	else 0
+end eihaku_kk_eiopisk_kk_opisk_lu
+
+----Ei hakenut eik‰ opiskellut korkea-asteella, opiskellut toisen asteen koulutuksessa, opiskellut ammatillisessa peruskoulutuksessa
+,case 
+	when  l.suorlk = '2' and monihaku_1 not in (4,5,6,7,0,8,9) and monihaku_2 not in (4,5,6,7,0,8,9) and monihaku_3 not in (4,5,6,7,0,8,9) and monihaku_4 not in (4,5,6,7,0,8,9) and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and (d1c.Koulutusaste_taso2_koodi = '32' or d2c.Koulutusaste_taso2_koodi = '32' or d3c.Koulutusaste_taso2_koodi = '32' or d4c.Koulutusaste_taso2_koodi = '32' or d5c.Koulutusaste_taso2_koodi = '32' or d6c.Koulutusaste_taso2_koodi = '32') and l.amkopiskkoulk_1 = '' and l.yoopiskkoulk_1 = '' and l.amkopiskkoulk_2 = '' and l.yoopiskkoulk_2 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and monihaku_2 not in (4,5,6,7,0,8,9) and monihaku_3 not in (4,5,6,7,0,8,9) and monihaku_4 not in (4,5,6,7,0,8,9) and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and (d2c.Koulutusaste_taso2_koodi = '32' or d3c.Koulutusaste_taso2_koodi = '32' or d4c.Koulutusaste_taso2_koodi = '32' or d5c.Koulutusaste_taso2_koodi = '32' or d6c.Koulutusaste_taso2_koodi = '32' or d7c.Koulutusaste_taso2_koodi = '32') and l.amkopiskkoulk_2 = '' and l.yoopiskkoulk_2 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and monihaku_3 not in (4,5,6,7,0,8,9) and monihaku_4 not in (4,5,6,7,0,8,9) and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and (d3c.Koulutusaste_taso2_koodi = '32' or d4c.Koulutusaste_taso2_koodi = '32' or d5c.Koulutusaste_taso2_koodi = '32' or d6c.Koulutusaste_taso2_koodi = '32' or d7c.Koulutusaste_taso2_koodi = '32' or d8c.Koulutusaste_taso2_koodi = '32') and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and monihaku_4 not in (4,5,6,7,0,8,9) and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and monihaku2012 not in (4,5,6,7,0,8,9) and (d4c.Koulutusaste_taso2_koodi = '32' or d5c.Koulutusaste_taso2_koodi = '32' or d6c.Koulutusaste_taso2_koodi = '32' or d7c.Koulutusaste_taso2_koodi = '32' or d8c.Koulutusaste_taso2_koodi = '32' or d9c.Koulutusaste_taso2_koodi = '32') and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and monihaku2012 not in (4,5,6,7,0,8,9) and monihaku2013 not in (4,5,6,7,0,8,9) and (d5c.Koulutusaste_taso2_koodi = '32' or d6c.Koulutusaste_taso2_koodi = '32' or d7c.Koulutusaste_taso2_koodi = '32' or d8c.Koulutusaste_taso2_koodi = '32' or d9c.Koulutusaste_taso2_koodi = '32' or d10c.Koulutusaste_taso2_koodi = '32') and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and monihaku2012 not in (4,5,6,7,0,8,9) and monihaku2013 not in (4,5,6,7,0,8,9) and monihaku2014 not in (4,5,6,7,0,8,9) and (d6c.Koulutusaste_taso2_koodi = '32' or d7c.Koulutusaste_taso2_koodi = '32' or d8c.Koulutusaste_taso2_koodi = '32' or d9c.Koulutusaste_taso2_koodi = '32' or d10c.Koulutusaste_taso2_koodi = '32' or d11c.Koulutusaste_taso2_koodi = '32') and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' and l.amkopiskkoulk2014 = '' and l.yoopiskkoulk2014 = '' then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and monihaku2012 not in (4,5,6,7,0,8,9) and monihaku2013 not in (4,5,6,7,0,8,9) and monihaku2014 not in (4,5,6,7,0,8,9) and monihaku2015 not in (4,5,6,7,0,8,9) and (d7c.Koulutusaste_taso2_koodi = '32' or d8c.Koulutusaste_taso2_koodi = '32' or d9c.Koulutusaste_taso2_koodi = '32' or d10c.Koulutusaste_taso2_koodi = '32' or d11c.Koulutusaste_taso2_koodi = '32' or d12c.Koulutusaste_taso2_koodi = '32') and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' and l.amkopiskkoulk2014 = '' and l.yoopiskkoulk2014 = '' and l.amkopiskkoulk2015 = '' and l.yoopiskkoulk2015 = '' then 1*/
+	else 0
+end eihaku_kk_eiopisk_kk_opisk_pk
+
+------Ei hakenut eik‰ opiskellut korkea-asteella, opiskellut toisen asteen koulutuksessa, opiskellut ammattitutkintokoulutuksessa
+,case 
+	when  l.suorlk = '2' and monihaku_1 not in (4,5,6,7,0,8,9) and monihaku_2 not in (4,5,6,7,0,8,9) and monihaku_3 not in (4,5,6,7,0,8,9) and monihaku_4 not in (4,5,6,7,0,8,9) and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and (d1c.Koulutusaste_taso2_koodi = '33' or d2c.Koulutusaste_taso2_koodi = '33' or d3c.Koulutusaste_taso2_koodi = '33' or d4c.Koulutusaste_taso2_koodi = '33' or d5c.Koulutusaste_taso2_koodi = '33' or d6c.Koulutusaste_taso2_koodi = '33') and l.amkopiskkoulk_1 = '' and l.yoopiskkoulk_1 = '' and l.amkopiskkoulk_2 = '' and l.yoopiskkoulk_2 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and monihaku_2 not in (4,5,6,7,0,8,9) and monihaku_3 not in (4,5,6,7,0,8,9) and monihaku_4 not in (4,5,6,7,0,8,9) and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and (d2c.Koulutusaste_taso2_koodi = '33' or d3c.Koulutusaste_taso2_koodi = '33' or d4c.Koulutusaste_taso2_koodi = '33' or d5c.Koulutusaste_taso2_koodi = '33' or d6c.Koulutusaste_taso2_koodi = '33' or d7c.Koulutusaste_taso2_koodi = '33') and l.amkopiskkoulk_2 = '' and l.yoopiskkoulk_2 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and monihaku_3 not in (4,5,6,7,0,8,9) and monihaku_4 not in (4,5,6,7,0,8,9) and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and (d3c.Koulutusaste_taso2_koodi = '33' or d4c.Koulutusaste_taso2_koodi = '33' or d5c.Koulutusaste_taso2_koodi = '33' or d6c.Koulutusaste_taso2_koodi = '33' or d7c.Koulutusaste_taso2_koodi = '33' or d8c.Koulutusaste_taso2_koodi = '33') and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and monihaku_4 not in (4,5,6,7,0,8,9) and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and monihaku2012 not in (4,5,6,7,0,8,9) and (d4c.Koulutusaste_taso2_koodi = '33' or d5c.Koulutusaste_taso2_koodi = '33' or d6c.Koulutusaste_taso2_koodi = '33' or d7c.Koulutusaste_taso2_koodi = '33' or d8c.Koulutusaste_taso2_koodi = '33' or d9c.Koulutusaste_taso2_koodi = '33') and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and monihaku2012 not in (4,5,6,7,0,8,9) and monihaku2013 not in (4,5,6,7,0,8,9) and (d5c.Koulutusaste_taso2_koodi = '33' or d6c.Koulutusaste_taso2_koodi = '33' or d7c.Koulutusaste_taso2_koodi = '33' or d8c.Koulutusaste_taso2_koodi = '33' or d9c.Koulutusaste_taso2_koodi = '33' or d10c.Koulutusaste_taso2_koodi = '33') and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and monihaku2012 not in (4,5,6,7,0,8,9) and monihaku2013 not in (4,5,6,7,0,8,9) and monihaku2014 not in (4,5,6,7,0,8,9) and (d6c.Koulutusaste_taso2_koodi = '33' or d7c.Koulutusaste_taso2_koodi = '33' or d8c.Koulutusaste_taso2_koodi = '33' or d9c.Koulutusaste_taso2_koodi = '33' or d10c.Koulutusaste_taso2_koodi = '33' or d11c.Koulutusaste_taso2_koodi = '33') and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' and l.amkopiskkoulk2014 = '' and l.yoopiskkoulk2014 = '' then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and monihaku2012 not in (4,5,6,7,0,8,9) and monihaku2013 not in (4,5,6,7,0,8,9) and monihaku2014 not in (4,5,6,7,0,8,9) and monihaku2015 not in (4,5,6,7,0,8,9) and (d7c.Koulutusaste_taso2_koodi = '33' or d8c.Koulutusaste_taso2_koodi = '33' or d9c.Koulutusaste_taso2_koodi = '33' or d10c.Koulutusaste_taso2_koodi = '33' or d11c.Koulutusaste_taso2_koodi = '33' or d12c.Koulutusaste_taso2_koodi = '33') and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' and l.amkopiskkoulk2014 = '' and l.yoopiskkoulk2014 = '' and l.amkopiskkoulk2015 = '' and l.yoopiskkoulk2015 = '' then 1*/
+	else 0
+end eihaku_kk_eiopisk_kk_opisk_at
+
+------Ei hakenut eik‰ opiskellut korkea-asteella, opiskellut toisen asteen koulutuksessa, opiskellut erikoisammattitutkintokoulutuksessa
+,case 
+	when  l.suorlk = '2' and monihaku_1 not in (4,5,6,7,0,8,9) and monihaku_2 not in (4,5,6,7,0,8,9) and monihaku_3 not in (4,5,6,7,0,8,9) and monihaku_4 not in (4,5,6,7,0,8,9) and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and (d1c.Koulutusaste_taso2_koodi = '41' or d2c.Koulutusaste_taso2_koodi = '41' or d3c.Koulutusaste_taso2_koodi = '41' or d4c.Koulutusaste_taso2_koodi = '41' or d5c.Koulutusaste_taso2_koodi = '41' or d6c.Koulutusaste_taso2_koodi = '41') and l.amkopiskkoulk_1 = '' and l.yoopiskkoulk_1 = '' and l.amkopiskkoulk_2 = '' and l.yoopiskkoulk_2 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and monihaku_2 not in (4,5,6,7,0,8,9) and monihaku_3 not in (4,5,6,7,0,8,9) and monihaku_4 not in (4,5,6,7,0,8,9) and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and (d2c.Koulutusaste_taso2_koodi = '41' or d3c.Koulutusaste_taso2_koodi = '41' or d4c.Koulutusaste_taso2_koodi = '41' or d5c.Koulutusaste_taso2_koodi = '41' or d6c.Koulutusaste_taso2_koodi = '41' or d7c.Koulutusaste_taso2_koodi = '41') and l.amkopiskkoulk_2 = '' and l.yoopiskkoulk_2 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and monihaku_3 not in (4,5,6,7,0,8,9) and monihaku_4 not in (4,5,6,7,0,8,9) and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and (d3c.Koulutusaste_taso2_koodi = '41' or d4c.Koulutusaste_taso2_koodi = '41' or d5c.Koulutusaste_taso2_koodi = '41' or d6c.Koulutusaste_taso2_koodi = '41' or d7c.Koulutusaste_taso2_koodi = '41' or d8c.Koulutusaste_taso2_koodi = '41') and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and monihaku_4 not in (4,5,6,7,0,8,9) and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and monihaku2012 not in (4,5,6,7,0,8,9) and (d4c.Koulutusaste_taso2_koodi = '41' or d5c.Koulutusaste_taso2_koodi = '41' or d6c.Koulutusaste_taso2_koodi = '41' or d7c.Koulutusaste_taso2_koodi = '41' or d8c.Koulutusaste_taso2_koodi = '41' or d9c.Koulutusaste_taso2_koodi = '41') and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and monihaku_5 not in (4,5,6,7,0,8,9) and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and monihaku2012 not in (4,5,6,7,0,8,9) and monihaku2013 not in (4,5,6,7,0,8,9) and (d5c.Koulutusaste_taso2_koodi = '41' or d6c.Koulutusaste_taso2_koodi = '41' or d7c.Koulutusaste_taso2_koodi = '41' or d8c.Koulutusaste_taso2_koodi = '41' or d9c.Koulutusaste_taso2_koodi = '41' or d10c.Koulutusaste_taso2_koodi = '41') and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and monihaku_6 not in (4,5,6,7,0,8,9) and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and monihaku2012 not in (4,5,6,7,0,8,9) and monihaku2013 not in (4,5,6,7,0,8,9) and monihaku2014 not in (4,5,6,7,0,8,9) and (d6c.Koulutusaste_taso2_koodi = '41' or d7c.Koulutusaste_taso2_koodi = '41' or d8c.Koulutusaste_taso2_koodi = '41' or d9c.Koulutusaste_taso2_koodi = '41' or d10c.Koulutusaste_taso2_koodi = '41' or d11c.Koulutusaste_taso2_koodi = '41') and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' and l.amkopiskkoulk2014 = '' and l.yoopiskkoulk2014 = '' then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and monihaku2010 not in (4,5,6,7,0,8,9) and monihaku2011 not in (4,5,6,7,0,8,9) and monihaku2012 not in (4,5,6,7,0,8,9) and monihaku2013 not in (4,5,6,7,0,8,9) and monihaku2014 not in (4,5,6,7,0,8,9) and monihaku2015 not in (4,5,6,7,0,8,9) and (d7c.Koulutusaste_taso2_koodi = '41' or d8c.Koulutusaste_taso2_koodi = '41' or d9c.Koulutusaste_taso2_koodi = '41' or d10c.Koulutusaste_taso2_koodi = '41' or d11c.Koulutusaste_taso2_koodi = '41' or d12c.Koulutusaste_taso2_koodi = '41') and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' and l.amkopiskkoulk2014 = '' and l.yoopiskkoulk2014 = '' and l.amkopiskkoulk2015 = '' and l.yoopiskkoulk2015 = '' then 1*/
+	else 0
+end eihaku_kk_eiopisk_kk_opisk_eat
+
+--Hakenut korkea-asteelle, ei opiskellut korkea-asteella
+,case 
+	when  l.suorlk = '2' and (monihaku_1 in (4,5,6,7,0,8,9) or monihaku_2 in (4,5,6,7,0,8,9) or monihaku_3 in (4,5,6,7,0,8,9) or monihaku_4 in (4,5,6,7,0,8,9) or monihaku_5 in (4,5,6,7,0,8,9) or monihaku_6 in (4,5,6,7,0,8,9)) and l.amkopiskkoulk_1 = '' and l.yoopiskkoulk_1 = '' and l.amkopiskkoulk_2 = '' and l.yoopiskkoulk_2 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (monihaku_2 in (4,5,6,7,0,8,9) or monihaku_3 in (4,5,6,7,0,8,9) or monihaku_4 in (4,5,6,7,0,8,9) or monihaku_5 in (4,5,6,7,0,8,9) or monihaku_6 in (4,5,6,7,0,8,9) or monihaku2010 in (4,5,6,7,0,8,9)) and l.amkopiskkoulk_2 = '' and l.yoopiskkoulk_2 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (monihaku_3 in (4,5,6,7,0,8,9) or monihaku_4 in (4,5,6,7,0,8,9) or monihaku_5 in (4,5,6,7,0,8,9) or monihaku_6 in (4,5,6,7,0,8,9) or monihaku2010 in (4,5,6,7,0,8,9) or monihaku2011 in (4,5,6,7,0,8,9)) and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (monihaku_4 in (4,5,6,7,0,8,9) or monihaku_5 in (4,5,6,7,0,8,9) or monihaku_6 in (4,5,6,7,0,8,9) or monihaku2010 in (4,5,6,7,0,8,9) or monihaku2011 in (4,5,6,7,0,8,9) or monihaku2012 in (4,5,6,7,0,8,9)) and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (monihaku_5 in (4,5,6,7,0,8,9) or monihaku_6 in (4,5,6,7,0,8,9) or monihaku2010 in (4,5,6,7,0,8,9) or monihaku2011 in (4,5,6,7,0,8,9) or monihaku2012 in (4,5,6,7,0,8,9) or monihaku2013 in (4,5,6,7,0,8,9)) and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (monihaku_6 in (4,5,6,7,0,8,9) or monihaku2010 in (4,5,6,7,0,8,9) or monihaku2011 in (4,5,6,7,0,8,9) or monihaku2012 in (4,5,6,7,0,8,9) or monihaku2013 in (4,5,6,7,0,8,9) or monihaku2014 in (4,5,6,7,0,8,9)) and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' and l.amkopiskkoulk2014 = '' and l.yoopiskkoulk2014 = '' then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (monihaku2010 in (4,5,6,7,0,8,9) or monihaku2011 in (4,5,6,7,0,8,9) or monihaku2012 in (4,5,6,7,0,8,9) or monihaku2013 in (4,5,6,7,0,8,9) or monihaku2014 in (4,5,6,7,0,8,9) or monihaku2015 in (4,5,6,7,0,8,9)) and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' and l.amkopiskkoulk2014 = '' and l.yoopiskkoulk2014 = '' and l.amkopiskkoulk2015 = '' and l.yoopiskkoulk2015 = '' then 1*/
+	else 0
+end haku_kk_eiopisk_kk
+----Hakenut korkea-asteelle, ei opiskellut korkea-asteella, ei-opiskellut toisen asteen koulutuksessa
+,case
+	when  l.suorlk = '2' and (monihaku_1 in (4,5,6,7,0,8,9) or monihaku_2 in (4,5,6,7,0,8,9) or monihaku_3 in (4,5,6,7,0,8,9) or monihaku_4 in (4,5,6,7,0,8,9) or monihaku_5 in (4,5,6,7,0,8,9) or monihaku_6 in (4,5,6,7,0,8,9)) and l.luopiskkoulk_1 = '' and l.ammopiskkoulk_1 = '' and l.amkopiskkoulk_1 = '' and l.yoopiskkoulk_1 = '' and l.luopiskkoulk_2 = '' and l.ammopiskkoulk_2 = '' and l.amkopiskkoulk_2 = '' and l.yoopiskkoulk_2 = '' and l.luopiskkoulk_3 = '' and l.ammopiskkoulk_3 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.luopiskkoulk_4 = '' and l.ammopiskkoulk_4 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.luopiskkoulk_5 = '' and l.ammopiskkoulk_5 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (monihaku_2 in (4,5,6,7,0,8,9) or monihaku_3 in (4,5,6,7,0,8,9) or monihaku_4 in (4,5,6,7,0,8,9) or monihaku_5 in (4,5,6,7,0,8,9) or monihaku_6 in (4,5,6,7,0,8,9) or monihaku2010 in (4,5,6,7,0,8,9)) and l.luopiskkoulk_2 = '' and l.ammopiskkoulk_2 = '' and l.amkopiskkoulk_2 = '' and l.yoopiskkoulk_2 = '' and l.luopiskkoulk_3 = '' and l.ammopiskkoulk_3 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.luopiskkoulk_4 = '' and l.ammopiskkoulk_4 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.luopiskkoulk_5 = '' and l.ammopiskkoulk_5 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.luopiskkoulk2010 = '' and l.ammopiskkoulk2010 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (monihaku_3 in (4,5,6,7,0,8,9) or monihaku_4 in (4,5,6,7,0,8,9) or monihaku_5 in (4,5,6,7,0,8,9) or monihaku_6 in (4,5,6,7,0,8,9) or monihaku2010 in (4,5,6,7,0,8,9) or monihaku2011 in (4,5,6,7,0,8,9)) and l.luopiskkoulk_3 = '' and l.ammopiskkoulk_3 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.luopiskkoulk_4 = '' and l.ammopiskkoulk_4 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.luopiskkoulk_5 = '' and l.ammopiskkoulk_5 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.luopiskkoulk2010 = '' and l.ammopiskkoulk2010 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.luopiskkoulk2011 = '' and l.ammopiskkoulk2011 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (monihaku_4 in (4,5,6,7,0,8,9) or monihaku_5 in (4,5,6,7,0,8,9) or monihaku_6 in (4,5,6,7,0,8,9) or monihaku2010 in (4,5,6,7,0,8,9) or monihaku2011 in (4,5,6,7,0,8,9) or monihaku2012 in (4,5,6,7,0,8,9)) and l.luopiskkoulk_4 = '' and l.ammopiskkoulk_4 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.luopiskkoulk_5 = '' and l.ammopiskkoulk_5 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.luopiskkoulk2010 = '' and l.ammopiskkoulk2010 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.luopiskkoulk2011 = '' and l.ammopiskkoulk2011 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.luopiskkoulk2012 = '' and l.ammopiskkoulk2012 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (monihaku_5 in (4,5,6,7,0,8,9) or monihaku_6 in (4,5,6,7,0,8,9) or monihaku2010 in (4,5,6,7,0,8,9) or monihaku2011 in (4,5,6,7,0,8,9) or monihaku2012 in (4,5,6,7,0,8,9) or monihaku2013 in (4,5,6,7,0,8,9)) and l.luopiskkoulk_5 = '' and l.ammopiskkoulk_5 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.luopiskkoulk2010 = '' and l.ammopiskkoulk2010 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.luopiskkoulk2011 = '' and l.ammopiskkoulk2011 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.luopiskkoulk2012 = '' and l.ammopiskkoulk2012 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.luopiskkoulk2013 = '' and l.ammopiskkoulk2013 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (monihaku_6 in (4,5,6,7,0,8,9) or monihaku2010 in (4,5,6,7,0,8,9) or monihaku2011 in (4,5,6,7,0,8,9) or monihaku2012 in (4,5,6,7,0,8,9) or monihaku2013 in (4,5,6,7,0,8,9) or monihaku2014 in (4,5,6,7,0,8,9)) and l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.luopiskkoulk2010 = '' and l.ammopiskkoulk2010 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.luopiskkoulk2011 = '' and l.ammopiskkoulk2011 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.luopiskkoulk2012 = '' and l.ammopiskkoulk2012 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.luopiskkoulk2013 = '' and l.ammopiskkoulk2013 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' and l.luopiskkoulk2014 = '' and l.ammopiskkoulk2014 = '' and l.amkopiskkoulk2014 = '' and l.yoopiskkoulk2014 = '' then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (monihaku2010 in (4,5,6,7,0,8,9) or monihaku2011 in (4,5,6,7,0,8,9) or monihaku2012 in (4,5,6,7,0,8,9) or monihaku2013 in (4,5,6,7,0,8,9) or monihaku2014 in (4,5,6,7,0,8,9) or monihaku2015 in (4,5,6,7,0,8,9)) and l.luopiskkoulk2010 = '' and l.ammopiskkoulk2010 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.luopiskkoulk2011 = '' and l.ammopiskkoulk2011 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.luopiskkoulk2012 = '' and l.ammopiskkoulk2012 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.luopiskkoulk2013 = '' and l.ammopiskkoulk2013 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' and l.luopiskkoulk2014 = '' and l.ammopiskkoulk2014 = '' and l.amkopiskkoulk2014 = '' and l.yoopiskkoulk2014 = '' and l.luopiskkoulk2015 = '' and l.ammopiskkoulk2015 = '' and l.amkopiskkoulk2015 = '' and l.yoopiskkoulk2015 = '' then 1*/
+	else 0
+end haku_kk_eiopisk_kk_eiopisk_ta
+----Hakenut korkea-asteelle, ei opiskellut korkea-asteella, opiskellut toisen asteen koulutuksessa
+,case
+	when  l.suorlk = '2' and (monihaku_1 in (4,5,6,7,0,8,9) or monihaku_2 in (4,5,6,7,0,8,9) or monihaku_3 in (4,5,6,7,0,8,9) or monihaku_4 in (4,5,6,7,0,8,9) or monihaku_5 in (4,5,6,7,0,8,9) or monihaku_6 in (4,5,6,7,0,8,9)) and (l.luopiskkoulk_1 <> '' or l.ammopiskkoulk_1 <> '' or l.luopiskkoulk_2 <> '' or l.ammopiskkoulk_2 <> '' or l.luopiskkoulk_3 <> '' or l.ammopiskkoulk_3 <> '' or l.luopiskkoulk_4 <> '' or l.ammopiskkoulk_4 <> '' or l.luopiskkoulk_5 <> '' or l.ammopiskkoulk_5 <> '' or l.luopiskkoulk_6 <> '' or l.ammopiskkoulk_6 <> '') and l.amkopiskkoulk_1 = '' and l.yoopiskkoulk_1 = '' and l.amkopiskkoulk_2 = '' and l.yoopiskkoulk_2 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (monihaku_2 in (4,5,6,7,0,8,9) or monihaku_3 in (4,5,6,7,0,8,9) or monihaku_4 in (4,5,6,7,0,8,9) or monihaku_5 in (4,5,6,7,0,8,9) or monihaku_6 in (4,5,6,7,0,8,9) or monihaku2010 in (4,5,6,7,0,8,9)) and (l.luopiskkoulk_2 <> '' or l.ammopiskkoulk_2 <> '' or l.luopiskkoulk_3 <> '' or l.ammopiskkoulk_3 <> '' or l.luopiskkoulk_4 <> '' or l.ammopiskkoulk_4 <> '' or l.luopiskkoulk_5 <> '' or l.ammopiskkoulk_5 <> '' or l.luopiskkoulk_6 <> '' or l.ammopiskkoulk_6 <> '' or l.luopiskkoulk2010 <> '' or l.ammopiskkoulk2010 <> '') and l.amkopiskkoulk_2 = '' and l.yoopiskkoulk_2 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (monihaku_3 in (4,5,6,7,0,8,9) or monihaku_4 in (4,5,6,7,0,8,9) or monihaku_5 in (4,5,6,7,0,8,9) or monihaku_6 in (4,5,6,7,0,8,9) or monihaku2010 in (4,5,6,7,0,8,9) or monihaku2011 in (4,5,6,7,0,8,9)) and (l.luopiskkoulk_3 <> '' or l.ammopiskkoulk_3 <> '' or l.luopiskkoulk_4 <> '' or l.ammopiskkoulk_4 <> '' or l.luopiskkoulk_5 <> '' or l.ammopiskkoulk_5 <> '' or l.luopiskkoulk_6 <> '' or l.ammopiskkoulk_6 <> '' or l.luopiskkoulk2010 <> '' or l.ammopiskkoulk2010 <> '' or l.luopiskkoulk2011 <> '' or l.ammopiskkoulk2011 <> '') and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (monihaku_4 in (4,5,6,7,0,8,9) or monihaku_5 in (4,5,6,7,0,8,9) or monihaku_6 in (4,5,6,7,0,8,9) or monihaku2010 in (4,5,6,7,0,8,9) or monihaku2011 in (4,5,6,7,0,8,9) or monihaku2012 in (4,5,6,7,0,8,9)) and (l.luopiskkoulk_4 <> '' or l.ammopiskkoulk_4 <> '' or l.luopiskkoulk_5 <> '' or l.ammopiskkoulk_5 <> '' or l.luopiskkoulk_6 <> '' or l.ammopiskkoulk_6 <> '' or l.luopiskkoulk2010 <> '' or l.ammopiskkoulk2010 <> '' or l.luopiskkoulk2011 <> '' or l.ammopiskkoulk2011 <> '' or l.luopiskkoulk2012 <> '' or l.ammopiskkoulk2012 <> '') and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (monihaku_5 in (4,5,6,7,0,8,9) or monihaku_6 in (4,5,6,7,0,8,9) or monihaku2010 in (4,5,6,7,0,8,9) or monihaku2011 in (4,5,6,7,0,8,9) or monihaku2012 in (4,5,6,7,0,8,9) or monihaku2013 in (4,5,6,7,0,8,9)) and (l.luopiskkoulk_5 <> '' or l.ammopiskkoulk_5 <> '' or l.luopiskkoulk_6 <> '' or l.ammopiskkoulk_6 <> '' or l.luopiskkoulk2010 <> '' or l.ammopiskkoulk2010 <> '' or l.luopiskkoulk2011 <> '' or l.ammopiskkoulk2011 <> '' or l.luopiskkoulk2012 <> '' or l.ammopiskkoulk2012 <> '' or l.luopiskkoulk2013 <> '' or l.ammopiskkoulk2013 <> '') and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (monihaku_6 in (4,5,6,7,0,8,9) or monihaku2010 in (4,5,6,7,0,8,9) or monihaku2011 in (4,5,6,7,0,8,9) or monihaku2012 in (4,5,6,7,0,8,9) or monihaku2013 in (4,5,6,7,0,8,9) or monihaku2014 in (4,5,6,7,0,8,9)) and (l.luopiskkoulk_6 <> '' or l.ammopiskkoulk_6 <> '' or l.luopiskkoulk2010 <> '' or l.ammopiskkoulk2010 <> '' or l.luopiskkoulk2011 <> '' or l.ammopiskkoulk2011 <> '' or l.luopiskkoulk2012 <> '' or l.ammopiskkoulk2012 <> '' or l.luopiskkoulk2013 <> '' or l.ammopiskkoulk2013 <> '' or l.luopiskkoulk2014 <> '' or l.ammopiskkoulk2014 <> '') and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' and l.amkopiskkoulk2014 = '' and l.yoopiskkoulk2014 = '' then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (monihaku2010 in (4,5,6,7,0,8,9) or monihaku2011 in (4,5,6,7,0,8,9) or monihaku2012 in (4,5,6,7,0,8,9) or monihaku2013 in (4,5,6,7,0,8,9) or monihaku2014 in (4,5,6,7,0,8,9) or monihaku2015 in (4,5,6,7,0,8,9)) and (l.luopiskkoulk2010 <> '' or l.ammopiskkoulk2010 <> '' or l.luopiskkoulk2011 <> '' or l.ammopiskkoulk2011 <> '' or l.luopiskkoulk2012 <> '' or l.ammopiskkoulk2012 <> '' or l.luopiskkoulk2013 <> '' or l.ammopiskkoulk2013 <> '' or l.luopiskkoulk2014 <> '' or l.ammopiskkoulk2014 <> '' or l.luopiskkoulk2015 <> '' or l.ammopiskkoulk2015 <> '') and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' and l.amkopiskkoulk2014 = '' and l.yoopiskkoulk2014 = '' and l.amkopiskkoulk2015 = '' and l.yoopiskkoulk2015 = '' then 1*/
+	else 0
+end haku_kk_eiopisk_kk_opisk_ta
+----Hakenut vain ammattikorkeakouluun, ei opiskellut korkea-asteella
+,case
+	when  l.suorlk = '2' and (monihaku_1 in (4,8) or monihaku_2 in (4,8) or monihaku_3 in (4,8) or monihaku_4 in (4,8) or monihaku_5 in (4,8) or monihaku_6 in (4,8)) and (monihaku_1 not in (5,6,7,0,9) and monihaku_2 not in (5,6,7,0,9) and monihaku_3 not in (5,6,7,0,9) and monihaku_4 not in (5,6,7,0,9) and monihaku_5 not in (5,6,7,0,9) and monihaku_6 not in (5,6,7,0,9)) and l.amkopiskkoulk_1 = '' and l.yoopiskkoulk_1 = '' and l.amkopiskkoulk_2 = '' and l.yoopiskkoulk_2 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (monihaku_2 in (4,8) or monihaku_3 in (4,8) or monihaku_4 in (4,8) or monihaku_5 in (4,8) or monihaku_6 in (4,8) or monihaku2010 in (4,8)) and (monihaku_2 not in (5,6,7) and monihaku_3 not in (5,6,7) and monihaku_4 not in (5,6,7) and monihaku_5 not in (5,6,7) and monihaku_6 not in (5,6,7) and monihaku2010 not in (5,6,7)) and l.amkopiskkoulk_2 = '' and l.yoopiskkoulk_2 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (monihaku_3 in (4,8) or monihaku_4 in (4,8) or monihaku_5 in (4,8) or monihaku_6 in (4,8) or monihaku2010 in (4,8) or monihaku2011 in (4,8)) and (monihaku_3 not in (5,6,7) and monihaku_4 not in (5,6,7) and monihaku_5 not in (5,6,7) and monihaku_6 not in (5,6,7) and monihaku2010 not in (5,6,7) and monihaku2011 not in (5,6,7)) and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (monihaku_4 in (4,8) or monihaku_5 in (4,8) or monihaku_6 in (4,8) or monihaku2010 in (4,8) or monihaku2011 in (4,8) or monihaku2012 in (4,8)) and (monihaku_4 not in (5,6,7) and monihaku_5 not in (5,6,7) and monihaku_6 not in (5,6,7) and monihaku2010 not in (5,6,7) and monihaku2011 not in (5,6,7) and monihaku2012 not in (5,6,7)) and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (monihaku_5 in (4,8) or monihaku_6 in (4,8) or monihaku2010 in (4,8) or monihaku2011 in (4,8) or monihaku2012 in (4,8) or monihaku2013 in (4,8)) and (monihaku_5 not in (5,6,7) and monihaku_6 not in (5,6,7) and monihaku2010 not in (5,6,7) and monihaku2011 not in (5,6,7) and monihaku2012 not in (5,6,7) and monihaku2013 not in (5,6,7)) and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (monihaku_6 in (4,8) or monihaku2010 in (4,8) or monihaku2011 in (4,8) or monihaku2012 in (4,8) or monihaku2013 in (4,8) or monihaku2014 in (4,8)) and (monihaku_6 not in (5,6,7) and monihaku2010 not in (5,6,7) and monihaku2011 not in (5,6,7) and monihaku2012 not in (5,6,7) and monihaku2013 not in (5,6,7) and monihaku2014 not in (5,6,7)) and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' and l.amkopiskkoulk2014 = '' and l.yoopiskkoulk2014 = '' then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (monihaku2010 in (4,8) or monihaku2011 in (4,8) or monihaku2012 in (4,8) or monihaku2013 in (4,8) or monihaku2014 in (4,8) or monihaku2015 in (4,8)) and (monihaku2010 not in (5,6,7) and monihaku2011 not in (5,6,7) and monihaku2012 not in (5,6,7) and monihaku2013 not in (5,6,7) and monihaku2014 not in (5,6,7) and monihaku2015 not in (5,6,7)) and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' and l.amkopiskkoulk2014 = '' and l.yoopiskkoulk2014 = '' and l.amkopiskkoulk2015 = '' and l.yoopiskkoulk2015 = '' then 1*/
+	else 0
+end haku_amk_eiopisk_kk
+----Hakenut vain yliopistokoulutukseen, ei opiskellut korkea-asteella
+,case
+	when  l.suorlk = '2' and (monihaku_1 in (7,9) or monihaku_2 in (7,9) or monihaku_3 in (7,9) or monihaku_4 in (7,9) or monihaku_5 in (7,9) or monihaku_6 in (7,9)) and (monihaku_1 not in (4,5,6,0,8) and monihaku_2 not in (4,5,6,0,8) and monihaku_3 not in (4,5,6,0,8) and monihaku_4 not in (4,5,6,0,8) and monihaku_5 not in (4,5,6,0,8) and monihaku_6 not in (4,5,6,0,8)) and l.amkopiskkoulk_1 = '' and l.yoopiskkoulk_1 = '' and l.amkopiskkoulk_2 = '' and l.yoopiskkoulk_2 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (monihaku_2 in (7,9) or monihaku_3 in (7,9) or monihaku_4 in (7,9) or monihaku_5 in (7,9) or monihaku_6 in (7,9) or monihaku2010 in (7,9)) and (monihaku_2 not in (4,5,6) and monihaku_3 not in (4,5,6) and monihaku_4 not in (4,5,6) and monihaku_5 not in (4,5,6) and monihaku_6 not in (4,5,6) and monihaku2010 not in (4,5,6)) and l.amkopiskkoulk_2 = '' and l.yoopiskkoulk_2 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (monihaku_3 in (7,9) or monihaku_4 in (7,9) or monihaku_5 in (7,9) or monihaku_6 in (7,9) or monihaku2010 in (7,9) or monihaku2011 in (7,9)) and (monihaku_3 not in (4,5,6) and monihaku_4 not in (4,5,6) and monihaku_5 not in (4,5,6) and monihaku_6 not in (4,5,6) and monihaku2010 not in (4,5,6) and monihaku2011 not in (4,5,6)) and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (monihaku_4 in (7,9) or monihaku_5 in (7,9) or monihaku_6 in (7,9) or monihaku2010 in (7,9) or monihaku2011 in (7,9) or monihaku2012 in (7,9)) and (monihaku_4 not in (4,5,6) and monihaku_5 not in (4,5,6) and monihaku_6 not in (4,5,6) and monihaku2010 not in (4,5,6) and monihaku2011 not in (4,5,6) and monihaku2012 not in (4,5,6)) and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (monihaku_5 in (7,9) or monihaku_6 in (7,9) or monihaku2010 in (7,9) or monihaku2011 in (7,9) or monihaku2012 in (7,9) or monihaku2013 in (7,9)) and (monihaku_5 not in (4,5,6) and monihaku_6 not in (4,5,6) and monihaku2010 not in (4,5,6) and monihaku2011 not in (4,5,6) and monihaku2012 not in (4,5,6) and monihaku2013 not in (4,5,6)) and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (monihaku_6 in (7,9) or monihaku2010 in (7,9) or monihaku2011 in (7,9) or monihaku2012 in (7,9) or monihaku2013 in (7,9) or monihaku2014 in (7,9)) and (monihaku_6 not in (4,5,6) and monihaku2010 not in (4,5,6) and monihaku2011 not in (4,5,6) and monihaku2012 not in (4,5,6) and monihaku2013 not in (4,5,6) and monihaku2014 not in (4,5,6)) and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' and l.amkopiskkoulk2014 = '' and l.yoopiskkoulk2014 = '' then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (monihaku2010 in (7,9) or monihaku2011 in (7,9) or monihaku2012 in (7,9) or monihaku2013 in (7,9) or monihaku2014 in (7,9) or monihaku2015 in (7,9)) and (monihaku2010 not in (4,5,6) and monihaku2011 not in (4,5,6) and monihaku2012 not in (4,5,6) and monihaku2013 not in (4,5,6) and monihaku2014 not in (4,5,6) and monihaku2015 not in (4,5,6)) and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' and l.amkopiskkoulk2014 = '' and l.yoopiskkoulk2014 = '' and l.amkopiskkoulk2015 = '' and l.yoopiskkoulk2015 = '' then 1*/
+	else 0
+end haku_yo_eiopisk_kk
+----Hakenut sek‰ amk- ett‰ yliopistokoulutukseen, ei opiskellut korkea-asteella
+,case
+	when  l.suorlk = '2' and (monihaku_1 in (6,0) or monihaku_2 in (6,0) or monihaku_3 in (6,0) or monihaku_4 in (6,0) or monihaku_5 in (6,0) or monihaku_6 in (6,0) or ((monihaku_1 in (4,8) or monihaku_2 in (4,8) or monihaku_3 in (4,8) or monihaku_4 in (4,8) or monihaku_5 in (4,8) or monihaku_6 in (4,8)) and (monihaku_1 in (7,9) or monihaku_2 in (7,9) or monihaku_3 in (7,9) or monihaku_4 in (7,9) or monihaku_5 in (7,9) or monihaku_6 in (7,9)))) and l.amkopiskkoulk_1 = '' and l.yoopiskkoulk_1 = '' and l.amkopiskkoulk_2 = '' and l.yoopiskkoulk_2 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (monihaku_2 = 6 or monihaku_3 = 6 or monihaku_4 = 6 or monihaku_5 = 6 or monihaku_6 = 6 or monihaku2010 = 6 or ((monihaku_2 in (4,8) or monihaku_3 in (4,8) or monihaku_4 in (4,8) or monihaku_5 in (4,8) or monihaku_6 in (4,8) or monihaku2010 in (4,8)) and (monihaku_2 in (7,9) or monihaku_3 in (7,9) or monihaku_4 in (7,9) or monihaku_5 in (7,9) or monihaku_6 in (7,9) or monihaku2010 in (7,9)))) and l.amkopiskkoulk_2 = '' and l.yoopiskkoulk_2 = '' and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (monihaku_3 = 6 or monihaku_4 = 6 or monihaku_5 = 6 or monihaku_6 = 6 or monihaku2010 = 6 or monihaku2011 = 6 or ((monihaku_3 in (4,8) or monihaku_4 in (4,8) or monihaku_5 in (4,8) or monihaku_6 in (4,8) or monihaku2010 in (4,8) or monihaku2011 in (4,8)) and (monihaku_3 in (7,9) or monihaku_4 in (7,9) or monihaku_5 in (7,9) or monihaku_6 in (7,9) or monihaku2010 in (7,9) or monihaku2011 in (7,9)))) and l.amkopiskkoulk_3 = '' and l.yoopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (monihaku_4 = 6 or monihaku_5 = 6 or monihaku_6 = 6 or monihaku2010 = 6 or monihaku2011 = 6 or monihaku2012 = 6 or ((monihaku_4 in (4,8) or monihaku_5 in (4,8) or monihaku_6 in (4,8) or monihaku2010 in (4,8) or monihaku2011 in (4,8) or monihaku2012 in (4,8)) and (monihaku_4 in (7,9) or monihaku_5 in (7,9) or monihaku_6 in (7,9) or monihaku2010 in (7,9) or monihaku2011 in (7,9) or monihaku2012 in (7,9)))) and l.amkopiskkoulk_4 = '' and l.yoopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (monihaku_5 = 6 or monihaku_6 = 6 or monihaku2010 = 6 or monihaku2011 = 6 or monihaku2012 = 6 or monihaku2013 = 6 or ((monihaku_5 in (4,8) or monihaku_6 in (4,8) or monihaku2010 in (4,8) or monihaku2011 in (4,8) or monihaku2012 in (4,8) or monihaku2013 in (4,8)) and (monihaku_5 in (7,9) or monihaku_6 in (7,9) or monihaku2010 in (7,9) or monihaku2011 in (7,9) or monihaku2012 in (7,9) or monihaku2013 in (7,9)))) and l.amkopiskkoulk_5 = '' and l.yoopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (monihaku_6 = 6 or monihaku2010 = 6 or monihaku2011 = 6 or monihaku2012 = 6 or monihaku2013 = 6 or monihaku2014 = 6 or ((monihaku_6 in (4,8) or monihaku2010 in (4,8) or monihaku2011 in (4,8) or monihaku2012 in (4,8) or monihaku2013 in (4,8) or monihaku2014 in (4,8)) and (monihaku_6 in (7,9) or monihaku2010 in (7,9) or monihaku2011 in (7,9) or monihaku2012 in (7,9) or monihaku2013 in (7,9) or monihaku2014 in (7,9)))) and l.amkopiskkoulk_6 = '' and l.yoopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' and l.amkopiskkoulk2014 = '' and l.yoopiskkoulk2014 = '' then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (monihaku2010 = 6 or monihaku2011 = 6 or monihaku2012 = 6 or monihaku2013 = 6 or monihaku2014 = 6 or monihaku2015 = 6 or ((monihaku2010 in (4,8) or monihaku2011 in (4,8) or monihaku2012 in (4,8) or monihaku2013 in (4,8) or monihaku2014 in (4,8) or monihaku2015 in (4,8)) and (monihaku2010 in (7,9) or monihaku2011 in (7,9) or monihaku2012 in (7,9) or monihaku2013 in (7,9) or monihaku2014 in (7,9) or monihaku2015 in (7,9)))) and l.amkopiskkoulk2010 = '' and l.yoopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.yoopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.yoopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.yoopiskkoulk2013 = '' and l.amkopiskkoulk2014 = '' and l.yoopiskkoulk2014 = '' and l.amkopiskkoulk2015 = '' and l.yoopiskkoulk2015 = '' then 1*/
+	else 0
+end haku_amkyo_eiopisk_kk
+
+--Opiskellut korkea-asteella
+,case
+	when  l.suorlk = '2' and (l.amkopiskkoulk_1 <> '' or l.yoopiskkoulk_1 <> '' or l.amkopiskkoulk_2 <> '' or l.yoopiskkoulk_2 <> '' or l.amkopiskkoulk_3 <> '' or l.yoopiskkoulk_3 <> '' or l.amkopiskkoulk_4 <> '' or l.yoopiskkoulk_4 <> '' or l.amkopiskkoulk_5 <> '' or l.yoopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.yoopiskkoulk_6 <> '') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (l.amkopiskkoulk_2 <> '' or l.yoopiskkoulk_2 <> '' or l.amkopiskkoulk_3 <> '' or l.yoopiskkoulk_3 <> '' or l.amkopiskkoulk_4 <> '' or l.yoopiskkoulk_4 <> '' or l.amkopiskkoulk_5 <> '' or l.yoopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.yoopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.yoopiskkoulk2010 <> '') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (l.amkopiskkoulk_3 <> '' or l.yoopiskkoulk_3 <> '' or l.amkopiskkoulk_4 <> '' or l.yoopiskkoulk_4 <> '' or l.amkopiskkoulk_5 <> '' or l.yoopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.yoopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.yoopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.yoopiskkoulk2011 <> '') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (l.amkopiskkoulk_4 <> '' or l.yoopiskkoulk_4 <> '' or l.amkopiskkoulk_5 <> '' or l.yoopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.yoopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.yoopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.yoopiskkoulk2011 <> '' or l.amkopiskkoulk2012 <> '' or l.yoopiskkoulk2012 <> '') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (l.amkopiskkoulk_5 <> '' or l.yoopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.yoopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.yoopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.yoopiskkoulk2011 <> '' or l.amkopiskkoulk2012 <> '' or l.yoopiskkoulk2012 <> '' or l.amkopiskkoulk2013 <> '' or l.yoopiskkoulk2013 <> '') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (l.amkopiskkoulk_6 <> '' or l.yoopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.yoopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.yoopiskkoulk2011 <> '' or l.amkopiskkoulk2012 <> '' or l.yoopiskkoulk2012 <> '' or l.amkopiskkoulk2013 <> '' or l.yoopiskkoulk2013 <> '' or l.amkopiskkoulk2014 <> '' or l.yoopiskkoulk2014 <> '') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (l.amkopiskkoulk2010 <> '' or l.yoopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.yoopiskkoulk2011 <> '' or l.amkopiskkoulk2012 <> '' or l.yoopiskkoulk2012 <> '' or l.amkopiskkoulk2013 <> '' or l.yoopiskkoulk2013 <> '' or l.amkopiskkoulk2014 <> '' or l.yoopiskkoulk2014 <> '' or l.amkopiskkoulk2015 <> '' or l.yoopiskkoulk2015 <> '') then 1*/
+	else 0
+end opisk_kk
+----Opiskellut korkea-asteella, ei-opiskellut toisen asteen koulutuksessa
+,case
+	when  l.suorlk = '2' and l.luopiskkoulk_1 = '' and l.ammopiskkoulk_1 = '' and l.luopiskkoulk_2 = '' and l.ammopiskkoulk_2 = '' and l.luopiskkoulk_3 = '' and l.ammopiskkoulk_3 = '' and l.luopiskkoulk_4 = '' and l.ammopiskkoulk_4 = '' and l.luopiskkoulk_5 = '' and l.ammopiskkoulk_5 = '' and l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 = '' and (l.amkopiskkoulk_1 <> '' or l.yoopiskkoulk_1 <> '' or l.amkopiskkoulk_2 <> '' or l.yoopiskkoulk_2 <> '' or l.amkopiskkoulk_3 <> '' or l.yoopiskkoulk_3 <> '' or l.amkopiskkoulk_4 <> '' or l.yoopiskkoulk_4 <> '' or l.amkopiskkoulk_5 <> '' or l.yoopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.yoopiskkoulk_6 <> '') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and l.luopiskkoulk_2 = '' and l.ammopiskkoulk_2 = '' and l.luopiskkoulk_3 = '' and l.ammopiskkoulk_3 = '' and l.luopiskkoulk_4 = '' and l.ammopiskkoulk_4 = '' and l.luopiskkoulk_5 = '' and l.ammopiskkoulk_5 = '' and l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 = '' and l.luopiskkoulk2010 = '' and l.ammopiskkoulk2010 = '' and (l.amkopiskkoulk_2 <> '' or l.yoopiskkoulk_2 <> '' or l.amkopiskkoulk_3 <> '' or l.yoopiskkoulk_3 <> '' or l.amkopiskkoulk_4 <> '' or l.yoopiskkoulk_4 <> '' or l.amkopiskkoulk_5 <> '' or l.yoopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.yoopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.yoopiskkoulk2010 <> '') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and l.luopiskkoulk_3 = '' and l.ammopiskkoulk_3 = '' and l.luopiskkoulk_4 = '' and l.ammopiskkoulk_4 = '' and l.luopiskkoulk_5 = '' and l.ammopiskkoulk_5 = '' and l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 = '' and l.luopiskkoulk2010 = '' and l.ammopiskkoulk2010 = '' and l.luopiskkoulk2011 = '' and l.ammopiskkoulk2011 = '' and (l.amkopiskkoulk_3 <> '' or l.yoopiskkoulk_3 <> '' or l.amkopiskkoulk_4 <> '' or l.yoopiskkoulk_4 <> '' or l.amkopiskkoulk_5 <> '' or l.yoopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.yoopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.yoopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.yoopiskkoulk2011 <> '') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and l.luopiskkoulk_4 = '' and l.ammopiskkoulk_4 = '' and l.luopiskkoulk_5 = '' and l.ammopiskkoulk_5 = '' and l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 = '' and l.luopiskkoulk2010 = '' and l.ammopiskkoulk2010 = '' and l.luopiskkoulk2011 = '' and l.ammopiskkoulk2011 = '' and l.luopiskkoulk2012 = '' and l.ammopiskkoulk2012 = '' and (l.amkopiskkoulk_4 <> '' or l.yoopiskkoulk_4 <> '' or l.amkopiskkoulk_5 <> '' or l.yoopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.yoopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.yoopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.yoopiskkoulk2011 <> '' or l.amkopiskkoulk2012 <> '' or l.yoopiskkoulk2012 <> '') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and l.luopiskkoulk_5 = '' and l.ammopiskkoulk_5 = '' and l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 = '' and l.luopiskkoulk2010 = '' and l.ammopiskkoulk2010 = '' and l.luopiskkoulk2011 = '' and l.ammopiskkoulk2011 = '' and l.luopiskkoulk2012 = '' and l.ammopiskkoulk2012 = '' and l.luopiskkoulk2013 = '' and l.ammopiskkoulk2013 = '' and (l.amkopiskkoulk_5 <> '' or l.yoopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.yoopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.yoopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.yoopiskkoulk2011 <> '' or l.amkopiskkoulk2012 <> '' or l.yoopiskkoulk2012 <> '' or l.amkopiskkoulk2013 <> '' or l.yoopiskkoulk2013 <> '') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and l.luopiskkoulk_6 = '' and l.ammopiskkoulk_6 = '' and l.luopiskkoulk2010 = '' and l.ammopiskkoulk2010 = '' and l.luopiskkoulk2011 = '' and l.ammopiskkoulk2011 = '' and l.luopiskkoulk2012 = '' and l.ammopiskkoulk2012 = '' and l.luopiskkoulk2013 = '' and l.ammopiskkoulk2013 = '' and l.luopiskkoulk2014 = '' and l.ammopiskkoulk2014 = '' and (l.amkopiskkoulk_6 <> '' or l.yoopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.yoopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.yoopiskkoulk2011 <> '' or l.amkopiskkoulk2012 <> '' or l.yoopiskkoulk2012 <> '' or l.amkopiskkoulk2013 <> '' or l.yoopiskkoulk2013 <> '' or l.amkopiskkoulk2014 <> '' or l.yoopiskkoulk2014 <> '') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and l.luopiskkoulk2010 = '' and l.ammopiskkoulk2010 = '' and l.luopiskkoulk2011 = '' and l.ammopiskkoulk2011 = '' and l.luopiskkoulk2012 = '' and l.ammopiskkoulk2012 = '' and l.luopiskkoulk2013 = '' and l.ammopiskkoulk2013 = '' and l.luopiskkoulk2014 = '' and l.ammopiskkoulk2014 = '' and l.luopiskkoulk2015 = '' and l.ammopiskkoulk2015 = '' and (l.amkopiskkoulk2010 <> '' or l.yoopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.yoopiskkoulk2011 <> '' or l.amkopiskkoulk2012 <> '' or l.yoopiskkoulk2012 <> '' or l.amkopiskkoulk2013 <> '' or l.yoopiskkoulk2013 <> '' or l.amkopiskkoulk2014 <> '' or l.yoopiskkoulk2014 <> '' or l.amkopiskkoulk2015 <> '' or l.yoopiskkoulk2015 <> '') then 1*/
+	else 0
+end opisk_kk_eiopisk_ta
+----Opiskellut korkea-asteella, opiskellut toisen asteen koulutuksessa
+,case
+	when  l.suorlk = '2' and (l.luopiskkoulk_1 <> '' or l.ammopiskkoulk_1 <> '' or l.luopiskkoulk_2 <> '' or l.ammopiskkoulk_2 <> '' or l.luopiskkoulk_3 <> '' or l.ammopiskkoulk_3 <> '' or l.luopiskkoulk_4 <> '' or l.ammopiskkoulk_4 <> '' or l.luopiskkoulk_5 <> '' or l.ammopiskkoulk_5 <> '' or l.luopiskkoulk_6 <> '' or l.ammopiskkoulk_6 <> '') and (l.amkopiskkoulk_1 <> '' or l.yoopiskkoulk_1 <> '' or l.amkopiskkoulk_2 <> '' or l.yoopiskkoulk_2 <> '' or l.amkopiskkoulk_3 <> '' or l.yoopiskkoulk_3 <> '' or l.amkopiskkoulk_4 <> '' or l.yoopiskkoulk_4 <> '' or l.amkopiskkoulk_5 <> '' or l.yoopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.yoopiskkoulk_6 <> '') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (l.luopiskkoulk_2 <> '' or l.ammopiskkoulk_2 <> '' or l.luopiskkoulk_3 <> '' or l.ammopiskkoulk_3 <> '' or l.luopiskkoulk_4 <> '' or l.ammopiskkoulk_4 <> '' or l.luopiskkoulk_5 <> '' or l.ammopiskkoulk_5 <> '' or l.luopiskkoulk_6 <> '' or l.ammopiskkoulk_6 <> '' or l.luopiskkoulk2010 <> '' or l.ammopiskkoulk2010 <> '') and (l.amkopiskkoulk_2 <> '' or l.yoopiskkoulk_2 <> '' or l.amkopiskkoulk_3 <> '' or l.yoopiskkoulk_3 <> '' or l.amkopiskkoulk_4 <> '' or l.yoopiskkoulk_4 <> '' or l.amkopiskkoulk_5 <> '' or l.yoopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.yoopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.yoopiskkoulk2010 <> '') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (l.luopiskkoulk_3 <> '' or l.ammopiskkoulk_3 <> '' or l.luopiskkoulk_4 <> '' or l.ammopiskkoulk_4 <> '' or l.luopiskkoulk_5 <> '' or l.ammopiskkoulk_5 <> '' or l.luopiskkoulk_6 <> '' or l.ammopiskkoulk_6 <> '' or l.luopiskkoulk2010 <> '' or l.ammopiskkoulk2010 <> '' or l.luopiskkoulk2011 <> '' or l.ammopiskkoulk2011 <> '') and (l.amkopiskkoulk_3 <> '' or l.yoopiskkoulk_3 <> '' or l.amkopiskkoulk_4 <> '' or l.yoopiskkoulk_4 <> '' or l.amkopiskkoulk_5 <> '' or l.yoopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.yoopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.yoopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.yoopiskkoulk2011 <> '') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (l.luopiskkoulk_4 <> '' or l.ammopiskkoulk_4 <> '' or l.luopiskkoulk_5 <> '' or l.ammopiskkoulk_5 <> '' or l.luopiskkoulk_6 <> '' or l.ammopiskkoulk_6 <> '' or l.luopiskkoulk2010 <> '' or l.ammopiskkoulk2010 <> '' or l.luopiskkoulk2011 <> '' or l.ammopiskkoulk2011 <> '' or l.luopiskkoulk2012 <> '' or l.ammopiskkoulk2012 <> '') and (l.amkopiskkoulk_4 <> '' or l.yoopiskkoulk_4 <> '' or l.amkopiskkoulk_5 <> '' or l.yoopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.yoopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.yoopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.yoopiskkoulk2011 <> '' or l.amkopiskkoulk2012 <> '' or l.yoopiskkoulk2012 <> '') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (l.luopiskkoulk_5 <> '' or l.ammopiskkoulk_5 <> '' or l.luopiskkoulk_6 <> '' or l.ammopiskkoulk_6 <> '' or l.luopiskkoulk2010 <> '' or l.ammopiskkoulk2010 <> '' or l.luopiskkoulk2011 <> '' or l.ammopiskkoulk2011 <> '' or l.luopiskkoulk2012 <> '' or l.ammopiskkoulk2012 <> '' or l.luopiskkoulk2013 <> '' or l.ammopiskkoulk2013 <> '') and (l.amkopiskkoulk_5 <> '' or l.yoopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.yoopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.yoopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.yoopiskkoulk2011 <> '' or l.amkopiskkoulk2012 <> '' or l.yoopiskkoulk2012 <> '' or l.amkopiskkoulk2013 <> '' or l.yoopiskkoulk2013 <> '') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (l.luopiskkoulk_6 <> '' or l.ammopiskkoulk_6 <> '' or l.luopiskkoulk2010 <> '' or l.ammopiskkoulk2010 <> '' or l.luopiskkoulk2011 <> '' or l.ammopiskkoulk2011 <> '' or l.luopiskkoulk2012 <> '' or l.ammopiskkoulk2012 <> '' or l.luopiskkoulk2013 <> '' or l.ammopiskkoulk2013 <> '' or l.luopiskkoulk2014 <> '' or l.ammopiskkoulk2014 <> '') and (l.amkopiskkoulk_6 <> '' or l.yoopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.yoopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.yoopiskkoulk2011 <> '' or l.amkopiskkoulk2012 <> '' or l.yoopiskkoulk2012 <> '' or l.amkopiskkoulk2013 <> '' or l.yoopiskkoulk2013 <> '' or l.amkopiskkoulk2014 <> '' or l.yoopiskkoulk2014 <> '') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (l.luopiskkoulk2010 <> '' or l.ammopiskkoulk2010 <> '' or l.luopiskkoulk2011 <> '' or l.ammopiskkoulk2011 <> '' or l.luopiskkoulk2012 <> '' or l.ammopiskkoulk2012 <> '' or l.luopiskkoulk2013 <> '' or l.ammopiskkoulk2013 <> '' or l.luopiskkoulk2014 <> '' or l.ammopiskkoulk2014 <> '' or l.luopiskkoulk2015 <> '' or l.ammopiskkoulk2015 <> '') and (l.amkopiskkoulk2010 <> '' or l.yoopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.yoopiskkoulk2011 <> '' or l.amkopiskkoulk2012 <> '' or l.yoopiskkoulk2012 <> '' or l.amkopiskkoulk2013 <> '' or l.yoopiskkoulk2013 <> '' or l.amkopiskkoulk2014 <> '' or l.yoopiskkoulk2014 <> '' or l.amkopiskkoulk2015 <> '' or l.yoopiskkoulk2015 <> '') then 1*/
+	else 0
+end opisk_kk_opisk_ta
+----Opiskellut vain ammattikorkeakoulussa
+,case
+	when  l.suorlk = '2' and (l.amkopiskkoulk_1 <> '' or l.amkopiskkoulk_2 <> '' or l.amkopiskkoulk_3 <> '' or l.amkopiskkoulk_4 <> '' or l.amkopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '') and l.yoopiskkoulk_1 = '' and l.yoopiskkoulk_2 = '' and l.yoopiskkoulk_3 = '' and l.yoopiskkoulk_4 = '' and l.yoopiskkoulk_5 = '' and l.yoopiskkoulk_6 = '' then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (l.amkopiskkoulk_2 <> '' or l.amkopiskkoulk_3 <> '' or l.amkopiskkoulk_4 <> '' or l.amkopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '') and l.yoopiskkoulk_2 = '' and l.yoopiskkoulk_3 = '' and l.yoopiskkoulk_4 = '' and l.yoopiskkoulk_5 = '' and l.yoopiskkoulk_6 = '' and l.yoopiskkoulk2010 = '' then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (l.amkopiskkoulk_3 <> '' or l.amkopiskkoulk_4 <> '' or l.amkopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '') and l.yoopiskkoulk_3 = '' and l.yoopiskkoulk_4 = '' and l.yoopiskkoulk_5 = '' and l.yoopiskkoulk_6 = '' and l.yoopiskkoulk2010 = '' and l.yoopiskkoulk2011 = '' then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (l.amkopiskkoulk_4 <> '' or l.amkopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.amkopiskkoulk2012 <> '') and l.yoopiskkoulk_4 = '' and l.yoopiskkoulk_5 = '' and l.yoopiskkoulk_6 = '' and l.yoopiskkoulk2010 = '' and l.yoopiskkoulk2011 = '' and l.yoopiskkoulk2012 = '' then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (l.amkopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.amkopiskkoulk2012 <> '' or l.amkopiskkoulk2013 <> '') and l.yoopiskkoulk_5 = '' and l.yoopiskkoulk_6 = '' and l.yoopiskkoulk2010 = '' and l.yoopiskkoulk2011 = '' and l.yoopiskkoulk2012 = '' and l.yoopiskkoulk2013 = '' then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (l.amkopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.amkopiskkoulk2012 <> '' or l.amkopiskkoulk2013 <> '' or l.amkopiskkoulk2014 <> '') and l.yoopiskkoulk_6 = '' and l.yoopiskkoulk2010 = '' and l.yoopiskkoulk2011 = '' and l.yoopiskkoulk2012 = '' and l.yoopiskkoulk2013 = '' and l.yoopiskkoulk2014 = '' then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (l.amkopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.amkopiskkoulk2012 <> '' or l.amkopiskkoulk2013 <> '' or l.amkopiskkoulk2014 <> '' or l.amkopiskkoulk2015 <> '') and l.yoopiskkoulk2010 = '' and l.yoopiskkoulk2011 = '' and l.yoopiskkoulk2012 = '' and l.yoopiskkoulk2013 = '' and l.yoopiskkoulk2014 = '' and l.yoopiskkoulk2015 = '' then 1*/
+	else 0
+end opisk_vain_amk
+----Opiskellut vain yliopistokoulutuksessa
+,case
+	when  l.suorlk = '2' and l.amkopiskkoulk_1 = '' and l.amkopiskkoulk_2 = '' and l.amkopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and (l.yoopiskkoulk_1 <> '' or l.yoopiskkoulk_2 <> '' or l.yoopiskkoulk_3 <> '' or l.yoopiskkoulk_4 <> '' or l.yoopiskkoulk_5 <> '' or l.yoopiskkoulk_6 <> '') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and l.amkopiskkoulk_2 = '' and l.amkopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and (l.yoopiskkoulk_2 <> '' or l.yoopiskkoulk_3 <> '' or l.yoopiskkoulk_4 <> '' or l.yoopiskkoulk_5 <> '' or l.yoopiskkoulk_6 <> '' or l.yoopiskkoulk2010 <> '') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and l.amkopiskkoulk_3 = '' and l.amkopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and (l.yoopiskkoulk_3 <> '' or l.yoopiskkoulk_4 <> '' or l.yoopiskkoulk_5 <> '' or l.yoopiskkoulk_6 <> '' or l.yoopiskkoulk2010 <> '' or l.yoopiskkoulk2011 <> '') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and l.amkopiskkoulk_4 = '' and l.amkopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and (l.yoopiskkoulk_4 <> '' or l.yoopiskkoulk_5 <> '' or l.yoopiskkoulk_6 <> '' or l.yoopiskkoulk2010 <> '' or l.yoopiskkoulk2011 <> '' or l.yoopiskkoulk2012 <> '') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and l.amkopiskkoulk_5 = '' and l.amkopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and (l.yoopiskkoulk_5 <> '' or l.yoopiskkoulk_6 <> '' or l.yoopiskkoulk2010 <> '' or l.yoopiskkoulk2011 <> '' or l.yoopiskkoulk2012 <> '' or l.yoopiskkoulk2013 <> '') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and l.amkopiskkoulk_6 = '' and l.amkopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.amkopiskkoulk2014 = '' and (l.yoopiskkoulk_6 <> '' or l.yoopiskkoulk2010 <> '' or l.yoopiskkoulk2011 <> '' or l.yoopiskkoulk2012 <> '' or l.yoopiskkoulk2013 <> '' or l.yoopiskkoulk2014 <> '') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and l.amkopiskkoulk2010 = '' and l.amkopiskkoulk2011 = '' and l.amkopiskkoulk2012 = '' and l.amkopiskkoulk2013 = '' and l.amkopiskkoulk2014 = '' and l.amkopiskkoulk2015 = '' and (l.yoopiskkoulk2010 <> '' or l.yoopiskkoulk2011 <> '' or l.yoopiskkoulk2012 <> '' or l.yoopiskkoulk2013 <> '' or l.yoopiskkoulk2014 <> '' or l.yoopiskkoulk2015 <> '') then 1*/
+	else 0
+end opisk_vain_yo
+----Opiskellut sek‰ amk- ett‰ yliopistokoulutuksessa
+,case
+	when  l.suorlk = '2' and (l.amkopiskkoulk_1 <> '' or l.amkopiskkoulk_2 <> '' or l.amkopiskkoulk_3 <> '' or l.amkopiskkoulk_4 <> '' or l.amkopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '') and (l.yoopiskkoulk_1 <> '' or l.yoopiskkoulk_2 <> '' or l.yoopiskkoulk_3 <> '' or l.yoopiskkoulk_4 <> '' or l.yoopiskkoulk_5 <> '' or l.yoopiskkoulk_6 <> '') then 1
+/*	when l.suorv = @toinen_suoritusvuosi		and l.suorlk = '2' and (l.amkopiskkoulk_2 <> '' or l.amkopiskkoulk_3 <> '' or l.amkopiskkoulk_4 <> '' or l.amkopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '') and (l.yoopiskkoulk_2 <> '' or l.yoopiskkoulk_3 <> '' or l.yoopiskkoulk_4 <> '' or l.yoopiskkoulk_5 <> '' or l.yoopiskkoulk_6 <> '' or l.yoopiskkoulk2010 <> '') then 1
+	when l.suorv = @kolmas_suoritusvuosi		and l.suorlk = '2' and (l.amkopiskkoulk_3 <> '' or l.amkopiskkoulk_4 <> '' or l.amkopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '') and (l.yoopiskkoulk_3 <> '' or l.yoopiskkoulk_4 <> '' or l.yoopiskkoulk_5 <> '' or l.yoopiskkoulk_6 <> '' or l.yoopiskkoulk2010 <> '' or l.yoopiskkoulk2011 <> '') then 1
+	when l.suorv = @neljas_suoritusvuosi		and l.suorlk = '2' and (l.amkopiskkoulk_4 <> '' or l.amkopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.amkopiskkoulk2012 <> '') and (l.yoopiskkoulk_4 <> '' or l.yoopiskkoulk_5 <> '' or l.yoopiskkoulk_6 <> '' or l.yoopiskkoulk2010 <> '' or l.yoopiskkoulk2011 <> '' or l.yoopiskkoulk2012 <> '') then 1
+	when l.suorv = @viides_suoritusvuosi		and l.suorlk = '2' and (l.amkopiskkoulk_5 <> '' or l.amkopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.amkopiskkoulk2012 <> '' or l.amkopiskkoulk2013 <> '') and (l.yoopiskkoulk_5 <> '' or l.yoopiskkoulk_6 <> '' or l.yoopiskkoulk2010 <> '' or l.yoopiskkoulk2011 <> '' or l.yoopiskkoulk2012 <> '' or l.yoopiskkoulk2013 <> '') then 1
+	when l.suorv = @kuudes_suoritusvuosi		and l.suorlk = '2' and (l.amkopiskkoulk_6 <> '' or l.amkopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.amkopiskkoulk2012 <> '' or l.amkopiskkoulk2013 <> '' or l.amkopiskkoulk2014 <> '') and (l.yoopiskkoulk_6 <> '' or l.yoopiskkoulk2010 <> '' or l.yoopiskkoulk2011 <> '' or l.yoopiskkoulk2012 <> '' or l.yoopiskkoulk2013 <> '' or l.yoopiskkoulk2014 <> '') then 1
+	when l.suorv = @seitsemas_suoritusvuosi		and l.suorlk = '2' and (l.amkopiskkoulk2010 <> '' or l.amkopiskkoulk2011 <> '' or l.amkopiskkoulk2012 <> '' or l.amkopiskkoulk2013 <> '' or l.amkopiskkoulk2014 <> '' or l.amkopiskkoulk2015 <> '') and (l.yoopiskkoulk2010 <> '' or l.yoopiskkoulk2011 <> '' or l.yoopiskkoulk2012 <> '' or l.yoopiskkoulk2013 <> '' or l.yoopiskkoulk2014 <> '' or l.yoopiskkoulk2015 <> '') then 1*/
+	else 0
+end opisk_amkyo
+
+FROM 
+    (
+	--select * from [VipunenTK_SA].[dbo].[v_K3_13_Perusk_paattaneet_amm_tutk_suorittaneet]
+    select * from [VipunenTK_DW].[dbo].[sa_K3_13_Perusk_paattaneet_amm_tutk_suorittaneet]
+	where suorlk = '2'
+	
+	) as l
+
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d1a on d1a.koulutusluokitus_avain=l.amkopiskkoulk_1
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d2a on d2a.koulutusluokitus_avain=l.amkopiskkoulk_2
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d3a on d3a.koulutusluokitus_avain=l.amkopiskkoulk_3
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d4a on d4a.koulutusluokitus_avain=l.amkopiskkoulk_4
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d5a on d5a.koulutusluokitus_avain=l.amkopiskkoulk_5
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d6a on d6a.koulutusluokitus_avain=l.amkopiskkoulk_6
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d7a on d7a.koulutusluokitus_avain=l.amkopiskkoulk_6
+/*LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d8a on d8a.koulutusluokitus_avain=l.amkopiskkoulk2011
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d9a on d9a.koulutusluokitus_avain=l.amkopiskkoulk2012
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d10a on d10a.koulutusluokitus_avain=l.amkopiskkoulk2013
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d11a on d11a.koulutusluokitus_avain=l.amkopiskkoulk2014
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d12a on d12a.koulutusluokitus_avain=l.amkopiskkoulk2015*/
+
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d1b on d1b.koulutusluokitus_avain=l.yoopiskkoulk_1
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d2b on d2b.koulutusluokitus_avain=l.yoopiskkoulk_2
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d3b on d3b.koulutusluokitus_avain=l.yoopiskkoulk_3
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d4b on d4b.koulutusluokitus_avain=l.yoopiskkoulk_4
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d5b on d5b.koulutusluokitus_avain=l.yoopiskkoulk_5
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d6b on d6b.koulutusluokitus_avain=l.yoopiskkoulk_6
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d7b on d7b.koulutusluokitus_avain=l.yoopiskkoulk_6
+/*LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d8b on d8b.koulutusluokitus_avain=l.yoopiskkoulk2011	
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d9b on d9b.koulutusluokitus_avain=l.yoopiskkoulk2012
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d10b on d10b.koulutusluokitus_avain=l.yoopiskkoulk2013
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d11b on d11b.koulutusluokitus_avain=l.yoopiskkoulk2014	
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d12b on d12b.koulutusluokitus_avain=l.yoopiskkoulk2015	*/
+
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d1c on d1c.koulutusluokitus_avain=l.ammopiskkoulk_1
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d2c on d2c.koulutusluokitus_avain=l.ammopiskkoulk_2
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d3c on d3c.koulutusluokitus_avain=l.ammopiskkoulk_3
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d4c on d4c.koulutusluokitus_avain=l.ammopiskkoulk_4
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d5c on d5c.koulutusluokitus_avain=l.ammopiskkoulk_5
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d6c on d6c.koulutusluokitus_avain=l.ammopiskkoulk_6
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d7c on d7c.koulutusluokitus_avain=l.ammopiskkoulk_6
+/*LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d8c on d8c.koulutusluokitus_avain=l.ammopiskkoulk2011
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d9c on d9c.koulutusluokitus_avain=l.ammopiskkoulk2012
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d10c on d10c.koulutusluokitus_avain=l.ammopiskkoulk2013
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d11c on d11c.koulutusluokitus_avain=l.ammopiskkoulk2014
+LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d12c on d12c.koulutusluokitus_avain=l.ammopiskkoulk2015*/
+
+CROSS APPLY (SELECT MIN(d) MinValue, MAX(d) MaxValue FROM (VALUES (d1a.iscfibroad2013_koodi),(d1b.iscfibroad2013_koodi), (d2a.iscfibroad2013_koodi),(d2b.iscfibroad2013_koodi), (d3a.iscfibroad2013_koodi),(d3b.iscfibroad2013_koodi), (d4a.iscfibroad2013_koodi),(d4b.iscfibroad2013_koodi), (d5a.iscfibroad2013_koodi),(d5b.iscfibroad2013_koodi), (d6a.iscfibroad2013_koodi),(d6b.iscfibroad2013_koodi)) AS a(d)) m1
+CROSS APPLY (SELECT MIN(d) MinValue, MAX(d) MaxValue FROM (VALUES (d2a.iscfibroad2013_koodi),(d2b.iscfibroad2013_koodi), (d3a.iscfibroad2013_koodi),(d3b.iscfibroad2013_koodi), (d4a.iscfibroad2013_koodi),(d4b.iscfibroad2013_koodi), (d5a.iscfibroad2013_koodi),(d5b.iscfibroad2013_koodi), (d6a.iscfibroad2013_koodi),(d6b.iscfibroad2013_koodi), (d7a.iscfibroad2013_koodi),(d7b.iscfibroad2013_koodi)) AS a(d)) m2
+/*CROSS APPLY (SELECT MIN(d) MinValue, MAX(d) MaxValue FROM (VALUES (d3a.iscfibroad2013_koodi),(d3b.iscfibroad2013_koodi), (d4a.iscfibroad2013_koodi),(d4b.iscfibroad2013_koodi), (d5a.iscfibroad2013_koodi),(d5b.iscfibroad2013_koodi), (d6a.iscfibroad2013_koodi),(d6b.iscfibroad2013_koodi), (d7a.iscfibroad2013_koodi),(d7b.iscfibroad2013_koodi), (d8a.iscfibroad2013_koodi),(d8b.iscfibroad2013_koodi)) AS a(d)) m3
+CROSS APPLY (SELECT MIN(d) MinValue, MAX(d) MaxValue FROM (VALUES (d4a.iscfibroad2013_koodi),(d4b.iscfibroad2013_koodi), (d5a.iscfibroad2013_koodi),(d5b.iscfibroad2013_koodi), (d6a.iscfibroad2013_koodi),(d6b.iscfibroad2013_koodi), (d7a.iscfibroad2013_koodi),(d7b.iscfibroad2013_koodi), (d8a.iscfibroad2013_koodi),(d8b.iscfibroad2013_koodi), (d9a.iscfibroad2013_koodi),(d9b.iscfibroad2013_koodi)) AS a(d)) m4
+CROSS APPLY (SELECT MIN(d) MinValue, MAX(d) MaxValue FROM (VALUES (d5a.iscfibroad2013_koodi),(d5b.iscfibroad2013_koodi), (d6a.iscfibroad2013_koodi),(d6b.iscfibroad2013_koodi), (d7a.iscfibroad2013_koodi),(d7b.iscfibroad2013_koodi), (d8a.iscfibroad2013_koodi),(d8b.iscfibroad2013_koodi), (d9a.iscfibroad2013_koodi),(d9b.iscfibroad2013_koodi), (d10a.iscfibroad2013_koodi),(d10b.iscfibroad2013_koodi)) AS a(d)) m5
+CROSS APPLY (SELECT MIN(d) MinValue, MAX(d) MaxValue FROM (VALUES (d6a.iscfibroad2013_koodi),(d6b.iscfibroad2013_koodi), (d7a.iscfibroad2013_koodi),(d7b.iscfibroad2013_koodi), (d8a.iscfibroad2013_koodi),(d8b.iscfibroad2013_koodi), (d9a.iscfibroad2013_koodi),(d9b.iscfibroad2013_koodi), (d10a.iscfibroad2013_koodi),(d10b.iscfibroad2013_koodi), (d11a.iscfibroad2013_koodi),(d11b.iscfibroad2013_koodi)) AS a(d)) m6
+CROSS APPLY (SELECT MIN(d) MinValue, MAX(d) MaxValue FROM (VALUES (d7a.iscfibroad2013_koodi),(d7b.iscfibroad2013_koodi), (d8a.iscfibroad2013_koodi),(d8b.iscfibroad2013_koodi), (d9a.iscfibroad2013_koodi),(d9b.iscfibroad2013_koodi), (d10a.iscfibroad2013_koodi),(d10b.iscfibroad2013_koodi), (d11a.iscfibroad2013_koodi),(d11b.iscfibroad2013_koodi), (d12a.iscfibroad2013_koodi),(d12b.iscfibroad2013_koodi)) AS a(d)) m7*/
+
+	
+	WHERE 1=1
+--end;
+
+--
+-- TULOS
+-- 
+/*
+if @debug_what_to_run>=3 begin
+	if @debug_what_to_run>0 print 'querying result';
+	select * from [VipunenTK_DW].[dbo].[_koulutukseen_sijoittuneet_6v]
+	--select COUNT(*) from vipunen_tk.f_tyol_ja_jatko_opin_ where aineisto=(select id from vipunen_tk.d_aineisto where aineistokoodi='4.3' and @toinen_suoritusvuosi between alkaa and paattyy)
+end;
+
+if @debug_what_to_run>0 PRINT 'all done.';
+*/
+
+GO
+
+
