@@ -273,6 +273,3 @@ ELSE
 	BEGIN
 		SET @puuttuvat = 0;
 	END;
-
-
-END;
