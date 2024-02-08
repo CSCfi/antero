@@ -1,5 +1,5 @@
 USE ARVO_SA
-CREATE PROCEDURE [Arvo_SA].[dbo].[p_arvo_puuttuvat_jaadytetyista]
+CREATE PROCEDURE p_arvo_puuttuvat_jaadytetyista
 AS
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -- Tämä proseduuri tarkistaa latausten jälkeen, jos Arvon datasta ladatuista tiedoista puuttuu rajapinnasta poistettuja tietoja
