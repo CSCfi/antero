@@ -1,4 +1,10 @@
 USE ARVO_SA
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
 CREATE PROCEDURE p_arvo_puuttuvat_jaadytetyista
 AS
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
