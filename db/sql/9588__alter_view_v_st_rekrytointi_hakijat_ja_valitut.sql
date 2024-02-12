@@ -31,10 +31,13 @@ ALTER VIEW [dw].[v_st_rekrytointi_hakijat_ja_valitut] AS
 
 	d2.sukupuoli_fi as Sukupuoli,
 	d7.kytkin_fi as 'Kansalaisuus (Suomi)',
-	CASE WHEN d7.kytkin_fi = 'Kyllä' THEN 'Suomi' 
-	WHEN d8.rekrytointi_maanosat_fi = 'Eurooppa' THEN 'Eurooppa (pl. Suomi)'
-	WHEN d8.id = '-1' THEN 'Tieto puuttuu'
-	ELSE 'Muu' END as 'Kansalaisuus (maanosa)',
+	CASE 
+		WHEN d7.kytkin_fi = 'Kyllä' THEN 'Suomi'
+		WHEN d8.rekrytointi_maanosat_fi = 'Eurooppa' THEN 'Eurooppa (pl. Suomi)'
+		WHEN d7.kytkin_fi = 'Ei' THEN 'Muu'
+		WHEN d7.kytkin_fi = 'Tieto puuttuu' and d8.rekrytointi_maanosat_fi = 'Tieto puuttuu' THEN 'Tieto puuttuu'
+		ELSE 'Muu' 
+	END as 'Kansalaisuus (maanosa)',
 	'Tieto puuttuu' as 'Ikä',
 	'Tieto puuttuu' AS 'Ikäryhmä',
 	'Tieto puuttuu' AS 'Äidinkieli',
@@ -110,10 +113,13 @@ ALTER VIEW [dw].[v_st_rekrytointi_hakijat_ja_valitut] AS
 	NULL as 'Koodit Suoritettu ylempi korkeakoulututkinto',
 	NULL as 'Koodit Suoritettu tohtorintutkinto',
 	d2.sukupuoli_koodi as 'Koodit Sukupuoli',
-	CASE WHEN d7.kytkin_fi = 'Kyllä' THEN '1'
-	WHEN d8.rekrytointi_maanosat_fi = 'Eurooppa' THEN '2'
-	WHEN d8.id = '-1' THEN '-1'
-	ELSE '2' END as 'Koodit Kansalaisuus',
+	CASE 
+		WHEN d7.kytkin_fi = 'Kyllä' THEN '1'
+		WHEN d8.rekrytointi_maanosat_fi = 'Eurooppa' THEN '2'
+		WHEN d7.kytkin_fi = 'Ei' THEN '2'
+		WHEN d7.kytkin_fi = 'Tieto puuttuu' and d8.rekrytointi_maanosat_fi = 'Tieto puuttuu' THEN '-1'
+		ELSE '2' 
+	END as 'Koodit Kansalaisuus',
 
 	d1.jarjestys_organisaatio_koodi as 'Järjestys Korkeakoulu',
 	d2.jarjestys_sukupuoli_koodi as 'Järjestys Sukupuoli',
@@ -253,7 +259,7 @@ SELECT DISTINCT
 	d20.koulutusluokitus_koodi as 'Koodit Suoritettu ylempi korkeakoulututkinto',
 	d21.koulutusluokitus_koodi as 'Koodit Suoritettu tohtorintutkinto',
 	d2.sukupuoli_koodi as 'Koodit Sukupuoli',
-	d3.jarjestys_maanosa1_koodi as 'Koodit Kansalaisuus',
+	d3.maanosa1_koodi as 'Koodit Kansalaisuus',
 
 	d1.jarjestys_organisaatio_koodi as 'Järjestys Korkeakoulu',
 	d2.jarjestys_sukupuoli_koodi as 'Järjestys Sukupuoli',
@@ -306,4 +312,4 @@ LEFT JOIN ANTERO.dw.d_koulutusluokitus d21 on d21.id = f.d_tohtorintutkinnon_kou
 
 GO
 
-
+USE [ANTERO]
