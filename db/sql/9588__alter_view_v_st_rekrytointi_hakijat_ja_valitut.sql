@@ -109,7 +109,7 @@ ALTER VIEW [dw].[v_st_rekrytointi_hakijat_ja_valitut] AS
 	d1.organisaatio_koodi as 'Koodit Korkeakoulu',
 	NULL as 'Koodit Suoritettu ylempi korkeakoulututkinto',
 	NULL as 'Koodit Suoritettu tohtorintutkinto',
-	d2.jarjestys_sukupuoli_koodi as 'Koodit Sukupuoli',
+	d2.sukupuoli_koodi as 'Koodit Sukupuoli',
 	CASE WHEN d7.kytkin_fi = 'Kyllä' THEN '1'
 	WHEN d8.rekrytointi_maanosat_fi = 'Eurooppa' THEN '2'
 	WHEN d8.id = '-1' THEN '-1'
@@ -252,7 +252,7 @@ SELECT DISTINCT
 	d1.organisaatio_koodi as 'Koodit Korkeakoulu',
 	d20.koulutusluokitus_koodi as 'Koodit Suoritettu ylempi korkeakoulututkinto',
 	d21.koulutusluokitus_koodi as 'Koodit Suoritettu tohtorintutkinto',
-	d2.sukupuoli_fi as 'Koodit Sukupuoli',
+	d2.sukupuoli_koodi as 'Koodit Sukupuoli',
 	d3.jarjestys_maanosa1_koodi as 'Koodit Kansalaisuus',
 
 	d1.jarjestys_organisaatio_koodi as 'Järjestys Korkeakoulu',
@@ -306,4 +306,4 @@ LEFT JOIN ANTERO.dw.d_koulutusluokitus d21 on d21.id = f.d_tohtorintutkinnon_kou
 
 GO
 
-USE [ANTERO]
+
