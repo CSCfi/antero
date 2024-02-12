@@ -5,8 +5,8 @@
     "culture": "fi-FI",
     "dataSources": [
       {
-        "name": "SqlServer dwitvipusql16 ANTERO",
-        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
+        "name": "SqlServer dwitvipusql22 ANTERO",
+        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql22;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
         "impersonationMode": "impersonateServiceAccount",
         "annotations": [
           {
@@ -40,7 +40,7 @@
             "dataView": "full",
             "source": {
               "query": " SELECT [dw].[Sarakeleveys].* FROM [dw].[Sarakeleveys] ",
-              "dataSource": "SqlServer dwitvipusql16 ANTERO"
+              "dataSource": "SqlServer dwitvipusql22 ANTERO"
             }
           }
         ],
@@ -623,6 +623,18 @@
             "dataType": "string",
             "sourceColumn": "Ylemmän korkeakoulututkinnon korkeakoulu",
             "displayFolder": "Koulutusmuuttujat"
+          },
+          {
+            "name": "Koodit Sukupuoli",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "Koodit Sukupuoli"
+          },
+          {
+            "name": "Koodit Kansalaisuus",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "Koodit Kansalaisuus"
           }
         ],
         "partitions": [
@@ -630,8 +642,8 @@
             "name": "Muuttujat",
             "dataView": "full",
             "source": {
-              "query": " SELECT [dw].[v_st_rekrytointi_hakijat_ja_valitut].* FROM [dw].[v_st_rekrytointi_hakijat_ja_valitut] ",
-              "dataSource": "SqlServer dwitvipusql16 ANTERO"
+              "query": " \t\t\t\tSELECT [dw].[v_st_rekrytointi_hakijat_ja_valitut].*   FROM [dw].[v_st_rekrytointi_hakijat_ja_valitut] ",
+              "dataSource": "SqlServer dwitvipusql22 ANTERO"
             },
             "annotations": [
               {
@@ -1342,6 +1354,22 @@
                   "        <int>273</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koodit Sukupuoli</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>159</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koodit Kansalaisuus</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>178</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -2040,6 +2068,22 @@
                   "        <int>86</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koodit Sukupuoli</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>87</int>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koodit Kansalaisuus</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>88</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -2507,6 +2551,22 @@
                   "        <boolean>true</boolean>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koodit Sukupuoli</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>Koodit Kansalaisuus</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnChecked>",
                   "  <ColumnFilter />",
                   "  <SelectionFilter />",
@@ -2546,7 +2606,7 @@
             "name": "Ulkomaalaiset hakijat",
             "expression": [
               " ",
-              "CALCULATE([Hakijat], Muuttujat[Kansalaisuus (Suomi)] =\"Ei\")",
+              "CALCULATE([Hakijat], Muuttujat[Koodit Kansalaisuus] = 2)",
               ""
             ],
             "formatString": "#,0",
@@ -2573,7 +2633,7 @@
             "name": "Naishakijat",
             "expression": [
               " ",
-              "CALCULATE([Hakijat], Muuttujat[Sukupuoli] = \"Nainen\")",
+              "CALCULATE([Hakijat], Muuttujat[Koodit Sukupuoli] = \"2\")",
               ""
             ],
             "formatString": "#,0",
@@ -2583,7 +2643,7 @@
             "name": "Mieshakijat",
             "expression": [
               " ",
-              "CALCULATE([Hakijat], Muuttujat[Sukupuoli] = \"Mies\")",
+              "CALCULATE([Hakijat], Muuttujat[Koodit Sukupuoli] = \"1\")",
               ""
             ],
             "formatString": "#,0",
@@ -2648,7 +2708,7 @@
               "IF(OR([Valitut] = \"1-4\", [Ulkomaalaiset hakijat] = \"1-4\"),BLANK(),MEDIANX(taulu, DIVIDE([h],[v],0)))",
               ""
             ],
-            "formatString": "#,0.0"
+            "formatString": "#,0"
           },
           {
             "name": "Keskihajonta hakijoita per valittu",
@@ -2680,7 +2740,7 @@
           },
           {
             "name": "Ulkomaalaiset valitut",
-            "expression": " CALCULATE([Valitut], Muuttujat[Kansalaisuus (Suomi)] = \"Ei\")",
+            "expression": " CALCULATE([Valitut], Muuttujat[Koodit Kansalaisuus] = 2)",
             "formatString": "#,0",
             "displayFolder": "Valitut"
           },
@@ -2701,13 +2761,13 @@
           },
           {
             "name": "Valitut naiset",
-            "expression": " CALCULATE([Valitut], Muuttujat[Sukupuoli] = \"Nainen\")",
+            "expression": " CALCULATE([Valitut],Muuttujat[Koodit Sukupuoli] = \"2\")",
             "formatString": "#,0",
             "displayFolder": "Valitut"
           },
           {
             "name": "Valitut miehet",
-            "expression": " CALCULATE([Valitut], Muuttujat[Sukupuoli] = \"Mies\")",
+            "expression": " CALCULATE([Valitut],Muuttujat[Koodit Sukupuoli] = \"1\")",
             "formatString": "#,0",
             "displayFolder": "Valitut"
           },
@@ -2748,7 +2808,7 @@
             "expression": [
               " ",
               "",
-              "var osa = CALCULATE([Hakijat], Muuttujat[Kansalaisuus (Suomi)] = \"Kyllä\")",
+              "var osa = CALCULATE([Hakijat], Muuttujat[Koodit Kansalaisuus] = 1)",
               "var kaikki = [Hakijat]",
               "return IF(osa = BLANK(), BLANK(),",
               "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
@@ -2766,7 +2826,7 @@
             "expression": [
               " ",
               "",
-              "var osa = CALCULATE([Hakijat], Muuttujat[Kansalaisuus (Suomi)] = \"Ei\")",
+              "var osa = CALCULATE([Hakijat],Muuttujat[Koodit Kansalaisuus] = 2)",
               "var kaikki = [Hakijat]",
               "return IF(osa = BLANK(), BLANK(),",
               "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
@@ -2785,7 +2845,7 @@
             "expression": [
               " ",
               "",
-              "var osa = CALCULATE([Hakijat], Muuttujat[Kansalaisuus (Suomi)] = \"Tieto puuttuu\")",
+              "var osa = CALCULATE([Hakijat], Muuttujat[Koodit Kansalaisuus] = -1)",
               "var kaikki = [Hakijat]",
               "return IF(osa = BLANK(), BLANK(),",
               "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
@@ -2800,7 +2860,14 @@
             "name": "Sukupuolitieto puuttuu",
             "expression": [
               "",
-              "DIVIDE(CALCULATE([Hakijat], Muuttujat[Sukupuoli] = \"Tieto puuttuu\"),[Hakijat],BLANK())"
+              "var osa = CALCULATE([Hakijat], Muuttujat[Koodit Sukupuoli] = \"-1\")",
+              "var kaikki = [Hakijat]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
+              ""
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %",
             "displayFolder": "Hakijat"
@@ -3271,7 +3338,7 @@
           },
           {
             "name": "Ulkomaalaiset hakijat_s",
-            "expression": " CALCULATE([Hakijat_s], Muuttujat[Kansalaisuus (Suomi)] =\"Ei\")",
+            "expression": " CALCULATE([Hakijat_s], Muuttujat[Koodit Kansalaisuus] = 2)",
             "formatString": "#,0",
             "displayFolder": "Hakijat"
           },
@@ -3288,13 +3355,13 @@
           },
           {
             "name": "Naishakijat_s",
-            "expression": " CALCULATE([Hakijat_s], Muuttujat[Sukupuoli] = \"Nainen\")",
+            "expression": " CALCULATE([Hakijat_s], Muuttujat[Koodit Sukupuoli] = \"2\")",
             "formatString": "#,0",
             "displayFolder": "Hakijat"
           },
           {
             "name": "Mieshakijat_s",
-            "expression": " CALCULATE([Hakijat_s], Muuttujat[Sukupuoli] = \"Mies\")",
+            "expression": " CALCULATE([Hakijat_s], Muuttujat[Koodit Sukupuoli] = \"1\")",
             "formatString": "#,0",
             "displayFolder": "Hakijat"
           },
@@ -3330,9 +3397,10 @@
             "name": "Sukupuolitieto puuttuu_s",
             "expression": [
               "",
-              "DIVIDE(CALCULATE([Hakijat_s], Muuttujat[Sukupuoli] = \"Tieto puuttuu\"),[Hakijat_s],BLANK())",
+              "DIVIDE(CALCULATE([Hakijat_s], Muuttujat[Koodit Sukupuoli] = \"-1\"),[Hakijat_s],BLANK())",
               ""
-            ]
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Mediaani ulk. hakijoita per valittu_s",
@@ -3378,7 +3446,7 @@
           },
           {
             "name": "Ulkomaalaiset valitut_s",
-            "expression": " CALCULATE([Valitut_s], Muuttujat[Kansalaisuus (Suomi)] = \"Ei\")",
+            "expression": " CALCULATE([Valitut_s], Muuttujat[Koodit Kansalaisuus] = 2)",
             "formatString": "#,0",
             "displayFolder": "Valitut"
           },
@@ -3393,13 +3461,13 @@
           },
           {
             "name": "Valitut naiset_s",
-            "expression": " CALCULATE([Valitut_s], Muuttujat[Sukupuoli] = \"Nainen\")",
+            "expression": " CALCULATE([Valitut_s], Muuttujat[Koodit Sukupuoli] = \"2\")",
             "formatString": "#,0",
             "displayFolder": "Valitut"
           },
           {
             "name": "Valitut miehet_s",
-            "expression": " CALCULATE([Valitut_s], Muuttujat[Sukupuoli] = \"Mies\")",
+            "expression": " CALCULATE([Valitut_s], Muuttujat[Koodit Sukupuoli]= \"1\")",
             "formatString": "#,0",
             "displayFolder": "Valitut"
           },
@@ -3421,7 +3489,7 @@
               " ",
               "",
               "DIVIDE(",
-              "\tCALCULATE([Hakijat_s], Muuttujat[Kansalaisuus (Suomi)] = \"Kyllä\"),",
+              "\tCALCULATE([Hakijat_s], Muuttujat[Koodit Kansalaisuus] = 1),",
               "\t[Hakijat_s], BLANK())",
               "\t",
               ""
@@ -3435,7 +3503,7 @@
               " ",
               "",
               "DIVIDE(",
-              "\tCALCULATE([Hakijat_s], Muuttujat[Kansalaisuus (Suomi)] = \"Ei\"),",
+              "\tCALCULATE([Hakijat_s], Muuttujat[Koodit Kansalaisuus] = 2),",
               "\t[Hakijat_s], BLANK())",
               ""
             ],
@@ -3448,10 +3516,11 @@
               " ",
               "",
               "DIVIDE(",
-              "\tCALCULATE([Hakijat_s], Muuttujat[Kansalaisuus (Suomi)] = \"Tieto puuttuu\"),",
+              "\tCALCULATE([Hakijat_s], Muuttujat[Koodit Kansalaisuus] = -1),",
               "\t[Hakijat_s], BLANK())",
               ""
-            ]
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
             "name": "Uudet työntekijät_s",
@@ -3877,7 +3946,7 @@
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": " SELECT [dw].[v_st_rekrytointi_hakijat_ja_valitut].* FROM [dw].[v_st_rekrytointi_hakijat_ja_valitut] "
+            "value": " \t\t\t\tSELECT [dw].[v_st_rekrytointi_hakijat_ja_valitut].*   FROM [dw].[v_st_rekrytointi_hakijat_ja_valitut] "
           },
           {
             "name": "_TM_ExtProp_DbTableName",
@@ -4595,6 +4664,22 @@
               "        <int>273</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koodit Sukupuoli</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>159</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koodit Kansalaisuus</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>178</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -5293,6 +5378,22 @@
               "        <int>86</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koodit Sukupuoli</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>87</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koodit Kansalaisuus</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>88</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -5755,6 +5856,22 @@
               "    <item>",
               "      <key>",
               "        <string>Koodit Suoritettu tohtorintutkinto</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koodit Sukupuoli</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>Koodit Kansalaisuus</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
