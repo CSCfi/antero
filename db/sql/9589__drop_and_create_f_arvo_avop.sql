@@ -1,12 +1,6 @@
 USE [ANTERO]
 GO
 
-ALTER TABLE [dw].[f_arvo_avop] DROP CONSTRAINT [DF__f_arvo_avop__username]
-GO
-
-ALTER TABLE [dw].[f_arvo_avop] DROP CONSTRAINT [DF__f_arvo_avop__loadtime]
-GO
-
 /****** Object:  Table [dw].[f_arvo_avop]    Script Date: 13.2.2024 12:23:59 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[f_arvo_avop]') AND type in (N'U'))
 DROP TABLE [dw].[f_arvo_avop]
@@ -47,7 +41,7 @@ CREATE TABLE [dw].[f_arvo_avop](
  CONSTRAINT [PK__f_arvo_avop] PRIMARY KEY CLUSTERED 
 (
 	[id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 90, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, FILLFACTOR = 90) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
 

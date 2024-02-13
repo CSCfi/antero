@@ -1,12 +1,6 @@
 USE [ANTERO]
 GO
 
-ALTER TABLE [dw].[f_arvo_kandi] DROP CONSTRAINT [DF__f_arvo_kandi__username]
-GO
-
-ALTER TABLE [dw].[f_arvo_kandi] DROP CONSTRAINT [DF__f_arvo_kandi__loadtime]
-GO
-
 /****** Object:  Table [dw].[f_arvo_kandi]    Script Date: 13.2.2024 12:25:33 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[f_arvo_kandi]') AND type in (N'U'))
 DROP TABLE [dw].[f_arvo_kandi]
