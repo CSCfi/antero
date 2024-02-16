@@ -6,7 +6,7 @@
     "dataSources": [
       {
         "name": "SqlServer dwitestvipusql VipunenTK",
-        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=VipunenTK;Integrated Security=SSPI;Persist Security Info=false",
+        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql22;Initial Catalog=VipunenTK;Integrated Security=SSPI;Persist Security Info=false",
         "impersonationMode": "impersonateAccount",
         "account": "DWI\\T_VIPUTK_KUUTIO",
         "annotations": [
@@ -3939,19 +3939,37 @@
           },
           {
             "name": "Koulutustasoa nostava tutkinto, koulutusaste taso 1",
-            "expression": " var lkm = SUM([koultasoa1_nostava_tutkinto]) return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            "expression": " var lkm = SUM([koultasoa1_nostava_tutkinto]) return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
+            "formatString": "#,0"
           },
           {
             "name": "Koulutustasoa nostava tutkinto, koulutusaste taso 2",
-            "expression": " var lkm = SUM([koultasoa2_nostava_tutkinto]) return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
+            "expression": " var lkm = SUM([koultasoa2_nostava_tutkinto]) return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))",
+            "formatString": "#,0"
           },
           {
             "name": "Koulutustasoa nostava tutkinto, koulutusaste taso 1_s",
-            "expression": " IF([kytkin]=0, BLANK(), SUM([koultasoa1_nostava_tutkinto]))"
+            "expression": " IF([kytkin]=0, BLANK(), SUM([koultasoa1_nostava_tutkinto]))",
+            "formatString": "#,0"
           },
           {
             "name": "Koulutustasoa nostava tutkinto, koulutusaste taso 2_s",
-            "expression": "IF([kytkin]=0, BLANK(), SUM([koultasoa2_nostava_tutkinto]))"
+            "expression": "IF([kytkin]=0, BLANK(), SUM([koultasoa2_nostava_tutkinto]))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Koulutustasoa nostavien tutkintojen osuus",
+            "expression": [
+              "",
+              "var osa =[Koulutustasoa nostava tutkinto, koulutusaste taso 1]",
+              "var kaikki =[Tutkinnon suorittaneiden lkm]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
           }
         ],
         "annotations": [
@@ -15803,6 +15821,362 @@
               },
               {
                 "name": "Aiemman ylioppilastutkinnon suorittaneiden lkm"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Tasoraportti",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Aik. suoritettu alempi kk-tutkinto"
+              },
+              {
+                "name": "Aik. suoritettu amk-tutkinto"
+              },
+              {
+                "name": "Aik. suoritettu amm. tutkinto"
+              },
+              {
+                "name": "Aik. suoritettu lisensiaatin tutk."
+              },
+              {
+                "name": "Aik. suoritettu opistoast. tai amm. korkast. tutkinto"
+              },
+              {
+                "name": "Aik. suoritettu tohtorin tutk."
+              },
+              {
+                "name": "Aik. suoritettu ylempi amk-tutkinto"
+              },
+              {
+                "name": "Aik. suoritettu ylempi kk-tutkinto"
+              },
+              {
+                "name": "Aik. suoritettu yo-tutkinto"
+              },
+              {
+                "name": "Alemman kk-tutk. suoritusvuosi"
+              },
+              {
+                "name": "Alemmasta kk-tutk. kulunut aika"
+              },
+              {
+                "name": "Alempi kk-tutk. samalla koul.alalla (2002)"
+              },
+              {
+                "name": "Alempi kk-tutk. samalla koul.alalla 1"
+              },
+              {
+                "name": "Alempi kk-tutk. samalla koul.alalla 2"
+              },
+              {
+                "name": "Alempi kk-tutk. samalla op.alalla"
+              },
+              {
+                "name": "Amk-tutkinnon suoritusvuosi"
+              },
+              {
+                "name": "Amk-tutkinnosta kulunut aika"
+              },
+              {
+                "name": "Amk-tutkinto samalla koul.alalla (2002)"
+              },
+              {
+                "name": "Amk-tutkinto samalla koul.alalla 1"
+              },
+              {
+                "name": "Amk-tutkinto samalla koul.alalla 2"
+              },
+              {
+                "name": "Amk-tutkinto samalla op.alalla"
+              },
+              {
+                "name": "Amm. tutk. samalla koul.alalla (1995)"
+              },
+              {
+                "name": "Amm. tutk. samalla koul.alalla (2002)"
+              },
+              {
+                "name": "Amm. tutk. samalla koul.alalla 1"
+              },
+              {
+                "name": "Amm. tutk. samalla koul.alalla 2"
+              },
+              {
+                "name": "Amm. tutk. samalla op.alalla"
+              },
+              {
+                "name": "Amm. tutkinnon suoritusvuosi"
+              },
+              {
+                "name": "Amm. tutkinnon tutkintotyyppi"
+              },
+              {
+                "name": "Amm. tutkinnosta kulunut aika"
+              },
+              {
+                "name": "Amm. tutkinto oppisopimuskoul."
+              },
+              {
+                "name": "Ikäryhmä"
+              },
+              {
+                "name": "Koodit Koulutusala (1995)"
+              },
+              {
+                "name": "Koodit Koulutusala (2002)"
+              },
+              {
+                "name": "Koodit Koulutusala taso 1"
+              },
+              {
+                "name": "Koodit Koulutusala taso 2"
+              },
+              {
+                "name": "Koodit Koulutusala taso 3"
+              },
+              {
+                "name": "Koodit Koulutusnimike"
+              },
+              {
+                "name": "Koodit OKM ohjauksen ala"
+              },
+              {
+                "name": "Koodit Opintoala (2002)"
+              },
+              {
+                "name": "Koulutusala (1995)"
+              },
+              {
+                "name": "Koulutusala (2002)"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste (2002)"
+              },
+              {
+                "name": "Koulutusaste, taso 1"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "Koulutusnimike"
+              },
+              {
+                "name": "Lis. tutkinto samalla koul.alalla (1995)"
+              },
+              {
+                "name": "Lis. tutkinto samalla koul.alalla (2002)"
+              },
+              {
+                "name": "Lis. tutkinto samalla koul.alalla 1"
+              },
+              {
+                "name": "Lis. tutkinto samalla koul.alalla 2"
+              },
+              {
+                "name": "Lis. tutkinto samalla op.alalla"
+              },
+              {
+                "name": "Lisensiaatin tutk. kulunut aika"
+              },
+              {
+                "name": "Lisensiaatin tutk. suoritusvuosi"
+              },
+              {
+                "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Opintoala (2002)"
+              },
+              {
+                "name": "Opisto/ammka tutk. samalla koul.alalla 1"
+              },
+              {
+                "name": "Opisto/ammka tutk. samalla koul.alalla 2"
+              },
+              {
+                "name": "Opisto/ammka. tutk. samalla koul.alalla (1995)"
+              },
+              {
+                "name": "Opisto/ammka. tutk. samalla koul.alalla (2002)"
+              },
+              {
+                "name": "Opisto/ammka. tutk. samalla op.alalla"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Tarkastelujakso"
+              },
+              {
+                "name": "Toht. tutkinto samalla koul.alalla (1995)"
+              },
+              {
+                "name": "Toht. tutkinto samalla koul.alalla (2002)"
+              },
+              {
+                "name": "Toht. tutkinto samalla koul.alalla 1"
+              },
+              {
+                "name": "Toht. tutkinto samalla koul.alalla 2"
+              },
+              {
+                "name": "Toht. tutkinto samalla op.alalla"
+              },
+              {
+                "name": "Tohtorin tutk. kulunut aika"
+              },
+              {
+                "name": "Tohtorin tutk. suorituvuosi"
+              },
+              {
+                "name": "Tutkinnon suoritusvuosi"
+              },
+              {
+                "name": "Ylemmän amk-tutk. suoritusvuosi"
+              },
+              {
+                "name": "Ylemmän kk-tutk. suoritusvuosi"
+              },
+              {
+                "name": "Ylemmästä amk-tutk. kulunut aika"
+              },
+              {
+                "name": "Ylemmästä kk-tutk. kulunut aika"
+              },
+              {
+                "name": "Ylempi amk-tutk. samalla koul.alalla (1995)"
+              },
+              {
+                "name": "Ylempi amk-tutk. samalla koul.alalla (2002)"
+              },
+              {
+                "name": "Ylempi amk-tutk. samalla koul.alalla 1"
+              },
+              {
+                "name": "Ylempi amk-tutk. samalla koul.alalla 2"
+              },
+              {
+                "name": "Ylempi amk-tutk. samalla op.alalla"
+              },
+              {
+                "name": "Ylempi kk-tutk. samalla koul.alalla (1995)"
+              },
+              {
+                "name": "Ylempi kk-tutk. samalla koul.alalla (2002)"
+              },
+              {
+                "name": "Ylempi kk-tutk. samalla koul.alalla 1"
+              },
+              {
+                "name": "Ylempi kk-tutk. samalla koul.alalla 2"
+              },
+              {
+                "name": "Ylempi kk-tutk. samalla op.alalla"
+              },
+              {
+                "name": "Yo-tutkinnon suoritusvuosi"
+              },
+              {
+                "name": "Yo-tutkinnosta kulunut aika"
+              },
+              {
+                "name": "Äidinkieli"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Aiemman alemman kk-tutkinnon suorittaneiden lkm"
+              },
+              {
+                "name": "Aiemman alemman kk-tutkinnon suorittaneiden osuus tutkinnon suorittaneista"
+              },
+              {
+                "name": "Aiemman amk-tutkinnon suorittaneiden lkm"
+              },
+              {
+                "name": "Aiemman amk-tutkinnon suorittaneiden osuus tutkinnon suorittaneista"
+              },
+              {
+                "name": "Aiemman ammatillisen tutkinnon suorittaneiden lkm"
+              },
+              {
+                "name": "Aiemman ammatillisen tutkinnon suorittaneiden osuus tutkinnon suorittaneista"
+              },
+              {
+                "name": "Aiemman lisensiaatin tutkinnon suorittaneiden lkm"
+              },
+              {
+                "name": "Aiemman lisensiaatin tutkinnon suorittaneiden osuus tutkinnon suorittaneista"
+              },
+              {
+                "name": "Aiemman opisto- tai ammatillisen korkea-asteen tutk. suorittaneiden osuus tutk. suorittaneista"
+              },
+              {
+                "name": "Aiemman opisto- tai ammatillisen korkea-asteen tutkinnon suorittaneiden lkm"
+              },
+              {
+                "name": "Aiemman tohtorin tutkinnon suorittaneiden lkm"
+              },
+              {
+                "name": "Aiemman tohtorin tutkinnon suorittaneiden osuus tutkinnon suorittaneista"
+              },
+              {
+                "name": "Aiemman ylemmän amk-tutkinnon suorittaneiden lkm"
+              },
+              {
+                "name": "Aiemman ylemmän amk-tutkinnon suorittaneiden osuus tutkinnon suorittaneista"
+              },
+              {
+                "name": "Aiemman ylemmän kk-tutkinnon suorittaneiden lkm"
+              },
+              {
+                "name": "Aiemman ylemmän kk-tutkinnon suorittaneiden osuus tutkinnon suorittaneista"
+              },
+              {
+                "name": "Aiemman ylioppilastutkinnon suorittaneiden lkm"
+              },
+              {
+                "name": "Aiemman ylioppilastutkinnon suorittaneiden osuus tutkinnon suorittaneista"
+              },
+              {
+                "name": "Koulutustasoa nostava tutkinto, koulutusaste taso 1"
+              },
+              {
+                "name": "Koulutustasoa nostava tutkinto, koulutusaste taso 2"
+              },
+              {
+                "name": "Koulutustasoa nostavien tutkintojen osuus"
+              },
+              {
+                "name": "Tutkinnon suorittaneiden lkm"
               }
             ]
           },
