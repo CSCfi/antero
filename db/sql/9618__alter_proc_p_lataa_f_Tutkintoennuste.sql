@@ -393,7 +393,7 @@ ALTER PROCEDURE [dbo].[p_lataa_f_Tutkintoennuste] AS
 	(f.aineistokoodi = 'K3.10' AND d10.lahde_koodi = '51' AND f.[1a Aloittaneiden opintojen kulku koulutuslajin mukaan prioriteettina mikä tahansa tutkinto] <> 'Virhetilanne'
 	AND d17.tarkastelujakso_koodi = '9' AND CAST(LEFT(d1.lukuvuosi,4) as int) >= 2008 AND (d6.koulutuslaji2_koodi = '51b' or (COALESCE(NULLIF(d7.Koulutusaste_taso2_koodi,-1),d7b.Koulutusaste_taso2_koodi) = '63' and COALESCE(NULLIF(d7.iscfi2013_koodi,-1),d7b.iscfi2013_koodi) in ('0112','0916')))) OR
 	(aineistokoodi = 'K3.10' AND d10.lahde_koodi = '41' AND d6.koulutuslaji2_koodi <> '52' AND [1a Aloittaneiden opintojen kulku koulutuslajin mukaan prioriteettina mikä tahansa tutkinto] <> 'Virhetilanne'
-	AND d17.tarkastelujakso_koodi = '6,5' AND CAST(LEFT(d1.lukuvuosi,4) as int) >= 2011 AND d7.Koulutusaste_taso2_koodi =  '62')
+	AND d17.tarkastelujakso_koodi = '7' AND CAST(LEFT(d1.lukuvuosi,4) as int) >= 2011 AND d7.Koulutusaste_taso2_koodi =  '62')
 	GROUP BY COALESCE(NULLIF(d7.Koulutusaste_taso2,'Tuntematon'),d7b.koulutusaste_taso2), COALESCE(NULLIF(d7.iscfi2013_koodi, -1), d7b.iscfi2013_koodi),
 			COALESCE(NULLIF(d7.iscfi2013,'Tuntematon'),d7b.iscfi2013), d1.lukuvuosi, d6.koulutuslaji2, CASE 
 			WHEN f.aineistokoodi = 'K3.9' THEN 'Ammatillinen koulutus'
@@ -491,7 +491,7 @@ ALTER PROCEDURE [dbo].[p_lataa_f_Tutkintoennuste] AS
 		(f.aineistokoodi = 'K3.10' AND d10.lahde_koodi = '51' AND f.[1a Aloittaneiden opintojen kulku koulutuslajin mukaan prioriteettina mikä tahansa tutkinto] <> 'Virhetilanne'
 		AND d17.tarkastelujakso_koodi = '9' AND CAST(LEFT(d1.lukuvuosi,4) as int) >= 2008 AND (d6.koulutuslaji2_koodi = '51b' or (COALESCE(NULLIF(d7.Koulutusaste_taso2_koodi,-1),d7b.Koulutusaste_taso2_koodi) = '63' and COALESCE(NULLIF(d7.iscfi2013_koodi,-1),d7b.iscfi2013_koodi) in ('0112','0916')))) OR
 		(aineistokoodi = 'K3.10' AND d10.lahde_koodi = '41' AND d6.koulutuslaji2_koodi <> '52' AND [1a Aloittaneiden opintojen kulku koulutuslajin mukaan prioriteettina mikä tahansa tutkinto] <> 'Virhetilanne'
-		AND d17.tarkastelujakso_koodi = '6,5' AND CAST(LEFT(d1.lukuvuosi,4) as int) >= 2011 AND d7.Koulutusaste_taso2_koodi =  '62')
+		AND d17.tarkastelujakso_koodi = '7' AND CAST(LEFT(d1.lukuvuosi,4) as int) >= 2011 AND d7.Koulutusaste_taso2_koodi =  '62')
 		GROUP BY COALESCE(NULLIF(d7.Koulutusaste_taso2,'Tuntematon'),d7b.koulutusaste_taso2), COALESCE(NULLIF(d7.iscfi2013_koodi, -1), d7b.iscfi2013_koodi),
 				COALESCE(NULLIF(d7.iscfi2013,'Tuntematon'),d7b.iscfi2013), d1.lukuvuosi, d6.koulutuslaji2, CASE 
 				WHEN f.aineistokoodi = 'K3.9' THEN 'Ammatillinen koulutus'
