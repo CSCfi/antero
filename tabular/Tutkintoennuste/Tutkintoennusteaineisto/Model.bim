@@ -206,7 +206,7 @@
               "",
               "IF([kytkin] = 0, blank(), IF([kytkin2], lkm, blank()))"
             ],
-            "formatString": "0"
+            "formatString": "#,0"
           },
           {
             "name": "Tutkintojen määrä, opintojaan jatkavat vähennetty (ennuste, kaikki alat)_s",
@@ -715,7 +715,9 @@
             "expression": [
               " ",
               "",
-              "var lkm1 = CALCULATE(SUM([alkuperaisen_tutkinnon_suorittaneet]))",
+              "var taulu = SUMMARIZE('Moninkertainen koulutus', 'Moninkertainen koulutus'[Koulutusaste, taso 2], 'Moninkertainen koulutus'[Koulutusala, taso 3], 'Moninkertainen koulutus'[Tilastovuosi], \"lkm\", AVERAGE('Moninkertainen koulutus'[alkuperaisen_tutkinnon_suorittaneet]))",
+              "",
+              "var lkm1 = SUMX(taulu,[lkm])",
               "",
               "var osa = [Myöhemmän tutkinnon suorittaneet]",
               "var kaikki = IF(AND(lkm1<5,lkm1>0),\"1-4\", MROUND(lkm1,3))",
@@ -737,7 +739,9 @@
             "expression": [
               " ",
               "",
-              "var kaikki = SUM([alkuperaisen_tutkinnon_suorittaneet])",
+              "var taulu = SUMMARIZE('Moninkertainen koulutus', 'Moninkertainen koulutus'[Koulutusaste, taso 2], 'Moninkertainen koulutus'[Koulutusala, taso 3], 'Moninkertainen koulutus'[Tilastovuosi], \"lkm\", AVERAGE('Moninkertainen koulutus'[alkuperaisen_tutkinnon_suorittaneet]))",
+              "",
+              "var kaikki = SUMX(taulu,[lkm])",
               "",
               "var osa = [Myöhemmän tutkinnon suorittaneet_s]",
               "",
