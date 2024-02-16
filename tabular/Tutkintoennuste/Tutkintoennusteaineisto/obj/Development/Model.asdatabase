@@ -182,7 +182,9 @@
             "expression": [
               "",
               "",
-              "var kerroin = DIVIDE(SUM('Moninkertainen koulutus'[myohemman_tutkinnon_suorittaneet]),SUM('Moninkertainen koulutus'[alkuperaisen_tutkinnon_suorittaneet]),BLANK())",
+              "var taulu = SUMMARIZE('Moninkertainen koulutus', 'Moninkertainen koulutus'[Koulutusaste, taso 2], 'Moninkertainen koulutus'[Koulutusala, taso 3], 'Moninkertainen koulutus'[Tilastovuosi], \"lkm\", AVERAGE('Moninkertainen koulutus'[alkuperaisen_tutkinnon_suorittaneet]))",
+              "",
+              "var kerroin = DIVIDE(SUM('Moninkertainen koulutus'[myohemman_tutkinnon_suorittaneet]), SUMX(taulu,[lkm]) ,BLANK())",
               "",
               "var lkm = IF(ISBLANK(kerroin), [Tutkintojen määrä, opintojaan jatkavat vähennetty (ennuste, kaikki alat)_s],[Tutkintojen määrä (ennuste)_s] - ([Tutkintojen määrä (ennuste)_s] * kerroin))",
               "",
@@ -198,7 +200,9 @@
             "expression": [
               "",
               "",
-              "var kerroin = DIVIDE(SUM('Moninkertainen koulutus'[myohemman_tutkinnon_suorittaneet]),SUM('Moninkertainen koulutus'[alkuperaisen_tutkinnon_suorittaneet]),BLANK())",
+              "var taulu = CALCULATETABLE(SUMMARIZE('Moninkertainen koulutus', 'Moninkertainen koulutus'[Koulutusaste, taso 2], 'Moninkertainen koulutus'[Koulutusala, taso 3], 'Moninkertainen koulutus'[Tilastovuosi], \"lkm\", AVERAGE('Moninkertainen koulutus'[alkuperaisen_tutkinnon_suorittaneet])), ALL(Ennuste[Koulutusala, taso 3]))",
+              "",
+              "var kerroin = DIVIDE(SUM('Moninkertainen koulutus'[myohemman_tutkinnon_suorittaneet]),SUMX(taulu, [lkm]),BLANK())",
               "",
               "var lkm = IF(ISBLANK(kerroin), [Tutkintojen määrä, opintojaan jatkavat vähennetty (ennuste, kaikki alat)_s],[Tutkintojen määrä (ennuste)_s] - ([Tutkintojen määrä (ennuste)_s] * kerroin))",
               "",
@@ -213,7 +217,9 @@
             "expression": [
               "",
               "",
-              "var kerroin = CALCULATE(DIVIDE(SUM('Moninkertainen koulutus'[myohemman_tutkinnon_suorittaneet]),SUM('Moninkertainen koulutus'[alkuperaisen_tutkinnon_suorittaneet]),BLANK()), ALL(Ennuste[Koulutusala, taso 3]))",
+              "var taulu = CALCULATETABLE(SUMMARIZE('Moninkertainen koulutus', 'Moninkertainen koulutus'[Koulutusaste, taso 2], 'Moninkertainen koulutus'[Koulutusala, taso 3], 'Moninkertainen koulutus'[Tilastovuosi], \"lkm\", AVERAGE('Moninkertainen koulutus'[alkuperaisen_tutkinnon_suorittaneet])), ALL(Ennuste[Koulutusala, taso 3]))",
+              "",
+              "var kerroin = CALCULATE(DIVIDE(SUM('Moninkertainen koulutus'[myohemman_tutkinnon_suorittaneet]),SUMX(taulu,[lkm]),BLANK()), ALL(Ennuste[Koulutusala, taso 3]))",
               "",
               "var lkm = [Tutkintojen määrä (ennuste)_s] - ([Tutkintojen määrä (ennuste)_s] * kerroin)",
               "",
@@ -746,7 +752,6 @@
               "var osa = [Myöhemmän tutkinnon suorittaneet_s]",
               "",
               "var osuus =  DIVIDE(osa,kaikki, blank())",
-              "",
               "",
               "RETURN IF([kytkin] = 0, blank(), IF(ISBLANK(osuus), [Myöhemmän tutkinnon suorittaneiden osuus (kaikki alat)_s], osuus))",
               ""
