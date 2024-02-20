@@ -1,0 +1,11 @@
+USE [ANTERO]
+GO
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER TABLE sa.sa_suorat_yo_talous_4_tutkimusmenot ADD HYVINVOINTIALUEET INT;
+ALTER TABLE sa.sa_suorat_amk_talous_4_tutkimusmenot ADD HYVINVOINTIALUEET BIGINT;
