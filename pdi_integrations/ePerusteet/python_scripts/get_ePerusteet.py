@@ -1,14 +1,17 @@
 # Import the necessary libraries
 import requests
-from pandas.io.json import json_normalize
+#from pandas.io.json import json_normalize
+import pandas as pd
 import os
 from time import gmtime, strftime
 
 # Set URL
 url="https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/" #?sivu=14" #?tuleva=true&siirtyma=true&voimassaolo=true&poistunut=true&koulutustyyppi=koulutustyyppi_1&koulutustyyppi=koulutustyyppi_4&koulutustyyppi=koulutustyyppi_11&koulutustyyppi=koulutustyyppi_12&koulutustyyppi=koulutustyyppi_13&koulutustyyppi=koulutustyyppi_18&koulutustyyppi=koulutustyyppi_19&koulutustyyppi=koulutustyyppi_26"
-
+reqheaders = {'Content-Type': 'application/json'}
+reqheaders['Accept'] = 'application/json'
+reqheaders['Caller-Id'] = '1.2.246.562.10.2013112012294919827487.vipunen'
 #set username
-username = os.environ['USERNAME']
+username = "vhamalai" #os.environ['USERNAME']
 
 # Get the number of pages and the current page
 
@@ -102,7 +105,8 @@ def makerow_tutkinnonosat():
            "arvo": None, "uri": None, "koodisto": None, "versio": None, "koodiuri": None, "koodiarvo": None, "tyyppi": None,
            "valmatelmasisalto": None, "source": url2, "loadtime": loadtime, "username": username}
 # Get the response
-response = requests.get(url).json()
+
+response = requests.get(url, headers=reqheaders).json()
 page =  response['sivu']
 pages = response['sivuja']
 loadtime = getTime()
@@ -151,9 +155,9 @@ while page < pages: ## While there are pages left
             row_oa["osaamisala_koodi"]= keycheck("arvo", osaamisala)
             row_oa["versio"]= keycheck("versio", osaamisala)
             osaamisalat.append(row_oa)
-
-        response = requests.get(url + "?sivu=" + str(page)).json()
     page += 1
+    response = requests.get(url + "?sivu=" + str(page),headers=reqheaders).json()
+    
 
 # First loop to get ePErusteet values
 #  id_list.append(229220)
@@ -162,8 +166,8 @@ loadtime = getTime()
 for ePeruste in id_list:     
     #used in nested loops
     url2 = "https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/%s/kaikki" % ePeruste
-    response2 = requests.get(url2).json()   
-    
+    response2 = requests.get(url2,headers=reqheaders).json()   
+   
     if "suoritustavat" in response2:
         for st in response2["suoritustavat"]:
             row_st = makerow_suoritustavat()
@@ -327,20 +331,21 @@ for ePeruste in id_list:
             row_to["valmatelmasisalto"] = deep_get(to,  "valmaTelmaSisalto")
             tutkinnonosat.append(row_to)
     else:
+        row_to = makerow_tutkinnonosat()
         tutkinnonosat.append(row_to)
 
  
  # Normalise the json data list tutkinnonosaviitteet = []
 # Suoritustavat - this is a plural dataset, ie. many "suoritustavat" per one row of data    
-data = json_normalize(eperusteet_all)
-data2 = json_normalize(osaamisalat)
-data3 = json_normalize(suoritustavat)
-data4 = json_normalize(tutkinnonosaviitteet)
-data5 = json_normalize(tutkinnonosat)
+data = pd.json_normalize(eperusteet_all)
+data2 = pd.json_normalize(osaamisalat)
+data3 = pd.json_normalize(suoritustavat)
+data4 = pd.json_normalize(tutkinnonosaviitteet)
+data5 = pd.json_normalize(tutkinnonosat)
 # Write the csv path, change to the folder in use    
 data.to_csv(path_or_buf='d:/pdi_integrations/data/ePerusteet/eperusteet.csv', sep='|', na_rep='',
                  header=True, index=False, mode='w', encoding='utf-8-sig', quoting=2,
-                 quotechar='"', line_terminator='\n' , escapechar='$',
+                 quotechar='"'  , escapechar='$',
                  columns = ["diaarinumero","id","tutkintokoodi","koulutustyyppi","koulutusvienti","luotu",
                             "muokattu","nimi_id","nimi_tunniste","nimi_fi","nimi_sv","nimi_en",
                             "paatospvm","siirtymaPaattyy","tila","tyyppi",
@@ -348,20 +353,20 @@ data.to_csv(path_or_buf='d:/pdi_integrations/data/ePerusteet/eperusteet.csv', se
 
 data2.to_csv(path_or_buf='d:/pdi_integrations/data/ePerusteet/osaamisalat.csv', sep='|', na_rep='',
                  header=True, index=False, mode='w', encoding='utf-8-sig', quoting=2,
-                 quotechar='"', line_terminator='\n' , escapechar='$',
+                 quotechar='"'  , escapechar='$',
                  columns = ["ePerusteId","nimi_fi","nimi_sv","nimi_en","osaamisala_koodi",
                             "versio","source","loadtime","username"]
                  )
 data3.to_csv(path_or_buf='d:/pdi_integrations/data/ePerusteet/suoritustavat.csv', sep='|', na_rep='',
                  header=True, index=False, mode='w', encoding='utf-8-sig', quoting=2,
-                 quotechar='"', line_terminator='\n' , escapechar='$'
+                 quotechar='"'  , escapechar='$'
                 )
 data4.to_csv(path_or_buf='d:/pdi_integrations/data/ePerusteet/tutkinnonosaviitteet.csv', sep='|', na_rep='',
                  header=True, index=False, mode='w', encoding='utf-8-sig', quoting=2,
-                 quotechar='"', line_terminator='\n' , escapechar='$'
+                 quotechar='"'  , escapechar='$'
                 )
 data5.to_csv(path_or_buf='d:/pdi_integrations/data/ePerusteet/tutkinnonosat.csv', sep='|', na_rep='',
                  header=True, index=False, mode='w', encoding='utf-8-sig', quoting=2,
-                 quotechar='"', line_terminator='\n' , escapechar='$'
+                 quotechar='"'  , escapechar='$'
                 )
     
