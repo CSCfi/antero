@@ -76,6 +76,7 @@ SELECT DISTINCT
 	,sisaoppilaitosmainen_majoitus
 	,jarj_tavoitetutkinto
 	,yhdistelmatutkinto
+	,oppivelvollinen
 	
 INTO dw.f_koski_lukio_opiskelijat_laskentapaiva
 
@@ -135,6 +136,7 @@ FROM (
 			order by alkamispaiva, jarj_tavoitetutkinto, suorituksen_tyyppi, koulutusmoduuli_koodiarvo
 		)
 		,yhdistelmatutkinto
+		,oppivelvollinen
 
 	FROM (
 
