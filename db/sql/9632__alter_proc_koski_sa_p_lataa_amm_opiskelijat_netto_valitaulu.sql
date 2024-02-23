@@ -68,8 +68,42 @@ CREATE TABLE #taulu2 (
 	,oppivelvollinen int
 )
 
-DROP TABLE IF EXISTS sa.temp_amm_koski_opiskeluoikeus
 DROP TABLE IF EXISTS sa.temp_amm_koski_opiskeluoikeus_hk
+
+CREATE TABLE [sa].[temp_amm_koski_opiskeluoikeus](
+	[opiskeluoikeus_oid] [varchar](150) NULL,
+	[oppija_oid] [varchar](150) NULL,
+	[lisatiedot_henkilostokoulutus] [int] NULL,
+	[lisatiedot_koulutusvienti] [int] NULL,
+	[alkamispaiva] [datetime] NULL,
+	[alku] [datetime] NULL,
+	[loppu] [datetime] NULL,
+	[tila] [varchar](50) NULL,
+	[sukupuoli] [varchar](50) NULL,
+	[aidinkieli] [varchar](50) NULL,
+	[syntymaaika] [date] NULL,
+	[kansalaisuus] [varchar](3) NULL,
+	[erityisopetus] [int] NOT NULL,
+	[opintojen_rahoitus] [varchar](50) NULL,
+	[koulutusvienti] [int] NULL,
+	[majoitus] [int] NOT NULL,
+	[tutkinto_koodi] [varchar](6) NULL,
+	[osaamisala_koodiarvo] [varchar](max) NULL,
+	[suorituskieli_koodiarvo] [nvarchar](255) NULL,
+	[suorituksen_tyyppi] [varchar](250) NULL,
+	[toimipiste_oid] [varchar](max) NULL,
+	[oppilaitos_oid] [varchar](max) NULL,
+	[koulutustoimija_oid] [varchar](max) NULL,
+	[hankintakoulutuksen_koulutustoimija_oid] [varchar](max) NULL,
+	[hankintakoulutus] [int] NOT NULL,
+	[henkilostokoulutus] [int] NULL,
+	[ika_oo_alk] [int] NULL,
+	[ika_oo_alk_tarkka] [int] NULL,
+	[oo_aloitusvuosi] [int] NULL,
+	[oo_aloituskuukausi] [int] NULL,
+	[ov_alku] [date] NULL,
+	[ov_loppu] [date] NULL
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 
 SELECT
 	sisaltyy_opiskeluoikeuteen_oid
@@ -82,6 +116,7 @@ INTO sa.temp_amm_koski_opiskeluoikeus_hk
 FROM sa.sa_koski_opiskeluoikeus 
 WHERE sisaltyy_opiskeluoikeuteen_oid is not null
 
+INSERT INTO [sa].[temp_amm_koski_opiskeluoikeus]
 SELECT 
 	oo.opiskeluoikeus_oid, 
 	oo.oppija_oid,
@@ -133,7 +168,6 @@ SELECT
 	oo_aloituskuukausi = month(oo.alkamispaiva),
 	ov.alkuPvm as ov_alku,
 	ov.loppuPvm as ov_loppu
-INTO sa.temp_amm_koski_opiskeluoikeus
 FROM sa.sa_koski_opiskeluoikeus oo
 LEFT JOIN [sa].[sa_koski_opiskeluoikeus_aikajakso] ooa on oo.opiskeluoikeus_oid = ooa.opiskeluoikeus_oid
 LEFT JOIN sa.sa_koski_henkilo h on h.oppija_oid = oo.oppija_oid
@@ -180,8 +214,7 @@ BEGIN
 		oo.oo_aloituskuukausi,
 		case when oo.ov_alku <= @pvm_alku and oo.ov_loppu > @pvm_alku then 1 else 0 end as oppivelvollinen
 	INTO #taulu1
-
-	FROM sa.temp_amm_koski_opiskeluoikeus oo
+	FROM Koski_sa.sa.temp_amm_koski_opiskeluoikeus oo
 	WHERE oo.alku <= @pvm_loppu AND oo.loppu >= @pvm_alku
 
 	--jaksonsisäiset apukyselyt
