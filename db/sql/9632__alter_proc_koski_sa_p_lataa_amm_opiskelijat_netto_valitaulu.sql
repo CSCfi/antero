@@ -69,6 +69,7 @@ CREATE TABLE #taulu2 (
 )
 
 DROP TABLE IF EXISTS sa.temp_amm_koski_opiskeluoikeus_hk
+DROP TABLE IF EXISTS sa.temp_amm_koski_opiskeluoikeus
 
 CREATE TABLE [sa].[temp_amm_koski_opiskeluoikeus](
 	[opiskeluoikeus_oid] [varchar](150) NULL,
