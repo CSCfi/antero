@@ -21,7 +21,7 @@ CREATE TABLE [dw].[api_opiskelijat_ja_tutkinnot](
 	[Sukupuoli] [nvarchar](100) NULL,
 	[Tutkinnot] [int] NULL,
 	[Opiskelijat] [int] NULL,
-	[opiskelijatFte] [int] NULL,
+	[opiskelijatFte] [float] NULL,
 	[Uudet opiskelijat] [int] NULL,
 	[Koulutusaste taso 1] [nvarchar](200) NULL,
 	[Koulutusaste taso 2] [nvarchar](200) NULL,
