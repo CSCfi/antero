@@ -14,11 +14,6 @@ GO
 
 
 
-
-
-
-
-
 ALTER VIEW [dbo].[v_f_tab_tutkinnon_suorittaneiden_myohempi_koulutus_4_8_yhteiset] AS
 
 Select --f.id,
