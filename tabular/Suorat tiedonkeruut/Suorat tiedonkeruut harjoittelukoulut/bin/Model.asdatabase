@@ -5,10 +5,9 @@
     "culture": "fi-FI",
     "dataSources": [
       {
-        "name": "SqlServer dwitvipusql16 ANTERO",
-        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
-        "impersonationMode": "impersonateAccount",
-        "account": "dwi\\T_VIPUTK_KUUTIO",
+        "name": "SqlServer dwitvipusql22 ANTERO",
+        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql22;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
+        "impersonationMode": "impersonateServiceAccount",
         "annotations": [
           {
             "name": "ConnectionEditUISource",
@@ -42,7 +41,7 @@
             "dataView": "full",
             "source": {
               "query": " SELECT [dw].[Sarakeleveys].* FROM [dw].[Sarakeleveys] ",
-              "dataSource": "SqlServer dwitvipusql16 ANTERO"
+              "dataSource": "SqlServer dwitvipusql22 ANTERO"
             }
           }
         ],
@@ -543,7 +542,7 @@
             "dataView": "full",
             "source": {
               "query": " SELECT [dw].[v_st_harjoittelukoulut].* FROM [dw].[v_st_harjoittelukoulut] ",
-              "dataSource": "SqlServer dwitvipusql16 ANTERO"
+              "dataSource": "SqlServer dwitvipusql22 ANTERO"
             },
             "annotations": [
               {
@@ -2257,7 +2256,8 @@
         "measures": [
           {
             "name": "Oppilasmäärä: esiopetus",
-            "expression": "if(sum([harjoittelukoulun_oppilaat_esiopetus])=0,blank(),sum([harjoittelukoulun_oppilaat_esiopetus]))"
+            "expression": "if(sum([harjoittelukoulun_oppilaat_esiopetus])=0,blank(),sum([harjoittelukoulun_oppilaat_esiopetus]))",
+            "formatString": "#,0"
           },
           {
             "name": "Oppilasmäärä: 1–6 luokat",
@@ -2339,6 +2339,77 @@
             "name": "Antal årsverken",
             "expression": " [Henkilötyövuodet]",
             "formatString": "#,0.0"
+          },
+          {
+            "name": "Antal elever: förskoleundervisning",
+            "expression": "if(sum([harjoittelukoulun_oppilaat_esiopetus])=0,blank(),sum([harjoittelukoulun_oppilaat_esiopetus]))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Antal elever: Årskurs 1–6",
+            "expression": "sum([harjoittelukoulun_oppilaat_perusopetuksen_vuodet_1_6])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Antal elever: Årskurs 7-9",
+            "expression": "if(sum([harjoittelukoulun_oppilaat_perusopetuksen_vuodet_7_9])=0,blank(),sum([harjoittelukoulun_oppilaat_perusopetuksen_vuodet_7_9]))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Antal elever: gymnasium",
+            "expression": "if(sum([harjoittelukoulun_oppilaat_lukio])=0,blank(),sum([harjoittelukoulun_oppilaat_lukio]))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Antal elever: totalt",
+            "expression": "sum([harjoittelukoulun_oppilaat_yhteensa])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Totalt antal veckotimmar i lärarutbildningsuppgifter",
+            "expression": "sum(Muuttujat[harjoittelukoulun_opettajankoulutustehtavien_kokonaisviikkotunnit])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Totalt antal timmar",
+            "expression": "sum(Muuttujat[harjoittelukoulun_kokonaistuntimaara])",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Klasslärarpraktik",
+            "expression": [
+              "if(sum([opintopisteet_luokanopettaja])=0,blank(),sum([opintopisteet_luokanopettaja]))",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Ämneslärarpraktik",
+            "expression": [
+              "if(sum(Muuttujat[opintopisteet_aineenopettaja])=0,blank(),sum([opintopisteet_aineenopettaja]))",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Speciallärare",
+            "expression": "if(sum([opintopisteet_erityisopettaja])=0,blank(),sum([opintopisteet_erityisopettaja]))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Studiehandledare",
+            "expression": "if(sum([opintopisteet_opinto_ohjaaja])=0,blank(),sum([opintopisteet_opinto_ohjaaja]))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Praktik med betoning på vuxenutbildning",
+            "expression": "if(sum([opintopisteet_aikuiskoulutus])=0,blank(),sum([opintopisteet_aikuiskoulutus]))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Andra lärarutbildningsgrupper",
+            "expression": "if(sum([opintopisteet_muut])=0,blank(),sum([opintopisteet_muut]))",
+            "formatString": "#,0"
           }
         ],
         "annotations": [
@@ -4432,6 +4503,147 @@
             "measures": [
               {
                 "name": "Antal årsverken"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "opintopisteet_sv",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Statistikår"
+              },
+              {
+                "name": "Universitet"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Praktik med betoning på vuxenutbildning"
+              },
+              {
+                "name": "Andra lärarutbildningsgrupper"
+              },
+              {
+                "name": "Klasslärarpraktik"
+              },
+              {
+                "name": "Speciallärare"
+              },
+              {
+                "name": "Studiehandledare"
+              },
+              {
+                "name": "Ämneslärarpraktik"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "toiminta_sv",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Statistikår"
+              },
+              {
+                "name": "Universitet"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Totalt antal timmar"
+              },
+              {
+                "name": "Totalt antal veckotimmar i lärarutbildningsuppgifter"
+              },
+              {
+                "name": "Antal elever: förskoleundervisning"
+              },
+              {
+                "name": "Antal elever: gymnasium"
+              },
+              {
+                "name": "Antal elever: totalt"
+              },
+              {
+                "name": "Antal elever: Årskurs 1–6"
+              },
+              {
+                "name": "Antal elever: Årskurs 7-9"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "analyysi_sv",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Statistikår"
+              },
+              {
+                "name": "Universitet"
+              },
+              {
+                "name": "Personalgrupp"
+              },
+              {
+                "name": "UKM-styrningsområde"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Antal årsverken"
+              },
+              {
+                "name": "Antal elever: förskoleundervisning"
+              },
+              {
+                "name": "Antal elever: gymnasium"
+              },
+              {
+                "name": "Antal elever: totalt"
+              },
+              {
+                "name": "Antal elever: Årskurs 1–6"
+              },
+              {
+                "name": "Antal elever: Årskurs 7-9"
+              },
+              {
+                "name": "Klasslärarpraktik"
+              },
+              {
+                "name": "Praktik med betoning på vuxenutbildning"
+              },
+              {
+                "name": "Speciallärare"
+              },
+              {
+                "name": "Studiehandledare"
+              },
+              {
+                "name": "Totalt antal timmar"
+              },
+              {
+                "name": "Totalt antal veckotimmar i lärarutbildningsuppgifter"
+              },
+              {
+                "name": "Ämneslärarpraktik"
+              },
+              {
+                "name": "Andra lärarutbildningsgrupper"
               }
             ]
           }
