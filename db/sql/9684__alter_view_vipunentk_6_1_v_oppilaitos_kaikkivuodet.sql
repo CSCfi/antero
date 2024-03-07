@@ -441,7 +441,7 @@ SELECT [koodi]
    
   UNION ALL
 
---vanhat n‰yttˆtutk
+--vanhat n√§ytt√∂tutk
   SELECT [koodi]
       ,[korvaavakoodi] = ' '
       ,[alkaa]
@@ -739,7 +739,7 @@ SELECT [koodi]
   
    UNION ALL
 
---6.4 n‰yttˆtutk, poistunut
+--6.4 n√§ytt√∂tutk, poistunut
   SELECT [koodi]=tunn
       ,[korvaavakoodi] = ' '
       ,[alkaa] = '1999-01-01'
@@ -1072,7 +1072,7 @@ SELECT tunn --[koodi]
       ,[alkaa] = '1999-01-01'
       ,[paattyy] = '9999-01-01'
       ,[onimi] = case tunn
-					when '01914' then 'LappeenrannanñLahden teknillinen yliopisto'
+					when '01914' then 'Lappeenrannan‚ÄìLahden teknillinen yliopisto'
 					when '10118' then 'Kaakkois-Suomen ammattikorkeakoulu'
 					else onimi
 				 end --[selite_FI]
@@ -1102,8 +1102,8 @@ SELECT tunn --[koodi]
       ,[korvaavakoodi] = case when tunn in ('02470','02609') then '10126' else utunn end --saimaa&lahti -> lab "yhdistyminen"
       ,[alkaa] = '1999-01-01'
       ,[paattyy] = '9999-01-01'
-      ,[onimi] = case tunn --hassu lyhennys tai kirjoitusasu, p‰ivit‰/poista jos korkeakoulun koodia vastaava nimi muuttuu; historiatietoja varten ei nykydimensiosta
-					when '01914' then 'LappeenrannanñLahden teknillinen yliopisto'
+      ,[onimi] = case tunn --hassu lyhennys tai kirjoitusasu, p√§ivit√§/poista jos korkeakoulun koodia vastaava nimi muuttuu; historiatietoja varten ei nykydimensiosta
+					when '01914' then 'Lappeenrannan‚ÄìLahden teknillinen yliopisto'
 					when '10118' then 'Kaakkois-Suomen ammattikorkeakoulu'
 					when '10126' then 'LAB-ammattikorkeakoulu'
 					else onimi
@@ -1134,8 +1134,8 @@ SELECT tunn --[koodi]
       ,[korvaavakoodi] = utunn
       ,[alkaa] = '1999-01-01'
       ,[paattyy] = '9999-01-01'
-      ,[onimi] = case tunn --hassu lyhennys tai kirjoitusasu, p‰ivit‰/poista jos korkeakoulun koodia vastaava nimi muuttuu
-					when '01914' then 'LappeenrannanñLahden teknillinen yliopisto'
+      ,[onimi] = case tunn --hassu lyhennys tai kirjoitusasu, p√§ivit√§/poista jos korkeakoulun koodia vastaava nimi muuttuu
+					when '01914' then 'Lappeenrannan‚ÄìLahden teknillinen yliopisto'
 					when '10118' then 'Kaakkois-Suomen ammattikorkeakoulu'
 					when '10126' then 'LAB-ammattikorkeakoulu'
 					else onimi
@@ -1166,8 +1166,8 @@ SELECT tunn --[koodi]
       ,[korvaavakoodi] = utunn
       ,[alkaa] = '1999-01-01'
       ,[paattyy] = '9999-01-01'
-      ,[onimi] = case tunn --hassu lyhennys tai kirjoitusasu, p‰ivit‰/poista jos korkeakoulun koodia vastaava nimi muuttuu
-					when '01914' then 'LappeenrannanñLahden teknillinen yliopisto'
+      ,[onimi] = case tunn --hassu lyhennys tai kirjoitusasu, p√§ivit√§/poista jos korkeakoulun koodia vastaava nimi muuttuu
+					when '01914' then 'Lappeenrannan‚ÄìLahden teknillinen yliopisto'
 					when '10118' then 'Kaakkois-Suomen ammattikorkeakoulu'
 					when '10126' then 'LAB-ammattikorkeakoulu'
 					else onimi
@@ -1198,15 +1198,15 @@ SELECT tunn --[koodi]
       ,[korvaavakoodi] = utunn
       ,[alkaa] = '1999-01-01'
       ,[paattyy] = '9999-01-01'
-      ,[onimi] = case tunn --hassu lyhennys tai kirjoitusasu, p‰ivit‰/poista jos korkeakoulun koodia vastaava nimi muuttuu
-					when '01914' then 'LappeenrannanñLahden teknillinen yliopisto'
+      ,[onimi] = case tunn --hassu lyhennys tai kirjoitusasu, p√§ivit√§/poista jos korkeakoulun koodia vastaava nimi muuttuu
+					when '01914' then 'Lappeenrannan‚ÄìLahden teknillinen yliopisto'
 					when '10118' then 'Kaakkois-Suomen ammattikorkeakoulu'
 					when '10126' then 'LAB-ammattikorkeakoulu'
 					else onimi
 				 end --[selite_FI]
       ,[onimi]  --[selite_SV]
       ,[onimi]  --[selite_EN]
-      ,[sair] = ISNULL([sair], '0')  -- Mika 2024.03.06: (tilap‰inen)korjaus aineistoon
+      ,[sair] = ISNULL([sair], '0')  -- Mika 2024.03.06: (tilap√§inen)korjaus aineistoon
       ,[oltyp]
       ,[pkryhma]
       ,[vuosilks]
@@ -1227,7 +1227,7 @@ SELECT tunn --[koodi]
    
 ) KaikkiVuodet
 
---haetaan kk-k‰‰nnˆkset nykytilanteen mukaan (manuaalisesti yll‰pidett‰v‰)
+--haetaan kk-k√§√§nn√∂kset nykytilanteen mukaan (manuaalisesti yll√§pidett√§v√§)
 left join VipunenTK_lisatiedot.dbo.korkeakoulut kk on kk.oppilaitoskoodi=KaikkiVuodet.koodi
 
 
