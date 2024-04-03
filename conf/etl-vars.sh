@@ -49,7 +49,7 @@ if [ "$env" == "test_old" ]; then
 fi
 if [ "$env" == "prod" ]; then
   export DATABASE_HOST="dwipvipusql22.csc.fi:1433"
-  export TABULAR_HOST="dwipviputab16"
+  export TABULAR_HOST="dwipviputab22"
 fi
 if [ "$env" == "prod_old" ]; then
   export DATABASE_HOST="dwipvipusql16.csc.fi:1433"
