@@ -5,8 +5,8 @@
     "culture": "fi-FI",
     "dataSources": [
       {
-        "name": "SqlServer dwitvipusql16 VipunenTK",
-        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=VipunenTK;Integrated Security=SSPI;Persist Security Info=false",
+        "name": "SqlServer dwitvipusql22 VipunenTK",
+        "connectionString": "Provider=SQLOLEDB.1;Data Source=dwitvipusql22;Initial Catalog=VipunenTK;Integrated Security=SSPI;Persist Security Info=false",
         "impersonationMode": "impersonateServiceAccount",
         "annotations": [
           {
@@ -151,7 +151,7 @@
             "dataView": "full",
             "source": {
               "query": " SELECT [dbo].[v_f_tab_poistuma].* FROM [dbo].[v_f_tab_poistuma] ",
-              "dataSource": "SqlServer dwitvipusql16 VipunenTK"
+              "dataSource": "SqlServer dwitvipusql22 VipunenTK"
             },
             "annotations": [
               {
@@ -1430,7 +1430,7 @@
             "dataView": "full",
             "source": {
               "query": " SELECT [dbo].[v_f_tab_poistuma_kertoimet].* FROM [dbo].[v_f_tab_poistuma_kertoimet] ",
-              "dataSource": "SqlServer dwitvipusql16 VipunenTK"
+              "dataSource": "SqlServer dwitvipusql22 VipunenTK"
             },
             "annotations": [
               {
@@ -1789,7 +1789,7 @@
             "dataView": "full",
             "source": {
               "query": " SELECT [dbo].[v_f_tab_poistuma_elakkeelle_siirtyneet_ja_kuolleet].* FROM [dbo].[v_f_tab_poistuma_elakkeelle_siirtyneet_ja_kuolleet] ",
-              "dataSource": "SqlServer dwitvipusql16 VipunenTK"
+              "dataSource": "SqlServer dwitvipusql22 VipunenTK"
             }
           }
         ],
@@ -1871,7 +1871,7 @@
             "dataView": "full",
             "source": {
               "query": " SELECT [dbo].[v_f_tab_ammattirakenne_ennuste].[Tilastovuosi],[dbo].[v_f_tab_ammattirakenne_ennuste].[Ammattiryhmä 1. taso],[dbo].[v_f_tab_ammattirakenne_ennuste].[Ammattiryhmä 2. taso],[dbo].[v_f_tab_ammattirakenne_ennuste].[Toimiala],[dbo].[v_f_tab_ammattirakenne_ennuste].[Toimiala_koodi],[dbo].[v_f_tab_ammattirakenne_ennuste].[Ikä tilastovuonna],[dbo].[v_f_tab_ammattirakenne_ennuste].[lkm],[dbo].[v_f_tab_ammattirakenne_ennuste].[vieraskieliset_lkm] FROM [dbo].[v_f_tab_ammattirakenne_ennuste] ",
-              "dataSource": "SqlServer dwitvipusql16 VipunenTK"
+              "dataSource": "SqlServer dwitvipusql22 VipunenTK"
             },
             "annotations": [
               {
@@ -2184,14 +2184,16 @@
               "var max_vuosi = MAX(Ammattirakenne[Tilastovuosi])",
               "var min_vuosi = MIN(Ammattirakenne[Tilastovuosi])",
               "var max_e_vuosi = MAX(Ennustevuosi[Vuosi])",
-              "var lg = IF(max_e_vuosi < min_vuosi, BLANK(),",
-              "IF([Trendi_s] <= 0, (LOG10((CALCULATE([Trendi_s], Ennustevuosi[Vuosi] = e_vuosi) * 100) / CALCULATE([Trendi_s], Ennustevuosi[Vuosi] = max_vuosi))),LOG( [Trendi_s] * 100 / CALCULATE([Trendi_s], Ennustevuosi[Vuosi] = max_vuosi))))",
+              "var lg = IFERROR(IF(max_e_vuosi < min_vuosi, BLANK(),",
+              "IF([Trendi_s] <= 0, (LOG10((CALCULATE([Trendi_s], Ennustevuosi[Vuosi] = e_vuosi) * 100) / CALCULATE([Trendi_s], Ennustevuosi[Vuosi] = max_vuosi))),LOG( [Trendi_s] * 100 / CALCULATE([Trendi_s], Ennustevuosi[Vuosi] = max_vuosi)))),BLANK())",
               "var lkm =  CALCULATE(SUM('Ammattirakenne'[lkm]), 'Ammattirakenne'[Tilastovuosi] = max_e_vuosi)",
               "",
               "",
               "RETURN",
               "",
-              "IFERROR(IF(max_e_vuosi > max_vuosi, CALCULATE(SUM(Ammattirakenne[lkm]), Ammattirakenne[Tilastovuosi] = max_vuosi) / 100 *  (((lg - 2) * 100) / 2) + CALCULATE(SUM(Ammattirakenne[lkm]), Ammattirakenne[Tilastovuosi] = max_vuosi),",
+              "IFERROR(",
+              "\tIF(max_e_vuosi > max_vuosi, ",
+              "\t\tCALCULATE(SUM(Ammattirakenne[lkm]), Ammattirakenne[Tilastovuosi] = max_vuosi) / 100 *  (((lg - 2) * 100) / 2) + \tCALCULATE(SUM(Ammattirakenne[lkm]), Ammattirakenne[Tilastovuosi] = max_vuosi),",
               "IF(min_vuosi > max_e_vuosi,BLANK(), lkm)),BLANK())",
               ""
             ],
@@ -2508,7 +2510,7 @@
             "dataView": "full",
             "source": {
               "query": " SELECT [dbo].[v_f_tab_toimialaennuste].* FROM [dbo].[v_f_tab_toimialaennuste] ",
-              "dataSource": "SqlServer dwitvipusql16 VipunenTK"
+              "dataSource": "SqlServer dwitvipusql22 VipunenTK"
             },
             "annotations": [
               {
