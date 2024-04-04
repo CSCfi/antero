@@ -379,8 +379,8 @@ def load(secure,hostname,url,schema,table,verbose=False):
             row["postinumero"] = josoite["postinumeroUri"].replace("posti_","") if "postinumeroUri" in josoite and josoite["postinumeroUri"] else None
             row["postitoimipaikka"] = jv(josoite,"postitoimipaikka")
 
-            if (row["osoite"] is not None and row["osoite"] is not "" and row["postinumero"] is not None and row["postinumero"] is not ""
-                and int(row["postinumero"]) is not 0 and row["postitoimipaikka"] is not None and row["postitoimipaikka"] is not ""):
+            if (row["osoite"] != None and row["osoite"] != "" and row["postinumero"] != None and row["postinumero"] != ""
+                and int(row["postinumero"]) != 0 and row["postitoimipaikka"] != None and row["postitoimipaikka"] != ""):
               get_and_set_coordinates(row)
 
           if verbose: show(" %5d -- %s %s (%s)"%(cnt,row["tyyppi"],row["koodi"],row["nimi"]))
