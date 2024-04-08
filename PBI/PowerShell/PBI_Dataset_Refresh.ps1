@@ -72,7 +72,12 @@ while(($errors -lt 2) -and ($RefreshStatus -ne "Completed")) {
 			$RefreshError = (ConvertFrom-Json (Invoke-PowerBIRestMethod -Url $RefreshDSCheck -Method Get)).value.serviceExceptionJson
 			$errors = $errors + 1
 			ECHO $RefreshError
+		} elseif ((Get-Date) -gt $limit)
+			$RefreshError = "Timeout. Refresh status unknown"
+			ECHO "Timeout. Refresh status unknown"
+			$errors = $errors + 2 # Skip retry
 		} else {
+			$RefreshError = "Something unexpected happened"
 			ECHO "Something unexpected happened"
 			$errors = $errors + 1
 		}
@@ -83,10 +88,6 @@ while(($errors -lt 2) -and ($RefreshStatus -ne "Completed")) {
 		$RefreshError = ((Resolve-PowerBIError).Message)[0]
 		$errors = $errors + 1
 	}
-}
-
-if ($RefreshStatus -ne "Completed") {
-	ECHO "Refresh failed"
 }
 
 ECHO "################################################"
