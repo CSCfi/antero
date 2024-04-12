@@ -10,7 +10,8 @@ NB! Depends on dboperator which takes care of connection and other db stuff.
 import sys,getopt
 from time import localtime, strftime
 import dboperator
-from imp import reload
+from importlib import reload
+#from imp import reload
 
 reload(sys)
 if sys.version_info < (3,0):
