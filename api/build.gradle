@@ -1,38 +1,15 @@
-buildscript {
-    ext {
-        springBootVersion = '2.7.11'
-    }
-    repositories {
-        jcenter()
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath("pl.allegro.tech.build:axion-release-plugin:1.6.0")
-    }
-}
-
-apply plugin: 'java'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
-apply plugin: 'pl.allegro.tech.build.axion-release'
-
-scmVersion {
-    versionIncrementer 'incrementMinor'
-    tag {
-        prefix = 'api'
-        initialVersion = { tag, position -> '1.0.0' }
-    }
-
-    repository {
-        directory = project.rootProject.file('../')
-    }
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.4'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'pl.allegro.tech.build.axion-release' version '1.17.0'
 }
 
 version = scmVersion.version
 
-sourceCompatibility = 11
-targetCompatibility = 11
+java {
+    sourceCompatibility = '17'
+}
 
 
 bootJar {
@@ -48,9 +25,7 @@ clean {
 }
 
 repositories {
-    jcenter()
     mavenCentral()
-    mavenLocal()
 }
 
 dependencies {
