@@ -2,7 +2,7 @@
 Spring and Gradle based REST API implementation.
 
 ## Requirements
-- Java JDK 8
+- Java JDK 17 LTS, check Spring Boot compatibility.
 
 ## Development
 Running application in local environment.

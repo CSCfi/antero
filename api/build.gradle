@@ -29,6 +29,7 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
     implementation('org.springframework.boot:spring-boot-starter-jdbc')
     implementation('org.springframework.boot:spring-boot-starter-cache')
     implementation('org.springframework.boot:spring-boot-starter-security')
@@ -36,12 +37,17 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     implementation('javax.cache:cache-api')
-    implementation('org.ehcache:ehcache:3.3.1')
+    implementation('org.ehcache:ehcache') {
+        capabilities {
+            requireCapability('org.ehcache:ehcache-jakarta')
+        }
+    }
     implementation('com.github.vineey:rsql-querydsl-all:2.0.0.RELEASE')
     implementation('com.querydsl:querydsl-sql:5.0.0')
-    implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
+    implementation group: 'com.google.guava', name: 'guava', version: '33.0.0-jre'
     implementation('org.apache.commons:commons-lang3:3.5')
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation('jakarta.validation:jakarta.validation-api')
     runtimeOnly('org.springframework.boot:spring-boot-devtools')
     runtimeOnly('com.h2database:h2:1.4.186')
     runtimeOnly('com.microsoft.sqlserver:mssql-jdbc')

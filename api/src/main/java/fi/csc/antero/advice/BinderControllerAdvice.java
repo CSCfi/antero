@@ -1,4 +1,5 @@
-import org.springframework.core.Ordered;
+package fi.csc.antero.advice;
+
 import org.springframework.core.annotation.Order;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.ControllerAdvice;
