@@ -4,8 +4,10 @@ import fi.csc.antero.analytic.annotation.EnableAnalytics;
 import fi.csc.antero.exception.NotFoundException;
 import fi.csc.antero.repository.ApiDataService;
 import fi.csc.antero.repository.ApiProperty;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
+@Tag(name = "Vipunen Rajapinta")
 public class ApiController {
 
     private final ApiDataService service;
@@ -33,15 +36,13 @@ public class ApiController {
     @RequestMapping(value = "/resources/{resource}/data", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @EnableAnalytics
-    @ApiOperation(value = "Get resource data",
-            notes = "You can query resource data with filters and use paging. " +
+    @Operation(summary = "Get resource data",
+            description = "You can query resource data with filters and use paging. " +
                     "Filtering uses [FIQL](https://tools.ietf.org/html/draft-nottingham-atompub-fiql-00) query syntax. " +
-                    "HOX! All dates are in GMT time.",
-            responseContainer = "List",
-            response = Object.class)
-    public StreamingResponseBody getResourceData(@ApiParam(value = "Name of the resource", required = true)
+                    "HOX! All dates are in GMT time.")
+    public StreamingResponseBody getResourceData(@Parameter(description = "Name of the resource", required = true)
                                                  @PathVariable("resource") String resource,
-                                                 ApiQuery query,
+                                                 @ParameterObject ApiQuery query,
                                                  HttpServletResponse response) throws SQLException {
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 
@@ -58,12 +59,12 @@ public class ApiController {
     @RequestMapping(value = "/resources/{resource}/data/count", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @EnableAnalytics
-    @ApiOperation(value = "Get count of resource data",
-            notes = "Counts total amount of results that query will return. " +
+    @Operation(summary = "Get count of resource data",
+            description = "Counts total amount of results that query will return. " +
                     "Can be used as pre-check if paging is need when actual data is loaded.")
-    public Long getDataCount(@ApiParam(value = "Name of the resource", required = true)
+    public Long getDataCount(@Parameter(description = "Name of the resource", required = true)
                              @PathVariable("resource") String resource,
-                             @ApiParam(value = "FIQL query filter")
+                             @Parameter(description = "FIQL query filter")
                              @RequestParam(value = "filter", required = false) String filter)
             throws SQLException {
         return service.getCount(resource, filter);
@@ -72,8 +73,8 @@ public class ApiController {
     @RequestMapping(value = "/resources/{resource}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @EnableAnalytics
-    @ApiOperation(value = "Describes structure of specified resource")
-    public List<ApiProperty> getResource(@ApiParam(value = "Name of the resource", required = true)
+    @Operation(description = "Describes structure of specified resource")
+    public List<ApiProperty> getResource(@Parameter(description = "Name of the resource", required = true)
                                          @PathVariable("resource") String resource) throws SQLException {
         checkResource(resource);
         return service.listResourceProperties(resource);
@@ -82,7 +83,7 @@ public class ApiController {
     @RequestMapping(value = "/resources", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     @EnableAnalytics
-    @ApiOperation(value = "Lists available resource names")
+    @Operation(description = "Lists available resource names")
     public Set<String> getResources() throws SQLException {
         return service.listResources();
     }

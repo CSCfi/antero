@@ -1,16 +1,17 @@
 package fi.csc.antero.controller;
 
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.Explode;
 
 public class ApiQuery {
 
-    @ApiParam(value = "FIQL query filter. Example: prop1=='text*' and prop2>3")
+    @Parameter(explode = Explode.TRUE, description = "FIQL query filter. Example: prop1=='text*' and prop2>3")
     private String filter;
-    @ApiParam(value = "Sorting '+' asc and '-' desc. Example: (+prop1,-prop2)")
+    @Parameter(explode = Explode.TRUE, description = "Sorting '+' asc and '-' desc. Example: (+prop1,-prop2)")
     private String sort;
-    @ApiParam(value = "Offset of returned results", example = "0")
+    @Parameter(explode = Explode.TRUE, description = "Offset of returned results", example = "0")
     private Long offset;
-    @ApiParam(value = "Number of returned results", example = "5")
+    @Parameter(explode = Explode.TRUE, description = "Number of returned results", example = "5")
     private Long limit;
 
     public String getFilter() {
