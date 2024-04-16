@@ -5,10 +5,9 @@
     "culture": "fi-FI",
     "dataSources": [
       {
-        "name": "dwitvipusql16",
-        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Persist Security Info=false;Integrated Security=SSPI;Initial Catalog=VipunenTK",
-        "impersonationMode": "impersonateAccount",
-        "account": "dwi\\t_viputk_kuutio",
+        "name": "dwitvipusql22",
+        "connectionString": "Provider=SQLOLEDB.1;Data Source=dwitvipusql22;Persist Security Info=false;Integrated Security=SSPI;Initial Catalog=VipunenTK",
+        "impersonationMode": "impersonateServiceAccount",
         "annotations": [
           {
             "name": "ConnectionEditUISource",
@@ -1302,7 +1301,7 @@
             "name": "v_f_tab_tyollistyminen_koulyht",
             "source": {
               "query": "SELECT [dbo].[v_f_tab_tyollistyminen_koulyht].* FROM [dbo].[v_f_tab_tyollistyminen_koulyht]",
-              "dataSource": "dwitvipusql16"
+              "dataSource": "dwitvipusql22"
             },
             "annotations": [
               {
@@ -6335,6 +6334,19 @@
             "expression": "IF(LEFT(USERNAME(), 4) = \"DWI\\\", 1, 0)",
             "formatString": "0",
             "isHidden": true
+          },
+          {
+            "name": "Rahoitusmallipisteet",
+            "expression": [
+              "",
+              "",
+              "var taulu = CALCULATETABLE(SUMMARIZE(Muuttujat, [Ammattiasema], \"kerroin\", IF(MIN([Ammattiasema]) = \"yrittäjä\",2,1), \"lkm\", [1 v. tutkinnon jälkeen_s]), FILTER(Muuttujat, Muuttujat[Pääasiallinen toiminta I] = \"Työllinen\"), FILTER(Muuttujat, OR(Muuttujat[Koulutusaste, taso 2]  = \"Ammattikorkeakoulututkinto\", Muuttujat[Koulutusaste, taso 2] = \"Ylempi korkeakoulututkinto\")))",
+              "",
+              "RETURN",
+              "",
+              "SUMX(taulu, [kerroin]*[lkm])"
+            ],
+            "formatString": "#,0"
           }
         ],
         "annotations": [
@@ -6374,7 +6386,7 @@
             "name": "Sarakeleveys",
             "source": {
               "query": "SELECT [dbo].[Sarakeleveys].* \t\tFROM [dbo].[Sarakeleveys]",
-              "dataSource": "dwitvipusql16"
+              "dataSource": "dwitvipusql22"
             },
             "annotations": [
               {
@@ -9043,6 +9055,30 @@
               },
               {
                 "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Indikaattori",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Ammattikorkeakoulu"
+              },
+              {
+                "name": "OKM ohjauksen ala korkeak."
+              },
+              {
+                "name": "Tilastovuosi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Rahoitusmallipisteet"
               }
             ]
           }

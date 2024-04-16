@@ -5,10 +5,9 @@
     "culture": "fi-FI",
     "dataSources": [
       {
-        "name": "SqlServer dwitvipusql16 ANTERO",
-        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
-        "impersonationMode": "impersonateAccount",
-        "account": "dwi\\T_VIPUTK_KUUTIO",
+        "name": "SqlServer dwitvipusql22 ANTERO",
+        "connectionString": "Provider=SQLOLEDB.1;Data Source=dwitvipusql22;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
+        "impersonationMode": "impersonateServiceAccount",
         "annotations": [
           {
             "name": "ConnectionEditUISource",
@@ -42,7 +41,7 @@
             "dataView": "full",
             "source": {
               "query": " SELECT [dw].[Sarakeleveys].* FROM [dw].[Sarakeleveys] ",
-              "dataSource": "SqlServer dwitvipusql16 ANTERO"
+              "dataSource": "SqlServer dwitvipusql22 ANTERO"
             }
           }
         ],
@@ -547,6 +546,14 @@
             "isHidden": true,
             "sourceColumn": "kv_ruotsi_vieraana_op_lkm",
             "sourceProviderType": "Integer"
+          },
+          {
+            "type": "calculated",
+            "name": "Korkeakoulu",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": " IF([Ammattikorkeakoulu] = BLANK(), [Yliopisto], [Ammattikorkeakoulu])",
+            "displayFolder": "Organisaatiomuuttujat"
           }
         ],
         "partitions": [
@@ -555,7 +562,7 @@
             "dataView": "full",
             "source": {
               "query": " SELECT [dw].[v_st_opintopisteet].* FROM [dw].[v_st_opintopisteet] ",
-              "dataSource": "SqlServer dwitvipusql16 ANTERO"
+              "dataSource": "SqlServer dwitvipusql22 ANTERO"
             },
             "annotations": [
               {
@@ -2143,6 +2150,19 @@
               "",
               "IF(SUM(Muuttujat[kv_ruotsi_vieraana_op_lkm]) = 0,BLANK(), SUM(Muuttujat[kv_ruotsi_vieraana_op_lkm]))",
               ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Rahoitusmallipisteet",
+            "expression": [
+              " ",
+              "",
+              "var taulu = SUMMARIZE(Muuttujat, Muuttujat[Sektori], \"pisteet\", IF(MAX(Muuttujat[Sektori]) = \"Ammattikorkeakoulutus\", [Erikoistumiskoulutuksessa suoritetut opintopisteet] + [Erillisten opinto-oikeuksien opintopisteet] + [Maahanmuuttajien valmentavan koulutuksen opintopisteet] + [Avoimen amk-opetuksen opintopisteet], [Erikoistumiskoulutuksessa suoritetut opintopisteet] + [Erillisten opinto-oikeuksien opintopisteet] + [Avoimen korkeakouluopetuksen opintopisteet]))",
+              "",
+              "RETURN",
+              "",
+              "SUMX(taulu, [pisteet])"
             ],
             "formatString": "#,0"
           }
@@ -4828,6 +4848,54 @@
               },
               {
                 "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Indikaattori_yhteistyo",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Korkeakoulu"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Korkeakoulujen välisten yhteistyösopimusten opintopisteet"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Indikaattori",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Korkeakoulu"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Rahoitusmallipisteet"
               }
             ]
           }

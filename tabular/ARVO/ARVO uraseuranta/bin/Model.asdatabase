@@ -5,10 +5,9 @@
     "culture": "fi-FI",
     "dataSources": [
       {
-        "name": "SqlServer dwitvipusql16 ANTERO",
-        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
-        "impersonationMode": "impersonateAccount",
-        "account": "dwi\\T_VIPUTK_KUUTIO",
+        "name": "SqlServer dwitvipusql22 ANTERO",
+        "connectionString": "Provider=SQLOLEDB.1;Data Source=dwitvipusql22;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
+        "impersonationMode": "impersonateServiceAccount",
         "annotations": [
           {
             "name": "ConnectionEditUISource",
@@ -806,7 +805,7 @@
             "dataView": "full",
             "source": {
               "query": " SELECT [dw].[v_arvo_uraseuranta].* FROM [dw].[v_arvo_uraseuranta] ",
-              "dataSource": "SqlServer dwitvipusql16 ANTERO"
+              "dataSource": "SqlServer dwitvipusql22 ANTERO"
             },
             "annotations": [
               {
@@ -3468,9 +3467,9 @@
               "\tBLANK()",
               "\t,CALCULATE(AVERAGE([numerovalinta]),'Muuttujat'[ura_tohtori]=1, 'Muuttujat'[vastaustyyppi]<>\"kylla_ei_valinta\"",
               "\t",
-              "\t,'Muuttujat'[vastaustyyppi]=\"arvosana6\"",
+              "\t,OR('Muuttujat'[vastaustyyppi]=\"arvosana6\",'Muuttujat'[vastaustyyppi]=\"arvosana\")",
               "\t",
-              "\t",
+              "\t,LEFT(Muuttujat[Monivalintavaihtoehto], 1) <> \"0\"",
               "\t )",
               ")"
             ],
@@ -3520,9 +3519,10 @@
               "\tBLANK()",
               "\t,CALCULATE(AVERAGE([numerovalinta]),'Muuttujat'[ura_tohtori]=1, 'Muuttujat'[vastaustyyppi]<>\"kylla_ei_valinta\"",
               "\t",
-              "\t,'Muuttujat'[vastaustyyppi]=\"arvosana6\"",
+              "\t,OR('Muuttujat'[vastaustyyppi]=\"arvosana6\",'Muuttujat'[vastaustyyppi]=\"arvosana\")",
               "\t",
-              "\t",
+              "\t,LEFT(Muuttujat[Multiple choice option], 1) <> \"0\"",
+              "",
               "\t",
               "\t )",
               ")",
@@ -3541,9 +3541,9 @@
               "\tBLANK()",
               "\t,CALCULATE(AVERAGE([numerovalinta]),'Muuttujat'[ura_tohtori]=1, 'Muuttujat'[vastaustyyppi]<>\"kylla_ei_valinta\"",
               "\t",
-              "\t,'Muuttujat'[vastaustyyppi]=\"arvosana6\"",
+              "\t,OR('Muuttujat'[vastaustyyppi]=\"arvosana6\",'Muuttujat'[vastaustyyppi]=\"arvosana\")",
               "\t",
-              "\t",
+              "\t,LEFT(Muuttujat[Flervalsalternativ], 1) <> \"0\"",
               "\t",
               "\t )",
               ")",
@@ -3628,6 +3628,8 @@
               "\t'Muuttujat'[vastaustyyppi]<>\"kylla_ei_valinta\"",
               "\t",
               "\t,OR('Muuttujat'[vastaustyyppi]=\"arvosana6\",'Muuttujat'[vastaustyyppi]=\"arvosana\")",
+              "\t",
+              "\t,LEFT(Muuttujat[Monivalintavaihtoehto], 1) <> \"0\"",
               "\t\t",
               "\t )",
               ")"
@@ -3694,8 +3696,7 @@
               "\t",
               "\t,OR('Muuttujat'[vastaustyyppi]=\"arvosana6\",'Muuttujat'[vastaustyyppi]=\"arvosana\")",
               "",
-              "\t",
-              "\t",
+              "\t,LEFT(Muuttujat[Multiple choice option], 1) <> \"0\"",
               "\t",
               "\t )",
               ")"
@@ -3749,7 +3750,7 @@
               "\t,OR('Muuttujat'[vastaustyyppi]=\"arvosana6\",'Muuttujat'[vastaustyyppi]=\"arvosana\")",
               "",
               "\t",
-              "",
+              "\t,LEFT(Muuttujat[Flervalsalternativ], 1) <> \"0\"",
               "\t",
               "\t",
               "\t )",
@@ -3927,6 +3928,11 @@
             "name": "ehtoSV",
             "expression": "OR([Vastaajamäärä]=\"1-4\",ISFILTERED(Muuttujat[Flervalsalternativ]))",
             "isHidden": true
+          },
+          {
+            "name": "Rahoitusmallipisteet",
+            "expression": " [Pisteet (maisterit)]",
+            "formatString": "#,0"
           }
         ],
         "annotations": [
@@ -6449,7 +6455,7 @@
             "dataView": "full",
             "source": {
               "query": " SELECT [dw].[Sarakeleveys].* FROM [dw].[Sarakeleveys] ",
-              "dataSource": "SqlServer dwitvipusql16 ANTERO"
+              "dataSource": "SqlServer dwitvipusql22 ANTERO"
             }
           }
         ],
@@ -7230,6 +7236,39 @@
               },
               {
                 "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Indikaattori",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Korkeakoulu"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Tilastovuosi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Rahoitusmallipisteet"
               }
             ]
           }

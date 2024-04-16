@@ -3704,6 +3704,41 @@
             "expression": " SUMX(FILTER(Muuttujat,[tili_taso5_fi]=\"Hyvinvointialueet\"),[arvo])",
             "formatString": "#,0",
             "displayFolder": "Tutkimusmenot\\Kotimainen ulkopuolinen rahoitus"
+          },
+          {
+            "name": "Kansainvälinen kilpailtu tutkimusrahoitus",
+            "expression": " [EU-puiteohjelmarahoitus ja muu laadullisesti kilpailtu EU-rahoitus] + [Muu ulkomainen rahoitus] + [Ulkomaiset rahastot ja säätiöt] + [Kansainväliset järjestöt]",
+            "formatString": "#,0"
+          },
+          {
+            "name": "Kotimainen ja kansainvälinen yrityksiltä saatu tutkimusrahoitus sekä muu kotimainen tutkimusrahoitus",
+            "expression": " [Kotimaiset yritykset ] * 1.2 + [Ulkomaiset yritykset] * 1.2 + [Suomen Akatemia ] + [Business Finland ]",
+            "formatString": "#,0",
+            "isHidden": true
+          },
+          {
+            "name": "Tutkimus- ja kehittämistoiminnan ulkopuolinen rahoitus",
+            "expression": [
+              "",
+              "[Suomen Akatemia ] + [Business Finland ] + [Ministeriöt yhteensä] + [Kunnat ja kuntainliitot] + [Muu julkinen rahoitus] + [Kotimaiset yksityiset rahastot ja säätiöt] + [Kotimaiset korkeakoulut]  + [EAKR-rahoitus] + [ESR-rahoitus] + [Hyvinvointialueet] +  ",
+              "",
+              "(([Muu ulkomainen rahoitus] + [Ulkomaiset rahastot ja säätiöt] + [Kotimaiset yritykset ] + [Kansainväliset järjestöt] + [Muu EU-rahoitus] + [Ulkomaiset yritykset] + [EU-puiteohjelmarahoitus ja muu laadullisesti kilpailtu EU-rahoitus]) * 1.3)"
+            ],
+            "formatString": "#,0",
+            "isHidden": true
+          },
+          {
+            "name": "Rahoitusmallipisteet",
+            "expression": [
+              " ",
+              "",
+              "var taulu = SUMMARIZE(Muuttujat, Muuttujat[Sektori], \"lkm\", IF(MAX(Muuttujat[Sektori]) = \"Ammattikorkeakoulu\", [Tutkimus- ja kehittämistoiminnan ulkopuolinen rahoitus], [Kotimainen ja kansainvälinen yrityksiltä saatu tutkimusrahoitus sekä muu kotimainen tutkimusrahoitus]))",
+              "",
+              "return",
+              "",
+              "SUMX(taulu, [lkm])"
+            ],
+            "formatString": "#,0"
           }
         ],
         "annotations": [
@@ -5851,6 +5886,84 @@
               },
               {
                 "name": "Tilinpäätössiirrot ja verot"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Indikaattori",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Korkeakoulu"
+              },
+              {
+                "name": "Ohjauksen ala"
+              },
+              {
+                "name": "Tilastovuosi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Kotimainen ja kansainvälinen yrityksiltä saatu tutkimusrahoitus sekä muu kotimainen tutkimusrahoitus"
+              },
+              {
+                "name": "Rahoitusmallipisteet"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Indikaattori_KV",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Korkeakoulu"
+              },
+              {
+                "name": "Ohjauksen ala"
+              },
+              {
+                "name": "Tilastovuosi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Kansainvälinen kilpailtu tutkimusrahoitus"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Indikaattori_AMK",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Korkeakoulu"
+              },
+              {
+                "name": "Ohjauksen ala"
+              },
+              {
+                "name": "Tilastovuosi"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Tutkimus- ja kehittämistoiminnan ulkopuolinen rahoitus"
+              },
+              {
+                "name": "Rahoitusmallipisteet"
               }
             ]
           }

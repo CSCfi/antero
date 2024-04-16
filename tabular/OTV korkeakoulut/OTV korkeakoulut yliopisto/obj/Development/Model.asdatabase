@@ -6,7 +6,7 @@
     "dataSources": [
       {
         "name": "SqlServer dwitestvipusql VipunenTK",
-        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=VipunenTK;Integrated Security=SSPI;Persist Security Info=false",
+        "connectionString": "Provider=SQLOLEDB.1;Data Source=dwitvipusql22;Initial Catalog=VipunenTK;Integrated Security=SSPI;Persist Security Info=false",
         "impersonationMode": "impersonateServiceAccount",
         "annotations": [
           {
@@ -4186,6 +4186,17 @@
               ""
             ],
             "formatString": "0"
+          },
+          {
+            "name": "Tohtorin tutkinnot_s",
+            "expression": [
+              "",
+              "var summa=CALCULATE(SUM([Tutk2]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2]=\"82\"))",
+              "return IF([kytkin] = 0, BLANK(), if(summa=0,BLANK(),summa))",
+              "",
+              ""
+            ],
+            "formatString": "#,0"
           }
         ],
         "annotations": [
@@ -14345,6 +14356,39 @@
               },
               {
                 "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Indikaattori",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "OKM ohjauksen ala korkeak."
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Yliopisto"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Tohtorin tutkinnot_s"
               }
             ]
           }
