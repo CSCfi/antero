@@ -22,7 +22,7 @@ from time import localtime, strftime
 import importlib
 
 #reload(sys)
- importlib.reload(sys)
+importlib.reload(sys)
 
 if sys.version_info < (3,0):
     sys.setdefaultencoding('utf-8')
