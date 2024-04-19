@@ -9,7 +9,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-ALTER   PROCEDURE EXEC [dw].[p_lataa_f_indikaattorit_kk_taloustiedot] as
+ALTER   PROCEDURE [dw].[p_lataa_f_indikaattorit_kk_taloustiedot] as
 
 MERGE dw.f_indikaattorit_kk AS target
 
