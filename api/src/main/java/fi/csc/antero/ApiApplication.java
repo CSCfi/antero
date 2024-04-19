@@ -1,5 +1,7 @@
 package fi.csc.antero;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.servers.Server;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import org.springframework.boot.SpringApplication;
@@ -11,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.util.TimeZone;
 
+@OpenAPIDefinition(servers = {@Server(url = "/api", description = "Vipunen API URL")})
 @SpringBootApplication
 @EnableCaching
 public class ApiApplication {
