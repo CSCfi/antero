@@ -6,7 +6,7 @@
     "dataSources": [
       {
         "name": "SqlServer dwitvipusql22 antero",
-        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql22;Integrated Security=SSPI;Persist Security Info=false;Initial Catalog=antero",
+        "connectionString": "Provider=SQLOLEDB.1;Data Source=dwitvipusql22;Integrated Security=SSPI;Persist Security Info=false;Initial Catalog=antero",
         "impersonationMode": "impersonateServiceAccount",
         "annotations": [
           {
@@ -1005,7 +1005,7 @@
               "\t, FILTER(VALUES(Muuttujat[Lukumäärätiedon tyyppi]), Muuttujat[Lukumäärätiedon tyyppi] = \"Myönnetty rahoitus\")",
               "\t, Muuttujat[raportti] = \"rahoitusperusteet_ja_myonnetty_rahoitus\"",
               ")",
-              "return IF(summa > 0, summa, BLANK())"
+              "return IF(summa <> 0, summa, BLANK())"
             ],
             "formatString": "#,0",
             "displayFolder": "Lukumäärät tyypeittäin"
@@ -1020,7 +1020,7 @@
               "\t, FILTER(VALUES(Muuttujat[Lukumäärätiedon tyyppi]), Muuttujat[Lukumäärätiedon tyyppi] = \"Painottamattomat suoritteet\")",
               "\t, Muuttujat[raportti] = \"rahoitusperusteet_ja_myonnetty_rahoitus\"",
               ")",
-              "return IF(summa > 0, summa, BLANK())"
+              "return IF(summa <> 0, summa, BLANK())"
             ],
             "formatString": "#,0",
             "displayFolder": "Lukumäärät tyypeittäin"
@@ -1035,7 +1035,7 @@
               "\t, FILTER(VALUES(Muuttujat[Lukumäärätiedon tyyppi]), Muuttujat[Lukumäärätiedon tyyppi] = \"Painotetut suoritteet\")",
               "\t, Muuttujat[raportti] = \"rahoitusperusteet_ja_myonnetty_rahoitus\"",
               ")",
-              "return IF(summa > 0, summa, BLANK())",
+              "return IF(summa <> 0, summa, BLANK())",
               ""
             ],
             "formatString": "#,0.0",
@@ -1066,7 +1066,7 @@
               "",
               "var kerroin = SUMX(taulu, [profiilikerroin])",
               "\t",
-              "return IF(NOT(ehto), \"NA\",  IF(kerroin = 0, BLANK(), kerroin)) --IF(ehto && kerroin > 0; kerroin; IF(ehto_NA && kerroin > 0; \"NA\"; BLANK()))",
+              "return IF(NOT(ehto), \"NA\",  IF(kerroin = 0, BLANK(), kerroin)) --IF(ehto && kerroin <> 0; kerroin; IF(ehto_NA && kerroin <> 0; \"NA\"; BLANK()))",
               ""
             ],
             "formatString": "0.00000",
@@ -1077,7 +1077,7 @@
             "expression": [
               "",
               "var summa = CALCULATE(SUM(Muuttujat[arvo]), Muuttujat[Lukumäärätieto] = \"Tavoitteellinen opiskelijavuosimäärä yhteensä\", Muuttujat[raportti] = \"perusrahoituksen_kohdennukset\")",
-              "return IF(summa > 0, summa, BLANK())"
+              "return IF(summa <> 0, summa, BLANK())"
             ],
             "formatString": "#,0"
           },
@@ -1086,7 +1086,7 @@
             "expression": [
               "",
               "var summa = CALCULATE(SUM(Muuttujat[arvo]), Muuttujat[Lukumäärätieto] = \"Painotetut tavoitteelliset opiskelijavuodet\", Muuttujat[raportti] = \"perusrahoituksen_kohdennukset\")",
-              "return IF(summa > 0, summa, BLANK())"
+              "return IF(summa <> 0, summa, BLANK())"
             ],
             "formatString": "#,0.0"
           },
@@ -1095,7 +1095,7 @@
             "expression": [
               "",
               "var summa = CALCULATE(SUM(Muuttujat[arvo]), Muuttujat[Lukumäärätieto] = \"Perusrahoitus tavoitteellisten opiskelijavuosien perusteella, €\", Muuttujat[raportti] = \"perusrahoituksen_kohdennukset\")",
-              "return IF(summa > 0, summa, BLANK())"
+              "return IF(summa <> 0, summa, BLANK())"
             ],
             "formatString": "#,0"
           },
@@ -1104,7 +1104,7 @@
             "expression": [
               "",
               "var summa = CALCULATE(SUM(Muuttujat[arvo]), Muuttujat[Lukumäärätieto] = \"Harkinnanvarainen korotus, €\", Muuttujat[raportti] = \"perusrahoituksen_kohdennukset\")",
-              "return IF(summa > 0, summa, BLANK())"
+              "return IF(summa <> 0, summa, BLANK())"
             ],
             "formatString": "#,0"
           },
@@ -1113,7 +1113,7 @@
             "expression": [
               "",
               "var summa = CALCULATE(SUM(Muuttujat[arvo]), Muuttujat[Lukumäärätieto] = \"Perusrahoitus yhteensä, €\", Muuttujat[raportti] = \"perusrahoituksen_kohdennukset\")",
-              "return IF(summa > 0, summa, BLANK())"
+              "return IF(summa <> 0, summa, BLANK())"
             ],
             "formatString": "#,0"
           },
@@ -1150,7 +1150,7 @@
               "\t, FILTER(VALUES(Muuttujat[Lukumäärätiedon tyyppi]), Muuttujat[Lukumäärätiedon tyyppi] = \"Painottamattomat tavoitteelliset opiskelijavuodet\")",
               "\t, Muuttujat[raportti] = \"rahoitusperusteet_ja_myonnetty_rahoitus\"",
               ")",
-              "return IF(summa > 0, summa, BLANK())"
+              "return IF(summa <> 0, summa, BLANK())"
             ],
             "formatString": "#,0",
             "displayFolder": "Lukumäärät tyypeittäin"
@@ -1165,7 +1165,7 @@
               "\t, FILTER(VALUES(Muuttujat[Lukumäärätiedon tyyppi]), Muuttujat[Lukumäärätiedon tyyppi] = \"Painotetut tavoitteelliset opiskelijavuodet\")",
               "\t, Muuttujat[raportti] = \"rahoitusperusteet_ja_myonnetty_rahoitus\"",
               ")",
-              "return IF(summa > 0, summa, BLANK())"
+              "return IF(summa <> 0, summa, BLANK())"
             ],
             "formatString": "#,0.0",
             "displayFolder": "Lukumäärät tyypeittäin"
