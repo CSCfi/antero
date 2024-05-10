@@ -72,7 +72,7 @@ while(($errors -lt 2) -and ($RefreshStatus -ne "Completed")) {
 			$RefreshError = (ConvertFrom-Json (Invoke-PowerBIRestMethod -Url $RefreshDSCheck -Method Get)).value.serviceExceptionJson
 			$errors = $errors + 1
 			ECHO $RefreshError {
-		} elseif ((Get-Date) -gt $limit)
+		} elseif ((Get-Date) -gt $limit) {
 			$RefreshError = "Timeout. Refresh status unknown"
 			ECHO "Timeout. Refresh status unknown"
 			$errors = $errors + 2 # Skip retry
