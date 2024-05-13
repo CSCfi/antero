@@ -501,6 +501,4 @@ LEFT JOIN [ANTERO].[dw].[f_eter_allfields_codes] d7 on d7.Name = 'Tuition fees' 
 
 GO
 
-USE [ANTERO
-
 USE [ANTERO]
