@@ -10,7 +10,7 @@ GO
 
 
 
-ALTER VIEW [dbo].[v_f_tab_oef_osaamis_ammatti_luokitusavain] AS
+CREATE OR ALTER VIEW [dbo].[v_f_tab_oef_osaamis_ammatti_luokitusavain] AS
 
 SELECT DISTINCT
 	d.oef_ammattiryhma1 as 'Ammattiala, taso 1',
