@@ -1,12 +1,10 @@
 USE [ANTERO]
 GO
 
-/****** Object:  Table [dw].[f_koski_esi_ja_perus_oppilaat_ja_paattaneet_kuukausittain]    Script Date: 22.4.2024 16:37:19 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[f_koski_esi_ja_perus_oppilaat_ja_paattaneet_kuukausittain]') AND type in (N'U'))
 DROP TABLE [dw].[f_koski_esi_ja_perus_oppilaat_ja_paattaneet_kuukausittain]
 GO
 
-/****** Object:  Table [dw].[f_koski_esi_ja_perus_oppilaat_ja_paattaneet_kuukausittain]    Script Date: 22.4.2024 16:37:19 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -66,4 +64,5 @@ CREATE TABLE [dw].[f_koski_esi_ja_perus_oppilaat_ja_paattaneet_kuukausittain](
 	[d_organisaatioluokitus_oppilaitos_id] [bigint] NULL,
 	[d_organisaatioluokitus_jarj_id] [bigint] NULL
 ) ON [PRIMARY]
+
 GO
