@@ -11,8 +11,6 @@ GO
 
 ALTER PROCEDURE [dw].[p_lataa_f_koski_amm_opiskelijat] AS
 
---Huom. Tikettiin CSCVIPUNEN-2602 liittyvää kehitystä meneillään. JS 10.5.2024
-
 DROP TABLE IF EXISTS dw.f_koski_amm_opiskelijat
 
 SELECT
