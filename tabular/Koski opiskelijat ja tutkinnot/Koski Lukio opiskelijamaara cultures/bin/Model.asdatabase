@@ -6,7 +6,7 @@
     "dataSources": [
       {
         "name": "SqlServer dwitvipusql22 ANTERO",
-        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql22;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
+        "connectionString": "Provider=SQLOLEDB.1;Data Source=dwitvipusql22;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
         "impersonationMode": "impersonateServiceAccount",
         "annotations": [
           {
@@ -913,6 +913,28 @@
             "name": "oppivelvollinen_1_8_2021_sv",
             "dataType": "string",
             "sourceColumn": "oppivelvollinen_1_8_2021_sv"
+          },
+          {
+            "name": "eronnut_fi",
+            "dataType": "string",
+            "sourceColumn": "eronnut_fi"
+          },
+          {
+            "name": "jatkoi_keskeytti_vaihtoi_fi",
+            "dataType": "string",
+            "sourceColumn": "jatkoi_keskeytti_vaihtoi_fi"
+          },
+          {
+            "name": "opiskelijan_tilanne_fi",
+            "dataType": "string",
+            "sourceColumn": "opiskelijan_tilanne_fi",
+            "sortByColumn": "jarjestys_opiskelijan_tilanne"
+          },
+          {
+            "name": "jarjestys_opiskelijan_tilanne",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "jarjestys_opiskelijan_tilanne"
           }
         ],
         "partitions": [
@@ -5178,7 +5200,20 @@
             "name": "lasnaolleet_opiskelijat",
             "expression": [
               " ",
-              "var lkm = DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid])",
+              "--ei-eronneet lasketaan eronneiden komplementtina (koko tarkasteluajalta)",
+              "var ehto =  IF(ISFILTERED(Muuttujat[eronnut_fi]) && HASONEVALUE(Muuttujat[eronnut_fi]), IF(VALUES(Muuttujat[eronnut_fi]) = \"Ei eronnut\", 1, 0), 0) ",
+              "var ei_eronneet = ",
+              "CALCULATE(",
+              "\tDISTINCTCOUNT(Muuttujat[apusarake_oppija_oid])",
+              "\t, ALL(Muuttujat[eronnut_fi], Muuttujat[jatkoi_keskeytti_vaihtoi_fi], Muuttujat[opiskelijan_tilanne_fi])",
+              ") ",
+              "- CALCULATE(",
+              "\tDISTINCTCOUNT(Muuttujat[apusarake_oppija_oid])",
+              "\t, ALL(Muuttujat[eronnut_fi], Muuttujat[jatkoi_keskeytti_vaihtoi_fi], Muuttujat[opiskelijan_tilanne_fi])",
+              "\t, KEEPFILTERS(Muuttujat[apusarake_eronnut]=1)",
+              ")",
+              "var kaikki_tai_eronneet = DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid])",
+              "var lkm = IF(ehto, ei_eronneet, kaikki_tai_eronneet)",
               "return IF(lkm = 0, BLANK(), IF(lkm<5, \"1-4\", MROUND(lkm, 3)))",
               ""
             ],
@@ -5188,7 +5223,7 @@
             "name": "eronnut_vaihtoi_koulutuksen_jarjestajaa_siirtyi_ammatilliseen",
             "expression": [
               "",
-              "\tvar lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut]=1, \tMuuttujat[apusarake_jatkaa_ammatillinen] = 1, Muuttujat[apusarake_jatkaa_kj] = 0, Muuttujat[apusarake_jatkaa_tutkinto_boo] = FALSE())",
+              "\tvar lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut]=1, \tMuuttujat[apusarake_jatkaa_ammatillinen] = 1, Muuttujat[apusarake_jatkaa_kj] = 0)",
               "       \treturn if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
             ],
             "formatString": "#,0"
@@ -5198,7 +5233,7 @@
             "expression": [
               "",
               "\tvar lkm = CALCULATE(DISTINCTCOUNT(Muuttujat[apusarake_oppija_oid]),Muuttujat[apusarake_eronnut]=1,",
-              "\tMuuttujat[apusarake_jatkaa_kj] = 1, Muuttujat[apusarake_jatkaa_oppilaitos] = 0)",
+              "\tMuuttujat[apusarake_jatkaa_yleissivistava] = 1, Muuttujat[apusarake_jatkaa_kj] = 1, Muuttujat[apusarake_jatkaa_oppilaitos] = 0)",
               "       \treturn if(lkm=0,BLANK(),IF(lkm<5,\"1-4\",MROUND(lkm,3)))"
             ],
             "formatString": "#,0"
@@ -10152,6 +10187,21 @@
                     "name": "oppivelvollinen_1_8_2021_sv",
                     "translatedCaption": ".",
                     "translatedDisplayFolder": "Organisaatiomuuttujat"
+                  },
+                  {
+                    "name": "eronnut_fi",
+                    "translatedCaption": "Eronnut",
+                    "translatedDisplayFolder": "Tilannemuuttujat"
+                  },
+                  {
+                    "name": "jatkoi_keskeytti_vaihtoi_fi",
+                    "translatedCaption": "Jatkoi / Keskeytti / Vaihtoi",
+                    "translatedDisplayFolder": "Tilannemuuttujat"
+                  },
+                  {
+                    "name": "opiskelijan_tilanne_fi",
+                    "translatedCaption": "Opiskelijan tilanne",
+                    "translatedDisplayFolder": "Tilannemuuttujat"
                   }
                 ],
                 "measures": [
@@ -11698,6 +11748,15 @@
               },
               {
                 "name": "oppilaitoksen_hyvinvointialue_fi"
+              },
+              {
+                "name": "eronnut_fi"
+              },
+              {
+                "name": "jatkoi_keskeytti_vaihtoi_fi"
+              },
+              {
+                "name": "opiskelijan_tilanne_fi"
               }
             ],
             "measures": [
