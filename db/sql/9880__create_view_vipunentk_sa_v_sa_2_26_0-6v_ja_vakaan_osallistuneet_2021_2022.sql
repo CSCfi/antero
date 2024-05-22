@@ -17,7 +17,7 @@ GO
 
 
 
-CREATE   VIEW [dbo].[v_sa_2_26_0-6v_ja_vakaan_osallistuneet_2021_2022] AS
+CREATE OR ALTER  VIEW [dbo].[v_sa_2_26_0-6v_ja_vakaan_osallistuneet_2021_2022] AS
 SELECT [tilv] = cast(kaikkivuodet.tilv as nvarchar(4))
       ,tilv_date = cast(kaikkivuodet.tilv+'0101' as date)
 	  ,[maakunta] = cast(kaikkivuodet.maakunta as nvarchar(100))
