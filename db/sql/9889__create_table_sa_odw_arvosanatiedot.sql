@@ -10,7 +10,7 @@ GO
 IF  EXISTS
   (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[sa_odw_arvosanatiedot]' )
     AND type in (N'U'))
-  DROP TABLE [sa].[sa_odw_arvosanatiedot]
+  DROP TABLE [sa].[sa_odw_arvosanatiedot];
   GO
 
 CREATE TABLE sa.sa_odw_arvosanatiedot
@@ -25,18 +25,15 @@ CREATE TABLE sa.sa_odw_arvosanatiedot
   ,[loadtime] [datetime] NOT NULL
 	,[source] [varchar](100) NOT NULL
 	,[username] [varchar](30) NOT NULL
-  ,CONSTRAINT [PK_d_perhe] PRIMARY KEY CLUSTERED
+  ,CONSTRAINT [PK_sa_odw_arvosanatiedot] PRIMARY KEY CLUSTERED
 (
  [id] ASC
-)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-) ON [PRIMARY]
-GO
+)) ON [PRIMARY];
 
 
-ALTER TABLE [sa].[sa_odw_arvosanatiedot] ADD  CONSTRAINT [DF__sa_odw_arvosanatiedot__loadtime]  DEFAULT (getdate()) FOR [loadtime]
-GO
+ALTER TABLE [sa].[sa_odw_arvosanatiedot] ADD  CONSTRAINT [DF__sa_odw_arvosanatiedot__loadtime]  DEFAULT (getdate()) FOR [loadtime];
 
-ALTER TABLE [sa].[sa_odw_arvosanatiedot] ADD  CONSTRAINT [DF__sa_odw_arvosanatiedot__username]  DEFAULT (suser_name()) FOR [username]
-GO
+
+ALTER TABLE [sa].[sa_odw_arvosanatiedot] ADD  CONSTRAINT [DF__sa_odw_arvosanatiedot__username]  DEFAULT (suser_name()) FOR [username];
 
 USE ANTERO
