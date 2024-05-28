@@ -1,9 +1,8 @@
 USE KOSKI_SA
 GO
 
-SET ANSI_NULLS ON
-GO
-
+SET ANSI_NULLS ON;
+FO
 SET QUOTED_IDENTIFIER ON
 GO
 
@@ -11,7 +10,7 @@ IF  EXISTS
   (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[sa_odw_arvosanatiedot]' )
     AND type in (N'U'))
   DROP TABLE [sa].[sa_odw_arvosanatiedot];
-  GO
+
 
 CREATE TABLE sa.sa_odw_arvosanatiedot
 (
