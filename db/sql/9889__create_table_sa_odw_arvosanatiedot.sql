@@ -28,11 +28,3 @@ CREATE TABLE sa.sa_odw_arvosanatiedot
 (
  [id] ASC
 )) ON [PRIMARY];
-
-
-ALTER TABLE [sa].[sa_odw_arvosanatiedot] ADD  CONSTRAINT [DF__sa_odw_arvosanatiedot__loadtime]  DEFAULT (getdate()) FOR [loadtime];
-
-
-ALTER TABLE [sa].[sa_odw_arvosanatiedot] ADD  CONSTRAINT [DF__sa_odw_arvosanatiedot__username]  DEFAULT (suser_name()) FOR [username];
-
-USE ANTERO
