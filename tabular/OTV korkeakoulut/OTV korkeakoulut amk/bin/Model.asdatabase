@@ -4163,14 +4163,6 @@
             "isHidden": true
           },
           {
-            "name": "Opintopisteiden kertymä_s",
-            "expression": [
-              " IF([kytkin] = 0, BLANK(), CALCULATE(SUM(Muuttujat[op_kertyma_edel_lkv_loppu]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"90\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"91\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"61\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"71\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"51\")))",
-              ""
-            ],
-            "formatString": "0"
-          },
-          {
             "name": "Opintopisteiden kertymä",
             "expression": [
               " ",
@@ -4196,6 +4188,104 @@
             "name": "Ylemmät ammattikorkeakoulututkinnot_s",
             "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([Tutk2]), Muuttujat[Koodit Koulutusaste taso 2] = \"71\"))",
             "formatString": "#,0"
+          },
+          {
+            "name": "Opintopisteiden kertymä_s",
+            "expression": [
+              " IF([kytkin] = 0, BLANK(), CALCULATE(SUM(Muuttujat[op_kertyma_edel_lkv_loppu]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"90\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"91\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"61\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"71\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"51\")))",
+              ""
+            ],
+            "formatString": "0"
+          },
+          {
+            "name": "Opintopisteet yhteensä",
+            "expression": [
+              "",
+              "var summa = CALCULATE(SUM([op_amk_yhteensa]), FILTER('Muuttujat', [Kirjoihintulovuosi] <> [Tilastovuosi]), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"73\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"81\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"82\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"91\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"61\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"71\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"51\"))",
+              "return IF(summa=0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))"
+            ]
+          },
+          {
+            "name": "Yleissivistävissä ja ammatillisissa oppilaitoksissa (Suomessa) suoritetut opintopisteet",
+            "expression": [
+              "",
+              "var summa = CALCULATE(SUM([op_amk_yleissiv_amm_opplait]), FILTER('Muuttujat', [Kirjoihintulovuosi] <> [Tilastovuosi]), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"73\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"81\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"82\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"91\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"61\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"71\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"51\"))",
+              "return IF(summa=0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))",
+              ""
+            ]
+          },
+          {
+            "name": "Muualla suoritetut opintopisteet",
+            "expression": [
+              "",
+              "var summa = CALCULATE(SUM([op_amk_muualla]), FILTER('Muuttujat', [Kirjoihintulovuosi] <> [Tilastovuosi]), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"73\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"81\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"82\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"91\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"61\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"71\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"51\"))",
+              "return IF(summa=0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))",
+              ""
+            ]
+          },
+          {
+            "name": "Omassa ammattikorkeakoulussa suoritetut opintopisteet",
+            "expression": [
+              "",
+              "var summa = CALCULATE(SUM([op_amk_oma_amk]), FILTER('Muuttujat', [Kirjoihintulovuosi] <> [Tilastovuosi]), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"73\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"81\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"82\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"91\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"61\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"71\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"51\"))",
+              "return IF(summa=0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))",
+              ""
+            ]
+          },
+          {
+            "name": "Muissa ammattikorkeakouluissa (Suomessa) suoritetut opintopisteet",
+            "expression": [
+              "",
+              "var summa = CALCULATE(SUM([op_amk_muu_amk]), FILTER('Muuttujat', [Kirjoihintulovuosi] <> [Tilastovuosi]), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"73\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"81\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"82\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"91\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"61\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"71\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"51\"))",
+              "return IF(summa=0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))",
+              ""
+            ]
+          },
+          {
+            "name": "Yliopistoissa (Suomessa) suoritetut opintopisteet",
+            "expression": [
+              "",
+              "var summa = CALCULATE(SUM([op_amk_yliopistoissa]), FILTER('Muuttujat', [Kirjoihintulovuosi] <> [Tilastovuosi]), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"73\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"81\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"82\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"91\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"61\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"71\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"51\"))",
+              "return IF(summa=0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))",
+              ""
+            ]
+          },
+          {
+            "name": "Ulkomailla suoritetut opintopisteet",
+            "expression": [
+              "",
+              "var summa = CALCULATE(SUM([op_amk_ulkomailla]), FILTER('Muuttujat', [Kirjoihintulovuosi] <> [Tilastovuosi]), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"73\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"81\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"82\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"91\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"61\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"71\"), FILTER('Muuttujat',  [Koodit Koulutusaste taso 2] <> \"51\"))",
+              "return IF(summa=0, BLANK(), IF(summa < 5, \"1-4\", MROUND(summa, 3)))",
+              ""
+            ]
+          },
+          {
+            "name": "Opintopisteet yhteensä_s",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([op_amk_yhteensa]), FILTER('Muuttujat', [Kirjoihintulovuosi] <> [Tilastovuosi]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"91\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"61\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"71\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"51\")))"
+          },
+          {
+            "name": "Yleissivistävissä ja ammatillisissa oppilaitoksissa (Suomessa) suoritetut opintopisteet_s",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([op_amk_yleissiv_amm_opplait]), FILTER('Muuttujat', [Kirjoihintulovuosi] <> [Tilastovuosi]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"91\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"61\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"71\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"51\")))"
+          },
+          {
+            "name": "Muualla suoritetut opintopisteet_s",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([op_amk_muualla]), FILTER('Muuttujat', [Kirjoihintulovuosi] <> [Tilastovuosi]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"91\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"61\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"71\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"51\")))"
+          },
+          {
+            "name": "Omassa ammattikorkeakoulussa suoritetut opintopisteet_s",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([op_amk_oma_amk]), FILTER('Muuttujat', [Kirjoihintulovuosi] <> [Tilastovuosi]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"91\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"61\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"71\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"51\")))"
+          },
+          {
+            "name": "Muissa ammattikorkeakouluissa (Suomessa) suoritetut opintopisteet_s",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([op_amk_muu_amk]), FILTER('Muuttujat', [Kirjoihintulovuosi] <> [Tilastovuosi]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"91\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"61\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"71\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"51\")))"
+          },
+          {
+            "name": "Yliopistoissa (Suomessa) suoritetut opintopisteet_s",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([op_amk_yliopistoissa]), FILTER('Muuttujat', [Kirjoihintulovuosi] <> [Tilastovuosi]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"91\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"61\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"71\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"51\")))"
+          },
+          {
+            "name": "Ulkomailla suoritetut opintopisteet_s",
+            "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([op_amk_ulkomailla]), FILTER('Muuttujat', [Kirjoihintulovuosi] <> [Tilastovuosi]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"91\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"61\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"71\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"51\")))"
           }
         ],
         "annotations": [
