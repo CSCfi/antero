@@ -8,7 +8,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-ALTER PROCEDURE EXEC [dw].[p_lataa_api_tavoiteajassa_tutkinnon_suorittaneet_esilataus] AS
+ALTER PROCEDURE [dw].[p_lataa_api_tavoiteajassa_tutkinnon_suorittaneet_esilataus] AS
 
 DECLARE @alkuVuosi int
 
