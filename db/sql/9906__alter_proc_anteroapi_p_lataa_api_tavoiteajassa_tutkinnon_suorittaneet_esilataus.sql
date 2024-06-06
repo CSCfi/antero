@@ -10,6 +10,7 @@ GO
 
 ALTER PROCEDURE [dw].[p_lataa_api_tavoiteajassa_tutkinnon_suorittaneet_esilataus] AS
 
+
 DECLARE @alkuVuosi int
 
 DECLARE @sql nvarchar(max)
