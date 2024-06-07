@@ -4,12 +4,12 @@ GO
 ALTER TABLE [dw].[d_perhe] DROP CONSTRAINT [DF__d_perhe__loadtime]
 GO
 
-/****** Object:  Table [dw].[d_perhe]    Script Date: 7.6.2024 13:12:22 ******/
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[d_perhe]') AND type in (N'U'))
 DROP TABLE [dw].[d_perhe]
 GO
 
-/****** Object:  Table [dw].[d_perhe]    Script Date: 7.6.2024 13:12:22 ******/
+
 SET ANSI_NULLS ON
 GO
 

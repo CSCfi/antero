@@ -7,12 +7,12 @@ GO
 ALTER TABLE [dw].[d_tulokvintiili] DROP CONSTRAINT [DF__d_tulokvintiili__loadtime]
 GO
 
-/****** Object:  Table [dw].[d_tulokvintiili]    Script Date: 7.6.2024 13:13:42 ******/
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[d_tulokvintiili]') AND type in (N'U'))
 DROP TABLE [dw].[d_tulokvintiili]
 GO
 
-/****** Object:  Table [dw].[d_tulokvintiili]    Script Date: 7.6.2024 13:13:42 ******/
+
 SET ANSI_NULLS ON
 GO
 
