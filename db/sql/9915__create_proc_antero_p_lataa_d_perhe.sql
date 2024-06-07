@@ -57,7 +57,6 @@ ELSE BEGIN
 	and s.koodi='-1'
 END
 
---skriptaa ANTERO -> tasks -> generate scripts -> drop create table -> with data ... advanced --> schema only
 
 SET IDENTITY_INSERT dw.d_perhe ON
 

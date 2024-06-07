@@ -57,7 +57,6 @@ ELSE BEGIN
 	and s.koodi='-1'
 END
 
---skriptaa ANTERO -> tasks -> generate scripts -> drop create table -> with data ...´advanced --> schema only
 
 
 INSERT [dw].[d_tulokvintiili] ([id], [tulokvintiili_koodi], [tulokvintiili_fi], [tulokvintiili_sv], [tulokvintiili_en], [jarjestys_tulokvintiili], [loadtime], [source], [username], [kommentti]) VALUES (2, N'1', N'1. viidennes (pienituloisin)', N'1. viidennes (pienituloisin)_SV', N'1. viidennes (pienituloisin)_EN', 1, CAST(N'2024-05-14T14:01:47.747' AS DateTime), N'ETL: p_lataa_d_perhe', N'DWI\akoskini', NULL)
