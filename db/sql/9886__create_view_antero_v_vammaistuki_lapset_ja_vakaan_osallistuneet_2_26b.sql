@@ -61,5 +61,3 @@ FROM [VipunenTK_SA].[dbo].[v_sa_2_26b_Vammaistuki_1-6v_ja_vakaan_osallistuneet_2
 	LEFT JOIN [ANTERO].[dw].[d_kytkin] d5
 	ON d5.id = v.vtukia16ylin
 GO
-
-

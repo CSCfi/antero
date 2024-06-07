@@ -75,5 +75,3 @@ FROM [VipunenTK_SA].[dbo].[v_sa_2_26_0-6v_ja_vakaan_osallistuneet_2021_2022] v
 
 
 GO
-
-
