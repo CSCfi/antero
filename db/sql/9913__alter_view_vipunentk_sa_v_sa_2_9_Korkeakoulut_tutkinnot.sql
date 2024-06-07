@@ -9,7 +9,6 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-
 ALTER VIEW [dbo].[v_sa_2_9_Korkeakoulut_tutkinnot] AS
 
 -- truncate table vipunentk_dw.dbo.sa_2_9_Korkeakoulut_tutkinnot
