@@ -1,7 +1,6 @@
 USE [ANTERO]
 GO
 
-/****** Object:  StoredProcedure [dw].[p_lataa_d_tulokvintiili]    Script Date: 7.6.2024 14:34:42 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -68,7 +67,6 @@ INSERT [dw].[d_tulokvintiili] ([id], [tulokvintiili_koodi], [tulokvintiili_fi], 
 INSERT [dw].[d_tulokvintiili] ([id], [tulokvintiili_koodi], [tulokvintiili_fi], [tulokvintiili_sv], [tulokvintiili_en], [jarjestys_tulokvintiili], [loadtime], [source], [username], [kommentti]) VALUES (5, N'4', N'4. viidennes', N'4. viidennes_SV', N'4. viidennes_EN', 4, CAST(N'2024-05-14T14:03:29.327' AS DateTime), N'ETL: p_lataa_d_perhe', N'DWI\akoskini', NULL)
 
 INSERT [dw].[d_tulokvintiili] ([id], [tulokvintiili_koodi], [tulokvintiili_fi], [tulokvintiili_sv], [tulokvintiili_en], [jarjestys_tulokvintiili], [loadtime], [source], [username], [kommentti]) VALUES (6, N'5', N'5. viidennes (suurituloisin)', N'5. viidennes (suurituloisin)_SV', N'5. viidennes (suurituloisin)_EN', 5, CAST(N'2024-05-14T14:04:01.617' AS DateTime), N'ETL: p_lataa_d_perhe', N'DWI\akoskini', NULL)
-
 
 
 SET IDENTITY_INSERT dw.d_tulokvintiili OFF

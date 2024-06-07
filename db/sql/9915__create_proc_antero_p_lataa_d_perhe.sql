@@ -1,7 +1,6 @@
 USE [ANTERO]
 GO
 
-/****** Object:  StoredProcedure [dw].[p_lataa_d_perhe]    Script Date: 7.6.2024 14:34:00 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -68,7 +67,6 @@ INSERT [dw].[d_perhe] ([id], [perhe_koodi], [perhe_fi], [perhe_sv], [perhe_en], 
 INSERT [dw].[d_perhe] ([id], [perhe_koodi], [perhe_fi], [perhe_sv], [perhe_en], [jarjestys_perhe], [loadtime], [source], [username], [kommentti]) VALUES (6, N'3', N'Yhden vanhemman perhe', N'Yhden vanhemman perhe_SV', N'Yhden vanhemman perhe_EN', 3, CAST(N'2024-05-14T13:57:30.050' AS DateTime), N'ETL: p_lataa_d_perhe', N'DWI\akoskini', NULL)
 
 INSERT [dw].[d_perhe] ([id], [perhe_koodi], [perhe_fi], [perhe_sv], [perhe_en], [jarjestys_perhe], [loadtime], [source], [username], [kommentti]) VALUES (7, N'4', N'Muut eli perheisiin kuulumattomat', N'Muut eli perheisiin kuulumattomat_SV', N'Muut eli perheisiin kuulumattomat_EN', 4, CAST(N'2024-05-14T13:58:32.397' AS DateTime), N'ETL: p_lataa_d_perhe', N'DWI\akoskini', NULL)
-
 
 
 
