@@ -35,5 +35,3 @@ GO
 
 ALTER TABLE [dw].[d_perhe] ADD  CONSTRAINT [DF__d_perhe__username]  DEFAULT (suser_name()) FOR [username]
 GO
-
-
