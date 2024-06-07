@@ -1,7 +1,7 @@
 USE [ANTERO]
 GO
 
-/****** Object:  View [dw].[v_lapset_ja_vakaan_osallistuneet_2_26]    Script Date: 22.5.2024 16:20:37 ******/
+/****** Object:  View [dw].[v_lapset_ja_vakaan_osallistuneet_2_26]    Script Date: 7.6.2024 15:11:20 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -19,7 +19,8 @@ GO
 
 
 
-CREATE OR ALTER VIEW [dw].[v_lapset_ja_vakaan_osallistuneet_2_26] AS
+
+CREATE OR ALTER   VIEW [dw].[v_lapset_ja_vakaan_osallistuneet_2_26] AS
 
 SELECT 
 
@@ -75,3 +76,5 @@ FROM [VipunenTK_SA].[dbo].[v_sa_2_26_0-6v_ja_vakaan_osallistuneet_2021_2022] v
 
 
 GO
+
+

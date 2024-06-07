@@ -1,7 +1,7 @@
 USE [ANTERO]
 GO
 
-/****** Object:  View [dw].[v_vammaistuki_lapset_ja_vakaan_osallistuneet_2_26b]    Script Date: 22.5.2024 16:21:38 ******/
+/****** Object:  View [dw].[v_vammaistuki_lapset_ja_vakaan_osallistuneet_2_26b]    Script Date: 7.6.2024 15:11:48 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -19,7 +19,8 @@ GO
 
 
 
-CREATE OR ALTER VIEW [dw].[v_vammaistuki_lapset_ja_vakaan_osallistuneet_2_26b] AS
+
+CREATE OR ALTER   VIEW [dw].[v_vammaistuki_lapset_ja_vakaan_osallistuneet_2_26b] AS
 
 SELECT
 
@@ -61,3 +62,5 @@ FROM [VipunenTK_SA].[dbo].[v_sa_2_26b_Vammaistuki_1-6v_ja_vakaan_osallistuneet_2
 	LEFT JOIN [ANTERO].[dw].[d_kytkin] d5
 	ON d5.id = v.vtukia16ylin
 GO
+
+
