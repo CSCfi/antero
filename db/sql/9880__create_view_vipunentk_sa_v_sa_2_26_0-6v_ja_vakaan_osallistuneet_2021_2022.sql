@@ -58,5 +58,3 @@ FROM [TK_H9098_CSC].[dbo].[TK_K2_26_sopv_24]
 
 
 GO
-
-
