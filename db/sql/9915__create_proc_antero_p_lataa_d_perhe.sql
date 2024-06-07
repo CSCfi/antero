@@ -1,6 +1,7 @@
 USE [ANTERO]
 GO
 
+/****** Object:  StoredProcedure [dw].[p_lataa_d_perhe]    Script Date: 7.6.2024 15:01:20 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -56,8 +57,9 @@ ELSE BEGIN
 	and s.koodi='-1'
 END
 
+--skriptaa ANTERO -> tasks -> generate scripts -> drop create table -> with data ... advanced --> schema only
 
-SET IDENTITY_INSERT dw.d_perhe ON
+
 
 
 INSERT [dw].[d_perhe] ([id], [perhe_koodi], [perhe_fi], [perhe_sv], [perhe_en], [jarjestys_perhe], [loadtime], [source], [username], [kommentti]) VALUES (4, N'1', N'Ydinperhe (vain yhteisiä lapsia)', N'Ydinperhe (vain yhteisiä lapsia)_SV', N'Ydinperhe (vain yhteisiä lapsia)_EN', 1, CAST(N'2024-05-14T13:56:01.693' AS DateTime), N'ETL: p_lataa_d_perhe', N'DWI\akoskini', NULL)
@@ -70,6 +72,9 @@ INSERT [dw].[d_perhe] ([id], [perhe_koodi], [perhe_fi], [perhe_sv], [perhe_en], 
 
 
 
+
 SET IDENTITY_INSERT dw.d_perhe OFF
 
 GO
+
+

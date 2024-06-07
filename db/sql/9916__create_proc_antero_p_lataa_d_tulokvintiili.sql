@@ -1,6 +1,7 @@
 USE [ANTERO]
 GO
 
+/****** Object:  StoredProcedure [dw].[p_lataa_d_tulokvintiili]    Script Date: 7.6.2024 15:03:49 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -56,6 +57,7 @@ ELSE BEGIN
 	and s.koodi='-1'
 END
 
+--skriptaa ANTERO -> tasks -> generate scripts -> drop create table -> with data ...´advanced --> schema only
 
 
 INSERT [dw].[d_tulokvintiili] ([id], [tulokvintiili_koodi], [tulokvintiili_fi], [tulokvintiili_sv], [tulokvintiili_en], [jarjestys_tulokvintiili], [loadtime], [source], [username], [kommentti]) VALUES (2, N'1', N'1. viidennes (pienituloisin)', N'1. viidennes (pienituloisin)_SV', N'1. viidennes (pienituloisin)_EN', 1, CAST(N'2024-05-14T14:01:47.747' AS DateTime), N'ETL: p_lataa_d_perhe', N'DWI\akoskini', NULL)
@@ -69,6 +71,9 @@ INSERT [dw].[d_tulokvintiili] ([id], [tulokvintiili_koodi], [tulokvintiili_fi], 
 INSERT [dw].[d_tulokvintiili] ([id], [tulokvintiili_koodi], [tulokvintiili_fi], [tulokvintiili_sv], [tulokvintiili_en], [jarjestys_tulokvintiili], [loadtime], [source], [username], [kommentti]) VALUES (6, N'5', N'5. viidennes (suurituloisin)', N'5. viidennes (suurituloisin)_SV', N'5. viidennes (suurituloisin)_EN', 5, CAST(N'2024-05-14T14:04:01.617' AS DateTime), N'ETL: p_lataa_d_perhe', N'DWI\akoskini', NULL)
 
 
+
 SET IDENTITY_INSERT dw.d_tulokvintiili OFF
 
 GO
+
+
