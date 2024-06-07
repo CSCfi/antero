@@ -75,5 +75,3 @@ INSERT [dw].[d_perhe] ([id], [perhe_koodi], [perhe_fi], [perhe_sv], [perhe_en], 
 SET IDENTITY_INSERT dw.d_perhe OFF
 
 GO
-
-

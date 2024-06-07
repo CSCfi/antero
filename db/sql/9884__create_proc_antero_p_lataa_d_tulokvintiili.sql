@@ -74,5 +74,3 @@ INSERT [dw].[d_tulokvintiili] ([id], [tulokvintiili_koodi], [tulokvintiili_fi], 
 SET IDENTITY_INSERT dw.d_tulokvintiili OFF
 
 GO
-
-

@@ -36,5 +36,3 @@ GO
 
 ALTER TABLE [dw].[d_tulokvintiili] ADD  CONSTRAINT [DF__d_tulokvintiili__username]  DEFAULT (suser_name()) FOR [username]
 GO
-
-
