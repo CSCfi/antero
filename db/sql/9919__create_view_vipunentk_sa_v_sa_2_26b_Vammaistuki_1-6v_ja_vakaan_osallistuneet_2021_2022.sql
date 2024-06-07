@@ -1,7 +1,7 @@
 USE [VipunenTK_SA]
 GO
 
-/****** Object:  View [dbo].[v_sa_2_26b_Vammaistuki_1-6v_ja_vakaan_osallistuneet_2021_2022]    Script Date: 22.5.2024 14:23:12 ******/
+/****** Object:  View [dbo].[v_sa_2_26b_Vammaistuki_1-6v_ja_vakaan_osallistuneet_2021_2022]    Script Date: 7.6.2024 15:34:08 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -16,7 +16,8 @@ GO
 
 
 
-CREATE OR ALTER  VIEW [dbo].[v_sa_2_26b_Vammaistuki_1-6v_ja_vakaan_osallistuneet_2021_2022] AS
+
+CREATE OR ALTER    VIEW [dbo].[v_sa_2_26b_Vammaistuki_1-6v_ja_vakaan_osallistuneet_2021_2022] AS
 SELECT [tilv] = cast(kaikkivuodet.tilv as nvarchar(4))
       ,tilv_date = cast(kaikkivuodet.tilv+'0101' as date)
 	  ,[maakunta] = cast(kaikkivuodet.maakunta as nvarchar(100))
@@ -51,3 +52,5 @@ FROM [TK_H9098_CSC].[dbo].[TK_K2_26b_sopv_24]
 
 
 GO
+
+
