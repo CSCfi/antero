@@ -1,7 +1,7 @@
 USE [ANTERO]
 GO
 
-/****** Object:  StoredProcedure [dw].[p_lataa_d_perhe]    Script Date: 22.5.2024 14:24:56 ******/
+/****** Object:  StoredProcedure [dw].[p_lataa_d_perhe]    Script Date: 7.6.2024 14:34:00 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -12,7 +12,8 @@ GO
 
 
 
-CREATE OR ALTER PROC [dw].[p_lataa_d_perhe] AS
+
+CREATE OR ALTER   PROC [dw].[p_lataa_d_perhe] AS
 
 TRUNCATE TABLE [dw].[d_perhe]
 
