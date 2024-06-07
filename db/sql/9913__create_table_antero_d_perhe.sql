@@ -1,7 +1,6 @@
 USE [ANTERO]
 GO
 
-/****** Object:  Table [dw].[d_perhe]    Script Date: 22.5.2024 14:28:21 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[d_perhe]') AND type in (N'U'))
 DROP TABLE [dw].[d_perhe]
 GO
