@@ -1,12 +1,6 @@
 USE [ANTERO]
 GO
 
-ALTER TABLE [sa].[sa_esco_luokitusavain] DROP CONSTRAINT [DF__sa_esco_luokitusavain__username]
-GO
-
-ALTER TABLE [sa].[sa_esco_luokitusavain] DROP CONSTRAINT [DF__sa_esco_luokitusavain__loadtime]
-GO
-
 /****** Object:  Table [sa].[sa_esco_luokitusavain]    Script Date: 11.6.2024 12:28:16 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[sa_esco_luokitusavain]') AND type in (N'U'))
 DROP TABLE [sa].[sa_esco_luokitusavain]
