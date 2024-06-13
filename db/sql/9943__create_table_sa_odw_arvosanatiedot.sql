@@ -21,7 +21,7 @@ CREATE TABLE sa.sa_odw_arvosanatiedot
   , Arvosana VARCHAR(20)
   , Yksilollistaminen VARCHAR(15)
   , luokkataso VARCHAR(15)
-  , pohjakoulutusVARCHAR(50)
+  , pohjakoulutus VARCHAR(50)
   ,[loadtime] [datetime] NOT NULL
 	,[source] [varchar](100) NOT NULL
 	,[username] [varchar](30) NOT NULL
