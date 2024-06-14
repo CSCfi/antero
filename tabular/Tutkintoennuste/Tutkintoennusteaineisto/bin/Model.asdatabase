@@ -6,7 +6,7 @@
     "dataSources": [
       {
         "name": "SqlServer dwitvipusql22 ANTERO",
-        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql22;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
+        "connectionString": "Provider=SQLOLEDB.1;Data Source=dwitvipusql22;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
         "impersonationMode": "impersonateServiceAccount",
         "annotations": [
           {
@@ -17,7 +17,7 @@
       },
       {
         "name": "SqlServer dwitvipusql22 ANTERO 2",
-        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql22;Integrated Security=SSPI;Persist Security Info=false;Initial Catalog=ANTERO",
+        "connectionString": "Provider=SQLOLEDB.1;Data Source=dwitvipusql22;Integrated Security=SSPI;Persist Security Info=false;Initial Catalog=ANTERO",
         "impersonationMode": "impersonateServiceAccount",
         "annotations": [
           {
@@ -28,7 +28,7 @@
       },
       {
         "name": "SqlServer dwitvipusql22 VipunenTK",
-        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql22;Initial Catalog=VipunenTK;Integrated Security=SSPI;Persist Security Info=false",
+        "connectionString": "Provider=SQLOLEDB.1;Data Source=dwitvipusql22;Initial Catalog=VipunenTK;Integrated Security=SSPI;Persist Security Info=false",
         "impersonationMode": "impersonateServiceAccount",
         "annotations": [
           {
@@ -1073,6 +1073,13 @@
             "name": "Ikä",
             "dataType": "int64",
             "sourceColumn": "Ikä"
+          },
+          {
+            "type": "calculated",
+            "name": "Ikäryhmä ja koulutustyyppi",
+            "dataType": "string",
+            "isDataTypeInferred": true,
+            "expression": " IF([Koulutusaste, taso 2] = \"Ammattikorkeakoulututkinto\", CONCATENATE(CONCATENATE(Tutkinnot[Ikäryhmä], \" / \"), Tutkinnot[Koulutustyyppi]), BLANK())"
           }
         ],
         "partitions": [
@@ -1288,7 +1295,7 @@
               "",
               "var taulu = SUMMARIZE(Tutkinnot, Tutkinnot[Tilastovuosi], \"lkm\", SUM(Tutkinnot[tutk2]))",
               "return",
-              "AVERAGEX(taulu, [lkm])"
+              "AVERAGEX(taulu, [lkm]) * [Tutkinnon suorittaneen väestön työvoimaosuus_s]"
             ],
             "formatString": "#,0"
           },
@@ -1299,7 +1306,7 @@
               "",
               "var taulu = SUMMARIZE(Tutkinnot, Tutkinnot[Tilastovuosi], \"lkm\", SUM(Tutkinnot[tutk2]))",
               "",
-              "var lkm = AVERAGEX(taulu, [lkm])",
+              "var lkm = AVERAGEX(taulu, [lkm]) * [Tutkinnon suorittaneen väestön työvoimaosuus_s]",
               "",
               "return",
               "IF(AND(lkm>0,lkm<5), \"1-4\", MROUND(lkm,3))"
@@ -1747,6 +1754,9 @@
               },
               {
                 "name": "Tilastovuosi"
+              },
+              {
+                "name": "Ikäryhmä ja koulutustyyppi"
               }
             ],
             "measures": [
