@@ -1,38 +1,15 @@
-buildscript {
-    ext {
-        springBootVersion = '2.7.11'
-    }
-    repositories {
-        jcenter()
-        mavenCentral()
-    }
-    dependencies {
-        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-        classpath("pl.allegro.tech.build:axion-release-plugin:1.6.0")
-    }
-}
-
-apply plugin: 'java'
-apply plugin: 'org.springframework.boot'
-apply plugin: 'io.spring.dependency-management'
-apply plugin: 'pl.allegro.tech.build.axion-release'
-
-scmVersion {
-    versionIncrementer 'incrementMinor'
-    tag {
-        prefix = 'api'
-        initialVersion = { tag, position -> '1.0.0' }
-    }
-
-    repository {
-        directory = project.rootProject.file('../')
-    }
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.4'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'pl.allegro.tech.build.axion-release' version '1.17.0'
 }
 
 version = scmVersion.version
 
-sourceCompatibility = 11
-targetCompatibility = 11
+java {
+    sourceCompatibility = '17'
+}
 
 
 bootJar {
@@ -48,12 +25,11 @@ clean {
 }
 
 repositories {
-    jcenter()
     mavenCentral()
-    mavenLocal()
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter'
     implementation('org.springframework.boot:spring-boot-starter-jdbc')
     implementation('org.springframework.boot:spring-boot-starter-cache')
     implementation('org.springframework.boot:spring-boot-starter-security')
@@ -61,12 +37,17 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 
     implementation('javax.cache:cache-api')
-    implementation('org.ehcache:ehcache:3.3.1')
+    implementation('org.ehcache:ehcache') {
+        capabilities {
+            requireCapability('org.ehcache:ehcache-jakarta')
+        }
+    }
     implementation('com.github.vineey:rsql-querydsl-all:2.0.0.RELEASE')
     implementation('com.querydsl:querydsl-sql:5.0.0')
-    implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
+    implementation group: 'com.google.guava', name: 'guava', version: '33.0.0-jre'
     implementation('org.apache.commons:commons-lang3:3.5')
-    implementation 'io.springfox:springfox-boot-starter:3.0.0'
+    implementation ('org.springdoc:springdoc-openapi-starter-webmvc-ui:2.5.0')
+    implementation('jakarta.validation:jakarta.validation-api')
     runtimeOnly('org.springframework.boot:spring-boot-devtools')
     runtimeOnly('com.h2database:h2:1.4.186')
     runtimeOnly('com.microsoft.sqlserver:mssql-jdbc')
