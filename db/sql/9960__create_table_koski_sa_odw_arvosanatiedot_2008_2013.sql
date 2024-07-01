@@ -23,7 +23,5 @@ CREATE TABLE [sa].[sa_odw_arvosanatiedot_2008_2013](
 [arvosana] [varchar](10) NULL,
 [source] [varchar](255) NULL
 ) ON [PRIMARY]
-GO
-
 
 END
