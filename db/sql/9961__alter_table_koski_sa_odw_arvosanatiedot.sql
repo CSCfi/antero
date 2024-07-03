@@ -1,0 +1,21 @@
+
+USE [Koski_SA]
+GO
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (
+    SELECT 1
+    FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE TABLE_SCHEMA = 'sa' AND TABLE_NAME = 'sa_odw_arvosanatiedot' AND COLUMN_NAME = 'Valinnainen'
+    )
+BEGIN
+
+
+    ALTER TABLE sa.sa_odw_arvosanatiedot ADD Valinnainen INT NULL;
+
+END
