@@ -90,6 +90,10 @@ while(($errors -lt 2) -and ($RefreshStatus -ne "Completed")) {
 	}
 }
 
+if ($RefreshStatus -eq "Failed") {
+	ECHO "Refresh failed"
+}
+
 ECHO "################################################"
 
 $endTime = Get-Date
