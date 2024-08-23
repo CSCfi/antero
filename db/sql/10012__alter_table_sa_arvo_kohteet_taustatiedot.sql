@@ -1,3 +1,4 @@
+USE Arvo_SA
 
 IF NOT EXISTS (
     SELECT *
@@ -35,8 +36,6 @@ BEGIN
     ALTER TABLE sa.sa_arvo_kohteet_taustatiedot
     DROP COLUMN  tarkenne;
 END;
-
-
 
 
 
