@@ -70,7 +70,3 @@ VALUES
 ('ulkop_tk_rahoitus', 'Ulkopuolisen tk-rahoituksen määrä (miljoonaa euroa)', 'Tutkimusindikaattorit', 45, 2, 'luku', 'ETL: p_lataa_d_indikaattorit_kk')
 
 GO
-
-EXEC [dw].[p_lataa_d_indikaattorit_kk]
-
-GO
