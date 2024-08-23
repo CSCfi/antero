@@ -34,6 +34,9 @@ ALTER TABLE [sa].[sa_cwts_leiden_ranking] ADD  CONSTRAINT [DF__sa_cwts_leiden_ra
 GO
 
 ALTER TABLE [sa].[sa_cwts_leiden_ranking] ADD  CONSTRAINT [DF__sa_cwts_leiden_ranking__username]  DEFAULT (suser_name()) FOR [username]
+
 GO
+
+USE [ANTERO]
 
 

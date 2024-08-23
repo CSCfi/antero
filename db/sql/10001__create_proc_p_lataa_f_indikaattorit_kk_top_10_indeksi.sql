@@ -185,3 +185,5 @@ BEGIN
 EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
 
 GO
+
+USE [ANTERO]

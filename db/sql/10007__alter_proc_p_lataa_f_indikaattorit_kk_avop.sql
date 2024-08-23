@@ -97,3 +97,5 @@ EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
 END
 
 GO
+
+USE [ANTERO]

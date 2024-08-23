@@ -30,3 +30,5 @@ EXEC dw.p_lataa_f_indikaattorit_kk_horizon
 EXEC dw.p_lataa_f_indikaattorit_kk_top_10_indeksi
 
 GO
+
+USE [ANTERO]

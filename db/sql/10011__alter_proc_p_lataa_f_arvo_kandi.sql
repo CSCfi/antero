@@ -266,4 +266,6 @@ EXEC dw.p_lataa_f_indikaattorit_kk_kandipalaute
 
 GO
 
+USE [ANTERO]
+
 

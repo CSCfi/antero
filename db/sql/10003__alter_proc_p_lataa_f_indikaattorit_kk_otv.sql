@@ -511,5 +511,7 @@ IF (SELECT cast(MAX(loadtime) as date) FROM ANTERO.dw.f_indikaattorit_kk WHERE s
 BEGIN
 EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
 END
-	
+
 GO
+
+USE [ANTERO]
