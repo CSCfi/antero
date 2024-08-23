@@ -1,6 +1,12 @@
 
+USE Arvo_SA
+SET ANSI_NULLS ON
+GO
 
-ALTER   PROCEDURE [Arvo_SA].[dbo].[p_arvo_jaadytys] AS
+SET QUOTED_IDENTIFIER ON
+GO
+
+ALTER   PROCEDURE [dbo].[p_arvo_jaadytys] AS
 
 -- vastaajat
 MERGE sa.sa_arvo_vastaajat_jaadytetty AS target
