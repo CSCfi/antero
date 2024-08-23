@@ -1,7 +1,6 @@
-USE [Arvo_SA]
 
 
-ALTER   PROCEDURE [dbo].[p_arvo_jaadytys] AS
+ALTER   PROCEDURE [Arvo_SA].[dbo].[p_arvo_jaadytys] AS
 
 -- vastaajat
 MERGE sa.sa_arvo_vastaajat_jaadytetty AS target
