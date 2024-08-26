@@ -1,12 +1,13 @@
 USE [ANTERO]
 GO
 
-/****** Object:  StoredProcedure [dw].[p_lataa_f_arvo_kandi]    Script Date: 23.8.2024 14:56:05 ******/
+/****** Object:  StoredProcedure [dw].[p_lataa_f_arvo_kandi]    Script Date: 26.8.2024 8:27:41 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 ALTER PROCEDURE [dw].[p_lataa_f_arvo_kandi] AS
@@ -15,11 +16,11 @@ DROP TABLE IF EXISTS [dw].[f_arvo_kandi_MAIN_QUERY]
 DROP TABLE IF EXISTS [sa].temp_arvo_kandi_taustat
 
 --taustat (indeksointi tarvittaessa)
-select distinct a.kyselykertaid, a.vastaajaid, a.kysymysid, a.kysymysversio, a.numerovalinta as koodi, b.taustakysymyksen_tyyppi 
+select distinct a.kyselyid, a.vastaajaid, a.kysymysid, a.kysymysversio, a.numerovalinta as koodi, b.taustakysymyksen_tyyppi 
 into [sa].temp_arvo_kandi_taustat
 from Arvo_SA.sa.sa_arvo_vastaukset_kandi a 
 join Arvo_SA.sa.sa_arvo_kysymykset b on b.kysymysid = a.kysymysid and b.kysymysversio = b.kysymysversio
-join Arvo_SA.sa.sa_arvo_kyselykerrat c on c.kyselykertaid = a.kyselykertaid
+join Arvo_SA.sa.sa_arvo_kyselykerrat c on c.kyselyid = a.kyselyid
 where b.taustakysymyksen_tyyppi in ('sukupuoli','ika','pohjakoulutus')
 and c.tyyppi = 'kandipalaute'
 
@@ -94,9 +95,9 @@ LEFT JOIN Arvo_SA.sa.sa_arvo_kyselykerrat f5 on f5.kyselyid = f4.kyselyid
 LEFT JOIN  Arvo_SA.sa.sa_arvo_teemat f6 on f6.koodi = f3.teema
 
 --HENKILÖN TAUSTATIEDOT
-LEFT JOIN [sa].temp_arvo_kandi_taustat tk_sp ON tk_sp.vastaajaid = f.vastaajaid AND tk_sp.kyselykertaid = f.kyselykertaid AND tk_sp.taustakysymyksen_tyyppi = 'sukupuoli'
-LEFT JOIN [sa].temp_arvo_kandi_taustat tk_ika ON tk_ika.vastaajaid = f.vastaajaid AND tk_ika.kyselykertaid = f.kyselykertaid AND tk_ika.taustakysymyksen_tyyppi = 'ika'
-LEFT JOIN [sa].temp_arvo_kandi_taustat tk_pk ON tk_pk.vastaajaid = f.vastaajaid AND tk_pk.kyselykertaid = f.kyselykertaid AND tk_pk.taustakysymyksen_tyyppi = 'pohjakoulutus'
+LEFT JOIN [sa].temp_arvo_kandi_taustat tk_sp ON tk_sp.vastaajaid = f.vastaajaid AND tk_sp.kyselyid = f.kyselyid AND tk_sp.taustakysymyksen_tyyppi = 'sukupuoli'
+LEFT JOIN [sa].temp_arvo_kandi_taustat tk_ika ON tk_ika.vastaajaid = f.vastaajaid AND tk_ika.kyselyid = f.kyselyid AND tk_ika.taustakysymyksen_tyyppi = 'ika'
+LEFT JOIN [sa].temp_arvo_kandi_taustat tk_pk ON tk_pk.vastaajaid = f.vastaajaid AND tk_pk.kyselyid = f.kyselyid AND tk_pk.taustakysymyksen_tyyppi = 'pohjakoulutus'
 
 WHERE f5.tyyppi = 'kandipalaute' 
 AND f3.valtakunnallinen = 1 
