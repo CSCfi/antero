@@ -1,12 +1,13 @@
 USE [ANTERO]
 GO
 
-/****** Object:  StoredProcedure [dw].[p_lataa_f_arvo_avop]    Script Date: 23.8.2024 15:53:18 ******/
+/****** Object:  StoredProcedure [dw].[p_lataa_f_arvo_avop]    Script Date: 26.8.2024 8:22:11 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 
@@ -19,7 +20,7 @@ DROP TABLE IF EXISTS [dw].[f_arvo_avop_CTE]
 
 --aputaulu
 select distinct 
-	a.kyselykertaid
+	a.kyselyid
 	,a.vastaajaid
 	,a.kysymysid
 	,a.kysymysversio
@@ -28,7 +29,7 @@ select distinct
 into [dw].[f_arvo_avop_CTE]
 from Arvo_SA.sa.sa_arvo_vastaukset_avop a 
 join Arvo_SA.sa.sa_arvo_kysymykset b on b.kysymysid = a.kysymysid and b.kysymysversio = b.kysymysversio
-join Arvo_SA.sa.sa_arvo_kyselykerrat c on c.kyselykertaid = a.kyselykertaid
+join Arvo_SA.sa.sa_arvo_kyselykerrat c on c.kyselyid = a.kyselyid
 where b.taustakysymyksen_tyyppi in ('sukupuoli','ika','pohjakoulutus')
 and c.tyyppi = 'avop'
 
@@ -73,32 +74,32 @@ INNER JOIN Arvo_SA.sa.sa_arvo_kysely_kysymysryhma f4 on f4.kysymysryhmaid = f3.k
 INNER JOIN Arvo_SA.sa.sa_arvo_kyselykerrat f5 on f5.kyselyid = f4.kyselyid
 --HENKILÖN TAUSTATIEDOT
 LEFT JOIN (
-	select kyselykertaid
+	select kyselyid
 		,vastaajaid
 		,kysymysid
 		,kysymysversio
 		,koodi
 	from [dw].[f_arvo_avop_CTE]
 	where taustakysymyksen_tyyppi = 'sukupuoli'
-) AS tk_sp ON tk_sp.vastaajaid = f.vastaajaid AND tk_sp.kyselykertaid = f.kyselykertaid
+) AS tk_sp ON tk_sp.vastaajaid = f.vastaajaid AND tk_sp.kyselyid = f.kyselyid
 LEFT JOIN (
-	select kyselykertaid
+	select kyselyid
 		,vastaajaid
 		,kysymysid
 		,kysymysversio
 		,koodi
 	from [dw].[f_arvo_avop_CTE]  
 	where taustakysymyksen_tyyppi = 'ika'
-) AS tk_ika ON tk_ika.vastaajaid = f.vastaajaid AND tk_ika.kyselykertaid = f.kyselykertaid
+) AS tk_ika ON tk_ika.vastaajaid = f.vastaajaid AND tk_ika.kyselyid = f.kyselyid
 LEFT JOIN (
-	select kyselykertaid
+	select kyselyid
 		,vastaajaid
 		,kysymysid
 		,kysymysversio
 		,koodi
 	from [dw].[f_arvo_avop_CTE] 
 	where taustakysymyksen_tyyppi = 'pohjakoulutus'
-) AS tk_pk ON tk_pk.vastaajaid = f.vastaajaid AND tk_pk.kyselykertaid = f.kyselykertaid
+) AS tk_pk ON tk_pk.vastaajaid = f.vastaajaid AND tk_pk.kyselyid = f.kyselyid
 
 WHERE f5.tyyppi = 'avop' 
 AND f3.valtakunnallinen = 1 
@@ -274,6 +275,8 @@ DROP TABLE IF EXISTS [dw].[f_arvo_avop_CTE]
 EXEC dw.p_lataa_f_indikaattorit_kk_avop
 
 GO
+
+USE [ANTERO]
 
 
 USE [ANTERO]
