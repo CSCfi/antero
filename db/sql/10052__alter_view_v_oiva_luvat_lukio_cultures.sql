@@ -90,7 +90,6 @@ SELECT DISTINCT --TOP 1000
 	,[jarjestys_muut_oikeudet_velvollisuudet_ehdot_ja_tehtavat] = case when d10.selite_fi = ca.puuttuu_fi then 0 else d10.jarjestys end
 
 FROM dw.f_oiva_luvat_lukio f
-LEFT JOIN dbo.translations_keys_as_columns k on 1=0
 LEFT JOIN dw.d_organisaatioluokitus d1 on d1.id=f.d_organisaatioluokitus_jarjestaja_id
 LEFT JOIN dw.d_alueluokitus d1a on d1a.kunta_koodi=d1.kunta_koodi
 LEFT JOIN dw.d_alueluokitus d2a on d2a.id=f.d_alueluokitus_toiminta_alue_kunta_id
@@ -104,5 +103,3 @@ LEFT JOIN dw.d_opetuksen_jarjestamismuoto_lukio d9 on d9.id = f.d_opetuksen_jarj
 LEFT JOIN dw.d_lukiomuutkoulutuksenjarjestamiseenliittyvatehdot d10 on d10.id=f.d_muutkoulutuksenjarjestamiseenliittyvatehdot_id
 LEFT JOIN dw.d_organisaatioluokitus d12 on d12.id = f.d_organisaatioluokitus_oppilaitos_id
 CROSS APPLY (select puuttuu_fi = 'Tieto puuttuu', puuttuu_sv = 'Information saknas', puuttuu_en = 'Missing data') ca
-
-GO
