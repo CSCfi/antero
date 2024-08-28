@@ -196,3 +196,4 @@ DROP TABLE IF EXISTS #temp_epo
 	DROP TABLE dw.temp_f_koski_epo_paat_lukuv
 
 END
+;
