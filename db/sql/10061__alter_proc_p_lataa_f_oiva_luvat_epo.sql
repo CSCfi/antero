@@ -1,4 +1,4 @@
-﻿USE [ANTERO]
+USE [ANTERO]
 GO
 
 /****** Object:  StoredProcedure [dw].[p_lataa_f_oiva_luvat_epo]    Script Date: 28.8.2024 12:59:07 ******/
