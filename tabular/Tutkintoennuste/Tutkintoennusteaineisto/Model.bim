@@ -1312,6 +1312,33 @@
               "IF(AND(lkm>0,lkm<5), \"1-4\", MROUND(lkm,3))"
             ],
             "formatString": "#,0"
+          },
+          {
+            "name": "Tutkinnot (ilman työvoimaosuutta)_s",
+            "expression": [
+              "",
+              "",
+              "var taulu = SUMMARIZE(Tutkinnot, Tutkinnot[Tilastovuosi], \"lkm\", SUM(Tutkinnot[tutk2]))",
+              "return",
+              "AVERAGEX(taulu, [lkm])",
+              ""
+            ],
+            "formatString": "0"
+          },
+          {
+            "name": "Tutkinnot (ilman työvoimaosuutta)",
+            "expression": [
+              " ",
+              "",
+              "var taulu = SUMMARIZE(Tutkinnot, Tutkinnot[Tilastovuosi], \"lkm\", SUM(Tutkinnot[tutk2]))",
+              "",
+              "var lkm = AVERAGEX(taulu, [lkm]) ",
+              "",
+              "return",
+              "IF(AND(lkm>0,lkm<5), \"1-4\", MROUND(lkm,3))",
+              ""
+            ],
+            "formatString": "0"
           }
         ],
         "annotations": [
@@ -1762,6 +1789,9 @@
             "measures": [
               {
                 "name": "Tutkinnot_s"
+              },
+              {
+                "name": "Tutkinnot (ilman työvoimaosuutta)_s"
               }
             ]
           }
