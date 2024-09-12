@@ -145,10 +145,9 @@ ALTER PROCEDURE [dbo].[p_lataa_f_Tutkintoennuste] AS
 	LEFT JOIN [VipunenTK].[dbo].d_ika d5 ON d5.id = f.ika_1v_id
 	LEFT JOIN VipunenTK.dbo.d_ammatillisen_koulutuksen_koulutuslaji d15 on d15.id=f.ammatillisen_koulutuksen_koulutuslaji_id
 	LEFT JOIN VipunenTK.dbo.d_koulutuksen_tavoite_toteuma d27 on d27.id=f.koulutuksen_tavoite_toteuma_id
-	LEFT JOIN VipunenTK.dbo.d_opetussuunnitelmaperusteinen_koulutus_nayttotutkintoon_valmistava_koulutus d2 on d2.id = f.opetussuunnitelmaperusteinen_koulutus_nayttotutkintoon_valmistava_koulutus_id
 	LEFT JOIN VipunenTK.dbo.d_rahoituslahde_amm d3 on d3.id = f.rahoituslahde_amm_id
 	WHERE d15.ammatillisen_koulutuksen_koulutuslaji = 'ammatillinen perustutkinto' and f.tilv >= 2017 and d5.ika_int BETWEEN 15 and 64
-	AND d27.koulutuksen_tavoite_toteuma = 'Koko tutkinto' and d2.opetussuunnitelmaperusteinen_koulutus_nayttotutkintoon_valmistava_koulutus = 'opetussuunnitelmaperusteinen koulutus/tutkinto'
+	AND d27.koulutuksen_tavoite_toteuma = 'Koko tutkinto' 
 	AND d3.rahoituslahde_amm_koodi not in ('10', '13') -- Ei työvoimakoulutusta
 	GROUP BY f.tilv,d16.iscfi2013,d16.Koulutusaste_taso2,CASE WHEN d5.ika_int BETWEEN 15 and 34 THEN '15-34' ELSE '35-64' END,d16.iscfi2013_koodi
 	
@@ -649,10 +648,9 @@ ALTER PROCEDURE [dbo].[p_lataa_f_Tutkintoennuste] AS
 	LEFT JOIN [VipunenTK].[dbo].d_ika d5 ON d5.id = f.ika_1v_id
 	LEFT JOIN VipunenTK.dbo.d_ammatillisen_koulutuksen_koulutuslaji d15 on d15.id=f.ammatillisen_koulutuksen_koulutuslaji_id
 	LEFT JOIN VipunenTK.dbo.d_koulutuksen_tavoite_toteuma d27 on d27.id=f.koulutuksen_tavoite_toteuma_id
-	LEFT JOIN VipunenTK.dbo.d_opetussuunnitelmaperusteinen_koulutus_nayttotutkintoon_valmistava_koulutus d2 on d2.id = f.opetussuunnitelmaperusteinen_koulutus_nayttotutkintoon_valmistava_koulutus_id
 	LEFT JOIN VipunenTK.dbo.d_rahoituslahde_amm d3 on d3.id = f.rahoituslahde_amm_id
 	WHERE d15.ammatillisen_koulutuksen_koulutuslaji = 'ammatillinen perustutkinto' and f.tilastointivuosi >= 2017 and d5.ika_int BETWEEN 15 and 64
-	AND d27.koulutuksen_tavoite_toteuma = 'Koko tutkinto' and d2.opetussuunnitelmaperusteinen_koulutus_nayttotutkintoon_valmistava_koulutus = 'opetussuunnitelmaperusteinen koulutus/tutkinto'
+	AND d27.koulutuksen_tavoite_toteuma = 'Koko tutkinto' 
 	AND d3.rahoituslahde_amm_koodi not in ('10', '13') -- Ei työvoimakoulutusta
 	GROUP BY f.tilastointivuosi,d5.ika_int,d16.iscfi2013,d16.Koulutusaste_taso2,CASE WHEN d5.ika_int BETWEEN 15 and 34 THEN '15-34' ELSE '35-64' END,d16.iscfi2013_koodi
 	
