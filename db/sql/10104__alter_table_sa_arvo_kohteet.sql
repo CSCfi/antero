@@ -1,0 +1,21 @@
+
+USE Arvo_SA
+GO
+
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+IF NOT EXISTS (
+    SELECT *
+    FROM INFORMATION_SCHEMA.COLUMNS
+    WHERE TABLE_SCHEMA = 'sa'
+      AND TABLE_NAME = 'sa_arvo_kohteet'
+      AND COLUMN_NAME = 'kohteiden_lkm'
+)
+BEGIN
+    ALTER TABLE sa.sa_arvo_kohteet ADD kohteiden_lkm  INT NULL
+END
+GO
