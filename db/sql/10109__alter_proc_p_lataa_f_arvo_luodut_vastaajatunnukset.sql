@@ -11,7 +11,7 @@ GO
 
 
 
-ALTER PROCEDURE  [dw].[p_lataa_f_arvo_luodut_vastaajatunnukset] AS
+ALTER PROCEDURE [dw].[p_lataa_f_arvo_luodut_vastaajatunnukset] AS
 
 DROP INDEX IF EXISTS [NC_arvo_luodut_vastaajatunnukset] ON [dw].[f_arvo_luodut_vastaajatunnukset]
 
@@ -136,7 +136,7 @@ FROM (
 		NULL as koulutustoimija,
 		k.tutkintokoodi,
 		DATEADD(day,1,EOMONTH(DATEADD(month,-1,vastaajatunnus_alkupvm))) as kuukausi,
-		SUM(k.kohteiden_lkm) as vastauskertoja,
+		COALESCE(SUM(k.kohteiden_lkm),1) as vastauskertoja,
 		NULL as tyonantaja,
 		NULL as sopimustyyppi,
 		NULL as oppisopimuksen_perusta,
