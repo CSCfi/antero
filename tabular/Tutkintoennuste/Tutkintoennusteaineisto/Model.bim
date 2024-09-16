@@ -129,8 +129,9 @@
             "formatString": "#,0"
           },
           {
-            "name": "Tutkintojen määrä (ennuste)",
+            "name": "Tutkintoennuste (ilman työvoimaosuutta)",
             "expression": [
+              "",
               "",
               "var osa = SUM('Kohorttipohjainen läpäisy'[suoritetut_tutkinnot])",
               "var kaikki = CALCULATE(SUM('Kohorttipohjainen läpäisy'[alkuperaisen_tutkinnon_aloittaneet]), ALL('Kohorttipohjainen läpäisy'[Suoritetun tutkinnon tutkintolaji]))",
@@ -145,8 +146,9 @@
             "formatString": "#,0"
           },
           {
-            "name": "Tutkintojen määrä (ennuste)_s",
+            "name": "Tutkintoennuste (ilman työvoimaosuutta)_s",
             "expression": [
+              "",
               "",
               "var osa = SUM('Kohorttipohjainen läpäisy'[suoritetut_tutkinnot])",
               "var kaikki = CALCULATE(SUM('Kohorttipohjainen läpäisy'[alkuperaisen_tutkinnon_aloittaneet]), ALL('Kohorttipohjainen läpäisy'[Suoritetun tutkinnon tutkintolaji]))",
@@ -186,7 +188,7 @@
               "",
               "var kerroin = DIVIDE(SUM('Moninkertainen koulutus'[myohemman_tutkinnon_suorittaneet]), SUMX(taulu,[lkm]) ,BLANK())",
               "",
-              "var lkm = IF(ISBLANK(kerroin), [Tutkintojen määrä, opintojaan jatkavat vähennetty (ennuste, kaikki alat)_s],[Tutkintojen määrä (ennuste)_s] - ([Tutkintojen määrä (ennuste)_s] * kerroin))",
+              "var lkm = IF(ISBLANK(kerroin), [Tutkintojen määrä, opintojaan jatkavat vähennetty (ennuste, kaikki alat)_s],[Tutkintoennuste (ilman työvoimaosuutta)_s] - ([Tutkintoennuste (ilman työvoimaosuutta)_s] * kerroin))",
               "",
               "RETURN",
               "",
@@ -204,7 +206,7 @@
               "",
               "var kerroin = DIVIDE(SUM('Moninkertainen koulutus'[myohemman_tutkinnon_suorittaneet]),SUMX(taulu, [lkm]),BLANK())",
               "",
-              "var lkm = IF(ISBLANK(kerroin), [Tutkintojen määrä, opintojaan jatkavat vähennetty (ennuste, kaikki alat)_s],[Tutkintojen määrä (ennuste)_s] - ([Tutkintojen määrä (ennuste)_s] * kerroin))",
+              "var lkm = IF(ISBLANK(kerroin), [Tutkintojen määrä, opintojaan jatkavat vähennetty (ennuste, kaikki alat)_s],[Tutkintoennuste (ilman työvoimaosuutta)_s] - ([Tutkintoennuste (ilman työvoimaosuutta)_s] * kerroin))",
               "",
               "RETURN",
               "",
@@ -221,7 +223,7 @@
               "",
               "var kerroin = CALCULATE(DIVIDE(SUM('Moninkertainen koulutus'[myohemman_tutkinnon_suorittaneet]),SUMX(taulu,[lkm]),BLANK()), ALL(Ennuste[Koulutusala, taso 3]))",
               "",
-              "var lkm = [Tutkintojen määrä (ennuste)_s] - ([Tutkintojen määrä (ennuste)_s] * kerroin)",
+              "var lkm = [Tutkintoennuste (ilman työvoimaosuutta)_s] - ([Tutkintoennuste (ilman työvoimaosuutta)_s] * kerroin)",
               "",
               "RETURN",
               "",
@@ -244,11 +246,12 @@
             "formatString": "#,0"
           },
           {
-            "name": "Tarjonta (ennuste)",
+            "name": "Tutkintoennuste (työvoimaosuus mukana)",
             "expression": [
               "",
+              "",
               "var kerroin = IF(OR(ISBLANK([Tutkinnon suorittaneen väestön työvoimaosuus_s]), [Tutkinnon suorittaneen väestön työvoimaosuus_s] > 1), [Tutkinnon suorittaneen väestön työvoimaosuus (kaikki alat)_s], [Tutkinnon suorittaneen väestön työvoimaosuus_s])",
-              "var lkm = [Tutkintojen määrä (ennuste)_s] * kerroin",
+              "var lkm = [Tutkintoennuste (ilman työvoimaosuutta)_s] * kerroin",
               "",
               "RETURN",
               "",
@@ -263,11 +266,12 @@
             "isHidden": true
           },
           {
-            "name": "Tarjonta (ennuste)_s",
+            "name": "Tutkintoennuste (työvoimaosuus mukana)_s",
             "expression": [
               "",
+              "",
               "var kerroin = IF(OR(ISBLANK([Tutkinnon suorittaneen väestön työvoimaosuus_s]), [Tutkinnon suorittaneen väestön työvoimaosuus_s] > 1), [Tutkinnon suorittaneen väestön työvoimaosuus (kaikki alat)_s], [Tutkinnon suorittaneen väestön työvoimaosuus_s])",
-              "var lkm = [Tutkintojen määrä (ennuste)_s] * kerroin",
+              "var lkm = [Tutkintoennuste (ilman työvoimaosuutta)_s] * kerroin",
               "",
               "RETURN",
               "",
@@ -290,8 +294,19 @@
             "formatString": "#,0"
           },
           {
-            "name": "Tarjonta / Tutkinnot_s",
-            "expression": " DIVIDE([Tarjonta (ennuste)_s], [Tutkinnot_s],BLANK())",
+            "name": "Tutkintoennuste / Tutkinnot (työvoimaosuus mukana)_s",
+            "expression": [
+              " DIVIDE([Tutkintoennuste (työvoimaosuus mukana)_s], [Tutkinnot (työvoimaosuus mukana)_s],BLANK())",
+              ""
+            ],
+            "formatString": "#,0.00"
+          },
+          {
+            "name": "Tutkintoennuste / Tutkinnot (ilman työvoimaosuutta)_s",
+            "expression": [
+              " DIVIDE([Tutkintoennuste (ilman työvoimaosuutta)_s], [Tutkinnot (ilman työvoimaosuutta)_s],BLANK())",
+              ""
+            ],
             "formatString": "#,0.00"
           }
         ],
@@ -1289,7 +1304,7 @@
         ],
         "measures": [
           {
-            "name": "Tutkinnot_s",
+            "name": "Tutkinnot (työvoimaosuus mukana)_s",
             "expression": [
               "",
               "",
@@ -1300,7 +1315,7 @@
             "formatString": "#,0"
           },
           {
-            "name": "Tutkinnot",
+            "name": "Tutkinnot (työvoimaosuus mukana)",
             "expression": [
               " ",
               "",
@@ -1649,10 +1664,10 @@
                 "name": "Aloittaneet (ennuste)_s"
               },
               {
-                "name": "Tarjonta (ennuste)_s"
+                "name": "Tutkintoennuste (työvoimaosuus mukana)_s"
               },
               {
-                "name": "Tutkintojen määrä (ennuste)_s"
+                "name": "Tutkintoennuste (ilman työvoimaosuutta)_s"
               },
               {
                 "name": "Tutkintojen määrä, opintojaan jatkavat vähennetty (ennuste)_s"
@@ -1661,7 +1676,10 @@
                 "name": "Työmarkkinoille tulevat tutkinnon suorittaneet (ennuste)_s"
               },
               {
-                "name": "Tarjonta / Tutkinnot_s"
+                "name": "Tutkintoennuste / Tutkinnot (työvoimaosuus mukana)_s"
+              },
+              {
+                "name": "Tutkintoennuste / Tutkinnot (ilman työvoimaosuutta)_s"
               }
             ]
           },
@@ -1788,7 +1806,7 @@
             ],
             "measures": [
               {
-                "name": "Tutkinnot_s"
+                "name": "Tutkinnot (työvoimaosuus mukana)_s"
               },
               {
                 "name": "Tutkinnot (ilman työvoimaosuutta)_s"
