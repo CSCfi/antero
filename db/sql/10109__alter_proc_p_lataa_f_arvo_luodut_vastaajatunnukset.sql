@@ -136,7 +136,7 @@ FROM (
 		NULL as koulutustoimija,
 		k.tutkintokoodi,
 		DATEADD(day,1,EOMONTH(DATEADD(month,-1,vastaajatunnus_alkupvm))) as kuukausi,
-		COALESCE(SUM(k.kohteiden_lkm),1) as vastauskertoja,
+		COALESCE(SUM(k.kohteiden_lkm),0) as vastauskertoja,
 		NULL as tyonantaja,
 		NULL as sopimustyyppi,
 		NULL as oppisopimuksen_perusta,
