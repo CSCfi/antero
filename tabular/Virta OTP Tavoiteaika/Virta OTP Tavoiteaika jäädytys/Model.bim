@@ -3371,7 +3371,10 @@
             "name": "tavoiteajassa_suoritetut_tutkinnot",
             "expression": [
               " ",
-              "CALCULATE([tutkinnot],  Muuttujat[apusarake_tavoiteajassavalmistunut] = 1)"
+              "",
+              "var lkm = CALCULATE([tutkinnot],  Muuttujat[apusarake_tavoiteajassavalmistunut] = 1)",
+              "RETURN",
+              "IF(ISBLANK(lkm),0,lkm)"
             ],
             "formatString": "#,0"
           },
@@ -3381,10 +3384,12 @@
               " ",
               "var kaikki = [tutkinnot]",
               "var osa =[tavoiteajassa_suoritetut_tutkinnot]",
-              "return IF(osa = BLANK(), BLANK(),",
+              "return ",
+              "IF(osa = 0, 0,",
               "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
               "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
-              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))), osa / kaikki)))"
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))), osa / kaikki)))",
+              ""
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
@@ -3393,7 +3398,10 @@
             "expression": [
               " ",
               "",
-              "CALCULATE([tutkinnot], Muuttujat[apusarake_aiempitutkinto] = 1)"
+              "var lkm = CALCULATE([tutkinnot], Muuttujat[apusarake_aiempitutkinto] = 1)",
+              "RETURN",
+              "IF(ISBLANK(lkm),0,lkm)",
+              ""
             ],
             "formatString": "#,0"
           },
@@ -3403,7 +3411,8 @@
               "",
               "var kaikki = [tutkinnot]",
               "var osa =[aiemmin_suoritettu_saman_tason_kk_tutkinto_maara]",
-              "return IF(osa = BLANK(), BLANK(),",
+              "return ",
+              "IF(osa = 0, 0,",
               "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
               "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
               "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))), osa / kaikki)))",
@@ -3413,12 +3422,25 @@
           },
           {
             "name": "12_kk_tavoiteajan_jalkeen_suoritetut_tutkinnot",
-            "expression": " CALCULATE([tutkinnot], Muuttujat[apusarake_tutkinto_yli_12] = 1)",
+            "expression": [
+              " ",
+              "",
+              "var lkm = CALCULATE([tutkinnot], Muuttujat[apusarake_tutkinto_yli_12] = 1)",
+              "RETURN",
+              "IF(ISBLANK(lkm),0,lkm)",
+              ""
+            ],
             "formatString": "#,0"
           },
           {
             "name": "enintaan_12_kk_tavoiteajan_jalkeen_suoritetut_tutkinnot",
-            "expression": " CALCULATE([tutkinnot], Muuttujat[apusarake_tutkinto_enintaan_12] = 1)",
+            "expression": [
+              "",
+              "var lkm = CALCULATE([tutkinnot], Muuttujat[apusarake_tutkinto_enintaan_12] = 1)",
+              "RETURN",
+              "IF(ISBLANK(lkm),0,lkm)",
+              ""
+            ],
             "formatString": "#,0"
           },
           {
@@ -3427,7 +3449,8 @@
               " ",
               "var kaikki = [tutkinnot]",
               "var osa =[enintaan_12_kk_tavoiteajan_jalkeen_suoritetut_tutkinnot]",
-              "return IF(osa = BLANK(), BLANK(),",
+              "return ",
+              "IF(osa = 0, 0,",
               "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
               "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
               "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))), osa / kaikki)))",
@@ -3442,7 +3465,8 @@
               "",
               "var kaikki = [tutkinnot]",
               "var osa =[12_kk_tavoiteajan_jalkeen_suoritetut_tutkinnot]",
-              "return IF(osa = BLANK(), BLANK(),",
+              "return ",
+              "IF(osa = 0, 0,",
               "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
               "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
               "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))), osa / kaikki)))",
@@ -3469,7 +3493,9 @@
             "name": "tavoiteajassa_suoritetut_tutkinnot_s",
             "expression": [
               " ",
-              "CALCULATE([tutkinnot_s],  Muuttujat[apusarake_tavoiteajassavalmistunut] = 1)",
+              "var lkm = CALCULATE([tutkinnot_s],  Muuttujat[apusarake_tavoiteajassavalmistunut] = 1)",
+              "RETURN",
+              "IF(ISBLANK(lkm),0,lkm)",
               ""
             ],
             "formatString": "#,0"
@@ -3481,7 +3507,9 @@
               "var kaikki = [tutkinnot_s]",
               "var osa =[tavoiteajassa_suoritetut_tutkinnot_s]",
               "return",
-              "divide(osa,kaikki)",
+              "",
+              "IF(osa=0,0, DIVIDE(osa,kaikki))",
+              "",
               ""
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
@@ -3491,7 +3519,10 @@
             "expression": [
               " ",
               "",
-              "CALCULATE([tutkinnot_s], Muuttujat[apusarake_aiempitutkinto] = 1)",
+              "var lkm = CALCULATE([tutkinnot_s], Muuttujat[apusarake_aiempitutkinto] = 1)",
+              "RETURN",
+              "IF(ISBLANK(lkm),0,lkm)",
+              "",
               ""
             ],
             "formatString": "#,0"
@@ -3504,18 +3535,31 @@
               "var osa =[aiemmin_suoritettu_saman_tason_kk_tutkinto_maara_s]",
               "return ",
               "",
-              "DIVIDE(osa,kaikki)"
+              "IF(osa = 0,0, DIVIDE(osa,kaikki))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
             "name": "12_kk_tavoiteajan_jalkeen_suoritetut_tutkinnot_s",
-            "expression": " CALCULATE([tutkinnot_s], Muuttujat[apusarake_tutkinto_yli_12] = 1)",
+            "expression": [
+              " ",
+              "",
+              "var lkm = CALCULATE([tutkinnot_s], Muuttujat[apusarake_tutkinto_yli_12] = 1)",
+              "RETURN",
+              "IF(ISBLANK(lkm),0,lkm)",
+              ""
+            ],
             "formatString": "#,0"
           },
           {
             "name": "enintaan_12_kk_tavoiteajan_jalkeen_suoritetut_tutkinnot_s",
-            "expression": " CALCULATE([tutkinnot_s], Muuttujat[apusarake_tutkinto_enintaan_12] = 1)",
+            "expression": [
+              " ",
+              "var lkm = CALCULATE([tutkinnot_s], Muuttujat[apusarake_tutkinto_enintaan_12] = 1)",
+              "RETURN",
+              "IF(ISBLANK(lkm),0,lkm)",
+              ""
+            ],
             "formatString": "#,0"
           },
           {
@@ -3524,8 +3568,8 @@
               " ",
               "var kaikki = [tutkinnot_s]",
               "var osa =[enintaan_12_kk_tavoiteajan_jalkeen_suoritetut_tutkinnot_s]",
-              "return DIVIDE(osa,kaikki)",
-              ""
+              "return",
+              "IF(osa = 0,0, DIVIDE(osa,kaikki))"
             ],
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
@@ -3536,7 +3580,8 @@
               "",
               "var kaikki = [tutkinnot_s]",
               "var osa =[12_kk_tavoiteajan_jalkeen_suoritetut_tutkinnot_s]",
-              "return DIVIDE(osa,kaikki)",
+              "return ",
+              "IF(osa = 0,0, DIVIDE(osa,kaikki))",
               "",
               ""
             ],
@@ -6033,81 +6078,6 @@
                     "translatedDisplayFolder": "Aikamuuttujat"
                   },
                   {
-                    "name": "lyhyt_kv_vaihto_fi",
-                    "translatedCaption": "Lyhyt kv-vaihto",
-                    "translatedDisplayFolder": "Liikkuvuusmuuttujat"
-                  },
-                  {
-                    "name": "pitka_kv_vaihto_fi",
-                    "translatedCaption": "Pitkä kv-vaihto",
-                    "translatedDisplayFolder": "Liikkuvuusmuuttujat"
-                  },
-                  {
-                    "name": "virtuaalinen_blended_kv_vaihto_fi",
-                    "translatedCaption": "Virtuaalinen blended kv-vaihto",
-                    "translatedDisplayFolder": "Liikkuvuusmuuttujat"
-                  },
-                  {
-                    "name": "henkilolla_kv_liikkuvuusjakso_fi",
-                    "translatedCaption": "Henkilöllä kv-liikkuvuusjakso",
-                    "translatedDisplayFolder": "Liikkuvuusmuuttujat"
-                  },
-                  {
-                    "name": "lyhyt_kv_vaihto_sv",
-                    "translatedCaption": "Kort internationellt utbyte",
-                    "translatedDisplayFolder": "Variabler för internationell mobilitet"
-                  },
-                  {
-                    "name": "pitka_kv_vaihto_sv",
-                    "translatedCaption": "Långt internationellt utbyte",
-                    "translatedDisplayFolder": "Variabler för internationell mobilitet"
-                  },
-                  {
-                    "name": "virtuaalinen_blended_kv_vaihto_sv",
-                    "translatedCaption": "Virtual blended internationellt utbyte",
-                    "translatedDisplayFolder": "Variabler för internationell mobilitet"
-                  },
-                  {
-                    "name": "henkilolla_kv_liikkuvuusjakso_sv",
-                    "translatedCaption": "Personen har en internationell mobilitetsperiod",
-                    "translatedDisplayFolder": "Variabler för internationell mobilitet"
-                  },
-                  {
-                    "name": "lyhyt_kv_vaihto_en",
-                    "translatedCaption": "Short international exchange",
-                    "translatedDisplayFolder": "International mobility variables"
-                  },
-                  {
-                    "name": "pitka_kv_vaihto_en",
-                    "translatedCaption": "Long international exchange",
-                    "translatedDisplayFolder": "International mobility variables"
-                  },
-                  {
-                    "name": "virtuaalinen_blended_kv_vaihto_en",
-                    "translatedCaption": "Virtual blended international exchange",
-                    "translatedDisplayFolder": "International mobility variables"
-                  },
-                  {
-                    "name": "henkilolla_kv_liikkuvuusjakso_en",
-                    "translatedCaption": "Individual international mobility period",
-                    "translatedDisplayFolder": "International mobility variables"
-                  },
-                  {
-                    "name": "aiempi_sama_koulutuskoodi_fi",
-                    "translatedCaption": "Aiempi sama koulutuskoodi",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "aiempi_sama_koulutuskoodi_sv",
-                    "translatedCaption": "Tidigare samma utbildningskod",
-                    "translatedDisplayFolder": "Personvariabler"
-                  },
-                  {
-                    "name": "aiempi_sama_koulutuskoodi_en",
-                    "translatedCaption": "The same education code as before",
-                    "translatedDisplayFolder": "Person variables"
-                  },
-                  {
                     "name": "tutkinnon_tavoiteaika_lukukausia_fi",
                     "translatedCaption": "Tutkinnon tavoiteaika (lukukausia)",
                     "translatedDisplayFolder": "Aikamuuttujat"
@@ -6606,6 +6576,81 @@
                     "name": "tilastovuosi_en",
                     "translatedCaption": ".",
                     "translatedDisplayFolder": "Aikamuuttujat"
+                  },
+                  {
+                    "name": "aiempi_sama_koulutuskoodi_fi",
+                    "translatedCaption": "Aiempi sama koulutuskoodi",
+                    "translatedDisplayFolder": "Henkilömuuttujat"
+                  },
+                  {
+                    "name": "aiempi_sama_koulutuskoodi_sv",
+                    "translatedCaption": "Tidigare samma utbildningskod",
+                    "translatedDisplayFolder": "Personvariabler"
+                  },
+                  {
+                    "name": "aiempi_sama_koulutuskoodi_en",
+                    "translatedCaption": "The same education code as before",
+                    "translatedDisplayFolder": "Person variables"
+                  },
+                  {
+                    "name": "lyhyt_kv_vaihto_fi",
+                    "translatedCaption": "Lyhyt kv-vaihto",
+                    "translatedDisplayFolder": "Liikkuvuusmuuttujat"
+                  },
+                  {
+                    "name": "lyhyt_kv_vaihto_sv",
+                    "translatedCaption": "Kort internationellt utbyte",
+                    "translatedDisplayFolder": "Variabler för internationell mobilitet"
+                  },
+                  {
+                    "name": "lyhyt_kv_vaihto_en",
+                    "translatedCaption": "Short international exchange",
+                    "translatedDisplayFolder": "International mobility variables"
+                  },
+                  {
+                    "name": "pitka_kv_vaihto_fi",
+                    "translatedCaption": "Pitkä kv-vaihto",
+                    "translatedDisplayFolder": "Liikkuvuusmuuttujat"
+                  },
+                  {
+                    "name": "pitka_kv_vaihto_sv",
+                    "translatedCaption": "Långt internationellt utbyte",
+                    "translatedDisplayFolder": "Variabler för internationell mobilitet"
+                  },
+                  {
+                    "name": "pitka_kv_vaihto_en",
+                    "translatedCaption": "Long international exchange",
+                    "translatedDisplayFolder": "International mobility variables"
+                  },
+                  {
+                    "name": "virtuaalinen_blended_kv_vaihto_fi",
+                    "translatedCaption": "Virtuaalinen blended kv-vaihto",
+                    "translatedDisplayFolder": "Liikkuvuusmuuttujat"
+                  },
+                  {
+                    "name": "virtuaalinen_blended_kv_vaihto_sv",
+                    "translatedCaption": "Virtual blended internationellt utbyte",
+                    "translatedDisplayFolder": "Variabler för internationell mobilitet"
+                  },
+                  {
+                    "name": "virtuaalinen_blended_kv_vaihto_en",
+                    "translatedCaption": "Virtual blended international exchange",
+                    "translatedDisplayFolder": "International mobility variables"
+                  },
+                  {
+                    "name": "henkilolla_kv_liikkuvuusjakso_fi",
+                    "translatedCaption": "Henkilöllä kv-liikkuvuusjakso",
+                    "translatedDisplayFolder": "Liikkuvuusmuuttujat"
+                  },
+                  {
+                    "name": "henkilolla_kv_liikkuvuusjakso_sv",
+                    "translatedCaption": "Personen har en internationell mobilitetsperiod",
+                    "translatedDisplayFolder": "Variabler för internationell mobilitet"
+                  },
+                  {
+                    "name": "henkilolla_kv_liikkuvuusjakso_en",
+                    "translatedCaption": "Individual international mobility period",
+                    "translatedDisplayFolder": "International mobility variables"
                   }
                 ],
                 "measures": [
@@ -6708,81 +6753,6 @@
                   {
                     "name": "tutkinnon_tavoiteaika_vuosia_fi",
                     "translatedCaption": "."
-                  },
-                  {
-                    "name": "lyhyt_kv_vaihto_fi",
-                    "translatedCaption": "Lyhyt kv-vaihto",
-                    "translatedDisplayFolder": "Liikkuvuusmuuttujat"
-                  },
-                  {
-                    "name": "pitka_kv_vaihto_fi",
-                    "translatedCaption": "Pitkä kv-vaihto",
-                    "translatedDisplayFolder": "Liikkuvuusmuuttujat"
-                  },
-                  {
-                    "name": "virtuaalinen_blended_kv_vaihto_fi",
-                    "translatedCaption": "Virtuaalinen blended kv-vaihto",
-                    "translatedDisplayFolder": "Liikkuvuusmuuttujat"
-                  },
-                  {
-                    "name": "henkilolla_kv_liikkuvuusjakso_fi",
-                    "translatedCaption": "Henkilöllä kv-liikkuvuusjakso",
-                    "translatedDisplayFolder": "Liikkuvuusmuuttujat"
-                  },
-                  {
-                    "name": "lyhyt_kv_vaihto_sv",
-                    "translatedCaption": "Kort internationellt utbyte",
-                    "translatedDisplayFolder": "Variabler för internationell mobilitet"
-                  },
-                  {
-                    "name": "pitka_kv_vaihto_sv",
-                    "translatedCaption": "Långt internationellt utbyte",
-                    "translatedDisplayFolder": "Variabler för internationell mobilitet"
-                  },
-                  {
-                    "name": "virtuaalinen_blended_kv_vaihto_sv",
-                    "translatedCaption": "Virtual blended internationellt utbyte",
-                    "translatedDisplayFolder": "Variabler för internationell mobilitet"
-                  },
-                  {
-                    "name": "henkilolla_kv_liikkuvuusjakso_sv",
-                    "translatedCaption": "Personen har en internationell mobilitetsperiod",
-                    "translatedDisplayFolder": "Variabler för internationell mobilitet"
-                  },
-                  {
-                    "name": "lyhyt_kv_vaihto_en",
-                    "translatedCaption": "Short international exchange",
-                    "translatedDisplayFolder": "International mobility variables"
-                  },
-                  {
-                    "name": "pitka_kv_vaihto_en",
-                    "translatedCaption": "Long international exchange",
-                    "translatedDisplayFolder": "International mobility variables"
-                  },
-                  {
-                    "name": "virtuaalinen_blended_kv_vaihto_en",
-                    "translatedCaption": "Virtual blended international exchange",
-                    "translatedDisplayFolder": "International mobility variables"
-                  },
-                  {
-                    "name": "henkilolla_kv_liikkuvuusjakso_en",
-                    "translatedCaption": "Individual international mobility period",
-                    "translatedDisplayFolder": "International mobility variables"
-                  },
-                  {
-                    "name": "aiempi_sama_koulutuskoodi_fi",
-                    "translatedCaption": "Aiempi sama koulutuskoodi",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "aiempi_sama_koulutuskoodi_sv",
-                    "translatedCaption": "Tidigare samma utbildningskod",
-                    "translatedDisplayFolder": "Personvariabler"
-                  },
-                  {
-                    "name": "aiempi_sama_koulutuskoodi_en",
-                    "translatedCaption": "The same education code as before",
-                    "translatedDisplayFolder": "Person variables"
                   },
                   {
                     "name": "tutkinnon_tavoiteaika_lukukausia_fi",
@@ -7256,6 +7226,81 @@
                     "name": "tilastovuosi_en",
                     "translatedCaption": ".",
                     "translatedDisplayFolder": "Tidsvariabler"
+                  },
+                  {
+                    "name": "aiempi_sama_koulutuskoodi_fi",
+                    "translatedCaption": "Aiempi sama koulutuskoodi",
+                    "translatedDisplayFolder": "Henkilömuuttujat"
+                  },
+                  {
+                    "name": "aiempi_sama_koulutuskoodi_sv",
+                    "translatedCaption": "Tidigare samma utbildningskod",
+                    "translatedDisplayFolder": "Personvariabler"
+                  },
+                  {
+                    "name": "aiempi_sama_koulutuskoodi_en",
+                    "translatedCaption": "The same education code as before",
+                    "translatedDisplayFolder": "Person variables"
+                  },
+                  {
+                    "name": "lyhyt_kv_vaihto_fi",
+                    "translatedCaption": "Lyhyt kv-vaihto",
+                    "translatedDisplayFolder": "Liikkuvuusmuuttujat"
+                  },
+                  {
+                    "name": "lyhyt_kv_vaihto_sv",
+                    "translatedCaption": "Kort internationellt utbyte",
+                    "translatedDisplayFolder": "Variabler för internationell mobilitet"
+                  },
+                  {
+                    "name": "lyhyt_kv_vaihto_en",
+                    "translatedCaption": "Short international exchange",
+                    "translatedDisplayFolder": "International mobility variables"
+                  },
+                  {
+                    "name": "pitka_kv_vaihto_fi",
+                    "translatedCaption": "Pitkä kv-vaihto",
+                    "translatedDisplayFolder": "Liikkuvuusmuuttujat"
+                  },
+                  {
+                    "name": "pitka_kv_vaihto_sv",
+                    "translatedCaption": "Långt internationellt utbyte",
+                    "translatedDisplayFolder": "Variabler för internationell mobilitet"
+                  },
+                  {
+                    "name": "pitka_kv_vaihto_en",
+                    "translatedCaption": "Long international exchange",
+                    "translatedDisplayFolder": "International mobility variables"
+                  },
+                  {
+                    "name": "virtuaalinen_blended_kv_vaihto_fi",
+                    "translatedCaption": "Virtuaalinen blended kv-vaihto",
+                    "translatedDisplayFolder": "Liikkuvuusmuuttujat"
+                  },
+                  {
+                    "name": "virtuaalinen_blended_kv_vaihto_sv",
+                    "translatedCaption": "Virtual blended internationellt utbyte",
+                    "translatedDisplayFolder": "Variabler för internationell mobilitet"
+                  },
+                  {
+                    "name": "virtuaalinen_blended_kv_vaihto_en",
+                    "translatedCaption": "Virtual blended international exchange",
+                    "translatedDisplayFolder": "International mobility variables"
+                  },
+                  {
+                    "name": "henkilolla_kv_liikkuvuusjakso_fi",
+                    "translatedCaption": "Henkilöllä kv-liikkuvuusjakso",
+                    "translatedDisplayFolder": "Liikkuvuusmuuttujat"
+                  },
+                  {
+                    "name": "henkilolla_kv_liikkuvuusjakso_sv",
+                    "translatedCaption": "Personen har en internationell mobilitetsperiod",
+                    "translatedDisplayFolder": "Variabler för internationell mobilitet"
+                  },
+                  {
+                    "name": "henkilolla_kv_liikkuvuusjakso_en",
+                    "translatedCaption": "Individual international mobility period",
+                    "translatedDisplayFolder": "International mobility variables"
                   }
                 ],
                 "measures": [
@@ -7358,81 +7403,6 @@
                   {
                     "name": "tutkinnon_tavoiteaika_vuosia_fi",
                     "translatedCaption": "."
-                  },
-                  {
-                    "name": "lyhyt_kv_vaihto_fi",
-                    "translatedCaption": "Lyhyt kv-vaihto",
-                    "translatedDisplayFolder": "Liikkuvuusmuuttujat"
-                  },
-                  {
-                    "name": "pitka_kv_vaihto_fi",
-                    "translatedCaption": "Pitkä kv-vaihto",
-                    "translatedDisplayFolder": "Liikkuvuusmuuttujat"
-                  },
-                  {
-                    "name": "virtuaalinen_blended_kv_vaihto_fi",
-                    "translatedCaption": "Virtuaalinen blended kv-vaihto",
-                    "translatedDisplayFolder": "Liikkuvuusmuuttujat"
-                  },
-                  {
-                    "name": "henkilolla_kv_liikkuvuusjakso_fi",
-                    "translatedCaption": "Henkilöllä kv-liikkuvuusjakso",
-                    "translatedDisplayFolder": "Liikkuvuusmuuttujat"
-                  },
-                  {
-                    "name": "lyhyt_kv_vaihto_sv",
-                    "translatedCaption": "Kort internationellt utbyte",
-                    "translatedDisplayFolder": "Variabler för internationell mobilitet"
-                  },
-                  {
-                    "name": "pitka_kv_vaihto_sv",
-                    "translatedCaption": "Långt internationellt utbyte",
-                    "translatedDisplayFolder": "Variabler för internationell mobilitet"
-                  },
-                  {
-                    "name": "virtuaalinen_blended_kv_vaihto_sv",
-                    "translatedCaption": "Virtual blended internationellt utbyte",
-                    "translatedDisplayFolder": "Variabler för internationell mobilitet"
-                  },
-                  {
-                    "name": "henkilolla_kv_liikkuvuusjakso_sv",
-                    "translatedCaption": "Personen har en internationell mobilitetsperiod",
-                    "translatedDisplayFolder": "Variabler för internationell mobilitet"
-                  },
-                  {
-                    "name": "lyhyt_kv_vaihto_en",
-                    "translatedCaption": "Short international exchange",
-                    "translatedDisplayFolder": "International mobility variables"
-                  },
-                  {
-                    "name": "pitka_kv_vaihto_en",
-                    "translatedCaption": "Long international exchange",
-                    "translatedDisplayFolder": "International mobility variables"
-                  },
-                  {
-                    "name": "virtuaalinen_blended_kv_vaihto_en",
-                    "translatedCaption": "Virtual blended international exchange",
-                    "translatedDisplayFolder": "International mobility variables"
-                  },
-                  {
-                    "name": "henkilolla_kv_liikkuvuusjakso_en",
-                    "translatedCaption": "Individual international mobility period",
-                    "translatedDisplayFolder": "International mobility variables"
-                  },
-                  {
-                    "name": "aiempi_sama_koulutuskoodi_fi",
-                    "translatedCaption": "Aiempi sama koulutuskoodi",
-                    "translatedDisplayFolder": "Henkilömuuttujat"
-                  },
-                  {
-                    "name": "aiempi_sama_koulutuskoodi_sv",
-                    "translatedCaption": "Tidigare samma utbildningskod",
-                    "translatedDisplayFolder": "Personvariabler"
-                  },
-                  {
-                    "name": "aiempi_sama_koulutuskoodi_en",
-                    "translatedCaption": "The same education code as before",
-                    "translatedDisplayFolder": "Person variables"
                   },
                   {
                     "name": "tutkinnon_tavoiteaika_lukukausia_fi",
@@ -7878,6 +7848,81 @@
                     "name": "tilastovuosi_en",
                     "translatedCaption": "Statistical year",
                     "translatedDisplayFolder": "Time variables"
+                  },
+                  {
+                    "name": "aiempi_sama_koulutuskoodi_fi",
+                    "translatedCaption": "Aiempi sama koulutuskoodi",
+                    "translatedDisplayFolder": "Henkilömuuttujat"
+                  },
+                  {
+                    "name": "aiempi_sama_koulutuskoodi_sv",
+                    "translatedCaption": "Tidigare samma utbildningskod",
+                    "translatedDisplayFolder": "Personvariabler"
+                  },
+                  {
+                    "name": "aiempi_sama_koulutuskoodi_en",
+                    "translatedCaption": "The same education code as before",
+                    "translatedDisplayFolder": "Person variables"
+                  },
+                  {
+                    "name": "lyhyt_kv_vaihto_fi",
+                    "translatedCaption": "Lyhyt kv-vaihto",
+                    "translatedDisplayFolder": "Liikkuvuusmuuttujat"
+                  },
+                  {
+                    "name": "lyhyt_kv_vaihto_sv",
+                    "translatedCaption": "Kort internationellt utbyte",
+                    "translatedDisplayFolder": "Variabler för internationell mobilitet"
+                  },
+                  {
+                    "name": "lyhyt_kv_vaihto_en",
+                    "translatedCaption": "Short international exchange",
+                    "translatedDisplayFolder": "International mobility variables"
+                  },
+                  {
+                    "name": "pitka_kv_vaihto_fi",
+                    "translatedCaption": "Pitkä kv-vaihto",
+                    "translatedDisplayFolder": "Liikkuvuusmuuttujat"
+                  },
+                  {
+                    "name": "pitka_kv_vaihto_sv",
+                    "translatedCaption": "Långt internationellt utbyte",
+                    "translatedDisplayFolder": "Variabler för internationell mobilitet"
+                  },
+                  {
+                    "name": "pitka_kv_vaihto_en",
+                    "translatedCaption": "Long international exchange",
+                    "translatedDisplayFolder": "International mobility variables"
+                  },
+                  {
+                    "name": "virtuaalinen_blended_kv_vaihto_fi",
+                    "translatedCaption": "Virtuaalinen blended kv-vaihto",
+                    "translatedDisplayFolder": "Liikkuvuusmuuttujat"
+                  },
+                  {
+                    "name": "virtuaalinen_blended_kv_vaihto_sv",
+                    "translatedCaption": "Virtual blended internationellt utbyte",
+                    "translatedDisplayFolder": "Variabler för internationell mobilitet"
+                  },
+                  {
+                    "name": "virtuaalinen_blended_kv_vaihto_en",
+                    "translatedCaption": "Virtual blended international exchange",
+                    "translatedDisplayFolder": "International mobility variables"
+                  },
+                  {
+                    "name": "henkilolla_kv_liikkuvuusjakso_fi",
+                    "translatedCaption": "Henkilöllä kv-liikkuvuusjakso",
+                    "translatedDisplayFolder": "Liikkuvuusmuuttujat"
+                  },
+                  {
+                    "name": "henkilolla_kv_liikkuvuusjakso_sv",
+                    "translatedCaption": "Personen har en internationell mobilitetsperiod",
+                    "translatedDisplayFolder": "Variabler för internationell mobilitet"
+                  },
+                  {
+                    "name": "henkilolla_kv_liikkuvuusjakso_en",
+                    "translatedCaption": "Individual international mobility period",
+                    "translatedDisplayFolder": "International mobility variables"
                   }
                 ],
                 "measures": [

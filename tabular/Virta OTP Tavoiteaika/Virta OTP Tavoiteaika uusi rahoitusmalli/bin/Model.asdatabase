@@ -1834,46 +1834,88 @@
           },
           {
             "name": "Aiempi tutkinto",
-            "expression": "CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[onaiempitutkinto]=1)"
+            "expression": [
+              "",
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[onaiempitutkinto]=1)",
+              "RETURN",
+              "IF(ISBLANK(lkm),0,lkm)",
+              ""
+            ]
           },
           {
             "name": "Osuus aiempi tutk.",
-            "expression": "[Aiempi tutkinto]/[Tutkinnot yht.]",
+            "expression": [
+              "",
+              "IF([Aiempi tutkinto] = 0,0, [Aiempi tutkinto]/[Tutkinnot yht.])"
+            ],
             "formatString": "0.00 %;-0.00 %;0.00 %"
           },
           {
             "name": "Tutkintopisteet yht.",
             "expression": "sum(Muuttujat[Tutkinto pisteet])",
-            "formatString": "#,0.0"
+            "formatString": "#,0.00"
           },
           {
             "name": "Tavoiteajassa",
-            "expression": "CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[tavoiteajassavalmistunut]=1)",
+            "expression": [
+              "",
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[tavoiteajassavalmistunut]=1)",
+              "RETURN",
+              "IF(ISBLANK(lkm),0,lkm)"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Osuus tavoiteajassa",
-            "expression": "[Tavoiteajassa]/[Tutkinnot yht.]",
+            "expression": [
+              "",
+              "",
+              "IF([Tavoiteajassa] = 0, 0, [Tavoiteajassa]/[Tutkinnot yht.])"
+            ],
             "formatString": "0.00 %;-0.00 %;0.00 %"
           },
           {
             "name": "Tavoiteaika ylitetty enintään 12 kk",
-            "expression": "CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[xonenintaan12kk]=1)",
+            "expression": [
+              "",
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[xonenintaan12kk]=1)",
+              "RETURN",
+              "IF(ISBLANK(lkm),0,lkm)",
+              ""
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Tavoiteaika ylitetty yli 12 kk",
-            "expression": "CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[xonyli12kk]=1)",
+            "expression": [
+              "",
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[xonyli12kk]=1)",
+              "RETURN",
+              "IF(ISBLANK(lkm),0,lkm)",
+              ""
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Osuus tavoiteaika yli. enin. 12kk",
-            "expression": "[Tavoiteaika ylitetty enintään 12 kk]/[Tutkinnot yht.]",
+            "expression": [
+              "",
+              "",
+              "IF([Tavoiteaika ylitetty enintään 12 kk] = 0,0, [Tavoiteaika ylitetty enintään 12 kk]/[Tutkinnot yht.])"
+            ],
             "formatString": "0.00 %;-0.00 %;0.00 %"
           },
           {
             "name": "Osuus tavoiteaika ylit. 12kk",
-            "expression": "[Tavoiteaika ylitetty yli 12 kk]/[Tutkinnot yht.]",
+            "expression": [
+              "",
+              "",
+              "IF([Tavoiteaika ylitetty yli 12 kk],0, [Tavoiteaika ylitetty yli 12 kk]/[Tutkinnot yht.])"
+            ],
             "formatString": "0.00 %;-0.00 %;0.00 %"
           }
         ],
