@@ -663,7 +663,11 @@ ALTER PROCEDURE [dbo].[p_lataa_f_Tutkintoennuste] AS
 			,d16.iscfi2013_koodi
 			,d16.iscfi2013
 			,d16.Koulutusaste_taso2
-			,d20.koulutustyyppi as Koulutustyyppi
+			,CASE 
+				WHEN d16.Koulutusaste_taso2_koodi = '63' THEN 'Alempaan korkeakoulututkintoon tähtäävä koulutus'
+				WHEN d16.Koulutusaste_taso2_koodi in ('72','73') THEN 'Ylempään korkeakoulututkintoon tähtäävä koulutus'
+				ELSE d20.koulutustyyppi
+			END as Koulutustyyppi
 			,CASE 
 				WHEN d16.Koulutusaste_taso2_koodi = '62' THEN 'Ammattikorkeakoulukoulutus'
 				WHEN d16.Koulutusaste_taso2_koodi in ('63','72','73') THEN 'Yliopistokoulutus'
@@ -685,7 +689,11 @@ ALTER PROCEDURE [dbo].[p_lataa_f_Tutkintoennuste] AS
 		,d16.iscfi2013_koodi
 		,d16.iscfi2013
 		,d16.Koulutusaste_taso2
-		,d20.koulutustyyppi 
+		,CASE 
+				WHEN d16.Koulutusaste_taso2_koodi = '63' THEN 'Alempaan korkeakoulututkintoon tähtäävä koulutus'
+				WHEN d16.Koulutusaste_taso2_koodi in ('72','73') THEN 'Ylempään korkeakoulututkintoon tähtäävä koulutus'
+				ELSE d20.koulutustyyppi
+			END
 		,CASE 
 			WHEN d16.Koulutusaste_taso2_koodi = '62' THEN 'Ammattikorkeakoulukoulutus'
 			WHEN d16.Koulutusaste_taso2_koodi in ('63','72','73') THEN 'Yliopistokoulutus'
@@ -838,5 +846,6 @@ ALTER PROCEDURE [dbo].[p_lataa_f_Tutkintoennuste] AS
 	DROP TABLE IF EXISTS #tutkintoennuste_j
 
 GO
+
 
 USE [ANTERO]
