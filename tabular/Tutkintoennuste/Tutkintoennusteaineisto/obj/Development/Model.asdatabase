@@ -525,6 +525,23 @@
             "isDataTypeInferred": true,
             "isHidden": true,
             "expression": "CONCATENATE(CONCATENATE('Kohorttipohjainen läpäisy'[Koodit Koulutusala],\"_\"), 'Kohorttipohjainen läpäisy'[Koodit Ennusteen koulutusaste])"
+          },
+          {
+            "name": "lapaisseet",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "lapaisseet"
+          },
+          {
+            "name": "lapaisseet_ja_keskeyttaneet",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "lapaisseet_ja_keskeyttaneet"
+          },
+          {
+            "name": "Laskentalogiikka",
+            "dataType": "string",
+            "sourceColumn": "Laskentalogiikka"
           }
         ],
         "partitions": [
@@ -549,10 +566,25 @@
             "expression": [
               " ",
               "",
-              "var lkm1 = CALCULATE(SUM('Kohorttipohjainen läpäisy'[alkuperaisen_tutkinnon_aloittaneet]), ALL('Kohorttipohjainen läpäisy'[Suoritetun tutkinnon tutkintolaji]))",
-              "var lkm2 = SUM('Kohorttipohjainen läpäisy'[suoritetut_tutkinnot])",
-              "var osa = IF(AND(lkm2<5,lkm2>0),\"1-4\", MROUND(lkm2,3))",
-              "var kaikki = IF(AND(lkm1<5,lkm1>0),\"1-4\", MROUND(lkm1,3))",
+              "var n_ll = IF(CALCULATE(HASONEVALUE('Kohorttipohjainen läpäisy'[Laskentalogiikka]),ALL(Ennuste[Koulutusala, taso 3])),1,2)",
+              "",
+              "var ll =CALCULATE(MIN('Kohorttipohjainen läpäisy'[Laskentalogiikka]),ALL(Ennuste[Koulutusala, taso 3]))",
+              "",
+              "-- Kohorttipohjainen läpäisy",
+              "var lkm1a = CALCULATE(SUM('Kohorttipohjainen läpäisy'[alkuperaisen_tutkinnon_aloittaneet]), ALL('Kohorttipohjainen läpäisy'[Suoritetun tutkinnon tutkintolaji]))",
+              "var lkm1b = SUM('Kohorttipohjainen läpäisy'[suoritetut_tutkinnot])",
+              "var osa1 = IF(AND(lkm1b<5,lkm1b>0),\"1-4\", MROUND(lkm1b,3))",
+              "var kaikki1 = IF(AND(lkm1a<5,lkm1a>0),\"1-4\", MROUND(lkm1a,3))",
+              "",
+              "-- Odotusarvo",
+              "var lkm2a = CALCULATE(SUM('Kohorttipohjainen läpäisy'[lapaisseet_ja_keskeyttaneet]), ALL('Kohorttipohjainen läpäisy'[Suoritetun tutkinnon tutkintolaji]))",
+              "var lkm2b = SUM('Kohorttipohjainen läpäisy'[lapaisseet])",
+              "var osa2 = IF(AND(lkm2b<5,lkm2b>0),\"1-4\", MROUND(lkm2b,3))",
+              "var kaikki2 = IF(AND(lkm2a<5,lkm2a>0),\"1-4\", MROUND(lkm2a,3))",
+              "",
+              "var osa = IF(n_ll = 2, BLANK(), IF(ll = \"Odotusarvo (K3.11)\", osa2, osa1))",
+              "var kaikki = IF(n_ll = 2, BLANK(), IF(ll = \"Odotusarvo (K3.11)\", kaikki2, kaikki1))",
+              "",
               "",
               "var osuus =  IF(osa = BLANK(), BLANK(),",
               "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
@@ -560,8 +592,7 @@
               "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
               "osa / kaikki)))",
               "",
-              "",
-              "return IF(ISBLANK(osuus), [Tutkinnon suorittaneiden osuus kaikista aloittaneista (kaikki alat)_s], osuus)",
+              "return IF(n_ll = 2, IF(ISBLANK([Tutkinnon suorittaneiden osuus kaikista aloittaneista_s]), [Tutkinnon suorittaneiden osuus kaikista aloittaneista (kaikki alat)_s], [Tutkinnon suorittaneiden osuus kaikista aloittaneista_s]), IF(ISBLANK(osuus), [Tutkinnon suorittaneiden osuus kaikista aloittaneista (kaikki alat)_s], osuus))",
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
@@ -571,12 +602,23 @@
             "expression": [
               " ",
               "",
-              "var lkm1 = CALCULATE(SUM('Kohorttipohjainen läpäisy'[alkuperaisen_tutkinnon_aloittaneet]),ALL(Ennuste[Koulutusala, taso 3]), ALL('Kohorttipohjainen läpäisy'[Suoritetun tutkinnon tutkintolaji]))",
-              "var lkm2 = CALCULATE(SUM('Kohorttipohjainen läpäisy'[suoritetut_tutkinnot]),ALL(Ennuste[Koulutusala, taso 3]))",
+              "var n_ll = IF(CALCULATE(HASONEVALUE('Kohorttipohjainen läpäisy'[Laskentalogiikka]),ALL(Ennuste[Koulutusala, taso 3])),1,2)",
+              "",
+              "var ll =CALCULATE(MIN('Kohorttipohjainen läpäisy'[Laskentalogiikka]),ALL(Ennuste[Koulutusala, taso 3]))",
+              "",
+              "-- Kohorttipohjainen läpäisy",
+              "var kaikki1 = CALCULATE(SUM('Kohorttipohjainen läpäisy'[alkuperaisen_tutkinnon_aloittaneet]),ALL(Ennuste[Koulutusala, taso 3]), ALL('Kohorttipohjainen läpäisy'[Suoritetun tutkinnon tutkintolaji]))",
+              "var osa1 = CALCULATE(SUM('Kohorttipohjainen läpäisy'[suoritetut_tutkinnot]),ALL(Ennuste[Koulutusala, taso 3]))",
+              "var osuus1 = DIVIDE(osa1,kaikki1,blank())",
+              "",
+              "-- Odotusarvo",
+              "var kaikki2 = CALCULATE(SUM('Kohorttipohjainen läpäisy'[lapaisseet_ja_keskeyttaneet]),ALL(Ennuste[Koulutusala, taso 3]), ALL('Kohorttipohjainen läpäisy'[Suoritetun tutkinnon tutkintolaji]))",
+              "var osa2 = CALCULATE(SUM('Kohorttipohjainen läpäisy'[lapaisseet]),ALL(Ennuste[Koulutusala, taso 3]))",
+              "var osuus2 = DIVIDE(osa2,kaikki2,blank())",
               "",
               "return ",
               "",
-              "DIVIDE(lkm2,lkm1,blank())"
+              "IF(n_ll = 2, (osuus2 + osuus1) / 2, IF(ll = \"Odotusarvo (K3.11)\", osuus2, osuus1))"
             ],
             "isHidden": true
           },
@@ -585,12 +627,23 @@
             "expression": [
               " ",
               "",
-              "var lkm1 = CALCULATE(SUM('Kohorttipohjainen läpäisy'[alkuperaisen_tutkinnon_aloittaneet]),ALL(Ennuste[Koulutusala, taso 3]),ALL( 'Kohorttipohjainen läpäisy'[Suoritetun tutkinnon tutkintolaji]))",
-              "var lkm2 = CALCULATE(SUM('Kohorttipohjainen läpäisy'[suoritetut_tutkinnot]),ALL(Ennuste[Koulutusala, taso 3]))",
-              "var osuus = DIVIDE(lkm2,lkm1,blank())",
+              "var n_ll = IF(CALCULATE(HASONEVALUE('Kohorttipohjainen läpäisy'[Laskentalogiikka]),ALL(Ennuste[Koulutusala, taso 3])),1,2)",
+              "",
+              "var ll =CALCULATE(MIN('Kohorttipohjainen läpäisy'[Laskentalogiikka]),ALL(Ennuste[Koulutusala, taso 3]))",
+              "",
+              "-- Kohorttipohjainen läpäisy",
+              "var kaikki1 = CALCULATE(SUM('Kohorttipohjainen läpäisy'[alkuperaisen_tutkinnon_aloittaneet]),ALL( 'Kohorttipohjainen läpäisy'[Suoritetun tutkinnon tutkintolaji]))",
+              "var osa1 = CALCULATE(SUM('Kohorttipohjainen läpäisy'[suoritetut_tutkinnot]))",
+              "var osuus1 = DIVIDE(osa1,kaikki1,blank())",
+              "",
+              "-- Odotusarvo",
+              "var kaikki2 = CALCULATE(SUM('Kohorttipohjainen läpäisy'[lapaisseet_ja_keskeyttaneet]),ALL( 'Kohorttipohjainen läpäisy'[Suoritetun tutkinnon tutkintolaji]))",
+              "var osa2 = CALCULATE(SUM('Kohorttipohjainen läpäisy'[lapaisseet]))",
+              "var osuus2 = DIVIDE(osa2,kaikki2,blank())",
+              "",
               "return ",
               "",
-              "IF([kytkin] = 0, blank(), IF(ISBLANK(osuus), [Tutkinnon suorittaneiden osuus kaikista aloittaneista (kaikki alat)_s], osuus))",
+              "IF([kytkin] = 0, blank(), IF(n_ll = 2, IF(OR(ISBLANK(osuus2),ISBLANK(osuus1)), [Tutkinnon suorittaneiden osuus kaikista aloittaneista (kaikki alat)_s], (osuus2 + osuus1) / 2), IF(ll = \"Odotusarvo (K3.11)\", IF(ISBLANK(osuus2), [Tutkinnon suorittaneiden osuus kaikista aloittaneista (kaikki alat)_s], osuus2), IF(ISBLANK(osuus1), [Tutkinnon suorittaneiden osuus kaikista aloittaneista (kaikki alat)_s], osuus1))))",
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
@@ -1709,6 +1762,9 @@
               },
               {
                 "name": "Suoritetun tutkinnon tutkintolaji"
+              },
+              {
+                "name": "Laskentalogiikka"
               }
             ],
             "measures": [
