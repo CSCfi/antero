@@ -21,7 +21,6 @@ SELECT
     ,[d_sukupuoli_id]
     ,[d_kieli_aidinkieli_id]
     ,[d_ika_id]
-	,keskiarvo_lahde
     ,[d_erityisopetus_id]
     ,[d_koulutusluokitus_id]
     ,[d_organisaatioluokitus_jarjestaja_id]
