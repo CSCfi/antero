@@ -1,8 +1,9 @@
 {
   "name": "SemanticModel",
-  "compatibilityLevel": 1200,
+  "compatibilityLevel": 1500,
   "model": {
     "culture": "fi-FI",
+    "discourageImplicitMeasures": true,
     "dataSources": [
       {
         "name": "SqlServer dwitvipusql22 ANTERO",
@@ -14,6 +15,23 @@
             "value": "SqlServer"
           }
         ]
+      },
+      {
+        "type": "structured",
+        "name": "SQL/dwitvipusql22;ANTERO",
+        "connectionDetails": {
+          "protocol": "tds",
+          "address": {
+            "server": "dwitvipusql22",
+            "database": "ANTERO"
+          },
+          "authentication": null,
+          "query": null
+        },
+        "credential": {
+          "AuthenticationKind": "ServiceAccount",
+          "EncryptConnection": false
+        }
       }
     ],
     "tables": [
@@ -832,6 +850,7 @@
           {
             "name": "v_arvo_amis",
             "source": {
+              "type": "query",
               "query": " SELECT [dw].[v_arvo_amis_tep_cultures].* FROM [dw].[v_arvo_amis_tep_cultures] ",
               "dataSource": "SqlServer dwitvipusql22 ANTERO"
             },
@@ -4265,6 +4284,15 @@
               "return tyopaikkapisteet_yrittajat"
             ],
             "formatString": "#,0"
+          },
+          {
+            "name": "lukumaara",
+            "expression": [
+              "",
+              "BLANK()",
+              "--noSelectionExpression tarjolla vasta levelistä 1605 alkaen"
+            ],
+            "formatString": "#,0"
           }
         ],
         "annotations": [
@@ -6733,6 +6761,7 @@
       },
       {
         "name": "Sarakeleveys",
+        "isHidden": true,
         "columns": [
           {
             "name": "Sarakeleveys",
@@ -6754,6 +6783,7 @@
             "name": "Sarakeleveys",
             "dataView": "full",
             "source": {
+              "type": "query",
               "query": " SELECT [dw].[Sarakeleveys].* FROM [dw].[Sarakeleveys] ",
               "dataSource": "SqlServer dwitvipusql22 ANTERO"
             }
@@ -6771,6 +6801,1237 @@
           {
             "name": "_TM_ExtProp_DbSchemaName",
             "value": "dw"
+          }
+        ]
+      },
+      {
+        "name": "mittariryhma_ohjaajakysely_fi",
+        "calculationGroup": {
+          "precedence": 500,
+          "calculationItems": [
+            {
+              "name": "Vastattu, työpaikkajaksojen lkm",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastattu_tyopaikkajaksojen_lkm\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [vastattu_tyopaikkajaksojen_lkm]",
+                ")"
+              ],
+              "ordinal": 5
+            },
+            {
+              "name": "Vastattu, työpaikkajaksojen päivien lkm",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastattu_tyopaikkajaksojen_paivien_lkm\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [vastattu_tyopaikkajaksojen_paivien_lkm]",
+                ")"
+              ],
+              "ordinal": 6
+            },
+            {
+              "name": "Vastausosuus, työpaikkajaksojen lkm",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastausosuus_tyopaikkajaksojen_lkm\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [vastausosuus_tyopaikkajaksojen_lkm]",
+                ")"
+              ],
+              "ordinal": 8,
+              "formatStringDefinition": {
+                "expression": "\"0.0 %;-0.0 %;0.0 %\""
+              }
+            },
+            {
+              "name": "Vastausosuus, työpaikkajaksojen päivien lkm",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastausosuus_tyopaikkajaksojen_paivien_lkm\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [vastausosuus_tyopaikkajaksojen_paivien_lkm]",
+                ")"
+              ],
+              "ordinal": 9,
+              "formatStringDefinition": {
+                "expression": "\"0.0 %;-0.0 %;0.0 %\""
+              }
+            },
+            {
+              "name": "Vastattujen työpaikkajaksojen keskimääräinen kesto",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastattujen_tyopaikkajaksojen_keskimaarainen_kesto\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [vastattujen_tyopaikkajaksojen_keskimaarainen_kesto]",
+                ")"
+              ],
+              "ordinal": 11,
+              "formatStringDefinition": {
+                "expression": "\"0.0\""
+              }
+            },
+            {
+              "name": "Keskiarvo (painotettu työpaikkajaksojen kestolla)",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"keskiarvo_painotettu_tyopaikkajaksojen_kestolla\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [keskiarvo_painotettu_tyopaikkajaksojen_kestolla]",
+                ")"
+              ],
+              "ordinal": 12,
+              "formatStringDefinition": {
+                "expression": "\"0.0\""
+              }
+            },
+            {
+              "name": "Keskihajonta (painotettu työpaikkajaksojen kestolla)",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"keskihajonta_painotettu_tyopaikkajaksojen_kestolla\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [keskihajonta_painotettu_tyopaikkajaksojen_kestolla]",
+                ")"
+              ],
+              "ordinal": 13,
+              "formatStringDefinition": {
+                "expression": "\"0.0\""
+              }
+            },
+            {
+              "name": "Kyselyn kohteet, työpaikkajaksojen päivien lkm",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm]",
+                ")"
+              ],
+              "ordinal": 3
+            },
+            {
+              "name": "Kyselyn kohteet, työpaikkajaksojen lkm",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"kyselyn_kohteet_tyopaikkajaksojen_lkm\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [kyselyn_kohteet_tyopaikkajaksojen_lkm]",
+                ")"
+              ],
+              "ordinal": 2
+            },
+            {
+              "name": "Kyselyn kohteiden (työpaikkajaksojen) keskimääräinen kesto",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"kyselyn_kohteiden_keskimaarainen_kesto\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [kyselyn_kohteiden_keskimaarainen_kesto]",
+                ")"
+              ],
+              "ordinal": 10,
+              "formatStringDefinition": {
+                "expression": "\"0.0\""
+              }
+            }
+          ]
+        },
+        "columns": [
+          {
+            "name": "Ordinal",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "Ordinal"
+          },
+          {
+            "name": "lukumaaratieto_fi",
+            "dataType": "string",
+            "sourceColumn": "Name",
+            "sortByColumn": "Ordinal"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculationGroup 1",
+            "mode": "import",
+            "source": {
+              "type": "calculationGroup"
+            }
+          }
+        ]
+      },
+      {
+        "name": "Mittarit_tyopaikkakysely",
+        "columns": [
+          {
+            "name": "koodi",
+            "dataType": "string",
+            "sourceColumn": "koodi"
+          },
+          {
+            "name": "koodi_piilosuodatin",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "koodi_piilosuodatin"
+          },
+          {
+            "name": "selite_fi",
+            "dataType": "string",
+            "sourceColumn": "selite_fi"
+          },
+          {
+            "name": "selite_sv",
+            "dataType": "string",
+            "sourceColumn": "selite_sv"
+          },
+          {
+            "name": "selite_en",
+            "dataType": "string",
+            "sourceColumn": "selite_en"
+          },
+          {
+            "name": "jarjestys",
+            "dataType": "int64",
+            "sourceColumn": "jarjestys"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/dwitvipusql22;ANTERO\",",
+                "    dw_v_arvo_amis_tep_mittarit_tyopaikkakysely = Source{[Schema=\"dw\",Item=\"v_arvo_amis_tep_mittarit_tyopaikkakysely\"]}[Data]",
+                "in",
+                "    dw_v_arvo_amis_tep_mittarit_tyopaikkakysely"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "Mittarit_ohjaajakysely",
+        "columns": [
+          {
+            "name": "koodi",
+            "dataType": "string",
+            "sourceColumn": "koodi"
+          },
+          {
+            "name": "koodi_piilosuodatin",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "koodi_piilosuodatin"
+          },
+          {
+            "name": "selite_fi",
+            "dataType": "string",
+            "sourceColumn": "selite_fi"
+          },
+          {
+            "name": "selite_sv",
+            "dataType": "string",
+            "sourceColumn": "selite_sv"
+          },
+          {
+            "name": "selite_en",
+            "dataType": "string",
+            "sourceColumn": "selite_en"
+          },
+          {
+            "name": "jarjestys",
+            "dataType": "int64",
+            "sourceColumn": "jarjestys"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Partition",
+            "dataView": "full",
+            "source": {
+              "type": "m",
+              "expression": [
+                "let",
+                "    Source = #\"SQL/dwitvipusql22;ANTERO\",",
+                "    dw_v_arvo_amis_tep_mittarit_ohjaajakysely = Source{[Schema=\"dw\",Item=\"v_arvo_amis_tep_mittarit_ohjaajakysely\"]}[Data]",
+                "in",
+                "    dw_v_arvo_amis_tep_mittarit_ohjaajakysely"
+              ]
+            }
+          }
+        ]
+      },
+      {
+        "name": "mittariryhma_tyopaikkakysely_fi",
+        "calculationGroup": {
+          "precedence": 600,
+          "calculationItems": [
+            {
+              "name": "Vastattu, työpaikkajaksojen lkm",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastattu_tyopaikkajaksojen_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [vastattu_tyopaikkajaksojen_lkm]",
+                ")"
+              ],
+              "ordinal": 5
+            },
+            {
+              "name": "Vastattu, työpaikkajaksojen päivien lkm",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastattu_tyopaikkajaksojen_paivien_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [vastattu_tyopaikkajaksojen_paivien_lkm]",
+                ")"
+              ],
+              "ordinal": 6
+            },
+            {
+              "name": "Vastausosuus, työpaikkajaksojen lkm",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastausosuus_tyopaikkajaksojen_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [vastausosuus_tyopaikkajaksojen_lkm]",
+                ")"
+              ],
+              "ordinal": 8,
+              "formatStringDefinition": {
+                "expression": "\"0.0 %;-0.0 %;0.0 %\""
+              }
+            },
+            {
+              "name": "Vastausosuus, työpaikkajaksojen päivien lkm",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastausosuus_tyopaikkajaksojen_paivien_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [vastausosuus_tyopaikkajaksojen_paivien_lkm]",
+                ")"
+              ],
+              "ordinal": 9,
+              "formatStringDefinition": {
+                "expression": "\"0.0 %;-0.0 %;0.0 %\""
+              }
+            },
+            {
+              "name": "Vastattujen työpaikkajaksojen keskimääräinen kesto",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastattujen_tyopaikkajaksojen_keskimaarainen_kesto\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [vastattujen_tyopaikkajaksojen_keskimaarainen_kesto]",
+                ")"
+              ],
+              "ordinal": 11,
+              "formatStringDefinition": {
+                "expression": "\"0.0\""
+              }
+            },
+            {
+              "name": "Keskiarvo (painotettu työpaikkajaksojen kestolla)",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"keskiarvo_painotettu_tyopaikkajaksojen_kestolla\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [keskiarvo_painotettu_tyopaikkajaksojen_kestolla]",
+                ")"
+              ],
+              "ordinal": 12,
+              "formatStringDefinition": {
+                "expression": "\"0.0\""
+              }
+            },
+            {
+              "name": "Keskihajonta (painotettu työpaikkajaksojen kestolla)",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"keskihajonta_painotettu_tyopaikkajaksojen_kestolla\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [keskihajonta_painotettu_tyopaikkajaksojen_kestolla]",
+                ")"
+              ],
+              "ordinal": 13,
+              "formatStringDefinition": {
+                "expression": "\"0.0\""
+              }
+            },
+            {
+              "name": "Kyselyn kohteet, työpaikkajaksojen päivien lkm",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm]",
+                ")"
+              ],
+              "ordinal": 3
+            },
+            {
+              "name": "Kyselyn kohteet, työpaikkajaksojen lkm",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"kyselyn_kohteet_tyopaikkajaksojen_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [kyselyn_kohteet_tyopaikkajaksojen_lkm]",
+                ")"
+              ],
+              "ordinal": 2
+            },
+            {
+              "name": "Kyselyn kohteiden (työpaikkajaksojen) keskimääräinen kesto",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"kyselyn_kohteiden_keskimaarainen_kesto\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [kyselyn_kohteiden_keskimaarainen_kesto]",
+                ")"
+              ],
+              "ordinal": 10,
+              "formatStringDefinition": {
+                "expression": "\"0.0\""
+              }
+            },
+            {
+              "name": "Kyselyn kohteet, työpaikkojen lkm",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"kyselyn_kohteet_tyopaikkojen_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [kyselyn_kohteet_tyopaikkojen_lkm]",
+                ")"
+              ],
+              "ordinal": 1
+            },
+            {
+              "name": "Vastattu, työpaikkojen lkm",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastattu_tyopaikkojen_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [vastattu_tyopaikkojen_lkm]",
+                ")"
+              ],
+              "ordinal": 4
+            },
+            {
+              "name": "Vastausosuus, työpaikkojen lkm",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastausosuus_tyopaikkojen_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [vastausosuus_tyopaikkojen_lkm]",
+                ")"
+              ],
+              "ordinal": 7,
+              "formatStringDefinition": {
+                "expression": "\"0.0 %;-0.0 %;0.0 %\""
+              }
+            }
+          ]
+        },
+        "columns": [
+          {
+            "name": "lukumaaratieto_fi",
+            "dataType": "string",
+            "sourceColumn": "Name",
+            "sortByColumn": "Ordinal"
+          },
+          {
+            "name": "Ordinal",
+            "dataType": "int64",
+            "sourceColumn": "Ordinal"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculationGroup 1",
+            "mode": "import",
+            "source": {
+              "type": "calculationGroup"
+            }
+          }
+        ]
+      },
+      {
+        "name": "mittariryhma_ohjaajakysely_sv",
+        "calculationGroup": {
+          "precedence": 501,
+          "calculationItems": [
+            {
+              "name": "Svar, antalet arbetsplatsperioder",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastattu_tyopaikkajaksojen_lkm\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [vastattu_tyopaikkajaksojen_lkm]",
+                ")"
+              ],
+              "ordinal": 5
+            },
+            {
+              "name": "Svar, antalet dagar under arbetsplatsperioderna",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastattu_tyopaikkajaksojen_paivien_lkm\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [vastattu_tyopaikkajaksojen_paivien_lkm]",
+                ")"
+              ],
+              "ordinal": 6
+            },
+            {
+              "name": "Svarsandel, antalet arbetsplatsperioder",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastausosuus_tyopaikkajaksojen_lkm\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [vastausosuus_tyopaikkajaksojen_lkm]",
+                ")"
+              ],
+              "ordinal": 8,
+              "formatStringDefinition": {
+                "expression": "\"0.0 %;-0.0 %;0.0 %\""
+              }
+            },
+            {
+              "name": "Svarsandel, antalet dagar under arbetsplatsperioderna",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastausosuus_tyopaikkajaksojen_paivien_lkm\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [vastausosuus_tyopaikkajaksojen_paivien_lkm]",
+                ")"
+              ],
+              "ordinal": 9,
+              "formatStringDefinition": {
+                "expression": "\"0.0 %;-0.0 %;0.0 %\""
+              }
+            },
+            {
+              "name": "Svar, längden på arbetsplatsperioderna i medeltal",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastattujen_tyopaikkajaksojen_keskimaarainen_kesto\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [vastattujen_tyopaikkajaksojen_keskimaarainen_kesto]",
+                ")"
+              ],
+              "ordinal": 11,
+              "formatStringDefinition": {
+                "expression": "\"0.0\""
+              }
+            },
+            {
+              "name": "Medeltal (viktat med längden på arbetsplatsperioderna)",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"keskiarvo_painotettu_tyopaikkajaksojen_kestolla\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [keskiarvo_painotettu_tyopaikkajaksojen_kestolla]",
+                ")"
+              ],
+              "ordinal": 12,
+              "formatStringDefinition": {
+                "expression": "\"0.0\""
+              }
+            },
+            {
+              "name": "Standardavvikelse (viktad med längden på arbetsplatsperioderna)",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"keskihajonta_painotettu_tyopaikkajaksojen_kestolla\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [keskihajonta_painotettu_tyopaikkajaksojen_kestolla]",
+                ")"
+              ],
+              "ordinal": 13,
+              "formatStringDefinition": {
+                "expression": "\"0.0\""
+              }
+            },
+            {
+              "name": "Målgrupp för enkäten, antalet dagar under arbetsplatsperioderna",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm]",
+                ")"
+              ],
+              "ordinal": 3
+            },
+            {
+              "name": "Målgrupp för enkäten, antalet arbetsplatsperioder",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"kyselyn_kohteet_tyopaikkajaksojen_lkm\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [kyselyn_kohteet_tyopaikkajaksojen_lkm]",
+                ")"
+              ],
+              "ordinal": 2
+            },
+            {
+              "name": "Målgrupp för enkäten, längden på arbetsplatsperioderna i medeltal",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"kyselyn_kohteiden_keskimaarainen_kesto\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [kyselyn_kohteiden_keskimaarainen_kesto]",
+                ")"
+              ],
+              "ordinal": 10,
+              "formatStringDefinition": {
+                "expression": "\"0.0\""
+              }
+            }
+          ]
+        },
+        "columns": [
+          {
+            "name": "Ordinal",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "Ordinal"
+          },
+          {
+            "name": "lukumaaratieto_sv",
+            "dataType": "string",
+            "sourceColumn": "Name",
+            "sortByColumn": "Ordinal"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculationGroup 1",
+            "mode": "import",
+            "source": {
+              "type": "calculationGroup"
+            }
+          }
+        ]
+      },
+      {
+        "name": "mittariryhma_tyopaikkakysely_sv",
+        "calculationGroup": {
+          "precedence": 601,
+          "calculationItems": [
+            {
+              "name": "Svar, antalet arbetsplatsperioder",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastattu_tyopaikkajaksojen_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [vastattu_tyopaikkajaksojen_lkm]",
+                ")"
+              ],
+              "ordinal": 5
+            },
+            {
+              "name": "Svar, antalet dagar under arbetsplatsperioderna",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastattu_tyopaikkajaksojen_paivien_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [vastattu_tyopaikkajaksojen_paivien_lkm]",
+                ")"
+              ],
+              "ordinal": 6
+            },
+            {
+              "name": "Svarsandel, antalet arbetsplatsperioder",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastausosuus_tyopaikkajaksojen_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [vastausosuus_tyopaikkajaksojen_lkm]",
+                ")"
+              ],
+              "ordinal": 8,
+              "formatStringDefinition": {
+                "expression": "\"0.0 %;-0.0 %;0.0 %\""
+              }
+            },
+            {
+              "name": "Svarsandel, antalet dagar under arbetsplatsperioderna",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastausosuus_tyopaikkajaksojen_paivien_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [vastausosuus_tyopaikkajaksojen_paivien_lkm]",
+                ")"
+              ],
+              "ordinal": 9,
+              "formatStringDefinition": {
+                "expression": "\"0.0 %;-0.0 %;0.0 %\""
+              }
+            },
+            {
+              "name": "Svar, längden på arbetsplatsperioderna i medeltal",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastattujen_tyopaikkajaksojen_keskimaarainen_kesto\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [vastattujen_tyopaikkajaksojen_keskimaarainen_kesto]",
+                ")"
+              ],
+              "ordinal": 11,
+              "formatStringDefinition": {
+                "expression": "\"0.0\""
+              }
+            },
+            {
+              "name": "Medeltal (viktat med längden på arbetsplatsperioderna)",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"keskiarvo_painotettu_tyopaikkajaksojen_kestolla\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [keskiarvo_painotettu_tyopaikkajaksojen_kestolla]",
+                ")"
+              ],
+              "ordinal": 12,
+              "formatStringDefinition": {
+                "expression": "\"0.0\""
+              }
+            },
+            {
+              "name": "Standardavvikelse (viktad med längden på arbetsplatsperioderna)",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"keskihajonta_painotettu_tyopaikkajaksojen_kestolla\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [keskihajonta_painotettu_tyopaikkajaksojen_kestolla]",
+                ")"
+              ],
+              "ordinal": 13,
+              "formatStringDefinition": {
+                "expression": "\"0.0\""
+              }
+            },
+            {
+              "name": "Målgrupp för enkäten, antalet dagar under arbetsplatsperioderna",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm]",
+                ")"
+              ],
+              "ordinal": 3
+            },
+            {
+              "name": "Målgrupp för enkäten, antalet arbetsplatsperioder",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"kyselyn_kohteet_tyopaikkajaksojen_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [kyselyn_kohteet_tyopaikkajaksojen_lkm]",
+                ")"
+              ],
+              "ordinal": 2
+            },
+            {
+              "name": "Målgrupp för enkäten, längden på arbetsplatsperioderna i medeltal",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"kyselyn_kohteiden_keskimaarainen_kesto\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [kyselyn_kohteiden_keskimaarainen_kesto]",
+                ")"
+              ],
+              "ordinal": 10,
+              "formatStringDefinition": {
+                "expression": "\"0.0\""
+              }
+            },
+            {
+              "name": "Målgrupp för enkäten, antalet arbetsplatser",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"kyselyn_kohteet_tyopaikkojen_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [kyselyn_kohteet_tyopaikkojen_lkm]",
+                ")"
+              ],
+              "ordinal": 1
+            },
+            {
+              "name": "Svar, antalet arbetsplatser",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastattu_tyopaikkojen_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [vastattu_tyopaikkojen_lkm]",
+                ")"
+              ],
+              "ordinal": 4
+            },
+            {
+              "name": "Svarsandel, antalet arbetsplatser",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastausosuus_tyopaikkojen_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [vastausosuus_tyopaikkojen_lkm]",
+                ")"
+              ],
+              "ordinal": 7,
+              "formatStringDefinition": {
+                "expression": "\"0.0 %;-0.0 %;0.0 %\""
+              }
+            }
+          ]
+        },
+        "columns": [
+          {
+            "name": "lukumaaratieto_sv",
+            "dataType": "string",
+            "sourceColumn": "Name",
+            "sortByColumn": "Ordinal"
+          },
+          {
+            "name": "Ordinal",
+            "dataType": "int64",
+            "sourceColumn": "Ordinal"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculationGroup 1",
+            "mode": "import",
+            "source": {
+              "type": "calculationGroup"
+            }
+          }
+        ]
+      },
+      {
+        "name": "mittariryhma_ohjaajakysely_en",
+        "calculationGroup": {
+          "precedence": 502,
+          "calculationItems": [
+            {
+              "name": "Responded, number of on-the-job learning periods",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastattu_tyopaikkajaksojen_lkm\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [vastattu_tyopaikkajaksojen_lkm]",
+                ")"
+              ],
+              "ordinal": 5
+            },
+            {
+              "name": "Responded, number of days in on-the-job learning periods",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastattu_tyopaikkajaksojen_paivien_lkm\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [vastattu_tyopaikkajaksojen_paivien_lkm]",
+                ")"
+              ],
+              "ordinal": 6
+            },
+            {
+              "name": "Response rate, number of on-the-job learning periods",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastausosuus_tyopaikkajaksojen_lkm\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [vastausosuus_tyopaikkajaksojen_lkm]",
+                ")"
+              ],
+              "ordinal": 8,
+              "formatStringDefinition": {
+                "expression": "\"0.0 %;-0.0 %;0.0 %\""
+              }
+            },
+            {
+              "name": "Response rate, number of on-the-job learning days",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastausosuus_tyopaikkajaksojen_paivien_lkm\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [vastausosuus_tyopaikkajaksojen_paivien_lkm]",
+                ")"
+              ],
+              "ordinal": 9,
+              "formatStringDefinition": {
+                "expression": "\"0.0 %;-0.0 %;0.0 %\""
+              }
+            },
+            {
+              "name": "Average duration of responded on-the-job learning periods",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastattujen_tyopaikkajaksojen_keskimaarainen_kesto\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [vastattujen_tyopaikkajaksojen_keskimaarainen_kesto]",
+                ")"
+              ],
+              "ordinal": 11,
+              "formatStringDefinition": {
+                "expression": "\"0.0\""
+              }
+            },
+            {
+              "name": "Mean (weighted by duration of on-the-job learning periods)",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"keskiarvo_painotettu_tyopaikkajaksojen_kestolla\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [keskiarvo_painotettu_tyopaikkajaksojen_kestolla]",
+                ")"
+              ],
+              "ordinal": 12,
+              "formatStringDefinition": {
+                "expression": "\"0.0\""
+              }
+            },
+            {
+              "name": "Standard deaviation (weighted by duration of on-the-job learning periods)",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"keskihajonta_painotettu_tyopaikkajaksojen_kestolla\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [keskihajonta_painotettu_tyopaikkajaksojen_kestolla]",
+                ")"
+              ],
+              "ordinal": 13,
+              "formatStringDefinition": {
+                "expression": "\"0.0\""
+              }
+            },
+            {
+              "name": "Survey target group, number of days in on-the-job learning periods",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm]",
+                ")"
+              ],
+              "ordinal": 3
+            },
+            {
+              "name": "Survey target group, number of on-the-job learning periods",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"kyselyn_kohteet_tyopaikkajaksojen_lkm\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [kyselyn_kohteet_tyopaikkajaksojen_lkm]",
+                ")"
+              ],
+              "ordinal": 2
+            },
+            {
+              "name": "Survey target group, average duration on-the-job learning periods",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"kyselyn_kohteiden_keskimaarainen_kesto\" ",
+                "        in VALUES(Mittarit_ohjaajakysely[koodi])",
+                "    , [kyselyn_kohteiden_keskimaarainen_kesto]",
+                ")"
+              ],
+              "ordinal": 10,
+              "formatStringDefinition": {
+                "expression": "\"0.0\""
+              }
+            }
+          ]
+        },
+        "columns": [
+          {
+            "name": "lukumaaratieto_en",
+            "dataType": "string",
+            "sourceColumn": "Name",
+            "sortByColumn": "Ordinal"
+          },
+          {
+            "name": "Ordinal",
+            "dataType": "int64",
+            "sourceColumn": "Ordinal"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculationGroup 1",
+            "mode": "import",
+            "source": {
+              "type": "calculationGroup"
+            }
+          }
+        ]
+      },
+      {
+        "name": "mittariryhma_tyopaikkakysely_en",
+        "calculationGroup": {
+          "precedence": 602,
+          "calculationItems": [
+            {
+              "name": "Responded, number of on-the-job learning periods",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastattu_tyopaikkajaksojen_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [vastattu_tyopaikkajaksojen_lkm]",
+                ")"
+              ],
+              "ordinal": 5
+            },
+            {
+              "name": "Responded, number of days in on-the-job learning periods",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastattu_tyopaikkajaksojen_paivien_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [vastattu_tyopaikkajaksojen_paivien_lkm]",
+                ")"
+              ],
+              "ordinal": 6
+            },
+            {
+              "name": "Response rate, number of on-the-job learning periods",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastausosuus_tyopaikkajaksojen_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [vastausosuus_tyopaikkajaksojen_lkm]",
+                ")"
+              ],
+              "ordinal": 8,
+              "formatStringDefinition": {
+                "expression": "\"0.0 %;-0.0 %;0.0 %\""
+              }
+            },
+            {
+              "name": "Response rate, number of on-the-job learning days",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastausosuus_tyopaikkajaksojen_paivien_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [vastausosuus_tyopaikkajaksojen_paivien_lkm]",
+                ")"
+              ],
+              "ordinal": 9,
+              "formatStringDefinition": {
+                "expression": "\"0.0 %;-0.0 %;0.0 %\""
+              }
+            },
+            {
+              "name": "Average duration of responded on-the-job learning periods",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastattujen_tyopaikkajaksojen_keskimaarainen_kesto\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [vastattujen_tyopaikkajaksojen_keskimaarainen_kesto]",
+                ")"
+              ],
+              "ordinal": 11,
+              "formatStringDefinition": {
+                "expression": "\"0.0\""
+              }
+            },
+            {
+              "name": "Mean (weighted by duration of on-the-job learning periods)",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"keskiarvo_painotettu_tyopaikkajaksojen_kestolla\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [keskiarvo_painotettu_tyopaikkajaksojen_kestolla]",
+                ")"
+              ],
+              "ordinal": 12,
+              "formatStringDefinition": {
+                "expression": "\"0.0\""
+              }
+            },
+            {
+              "name": "Standard deaviation (weighted by duration of on-the-job learning periods)",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"keskihajonta_painotettu_tyopaikkajaksojen_kestolla\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [keskihajonta_painotettu_tyopaikkajaksojen_kestolla]",
+                ")"
+              ],
+              "ordinal": 13,
+              "formatStringDefinition": {
+                "expression": "\"0.0\""
+              }
+            },
+            {
+              "name": "Survey target group, number of days in on-the-job learning periods",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm]",
+                ")"
+              ],
+              "ordinal": 3
+            },
+            {
+              "name": "Survey target group, number of on-the-job learning periods",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"kyselyn_kohteet_tyopaikkajaksojen_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [kyselyn_kohteet_tyopaikkajaksojen_lkm]",
+                ")"
+              ],
+              "ordinal": 2
+            },
+            {
+              "name": "Survey target group, average duration on-the-job learning periods",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"kyselyn_kohteiden_keskimaarainen_kesto\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [kyselyn_kohteiden_keskimaarainen_kesto]",
+                ")"
+              ],
+              "ordinal": 10,
+              "formatStringDefinition": {
+                "expression": "\"0.0\""
+              }
+            },
+            {
+              "name": "Survey target group, number of workplaces",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"kyselyn_kohteet_tyopaikkojen_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [kyselyn_kohteet_tyopaikkojen_lkm]",
+                ")"
+              ],
+              "ordinal": 1
+            },
+            {
+              "name": "Responded, number of workplaces",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastattu_tyopaikkojen_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [vastattu_tyopaikkojen_lkm]",
+                ")"
+              ],
+              "ordinal": 4
+            },
+            {
+              "name": "Response rate, number of workplaces",
+              "expression": [
+                "if(",
+                "    isselectedmeasure([lukumaara])",
+                "    && \"vastausosuus_tyopaikkojen_lkm\" ",
+                "        in VALUES(Mittarit_tyopaikkakysely[koodi])",
+                "    , [vastausosuus_tyopaikkojen_lkm]",
+                ")"
+              ],
+              "ordinal": 7,
+              "formatStringDefinition": {
+                "expression": "\"0.0 %;-0.0 %;0.0 %\""
+              }
+            }
+          ]
+        },
+        "columns": [
+          {
+            "name": "lukumaaratieto_en",
+            "dataType": "string",
+            "sourceColumn": "Name",
+            "sortByColumn": "Ordinal"
+          },
+          {
+            "name": "Ordinal",
+            "dataType": "int64",
+            "sourceColumn": "Ordinal"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "CalculationGroup 1",
+            "mode": "import",
+            "source": {
+              "type": "calculationGroup"
+            }
           }
         ]
       }
@@ -7194,6 +8455,50 @@
                   {
                     "name": "Pisteet (Rahoitus), työpaikkakyselyn yrittäjäjaksot",
                     "translatedDisplayFolder": "Rahoitus"
+                  },
+                  {
+                    "name": "lukumaara",
+                    "translatedCaption": "Lukumäärä"
+                  }
+                ]
+              },
+              {
+                "name": "mittariryhma_ohjaajakysely_fi",
+                "translatedCaption": "Muuttujat",
+                "columns": [
+                  {
+                    "name": "lukumaaratieto_fi",
+                    "translatedCaption": "Lukumäärätieto"
+                  }
+                ]
+              },
+              {
+                "name": "Mittarit_tyopaikkakysely",
+                "translatedCaption": "Muuttujat",
+                "columns": [
+                  {
+                    "name": "selite_fi",
+                    "translatedCaption": "Lukumäärätieto (suodatin)"
+                  }
+                ]
+              },
+              {
+                "name": "Mittarit_ohjaajakysely",
+                "translatedCaption": "Muuttujat",
+                "columns": [
+                  {
+                    "name": "selite_fi",
+                    "translatedCaption": "Lukumäärätieto (suodatin)"
+                  }
+                ]
+              },
+              {
+                "name": "mittariryhma_tyopaikkakysely_fi",
+                "translatedCaption": "Muuttujat",
+                "columns": [
+                  {
+                    "name": "lukumaaratieto_fi",
+                    "translatedCaption": "Lukumäärätieto"
                   }
                 ]
               }
@@ -7543,6 +8848,50 @@
                   {
                     "name": "vastausosuus_tyopaikkojen_lkm",
                     "translatedCaption": "Svarsandel, antalet arbetsplatser"
+                  },
+                  {
+                    "name": "lukumaara",
+                    "translatedCaption": "Antal"
+                  }
+                ]
+              },
+              {
+                "name": "Mittarit_tyopaikkakysely",
+                "translatedCaption": "Variabler",
+                "columns": [
+                  {
+                    "name": "selite_sv",
+                    "translatedCaption": "Antalsuppgift (filter)"
+                  }
+                ]
+              },
+              {
+                "name": "Mittarit_ohjaajakysely",
+                "translatedCaption": "Variabler",
+                "columns": [
+                  {
+                    "name": "selite_sv",
+                    "translatedCaption": "Antalsuppgift (filter)"
+                  }
+                ]
+              },
+              {
+                "name": "mittariryhma_ohjaajakysely_sv",
+                "translatedCaption": "Variabler",
+                "columns": [
+                  {
+                    "name": "lukumaaratieto_sv",
+                    "translatedCaption": "Antalsuppgift"
+                  }
+                ]
+              },
+              {
+                "name": "mittariryhma_tyopaikkakysely_sv",
+                "translatedCaption": "Variabler",
+                "columns": [
+                  {
+                    "name": "lukumaaratieto_sv",
+                    "translatedCaption": "Antalsuppgift"
                   }
                 ]
               }
@@ -7892,6 +9241,50 @@
                   {
                     "name": "vastausosuus_tyopaikkojen_lkm",
                     "translatedCaption": "Response rate, number of workplaces"
+                  },
+                  {
+                    "name": "lukumaara",
+                    "translatedCaption": "Number"
+                  }
+                ]
+              },
+              {
+                "name": "Mittarit_tyopaikkakysely",
+                "translatedCaption": "Variables",
+                "columns": [
+                  {
+                    "name": "selite_en",
+                    "translatedCaption": "Numerical data (filter)"
+                  }
+                ]
+              },
+              {
+                "name": "Mittarit_ohjaajakysely",
+                "translatedCaption": "Variables",
+                "columns": [
+                  {
+                    "name": "selite_en",
+                    "translatedCaption": "Numerical data (filter)"
+                  }
+                ]
+              },
+              {
+                "name": "mittariryhma_ohjaajakysely_en",
+                "translatedCaption": "Variables",
+                "columns": [
+                  {
+                    "name": "lukumaaratieto_en",
+                    "translatedCaption": "Numerical data"
+                  }
+                ]
+              },
+              {
+                "name": "mittariryhma_tyopaikkakysely_en",
+                "translatedCaption": "Variables",
+                "columns": [
+                  {
+                    "name": "lukumaaratieto_en",
+                    "translatedCaption": "Numerical data"
                   }
                 ]
               }
@@ -8215,43 +9608,7 @@
             ],
             "measures": [
               {
-                "name": "kyselyn_kohteet_tyopaikkajaksojen_lkm"
-              },
-              {
-                "name": "vastattu_tyopaikkajaksojen_lkm"
-              },
-              {
-                "name": "vastattu_tyopaikkajaksojen_paivien_lkm"
-              },
-              {
-                "name": "vastattujen_tyopaikkajaksojen_keskimaarainen_kesto"
-              },
-              {
-                "name": "vastausosuus_tyopaikkajaksojen_lkm"
-              },
-              {
-                "name": "vastausosuus_tyopaikkajaksojen_paivien_lkm"
-              },
-              {
-                "name": "kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm"
-              },
-              {
-                "name": "kyselyn_kohteiden_keskimaarainen_kesto"
-              },
-              {
-                "name": "keskiarvo_painotettu_tyopaikkajaksojen_kestolla"
-              },
-              {
-                "name": "keskihajonta_painotettu_tyopaikkajaksojen_kestolla"
-              },
-              {
-                "name": "kyselyn_kohteet_tyopaikkojen_lkm"
-              },
-              {
-                "name": "vastattu_tyopaikkojen_lkm"
-              },
-              {
-                "name": "vastausosuus_tyopaikkojen_lkm"
+                "name": "lukumaara"
               }
             ]
           },
@@ -8263,6 +9620,22 @@
               },
               {
                 "name": "Sarakeleveys"
+              }
+            ]
+          },
+          {
+            "name": "mittariryhma_tyopaikkakysely_fi",
+            "columns": [
+              {
+                "name": "lukumaaratieto_fi"
+              }
+            ]
+          },
+          {
+            "name": "Mittarit_tyopaikkakysely",
+            "columns": [
+              {
+                "name": "selite_fi"
               }
             ]
           }
@@ -8382,34 +9755,7 @@
             ],
             "measures": [
               {
-                "name": "keskiarvo_painotettu_tyopaikkajaksojen_kestolla"
-              },
-              {
-                "name": "keskihajonta_painotettu_tyopaikkajaksojen_kestolla"
-              },
-              {
-                "name": "kyselyn_kohteet_tyopaikkajaksojen_lkm"
-              },
-              {
-                "name": "kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm"
-              },
-              {
-                "name": "kyselyn_kohteiden_keskimaarainen_kesto"
-              },
-              {
-                "name": "vastattu_tyopaikkajaksojen_lkm"
-              },
-              {
-                "name": "vastattu_tyopaikkajaksojen_paivien_lkm"
-              },
-              {
-                "name": "vastattujen_tyopaikkajaksojen_keskimaarainen_kesto"
-              },
-              {
-                "name": "vastausosuus_tyopaikkajaksojen_lkm"
-              },
-              {
-                "name": "vastausosuus_tyopaikkajaksojen_paivien_lkm"
+                "name": "lukumaara"
               }
             ]
           },
@@ -8421,6 +9767,22 @@
               },
               {
                 "name": "Sarakeleveys"
+              }
+            ]
+          },
+          {
+            "name": "mittariryhma_ohjaajakysely_fi",
+            "columns": [
+              {
+                "name": "lukumaaratieto_fi"
+              }
+            ]
+          },
+          {
+            "name": "Mittarit_ohjaajakysely",
+            "columns": [
+              {
+                "name": "selite_fi"
               }
             ]
           }
@@ -8986,43 +10348,7 @@
             ],
             "measures": [
               {
-                "name": "kyselyn_kohteet_tyopaikkajaksojen_lkm"
-              },
-              {
-                "name": "vastattu_tyopaikkajaksojen_lkm"
-              },
-              {
-                "name": "vastattu_tyopaikkajaksojen_paivien_lkm"
-              },
-              {
-                "name": "vastattujen_tyopaikkajaksojen_keskimaarainen_kesto"
-              },
-              {
-                "name": "vastausosuus_tyopaikkajaksojen_lkm"
-              },
-              {
-                "name": "vastausosuus_tyopaikkajaksojen_paivien_lkm"
-              },
-              {
-                "name": "kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm"
-              },
-              {
-                "name": "kyselyn_kohteiden_keskimaarainen_kesto"
-              },
-              {
-                "name": "keskiarvo_painotettu_tyopaikkajaksojen_kestolla"
-              },
-              {
-                "name": "keskihajonta_painotettu_tyopaikkajaksojen_kestolla"
-              },
-              {
-                "name": "kyselyn_kohteet_tyopaikkojen_lkm"
-              },
-              {
-                "name": "vastattu_tyopaikkojen_lkm"
-              },
-              {
-                "name": "vastausosuus_tyopaikkojen_lkm"
+                "name": "lukumaara"
               }
             ]
           },
@@ -9034,6 +10360,22 @@
               },
               {
                 "name": "Sarakeleveys"
+              }
+            ]
+          },
+          {
+            "name": "mittariryhma_tyopaikkakysely_sv",
+            "columns": [
+              {
+                "name": "lukumaaratieto_sv"
+              }
+            ]
+          },
+          {
+            "name": "Mittarit_tyopaikkakysely",
+            "columns": [
+              {
+                "name": "selite_sv"
               }
             ]
           }
@@ -9153,34 +10495,7 @@
             ],
             "measures": [
               {
-                "name": "kyselyn_kohteet_tyopaikkajaksojen_lkm"
-              },
-              {
-                "name": "kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm"
-              },
-              {
-                "name": "kyselyn_kohteiden_keskimaarainen_kesto"
-              },
-              {
-                "name": "vastattu_tyopaikkajaksojen_lkm"
-              },
-              {
-                "name": "vastattu_tyopaikkajaksojen_paivien_lkm"
-              },
-              {
-                "name": "vastattujen_tyopaikkajaksojen_keskimaarainen_kesto"
-              },
-              {
-                "name": "vastausosuus_tyopaikkajaksojen_lkm"
-              },
-              {
-                "name": "vastausosuus_tyopaikkajaksojen_paivien_lkm"
-              },
-              {
-                "name": "keskihajonta_painotettu_tyopaikkajaksojen_kestolla"
-              },
-              {
-                "name": "keskiarvo_painotettu_tyopaikkajaksojen_kestolla"
+                "name": "lukumaara"
               }
             ]
           },
@@ -9192,6 +10507,22 @@
               },
               {
                 "name": "Sarakeleveys"
+              }
+            ]
+          },
+          {
+            "name": "mittariryhma_ohjaajakysely_sv",
+            "columns": [
+              {
+                "name": "lukumaaratieto_sv"
+              }
+            ]
+          },
+          {
+            "name": "Mittarit_ohjaajakysely",
+            "columns": [
+              {
+                "name": "selite_sv"
               }
             ]
           }
@@ -9511,43 +10842,7 @@
             ],
             "measures": [
               {
-                "name": "kyselyn_kohteet_tyopaikkajaksojen_lkm"
-              },
-              {
-                "name": "vastattu_tyopaikkajaksojen_lkm"
-              },
-              {
-                "name": "vastattu_tyopaikkajaksojen_paivien_lkm"
-              },
-              {
-                "name": "vastattujen_tyopaikkajaksojen_keskimaarainen_kesto"
-              },
-              {
-                "name": "vastausosuus_tyopaikkajaksojen_lkm"
-              },
-              {
-                "name": "vastausosuus_tyopaikkajaksojen_paivien_lkm"
-              },
-              {
-                "name": "kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm"
-              },
-              {
-                "name": "kyselyn_kohteiden_keskimaarainen_kesto"
-              },
-              {
-                "name": "keskiarvo_painotettu_tyopaikkajaksojen_kestolla"
-              },
-              {
-                "name": "keskihajonta_painotettu_tyopaikkajaksojen_kestolla"
-              },
-              {
-                "name": "kyselyn_kohteet_tyopaikkojen_lkm"
-              },
-              {
-                "name": "vastattu_tyopaikkojen_lkm"
-              },
-              {
-                "name": "vastausosuus_tyopaikkojen_lkm"
+                "name": "lukumaara"
               }
             ]
           },
@@ -9559,6 +10854,22 @@
               },
               {
                 "name": "Sarakeleveys"
+              }
+            ]
+          },
+          {
+            "name": "mittariryhma_tyopaikkakysely_en",
+            "columns": [
+              {
+                "name": "lukumaaratieto_en"
+              }
+            ]
+          },
+          {
+            "name": "Mittarit_tyopaikkakysely",
+            "columns": [
+              {
+                "name": "selite_en"
               }
             ]
           }
@@ -9678,34 +10989,7 @@
             ],
             "measures": [
               {
-                "name": "kyselyn_kohteet_tyopaikkajaksojen_lkm"
-              },
-              {
-                "name": "kyselyn_kohteet_tyopaikkajaksojen_paivien_lkm"
-              },
-              {
-                "name": "kyselyn_kohteiden_keskimaarainen_kesto"
-              },
-              {
-                "name": "vastattu_tyopaikkajaksojen_lkm"
-              },
-              {
-                "name": "vastattu_tyopaikkajaksojen_paivien_lkm"
-              },
-              {
-                "name": "vastattujen_tyopaikkajaksojen_keskimaarainen_kesto"
-              },
-              {
-                "name": "vastausosuus_tyopaikkajaksojen_lkm"
-              },
-              {
-                "name": "vastausosuus_tyopaikkajaksojen_paivien_lkm"
-              },
-              {
-                "name": "keskihajonta_painotettu_tyopaikkajaksojen_kestolla"
-              },
-              {
-                "name": "keskiarvo_painotettu_tyopaikkajaksojen_kestolla"
+                "name": "lukumaara"
               }
             ]
           },
@@ -9717,6 +11001,22 @@
               },
               {
                 "name": "Sarakeleveys"
+              }
+            ]
+          },
+          {
+            "name": "mittariryhma_ohjaajakysely_en",
+            "columns": [
+              {
+                "name": "lukumaaratieto_en"
+              }
+            ]
+          },
+          {
+            "name": "Mittarit_ohjaajakysely",
+            "columns": [
+              {
+                "name": "selite_en"
               }
             ]
           }
@@ -9782,7 +11082,7 @@
     "annotations": [
       {
         "name": "ClientCompatibilityLevel",
-        "value": "400"
+        "value": "600"
       }
     ]
   },
