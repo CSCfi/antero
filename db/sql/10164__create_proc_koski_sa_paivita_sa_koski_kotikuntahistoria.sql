@@ -1,7 +1,7 @@
 USE [Koski_SA]
 GO
 
-/****** Object:  StoredProcedure [sa].[paivita_sa_koski_kotikuntahistoria]    Script Date: 27.9.2024 16:34:05 ******/
+/****** Object:  StoredProcedure [sa].[paivita_sa_koski_kotikuntahistoria]    Script Date: 28.9.2024 7:59:43 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -10,7 +10,8 @@ GO
 
 
 
-CREATE OR ALTER PROCEDURE [sa].[paivita_sa_koski_kotikuntahistoria] as
+
+ALTER   PROCEDURE [sa].[paivita_sa_koski_kotikuntahistoria] as
 
 -- Generoidaan syntymäpäivän ja ensimmäisen muuttopäivän kotikunta
 
@@ -23,7 +24,7 @@ SELECT DISTINCT
 	0 as turvakielto,
 	getdate() as imp_created,
 	SUSER_SNAME() as username,
-	'ETL: paivita_sa_koski_kotikuntahistoria'
+	'ETL: paivita_sa_koski_kotikuntahistoria' as source
 FROM (
 	SELECT master_oid, MIN(muutto_pvm) as muutto_pvm
 	FROM Koski_SA.sa.sa_koski_kotikuntahistoria kh
@@ -34,6 +35,7 @@ WHERE muutto_pvm > h.syntymaaika
 
 -- Generoidaan muut puuttuvat ajanjaksot
 
+INSERT INTO Koski_SA.sa.sa_koski_kotikuntahistoria
 SELECT
 	master_oid,
 	'999' as kotikunta,
@@ -42,7 +44,7 @@ SELECT
 	0 as turvakielto,
 	getdate() as imp_created,
 	SUSER_SNAME() as username,
-	'ETL: paivita_sa_koski_kotikuntahistoria'
+	'ETL: paivita_sa_koski_kotikuntahistoria' as source
 FROM (
 	SELECT
 		master_oid,
