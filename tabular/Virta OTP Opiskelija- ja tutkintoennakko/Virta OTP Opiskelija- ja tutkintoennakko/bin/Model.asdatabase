@@ -5,8 +5,8 @@
     "culture": "fi-FI",
     "dataSources": [
       {
-        "name": "SqlServer dwitvipusql16 ANTERO",
-        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipusql16;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
+        "name": "SqlServer dwitvipusql22 ANTERO",
+        "connectionString": "Provider=SQLOLEDB.1;Data Source=dwitvipusql22;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
         "impersonationMode": "impersonateServiceAccount",
         "annotations": [
           {
@@ -40,7 +40,7 @@
             "dataView": "full",
             "source": {
               "query": " SELECT [dw].[Sarakeleveys].* FROM [dw].[Sarakeleveys] ",
-              "dataSource": "SqlServer dwitvipusql16 ANTERO"
+              "dataSource": "SqlServer dwitvipusql22 ANTERO"
             }
           }
         ],
@@ -393,6 +393,12 @@
             "dataType": "int64",
             "isHidden": true,
             "sourceColumn": "tutkinnot2"
+          },
+          {
+            "name": "opyht",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "opyht"
           }
         ],
         "partitions": [
@@ -400,8 +406,8 @@
             "name": "Muuttujat",
             "dataView": "full",
             "source": {
-              "query": " SELECT [dw].[v_virta_otp_opiskelija_ja_tutkinto_ennakko].* FROM [dw].[v_virta_otp_opiskelija_ja_tutkinto_ennakko] ",
-              "dataSource": "SqlServer dwitvipusql16 ANTERO"
+              "query": " \t\t\t\tSELECT [dw].[v_virta_otp_opiskelija_ja_tutkinto_ennakko].*   FROM [dw].[v_virta_otp_opiskelija_ja_tutkinto_ennakko] ",
+              "dataSource": "SqlServer dwitvipusql22 ANTERO"
             },
             "annotations": [
               {
@@ -784,6 +790,14 @@
                   "        <int>210</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>opyht</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>79</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnWidths>",
                   "  <ColumnDisplayIndex>",
                   "    <item>",
@@ -1154,6 +1168,14 @@
                   "        <int>43</int>",
                   "      </value>",
                   "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>opyht</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <int>46</int>",
+                  "      </value>",
+                  "    </item>",
                   "  </ColumnDisplayIndex>",
                   "  <ColumnFrozen />",
                   "  <ColumnChecked>",
@@ -1168,6 +1190,14 @@
                   "    <item>",
                   "      <key>",
                   "        <string>opiskelijat2</string>",
+                  "      </key>",
+                  "      <value>",
+                  "        <boolean>true</boolean>",
+                  "      </value>",
+                  "    </item>",
+                  "    <item>",
+                  "      <key>",
+                  "        <string>opyht</string>",
                   "      </key>",
                   "      <value>",
                   "        <boolean>true</boolean>",
@@ -1535,12 +1565,57 @@
               ""
             ],
             "formatString": "#,0"
+          },
+          {
+            "name": "Opintopisteiden mediaani (tutkinnon suorittaneet)",
+            "expression": [
+              "",
+              "",
+              " var __nbrows = SUM(Muuttujat[tutkinnot2])",
+              " var __isod=if(__nbrows/2>int(__nbrows/2),1,0)",
+              " var __n=if(__nbrows/2>int(__nbrows/2),int(__nbrows/2)+1,int(__nbrows/2))",
+              " var __list= ",
+              " \tCALCULATETABLE(ADDCOLUMNS(",
+              "                   \tSUMMARIZE(Muuttujat,Muuttujat[opyht]),",
+              "                                           \"cml\",calculate(SUM(Muuttujat[tutkinnot2]),",
+              "                                          Muuttujat[opyht]   <= EARLIER(Muuttujat[opyht]) ",
+              "                                             )",
+              "                        ),Muuttujat[tutkinnot2] > 0)                                         ",
+              "return",
+              "IF([Tutkinnot_s] < 5, BLANK(), if(__isod=1,",
+              "    minx(FILTER(__list,[cml]>=__n),[opyht]),",
+              "    0.5*(minx(FILTER(__list,[cml]>=__n),[opyht])+minx(FILTER(__list,[cml]>=__n+1),[opyht]))))"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Opintopisteiden mediaani (tutkinnon suorittaneet)_s",
+            "expression": [
+              "",
+              "",
+              " var __nbrows = SUM(Muuttujat[tutkinnot2])",
+              " var __isod=if(__nbrows/2>int(__nbrows/2),1,0)",
+              " var __n=if(__nbrows/2>int(__nbrows/2),int(__nbrows/2)+1,int(__nbrows/2))",
+              " var __list= ",
+              " \tCALCULATETABLE(ADDCOLUMNS(",
+              "                   \tSUMMARIZE(Muuttujat,Muuttujat[opyht]),",
+              "                                           \"cml\",calculate(SUM(Muuttujat[tutkinnot2]),",
+              "                                          Muuttujat[opyht]   <= EARLIER(Muuttujat[opyht]) ",
+              "                                             )",
+              "                        ),Muuttujat[tutkinnot2] > 0)                                         ",
+              "return",
+              "if(__isod=1,",
+              "    minx(FILTER(__list,[cml]>=__n),[opyht]),",
+              "    0.5*(minx(FILTER(__list,[cml]>=__n),[opyht])+minx(FILTER(__list,[cml]>=__n+1),[opyht])))",
+              ""
+            ],
+            "formatString": "#,0"
           }
         ],
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": " SELECT [dw].[v_virta_otp_opiskelija_ja_tutkinto_ennakko].* FROM [dw].[v_virta_otp_opiskelija_ja_tutkinto_ennakko] "
+            "value": " \t\t\t\tSELECT [dw].[v_virta_otp_opiskelija_ja_tutkinto_ennakko].*   FROM [dw].[v_virta_otp_opiskelija_ja_tutkinto_ennakko] "
           },
           {
             "name": "_TM_ExtProp_DbTableName",
@@ -1930,6 +2005,14 @@
               "        <int>210</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>opyht</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>79</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -2300,6 +2383,14 @@
               "        <int>43</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>opyht</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>46</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnDisplayIndex>",
               "  <ColumnFrozen />",
               "  <ColumnChecked>",
@@ -2314,6 +2405,14 @@
               "    <item>",
               "      <key>",
               "        <string>opiskelijat2</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>opyht</string>",
               "      </key>",
               "      <value>",
               "        <boolean>true</boolean>",
