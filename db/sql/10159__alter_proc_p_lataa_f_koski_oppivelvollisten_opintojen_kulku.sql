@@ -213,7 +213,7 @@ BEGIN
 			LEFT JOIN [Koski_SA].[sa].[sa_koski_paatason_suoritus] ps on ps.opiskeluoikeus_oid = oo.opiskeluoikeus_oid 
 			LEFT JOIN [Koski_SA].[sa].[sa_amm_paatason_suoritus] aps on aps.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
 			LEFT JOIN [Koski_SA].[sa].[sa_lukio_paatason_suoritus] lps on lps.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
-			INNER JOIN Koski_SA.sa.sa_oppivelvolliset ov2 on ov2.oppija_oid = ov.oppija_oid and aika.alku BETWEEN ov2.alkuPvm and ov2.loppuPvm
+			INNER JOIN Koski_SA.sa.sa_oppivelvolliset ov2 on ov2.oppija_oid = ov.oppija_oid and aika.alku <= ov2.loppuPvm
 			WHERE ooa.tila != 'katsotaaneronneeksi' 
 			and aika.alku BETWEEN @alkuPvm and @loppuPvm 
 			and (
@@ -275,7 +275,7 @@ BEGIN
 			LEFT JOIN [Koski_SA].[sa].[sa_koski_opiskeluoikeus_aikajakso] ooa 
 				on ooa.opiskeluoikeus_oid = oo.opiskeluoikeus_oid and ooa.alku <= @loppuPvm and ooa.loppu >= @alkuPvm and ooa.loppu > aika.alku
 			LEFT JOIN [Koski_SA].[sa].[sa_koski_paatason_suoritus] ps on ps.opiskeluoikeus_oid = oo.opiskeluoikeus_oid 
-			INNER JOIN Koski_SA.sa.sa_oppivelvolliset ov2 on ov2.oppija_oid = ov.oppija_oid and aika.alku BETWEEN ov2.alkuPvm and ov2.loppuPvm
+			INNER JOIN Koski_SA.sa.sa_oppivelvolliset ov2 on ov2.oppija_oid = ov.oppija_oid and aika.alku <= ov2.loppuPvm
 			WHERE ooa.tila != 'katsotaaneronneeksi' 
 			and aika.alku BETWEEN @alkuPvm and @loppuPvm 
 			and ov.perusopetus_alkanut = aika.alku 
