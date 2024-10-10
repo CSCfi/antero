@@ -167,7 +167,9 @@ FROM (
 			   (select d from dbo.biginttodate (alkamispaivamaara)) as pvm
 			  ,[oid]
 			  ,tavoitetutkinto as tutkinto
-		FROM [ANTERO].[sa].[sa_virta_otp_korkeakouluhaut_hakijat_opiskeluoikeudet]
+		FROM [ANTERO].[sa].[sa_virta_otp_korkeakouluhaut_hakijat_opiskeluoikeudet] t
+		LEFT JOIN ANTERO.dw.d_koulutusluokitus d1 on t.tavoitetutkinto = d1.koulutusluokitus_koodi
+		WHERE d1.koulutusastetaso1_koodi <> '9'
 
 		UNION ALL
 
