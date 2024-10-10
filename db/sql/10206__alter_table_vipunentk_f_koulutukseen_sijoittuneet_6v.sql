@@ -8,7 +8,11 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_koulutukseen_sijoittuneet_6v]') AND type in (N'U')) DROP TABLE [dbo].[f_koulutukseen_sijoittuneet_6v]
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_koulutukseen_sijoittuneet_6v]') AND type in (N'U')) 
+BEGIN
+TRUNCATE TABLE [dbo].[f_koulutukseen_sijoittuneet_6v]
+DROP TABLE [dbo].[f_koulutukseen_sijoittuneet_6v]
+END
 GO
 
 CREATE TABLE [dbo].[f_koulutukseen_sijoittuneet_6v](
