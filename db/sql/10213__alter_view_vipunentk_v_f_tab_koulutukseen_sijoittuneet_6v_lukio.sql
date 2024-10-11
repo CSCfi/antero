@@ -1,7 +1,7 @@
 USE [VipunenTK]
 GO
 
-/****** Object:  View [dbo].[v_f_tab_koulutukseen_sijoittuneet_6v_peruskoulu]    Script Date: 11.10.2024 12:38:49 ******/
+/****** Object:  View [dbo].[v_f_tab_koulutukseen_sijoittuneet_6v_lukio]    Script Date: 11.10.2024 12:38:11 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -19,7 +19,8 @@ GO
 
 
 
-ALTER VIEW [dbo].[v_f_tab_koulutukseen_sijoittuneet_6v_peruskoulu] AS
+
+ALTER VIEW [dbo].[v_f_tab_koulutukseen_sijoittuneet_6v_lukio] AS
 
 Select --top 100
 
@@ -87,7 +88,7 @@ Select --top 100
 --,d22.opetuskieli AS "Opetuskieli"
 ,d23.ammatillisen_koulutuksen_koulutuslaji AS "Tutkintotyyppi"
 ,d24.opetussuunnitelmaperusteinen_koulutus_nayttotutkintoon_valmistava_koulutus AS "Järjestämistapa"
---,d25.nuorten_aikuisten_koulutus AS "Nuoret/aikuiset"
+,d25.nuorten_aikuisten_koulutus AS "Nuoret/aikuiset"
 --,d26.moninkertainen_haku AS "Koul. sijoittuneiden haut"
 --,d27.paaasiallinen_toiminta AS "Pääasiallinen toiminta"
 --,d28.ammattiasema AS "Ammattiasema"
@@ -176,7 +177,7 @@ Select --top 100
 ,d15.vuosiselite_SV AS [År då utbildningen avlagts]
 ,d18.lukukausiselite_SV AS [Termin då utbildningen avlagts]
 ,d21.kansalaisuus_versio1_SV AS Medborgaskap
---,d25.nuorten_aikuisten_koulutus_SV AS [Ungdoms-/vuxenutbildning]
+,d25.nuorten_aikuisten_koulutus_SV AS [Ungdoms-/vuxenutbildning]
 ,d29.koulutuksen_paattaneiden_toiminta_SV AS [Sysselsättning av utexaminerade]
 ,d59.kylla_ei_SV as [Fått studiestöd för studier utomlands]
 
@@ -204,7 +205,7 @@ Select --top 100
 ,d15.vuosiselite_EN AS [Graduation year]
 ,d18.lukukausiselite_EN AS [Term of graduation]
 ,d21.kansalaisuus_versio1_EN AS Nationality
---,d25.nuorten_aikuisten_koulutus_EN AS [Youth/adult education]
+,d25.nuorten_aikuisten_koulutus_EN AS [Youth/adult education]
 ,d29.koulutuksen_paattaneiden_toiminta_EN AS [Completers' activity]
 ,d59.kylla_ei_EN as [Received financial aid for studies abroad]
 
@@ -400,7 +401,7 @@ FROM            dbo.f_koulutukseen_sijoittuneet_6v
     LEFT JOIN d_kylla_ei d58 on d58.id = haku_yo_kyllaei_id
 	LEFT JOIN d_kylla_ei d59 on d59.id = opintotuki_ulkom_id
 
-WHERE tutkintoryhma_koodi = 1
+WHERE tutkintoryhma_koodi = 2 AND [Tilastovuosi] <> '2008'
 
 
 
