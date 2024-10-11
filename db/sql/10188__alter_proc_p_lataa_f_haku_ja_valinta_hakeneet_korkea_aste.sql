@@ -196,7 +196,7 @@ FROM (
 			CASE 
 				WHEN t.tutkinto = hkk.hakukohdekoulutus_koodi AND YEAR(t.pvm) < YEAR(h.HakuaikaAlku) AND VastaanotonTila in ('VASTAANOTTANUT_SITOVASTI','EHDOLLISESTI_VASTAANOTTANUT') THEN 0
 				WHEN t.tutkinto = hkk.hakukohdekoulutus_koodi AND t.pvm < h.HakuaikaAlku AND COALESCE(VastaanotonTila, '') not in ('VASTAANOTTANUT_SITOVASTI','EHDOLLISESTI_VASTAANOTTANUT') THEN 0
-				WHEN t.tutkinto <> hkk.hakukohdekoulutus_koodi AND t.pvm < h.HakuaikaAlku THEN 0
+				WHEN t.tutkinto <> coalesce(hkk.hakukohdekoulutus_koodi, -1) AND t.pvm < h.HakuaikaAlku THEN 0
 				ELSE 1
 			END
 		) as aidosti_ensikertainen

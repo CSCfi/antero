@@ -68,7 +68,7 @@ FROM (
 			CASE 
 				WHEN t.tavoitetutkinto = hkk.hakukohdekoulutus_koodi AND YEAR(t.opisk_alkamisPvm) < YEAR(h.HakuaikaAlku) AND VastaanotonTila in ('VASTAANOTTANUT_SITOVASTI','EHDOLLISESTI_VASTAANOTTANUT') THEN 1
 				WHEN t.tavoitetutkinto = hkk.hakukohdekoulutus_koodi AND t.opisk_alkamisPvm < h.HakuaikaAlku AND COALESCE(VastaanotonTila, '') not in ('VASTAANOTTANUT_SITOVASTI','EHDOLLISESTI_VASTAANOTTANUT') THEN 1
-				WHEN t.tavoitetutkinto <> hkk.hakukohdekoulutus_koodi AND t.opisk_alkamisPvm < h.HakuaikaAlku THEN 1
+				WHEN t.tavoitetutkinto <> coalesce(hkk.hakukohdekoulutus_koodi, -1) AND t.opisk_alkamisPvm < h.HakuaikaAlku THEN 1
 				ELSE 0
 			END
 		) OVER (partition by HakemusOid, t.opisk_alkamisPvm) as aiempi_oo
