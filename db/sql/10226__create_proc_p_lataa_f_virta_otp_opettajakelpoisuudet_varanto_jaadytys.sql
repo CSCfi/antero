@@ -14,7 +14,7 @@ CREATE OR ALTER PROCEDURE [dw].[p_lataa_f_virta_otp_opettajakelpoisuudet_varanto
 DECLARE @alkuVuosi as int
 DECLARE @loppuVuosi as int
 SET @alkuVuosi = 2016
-SET @loppuVuosi = YEAR(GETDATE())
+SET @loppuVuosi = (SELECT MAX(Vuosi) FROM ANTERO.dw.f_virta_otp_opettajakelpoisuudet_jaadytys)
 TRUNCATE TABLE [ANTERO].[dw].[f_virta_otp_opettajakelpoisuudet_varanto_jaadytys]
 
 WHILE @alkuVuosi <= @loppuVuosi
@@ -57,7 +57,7 @@ BEGIN
 			f.vuosi_korkein_tutkinto,
 			f.d_koulutusluokitus_korkein_tutkinto_id,
 			d2.koodi as kelpoisuus_koodi
-		FROM [ANTERO].[dw].[f_virta_otp_opettajakelpoisuudet] f
+		FROM [ANTERO].[dw].[f_virta_otp_opettajakelpoisuudet_jaadytys] f
 		LEFT JOIN ANTERO.sa.sa_virta_otp_ope_henkilotiedot h on h.henkilo = f.henkilo
 		LEFT JOIN ANTERO.dw.d_ika d1 on d1.ika_avain = @alkuVuosi - YEAR(h.syntymaaika)
 		LEFT JOIN ANTERO.dw.d_opettajapatevyys d2 on d2.id = f.d_kelpoisuus_id
