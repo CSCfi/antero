@@ -4360,9 +4360,29 @@
               "                                             )",
               "                        )                                                               ",
               "return",
-              "if(__isod=1,",
+              "if(__nbrows < 5, BLANK(),if(__isod=1,",
               "    minx(FILTER(__list,[cml]>=__n),'Muuttujat'[op_yo_yhteensa]),",
-              "    0.5*(minx(FILTER(__list,[cml]>=__n),'Muuttujat'[op_yo_yhteensa])+minx(FILTER(__list,[cml]>=__n+1),'Muuttujat'[op_yo_yhteensa])))"
+              "    0.5*(minx(FILTER(__list,[cml]>=__n),'Muuttujat'[op_yo_yhteensa])+minx(FILTER(__list,[cml]>=__n+1),'Muuttujat'[op_yo_yhteensa]))))"
+            ]
+          },
+          {
+            "name": "Tutkintojen opintopisteiden mediaani_s",
+            "expression": [
+              " ",
+              " var __nbrows=sum('Muuttujat'[Tutk2])",
+              " var __isod=if(__nbrows/2>int(__nbrows/2),1,0)",
+              " var __n=if(__nbrows/2>int(__nbrows/2),int(__nbrows/2)+1,int(__nbrows/2))",
+              " var __list= ADDCOLUMNS(",
+              "                   SUMMARIZE('Muuttujat','Muuttujat'[op_yo_yhteensa]),",
+              "                                           \"cml\",calculate(sum('Muuttujat'[Tutk2]),",
+              "                                           'Muuttujat'[op_yo_yhteensa]   <= EARLIER( 'Muuttujat'[op_yo_yhteensa]) ",
+              "                                             )",
+              "                        )                                                               ",
+              "return",
+              "if([kytkin]=0, BLANK(),if(__isod=1,",
+              "    minx(FILTER(__list,[cml]>=__n),'Muuttujat'[op_yo_yhteensa]),",
+              "    0.5*(minx(FILTER(__list,[cml]>=__n),'Muuttujat'[op_yo_yhteensa])+minx(FILTER(__list,[cml]>=__n+1),'Muuttujat'[op_yo_yhteensa]))))",
+              ""
             ]
           }
         ],
