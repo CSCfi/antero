@@ -15,7 +15,7 @@ GO
 
 
 
-CREATE PROCEDURE [dbo].[p_lataa_f_koulutukseen_sijoittuneet_8v_2_0_tarkastelujakso] AS
+CREATE OR ALTER PROCEDURE [dbo].[p_lataa_f_koulutukseen_sijoittuneet_8v_2_0_tarkastelujakso] AS
 
 
 INSERT INTO [VipunenTK_DW].[dbo].[_koulutukseen_sijoittuneet_8v_tarkastelu]
