@@ -31,7 +31,7 @@ SELECT
 	d2.koulutusalataso1_fi as 'Koulutusala, taso 1',
 	d2.koulutusalataso2_fi as 'Koulutusala, taso 2',
 	d2.koulutusalataso3_fi as 'Koulutusala, taso 3',
-	d2.okmohjauksenala_fi as 'OKM ohjauksenala',
+	d2.okmohjauksenala_fi as 'OKM ohjauksen ala',
 	d8.koulutuslaji_okm as Koulutuslaji,
 	d9.koulutustyyppi as Koulutustyyppi,
 	d11.rahoituslahde_nimi_fi as 'Rahoituslähde',
