@@ -7,8 +7,7 @@
       {
         "name": "SqlServer dwitvipusql22.csc.fi ANTERO",
         "connectionString": "Provider=SQLOLEDB.1;Data Source=dwitvipusql22.csc.fi;Initial Catalog=ANTERO;Integrated Security=SSPI;Persist Security Info=false",
-        "impersonationMode": "impersonateAccount",
-        "account": "dwi\\ffinnber",
+        "impersonationMode": "impersonateServiceAccount",
         "annotations": [
           {
             "name": "ConnectionEditUISource",
@@ -310,37 +309,99 @@
         "measures": [
           {
             "name": "Väh. 55 op suorittaneet",
-            "expression": "CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[Suorittanut55]=1)",
+            "expression": [
+              "",
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[Suorittanut55]=1)",
+              "",
+              "RETURN",
+              "",
+              "IF(AND(lkm < 5, lkm > 0), \"1-4\", MROUND(lkm,3))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Väh. 55 op suorittaneet, rahoitusmalli",
-            "expression": "[Väh. 55 op suorittaneet]-[Keväällä aloittaneista väh. 27 op suorittaneet]/2",
+            "expression": [
+              "",
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[Suorittanut55]=1) -  CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[suorittanut_27]=1) / 2",
+              "",
+              "RETURN ",
+              "",
+              "IF(AND(lkm < 5, lkm > 0), \"1-4\", MROUND(lkm,3))"
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Keväällä aloittaneista väh. 27 op suorittaneet",
-            "expression": "CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[suorittanut_27]=1)",
+            "expression": [
+              "",
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[suorittanut_27]=1)",
+              "",
+              "RETURN",
+              "",
+              "IF(AND(lkm < 5, lkm > 0), \"1-4\", MROUND(lkm,3))",
+              ""
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Suorittanut 55 op ilman pankkia",
-            "expression": "calculate(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[suorittanut_55_ilman_pankkia]=1)",
+            "expression": [
+              "",
+              "",
+              "var lkm = calculate(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[suorittanut_55_ilman_pankkia]=1)",
+              "",
+              "RETURN",
+              "",
+              "IF(AND(lkm < 5, lkm > 0), \"1-4\", MROUND(lkm,3))",
+              ""
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Suorittanut 55 op pankin kanssa",
-            "expression": "CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[suorittanut_55_pankin_avulla]=1)",
+            "expression": [
+              "",
+              "",
+              "var lkm = CALCULATE(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[suorittanut_55_pankin_avulla]=1)",
+              "",
+              "RETURN",
+              "",
+              "IF(AND(lkm < 5, lkm > 0), \"1-4\", MROUND(lkm,3))",
+              ""
+            ],
             "formatString": "#,0"
           },
           {
             "name": "Läsnäolleet",
-            "expression": "calculate(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[Lasna]=1)",
+            "expression": [
+              "",
+              "",
+              "var lkm = calculate(DISTINCTCOUNT([Henkilo_koodi]),Muuttujat[Lasna]=1)",
+              "",
+              "RETURN",
+              "",
+              "IF(AND(lkm < 5, lkm > 0), \"1-4\", MROUND(lkm,3))",
+              ""
+            ],
             "formatString": "#,0"
           },
           {
             "name": "55 op suorittaneiden osuus",
-            "expression": "[Väh. 55 op suorittaneet]/[Läsnäolleet]",
+            "expression": [
+              "",
+              "",
+              "var osa = [Väh. 55 op suorittaneet]",
+              "var kaikki = [Läsnäolleet]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
             "formatString": "0.00 %;-0.00 %;0.00 %"
           }
         ],
