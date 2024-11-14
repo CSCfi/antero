@@ -49,18 +49,21 @@ tf3 <- tempfile()
 td3 <- tempdir()
 download.file("https://cordis.europa.eu/data/cordis-h2020projects-csv.zip",tf3, mode = "wb", method = "libcurl")
 file.names <- unzip(tf3, exdir = td3)
-Projects = read.csv(file.names[which(unlist(gregexpr('project.csv', file.names)) > 0)], header = TRUE, sep = ";", encoding="UTF-8")
+Projects = read.csv(file.names[which(unlist(gregexpr('project.csv', file.names)) > 0)], header = TRUE, sep = ";", encoding="UTF-8", quote = "\"")
 names(Projects)[19] <- "projectRcn"
+
+
+
 
 # Organisations and EC contribution
 
-Orgs = read.csv(file.names[which(unlist(gregexpr('organization', file.names)) > 0)], header = TRUE, sep = ";", encoding="UTF-8")
+Orgs = read.csv(file.names[which(unlist(gregexpr('organization', file.names)) > 0)], header = TRUE, sep = ";", encoding="UTF-8", quote = "\"")
 
 # country codes
-Country = read.csv("http://cordis.europa.eu/data/reference/cordisref-countries.csv", header = TRUE, sep = ";", encoding="UTF-8")
+Country = read.csv("http://cordis.europa.eu/data/reference/cordisref-countries.csv", header = TRUE, sep = ";", encoding="UTF-8", quote = "\"")
 
 # organisation type codes
-oTypes = read.csv("http://cordis.europa.eu/data/reference/cordisref-organizationActivityType.csv", header = TRUE, sep = ";", encoding="UTF-8")
+oTypes = read.csv("http://cordis.europa.eu/data/reference/cordisref-organizationActivityType.csv", header = TRUE, sep = ";", encoding="UTF-8", quote = "\"")
 
 
 # programmes
@@ -68,17 +71,17 @@ tf <- tempfile()
 td <- tempdir()
 download.file("https://cordis.europa.eu/data/reference/cordisref-H2020programmes-csv.zip",tf, mode = "wb", method = "libcurl")
 file.names <- unzip(tf, exdir = td)
-Progs <- read.csv(file.names, header = TRUE, sep = ";", encoding="UTF-8")
+Progs <- read.csv(file.names, header = TRUE, sep = ";", encoding="UTF-8", quote = "\"")
 
 # topics
 tf2 <- tempfile()
 td2 <- tempdir()
 download.file("https://cordis.europa.eu/data/reference/cordisref-H2020topics-csv.zip",tf2, mode = "wb", method = "libcurl")
 file.names <- unzip(tf2, exdir = td2)
-Topics = read.csv(file.names, header = TRUE, sep = ";", encoding="UTF-8")
+Topics = read.csv(file.names, header = TRUE, sep = ";", encoding="UTF-8", quote = "\"")
 
 #funding schemes
-fSchemes <- read.csv("https://cordis.europa.eu/data/reference/cordisref-projectFundingSchemeCategory.csv", header = TRUE, sep = ";", encoding="UTF-8")
+fSchemes <- read.csv("https://cordis.europa.eu/data/reference/cordisref-projectFundingSchemeCategory.csv", header = TRUE, sep = ";", encoding="UTF-8", quote = "\"")
 
 ## Horizon europe
 tfHE <- tempfile()
@@ -86,27 +89,32 @@ tdHE <- tempdir()
 download.file("https://cordis.europa.eu/data/cordis-HORIZONprojects-csv.zip",tfHE, mode = "wb", method = "libcurl")
 file.names <- unzip(tfHE, exdir = tdHE)
 
-ProjectsHE <- read.csv(file.names[which(unlist(gregexpr('project', file.names)) > 0)], header = TRUE, sep = ";", encoding="UTF-8")
-OrgsHE <- read.csv(file.names[which(unlist(gregexpr('organization', file.names)) > 0)], header = TRUE, sep = ";", encoding="UTF-8")
-LegalBasisHE <- read.csv(file.names[which(unlist(gregexpr('legalBasis', file.names)) > 0)], header = TRUE, sep = ";", encoding="UTF-8")
+ProjectsHE <- read.csv(file.names[which(unlist(gregexpr('project', file.names)) > 0)], header = TRUE, sep = ";", encoding="UTF-8", quote = "\"")
+OrgsHE <- read.csv(file.names[which(unlist(gregexpr('organization', file.names)) > 0)], header = TRUE, sep = ";", encoding="UTF-8", quote = "\"")
+LegalBasisHE <- read.csv(file.names[which(unlist(gregexpr('legalBasis', file.names)) > 0)], header = TRUE, sep = ";", encoding="UTF-8", quote = "\"")
 
 tfHE2 <- tempfile()
 tdHE2 <- tempdir()
 download.file("https://cordis.europa.eu/data/reference/cordisref-HORIZONprogrammes-csv.zip",tfHE2, mode = "wb", method = "libcurl")
 file.names <- unzip(tfHE2, exdir = tdHE2)
-ProgsHE <- read.csv(file.names, header = TRUE, sep = ";", encoding="UTF-8")
+ProgsHE <- read.csv(file.names, header = TRUE, sep = ";", encoding="UTF-8", quote = "\"")
 
 tfHE3 <- tempfile()
 tdHE3 <- tempdir()
 download.file("https://cordis.europa.eu/data/reference/cordisref-HORIZONtopics-csv.zip",tfHE3, mode = "wb", method = "libcurl")
 file.names <- unzip(tfHE3, exdir = tdHE3)
-TopicsHE <- read.csv(file.names, header = TRUE, sep = ";", encoding="UTF-8")
+TopicsHE <- read.csv(file.names, header = TRUE, sep = ";", encoding="UTF-8", quote = "\"")
 
 #---------------------------#
 
 #     data pre-processing   #
 
 #---------------------------#
+
+Projects <- Projects[Projects$projectRcn != "",]
+Projects$contentUpdateDate[is.na(as.integer(Projects$projectRcn))] <- NA
+Projects$grantDoi[is.na(as.integer(Projects$projectRcn))] <- NA
+Projects$projectRcn[is.na(as.integer(Projects$projectRcn))] <- NA
 
 Country <- subset(Country, language == 'en', select=names(Country))
 oTypes <- subset(oTypes, language == 'en', select=names(oTypes))
@@ -120,6 +128,9 @@ ProjectsHE$legalBasis[ProjectsHE$legalBasis == ""] <-  as.character(ProjectsHE$l
 ProjectsHE = ProjectsHE[,!(names(ProjectsHE) %in% c("legalBasis.y", "legalBasis.x"))]
 names(ProjectsHE)[names(ProjectsHE) == "rcn"] <- "projectRcn"
 ProjectsHE <- ProjectsHE[, names(Projects)]
+ProjectsHE$contentUpdateDate[is.na(as.integer(ProjectsHE$projectRcn))] <- NA
+ProjectsHE$grantDoi[is.na(as.integer(ProjectsHE$projectRcn))] <- NA
+ProjectsHE$projectRcn[is.na(as.integer(ProjectsHE$projectRcn))] <- NA
 OrgsHE <- OrgsHE[OrgsHE$projectID != "projectID",]
 OrgsHE$projectID <- as.integer(OrgsHE$projectID)
 OrgsHE$organisationID <- as.integer(OrgsHE$organisationID)
@@ -129,6 +140,7 @@ OrgsHE$ecContribution <- as.double(OrgsHE$ecContribution)
 OrgsHE$netEcContribution <- as.double(OrgsHE$netEcContribution)
 OrgsHE$activityType <- substr(OrgsHE$activityType,1,3)
 Orgs$activityType <- substr(Orgs$activityType,1,3)
+Progs$rcn <- as.integer(Progs$rcn)
 
 # Horizon 2020 and Horizon Europe data is combined 
 
