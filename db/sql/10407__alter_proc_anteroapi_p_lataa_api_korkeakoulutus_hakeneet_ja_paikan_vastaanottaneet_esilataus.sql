@@ -10,7 +10,7 @@ GO
 
 
 
-ALTER PROCEDURE [dw].[p_lataa_api_korkeakoulutus_hakeneet_ja_paikan_vastaanottaneet_esilataus] as
+CREATE OR ALTER PROCEDURE [dw].[p_lataa_api_korkeakoulutus_hakeneet_ja_paikan_vastaanottaneet_esilataus] as
 
 DROP TABLE IF EXISTS ANTERO.sa.temp_haku_ja_valinta_api 
 DROP TABLE IF EXISTS ANTERO.sa.temp_haku_ja_valinta_api2 

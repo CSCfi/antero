@@ -10,7 +10,7 @@ GO
 
 
 
-ALTER  PROCEDURE [dw].[p_lataa_api_korkeakoulutus_hakeneet_ja_paikan_vastaanottaneet] AS
+CREATE OR ALTER  PROCEDURE [dw].[p_lataa_api_korkeakoulutus_hakeneet_ja_paikan_vastaanottaneet] AS
 
 DECLARE @api_pvm date
 DECLARE @pvm date
