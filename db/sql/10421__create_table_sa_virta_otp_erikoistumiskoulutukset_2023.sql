@@ -1,12 +1,12 @@
 USE [ANTERO]
 GO
 
-/****** Object:  Table [sa].[sa_virta_otp_erikoistumiskoulutukset_2023]    Script Date: 28.11.2024 10:01:21 ******/
+/****** Object:  Table [sa].[sa_virta_otp_erikoistumiskoulutukset_2023]    Script Date: 28.11.2024 10:20:32 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[sa_virta_otp_erikoistumiskoulutukset_2023]') AND type in (N'U'))
 DROP TABLE [sa].[sa_virta_otp_erikoistumiskoulutukset_2023]
 GO
 
-/****** Object:  Table [sa].[sa_virta_otp_erikoistumiskoulutukset_2023]    Script Date: 28.11.2024 10:01:21 ******/
+/****** Object:  Table [sa].[sa_virta_otp_erikoistumiskoulutukset_2023]    Script Date: 28.11.2024 10:20:32 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -30,3 +30,5 @@ CREATE TABLE [sa].[sa_virta_otp_erikoistumiskoulutukset_2023](
 	[username] [nvarchar](128) NOT NULL
 ) ON [PRIMARY]
 GO
+
+
