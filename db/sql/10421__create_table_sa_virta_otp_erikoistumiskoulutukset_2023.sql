@@ -13,6 +13,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+
 CREATE TABLE [sa].[sa_virta_otp_erikoistumiskoulutukset_2023](
 	[id] [bigint] IDENTITY(1,1) NOT NULL,
 	[erikoistumiskoulutuskoodi] [nvarchar](20) NULL,
