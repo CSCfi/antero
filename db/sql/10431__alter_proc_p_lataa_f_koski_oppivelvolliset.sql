@@ -342,7 +342,7 @@ BEGIN
 			LEFT JOIN [Koski_SA].[sa].[temp_oppivelvolliset_opiskelu] ovo on ov.oppija_oid = ovo.oppija_oid and d.paivays BETWEEN ovo.ooa_alku and ovo.ooa_loppu
 			LEFT JOIN [Koski_SA].[sa].[temp_oppivelvolliset_kotikunta] kh on kh.oppija_oid = ov.oppija_oid and d.paivays BETWEEN kh.muutto_pvm and kh.poismuutto_pvm
 			LEFT JOIN [Koski_SA].[sa].[sa_valpas_oppivelvollisuuden_keskeytys] kesk on kesk.oppija_oid = ov.oppija_oid and kesk.peruttu = 0 and d.paivays BETWEEN kesk.alku and coalesce(kesk.loppu,'9999-01-01')
-			LEFT JOIN [Koski_SA].[sa].[sa_valpas_oppivelvollisuudesta_vapautetut] vov on vov.oppija_oid = ov.oppija_oid and vov.vapautettu >= d.paivays
+			LEFT JOIN [Koski_SA].[sa].[sa_valpas_oppivelvollisuudesta_vapautetut] vov on vov.oppija_oid = ov.oppija_oid and vov.vapautettu <= d.paivays
 			INNER JOIN Koski_SA.sa.sa_oppivelvolliset ovp on ovp.oppija_oid = ov.oppija_oid and @alkuVuosi BETWEEN YEAR(ovp.alkuPvm) AND YEAR(ovp.loppuPvm) 
 			WHERE CAST(CONCAT(@alkuVuosi,'-01-01') as date) < DATEADD(year, 18, ov.syntymaaika) 
 			AND @alkuVuosi >= YEAR(DATEADD(year, 16, ov.syntymaaika)) 
