@@ -772,7 +772,7 @@ BEGIN
 			LEFT JOIN Koski_SA.sa.temp_opintojen_kulku_oppivelvolliset_tarkastelujaksot tj on tj.opiskeluoikeus_oid = s1.opiskeluoikeus_oid
 			LEFT JOIN Koski_SA.sa.temp_opintojen_kulku_oppivelvolliset_opiskelutiedot s2 on s1.opiskeluoikeus_oid = s2.opiskeluoikeus_oid_alkuperainen and (tj.tarkastelu_pvm BETWEEN s2.alku and s2.loppu or (s2.tila = 1 and s2.alku <= tj.tarkastelu_pvm))
 			-- Vapautetut
-			LEFT JOIN Koski_SA.sa.sa_valpas_oppivelvollisuudesta_vapautetut v on v.oppija_oid = s1.oppija_oid and tj.tarkastelu_pvm >= v.vapautettu
+			LEFT JOIN Koski_SA.sa.sa_valpas_oppivelvollisuudesta_vapautetut v on v.oppija_oid = s1.oppija_oid and tj.tarkastelu_pvm <= v.vapautettu
 			-- Henkilötiedot
 			LEFT JOIN Koski_SA.sa.sa_koski_henkilo h on h.oppija_oid = s1.oppija_oid
 			LEFT JOIN dw.d_sukupuoli d1 on d1.sukupuoli_koodi = h.sukupuoli
