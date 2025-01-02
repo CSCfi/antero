@@ -1,7 +1,7 @@
 USE [ANTERO]
 GO
 
-/****** Object:  StoredProcedure [sa].[p_lataa_arvo_osaamisen_hankkimistavat_amis]    Script Date: 27.12.2024 15.44.23 ******/
+/****** Object:  StoredProcedure [sa].[p_lataa_arvo_osaamisen_hankkimistavat_amis]    Script Date: 2.1.2025 14.14.44 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -11,7 +11,8 @@ GO
 
 
 
-CREATE PROCEDURE  [sa].[p_lataa_arvo_osaamisen_hankkimistavat_amis] AS
+
+CREATE OR ALTER PROCEDURE  [sa].[p_lataa_arvo_osaamisen_hankkimistavat_amis] AS
 
 DECLARE @arguments nvarchar(max)
 DECLARE @query nvarchar(max)
