@@ -17,4 +17,3 @@ CREATE TABLE [sa].[sa_arvo_osaamisen_hankkimistavat_amis](
 	[vastaajatunnusid] [int] NOT NULL,
 	[osaamisen_hankkimistavat] [varchar](55) NOT NULL
 ) ON [PRIMARY]
-GO
