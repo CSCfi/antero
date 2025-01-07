@@ -1,7 +1,6 @@
 USE [ANTERO]
 GO
 
-/****** Object:  Table [sa].[sa_virta_otp_opintopistepvmamk_2023]    Script Date: 7.1.2025 14.07.49 ******/
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[sa_virta_otp_opintopistepvmyo_2023]') AND type in (N'U'))
 
 BEGIN
@@ -68,6 +67,4 @@ END
 
 GO
 
-
-
-
+USE [ANTERO]
