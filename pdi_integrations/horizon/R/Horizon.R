@@ -89,21 +89,21 @@ tdHE <- tempdir()
 download.file("https://cordis.europa.eu/data/cordis-HORIZONprojects-csv.zip",tfHE, mode = "wb", method = "libcurl")
 file.names <- unzip(tfHE, exdir = tdHE)
 
-ProjectsHE <- read.csv(file.names[which(unlist(gregexpr('project', file.names)) > 0)], header = TRUE, sep = ";", encoding="UTF-8", quote = "\"")
-OrgsHE <- read.csv(file.names[which(unlist(gregexpr('organization', file.names)) > 0)], header = TRUE, sep = ";", encoding="UTF-8", quote = "\"")
-LegalBasisHE <- read.csv(file.names[which(unlist(gregexpr('legalBasis', file.names)) > 0)], header = TRUE, sep = ";", encoding="UTF-8", quote = "\"")
+ProjectsHE <- read.csv(file.names[which(unlist(gregexpr('project', file.names)) > 0)], header = TRUE, sep = ";", encoding="UTF-8", quote = "\"", row.names = NULL)
+OrgsHE <- read.csv(file.names[which(unlist(gregexpr('organization', file.names)) > 0)], header = TRUE, sep = ";", encoding="UTF-8", quote = "\"", row.names = NULL)
+LegalBasisHE <- read.csv(file.names[which(unlist(gregexpr('legalBasis', file.names)) > 0)], header = TRUE, sep = ";", encoding="UTF-8", quote = "\"", row.names = NULL)
 
 tfHE2 <- tempfile()
 tdHE2 <- tempdir()
 download.file("https://cordis.europa.eu/data/reference/cordisref-HORIZONprogrammes-csv.zip",tfHE2, mode = "wb", method = "libcurl")
 file.names <- unzip(tfHE2, exdir = tdHE2)
-ProgsHE <- read.csv(file.names, header = TRUE, sep = ";", encoding="UTF-8", quote = "\"")
+ProgsHE <- read.csv(file.names, header = TRUE, sep = ";", encoding="UTF-8", quote = "\"", row.names = NULL)
 
 tfHE3 <- tempfile()
 tdHE3 <- tempdir()
 download.file("https://cordis.europa.eu/data/reference/cordisref-HORIZONtopics-csv.zip",tfHE3, mode = "wb", method = "libcurl")
 file.names <- unzip(tfHE3, exdir = tdHE3)
-TopicsHE <- read.csv(file.names, header = TRUE, sep = ";", encoding="UTF-8", quote = "\"")
+TopicsHE <- read.csv(file.names, header = TRUE, sep = ";", encoding="UTF-8", quote = "\"", row.names = NULL)
 
 #---------------------------#
 
@@ -122,6 +122,11 @@ Progs <- subset(Progs, language == 'en', select=names(Progs))
 Topics <- subset(Topics, language == 'en', select=names(Topics))
 fSchemes <- subset(fSchemes, Available.languages == 'en', select=names(fSchemes))
 
+if(ncol(ProjectsHE) > 20){
+  name_list <- names(ProjectsHE)[2:ncol(ProjectsHE)]
+  ProjectsHE <- ProjectsHE[,1:ncol(ProjectsHE)-1]
+  names(ProjectsHE) <- name_list
+}
 ProjectsHE <- merge(ProjectsHE, LegalBasisHE[,1:2], by.x = "id", by.y = "projectID")
 ProjectsHE$legalBasis <-  as.character(ProjectsHE$legalBasis.x)
 ProjectsHE$legalBasis[ProjectsHE$legalBasis == ""] <-  as.character(ProjectsHE$legalBasis.y[ProjectsHE$legalBasis == ""])
