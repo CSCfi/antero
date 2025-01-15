@@ -8,6 +8,9 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
+DROP TABLE[dbo].[sa_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta]
+GO
+
 CREATE TABLE [dbo].[sa_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta](
 	[tilv] [nvarchar](4) NULL,
 	[tilv_date] [date] NULL,
