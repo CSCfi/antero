@@ -27,8 +27,8 @@ BEGIN
 		,selite_sv
 		,selite_en
 		,jarjestys
-		,alkupvm
-		,loppupvm
+		--,alkupvm
+		--,loppupvm
 		,source
 		)
 	SELECT
@@ -38,8 +38,8 @@ BEGIN
 		nimi_sv,
 		nimi_en,
 		'9999',
-		'1900-01-01',
-		'9999-12-31',
+		--'1900-01-01',
+		--'9999-12-31',
 		source
 	  FROM sa.sa_koodistot
 	  WHERE koodisto='vipunenmeta'
@@ -58,8 +58,8 @@ BEGIN
 		selite_sv = s.nimi_sv,
 		selite_en = s.nimi_en,
 		jarjestys = '9999',
-		alkupvm = '1900-01-01',
-		loppupvm = '9999-12-31',
+		--alkupvm = '1900-01-01',
+		--loppupvm = '9999-12-31',
 		source = s.source
 	  FROM dw.d_osaamisala d
 	  join sa.sa_koodistot s on s.koodi=d.koodi
@@ -78,8 +78,8 @@ USING (
 		  ,selite_sv = min(epo.nimi_sv)
 		  ,selite_en = min(epo.nimi_en)
 		  ,jarjestys = '1'
-		  ,alkupvm = min(ep.voimassaoloalkaa)
-		  ,loppupvm = nullif(max(coalesce(ep.voimassaololoppuu,'9999-12-31')),'9999-12-31')
+		  --,alkupvm = min(ep.voimassaoloalkaa)
+		  --,loppupvm = nullif(max(coalesce(ep.voimassaololoppuu,'9999-12-31')),'9999-12-31')
           ,source = 'Koski_SA.sa.sa_eperusteet_osaamisalat'
 	  FROM [Koski_SA].[sa].[sa_eperusteet_osaamisalat] epo
 	  LEFT JOIN Koski_SA.sa.sa_eperusteet ep on ep.eperusteid=epo.eperusteid
@@ -96,8 +96,8 @@ WHEN MATCHED
 			,selite_sv = src.selite_sv
 			,selite_en = src.selite_en
 			,jarjestys = src.jarjestys
-			,alkupvm = src.alkupvm
-			,loppupvm = src.loppupvm
+			--,alkupvm = src.alkupvm
+			--,loppupvm = src.loppupvm
 			,target.source = src.source
 
 WHEN NOT MATCHED
@@ -108,8 +108,8 @@ WHEN NOT MATCHED
 			,selite_sv
 			,selite_en
 			,jarjestys
-			,alkupvm
-			,loppupvm
+			--,alkupvm
+			--,loppupvm
 			,source
 			)
 		VALUES (
@@ -118,8 +118,8 @@ WHEN NOT MATCHED
 			,src.selite_sv
 			,src.selite_en
 			,src.jarjestys
-			,src.alkupvm
-			,src.loppupvm
+			--,src.alkupvm
+			--,src.loppupvm
 			,src.source
 		);
 
