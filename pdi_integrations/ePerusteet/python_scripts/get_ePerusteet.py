@@ -6,7 +6,7 @@ import os
 from time import gmtime, strftime
 
 # Set URL
-url="https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/" #?sivu=14" #?tuleva=true&siirtyma=true&voimassaolo=true&poistunut=true&koulutustyyppi=koulutustyyppi_1&koulutustyyppi=koulutustyyppi_4&koulutustyyppi=koulutustyyppi_11&koulutustyyppi=koulutustyyppi_12&koulutustyyppi=koulutustyyppi_13&koulutustyyppi=koulutustyyppi_18&koulutustyyppi=koulutustyyppi_19&koulutustyyppi=koulutustyyppi_26"
+url="https://eperusteet.opintopolku.fi/eperusteet-service/api/external/perusteet/?tulevat=true&voimassa=true&poistuneet=true&siirtyma=true&sivukoko=1500" #?sivu=14" #?tuleva=true&siirtyma=true&voimassaolo=true&poistunut=true&koulutustyyppi=koulutustyyppi_1&koulutustyyppi=koulutustyyppi_4&koulutustyyppi=koulutustyyppi_11&koulutustyyppi=koulutustyyppi_12&koulutustyyppi=koulutustyyppi_13&koulutustyyppi=koulutustyyppi_18&koulutustyyppi=koulutustyyppi_19&koulutustyyppi=koulutustyyppi_26"
 reqheaders = {'Content-Type': 'application/json'}
 reqheaders['Accept'] = 'application/json'
 reqheaders['Caller-Id'] = '1.2.246.562.10.2013112012294919827487.vipunen'
@@ -117,6 +117,14 @@ while page < pages: ## While there are pages left
         id_key= keycheck("id", i)
         id_list.append(id_key) ##used later to get additional data in nested objects
         row = makerow_eperusteet()
+        url_id = "https://eperusteet.opintopolku.fi/eperusteet-service/api/perusteet/"+str(id_key)
+        try: 
+            response_id = requests.get(url_id, headers=reqheaders).json()
+            row["koulutusvienti"] = keycheck("koulutusvienti", response_id)
+            row["tila"] = keycheck("tila", response_id)
+        except:
+            continue     
+            
         row["diaarinumero"] = keycheck("diaarinumero", i)
         row["id"] = id_key
         row["koulutukset"] = keycheck("koulutukset", i)
@@ -128,7 +136,8 @@ while page < pages: ## While there are pages left
             row["tutkintokoodi"] = None
         
         row["koulutustyyppi"] = keycheck("koulutustyyppi", i)
-        row["koulutusvienti"] = keycheck("koulutusvienti", i)
+        
+
         row["luotu"] = keycheck("luotu", i)
         row["muokattu"] = keycheck("muokattu", i)
         #for nimi in i:
@@ -140,7 +149,6 @@ while page < pages: ## While there are pages left
         
         row["paatospvm"] = keycheck("paatospvm", i)
         row["siirtymaPaattyy"] = intcheck("siirtymaPaattyy", i)
-        row["tila"] = keycheck("tila", i)
         row["tyyppi"] = keycheck("tyyppi", i)
         row["voimassaoloAlkaa"] = intcheck("voimassaoloAlkaa", i)
         row["voimassaoloLoppuu"] = intcheck("voimassaoloLoppuu", i)
@@ -156,7 +164,8 @@ while page < pages: ## While there are pages left
             row_oa["versio"]= keycheck("versio", osaamisala)
             osaamisalat.append(row_oa)
     page += 1
-    response = requests.get(url + "?sivu=" + str(page),headers=reqheaders).json()
+    url_sivutus= url + "&sivu=" + str(page)
+    response = requests.get(url_sivutus,headers=reqheaders).json()
     
 
 # First loop to get ePErusteet values
