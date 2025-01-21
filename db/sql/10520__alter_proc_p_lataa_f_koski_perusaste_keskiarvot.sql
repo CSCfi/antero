@@ -63,7 +63,7 @@ OUTER APPLY (
 	and oo2.oppija_oid = oo.oppija_oid
 ) po
 WHERE ps.suorituksen_tyyppi in ('perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara', 'perusopetuksenlisaopetus', 'nuortenperusopetuksenoppiaineenoppimaara', 'perusopetuksenoppiaineenoppimaara')
-and ps.luokkaaste_koodiarvo is null
+and ps.luokkaaste_koodiarvo is null and ps.vahvistus_paiva is not null
 
 -- Faktataulun tyhjäys ja lataus
 TRUNCATE TABLE dw.f_koski_perusaste_keskiarvot
@@ -93,8 +93,8 @@ FROM (
 			ta.oppija_oid, 
 			YEAR(ta.tarkasteluajankohta) as vuosi,
 			pa.koulutusmoduuli_koodiarvo,
-			MAX(pa.arviointi_arvosana_koodiarvo) as 'arvosana',
-			MAX(CASE WHEN pa.koulutusmoduuli_koodiarvo not in ('MU', 'KS', 'LI', 'KO', 'KU') THEN pa.arviointi_arvosana_koodiarvo ELSE NULL END) as arvosana_lukuaine
+			MAX(cast(pa.arviointi_arvosana_koodiarvo as int)) as 'arvosana',
+			MAX(CASE WHEN pa.koulutusmoduuli_koodiarvo not in ('MU', 'KS', 'LI', 'KO', 'KU') THEN cast(pa.arviointi_arvosana_koodiarvo as int) ELSE NULL END) as arvosana_lukuaine
 		FROM [ANTERO].[dbo].[temp_lukio_opiskelijoiden_tarkasteluajankohdat] ta
 		LEFT JOIN ANTERO.dbo.temp_perusopetus_arvosanat pa on pa.oppija_oid = ta.oppija_oid and pa.vahvistus_paiva <= ta.tarkasteluajankohta
 		WHERE pa.koulutusmoduuli_pakollinen = 1
