@@ -48,11 +48,20 @@ SELECT
 		else os.koulutusmoduuli_koodisto
 	end as koulutusmoduuli_koodisto,
 	ps.vahvistus_paiva,
-	ps.suorituksen_tyyppi
+	ps.suorituksen_tyyppi,
+	po.perusopetus_suoritettu
 INTO ANTERO.dbo.temp_perusopetus_arvosanat
 FROM [Koski_SA].[sa].[sa_koski_opiskeluoikeus] oo 
 LEFT JOIN [Koski_SA].[sa].[sa_koski_paatason_suoritus] ps on ps.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
-LEFT JOIN [Koski_SA].[sa].[sa_koski_osasuoritus] os on os.paatason_suoritus_id = ps.paatason_suoritus_id 
+LEFT JOIN [Koski_SA].[sa].[sa_koski_osasuoritus] os on os.paatason_suoritus_id = ps.paatason_suoritus_id
+OUTER APPLY (
+	SELECT 
+		MIN(vahvistus_paiva) as perusopetus_suoritettu
+	FROM [Koski_SA].[sa].[sa_koski_opiskeluoikeus] oo2
+	LEFT JOIN [Koski_SA].[sa].[sa_koski_paatason_suoritus] ps2 on oo2.opiskeluoikeus_oid = ps2.opiskeluoikeus_oid
+	WHERE ps2.suorituksen_tyyppi in ('perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara')
+	and oo2.oppija_oid = oo.oppija_oid
+) po
 WHERE ps.suorituksen_tyyppi in ('perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara', 'perusopetuksenlisaopetus', 'nuortenperusopetuksenoppiaineenoppimaara', 'perusopetuksenoppiaineenoppimaara')
 
 -- Faktataulun tyhjäys ja lataus
@@ -91,6 +100,8 @@ FROM (
 			and pa.koulutusmoduuli_koodisto = 'koskioppiaineetyleissivistava' 
 			and pa.arviointi_arvosana_koodiarvo not in ('S', 'H', 'O') 
 			and pa.arviointi_arvosana_koodiarvo is not null 
+			-- Perusopetuksen oppimäärän on oltava suoritettu
+			and pa.perusopetus_suoritettu <= ta.tarkasteluajankohta
 		GROUP BY ta.oppija_oid, pa.koulutusmoduuli_koodiarvo, YEAR(ta.tarkasteluajankohta)
 	) f
 	GROUP BY f.oppija_oid, f.vuosi
