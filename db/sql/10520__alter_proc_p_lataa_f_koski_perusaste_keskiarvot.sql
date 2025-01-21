@@ -63,6 +63,7 @@ OUTER APPLY (
 	and oo2.oppija_oid = oo.oppija_oid
 ) po
 WHERE ps.suorituksen_tyyppi in ('perusopetuksenoppimaara', 'aikuistenperusopetuksenoppimaara', 'perusopetuksenlisaopetus', 'nuortenperusopetuksenoppiaineenoppimaara', 'perusopetuksenoppiaineenoppimaara')
+and ps.luokkaaste_koodiarvo is null
 
 -- Faktataulun tyhjäys ja lataus
 TRUNCATE TABLE dw.f_koski_perusaste_keskiarvot
