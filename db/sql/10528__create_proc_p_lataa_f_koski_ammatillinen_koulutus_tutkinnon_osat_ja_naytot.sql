@@ -28,7 +28,7 @@ CREATE OR ALTER PROCEDURE [dw].[p_lataa_f_koski_ammatillinen_koulutus_tutkinnon_
 DECLARE @alkuVuosi int
 DECLARE @loppuVuosi int
 
-SET @alkuVuosi = '2018-01-01'
+SET @alkuVuosi = 2018
 SET @loppuVuosi = YEAR(eomonth(dateadd(month, -1, getdate())))
 
 -- Temp-taulujen pudotus
