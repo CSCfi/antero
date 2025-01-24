@@ -10,7 +10,7 @@ GO
 
 
 
-ALTER PROCEDURE [dw].[p_lataa_d_osaamisala_koodisto] AS
+CREATE OR ALTER PROCEDURE [dw].[p_lataa_d_osaamisala_koodisto] AS
 
 IF (
 		SELECT count(1)
