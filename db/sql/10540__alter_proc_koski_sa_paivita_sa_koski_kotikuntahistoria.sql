@@ -46,6 +46,21 @@ OUTER APPLY (
 ) kkh2
 where kkh.muutto_pvm is null and kkh.poismuutto_pvm = kkh2.poismuutto_pvm;
 
+-- Jos muuttopäivä on null, muuttopäiväksi asetetaan edellistä poismuuttopäivää seuraava päivä
+
+UPDATE kkh
+SET 
+	kkh.muutto_pvm = kkh2.muutto_pvm
+from sa.sa_koski_kotikuntahistoria kkh 
+LEFT JOIN (
+	select
+		poismuutto_pvm,
+		master_oid,
+		DATEADD(day,1, LAG(poismuutto_pvm) OVER( PARTITION BY master_oid ORDER BY poismuutto_pvm)) muutto_pvm
+	from sa.sa_koski_kotikuntahistoria kkh 
+) kkh2 on kkh2.master_oid = kkh.master_oid and kkh.poismuutto_pvm = kkh2.poismuutto_pvm
+WHERE kkh.muutto_pvm is null
+
 -- Generoidaan syntymäpäivän ja ensimmäisen muuttopäivän kotikunta
 
 INSERT INTO Koski_SA.sa.sa_koski_kotikuntahistoria
