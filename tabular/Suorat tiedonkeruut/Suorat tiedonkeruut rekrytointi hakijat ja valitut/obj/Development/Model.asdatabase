@@ -2961,35 +2961,13 @@
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
-            "name": "Tohtorintutkinto suoritettu ulkomailla",
-            "expression": [
-              "",
-              "CALCULATE([Uudet työntekijät], Muuttujat[tohtori_ulk_yo] = 1)",
-              ""
-            ],
-            "formatString": "#,0"
-          },
-          {
-            "name": "Tohtorintutkinto suoritettu ulkomailla (%)",
-            "expression": [
-              "",
-              "var osa = [Tohtorintutkinto suoritettu ulkomailla]",
-              "var kaikki = [Uudet työntekijät]",
-              "return IF(osa = BLANK(), BLANK(),",
-              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
-              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
-              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
-              "osa / kaikki)))"
-            ],
-            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
-          },
-          {
             "name": "Tohtorintutkinto - Tieto puuttuu",
             "expression": [
               "",
               "",
               "var lkm = [Uudet työntekijät_s] - ([Tohtorintutkinto muussa suomalaisessa yliopistossa_s] + [Tohtorintutkinto samassa yliopistossa_s] + [Tohtorintutkinto suoritettu ulkomailla_s])",
-              "return IF(AND(lkm < 5, lkm > 0), \"1-4\", MROUND(lkm,3))",
+              "",
+              "return IF(AND(lkm < 5, lkm > 0), \"1-4\", IF(lkm <= 0, BLANK(), MROUND(lkm,3)))",
               ""
             ],
             "formatString": "#,0"
@@ -3601,24 +3579,6 @@
             "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           },
           {
-            "name": "Tohtorintutkinto suoritettu ulkomailla_s",
-            "expression": [
-              "",
-              "CALCULATE([Uudet työntekijät_s], Muuttujat[tohtori_ulk_yo] = 1)",
-              ""
-            ],
-            "formatString": "#,0"
-          },
-          {
-            "name": "Tohtorintutkinto suoritettu ulkomailla (%)_s",
-            "expression": [
-              "",
-              "DIVIDE([Tohtorintutkinto suoritettu ulkomailla_s], [Uudet työntekijät_s], BLANK())",
-              ""
-            ],
-            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
-          },
-          {
             "name": "Tohtorintutkinto - Tieto puuttuu_s",
             "expression": [
               "",
@@ -4015,6 +3975,47 @@
               ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Tohtorintutkinto suoritettu ulkomailla",
+            "expression": [
+              "",
+              "CALCULATE([Uudet työntekijät], Muuttujat[tohtori_ulk_yo] = 1)",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tohtorintutkinto suoritettu ulkomailla (%)",
+            "expression": [
+              "",
+              "var osa = [Tohtorintutkinto suoritettu ulkomailla]",
+              "var kaikki = [Uudet työntekijät]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
+          },
+          {
+            "name": "Tohtorintutkinto suoritettu ulkomailla_s",
+            "expression": [
+              "",
+              "CALCULATE([Uudet työntekijät_s], Muuttujat[tohtori_ulk_yo] = 1)",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tohtorintutkinto suoritettu ulkomailla (%)_s",
+            "expression": [
+              "",
+              "DIVIDE([Tohtorintutkinto suoritettu ulkomailla_s], [Uudet työntekijät_s], BLANK())",
+              ""
+            ],
+            "formatString": "#,0.0 %;-#,0.0 %;#,0.0 %"
           }
         ],
         "annotations": [
@@ -6251,12 +6252,6 @@
                 "name": "Tohtorintutkinto samassa yliopistossa (%)"
               },
               {
-                "name": "Tohtorintutkinto suoritettu ulkomailla"
-              },
-              {
-                "name": "Tohtorintutkinto suoritettu ulkomailla (%)"
-              },
-              {
                 "name": "Uudet työntekijät"
               },
               {
@@ -6282,6 +6277,12 @@
               },
               {
                 "name": "Ei ylempää korkeakoulututkintoa suomalaisessa korkeakoulussa (%)"
+              },
+              {
+                "name": "Tohtorintutkinto suoritettu ulkomailla"
+              },
+              {
+                "name": "Tohtorintutkinto suoritettu ulkomailla (%)"
               }
             ]
           }
