@@ -192,6 +192,8 @@ WHERE oo.koulutusmuoto = 'ammatillinenkoulutus'
 /* 1. FAKTALATAUS */
 --------------------
 
+TRUNCATE TABLE ANTERO.dw.f_koski_ammatillisen_koulutuksen_arvosanat
+
 INSERT INTO ANTERO.dw.f_koski_ammatillisen_koulutuksen_arvosanat
 SELECT DISTINCT
 	YEAR(ps.vahvistus_paiva) as koulutuksen_paattymisvuosi,
