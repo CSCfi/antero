@@ -31,6 +31,14 @@ if(require("dplyr") == FALSE){
   install.packages("dplyr", repos = "http://cran.us.r-project.org")
   library("dplyr")
 }
+if(require("data.table") == FALSE){
+  install.packages("data.table", repos = "http://cran.us.r-project.org")
+  library("data.table")
+}
+if(require("splitstackshape") == FALSE){
+  install.packages("splitstackshape", repos = "http://cran.us.r-project.org")
+  library("splitstackshape")
+}
 
 # Set max timeout time
 
@@ -52,9 +60,6 @@ file.names <- unzip(tf3, exdir = td3)
 Projects = read.csv(file.names[which(unlist(gregexpr('project.csv', file.names)) > 0)], header = TRUE, sep = ";", encoding="UTF-8", quote = "\"")
 names(Projects)[19] <- "projectRcn"
 
-
-
-
 # Organisations and EC contribution
 
 Orgs = read.csv(file.names[which(unlist(gregexpr('organization', file.names)) > 0)], header = TRUE, sep = ";", encoding="UTF-8", quote = "\"")
@@ -71,8 +76,8 @@ tf <- tempfile()
 td <- tempdir()
 download.file("https://cordis.europa.eu/data/reference/cordisref-H2020programmes-csv.zip",tf, mode = "wb", method = "libcurl")
 file.names <- unzip(tf, exdir = td)
-Progs <- read.csv(file.names, header = TRUE, sep = ";", encoding="UTF-8", quote = "\"")
-
+Progs_raw <- readLines(file.names)
+ 
 # topics
 tf2 <- tempfile()
 td2 <- tempdir()
@@ -111,6 +116,13 @@ TopicsHE <- read.csv(file.names, header = TRUE, sep = ";", encoding="UTF-8", quo
 
 #---------------------------#
 
+Progs <- as.data.frame(Progs_raw)
+Progs$Progs_raw <- gsub('"', "", Progs$Progs_raw)
+Progs <- cSplit(Progs, "Progs_raw", sep = ";", direction = "wide")
+Progs <- Progs[,1:7]
+colnames(Progs) <- as.character(Progs[1, ]) 
+Progs <- Progs[-1, ] 
+
 Projects <- Projects[Projects$projectRcn != "",]
 Projects$contentUpdateDate[is.na(as.integer(Projects$projectRcn))] <- NA
 Projects$grantDoi[is.na(as.integer(Projects$projectRcn))] <- NA
@@ -145,7 +157,7 @@ OrgsHE$ecContribution <- as.double(OrgsHE$ecContribution)
 OrgsHE$netEcContribution <- as.double(OrgsHE$netEcContribution)
 OrgsHE$activityType <- substr(OrgsHE$activityType,1,3)
 Orgs$activityType <- substr(Orgs$activityType,1,3)
-Progs$rcn <- as.integer(Progs$rcn)
+ProgsHE <- ProgsHE[,1:7]
 
 # Horizon 2020 and Horizon Europe data is combined 
 
