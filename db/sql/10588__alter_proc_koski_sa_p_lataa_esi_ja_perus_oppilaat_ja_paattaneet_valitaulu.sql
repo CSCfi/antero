@@ -12,10 +12,10 @@ GO
 
 ALTER PROCEDURE [dbo].[p_lataa_esi_ja_perus_oppilaat_ja_paattaneet_valitaulu] AS
 
--- Tutkintopoiminnassa osin eri logiikka kuin oppilaissa; ks. tarvittaessa vuosiluokka, ranki sekä huom-kohdat.
+-- Tutkintopoiminnassa osin eri logiikka kuin oppilaissa; ks. tarvittaessa vuosiluokka, rnk sekä huom-kohdat.
 -- Lisää tarvittaessa koulutuksia vuosiluokkapäättelyyn ja -dimensioon.
 -- Osa tiedoista raportoidaan oppilaille vain kuluvalta lukuvuodelta; rajaukset alustetaan faktalatauksessa ja toteutetaan näkymässä.
--- Jäädytyksen jälkeen arch-palvelimella ladataan vain 1.10.vvvv-1 - 30.9.vvvv.
+-- Jäädytyksen jälkeen arch-palvelimella ladataan vain 1.8.vvvv-1 - 30.9.vvvv.
 
 DECLARE @alkuPvm as date, @loppuPvm as date, @tilastoPvm as date, @endOfLoop as date, @palvelinNimi as varchar(14)
 
@@ -23,7 +23,7 @@ SET @palvelinNimi = @@servername
 
 IF @palvelinNimi like '%arch%'
 BEGIN
-	SET @alkuPvm = DATEFROMPARTS(right(db_name(),4)-1, 8, 1) --Jatkossa limittäiset jäädytykset, luokalle jääneiden ja 20.9. raporttien erottelu livekannan sa-näkymässä. JS 19.2.2025
+	SET @alkuPvm = DATEFROMPARTS(right(db_name(),4)-1, 8, 1)
 	SET @loppuPvm = EOMONTH(@alkuPvm)
 	SET @tilastoPvm = DATEFROMPARTS(YEAR(@alkuPvm), 9, 20)
 	SET @endOfLoop = DATEFROMPARTS(right(db_name(),4), 9, 30)
@@ -337,9 +337,10 @@ BEGIN
 			kuukausi = month(@alkuPvm),
 			epo.oo_alkamispaiva,
 
+			--huom.
 			paatason_suoritus_id = coalesce(oa.paatason_suoritus_id, epo.paatason_suoritus_id),
 			oa.jaa_luokalle,
-			vuosiluokka_tai_koulutus = coalesce(nullif(epo.vuosiluokka_tai_koulutus, '201101'), oa.vuosiluokka, 'x'), --huom
+			vuosiluokka_tai_koulutus = coalesce(nullif(epo.vuosiluokka_tai_koulutus, '201101'), oa.vuosiluokka, 'x'),
 			epo.suorituksen_tyyppi,
 			epo.suoritustapa_koodi,
 			vahvistus_paiva = coalesce(oa.vahvistus_paiva_muokattu, epo.vahvistus_paiva),
@@ -347,6 +348,7 @@ BEGIN
 			muu_suorituskieli = coalesce(oa.muu_suorituskieli, epo.muu_suorituskieli), 
 			kielikylpykieli = coalesce(oa.kielikylpykieli, epo.kielikylpykieli),
 			toimipiste_oid = coalesce(oa.toimipiste_oid, epo.toimipiste_oid),
+			--
 
 			epo.oppilaitos_oid,
 			epo.koulutustoimija_oid,
