@@ -761,7 +761,7 @@ SELECT
 			END
 		ELSE NULL
 	END as 'jarjestys_kysymys_rahoitusmalli'
-FROM [ANTERO].dw.f_arvo_yo_uraseuranta_2018_testi f
+FROM [ANTERO].dw.f_arvo_yo_uraseuranta_2018 f
 LEFT JOIN ANTERO.dw.d_arvokysymys d1 on d1.id = f.d_arvokysymys_id 
 LEFT JOIN ANTERO.dw.d_ika d2 on d2.id = f.d_ika_id
 LEFT JOIN ANTERO.dw.d_sukupuoli d3 on d3.id = f.d_sukupuoli_id
