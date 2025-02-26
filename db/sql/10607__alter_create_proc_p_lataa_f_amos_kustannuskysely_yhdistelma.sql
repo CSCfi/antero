@@ -1,11 +1,7 @@
 USE [ANTERO]
 GO
 
-/****** Object:  StoredProcedure [dw].[p_lataa_f_amos_kustannuskysely_yhdistelma]    Script Date: 26.2.2025 10.55.53 ******/
-DROP PROCEDURE [dw].[p_lataa_f_amos_kustannuskysely_yhdistelma]
-GO
-
-/****** Object:  StoredProcedure [dw].[p_lataa_f_amos_kustannuskysely_yhdistelma]    Script Date: 26.2.2025 10.55.53 ******/
+/****** Object:  StoredProcedure [dw].[p_lataa_f_amos_kustannuskysely_yhdistelma]    Script Date: 26.2.2025 14.40.23 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -27,9 +23,7 @@ GO
 
 
 
-
-
-CREATE PROCEDURE [dw].[p_lataa_f_amos_kustannuskysely_yhdistelma] AS
+CREATE OR ALTER PROCEDURE [dw].[p_lataa_f_amos_kustannuskysely_yhdistelma] AS
 
 /*
 Tämä proseduuri lataa faktataulun f_amos_kustannuskysely_yhdistelma kuutiota "Amos kustannuskysely yhdistelmä" ja raporttia "Ammatillisen koulutuksen kustannuskysely - kustannukset ja rahoitus" varten.
