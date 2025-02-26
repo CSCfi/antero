@@ -1,11 +1,7 @@
 USE [ANTERO]
 GO
 
-/****** Object:  View [dw].[v_amos_kustannuskysely_yhdistelma]    Script Date: 26.2.2025 13.52.58 ******/
-DROP VIEW [dw].[v_amos_kustannuskysely_yhdistelma]
-GO
-
-/****** Object:  View [dw].[v_amos_kustannuskysely_yhdistelma]    Script Date: 26.2.2025 13.52.58 ******/
+/****** Object:  View [dw].[v_amos_kustannuskysely_yhdistelma]    Script Date: 26.2.2025 14.53.57 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -23,7 +19,8 @@ GO
 
 
 
-CREATE VIEW [dw].[v_amos_kustannuskysely_yhdistelma] AS
+
+CREATE OR ALTER VIEW [dw].[v_amos_kustannuskysely_yhdistelma] AS
 
 /*
 Näkymä kuutiolle Amos kustannuskysely yhdistelmä ja raportille Ammatillisen koulutuksen kustannuskysely - kustannukset ja rahoitus. 
