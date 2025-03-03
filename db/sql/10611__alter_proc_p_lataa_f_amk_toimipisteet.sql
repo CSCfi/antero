@@ -30,7 +30,7 @@ SELECT s2.id
 	,'etl: p_lataa_f_amk_toimipisteet'
 	,suser_sname()
 FROM [sa].[sa_suorat_amk4_toimipisteet_fakta] s1
-JOIN [dw].[d_amk] s2 ON s1.korkeakoulu_tunnus = s2.amk_nykyinen_tunnus
+JOIN [dw].[d_organisaatioluokitus] s2 ON s1.korkeakoulu_tunnus = s2.organisaatio_koodi
 JOIN [dw].[d_amk_toimipisteen_toimipaikka] s3 ON s1.korkeakoulu_tunnus = s3.koodi_amk
 	AND s1.toimipiste_koodi = s3.koodi_toimipiste
 	AND s1.toimipaikka_koodi = s3.koodi_toimipaikka
