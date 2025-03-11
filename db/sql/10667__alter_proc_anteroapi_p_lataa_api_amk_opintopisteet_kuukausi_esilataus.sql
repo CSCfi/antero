@@ -142,7 +142,7 @@ BEGIN
 		LEFT JOIN ANTERO.dw.d_ohjauksenala d1 ON d1.ohjauksenala_koodi = coalesce(sa.ohjauksenala,-1)
 		LEFT JOIN ANTERO.dw.d_amk_koulutustyyppi d2 ON d2.koodi = coalesce(sa.koulutustyyppi, -1)
 		LEFT JOIN ANTERO.dw.d_organisaatioluokitus d3 ON d3.organisaatio_koodi = sa.oppilaitostunnus
-		ORDER BY sa.tilastovuosi, sa.kuukausi, d3.amk_tunnus, d1.ohjauksenala_koodi, d2.selite_fi'
+		ORDER BY sa.tilastovuosi, sa.kuukausi, d3.organisaatio_koodi, d1.ohjauksenala_koodi, d2.selite_fi'
 
 		EXEC (@sql)
 

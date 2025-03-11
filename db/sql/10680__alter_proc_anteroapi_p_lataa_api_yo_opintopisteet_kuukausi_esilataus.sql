@@ -128,7 +128,7 @@ BEGIN
 		FROM ' + @taulu + ' as sa
 		LEFT JOIN ANTERO.dw.d_ohjauksenala d1 ON d1.ohjauksenala_koodi = coalesce(sa.ohjauksenala,-1)
 		LEFT JOIN ANTERO.dw.d_organisaatioluokitus d3 ON d3.organisaatio_koodi = sa.oppilaitostunnus
-		ORDER BY sa.tilastovuosi, sa.kuukausi, d3.yo_tunnus, d1.ohjauksenala_koodi'
+		ORDER BY sa.tilastovuosi, sa.kuukausi, d3.organisaatio_koodi, d1.ohjauksenala_koodi'
 
 		EXEC (@sql)
 
