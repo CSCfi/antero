@@ -57,7 +57,9 @@ tf3 <- tempfile()
 td3 <- tempdir()
 download.file("https://cordis.europa.eu/data/cordis-h2020projects-csv.zip",tf3, mode = "wb", method = "libcurl")
 file.names <- unzip(tf3, exdir = td3)
-Projects = read.csv(file.names[which(unlist(gregexpr('project.csv', file.names)) > 0)], header = TRUE, sep = ";", encoding="UTF-8", quote = "\"")
+Projects <- read.csv(file.names[which(unlist(gregexpr('project.csv', file.names)) > 0)],header = FALSE, sep = ";", encoding = "UTF-8", quote = "\"")
+names(Projects)[1:20] <- Projects[1,1:20]
+Projects <- Projects[2:nrow(Projects),]
 names(Projects)[19] <- "projectRcn"
 
 # Organisations and EC contribution
@@ -127,6 +129,7 @@ Projects <- Projects[Projects$projectRcn != "",]
 Projects$contentUpdateDate[is.na(as.integer(Projects$projectRcn))] <- NA
 Projects$grantDoi[is.na(as.integer(Projects$projectRcn))] <- NA
 Projects$projectRcn[is.na(as.integer(Projects$projectRcn))] <- NA
+Projects <- Projects[,1:20]
 
 Country <- subset(Country, language == 'en', select=names(Country))
 oTypes <- subset(oTypes, language == 'en', select=names(oTypes))
