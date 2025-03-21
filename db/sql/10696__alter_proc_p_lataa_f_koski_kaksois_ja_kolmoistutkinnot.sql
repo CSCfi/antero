@@ -1,12 +1,13 @@
 USE [ANTERO]
 GO
 
-/****** Object:  StoredProcedure [dw].[p_lataa_f_koski_kaksois_ja_kolmoistutkinnot]    Script Date: 20.3.2025 11.01.01 ******/
+/****** Object:  StoredProcedure [dw].[p_lataa_f_koski_kaksois_ja_kolmoistutkinnot]    Script Date: 21.3.2025 9.21.58 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 ALTER PROCEDURE [dw].[p_lataa_f_koski_kaksois_ja_kolmoistutkinnot]
 AS
@@ -25,7 +26,15 @@ DROP TABLE IF EXISTS [Koski_SA].[sa].[temp_koski_ammatillinen_tutkinnot_kaikki]
 DROP TABLE IF EXISTS [Koski_SA].[sa].[temp_koski_lukio_oppimaarat_kaikki]
 DROP TABLE IF EXISTS [Koski_SA].[sa].[temp_koski_yo_tutkinnot_kaikki]
 
-SELECT os.*, oo.oppija_oid, CASE WHEN os.koulutusmoduuli_koodisto = 'moduulikoodistolops2021' THEN 1 ELSE 2 END as koulutusmoduuli_koodisto_rnk
+SELECT 
+	os.osasuoritus_id, 
+	os.arviointi_paiva, 
+	-- Huomioidaan laajuuden laskennassa kaikki paikalliset syventävät ja soveltavat kurssit
+	CASE WHEN os.koulutusmoduuli_koodiarvo in ('PSY','PSO') THEN cast(os.osasuoritus_id as varchar) ELSE os.koulutusmoduuli_koodiarvo END as koulutusmoduuli_koodiarvo, 
+	os.koulutusmoduuli_laajuus_arvo, 
+	os.koulutusmoduuli_laajuus_yksikko, 
+	oo.oppija_oid, 
+	CASE WHEN os.koulutusmoduuli_koodisto = 'moduulikoodistolops2021' THEN 1 ELSE 2 END as koulutusmoduuli_koodisto_rnk
 INTO [Koski_SA].[sa].[temp_lukio_kurssit]
 FROM [Koski_SA].[sa].[sa_koski_osasuoritus] os
 LEFT JOIN Koski_SA.sa.sa_koski_opiskeluoikeus oo on os.opiskeluoikeus_oid = oo.opiskeluoikeus_oid
@@ -128,7 +137,7 @@ BEGIN
 				-- Priorisoidaan moduulit kurssien edelle
 				rnk =
 					RANK() OVER (
-							PARTITION BY oppija_oid, koulutusmoduuli_koodiarvo 
+							PARTITION BY oppija_oid, koulutusmoduuli_koodiarvo
 							ORDER BY os.koulutusmoduuli_koodisto_rnk, os.arviointi_paiva DESC, os.osasuoritus_id
 					),
 				-- Laajuus opintopisteinä: 1 kurssi = 2 opintopistettä
@@ -306,5 +315,6 @@ DROP TABLE IF EXISTS [Koski_SA].[sa].[temp_koski_lukio_oppimaarat_kaikki]
 DROP TABLE IF EXISTS [Koski_SA].[sa].[temp_koski_yo_tutkinnot_kaikki]
 
 GO
+
 
 USE [ANTERO]
