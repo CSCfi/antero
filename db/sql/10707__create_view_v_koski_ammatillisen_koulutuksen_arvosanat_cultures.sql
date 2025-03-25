@@ -8,7 +8,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-DROP IF EXISTS [dw].[v_koski_ammatillisen_koulutuksen_arvosanat] 
+DROP VIEW IF EXISTS [dw].[v_koski_ammatillisen_koulutuksen_arvosanat] 
 
 GO
 
