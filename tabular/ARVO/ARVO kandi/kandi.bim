@@ -1420,6 +1420,69 @@
             "name": "Rahoitusmallipisteet",
             "expression": " [Pisteet]",
             "formatString": "#,0"
+          },
+          {
+            "name": "Keskiarvo vähintään 4",
+            "expression": [
+              "",
+              "",
+              "var taulu = SUMMARIZE(Muuttujat, Muuttujat[vastaajaid], \"ka\", AVERAGE(Muuttujat[numerovalinta]))",
+              "",
+              "",
+              "var lkm = COUNTROWS(FILTER(taulu, [ka] >= 4))",
+              "var osa =  IF(AND(lkm < 5, lkm > 0), \"1-4\", MROUND(lkm,3))",
+              "",
+              "var kaikki = [Vastaajamäärä]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
+              ""
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Keskiarvo vähintään 3",
+            "expression": [
+              "",
+              "",
+              "var taulu = SUMMARIZE(Muuttujat, Muuttujat[vastaajaid], \"ka\", AVERAGE(Muuttujat[numerovalinta]))",
+              "",
+              "",
+              "var lkm = COUNTROWS(FILTER(taulu, [ka] >= 3))",
+              "var osa =  IF(AND(lkm < 5, lkm > 0), \"1-4\", MROUND(lkm,3))",
+              "",
+              "var kaikki = [Vastaajamäärä]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
+              ""
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "Keskiarvo vähintään 2",
+            "expression": [
+              "",
+              "",
+              "var taulu = SUMMARIZE(Muuttujat, Muuttujat[vastaajaid], \"ka\", AVERAGE(Muuttujat[numerovalinta]))",
+              "",
+              "",
+              "var lkm = COUNTROWS(FILTER(taulu, [ka] >= 2))",
+              "var osa =  IF(AND(lkm < 5, lkm > 0), \"1-4\", MROUND(lkm,3))",
+              "",
+              "var kaikki = [Vastaajamäärä]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
+              ""
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
           }
         ],
         "annotations": [
@@ -4167,6 +4230,63 @@
             "measures": [
               {
                 "name": "Rahoitusmallipisteet"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Keskiarvo",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Koodit Koulutusnimike"
+              },
+              {
+                "name": "Koodit Organisaatio"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusnimike"
+              },
+              {
+                "name": "Kyselyvuosi"
+              },
+              {
+                "name": "Kysymys (rahoitusmalli)"
+              },
+              {
+                "name": "OKM ohjauksen ala"
+              },
+              {
+                "name": "Organisaatio"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Ikäryhmä"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Keskiarvo vähintään 2"
+              },
+              {
+                "name": "Keskiarvo vähintään 3"
+              },
+              {
+                "name": "Keskiarvo vähintään 4"
               }
             ]
           }
