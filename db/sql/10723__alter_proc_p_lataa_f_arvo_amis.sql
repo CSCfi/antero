@@ -276,7 +276,7 @@ SELECT DISTINCT
 	f.d_arvovastaus_taustakysymys_arvio_tilanteesta_id,
 	'ETL: p_lataa_f_arvo_amis' as source
 FROM dw.f_arvo_amis AS f
-WHERE f.vastaajaid is null
+WHERE f.vastaajaid is not null
 
 
 ALTER TABLE [dw].[f_arvo_amis] ADD  CONSTRAINT [PK__f_arvo_amis] PRIMARY KEY CLUSTERED
