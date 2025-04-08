@@ -19,7 +19,7 @@ SET @loppuVuosi = YEAR(GETDATE())
 TRUNCATE TABLE ANTERO.dw.f_indikaattorit_kk_4v
 
 -- Julkaistaan vuodesta 2026 alkaen uusi nelivuotiskausi vasta huhtikuun puolessa välissä
-WHILE @alkuVuosi + 3 < @loppuVuosi AND (@loppuVuosi < 2026 OR GETDATE() >= DATEFROMPARTS(@loppuVuosi, 4, 15))
+WHILE @alkuVuosi + 3 < @loppuVuosi AND (@loppuVuosi < 2026 OR GETDATE() >= DATEFROMPARTS(@alkuVuosi + 4, 4, 15))
 BEGIN
 
 	INSERT INTO ANTERO.dw.f_indikaattorit_kk_4v
