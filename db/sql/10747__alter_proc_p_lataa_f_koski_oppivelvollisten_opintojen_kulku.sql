@@ -1,7 +1,7 @@
 USE [ANTERO]
 GO
 
-/****** Object:  StoredProcedure [dw].[p_lataa_f_koski_oppivelvollisten_opintojen_kulku]    Script Date: 15.4.2025 12.53.07 ******/
+/******  Object:  StoredProcedure [dw].[p_lataa_f_koski_oppivelvollisten_opintojen_kulku]    Script Date: 15.4.2025 12.53.07 ******/
 SET ANSI_NULLS ON
 GO
 
