@@ -133,13 +133,13 @@ def get_reports(language):
                     if "/" + lang + "/" + folder + "/" in href:
                         start = href.find("/" + lang + "/" + folder + "/")
                         end = href.find(".xlsb") + len(".xlsb")
-                        clean_href = href[start:end].split(folder + "/")[-1]
+                        clean_href = href[start:end].split(folder + "/")[-1].replace("%20", " ").replace("%C3%A4", "ä").replace("%C3%B6", "ö").replace("%28", "(").replace("%29", ")")
                         text = a.text.strip()
                 
                     elif "&file=" in href:
                         start = href.find("&file=") + len("&file=")
                         end = href.find(".xlsb") + len(".xlsb")
-                        clean_href = href[start:end].split("&file=")[-1]
+                        clean_href = href[start:end].split("&file=")[-1].replace("%20", " ").replace("%C3%A4", "ä").replace("%C3%B6", "ö").replace("%28", "(").replace("%29", ")")
                         text = a.text.strip()
                 
                     else:
@@ -168,13 +168,13 @@ def get_reports(language):
                     if "/" + lang + "/" + folder + "/" in href:
                         start = href.find("/" + lang + "/" + folder + "/")
                         end = href.find(".xlsb") + len(".xlsb")
-                        clean_href = href[start:end].split(folder + "/")[-1]
+                        clean_href = href[start:end].split(folder + "/")[-1].replace("%20", " ").replace("%C3%A4", "ä").replace("%C3%B6", "ö").replace("%28", "(").replace("%29", ")")
                         text = a.text.strip()
         
                     elif "&file=" in href:
                         start = href.find("&file=") + len("&file=")
                         end = href.find(".xlsb") + len(".xlsb")
-                        clean_href = href[start:end].split("&file=")[-1]
+                        clean_href = href[start:end].split("&file=")[-1].replace("%20", " ").replace("%C3%A4", "ä").replace("%C3%B6", "ö").replace("%28", "(").replace("%29", ")")
                         text = a.text.strip()
                     else:
                         continue
