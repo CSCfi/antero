@@ -32,7 +32,7 @@ SELECT
     ,[etamaa]=[etamaa]
     ,[tutkinnon_suoritusvuosi]=[suorv]
     ,[tutkinnon_suoritusmaakunta]=[suormaak]
-	,[koulutuksen_opetuskieli] = [kkieli]
+	--,[koulutuksen_opetuskieli] = [kkieli]
     ,[koulutusluokitus] = CAST(
 		(case
 			when [koulk] = '999999' then 'SA9999'
@@ -73,10 +73,10 @@ SELECT
 			when nullif(opiskkoulk,'') != '999999' and opiskkoulk != koulk then '0'
 		end
 	,[tutkintoon_johtavassa_koulutuksessa] = tutkjoht
-	,[kk_ensim_koulutusaste] = kk_haku_kaste
-	,[kk_ensim_hakuvuosi] = kk_haku_vuosi
-	,[ta_ensim_koulutusaste] = ta_haku_kaste
-	,[ta_ensim_hakuvuosi] = ta_haku_vuosi
+	--,[kk_ensim_koulutusaste] = kk_haku_kaste
+	--,[kk_ensim_hakuvuosi] = kk_haku_vuosi
+	--,[ta_ensim_koulutusaste] = ta_haku_kaste
+	--,[ta_ensim_hakuvuosi] = ta_haku_vuosi
 	,[tutkinto_suoritettu_ulkomailla] = ulkom
     ,[lukumaara]=[lkm]
     ,[tietolahde]=[tietolahde]
