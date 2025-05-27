@@ -2850,6 +2850,14 @@
               " ",
               "IF([Koulutusaste, taso 2] = \"Alempi korkeakoulututkinto\", 1, IF([Koodit Koulutusnimike] in {\"772101\", \"772201\"}, 1, 0))"
             ]
+          },
+          {
+            "type": "calculated",
+            "name": "op_yhteensa",
+            "dataType": "double",
+            "isDataTypeInferred": true,
+            "isHidden": true,
+            "expression": " DIVIDE(Muuttujat[op_amk_yhteensa] + Muuttujat[op_yo_yhteensa], Muuttujat[Tutk2], BLANK())"
           }
         ],
         "partitions": [
@@ -4609,6 +4617,130 @@
           {
             "name": "Ammattikorkeakouluissa suoritetut opintopisteet, yliop._s",
             "expression": "IF([kytkin] = 0, BLANK(), CALCULATE(SUM([op_yo_ammattikorkeakouluissa]), FILTER('Muuttujat', [Kirjoihintulovuosi] <> [Tilastovuosi]), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"73\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"81\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"82\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"91\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"61\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"71\"), FILTER('Muuttujat', [Koodit Koulutusaste taso 2] <> \"51\")))"
+          },
+          {
+            "name": "Tutkintojen opintopisteiden mediaani",
+            "expression": [
+              " ",
+              " var __nbrows=calculate(sum('Muuttujat'[Tutk2]), Muuttujat[op_yhteensa] > 0)",
+              " var __isod=if(__nbrows/2>int(__nbrows/2),1,0)",
+              " var __n=if(__nbrows/2>int(__nbrows/2),int(__nbrows/2)+1,int(__nbrows/2))",
+              " var __list= CALCULATETABLE(ADDCOLUMNS(",
+              "                   SUMMARIZE('Muuttujat','Muuttujat'[op_yhteensa]),",
+              "                                           \"cml\",calculate(sum('Muuttujat'[Tutk2]),",
+              "                                           'Muuttujat'[op_yhteensa]   <= EARLIER( 'Muuttujat'[op_yhteensa]) ",
+              "                                             )",
+              "                        ), Muuttujat[op_yhteensa] > 0, Muuttujat[Tutk2] > 0, FILTER(Muuttujat, VALUE(Muuttujat[Tilastovuosi]) > 2009))    ",
+              "return ",
+              "if(__nbrows < 5, BLANK(),if(__isod=1,",
+              "    minx(FILTER(__list,[cml]>=__n),'Muuttujat'[op_yhteensa]),",
+              "    0.5*(minx(FILTER(__list,[cml]>=__n),'Muuttujat'[op_yhteensa])+minx(FILTER(__list,[cml]>=__n+1),'Muuttujat'[op_yhteensa]))))",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkintojen opintopisteiden mediaani_s",
+            "expression": [
+              " ",
+              " var __nbrows=calculate(sum('Muuttujat'[Tutk2]), Muuttujat[op_yhteensa] > 0)",
+              " var __isod=if(__nbrows/2>int(__nbrows/2),1,0)",
+              " var __n=if(__nbrows/2>int(__nbrows/2),int(__nbrows/2)+1,int(__nbrows/2))",
+              " var __list= CALCULATETABLE(ADDCOLUMNS(",
+              "                   SUMMARIZE('Muuttujat','Muuttujat'[op_yhteensa]),",
+              "                                           \"cml\",calculate(sum('Muuttujat'[Tutk2]),",
+              "                                           'Muuttujat'[op_yhteensa]   <= EARLIER( 'Muuttujat'[op_yhteensa]) ",
+              "                                             )",
+              "                        ), Muuttujat[op_yhteensa] > 0, Muuttujat[Tutk2] > 0, FILTER(Muuttujat, VALUE(Muuttujat[Tilastovuosi]) > 2009))                                                  ",
+              "return",
+              "if([kytkin]=0, BLANK(),if(__isod=1,",
+              "    minx(FILTER(__list,[cml]>=__n),'Muuttujat'[op_yhteensa]),",
+              "    0.5*(minx(FILTER(__list,[cml]>=__n),'Muuttujat'[op_yhteensa])+minx(FILTER(__list,[cml]>=__n+1),'Muuttujat'[op_yhteensa]))))",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkintojen opintopisteiden 20. persentiili_s",
+            "expression": [
+              " ",
+              " var __nbrows=calculate(sum('Muuttujat'[Tutk2]), Muuttujat[op_yhteensa] > 0)",
+              " var __isod=if(__nbrows/5>int(__nbrows/5),1,0)",
+              " var __n=if(__nbrows/5>int(__nbrows/5),int(__nbrows/5)+1,int(__nbrows/5))",
+              " var __list= CALCULATETABLE(ADDCOLUMNS(",
+              "                   SUMMARIZE('Muuttujat','Muuttujat'[op_yhteensa]),",
+              "                                           \"cml\",calculate(sum('Muuttujat'[Tutk2]),",
+              "                                           'Muuttujat'[op_yhteensa]   <= EARLIER( 'Muuttujat'[op_yhteensa]) ",
+              "                                             )",
+              "                        ), Muuttujat[op_yhteensa] > 0, Muuttujat[Tutk2] > 0, FILTER(Muuttujat, VALUE(Muuttujat[Tilastovuosi]) > 2009))                                     ",
+              "return",
+              "if([kytkin]=0, BLANK(),if(__isod=1,",
+              "    minx(FILTER(__list,[cml]>=__n),'Muuttujat'[op_yhteensa]),",
+              "    0.5*(minx(FILTER(__list,[cml]>=__n),'Muuttujat'[op_yhteensa])+minx(FILTER(__list,[cml]>=__n+1),'Muuttujat'[op_yhteensa]))))",
+              ""
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkintojen opintopisteiden 20. persentiili",
+            "expression": [
+              " ",
+              " var __nbrows=calculate(sum('Muuttujat'[Tutk2]), Muuttujat[op_yhteensa] > 0)",
+              " var __isod=if(__nbrows/5>int(__nbrows/5),1,0)",
+              " var __n=if(__nbrows/5>int(__nbrows/5),int(__nbrows/5)+1,int(__nbrows/5))",
+              " var __list= CALCULATETABLE(ADDCOLUMNS(",
+              "                   SUMMARIZE('Muuttujat','Muuttujat'[op_yhteensa]),",
+              "                                           \"cml\",calculate(sum('Muuttujat'[Tutk2]),",
+              "                                           'Muuttujat'[op_yhteensa]   <= EARLIER( 'Muuttujat'[op_yhteensa]) ",
+              "                                             )",
+              "                        ), Muuttujat[op_yhteensa] > 0, Muuttujat[Tutk2] > 0, FILTER(Muuttujat, VALUE(Muuttujat[Tilastovuosi]) > 2009))                                                            ",
+              "return",
+              "if(__nbrows < 5, BLANK(),if(__isod=1,",
+              "    minx(FILTER(__list,[cml]>=__n),'Muuttujat'[op_yhteensa]),",
+              "    0.5*(minx(FILTER(__list,[cml]>=__n),'Muuttujat'[op_yhteensa])+minx(FILTER(__list,[cml]>=__n+1),'Muuttujat'[op_yhteensa]))))"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkintojen opintopisteiden 80. persentiili",
+            "expression": [
+              " ",
+              "  var __nbrows=calculate(sum('Muuttujat'[Tutk2]), Muuttujat[op_yhteensa] > 0)",
+              " var __isod=if(__nbrows/5*4>int(__nbrows/5*4),1,0)",
+              " var __n=if(__nbrows/5*4>int(__nbrows/5*4),int(__nbrows/5*4)+1,int(__nbrows/5*4))",
+              " var __list= CALCULATETABLE(ADDCOLUMNS(",
+              "                   SUMMARIZE('Muuttujat','Muuttujat'[op_yhteensa]),",
+              "                                           \"cml\",calculate(sum('Muuttujat'[Tutk2]),",
+              "                                           'Muuttujat'[op_yhteensa]   <= EARLIER( 'Muuttujat'[op_yhteensa]) ",
+              "                                             )",
+              "                        ), Muuttujat[op_yhteensa] > 0, Muuttujat[Tutk2] > 0, FILTER(Muuttujat, VALUE(Muuttujat[Tilastovuosi]) > 2009))                                                 ",
+              "return",
+              "if(__nbrows < 5, BLANK(),if(__isod=1,",
+              "    minx(FILTER(__list,[cml]>=__n),'Muuttujat'[op_yhteensa]),",
+              "    0.5*(minx(FILTER(__list,[cml]>=__n),'Muuttujat'[op_yhteensa])+minx(FILTER(__list,[cml]>=__n+1),'Muuttujat'[op_yhteensa]))))"
+            ],
+            "formatString": "#,0"
+          },
+          {
+            "name": "Tutkintojen opintopisteiden 80. persentiili_s",
+            "expression": [
+              " ",
+              "  var __nbrows=calculate(sum('Muuttujat'[Tutk2]), Muuttujat[op_yhteensa] > 0)",
+              " var __isod=if(__nbrows/5*4>int(__nbrows/5*4),1,0)",
+              " var __n=if(__nbrows/5*4>int(__nbrows/5*4),int(__nbrows/5*4)+1,int(__nbrows/5*4))",
+              " var __list= CALCULATETABLE(ADDCOLUMNS(",
+              "                   SUMMARIZE('Muuttujat','Muuttujat'[op_yhteensa]),",
+              "                                           \"cml\",calculate(sum('Muuttujat'[Tutk2]),",
+              "                                           'Muuttujat'[op_yhteensa]   <= EARLIER( 'Muuttujat'[op_yhteensa]) ",
+              "                                             )",
+              "                        ), Muuttujat[op_yhteensa] > 0, Muuttujat[Tutk2] > 0, FILTER(Muuttujat, VALUE(Muuttujat[Tilastovuosi]) > 2009))                                              ",
+              "return",
+              "if([kytkin]=0, BLANK(),if(__isod=1,",
+              "    minx(FILTER(__list,[cml]>=__n),'Muuttujat'[op_yhteensa]),",
+              "    0.5*(minx(FILTER(__list,[cml]>=__n),'Muuttujat'[op_yhteensa])+minx(FILTER(__list,[cml]>=__n+1),'Muuttujat'[op_yhteensa]))))",
+              ""
+            ],
+            "formatString": "#,0"
           }
         ],
         "annotations": [
@@ -15066,6 +15198,203 @@
             "measures": [
               {
                 "name": "Aloittaneet (korkeakoulusektori)_s"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "Opintopisteet",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Koodit Koulutusala taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Asuinmaakunta"
+              },
+              {
+                "name": "Koulutustyyppi"
+              },
+              {
+                "name": "Ensisijainen opinto-oikeus"
+              },
+              {
+                "name": "Ikä"
+              },
+              {
+                "name": "Koulutussektori"
+              },
+              {
+                "name": "Koodit OKM ohjauksen ala korkeak"
+              },
+              {
+                "name": "Syntymävuosi"
+              },
+              {
+                "name": "Til.v:tta ed. asuinmaakunta"
+              },
+              {
+                "name": "Koodit Koulutusala taso 3"
+              },
+              {
+                "name": "Koodit Koulutusaste taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Koulutusaste, taso 1"
+              },
+              {
+                "name": "Äidinkieli"
+              },
+              {
+                "name": "Koodit Koulutusohjelma"
+              },
+              {
+                "name": "Koodit Oppilaitos"
+              },
+              {
+                "name": "Kirjoillaolo (syys)"
+              },
+              {
+                "name": "Koodit Asuinkunta"
+              },
+              {
+                "name": "Koodit Koulutuksen kunta"
+              },
+              {
+                "name": "Koodit Koulutustyyppi"
+              },
+              {
+                "name": "Koodit Koulutusala taso 1"
+              },
+              {
+                "name": "Koulutusnimike"
+              },
+              {
+                "name": "Oppilaitos"
+              },
+              {
+                "name": "Asuinkunta"
+              },
+              {
+                "name": "Koulutuksen maakunta"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Til.v:tta ed. asuinkunta"
+              },
+              {
+                "name": "Tutkinto (yo)"
+              },
+              {
+                "name": "Koulutusohjelma"
+              },
+              {
+                "name": "Rahoituslähde"
+              },
+              {
+                "name": "Tutkinto (amk)"
+              },
+              {
+                "name": "Ikäryhmä"
+              },
+              {
+                "name": "Koodit Koulutusaste taso 2"
+              },
+              {
+                "name": "Koulutusaste, taso 2"
+              },
+              {
+                "name": "OKM ohjauksen ala korkeak."
+              },
+              {
+                "name": "Koodit Asuinmaakunta"
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Koodit Koulutuksen maakunta"
+              },
+              {
+                "name": "Koulutuksen kunta"
+              },
+              {
+                "name": "Koulutuslaji"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Kansalaisuus"
+              },
+              {
+                "name": "Koodit Koulutusnimike"
+              },
+              {
+                "name": "Kirjoillaolo (tammi)"
+              },
+              {
+                "name": "Oppilaitos (tilastovuosi)"
+              },
+              {
+                "name": "Koodit Koulutusala (2002)"
+              },
+              {
+                "name": "Koulutusala (1995) "
+              },
+              {
+                "name": "Koodit Koulutusaste (2002)"
+              },
+              {
+                "name": "Koodit Opintoala (2002)"
+              },
+              {
+                "name": "Koulutusala (2002) "
+              },
+              {
+                "name": "Koulutusaste (2002) "
+              },
+              {
+                "name": "Koodit Koulutusala (1995)"
+              },
+              {
+                "name": "Opintoala (2002) "
+              },
+              {
+                "name": "Kansainvälinen opiskelija"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Tutkintojen opintopisteiden 80. persentiili"
+              },
+              {
+                "name": "Tutkintojen opintopisteiden 20. persentiili"
+              },
+              {
+                "name": "Tutkintojen opintopisteiden mediaani"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
               }
             ]
           }
