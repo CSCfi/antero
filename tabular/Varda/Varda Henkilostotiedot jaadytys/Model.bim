@@ -39,6 +39,7 @@
             "name": "Sarakeleveys",
             "dataView": "full",
             "source": {
+              "type": "query",
               "query": " SELECT [dw].[Sarakeleveys].* FROM [dw].[Sarakeleveys] ",
               "dataSource": "SqlServer dwitvipuarch22 ANTERO_master"
             }
@@ -484,6 +485,7 @@
             "name": "Muuttujat",
             "dataView": "full",
             "source": {
+              "type": "query",
               "query": " \t\t\t\tSELECT [dw].[v_varda_henkilosto].*   FROM [dw].[v_varda_henkilosto] ",
               "dataSource": "SqlServer dwitvipuarch22 ANTERO_master"
             },
@@ -2297,15 +2299,19 @@
             "name": "ehto_uusimaa",
             "expression": [
               "",
+              "/*",
               "IF(HASONEVALUE(Muuttujat[tilastovuosi_fi]), IF(VALUES(Muuttujat[tilastovuosi_fi]) <> 2022 ",
               "&& VALUES(Muuttujat[tilastovuosi_fi]) <> 2023, 1, 0), 0)",
-              "||",
+              "||*/",
               "(",
               "IF(HASONEVALUE(Muuttujat[yritystyyppi_fi]), IF(VALUES(Muuttujat[yritystyyppi_fi]) <> \"Kunta\", 1, 0), 0)",
               "|| IF(HASONEVALUE(Muuttujat[toimipaikan_maakunta_fi])",
               "\t, IF(",
               "\t\tVALUES(Muuttujat[toimipaikan_maakunta_fi]) <> \"Uusimaa\"",
-              "\t\t&& VALUES(Muuttujat[toimipaikan_maakunta_fi]) <> \"Varsinais-Suomi\"",
+              "\t\t&& (",
+              "\t\t\tVALUES(Muuttujat[toimipaikan_maakunta_fi]) <> \"Varsinais-Suomi\"",
+              "\t\t\t|| VALUES(Muuttujat[tilastovuosi_fi]) > 2023 ",
+              "\t\t)",
               "\t\t, 1, 0",
               "\t)",
               "\t, 0",
@@ -2315,7 +2321,7 @@
               "\t\tVALUES(Muuttujat[toimipaikan_kunta_fi]) <> \"Espoo\"",
               "\t\t&& VALUES(Muuttujat[toimipaikan_kunta_fi]) <> \"Helsinki\"",
               "\t\t&& VALUES(Muuttujat[toimipaikan_kunta_fi]) <> \"Vantaa\"",
-              "\t\t&& VALUES(Muuttujat[toimipaikan_kunta_fi]) <> \"Kemiönsaari\"",
+              "\t\t--&& VALUES(Muuttujat[toimipaikan_kunta_fi]) <> \"Kemiönsaari\"",
               "\t\t, 1, 0",
               "\t)",
               "\t, 0",
