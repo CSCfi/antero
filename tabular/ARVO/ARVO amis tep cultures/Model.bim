@@ -822,6 +822,12 @@
             "dataType": "int64",
             "isHidden": true,
             "sourceColumn": "jarjestys_kuukausi"
+          },
+          {
+            "name": "osaamisalat_avain",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "osaamisalat_avain"
           }
         ],
         "partitions": [
@@ -8000,6 +8006,209 @@
             }
           }
         ]
+      },
+      {
+        "name": "Osaamisalat_avain",
+        "isHidden": true,
+        "columns": [
+          {
+            "name": "osaamisalat_avain",
+            "dataType": "string",
+            "sourceColumn": "osaamisalat_avain",
+            "sourceProviderType": "VarChar"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Osaamisalat_avain",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "query": "SELECT DISTINCT [osaamisalat_avain] FROM [ANTERO].[dw].[f_arvo_amis_tep]",
+              "dataSource": "SqlServer dwitvipusql22 ANTERO"
+            },
+            "annotations": [
+              {
+                "name": "QueryEditorSerialization",
+                "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT DISTINCT [osaamisalat_avain] FROM [ANTERO].[dw].[f_arvo_amis_tep]</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+              }
+            ]
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": "SELECT DISTINCT [osaamisalat_avain] FROM [ANTERO].[dw].[f_arvo_amis_tep]"
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "Osaamisalat_avain"
+          },
+          {
+            "name": "QueryEditorSerialization",
+            "value": "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT DISTINCT [osaamisalat_avain] FROM [ANTERO].[dw].[f_arvo_amis_tep]</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+          }
+        ]
+      },
+      {
+        "name": "Osaamisalat",
+        "columns": [
+          {
+            "name": "osaamisalat_avain",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "osaamisalat_avain",
+            "sourceProviderType": "VarChar"
+          },
+          {
+            "name": "Koodit Osaamisala",
+            "dataType": "string",
+            "sourceColumn": "Koodit Osaamisala",
+            "sourceProviderType": "VarChar"
+          },
+          {
+            "name": "Osaamisala",
+            "dataType": "string",
+            "sourceColumn": "Osaamisala",
+            "sourceProviderType": "VarChar"
+          },
+          {
+            "name": "Kompetensområde",
+            "dataType": "string",
+            "sourceColumn": "Kompetensområde",
+            "sourceProviderType": "VarChar"
+          },
+          {
+            "name": "Competence area",
+            "dataType": "string",
+            "sourceColumn": "Competence area",
+            "sourceProviderType": "VarChar"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Osaamisalat",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "query": [
+                "SELECT DISTINCT ",
+                "\t[osaamisalat_avain]",
+                "\t,[Koodit Osaamisala] = d.koodi",
+                "\t,[Osaamisala] = d.selite_fi",
+                "\t,[Kompetensområde] = d.selite_sv",
+                "\t,[Competence area] = d.selite_en",
+                "FROM (",
+                "\tSELECT DISTINCT",
+                "\t\t[osaamisalat_avain]",
+                "\t\t,[osaamisala] = TRIM(value)",
+                "\tFROM (",
+                "\t\tSELECT DISTINCT",
+                "\t\t\t[osaamisalat_avain]",
+                "\t\tFROM [dw].[f_arvo_amis_tep]",
+                "\t) q",
+                "\tOUTER APPLY STRING_SPLIT(REPLACE(REPLACE(REPLACE([osaamisalat_avain], '[', ''), ']', ''), '''', ''), ',') ca",
+                ") q2",
+                "LEFT JOIN dw.d_osaamisala_koodisto d on d.koodi = q2.osaamisala"
+              ],
+              "dataSource": "SqlServer dwitvipusql22 ANTERO"
+            },
+            "annotations": [
+              {
+                "name": "QueryEditorSerialization",
+                "value": [
+                  "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT DISTINCT \r",
+                  "\t[osaamisalat_avain]\r",
+                  "\t,[Koodit Osaamisala] = d.koodi\r",
+                  "\t,[Osaamisala] = d.selite_fi\r",
+                  "\t,[Kompetensområde] = d.selite_sv\r",
+                  "\t,[Competence area] = d.selite_en\r",
+                  "FROM (\r",
+                  "\tSELECT DISTINCT\r",
+                  "\t\t[osaamisalat_avain]\r",
+                  "\t\t,[osaamisala] = TRIM(value)\r",
+                  "\tFROM (\r",
+                  "\t\tSELECT DISTINCT\r",
+                  "\t\t\t[osaamisalat_avain]\r",
+                  "\t\tFROM [dw].[f_arvo_amis_tep]\r",
+                  "\t) q\r",
+                  "\tOUTER APPLY STRING_SPLIT(REPLACE(REPLACE(REPLACE([osaamisalat_avain], '[', ''), ']', ''), '''', ''), ',') ca\r",
+                  ") q2\r",
+                  "LEFT JOIN dw.d_osaamisala_koodisto d on d.koodi = q2.osaamisala</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+                ]
+              }
+            ]
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": [
+              "SELECT DISTINCT \r",
+              "\t[osaamisalat_avain]\r",
+              "\t,[Koodit Osaamisala] = d.koodi\r",
+              "\t,[Osaamisala] = d.selite_fi\r",
+              "\t,[Kompetensområde] = d.selite_sv\r",
+              "\t,[Competence area] = d.selite_en\r",
+              "FROM (\r",
+              "\tSELECT DISTINCT\r",
+              "\t\t[osaamisalat_avain]\r",
+              "\t\t,[osaamisala] = TRIM(value)\r",
+              "\tFROM (\r",
+              "\t\tSELECT DISTINCT\r",
+              "\t\t\t[osaamisalat_avain]\r",
+              "\t\tFROM [dw].[f_arvo_amis_tep]\r",
+              "\t) q\r",
+              "\tOUTER APPLY STRING_SPLIT(REPLACE(REPLACE(REPLACE([osaamisalat_avain], '[', ''), ']', ''), '''', ''), ',') ca\r",
+              ") q2\r",
+              "LEFT JOIN dw.d_osaamisala_koodisto d on d.koodi = q2.osaamisala"
+            ]
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "Osaamisalat"
+          },
+          {
+            "name": "QueryEditorSerialization",
+            "value": [
+              "<?xml version=\"1.0\" encoding=\"UTF-16\"?><Gemini xmlns=\"QueryEditorSerialization\"><AnnotationContent><![CDATA[<RSQueryCommandText>SELECT DISTINCT \r",
+              "\t[osaamisalat_avain]\r",
+              "\t,[Koodit Osaamisala] = d.koodi\r",
+              "\t,[Osaamisala] = d.selite_fi\r",
+              "\t,[Kompetensområde] = d.selite_sv\r",
+              "\t,[Competence area] = d.selite_en\r",
+              "FROM (\r",
+              "\tSELECT DISTINCT\r",
+              "\t\t[osaamisalat_avain]\r",
+              "\t\t,[osaamisala] = TRIM(value)\r",
+              "\tFROM (\r",
+              "\t\tSELECT DISTINCT\r",
+              "\t\t\t[osaamisalat_avain]\r",
+              "\t\tFROM [dw].[f_arvo_amis_tep]\r",
+              "\t) q\r",
+              "\tOUTER APPLY STRING_SPLIT(REPLACE(REPLACE(REPLACE([osaamisalat_avain], '[', ''), ']', ''), '''', ''), ',') ca\r",
+              ") q2\r",
+              "LEFT JOIN dw.d_osaamisala_koodisto d on d.koodi = q2.osaamisala</RSQueryCommandText><RSQueryCommandType>Text</RSQueryCommandType><RSQueryDesignState></RSQueryDesignState>]]></AnnotationContent></Gemini>"
+            ]
+          }
+        ]
+      }
+    ],
+    "relationships": [
+      {
+        "name": "59c392ba-cd38-4b6a-a89c-a0f9c707096f",
+        "fromTable": "Muuttujat",
+        "fromColumn": "osaamisalat_avain",
+        "toTable": "Osaamisalat_avain",
+        "toColumn": "osaamisalat_avain"
+      },
+      {
+        "name": "8945cc48-b40e-40d4-b011-0a4791539931",
+        "fromTable": "Osaamisalat",
+        "fromColumn": "osaamisalat_avain",
+        "toTable": "Osaamisalat_avain",
+        "toColumn": "osaamisalat_avain",
+        "crossFilteringBehavior": "bothDirections"
       }
     ],
     "cultures": [
@@ -8425,7 +8634,7 @@
               },
               {
                 "name": "mittariryhma_ohjaajakysely_fi",
-                "translatedCaption": "Muuttujat",
+                "translatedCaption": "\tMuuttujat",
                 "columns": [
                   {
                     "name": "lukumaaratieto_fi",
@@ -8435,7 +8644,7 @@
               },
               {
                 "name": "Mittarit_tyopaikkakysely",
-                "translatedCaption": "Muuttujat",
+                "translatedCaption": "\tMuuttujat",
                 "columns": [
                   {
                     "name": "selite_fi",
@@ -8445,7 +8654,7 @@
               },
               {
                 "name": "Mittarit_ohjaajakysely",
-                "translatedCaption": "Muuttujat",
+                "translatedCaption": "\tMuuttujat",
                 "columns": [
                   {
                     "name": "selite_fi",
@@ -8455,13 +8664,17 @@
               },
               {
                 "name": "mittariryhma_tyopaikkakysely_fi",
-                "translatedCaption": "Muuttujat",
+                "translatedCaption": "\tMuuttujat",
                 "columns": [
                   {
                     "name": "lukumaaratieto_fi",
                     "translatedCaption": "Lukumäärätieto"
                   }
                 ]
+              },
+              {
+                "name": "Osaamisalat",
+                "translatedCaption": "Koulutuksen lisämuuttujat"
               }
             ]
           }
@@ -8813,7 +9026,7 @@
               },
               {
                 "name": "Mittarit_tyopaikkakysely",
-                "translatedCaption": "Variabler",
+                "translatedCaption": "\tVariabler",
                 "columns": [
                   {
                     "name": "selite_sv",
@@ -8823,7 +9036,7 @@
               },
               {
                 "name": "Mittarit_ohjaajakysely",
-                "translatedCaption": "Variabler",
+                "translatedCaption": "\tVariabler",
                 "columns": [
                   {
                     "name": "selite_sv",
@@ -8833,7 +9046,7 @@
               },
               {
                 "name": "mittariryhma_ohjaajakysely_sv",
-                "translatedCaption": "Variabler",
+                "translatedCaption": "\tVariabler",
                 "columns": [
                   {
                     "name": "lukumaaratieto_sv",
@@ -8843,13 +9056,17 @@
               },
               {
                 "name": "mittariryhma_tyopaikkakysely_sv",
-                "translatedCaption": "Variabler",
+                "translatedCaption": "\tVariabler",
                 "columns": [
                   {
                     "name": "lukumaaratieto_sv",
                     "translatedCaption": "Antalsuppgift"
                   }
                 ]
+              },
+              {
+                "name": "Osaamisalat",
+                "translatedCaption": "Tilläggsvariabler för utbildningen"
               }
             ]
           }
@@ -9201,7 +9418,7 @@
               },
               {
                 "name": "Mittarit_tyopaikkakysely",
-                "translatedCaption": "Variables",
+                "translatedCaption": "\tVariables",
                 "columns": [
                   {
                     "name": "selite_en",
@@ -9211,7 +9428,7 @@
               },
               {
                 "name": "Mittarit_ohjaajakysely",
-                "translatedCaption": "Variables",
+                "translatedCaption": "\tVariables",
                 "columns": [
                   {
                     "name": "selite_en",
@@ -9221,7 +9438,7 @@
               },
               {
                 "name": "mittariryhma_ohjaajakysely_en",
-                "translatedCaption": "Variables",
+                "translatedCaption": "\tVariables",
                 "columns": [
                   {
                     "name": "lukumaaratieto_en",
@@ -9231,13 +9448,17 @@
               },
               {
                 "name": "mittariryhma_tyopaikkakysely_en",
-                "translatedCaption": "Variables",
+                "translatedCaption": "\tVariables",
                 "columns": [
                   {
                     "name": "lukumaaratieto_en",
                     "translatedCaption": "Numerical data"
                   }
                 ]
+              },
+              {
+                "name": "Osaamisalat",
+                "translatedCaption": "Additional variables for education"
               }
             ]
           }
@@ -9589,6 +9810,14 @@
                 "name": "selite_fi"
               }
             ]
+          },
+          {
+            "name": "Osaamisalat",
+            "columns": [
+              {
+                "name": "Osaamisala"
+              }
+            ]
           }
         ]
       },
@@ -9734,6 +9963,14 @@
             "columns": [
               {
                 "name": "selite_fi"
+              }
+            ]
+          },
+          {
+            "name": "Osaamisalat",
+            "columns": [
+              {
+                "name": "Osaamisala"
               }
             ]
           }
@@ -10329,6 +10566,14 @@
                 "name": "selite_sv"
               }
             ]
+          },
+          {
+            "name": "Osaamisalat",
+            "columns": [
+              {
+                "name": "Kompetensområde"
+              }
+            ]
           }
         ]
       },
@@ -10474,6 +10719,14 @@
             "columns": [
               {
                 "name": "selite_sv"
+              }
+            ]
+          },
+          {
+            "name": "Osaamisalat",
+            "columns": [
+              {
+                "name": "Kompetensområde"
               }
             ]
           }
@@ -10823,6 +11076,14 @@
                 "name": "selite_en"
               }
             ]
+          },
+          {
+            "name": "Osaamisalat",
+            "columns": [
+              {
+                "name": "Competence area"
+              }
+            ]
           }
         ]
       },
@@ -10970,6 +11231,14 @@
                 "name": "selite_en"
               }
             ]
+          },
+          {
+            "name": "Osaamisalat",
+            "columns": [
+              {
+                "name": "Competence area"
+              }
+            ]
           }
         ]
       }
@@ -10988,7 +11257,7 @@
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1733"
           },
           {
-            "memberName": "dwi\\Z_DWIPVIPURD_Allow_F_Drive",
+            "memberName": "DWI\\Z_DWIPVIPURD_Allow_F_Drive",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5333"
           }
         ]
@@ -11006,7 +11275,7 @@
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1733"
           },
           {
-            "memberName": "dwi\\Z_DWIPVIPURD_Allow_F_Drive",
+            "memberName": "DWI\\Z_DWIPVIPURD_Allow_F_Drive",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5333"
           }
         ]
@@ -11024,12 +11293,12 @@
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1733"
           },
           {
-            "memberName": "dwi\\Z_DWIPVIPURD_Allow_F_Drive",
-            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5333"
-          },
-          {
             "memberName": "DWI\\Z_P_OPH_materials_Full_Read_No_TK_TAB",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5670"
+          },
+          {
+            "memberName": "DWI\\Z_DWIPVIPURD_Allow_F_Drive",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5333"
           }
         ]
       }
