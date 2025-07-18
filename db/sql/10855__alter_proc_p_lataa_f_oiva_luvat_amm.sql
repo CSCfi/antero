@@ -1,3 +1,8 @@
+USE [ANTERO]
+GO
+
+/****** Object:  StoredProcedure [dw].[p_lataa_f_oiva_luvat_amm]    Script Date: 18.7.2025 10.47.09 ******/
+SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
@@ -24,7 +29,8 @@ GO
 
 
 
-ALTER PROCEDURE [dw].[p_lataa_f_oiva_luvat_amm] @alku as date = '2018-01-01' AS
+
+CREATE OR ALTER PROCEDURE [dw].[p_lataa_f_oiva_luvat_amm] @alku as date = '2018-01-01' AS
 
 /*
 Tämä proseduuri lataa faktataulun dw.f_oiva_luvat_amm ammatillisen koulutuksen järjestämisluvat raporttia varten. 
