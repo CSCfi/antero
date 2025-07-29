@@ -915,6 +915,12 @@
             "dataType": "int64",
             "isHidden": true,
             "sourceColumn": "jarjestys_erityinen_maailmankatsomus_tai_kasvatusopillinen_jarjestelma"
+          },
+          {
+            "name": "apusarake_tuen_paatos",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "apusarake_tuen_paatos"
           }
         ],
         "partitions": [
@@ -1094,6 +1100,26 @@
               "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
               "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
               "osa / kaikki)))"
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "oppilaat_joilla_on_tukea_koskeva_paatos_pol_20_f",
+            "expression": " CALCULATE([oppilaat], KEEPFILTERS(Muuttujat[apusarake_tuen_paatos] = 1))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "oppilaat_joilla_on_tukea_koskeva_paatos_pol_20_f_pros",
+            "expression": [
+              "  ",
+              "var osa = CALCULATE([oppilaat], KEEPFILTERS(Muuttujat[apusarake_tuen_paatos] = 1))",
+              "var kaikki = [oppilaat]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))",
+              ""
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           }
@@ -2179,6 +2205,14 @@
               "        <int>555</int>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>apusarake_tuen_paatos</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>205</int>",
+              "      </value>",
+              "    </item>",
               "  </ColumnWidths>",
               "  <ColumnDisplayIndex>",
               "    <item>",
@@ -3235,6 +3269,14 @@
               "      </key>",
               "      <value>",
               "        <int>131</int>",
+              "      </value>",
+              "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>apusarake_tuen_paatos</string>",
+              "      </key>",
+              "      <value>",
+              "        <int>132</int>",
               "      </value>",
               "    </item>",
               "  </ColumnDisplayIndex>",
@@ -4296,6 +4338,14 @@
               "        <boolean>true</boolean>",
               "      </value>",
               "    </item>",
+              "    <item>",
+              "      <key>",
+              "        <string>apusarake_tuen_paatos</string>",
+              "      </key>",
+              "      <value>",
+              "        <boolean>true</boolean>",
+              "      </value>",
+              "    </item>",
               "  </ColumnChecked>",
               "  <ColumnFilter />",
               "  <SelectionFilter />",
@@ -4978,11 +5028,11 @@
                   },
                   {
                     "name": "erityisen_tuen_oppilaat",
-                    "translatedCaption": "Erityisen tuen oppilaat"
+                    "translatedCaption": "Oppilaat, joilla on erityisen tuen päätös"
                   },
                   {
                     "name": "erityisen_tuen_oppilaat_pros",
-                    "translatedCaption": "Erityisen tuen oppilaat %"
+                    "translatedCaption": "Oppilaat, joilla on erityisen tuen päätös %"
                   },
                   {
                     "name": "pidennetyn_oppivelvollisuuden_oppilaat",
@@ -4991,6 +5041,14 @@
                   {
                     "name": "pidennetyn_oppivelvollisuuden_oppilaat_pros",
                     "translatedCaption": "Pidennetyn oppivelvollisuuden oppilaat %"
+                  },
+                  {
+                    "name": "oppilaat_joilla_on_tukea_koskeva_paatos_pol_20_f",
+                    "translatedCaption": "Oppilaat, joilla on tukea koskeva päätös (POL 20 f)"
+                  },
+                  {
+                    "name": "oppilaat_joilla_on_tukea_koskeva_paatos_pol_20_f_pros",
+                    "translatedCaption": "Oppilaat, joilla on tukea koskeva päätös (POL 20 f) %"
                   }
                 ]
               }
@@ -5681,6 +5739,14 @@
                   {
                     "name": "pidennetyn_oppivelvollisuuden_oppilaat_pros",
                     "translatedCaption": "Elever med förlängd läroplikt %"
+                  },
+                  {
+                    "name": "oppilaat_joilla_on_tukea_koskeva_paatos_pol_20_f",
+                    "translatedCaption": "Oppilaat, joilla on tukea koskeva päätös (POL 20 f)*SV"
+                  },
+                  {
+                    "name": "oppilaat_joilla_on_tukea_koskeva_paatos_pol_20_f_pros",
+                    "translatedCaption": "Oppilaat, joilla on tukea koskeva päätös (POL 20 f) %*SV"
                   }
                 ]
               }
@@ -6236,10 +6302,10 @@
                 "name": "kaikki_oppilaat"
               },
               {
-                "name": "pidennetyn_oppivelvollisuuden_oppilaat"
+                "name": "oppilaat_joilla_on_tukea_koskeva_paatos_pol_20_f"
               },
               {
-                "name": "pidennetyn_oppivelvollisuuden_oppilaat_pros"
+                "name": "oppilaat_joilla_on_tukea_koskeva_paatos_pol_20_f_pros"
               }
             ]
           }
@@ -6333,12 +6399,6 @@
               },
               {
                 "name": "kaikki_oppilaat"
-              },
-              {
-                "name": "pidennetyn_oppivelvollisuuden_oppilaat"
-              },
-              {
-                "name": "pidennetyn_oppivelvollisuuden_oppilaat_pros"
               }
             ]
           }
@@ -6481,7 +6541,7 @@
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1732"
           },
           {
-            "memberName": "dwi\\Z_DWIPVIPURD_Allow_F_Drive",
+            "memberName": "DWI\\Z_DWIPVIPURD_Allow_F_Drive",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5333"
           }
         ]
@@ -6499,7 +6559,7 @@
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5670"
           },
           {
-            "memberName": "dwi\\Z_DWIPVIPURD_Allow_F_Drive",
+            "memberName": "DWI\\Z_DWIPVIPURD_Allow_F_Drive",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5333"
           }
         ]
