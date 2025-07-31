@@ -74,7 +74,3 @@ VALUES
 ('6','Ei tietoa oppiainesuorituksista','Information om läroämnesprestationer saknas','Missing data on passed subjects',2,6,'manuaalinen')
 
 GO
-
-EXEC [dw].[p_lataa_d_perusopetuksen_oppimaaran_yksilollistaminen]
-
-GO
