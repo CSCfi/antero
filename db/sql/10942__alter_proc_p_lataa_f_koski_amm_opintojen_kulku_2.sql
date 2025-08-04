@@ -11,7 +11,6 @@ GO
 
 
 
-
 ALTER PROCEDURE [dw].[p_lataa_f_koski_amm_opintojen_kulku_2] AS
 
 DROP TABLE IF EXISTS dw.f_koski_amm_opintojen_kulku_2
