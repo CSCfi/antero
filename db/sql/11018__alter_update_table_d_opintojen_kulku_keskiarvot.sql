@@ -19,7 +19,7 @@ BEGIN
 	ALTER TABLE [dw].[d_opintojen_kulku_keskiarvot]
 	ADD [opv_kerroin] decimal(3,2)
 END
-;
+GO
 
 UPDATE [dw].[d_opintojen_kulku_keskiarvot]
 SET opv_kerroin = 
