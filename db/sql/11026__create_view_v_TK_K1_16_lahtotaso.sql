@@ -11,7 +11,7 @@ GO
 
 CREATE OR ALTER VIEW [dw].[v_TK_K1_16_lahtotaso] AS 
 
---lopulta K1.16 poimitaan rahoituskausittain, mikä tuolloin huomioitava alla sekä jatkolatausten liitoksissa.
+--lopulta poiminnat (limittäin) rahoituskausittain, mikä tuolloin huomioitava alla sekä jatkolatausten liitoksissa.
 
 SELECT 
 	[suorituskausi] = [rahoituskausi]
