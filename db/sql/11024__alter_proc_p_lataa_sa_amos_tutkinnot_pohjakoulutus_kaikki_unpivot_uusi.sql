@@ -11,7 +11,7 @@ GO
 
 ALTER PROCEDURE [sa].[p_lataa_sa_amos_tutkinnot_pohjakoulutus_kaikki_unpivot_uusi] AS
 
---lopulta K1.12d poimitaan rahoituskausittain, mikä tuolloin huomioitava alla sekä jatkolatausten liitoksissa.
+--lopulta poiminnat (limittäin) rahoituskausittain, mikä tuolloin huomioitava alla sekä jatkolatausten liitoksissa.
 
 TRUNCATE TABLE sa.sa_amos_tutkinnot_pohjakoulutus_kaikki_unpivot_uusi
 
