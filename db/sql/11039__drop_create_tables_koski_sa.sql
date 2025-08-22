@@ -6,13 +6,6 @@ IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[temp_o
 DROP TABLE [sa].[temp_opiskelijavuodet_osatutkinnot_kustannusryhma_uusi]
 GO
 
-/****** Object:  Table [sa].[temp_opiskelijavuodet_osatutkinnot_kustannusryhma_uusi]    Script Date: 22.8.2025 20.27.32 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
-GO
-
 CREATE TABLE [sa].[temp_opiskelijavuodet_osatutkinnot_kustannusryhma_uusi](
 	[opiskeluoikeus_oid] [varchar](100) NULL,
 	[paatason_suoritus_id] [bigint] NULL,
@@ -20,16 +13,9 @@ CREATE TABLE [sa].[temp_opiskelijavuodet_osatutkinnot_kustannusryhma_uusi](
 ) ON [PRIMARY]
 GO
 
-/****** Object:  Table [sa].[temp_opiskelijavuodet_osatutkinnot_kustannusryhma]    Script Date: 22.8.2025 20.27.17 ******/
+
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[temp_opiskelijavuodet_osatutkinnot_kustannusryhma]') AND type in (N'U'))
 DROP TABLE [sa].[temp_opiskelijavuodet_osatutkinnot_kustannusryhma]
-GO
-
-/****** Object:  Table [sa].[temp_opiskelijavuodet_osatutkinnot_kustannusryhma]    Script Date: 22.8.2025 20.27.17 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [sa].[temp_opiskelijavuodet_osatutkinnot_kustannusryhma](
@@ -39,20 +25,10 @@ CREATE TABLE [sa].[temp_opiskelijavuodet_osatutkinnot_kustannusryhma](
 	[kr_uusi] [varchar](10) NULL
 ) ON [PRIMARY]
 GO
-USE [Koski_SA]
-GO
 
 
-/****** Object:  Table [sa].[temp_opiskelijavuodet_opiskeluoikeus_aikajakso_lasna_valmistunut]    Script Date: 22.8.2025 20.26.52 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[temp_opiskelijavuodet_opiskeluoikeus_aikajakso_lasna_valmistunut]') AND type in (N'U'))
 DROP TABLE [sa].[temp_opiskelijavuodet_opiskeluoikeus_aikajakso_lasna_valmistunut]
-GO
-
-/****** Object:  Table [sa].[temp_opiskelijavuodet_opiskeluoikeus_aikajakso_lasna_valmistunut]    Script Date: 22.8.2025 20.26.52 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [sa].[temp_opiskelijavuodet_opiskeluoikeus_aikajakso_lasna_valmistunut](
@@ -101,16 +77,8 @@ CREATE TABLE [sa].[temp_opiskelijavuodet_opiskeluoikeus_aikajakso_lasna_valmistu
 GO
 
 
-/****** Object:  Table [sa].[temp_opiskelijavuodet_opiskeluoikeus_aikajakso_loma]    Script Date: 22.8.2025 20.27.06 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[temp_opiskelijavuodet_opiskeluoikeus_aikajakso_loma]') AND type in (N'U'))
 DROP TABLE [sa].[temp_opiskelijavuodet_opiskeluoikeus_aikajakso_loma]
-GO
-
-/****** Object:  Table [sa].[temp_opiskelijavuodet_opiskeluoikeus_aikajakso_loma]    Script Date: 22.8.2025 20.27.06 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [sa].[temp_opiskelijavuodet_opiskeluoikeus_aikajakso_loma](
@@ -159,16 +127,8 @@ CREATE TABLE [sa].[temp_opiskelijavuodet_opiskeluoikeus_aikajakso_loma](
 GO
 
 
-/****** Object:  Table [sa].[temp_opiskelijavuodet_opiskeluoikeus_aikajakso_opva]    Script Date: 22.8.2025 20.27.11 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[temp_opiskelijavuodet_opiskeluoikeus_aikajakso_opva]') AND type in (N'U'))
 DROP TABLE [sa].[temp_opiskelijavuodet_opiskeluoikeus_aikajakso_opva]
-GO
-
-/****** Object:  Table [sa].[temp_opiskelijavuodet_opiskeluoikeus_aikajakso_opva]    Script Date: 22.8.2025 20.27.11 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
 GO
 
 CREATE TABLE [sa].[temp_opiskelijavuodet_opiskeluoikeus_aikajakso_opva](
