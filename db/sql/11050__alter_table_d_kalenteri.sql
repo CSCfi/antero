@@ -23,5 +23,3 @@ BEGIN
 	alter table [dw].[d_kalenteri]
 	add [rahoituskausi_amm_2] nvarchar(50)
 END
-
-GO
