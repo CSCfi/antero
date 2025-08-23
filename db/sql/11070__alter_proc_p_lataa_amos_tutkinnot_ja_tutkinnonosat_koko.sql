@@ -29,5 +29,3 @@ EXEC dw.p_lataa_f_amos_tutkinnot_ja_tutkinnonosat_painotetut_uusi 1 --estimaatti
 EXEC dw.p_lataa_f_amos_tutkinnot_ja_tutkinnonosat_painotetut
 EXEC dw.p_lataa_f_amos_tutkinnot_ja_tutkinnonosat_painotetut_unpivot
 EXEC dw.p_lataa_f_amos_tutkinnot_ja_tutkinnonosat_painotetut_unpivot_generoi_hyvaksytty_korotustekija
-
-GO
