@@ -132,7 +132,7 @@ FROM (
 				,f.vastaajatunnus
 		
 				,pisteet = cast(
-					cast((case when t.yrittajat_tpk = 1 then 1.0 * 9/8/ *@kysymyksia_tpk/@kysymyksia_tpok*/ else 1.0 end) as decimal(4,3))
+					cast((case when t.yrittajat_tpk = 1 then 1.0 * 9/8 /*@kysymyksia_tpk/@kysymyksia_tpok*/ else 1.0 end) as decimal(4,3))
 					* sum(case when d4.rahoitusmallikysymys = 1 then 1.0 * numerovalinta * tyopaikkajakson_kesto else 0.0 end)
 					as decimal(12,4)
 				)
