@@ -921,6 +921,51 @@
             "dataType": "int64",
             "isHidden": true,
             "sourceColumn": "apusarake_tuen_paatos"
+          },
+          {
+            "name": "toimipisteen_kunta_fi",
+            "dataType": "string",
+            "sourceColumn": "toimipisteen_kunta_fi",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "toimipisteen_maakunta_fi",
+            "dataType": "string",
+            "sourceColumn": "toimipisteen_maakunta_fi",
+            "sortByColumn": "jarjestys_toimipisteen_maakunta",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "jarjestys_toimipisteen_maakunta",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "jarjestys_toimipisteen_maakunta",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "koodit_opetuksen_jarjestaja",
+            "dataType": "string",
+            "sourceColumn": "koodit_opetuksen_jarjestaja",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "koodit_oppilaitos",
+            "dataType": "string",
+            "sourceColumn": "koodit_oppilaitos",
+            "sourceProviderType": "Char"
+          },
+          {
+            "name": "toimipisteen_kunta_sv",
+            "dataType": "string",
+            "sourceColumn": "toimipisteen_kunta_sv",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "toimipisteen_maakunta_sv",
+            "dataType": "string",
+            "sourceColumn": "toimipisteen_maakunta_sv",
+            "sortByColumn": "jarjestys_toimipisteen_maakunta",
+            "sourceProviderType": "WChar"
           }
         ],
         "partitions": [
@@ -1066,15 +1111,15 @@
             "isHidden": true
           },
           {
-            "name": "erityisen_tuen_oppilaat",
-            "expression": "CALCULATE([oppilaat], KEEPFILTERS(Muuttujat[erityisen_tuen_paatos_fi] = \"Kyllä\"))",
+            "name": "pidennetyn_oppivelvollisuuden_oppilaat",
+            "expression": "CALCULATE([oppilaat], KEEPFILTERS(Muuttujat[pidennetty_oppivelvollisuus_fi] = \"Kyllä\"))",
             "formatString": "#,0"
           },
           {
-            "name": "erityisen_tuen_oppilaat_pros",
+            "name": "pidennetyn_oppivelvollisuuden_oppilaat_pros",
             "expression": [
               "",
-              "var osa = [erityisen_tuen_oppilaat]",
+              "var osa = [pidennetyn_oppivelvollisuuden_oppilaat]",
               "var kaikki = [oppilaat]",
               "return IF(osa = BLANK(), BLANK(),",
               "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
@@ -1085,15 +1130,15 @@
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
           {
-            "name": "pidennetyn_oppivelvollisuuden_oppilaat",
-            "expression": "CALCULATE([oppilaat], KEEPFILTERS(Muuttujat[pidennetty_oppivelvollisuus_fi] = \"Kyllä\"))",
+            "name": "oppilaat_joilla_on_erityisen_tuen_paatos",
+            "expression": "CALCULATE([oppilaat], KEEPFILTERS(Muuttujat[erityisen_tuen_paatos_fi] = \"Kyllä\"))",
             "formatString": "#,0"
           },
           {
-            "name": "pidennetyn_oppivelvollisuuden_oppilaat_pros",
+            "name": "oppilaat_joilla_on_erityisen_tuen_paatos_pros",
             "expression": [
               "",
-              "var osa = [pidennetyn_oppivelvollisuuden_oppilaat]",
+              "var osa = [oppilaat_joilla_on_erityisen_tuen_paatos]",
               "var kaikki = [oppilaat]",
               "return IF(osa = BLANK(), BLANK(),",
               "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
@@ -5011,6 +5056,26 @@
                     "name": "erityinen_maailmankatsomus_tai_kasvatusopillinen_jarjestelma_sv",
                     "translatedCaption": "Särskild världsåskådning eller pedagogiskt system",
                     "translatedDisplayFolder": "Organisationsvariabler"
+                  },
+                  {
+                    "name": "toimipisteen_kunta_fi",
+                    "translatedCaption": "Toimipisteen kunta",
+                    "translatedDisplayFolder": "Organisaatiomuuttujat"
+                  },
+                  {
+                    "name": "toimipisteen_maakunta_fi",
+                    "translatedCaption": "Toimipisteen maakunta",
+                    "translatedDisplayFolder": "Organisaatiomuuttujat"
+                  },
+                  {
+                    "name": "koodit_opetuksen_jarjestaja",
+                    "translatedCaption": "Koodit Opetuksen järjestäjä",
+                    "translatedDisplayFolder": "Koodimuuttujat"
+                  },
+                  {
+                    "name": "koodit_oppilaitos",
+                    "translatedCaption": "Koodit Oppilaitos",
+                    "translatedDisplayFolder": "Koodimuuttujat"
                   }
                 ],
                 "measures": [
@@ -5027,20 +5092,20 @@
                     "translatedCaption": "Oppilaat"
                   },
                   {
-                    "name": "erityisen_tuen_oppilaat",
-                    "translatedCaption": "Oppilaat, joilla on erityisen tuen päätös"
-                  },
-                  {
-                    "name": "erityisen_tuen_oppilaat_pros",
-                    "translatedCaption": "Oppilaat, joilla on erityisen tuen päätös %"
-                  },
-                  {
                     "name": "pidennetyn_oppivelvollisuuden_oppilaat",
                     "translatedCaption": "Pidennetyn oppivelvollisuuden oppilaat"
                   },
                   {
                     "name": "pidennetyn_oppivelvollisuuden_oppilaat_pros",
                     "translatedCaption": "Pidennetyn oppivelvollisuuden oppilaat %"
+                  },
+                  {
+                    "name": "oppilaat_joilla_on_erityisen_tuen_paatos",
+                    "translatedCaption": "Oppilaat, joilla on erityisen tuen päätös"
+                  },
+                  {
+                    "name": "oppilaat_joilla_on_erityisen_tuen_paatos_pros",
+                    "translatedCaption": "Oppilaat, joilla on erityisen tuen päätös %"
                   },
                   {
                     "name": "oppilaat_joilla_on_tukea_koskeva_paatos_pol_20_f",
@@ -5709,6 +5774,26 @@
                     "name": "erityinen_maailmankatsomus_tai_kasvatusopillinen_jarjestelma_sv",
                     "translatedCaption": "Särskild världsåskådning eller pedagogiskt system",
                     "translatedDisplayFolder": "Organisationsvariabler"
+                  },
+                  {
+                    "name": "koodit_opetuksen_jarjestaja",
+                    "translatedCaption": "Kod Utbildningsanordnare",
+                    "translatedDisplayFolder": "Kodvariabler"
+                  },
+                  {
+                    "name": "koodit_oppilaitos",
+                    "translatedCaption": "Kod Läroanstalt",
+                    "translatedDisplayFolder": "Kodvariabler"
+                  },
+                  {
+                    "name": "toimipisteen_kunta_sv",
+                    "translatedCaption": "Verksamhetsställets kommun",
+                    "translatedDisplayFolder": "Organisationsvariabler"
+                  },
+                  {
+                    "name": "toimipisteen_maakunta_sv",
+                    "translatedCaption": "Verksamhetsställets landskap",
+                    "translatedDisplayFolder": "Organisationsvariabler"
                   }
                 ],
                 "measures": [
@@ -5725,14 +5810,6 @@
                     "translatedCaption": "Elever"
                   },
                   {
-                    "name": "erityisen_tuen_oppilaat",
-                    "translatedCaption": "Elever som omfattas av särskilt stöd"
-                  },
-                  {
-                    "name": "erityisen_tuen_oppilaat_pros",
-                    "translatedCaption": "Elever som omfattas av särskilt stöd %"
-                  },
-                  {
                     "name": "pidennetyn_oppivelvollisuuden_oppilaat",
                     "translatedCaption": "Elever med förlängd läroplikt"
                   },
@@ -5741,12 +5818,20 @@
                     "translatedCaption": "Elever med förlängd läroplikt %"
                   },
                   {
+                    "name": "oppilaat_joilla_on_erityisen_tuen_paatos",
+                    "translatedCaption": "Elever som har ett beslut om särskilt stöd"
+                  },
+                  {
+                    "name": "oppilaat_joilla_on_erityisen_tuen_paatos_pros",
+                    "translatedCaption": "Elever som har ett beslut om särskilt stöd %"
+                  },
+                  {
                     "name": "oppilaat_joilla_on_tukea_koskeva_paatos_pol_20_f",
-                    "translatedCaption": "Oppilaat, joilla on tukea koskeva päätös (POL 20 f)*SV"
+                    "translatedCaption": "Elever som har ett beslut om stöd (Lag om grundläggande utbildning 20 f §)"
                   },
                   {
                     "name": "oppilaat_joilla_on_tukea_koskeva_paatos_pol_20_f_pros",
-                    "translatedCaption": "Oppilaat, joilla on tukea koskeva päätös (POL 20 f) %*SV"
+                    "translatedCaption": "Elever som har ett beslut om stöd (Lag om grundläggande utbildning 20 f §) %"
                   }
                 ]
               }
@@ -5823,9 +5908,6 @@
                 "name": "oppilaitos_fi"
               },
               {
-                "name": "oppilaitosnumero_fi"
-              },
-              {
                 "name": "oppilaitostyyppi_fi"
               },
               {
@@ -5866,6 +5948,18 @@
               },
               {
                 "name": "erityinen_maailmankatsomus_tai_kasvatusopillinen_jarjestelma_fi"
+              },
+              {
+                "name": "toimipisteen_kunta_fi"
+              },
+              {
+                "name": "koodit_opetuksen_jarjestaja"
+              },
+              {
+                "name": "koodit_oppilaitos"
+              },
+              {
+                "name": "toimipisteen_maakunta_fi"
               }
             ],
             "measures": [
@@ -5943,9 +6037,6 @@
                 "name": "oppilaitos_sv"
               },
               {
-                "name": "oppilaitosnumero_sv"
-              },
-              {
                 "name": "oppilaitostyyppi_sv"
               },
               {
@@ -5986,6 +6077,18 @@
               },
               {
                 "name": "erityinen_maailmankatsomus_tai_kasvatusopillinen_jarjestelma_sv"
+              },
+              {
+                "name": "toimipisteen_kunta_sv"
+              },
+              {
+                "name": "koodit_opetuksen_jarjestaja"
+              },
+              {
+                "name": "koodit_oppilaitos"
+              },
+              {
+                "name": "toimipisteen_maakunta_sv"
               }
             ],
             "measures": [
@@ -6063,9 +6166,6 @@
                 "name": "oppilaitos_fi"
               },
               {
-                "name": "oppilaitosnumero_fi"
-              },
-              {
                 "name": "oppilaitostyyppi_fi"
               },
               {
@@ -6094,6 +6194,18 @@
               },
               {
                 "name": "erityinen_maailmankatsomus_tai_kasvatusopillinen_jarjestelma_fi"
+              },
+              {
+                "name": "toimipisteen_kunta_fi"
+              },
+              {
+                "name": "koodit_opetuksen_jarjestaja"
+              },
+              {
+                "name": "koodit_oppilaitos"
+              },
+              {
+                "name": "toimipisteen_maakunta_fi"
               }
             ],
             "measures": [
@@ -6171,9 +6283,6 @@
                 "name": "oppilaitos_sv"
               },
               {
-                "name": "oppilaitosnumero_sv"
-              },
-              {
                 "name": "oppilaitostyyppi_sv"
               },
               {
@@ -6202,6 +6311,18 @@
               },
               {
                 "name": "erityinen_maailmankatsomus_tai_kasvatusopillinen_jarjestelma_sv"
+              },
+              {
+                "name": "toimipisteen_kunta_sv"
+              },
+              {
+                "name": "koodit_opetuksen_jarjestaja"
+              },
+              {
+                "name": "koodit_oppilaitos"
+              },
+              {
+                "name": "toimipisteen_maakunta_sv"
               }
             ],
             "measures": [
@@ -6293,12 +6414,6 @@
             ],
             "measures": [
               {
-                "name": "erityisen_tuen_oppilaat"
-              },
-              {
-                "name": "erityisen_tuen_oppilaat_pros"
-              },
-              {
                 "name": "kaikki_oppilaat"
               },
               {
@@ -6306,6 +6421,12 @@
               },
               {
                 "name": "pidennetyn_oppivelvollisuuden_oppilaat_pros"
+              },
+              {
+                "name": "oppilaat_joilla_on_erityisen_tuen_paatos"
+              },
+              {
+                "name": "oppilaat_joilla_on_erityisen_tuen_paatos_pros"
               },
               {
                 "name": "oppilaat_joilla_on_tukea_koskeva_paatos_pol_20_f"
@@ -6398,12 +6519,6 @@
             ],
             "measures": [
               {
-                "name": "erityisen_tuen_oppilaat"
-              },
-              {
-                "name": "erityisen_tuen_oppilaat_pros"
-              },
-              {
                 "name": "kaikki_oppilaat"
               },
               {
@@ -6411,6 +6526,18 @@
               },
               {
                 "name": "pidennetyn_oppivelvollisuuden_oppilaat_pros"
+              },
+              {
+                "name": "oppilaat_joilla_on_erityisen_tuen_paatos"
+              },
+              {
+                "name": "oppilaat_joilla_on_erityisen_tuen_paatos_pros"
+              },
+              {
+                "name": "oppilaat_joilla_on_tukea_koskeva_paatos_pol_20_f"
+              },
+              {
+                "name": "oppilaat_joilla_on_tukea_koskeva_paatos_pol_20_f_pros"
               }
             ]
           }
@@ -6555,6 +6682,10 @@
           {
             "memberName": "DWI\\Z_DWIPVIPURD_Allow_F_Drive",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5333"
+          },
+          {
+            "memberName": "DWI\\Z_DWIPVIPURD_Allow_All_Drives",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5673"
           }
         ]
       },
@@ -6573,6 +6704,10 @@
           {
             "memberName": "DWI\\Z_DWIPVIPURD_Allow_F_Drive",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5333"
+          },
+          {
+            "memberName": "DWI\\Z_DWIPVIPURD_Allow_All_Drives",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5673"
           }
         ]
       }
