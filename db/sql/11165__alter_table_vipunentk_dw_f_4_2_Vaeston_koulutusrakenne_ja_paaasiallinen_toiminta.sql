@@ -8,8 +8,8 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_VKP_4_2_Vaeston_koulutusrakenne_ja_paaasiallinen_toiminta]') AND type in (N'U'))
-  DROP TABLE [dbo].[f_VKP_4_2_Vaeston_koulutusrakenne_ja_paaasiallinen_toiminta]
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[f_4_2_Vaeston_koulutusrakenne_ja_paaasiallinen_toiminta]') AND type in (N'U'))
+  DROP TABLE [dbo].[f_4_2_Vaeston_koulutusrakenne_ja_paaasiallinen_toiminta]
 GO
 
 CREATE TABLE [dbo].[f_4_2_Vaeston_koulutusrakenne_ja_paaasiallinen_toiminta](
