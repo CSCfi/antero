@@ -294,6 +294,7 @@
             "name": "Vaativa erityinen tuki",
             "dataType": "string",
             "sourceColumn": "Vaativa erityinen tuki",
+            "sortByColumn": "jarjestys Vaativa erityinen tuki",
             "displayFolder": "Koulutusmuuttujat"
           },
           {
@@ -319,14 +320,14 @@
             "name": "Tutkintotyyppi (rahoitus)",
             "dataType": "string",
             "sourceColumn": "Tutkintotyyppi (rahoitus)",
-            "sortByColumn": "jarjestys Tutkintotyyppi rahoitus",
+            "sortByColumn": "jarjestys Tutkintotyyppi (rahoitus)",
             "displayFolder": "Koulutusmuuttujat"
           },
           {
-            "name": "jarjestys Tutkintotyyppi rahoitus",
+            "name": "jarjestys Tutkintotyyppi (rahoitus)",
             "dataType": "int64",
             "isHidden": true,
-            "sourceColumn": "jarjestys Tutkintotyyppi rahoitus"
+            "sourceColumn": "jarjestys Tutkintotyyppi (rahoitus)"
           },
           {
             "name": "Tutkinto",
@@ -349,7 +350,7 @@
           },
           {
             "name": "jarj_koulutusala_taso1",
-            "dataType": "int64",
+            "dataType": "string",
             "isHidden": true,
             "sourceColumn": "jarj_koulutusala_taso1"
           },
@@ -362,7 +363,7 @@
           },
           {
             "name": "jarj_koulutusala_taso2",
-            "dataType": "int64",
+            "dataType": "string",
             "isHidden": true,
             "sourceColumn": "jarj_koulutusala_taso2"
           },
@@ -375,7 +376,7 @@
           },
           {
             "name": "jarj_koulutusala_taso3",
-            "dataType": "int64",
+            "dataType": "string",
             "isHidden": true,
             "sourceColumn": "jarj_koulutusala_taso3"
           },
@@ -394,23 +395,18 @@
           },
           {
             "name": "Ei maksuttomien opiskelijavuosien enimmäismäärä",
-            "dataType": "int64",
+            "dataType": "string",
             "sourceColumn": "Ei maksuttomien opiskelijavuosien enimmäismäärä",
             "formatString": "#,0",
-            "displayFolder": "Järjestämislupamuuttujat"
-          },
-          {
-            "name": "Sisäoppilaitosmuotoisen majoituksen opiskelijavuosien enimmäismäärä",
-            "dataType": "int64",
-            "sourceColumn": "Sisäoppilaitosmuotoisen majoituksen opiskelijavuosien enimmäismäärä",
-            "formatString": "#,0",
+            "sortByColumn": "jarjestys Ei maksuttomien opiskelijavuosien enimmäismäärä",
             "displayFolder": "Järjestämislupamuuttujat"
           },
           {
             "name": "Vaativan erityisen tuen opiskelijavuosien enimmäismäärä",
-            "dataType": "int64",
+            "dataType": "string",
             "sourceColumn": "Vaativan erityisen tuen opiskelijavuosien enimmäismäärä",
             "formatString": "#,0",
+            "sortByColumn": "jarjestys Vaativan erityisen tuen opiskelijavuosien enimmäismäärä",
             "displayFolder": "Järjestämislupamuuttujat"
           },
           {
@@ -645,14 +641,42 @@
             "dataType": "string",
             "sourceColumn": "Ikä 20/alle/yli",
             "displayFolder": "Henkilömuuttujat"
+          },
+          {
+            "name": "jarjestys Vaativa erityinen tuki",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "jarjestys Vaativa erityinen tuki"
+          },
+          {
+            "name": "jarjestys Ei maksuttomien opiskelijavuosien enimmäismäärä",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "jarjestys Ei maksuttomien opiskelijavuosien enimmäismäärä"
+          },
+          {
+            "name": "jarjestys Vaativan erityisen tuen opiskelijavuosien enimmäismäärä",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "jarjestys Vaativan erityisen tuen opiskelijavuosien enimmäismäärä"
+          },
+          {
+            "name": "apusarake_suppea_sisalto_1_0",
+            "dataType": "double",
+            "sourceColumn": "apusarake_suppea_sisalto_1_0"
+          },
+          {
+            "name": "apusarake_laaja_sisalto_1_0",
+            "dataType": "double",
+            "sourceColumn": "apusarake_laaja_sisalto_1_0"
           }
         ],
         "partitions": [
           {
-            "name": "Muuttujat",
+            "name": "0",
             "source": {
               "type": "query",
-              "query": " SELECT * FROM [dw].[v_amos_koonti] ",
+              "query": " SELECT * FROM [dw].[v_amos_koonti_2026] ",
               "dataSource": "SqlServer dwitvipusql22 ANTERO"
             },
             "annotations": [
@@ -2163,9 +2187,15 @@
             "name": "Koulutuksen suorittaneet",
             "expression": [
               " --jo näkymässä vain ennen koulutusta ei. työll.",
-              "var lkm = SUM(Muuttujat[apusarake_lkm])",
-              "return IF(lkm > 0, lkm)",
-              "--return IF(lkm = 0, BLANK(), IF(lkm < 5, 2.5, MROUND(lkm, 3))) --laajempaa raporttiversiota varten suojaus"
+              "",
+              "var ehto_s = SELECTEDVALUE(Muuttujat[apusarake_suppea_sisalto_1_0]) == 1",
+              "var ehto = SELECTEDVALUE(Muuttujat[apusarake_laaja_sisalto_1_0]) == 1",
+              "",
+              "var lkm_raaka = SUM(Muuttujat[apusarake_lkm])",
+              "var lkm_s = IF(lkm_raaka = 0, BLANK(), lkm_raaka)",
+              "var lkm = IF(lkm_raaka = 0, BLANK(), IF(lkm_raaka < 5, 2.5, MROUND(lkm_raaka, 3)))",
+              "",
+              "return IF(ehto_s, lkm_s, IF(ehto, lkm, BLANK()))"
             ],
             "formatString": "#,0.0",
             "isHidden": true,
