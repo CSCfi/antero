@@ -1,9 +1,8 @@
 USE [ANTERO]
 GO
 
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[d_amos_pohjakoulutus]') AND type in (N'U'))
-DROP TABLE [dw].[d_amos_pohjakoulutus]
-;
+DROP TABLE IF EXISTS [dw].[d_amos_pohjakoulutus]
+GO
 
 CREATE TABLE [dw].[d_amos_pohjakoulutus](
 	[id] [int] IDENTITY(1,1) NOT NULL,
