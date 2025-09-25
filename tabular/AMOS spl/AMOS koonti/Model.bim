@@ -221,13 +221,6 @@
             "displayFolder": "Koulutusmuuttujat"
           },
           {
-            "name": "Opiskelijavuoden tyyppi",
-            "dataType": "string",
-            "sourceColumn": "Opiskelijavuoden tyyppi",
-            "sortByColumn": "jarj Opiskelijavuoden tyyppi",
-            "displayFolder": "Rahoitusmallimuuttujat"
-          },
-          {
             "name": "Ikä (maksuttomuusraja)",
             "dataType": "string",
             "sourceColumn": "Ikä (maksuttomuusraja)",
@@ -443,12 +436,6 @@
             "sourceColumn": "apusarake_opiskelijavuodet_painottamaton"
           },
           {
-            "name": "apusarake_opiskelijavuodet_painotettu",
-            "dataType": "double",
-            "isHidden": true,
-            "sourceColumn": "apusarake_opiskelijavuodet_painotettu"
-          },
-          {
             "name": "apusarake_opv_ei_maksuton_kerroin",
             "dataType": "double",
             "isHidden": true,
@@ -460,12 +447,6 @@
             "sourceColumn": "Hyväksytyt/hylätyt opiskelijavuodet",
             "sortByColumn": "jarj Hyväksytyt/hylätyt opiskelijavuodet",
             "displayFolder": "Rahoitusmallimuuttujat"
-          },
-          {
-            "name": "jarj Opiskelijavuoden tyyppi",
-            "dataType": "int64",
-            "isHidden": true,
-            "sourceColumn": "jarj Opiskelijavuoden tyyppi"
           },
           {
             "name": "jarj Hyväksytyt/hylätyt opiskelijavuodet",
@@ -669,6 +650,30 @@
             "dataType": "string",
             "sourceColumn": "Maksuttomuus (rahoitus)",
             "displayFolder": "Koulutusmuuttujat"
+          },
+          {
+            "name": "apusarake_opiskelijavuodet_painotettu_lahtotaso",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "apusarake_opiskelijavuodet_painotettu_lahtotaso"
+          },
+          {
+            "name": "apusarake_opiskelijavuodet_painotettu_kustannusryhma",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "apusarake_opiskelijavuodet_painotettu_kustannusryhma"
+          },
+          {
+            "name": "apusarake_opiskelijavuodet_painotettu_erityistuki",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "apusarake_opiskelijavuodet_painotettu_erityistuki"
+          },
+          {
+            "name": "apusarake_opiskelijavuodet_painotettu_majoitus",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "apusarake_opiskelijavuodet_painotettu_majoitus"
           }
         ],
         "partitions": [
@@ -1067,10 +1072,10 @@
             "name": "Painotetut opiskelijavuodet (kust.ryhmä, tutk.tyyppi, korotukset), lkm",
             "expression": [
               "",
-              "CALCULATE(",
-              "\t[Painotetut opiskelijavuodet, lkm]",
-              "\t,FILTER(VALUES(Muuttujat[Opiskelijavuoden tyyppi]), Muuttujat[Opiskelijavuoden tyyppi]<>\"Lähtötason mukaan painotetut opiskelijavuodet\")",
-              ")"
+              "var summa = CALCULATE(SUM(Muuttujat[apusarake_opiskelijavuodet_painotettu_kustannusryhma]))",
+              "\t+ CALCULATE(SUM(Muuttujat[apusarake_opiskelijavuodet_painotettu_erityistuki]))",
+              "\t+ CALCULATE(SUM(Muuttujat[apusarake_opiskelijavuodet_painotettu_majoitus]))",
+              "return IF(summa=0, BLANK(), summa)"
             ],
             "formatString": "#,0.00",
             "displayFolder": "Opiskelijavuodet\\Painotettu (kust.ryhmä, tutk.tyyppi, korotukset)"
@@ -1079,10 +1084,10 @@
             "name": "Painotetut rahoituksen perusteena olevat opiskelijavuodet (kust.ryhmä, tutk.tyyppi, korotukset), lkm",
             "expression": [
               "",
-              "CALCULATE(",
-              "\t[Painotetut rahoituksen perusteena olevat opiskelijavuodet, lkm]",
-              "\t,FILTER(VALUES(Muuttujat[Opiskelijavuoden tyyppi]), Muuttujat[Opiskelijavuoden tyyppi]<>\"Lähtötason mukaan painotetut opiskelijavuodet\")",
-              ")"
+              "var summa = CALCULATE(SUMX(Muuttujat, [apusarake_opv_ei_maksuton_kerroin] * [apusarake_opiskelijavuodet_painotettu_kustannusryhma]))",
+              "\t+ CALCULATE(SUMX(Muuttujat, [apusarake_opv_ei_maksuton_kerroin] * [apusarake_opiskelijavuodet_painotettu_erityistuki]))",
+              "\t+ CALCULATE(SUMX(Muuttujat, [apusarake_opv_ei_maksuton_kerroin] * [apusarake_opiskelijavuodet_painotettu_majoitus]))",
+              "return IF(summa=0, BLANK(), summa)"
             ],
             "formatString": "#,0.00",
             "displayFolder": "Opiskelijavuodet\\Painotettu (kust.ryhmä, tutk.tyyppi, korotukset)"
@@ -1109,10 +1114,8 @@
             "name": "Painotetut opiskelijavuodet (lähtötaso), lkm",
             "expression": [
               "",
-              "CALCULATE(",
-              "\t[Painotetut opiskelijavuodet, lkm]",
-              "\t,FILTER(VALUES(Muuttujat[Opiskelijavuoden tyyppi]), Muuttujat[Opiskelijavuoden tyyppi]=\"Lähtötason mukaan painotetut opiskelijavuodet\")",
-              ")"
+              "var summa = CALCULATE(SUM(Muuttujat[apusarake_opiskelijavuodet_painotettu_lahtotaso]))",
+              "return IF(summa=0, BLANK(), summa)"
             ],
             "formatString": "#,0.00",
             "displayFolder": "Opiskelijavuodet\\Painotettu (lähtötaso)"
@@ -1121,10 +1124,8 @@
             "name": "Painotetut rahoituksen perusteena olevat opiskelijavuodet (lähtötaso), lkm",
             "expression": [
               "",
-              "CALCULATE(",
-              "\t[Painotetut rahoituksen perusteena olevat opiskelijavuodet, lkm]",
-              "\t,FILTER(VALUES(Muuttujat[Opiskelijavuoden tyyppi]), Muuttujat[Opiskelijavuoden tyyppi]=\"Lähtötason mukaan painotetut opiskelijavuodet\")",
-              ")"
+              "var summa = CALCULATE(SUMX(Muuttujat, [apusarake_opv_ei_maksuton_kerroin] * [apusarake_opiskelijavuodet_painotettu_lahtotaso]))",
+              "return IF(summa=0, BLANK(), summa)"
             ],
             "formatString": "#,0.00",
             "displayFolder": "Opiskelijavuodet\\Painotettu (lähtötaso)"
@@ -1624,25 +1625,6 @@
             ],
             "formatString": "0.00 %;-0.00 %;0.00 %",
             "displayFolder": "Kokonaisrahoitus"
-          },
-          {
-            "name": "Painotetut opiskelijavuodet, lkm",
-            "expression": [
-              "",
-              "sum([apusarake_opiskelijavuodet_painotettu])"
-            ],
-            "formatString": "0.00",
-            "isHidden": true
-          },
-          {
-            "name": "Painotetut rahoituksen perusteena olevat opiskelijavuodet, lkm",
-            "expression": [
-              "",
-              "var summa = CALCULATE(SUMX(Muuttujat, [apusarake_opv_ei_maksuton_kerroin] * [apusarake_opiskelijavuodet_painotettu]))",
-              "return IF(summa=0, BLANK(), summa)"
-            ],
-            "formatString": "0.00",
-            "isHidden": true
           }
         ],
         "annotations": [
@@ -3118,9 +3100,6 @@
               },
               {
                 "name": "Majoitus"
-              },
-              {
-                "name": "Opiskelijavuoden tyyppi"
               },
               {
                 "name": "Rahoitusmuoto"

@@ -185,13 +185,6 @@
             "displayFolder": "Henkilömuuttujat"
           },
           {
-            "name": "Ikä (maksuttomuusraja)",
-            "dataType": "string",
-            "sourceColumn": "Ikä (maksuttomuusraja)",
-            "sourceProviderType": "WChar",
-            "displayFolder": "Henkilömuuttujat"
-          },
-          {
             "name": "Ikäryhmä",
             "dataType": "string",
             "sourceColumn": "Ikäryhmä",
@@ -484,24 +477,6 @@
             "sourceColumn": "painottamaton"
           },
           {
-            "name": "painotettu",
-            "dataType": "double",
-            "isHidden": true,
-            "sourceColumn": "painotettu"
-          },
-          {
-            "name": "hylatty",
-            "dataType": "double",
-            "isHidden": true,
-            "sourceColumn": "hylatty"
-          },
-          {
-            "name": "jarj_painotuksen_tyyppi",
-            "dataType": "int64",
-            "isHidden": true,
-            "sourceColumn": "jarj_painotuksen_tyyppi"
-          },
-          {
             "name": "Suorituskieli",
             "dataType": "string",
             "sourceColumn": "Suorituskieli",
@@ -528,12 +503,6 @@
             "sourceColumn": "jarj_suorituskieli_luvanmukainen"
           },
           {
-            "name": "Opiskelijavuoden tyyppi",
-            "dataType": "string",
-            "sourceColumn": "Opiskelijavuoden tyyppi",
-            "displayFolder": "Rahoitusmallimuuttujat"
-          },
-          {
             "name": "Toimipisteen kunta",
             "dataType": "string",
             "sourceColumn": "Toimipisteen kunta",
@@ -550,21 +519,6 @@
             "name": "Hankintakoulutuksen järjestäjän kunta",
             "dataType": "string",
             "sourceColumn": "Hankintakoulutuksen järjestäjän kunta"
-          },
-          {
-            "name": "Koodit Koulutuksen järjestäjän kunta",
-            "dataType": "string",
-            "sourceColumn": "Koodit Koulutuksen järjestäjän kunta"
-          },
-          {
-            "name": "Koodit Hankintakoulutuksen järjestäjän kunta",
-            "dataType": "string",
-            "sourceColumn": "Koodit Hankintakoulutuksen järjestäjän kunta"
-          },
-          {
-            "name": "Koodit Oppilaitoksen kunta",
-            "dataType": "string",
-            "sourceColumn": "Koodit Oppilaitoksen kunta"
           },
           {
             "name": "jarjestys_toimipisteen_maakunta",
@@ -606,12 +560,6 @@
             "sourceColumn": "Vaativa erityinen tuki",
             "sortByColumn": "jarjestys Vaativa erityinen tuki",
             "displayFolder": "Koulutusmuuttujat"
-          },
-          {
-            "name": "jarjestys Vaativa erityinen tuki",
-            "dataType": "int64",
-            "isHidden": true,
-            "sourceColumn": "jarjestys Vaativa erityinen tuki"
           },
           {
             "name": "Maksuttomuus (simulointi)",
@@ -791,6 +739,43 @@
             "dataType": "string",
             "sourceColumn": "Maksuttomuus (rahoitus)",
             "displayFolder": "Koulutusmuuttujat"
+          },
+          {
+            "name": "Ikä (maksuttomuusraja)",
+            "dataType": "string",
+            "sourceColumn": "Ikä (maksuttomuusraja)",
+            "sourceProviderType": "WChar",
+            "displayFolder": "Henkilömuuttujat"
+          },
+          {
+            "name": "jarjestys Vaativa erityinen tuki",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "jarjestys Vaativa erityinen tuki"
+          },
+          {
+            "name": "painotettu_lahtotaso",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "painotettu_lahtotaso"
+          },
+          {
+            "name": "painotettu_kustannusryhma",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "painotettu_kustannusryhma"
+          },
+          {
+            "name": "painotettu_erityistuki",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "painotettu_erityistuki"
+          },
+          {
+            "name": "painotettu_majoitus",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "painotettu_majoitus"
           }
         ],
         "partitions": [
@@ -809,22 +794,6 @@
           }
         ],
         "measures": [
-          {
-            "name": "Hylätyt opiskelijavuodet, ka",
-            "expression": "0.5 * CALCULATE(SUM([hylatty]))",
-            "formatString": "#,0.00",
-            "isHidden": true
-          },
-          {
-            "name": "Hylätyt opiskelijavuodet",
-            "expression": [
-              "",
-              "var summa = CALCULATE(SUM([hylatty]))",
-              "return IF(summa=0,BLANK(),summa)"
-            ],
-            "formatString": "#,0.00",
-            "isHidden": true
-          },
           {
             "name": "Painottamattomat enimmäismäärän mukaiset opiskelijavuodet, ka",
             "expression": "0.5 * [Painottamattomat enimmäismäärän mukaiset opiskelijavuodet, lkm]",
@@ -879,7 +848,7 @@
             "name": "Lähtötason mukaan painotetut rahoituksen perusteena olevat opiskelijavuodet, lkm",
             "expression": [
               "",
-              "var summa = CALCULATE(SUMX(Muuttujat, [opv_ei_maksuton_kerroin] * [painotettu]))",
+              "var summa = CALCULATE(SUMX(Muuttujat, [opv_ei_maksuton_kerroin] * [painotettu_lahtotaso]))",
               "return IF(summa=0,BLANK(),summa)"
             ],
             "formatString": "#,0.00"
@@ -913,18 +882,7 @@
             "name": "Kust.ryhm. ja tutk.tyyp. mukaan painotetut rahoituksen perusteena olevat opiskelijavuodet, lkm",
             "expression": [
               "",
-              "var summa = CALCULATE(",
-              "\tSUMX(Muuttujat, [opv_ei_maksuton_kerroin] * [painotettu])",
-              "\t, FILTER(",
-              "\t\tVALUES(Muuttujat[Opiskelijavuoden tyyppi])",
-              "\t\t, Muuttujat[Opiskelijavuoden tyyppi] in {",
-              "\t\t\t\"Kustannusryhmän mukaan painotetut at- ja eat-tutkinnon opiskelijavuodet\"",
-              "\t\t\t, \"Kustannusryhmän mukaan painotetut muun koulutuksen opiskelijavuodet\"",
-              "\t\t\t, \"Kustannusryhmän mukaan painotetut perustutkinnon opiskelijavuodet\"",
-              "\t\t\t, \"Kustannusryhmän mukaan painotetut valmentavan koulutuksen opiskelijavuodet\"",
-              "\t\t}",
-              "\t)",
-              ")",
+              "var summa = CALCULATE(SUMX(Muuttujat, [opv_ei_maksuton_kerroin] * [painotettu_kustannusryhma]))",
               "return IF(summa=0,BLANK(),summa)"
             ],
             "formatString": "#,0.00"
@@ -938,7 +896,7 @@
             "name": "Majoituksen mukaan painotetut rahoituksen perusteena olevat opiskelijavuodet, lkm",
             "expression": [
               "",
-              "var summa = CALCULATE(SUMX(Muuttujat, [opv_ei_maksuton_kerroin] * [painotettu]), FILTER(VALUES(Muuttujat[Opiskelijavuoden tyyppi]), Muuttujat[Opiskelijavuoden tyyppi]=\"Majoituksen mukaan painotetut opiskelijavuodet\"))",
+              "var summa = CALCULATE(SUMX(Muuttujat, [opv_ei_maksuton_kerroin] * [painotettu_majoitus]))",
               "return IF(summa=0,BLANK(),summa)"
             ],
             "formatString": "#,0.00"
@@ -952,7 +910,7 @@
             "name": "Vaativan erityisen tuen mukaan painotetut rahoituksen perusteena olevat opiskelijavuodet, lkm",
             "expression": [
               "",
-              "var summa = CALCULATE(SUMX(Muuttujat, [opv_ei_maksuton_kerroin] * [painotettu]), FILTER(VALUES(Muuttujat[Opiskelijavuoden tyyppi]), Muuttujat[Opiskelijavuoden tyyppi]=\"Erityistuen mukaan painotetut opiskelijavuodet\"))",
+              "var summa = CALCULATE(SUMX(Muuttujat, [opv_ei_maksuton_kerroin] * [painotettu_erityistuki]))",
               "return IF(summa=0,BLANK(),summa)"
             ],
             "formatString": "#,0.00"
@@ -990,7 +948,6 @@
             "name": "Painotetut rahoituksen perusteena olevat opiskelijavuodet (kust.ryhmä, tutk.tyyppi, korotukset), lkm",
             "expression": [
               "",
-              "--var summa = CALCULATE(SUMX(Muuttujat, [opv_ei_maksuton_kerroin] * [painotettu]), FILTER(VALUES(Muuttujat[Opiskelijavuoden tyyppi]), Muuttujat[Opiskelijavuoden tyyppi]<>\"Lähtötason mukaan painotetut opiskelijavuodet\"))",
               "var summa = [Kust.ryhm. ja tutk.tyyp. mukaan painotetut rahoituksen perusteena olevat opiskelijavuodet, lkm]",
               "\t+ [Majoituksen mukaan painotetut rahoituksen perusteena olevat opiskelijavuodet, lkm]",
               "\t+ [Vaativan erityisen tuen mukaan painotetut rahoituksen perusteena olevat opiskelijavuodet, lkm]",
@@ -1031,7 +988,7 @@
             "name": "Lähtötason mukaan painotetut opiskelijavuodet, lkm",
             "expression": [
               "",
-              "var summa = CALCULATE(SUM(Muuttujat[painotettu]))",
+              "var summa = CALCULATE(SUM(Muuttujat[painotettu_lahtotaso]))",
               "return IF(summa=0,BLANK(),summa)"
             ],
             "formatString": "#,0.00"
@@ -1152,9 +1109,6 @@
                 "name": "Ikä"
               },
               {
-                "name": "Ikä (maksuttomuusraja)"
-              },
-              {
                 "name": "Ikäryhmä"
               },
               {
@@ -1287,9 +1241,6 @@
                 "name": "Luvanmukainen suorituskieli"
               },
               {
-                "name": "Opiskelijavuoden tyyppi"
-              },
-              {
                 "name": "Toimipisteen kunta"
               },
               {
@@ -1351,6 +1302,9 @@
               },
               {
                 "name": "Perusop. keskiarvoluokka 2"
+              },
+              {
+                "name": "Ikä (maksuttomuusraja)"
               }
             ],
             "measures": [
@@ -1454,9 +1408,6 @@
                 "name": "Ikä"
               },
               {
-                "name": "Ikä (maksuttomuusraja)"
-              },
-              {
                 "name": "Ikäryhmä"
               },
               {
@@ -1589,9 +1540,6 @@
                 "name": "Luvanmukainen suorituskieli"
               },
               {
-                "name": "Opiskelijavuoden tyyppi"
-              },
-              {
                 "name": "Toimipisteen kunta"
               },
               {
@@ -1653,6 +1601,9 @@
               },
               {
                 "name": "Perusop. keskiarvoluokka 2"
+              },
+              {
+                "name": "Ikä (maksuttomuusraja)"
               }
             ],
             "measures": [
