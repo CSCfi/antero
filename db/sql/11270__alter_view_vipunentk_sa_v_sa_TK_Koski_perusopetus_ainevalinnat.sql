@@ -13,7 +13,7 @@ ALTER VIEW [dbo].[v_sa_TK_Koski_perusopetus_ainevalinnat] AS
 
 SELECT 
 	[Lukuvuosi]
-	,master_oid
+	,oppija_oid
 	,[opiskeluoikeus_oid]
 	,[paatason_suoritus_id] = cast([Lukuvuosi] as varchar(4)) + '_' + cast([paatason_suoritus_id] as varchar(10))
 	,[vuosiluokka]
@@ -43,7 +43,7 @@ FROM
 (	
 	SELECT 
 		[Lukuvuosi]
-		,master_oid --[oppija_oid]
+		,[oppija_oid]
 		,[opiskeluoikeus_oid]
 		,[paatason_suoritus_id]
 		,[vuosiluokka]
