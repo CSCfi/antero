@@ -60,7 +60,7 @@ file.names <- unzip(tf3, exdir = td3)
 txt <- readLines(file.names[1], warn = FALSE, encoding = "UTF-8")
 txt <- sub("^\ufeff", "", txt)  # remove BOM if present
 Projects <- fromJSON(paste(txt, collapse = "\n"), flatten = TRUE)
-names(Projects)[14] <- "projectRcn"
+names(Projects)[names(Projects) == "rcn"] <- "projectRcn"
 
 # Organisations and EC contribution
 
@@ -79,14 +79,14 @@ tf <- tempfile()
 td <- tempdir()
 download.file("https://cordis.europa.eu/data/reference/cordisref-H2020programmes-json.zip",tf, mode = "wb", method = "libcurl")
 file.names <- unzip(tf, exdir = td)
-Progs <- fromJSON(file.names, flatten = TRUE)
+Progs <- fromJSON(file.names[grepl("json", file.names)], flatten = TRUE)
  
 # topics
 tf2 <- tempfile()
 td2 <- tempdir()
 download.file("https://cordis.europa.eu/data/reference/cordisref-H2020topics-json.zip",tf2, mode = "wb", method = "libcurl")
 file.names <- unzip(tf2, exdir = td2)
-Topics <- fromJSON(file.names, flatten = TRUE)
+Topics <- fromJSON(file.names[grepl("json", file.names)], flatten = TRUE)
 
 #funding schemes
 fSchemes <- read.csv("https://cordis.europa.eu/data/reference/cordisref-projectFundingSchemeCategory.csv", header = TRUE, sep = ";", encoding="UTF-8", quote = "\"")
@@ -107,13 +107,13 @@ tfHE2 <- tempfile()
 tdHE2 <- tempdir()
 download.file("https://cordis.europa.eu/data/reference/cordisref-HORIZONprogrammes-json.zip",tfHE2, mode = "wb", method = "libcurl")
 file.names <- unzip(tfHE2, exdir = tdHE2)
-ProgsHE <- fromJSON(file.names, flatten = TRUE)
+ProgsHE <- fromJSON(file.names[grepl("json", file.names)], flatten = TRUE)
 
 tfHE3 <- tempfile()
 tdHE3 <- tempdir()
 download.file("https://cordis.europa.eu/data/reference/cordisref-HORIZONtopics-json.zip",tfHE3, mode = "wb", method = "libcurl")
 file.names <- unzip(tfHE3, exdir = tdHE3)
-TopicsHE <- fromJSON(file.names, flatten = TRUE)
+TopicsHE <- fromJSON(file.names[grepl("json", file.names)], flatten = TRUE)
 
 
 #---------------------------#
@@ -134,7 +134,7 @@ Progs <- subset(Progs, language == 'en', select=names(Progs))
 Topics <- subset(Topics, language == 'en', select=names(Topics))
 fSchemes <- subset(fSchemes, Available.languages == 'en', select=names(fSchemes))
 
-ProjectsHE <- merge(ProjectsHE, LegalBasisHE[,1:2], by.x = "id", by.y = "projectID")
+ProjectsHE <- merge(ProjectsHE, LegalBasisHE[,c(1,3)], by.x = "id", by.y = "projectID")
 ProjectsHE$legalBasis <-  as.character(ProjectsHE$legalBasis.x)
 ProjectsHE$legalBasis[ProjectsHE$legalBasis == ""] <-  as.character(ProjectsHE$legalBasis.y[ProjectsHE$legalBasis == ""])
 ProjectsHE = ProjectsHE[,!(names(ProjectsHE) %in% c("legalBasis.y", "legalBasis.x"))]
@@ -159,6 +159,7 @@ Orgs$totalCost <- as.numeric(Orgs$totalCost)
 OrgsHE$totalCost <- as.numeric(OrgsHE$totalCost)
 Orgs$netEcContribution <- as.numeric(Orgs$netEcContribution)
 Orgs$ecContribution <- as.numeric(Orgs$ecContribution)
+Orgs$order <- as.numeric(Orgs$order)
 OrgsHE$activityType <- substr(OrgsHE$activityType,1,3)
 Orgs$activityType <- substr(Orgs$activityType,1,3)
 OrgsHE$country <- substr(OrgsHE$country,0,2)
