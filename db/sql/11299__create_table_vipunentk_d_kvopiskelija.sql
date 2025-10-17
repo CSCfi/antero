@@ -8,10 +8,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[d_kvopiskelija]') AND type in (N'U'))
-  DROP TABLE [dbo].[d_kvopiskelija]
-GO
-
+IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[d_kvopiskelija]') AND type in (N'U'))
 CREATE TABLE [dbo].[d_kvopiskelija](
 	[id] [int] NOT NULL,
 	[alkaa] [date] NULL,
