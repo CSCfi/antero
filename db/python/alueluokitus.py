@@ -72,51 +72,57 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
     row["loppupvm"] = jv(i,"voimassaLoppuPvm")
 
     # classifications (nb! avi is in different direction!)
-    httpconn.request('GET', "/koodisto-service/rest/json/relaatio/sisaltyy-ylakoodit/%s" % i["koodiUri"], headers=reqheaders)
-    rr = httpconn.getresponse()
-    jj = json.loads(rr.read())
-    for ii in jj:
-      if ii["koodisto"]["koodistoUri"] == "aluehallintovirasto":
-        row["avikoodi"] = jv(ii,"koodiArvo")
-        row["avinimi"] = getnimi(ii,"FI")
-        row["avinimi_sv"] = getnimi(ii,"SV")
-        row["avinimi_en"] = getnimi(ii,"EN")
-    # other classifications
-    httpconn.request('GET', "/koodisto-service/rest/json/relaatio/sisaltyy-alakoodit/%s" % i["koodiUri"], headers=reqheaders)
-    rr = httpconn.getresponse()
-    jj = json.loads(rr.read())
-    for ii in jj:
-      if ii["koodisto"]["koodistoUri"] == "maakunta":
-        row["maakuntakoodi"] = jv(ii,"koodiArvo")
-        row["maakuntanimi"] = getnimi(ii,"FI")
-        row["maakuntanimi_sv"] = getnimi(ii,"SV")
-        row["maakuntanimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "elykeskus":
-        row["elykoodi"] = jv(ii,"koodiArvo")
-        row["elynimi"] = getnimi(ii,"FI")
-        row["elynimi_sv"] = getnimi(ii,"SV")
-        row["elynimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "kielisuhde":
-        row["kielisuhdekoodi"] = jv(ii,"koodiArvo")
-        row["kielisuhdenimi"] = getnimi(ii,"FI")
-        row["kielisuhdenimi_sv"] = getnimi(ii,"SV")
-        row["kielisuhdenimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "seutukunta":
-        row["seutukuntakoodi"] = jv(ii,"koodiArvo")
-        row["seutukuntanimi"] = getnimi(ii,"FI")
-        row["seutukuntanimi_sv"] = getnimi(ii,"SV")
-        row["seutukuntanimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "laani":
-        row["laanikoodi"] = jv(ii,"koodiArvo")
-        row["laaninimi"] = getnimi(ii,"FI")
-        row["laaninimi_sv"] = getnimi(ii,"SV")
-        row["laaninimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "kuntaryhma":
-        row["kuntaryhmakoodi"] = jv(ii,"koodiArvo")
-        row["kuntaryhmanimi"] = getnimi(ii,"FI")
-        row["kuntaryhmanimi_sv"] = getnimi(ii,"SV")
-        row["kuntaryhmanimi_en"] = getnimi(ii,"EN")
+    try:    
+        httpconn.request('GET', "/koodisto-service/rest/json/relaatio/sisaltyy-ylakoodit/%s" % i["koodiUri"], headers=reqheaders)
+        rr = httpconn.getresponse()
+        jj = json.loads(rr.read())
+        for ii in jj:
+          if ii["koodisto"]["koodistoUri"] == "aluehallintovirasto":
+            row["avikoodi"] = jv(ii,"koodiArvo")
+            row["avinimi"] = getnimi(ii,"FI")
+            row["avinimi_sv"] = getnimi(ii,"SV")
+            row["avinimi_en"] = getnimi(ii,"EN")
 
+    except Exception:
+        print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" %d -- %s"%(cnt,row["koodi"]))
+    # other classifications
+    try:
+        httpconn.request('GET', "/koodisto-service/rest/json/relaatio/sisaltyy-alakoodit/%s" % i["koodiUri"], headers=reqheaders)
+        rr = httpconn.getresponse()
+        jj = json.loads(rr.read())
+        for ii in jj:
+          if ii["koodisto"]["koodistoUri"] == "maakunta":
+            row["maakuntakoodi"] = jv(ii,"koodiArvo")
+            row["maakuntanimi"] = getnimi(ii,"FI")
+            row["maakuntanimi_sv"] = getnimi(ii,"SV")
+            row["maakuntanimi_en"] = getnimi(ii,"EN")
+          if ii["koodisto"]["koodistoUri"] == "elykeskus":
+            row["elykoodi"] = jv(ii,"koodiArvo")
+            row["elynimi"] = getnimi(ii,"FI")
+            row["elynimi_sv"] = getnimi(ii,"SV")
+            row["elynimi_en"] = getnimi(ii,"EN")
+          if ii["koodisto"]["koodistoUri"] == "kielisuhde":
+            row["kielisuhdekoodi"] = jv(ii,"koodiArvo")
+            row["kielisuhdenimi"] = getnimi(ii,"FI")
+            row["kielisuhdenimi_sv"] = getnimi(ii,"SV")
+            row["kielisuhdenimi_en"] = getnimi(ii,"EN")
+          if ii["koodisto"]["koodistoUri"] == "seutukunta":
+            row["seutukuntakoodi"] = jv(ii,"koodiArvo")
+            row["seutukuntanimi"] = getnimi(ii,"FI")
+            row["seutukuntanimi_sv"] = getnimi(ii,"SV")
+            row["seutukuntanimi_en"] = getnimi(ii,"EN")
+          if ii["koodisto"]["koodistoUri"] == "laani":
+            row["laanikoodi"] = jv(ii,"koodiArvo")
+            row["laaninimi"] = getnimi(ii,"FI")
+            row["laaninimi_sv"] = getnimi(ii,"SV")
+            row["laaninimi_en"] = getnimi(ii,"EN")
+          if ii["koodisto"]["koodistoUri"] == "kuntaryhma":
+            row["kuntaryhmakoodi"] = jv(ii,"koodiArvo")
+            row["kuntaryhmanimi"] = getnimi(ii,"FI")
+            row["kuntaryhmanimi_sv"] = getnimi(ii,"SV")
+            row["kuntaryhmanimi_en"] = getnimi(ii,"EN")
+    except Exception:
+        print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" %d -- %s"%(cnt,row["koodi"]))
     if verbose: print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" %d -- %s"%(cnt,row["koodi"]))
     dboperator.insert(hostname+url,schema,table,row,debug)
 
