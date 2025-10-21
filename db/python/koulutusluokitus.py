@@ -78,124 +78,125 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
     row["nimi_en"] = getnimi(i,"EN")
     row["alkupvm"] = i["voimassaAlkuPvm"]
     row["loppupvm"] = i["voimassaLoppuPvm"]
-
-    httpconn.request('GET', "/koodisto-service/rest/json/relaatio/sisaltyy-alakoodit/%s" % i["koodiUri"], headers=reqheaders)
-    rr = httpconn.getresponse()
-    jj = json.loads(rr.read())
-    for ii in jj:
-      if ii["koodisto"]["koodistoUri"] == "koulutusasteoph2002":
-        row["koulutusaste2002koodi"] = ii["koodiArvo"]
-        row["koulutusaste2002nimi"] = getnimi(ii,"FI")
-        row["koulutusaste2002nimi_sv"] = getnimi(ii,"SV")
-        row["koulutusaste2002nimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "koulutusalaoph2002":
-        row["koulutusala2002koodi"] = ii["koodiArvo"]
-        row["koulutusala2002nimi"] = getnimi(ii,"FI")
-        row["koulutusala2002nimi_sv"] = getnimi(ii,"SV")
-        row["koulutusala2002nimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "opintoalaoph2002":
-        row["opintoala2002koodi"] = ii["koodiArvo"]
-        row["opintoala2002nimi"] = getnimi(ii,"FI")
-        row["opintoala2002nimi_sv"] = getnimi(ii,"SV")
-        row["opintoala2002nimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "koulutusasteoph1995":
-        row["koulutusaste1995koodi"] = ii["koodiArvo"]
-        row["koulutusaste1995nimi"] = getnimi(ii,"FI")
-        row["koulutusaste1995nimi_sv"] = getnimi(ii,"SV")
-        row["koulutusaste1995nimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "koulutusalaoph1995":
-        row["koulutusala1995koodi"] = ii["koodiArvo"]
-        row["koulutusala1995nimi"] = getnimi(ii,"FI")
-        row["koulutusala1995nimi_sv"] = getnimi(ii,"SV")
-        row["koulutusala1995nimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "opintoalaoph1995":
-        row["opintoala1995koodi"] = ii["koodiArvo"]
-        row["opintoala1995nimi"] = getnimi(ii,"FI")
-        row["opintoala1995nimi_sv"] = getnimi(ii,"SV")
-        row["opintoala1995nimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "tutkinto":
-        row["tutkintokoodi"] = ii["koodiArvo"]
-        row["tutkintonimi"] = getnimi(ii,"FI")
-        row["tutkintonimi_sv"] = getnimi(ii,"SV")
-        row["tutkintonimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "tutkintotyyppi":
-        row["tutkintotyyppikoodi"] = ii["koodiArvo"]
-        row["tutkintotyyppinimi"] = getnimi(ii,"FI")
-        row["tutkintotyyppinimi_sv"] = getnimi(ii,"SV")
-        row["tutkintotyyppinimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "koulutustyyppi":
-        row["koulutustyyppikoodi"] = ii["koodiArvo"]
-        row["koulutustyyppinimi"] = getnimi(ii,"FI")
-        row["koulutustyyppinimi_sv"] = getnimi(ii,"SV")
-        row["koulutustyyppinimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "isced2011koulutusaste":
-        row["isced2011koulutusastekoodi"] = ii["koodiArvo"]
-        row["isced2011koulutusastenimi"] = getnimi(ii,"FI")
-        row["isced2011koulutusastenimi_sv"] = getnimi(ii,"SV")
-        row["isced2011koulutusastenimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "isced2011koulutusastetaso1":
-        row["isced2011koulutusastetaso1koodi"] = ii["koodiArvo"]
-        row["isced2011koulutusastetaso1nimi"] = getnimi(ii,"FI")
-        row["isced2011koulutusastetaso1nimi_sv"] = getnimi(ii,"SV")
-        row["isced2011koulutusastetaso1nimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "isced2011koulutusastetaso2":
-        row["isced2011koulutusastetaso2koodi"] = ii["koodiArvo"]
-        row["isced2011koulutusastetaso2nimi"] = getnimi(ii,"FI")
-        row["isced2011koulutusastetaso2nimi_sv"] = getnimi(ii,"SV")
-        row["isced2011koulutusastetaso2nimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "kansallinenkoulutusluokitus2016koulutusastetaso1":
-        row["koulutusluokitus2016koulutusastetaso1koodi"] = ii["koodiArvo"]
-        row["koulutusluokitus2016koulutusastetaso1nimi"] = getnimi(ii,"FI")
-        row["koulutusluokitus2016koulutusastetaso1nimi_sv"] = getnimi(ii,"SV")
-        row["koulutusluokitus2016koulutusastetaso1nimi_en"] = getnimi(ii,"EN")
-      # huom! https://www.stat.fi/meta/luokitukset/koulutus/001-2016/kuvaus.html
-      # kansallinenkoulutusluokitus2016koulutusastetaso2 -> isced2011koulutusastetaso2
-      if ii["koodisto"]["koodistoUri"] == "kansallinenkoulutusluokitus2016koulutusastetaso2":
-        row["koulutusluokitus2016koulutusastetaso2koodi"] = ii["koodiArvo"]
-        row["koulutusluokitus2016koulutusastetaso2nimi"] = getnimi(ii,"FI")
-        row["koulutusluokitus2016koulutusastetaso2nimi_sv"] = getnimi(ii,"SV")
-        row["koulutusluokitus2016koulutusastetaso2nimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "isced2011koulutusalataso1":
-        row["isced2011koulutusalataso1koodi"] = ii["koodiArvo"]
-        row["isced2011koulutusalataso1nimi"] = getnimi(ii,"FI")
-        row["isced2011koulutusalataso1nimi_sv"] = getnimi(ii,"SV")
-        row["isced2011koulutusalataso1nimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "kansallinenkoulutusluokitus2016koulutusalataso1":
-        row["koulutusluokitus2016koulutusalataso1koodi"] = ii["koodiArvo"]
-        row["koulutusluokitus2016koulutusalataso1nimi"] = getnimi(ii,"FI")
-        row["koulutusluokitus2016koulutusalataso1nimi_sv"] = getnimi(ii,"SV")
-        row["koulutusluokitus2016koulutusalataso1nimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "isced2011koulutusalataso2":
-        row["isced2011koulutusalataso2koodi"] = ii["koodiArvo"]
-        row["isced2011koulutusalataso2nimi"] = getnimi(ii,"FI")
-        row["isced2011koulutusalataso2nimi_sv"] = getnimi(ii,"SV")
-        row["isced2011koulutusalataso2nimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "kansallinenkoulutusluokitus2016koulutusalataso2":
-        row["koulutusluokitus2016koulutusalataso2koodi"] = ii["koodiArvo"]
-        row["koulutusluokitus2016koulutusalataso2nimi"] = getnimi(ii,"FI")
-        row["koulutusluokitus2016koulutusalataso2nimi_sv"] = getnimi(ii,"SV")
-        row["koulutusluokitus2016koulutusalataso2nimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "isced2011koulutusalataso3":
-        row["isced2011koulutusalataso3koodi"] = ii["koodiArvo"]
-        row["isced2011koulutusalataso3nimi"] = getnimi(ii,"FI")
-        row["isced2011koulutusalataso3nimi_sv"] = getnimi(ii,"SV")
-        row["isced2011koulutusalataso3nimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "kansallinenkoulutusluokitus2016koulutusalataso3":
-        row["koulutusluokitus2016koulutusalataso3koodi"] = ii["koodiArvo"]
-        row["koulutusluokitus2016koulutusalataso3nimi"] = getnimi(ii,"FI")
-        row["koulutusluokitus2016koulutusalataso3nimi_sv"] = getnimi(ii,"SV")
-        row["koulutusluokitus2016koulutusalataso3nimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "okmohjauksenala":
-        row["okmohjauksenalakoodi"] = ii["koodiArvo"]
-        row["okmohjauksenalanimi"] = getnimi(ii,"FI")
-        row["okmohjauksenalanimi_sv"] = getnimi(ii,"SV")
-        row["okmohjauksenalanimi_en"] = getnimi(ii,"EN")
-      if ii["koodisto"]["koodistoUri"] == "tutkintonimikkeet":
-        row["tutkintonimikekoodi"] = ii["koodiArvo"]
-        row["tutkintonimike"] = getnimi(ii,"FI")
-        row["tutkintonimike_sv"] = getnimi(ii,"SV")
-        row["tutkintonimike_en"] = getnimi(ii,"EN")
-
+    try:
+        httpconn.request('GET', "/koodisto-service/rest/json/relaatio/sisaltyy-alakoodit/%s" % i["koodiUri"], headers=reqheaders)
+        rr = httpconn.getresponse()
+        jj = json.loads(rr.read())
+        for ii in jj:
+          if ii["koodisto"]["koodistoUri"] == "koulutusasteoph2002":
+            row["koulutusaste2002koodi"] = ii["koodiArvo"]
+            row["koulutusaste2002nimi"] = getnimi(ii,"FI")
+            row["koulutusaste2002nimi_sv"] = getnimi(ii,"SV")
+            row["koulutusaste2002nimi_en"] = getnimi(ii,"EN")
+          if ii["koodisto"]["koodistoUri"] == "koulutusalaoph2002":
+            row["koulutusala2002koodi"] = ii["koodiArvo"]
+            row["koulutusala2002nimi"] = getnimi(ii,"FI")
+            row["koulutusala2002nimi_sv"] = getnimi(ii,"SV")
+            row["koulutusala2002nimi_en"] = getnimi(ii,"EN")
+          if ii["koodisto"]["koodistoUri"] == "opintoalaoph2002":
+            row["opintoala2002koodi"] = ii["koodiArvo"]
+            row["opintoala2002nimi"] = getnimi(ii,"FI")
+            row["opintoala2002nimi_sv"] = getnimi(ii,"SV")
+            row["opintoala2002nimi_en"] = getnimi(ii,"EN")
+          if ii["koodisto"]["koodistoUri"] == "koulutusasteoph1995":
+            row["koulutusaste1995koodi"] = ii["koodiArvo"]
+            row["koulutusaste1995nimi"] = getnimi(ii,"FI")
+            row["koulutusaste1995nimi_sv"] = getnimi(ii,"SV")
+            row["koulutusaste1995nimi_en"] = getnimi(ii,"EN")
+          if ii["koodisto"]["koodistoUri"] == "koulutusalaoph1995":
+            row["koulutusala1995koodi"] = ii["koodiArvo"]
+            row["koulutusala1995nimi"] = getnimi(ii,"FI")
+            row["koulutusala1995nimi_sv"] = getnimi(ii,"SV")
+            row["koulutusala1995nimi_en"] = getnimi(ii,"EN")
+          if ii["koodisto"]["koodistoUri"] == "opintoalaoph1995":
+            row["opintoala1995koodi"] = ii["koodiArvo"]
+            row["opintoala1995nimi"] = getnimi(ii,"FI")
+            row["opintoala1995nimi_sv"] = getnimi(ii,"SV")
+            row["opintoala1995nimi_en"] = getnimi(ii,"EN")
+          if ii["koodisto"]["koodistoUri"] == "tutkinto":
+            row["tutkintokoodi"] = ii["koodiArvo"]
+            row["tutkintonimi"] = getnimi(ii,"FI")
+            row["tutkintonimi_sv"] = getnimi(ii,"SV")
+            row["tutkintonimi_en"] = getnimi(ii,"EN")
+          if ii["koodisto"]["koodistoUri"] == "tutkintotyyppi":
+            row["tutkintotyyppikoodi"] = ii["koodiArvo"]
+            row["tutkintotyyppinimi"] = getnimi(ii,"FI")
+            row["tutkintotyyppinimi_sv"] = getnimi(ii,"SV")
+            row["tutkintotyyppinimi_en"] = getnimi(ii,"EN")
+          if ii["koodisto"]["koodistoUri"] == "koulutustyyppi":
+            row["koulutustyyppikoodi"] = ii["koodiArvo"]
+            row["koulutustyyppinimi"] = getnimi(ii,"FI")
+            row["koulutustyyppinimi_sv"] = getnimi(ii,"SV")
+            row["koulutustyyppinimi_en"] = getnimi(ii,"EN")
+          if ii["koodisto"]["koodistoUri"] == "isced2011koulutusaste":
+            row["isced2011koulutusastekoodi"] = ii["koodiArvo"]
+            row["isced2011koulutusastenimi"] = getnimi(ii,"FI")
+            row["isced2011koulutusastenimi_sv"] = getnimi(ii,"SV")
+            row["isced2011koulutusastenimi_en"] = getnimi(ii,"EN")
+          if ii["koodisto"]["koodistoUri"] == "isced2011koulutusastetaso1":
+            row["isced2011koulutusastetaso1koodi"] = ii["koodiArvo"]
+            row["isced2011koulutusastetaso1nimi"] = getnimi(ii,"FI")
+            row["isced2011koulutusastetaso1nimi_sv"] = getnimi(ii,"SV")
+            row["isced2011koulutusastetaso1nimi_en"] = getnimi(ii,"EN")
+          if ii["koodisto"]["koodistoUri"] == "isced2011koulutusastetaso2":
+            row["isced2011koulutusastetaso2koodi"] = ii["koodiArvo"]
+            row["isced2011koulutusastetaso2nimi"] = getnimi(ii,"FI")
+            row["isced2011koulutusastetaso2nimi_sv"] = getnimi(ii,"SV")
+            row["isced2011koulutusastetaso2nimi_en"] = getnimi(ii,"EN")
+          if ii["koodisto"]["koodistoUri"] == "kansallinenkoulutusluokitus2016koulutusastetaso1":
+            row["koulutusluokitus2016koulutusastetaso1koodi"] = ii["koodiArvo"]
+            row["koulutusluokitus2016koulutusastetaso1nimi"] = getnimi(ii,"FI")
+            row["koulutusluokitus2016koulutusastetaso1nimi_sv"] = getnimi(ii,"SV")
+            row["koulutusluokitus2016koulutusastetaso1nimi_en"] = getnimi(ii,"EN")
+          # huom! https://www.stat.fi/meta/luokitukset/koulutus/001-2016/kuvaus.html
+          # kansallinenkoulutusluokitus2016koulutusastetaso2 -> isced2011koulutusastetaso2
+          if ii["koodisto"]["koodistoUri"] == "kansallinenkoulutusluokitus2016koulutusastetaso2":
+            row["koulutusluokitus2016koulutusastetaso2koodi"] = ii["koodiArvo"]
+            row["koulutusluokitus2016koulutusastetaso2nimi"] = getnimi(ii,"FI")
+            row["koulutusluokitus2016koulutusastetaso2nimi_sv"] = getnimi(ii,"SV")
+            row["koulutusluokitus2016koulutusastetaso2nimi_en"] = getnimi(ii,"EN")
+          if ii["koodisto"]["koodistoUri"] == "isced2011koulutusalataso1":
+            row["isced2011koulutusalataso1koodi"] = ii["koodiArvo"]
+            row["isced2011koulutusalataso1nimi"] = getnimi(ii,"FI")
+            row["isced2011koulutusalataso1nimi_sv"] = getnimi(ii,"SV")
+            row["isced2011koulutusalataso1nimi_en"] = getnimi(ii,"EN")
+          if ii["koodisto"]["koodistoUri"] == "kansallinenkoulutusluokitus2016koulutusalataso1":
+            row["koulutusluokitus2016koulutusalataso1koodi"] = ii["koodiArvo"]
+            row["koulutusluokitus2016koulutusalataso1nimi"] = getnimi(ii,"FI")
+            row["koulutusluokitus2016koulutusalataso1nimi_sv"] = getnimi(ii,"SV")
+            row["koulutusluokitus2016koulutusalataso1nimi_en"] = getnimi(ii,"EN")
+          if ii["koodisto"]["koodistoUri"] == "isced2011koulutusalataso2":
+            row["isced2011koulutusalataso2koodi"] = ii["koodiArvo"]
+            row["isced2011koulutusalataso2nimi"] = getnimi(ii,"FI")
+            row["isced2011koulutusalataso2nimi_sv"] = getnimi(ii,"SV")
+            row["isced2011koulutusalataso2nimi_en"] = getnimi(ii,"EN")
+          if ii["koodisto"]["koodistoUri"] == "kansallinenkoulutusluokitus2016koulutusalataso2":
+            row["koulutusluokitus2016koulutusalataso2koodi"] = ii["koodiArvo"]
+            row["koulutusluokitus2016koulutusalataso2nimi"] = getnimi(ii,"FI")
+            row["koulutusluokitus2016koulutusalataso2nimi_sv"] = getnimi(ii,"SV")
+            row["koulutusluokitus2016koulutusalataso2nimi_en"] = getnimi(ii,"EN")
+          if ii["koodisto"]["koodistoUri"] == "isced2011koulutusalataso3":
+            row["isced2011koulutusalataso3koodi"] = ii["koodiArvo"]
+            row["isced2011koulutusalataso3nimi"] = getnimi(ii,"FI")
+            row["isced2011koulutusalataso3nimi_sv"] = getnimi(ii,"SV")
+            row["isced2011koulutusalataso3nimi_en"] = getnimi(ii,"EN")
+          if ii["koodisto"]["koodistoUri"] == "kansallinenkoulutusluokitus2016koulutusalataso3":
+            row["koulutusluokitus2016koulutusalataso3koodi"] = ii["koodiArvo"]
+            row["koulutusluokitus2016koulutusalataso3nimi"] = getnimi(ii,"FI")
+            row["koulutusluokitus2016koulutusalataso3nimi_sv"] = getnimi(ii,"SV")
+            row["koulutusluokitus2016koulutusalataso3nimi_en"] = getnimi(ii,"EN")
+          if ii["koodisto"]["koodistoUri"] == "okmohjauksenala":
+            row["okmohjauksenalakoodi"] = ii["koodiArvo"]
+            row["okmohjauksenalanimi"] = getnimi(ii,"FI")
+            row["okmohjauksenalanimi_sv"] = getnimi(ii,"SV")
+            row["okmohjauksenalanimi_en"] = getnimi(ii,"EN")
+          if ii["koodisto"]["koodistoUri"] == "tutkintonimikkeet":
+            row["tutkintonimikekoodi"] = ii["koodiArvo"]
+            row["tutkintonimike"] = getnimi(ii,"FI")
+            row["tutkintonimike_sv"] = getnimi(ii,"SV")
+            row["tutkintonimike_en"] = getnimi(ii,"EN")
+    except Exception as e:
+        print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" %d -- %s"%(cnt,row["koodi"]), e)
     if verbose: print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" %d -- %s"%(cnt,row["koodi"]))
     dboperator.insert(hostname+url,schema,table,row,debug)
 
