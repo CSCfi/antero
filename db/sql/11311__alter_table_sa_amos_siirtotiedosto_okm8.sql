@@ -9,7 +9,7 @@ IF NOT EXISTS (
 )
 alter table [ANTERO].[sa].[sa_amos_siirtotiedosto_okm8]
 add [Toiminnanohjauksen kokeilu] nvarchar(50) 
-;
+go
 
 update t 
 set [Toiminnanohjauksen kokeilu] = oa.[Toiminnanohjauksen_kokeilu] 
