@@ -11,4 +11,4 @@ outer apply (
     order by voimaan_alkaen desc
 ) oa
 where t.voimaan_alkaen >= '2025-01-01'
-and [Toiminnanohjauksen_kokeilu] is null
+and [Toiminnanohjauksen kokeilu] is null
