@@ -23,7 +23,7 @@ GO
 
 
 
-CREATE VIEW [dbo].[v_sa_3_4_Kk_tutk_suor_mediaani_iat_ja_tutk_mediaani_ajat] AS
+CREATE OR ALTER VIEW [dbo].[v_sa_3_4_Kk_tutk_suor_mediaani_iat_ja_tutk_mediaani_ajat] AS
 
 -- truncate table vipunentk_dw..sa_3_4_Kk_tutk_suor_mediaani_iat_ja_tutk_mediaani_ajat
 -- insert into vipunentk_dw..sa_3_4_Kk_tutk_suor_mediaani_iat_ja_tutk_mediaani_ajat select * from v_sa_3_4_Kk_tutk_suor_mediaani_iat_ja_tutk_mediaani_ajat
