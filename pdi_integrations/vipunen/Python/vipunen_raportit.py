@@ -92,6 +92,7 @@ def get_reports(language):
     
     # Dataframe for results
     xlsb_rows = []
+    visualization_rows = []
     
     # Loop trough sections
     for section_link in first_level_links:
@@ -135,22 +136,44 @@ def get_reports(language):
                         end = href.find(".xlsb") + len(".xlsb")
                         clean_href = href[start:end].split(folder + "/")[-1].replace("%20", " ").replace("%C3%A4", "ä").replace("%C3%B6", "ö").replace("%28", "(").replace("%29", ")")
                         text = a.text.strip()
-                
+                        xlsb_rows.append({
+                            "Raportti": clean_href,
+                            "Osio": section_text,
+                            "Alaosio": subsection_name,
+                            "Näkökulma": text
+                        })
                     elif "&file=" in href:
                         start = href.find("&file=") + len("&file=")
                         end = href.find(".xlsb") + len(".xlsb")
                         clean_href = href[start:end].split("&file=")[-1].replace("%20", " ").replace("%C3%A4", "ä").replace("%C3%B6", "ö").replace("%28", "(").replace("%29", ")")
                         text = a.text.strip()
-                
+                        xlsb_rows.append({
+                            "Raportti": clean_href,
+                            "Osio": section_text,
+                            "Alaosio": subsection_name,
+                            "Näkökulma": text
+                        })
+                    elif "app.powerbi.com" in href:
+                        start = href.find("https://app.powerbi.com")
+                        end = href.find("MiOjh9") + len("MiOjh9")
+                        clean_href = href[start:end]
+                        text = a.text.strip()
+                        text = text.split('\n', 1)[1] if '\n' in text else text
+                        visualization_rows.append({
+                            "Visualisointi": clean_href,
+                            "Osio": section_text,
+                            "Alaosio": subsection_name,
+                            "Näkökulma": text
+                        })
                     else:
                         continue
                 
-                    xlsb_rows.append({
-                        "Raportti": clean_href,
-                        "Osio": section_text,
-                        "Alaosio": subsection_name,
-                        "Näkökulma": text
-                    })
+									  
+											   
+											 
+												   
+										   
+					  
      
     # Hidden pages  
     if len(hidden_pages) > 0:
@@ -170,27 +193,54 @@ def get_reports(language):
                         end = href.find(".xlsb") + len(".xlsb")
                         clean_href = href[start:end].split(folder + "/")[-1].replace("%20", " ").replace("%C3%A4", "ä").replace("%C3%B6", "ö").replace("%28", "(").replace("%29", ")")
                         text = a.text.strip()
-        
+                        xlsb_rows.append({
+                            "Raportti": clean_href,
+                            "Osio": section_text,
+                            "Alaosio": subsection_text,
+                            "Näkökulma": text
+                        })
                     elif "&file=" in href:
                         start = href.find("&file=") + len("&file=")
                         end = href.find(".xlsb") + len(".xlsb")
                         clean_href = href[start:end].split("&file=")[-1].replace("%20", " ").replace("%C3%A4", "ä").replace("%C3%B6", "ö").replace("%28", "(").replace("%29", ")")
                         text = a.text.strip()
+                        xlsb_rows.append({
+                            "Raportti": clean_href,
+                            "Osio": section_text,
+                            "Alaosio": subsection_text,
+                            "Näkökulma": text
+                        })
+                    elif "app.powerbi.com" in href:
+                        start = href.find("https://app.powerbi.com")
+                        end = href.find("MiOjh9") + len("MiOjh9")
+                        clean_href = href[start:end]
+                        text = a.text.strip()
+                        text = text.split('\n', 1)[1] if '\n' in text else text
+                        visualization_rows.append({
+                            "Visualisointi": clean_href,
+                            "Osio": section_text,
+                            "Alaosio": subsection_text,
+                            "Näkökulma": text
+                        })
                     else:
                         continue
         
-                    xlsb_rows.append({
-                        "Raportti": clean_href,
-                        "Osio": section_text,
-                        "Alaosio": subsection_text,
-                        "Näkökulma": text
-                    })
+									  
+											   
+											 
+												   
+										   
+					  
             
     # Save results into csv
     df = pd.DataFrame(xlsb_rows)
     df = df[df["Raportti"].notna() & (df["Raportti"] != "")]
     df.to_csv("D:/pdi_integrations/data/vipunen/raportit/Raportit_" + language + ".csv", index=False, sep=";", encoding="utf-8-sig")
-    return df.shape[0]
+    df2 = pd.DataFrame(visualization_rows)
+    df2 = df2[df2["Visualisointi"].notna() & (df2["Visualisointi"] != "")]
+    df2.to_csv("D:/pdi_integrations/data/vipunen/raportit/Visualisoinnit_" + language + ".csv", index=False, sep=";", encoding="utf-8-sig")
+    
+    return df.shape[0] + df2.shape[0]
 
 rows_fi = get_reports("fi")
 print(str(rows_fi) + " finnish report links")
