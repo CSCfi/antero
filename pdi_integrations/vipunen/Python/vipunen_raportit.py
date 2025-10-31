@@ -114,6 +114,9 @@ def get_reports(language):
                     second_level_links.append({"url": href, "text": link_text})
         except:
             second_level_links = []
+            
+        # Add also link of the section's main page
+        second_level_links.append({"url": section_link["url"], "text": section_text})
     
         # Loop through subsections
         for subsection_link in second_level_links:
@@ -168,12 +171,6 @@ def get_reports(language):
                     else:
                         continue
                 
-									  
-											   
-											 
-												   
-										   
-					  
      
     # Hidden pages  
     if len(hidden_pages) > 0:
@@ -225,12 +222,6 @@ def get_reports(language):
                     else:
                         continue
         
-									  
-											   
-											 
-												   
-										   
-					  
             
     # Save results into csv
     df = pd.DataFrame(xlsb_rows)
