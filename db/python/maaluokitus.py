@@ -68,25 +68,24 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False):
     row["nimi_en"] = getnimi(i,"EN")
     row["alkupvm"] = jv(i,"voimassaAlkuPvm")
     row["loppupvm"] = jv(i,"voimassaLoppuPvm")
-    try:
-        httpconn.request('GET', "/koodisto-service/rest/json/relaatio/sisaltyy-ylakoodit/%s" % i["koodiUri"], headers=reqheaders)
-        rr = httpconn.getresponse()
-        jj = json.loads(rr.read())
-        for ii in jj:
-          classification = "maanosat"
-          level = ""
-          if len(ii["koodiArvo"])==3:
-            level = "3"
-          elif len(ii["koodiArvo"])==2:
-            level = "2"
-          # else default
-          if ii["koodisto"]["koodistoUri"] == classification:
-            row[classification+level+"koodi"] = jv(ii,"koodiArvo")
-            row[classification+level+"nimi"] = getnimi(ii,"FI")
-            row[classification+level+"nimi_sv"] = getnimi(ii,"SV")
-            row[classification+level+"nimi_en"] = getnimi(ii,"EN")
-    except Exception:
-        show("%d -- %s"%(cnt,row["koodi"]))
+
+    httpconn.request('GET', "/koodisto-service/rest/json/relaatio/sisaltyy-ylakoodit/%s" % i["koodiUri"], headers=reqheaders)
+    rr = httpconn.getresponse()
+    jj = json.loads(rr.read())
+    for ii in jj:
+      classification = "maanosat"
+      level = ""
+      if len(ii["koodiArvo"])==3:
+        level = "3"
+      elif len(ii["koodiArvo"])==2:
+        level = "2"
+      # else default
+      if ii["koodisto"]["koodistoUri"] == classification:
+        row[classification+level+"koodi"] = jv(ii,"koodiArvo")
+        row[classification+level+"nimi"] = getnimi(ii,"FI")
+        row[classification+level+"nimi_sv"] = getnimi(ii,"SV")
+        row[classification+level+"nimi_en"] = getnimi(ii,"EN")
+
     if verbose: show("%d -- %s"%(cnt,row["koodi"]))
     dboperator.insert(hostname+url,schema,table,row)
 
