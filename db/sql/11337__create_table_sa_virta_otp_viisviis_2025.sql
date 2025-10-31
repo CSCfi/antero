@@ -1,12 +1,24 @@
 USE [ANTERO]
 GO
+
+ALTER TABLE [sa].[sa_virta_otp_viisviis_2025] DROP CONSTRAINT [DF__sa_virta_otp_viisviis_2025__username]
+GO
+
+ALTER TABLE [sa].[sa_virta_otp_viisviis_2025] DROP CONSTRAINT [DF__sa_virta_otp_viisviis_2025__loadtime]
+GO
+
+/****** Object:  Table [sa].[sa_virta_otp_viisviis_2025]    Script Date: 31.10.2025 12.21.51 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[sa_virta_otp_viisviis_2025]') AND type in (N'U'))
 DROP TABLE [sa].[sa_virta_otp_viisviis_2025]
 GO
+
+/****** Object:  Table [sa].[sa_virta_otp_viisviis_2025]    Script Date: 31.10.2025 12.21.51 ******/
 SET ANSI_NULLS ON
 GO
+
 SET QUOTED_IDENTIFIER ON
 GO
+
 CREATE TABLE [sa].[sa_virta_otp_viisviis_2025](
 	[id] [bigint] IDENTITY(1,1) NOT NULL,
 	[edellinenSyysolo] [smallint] NULL,
@@ -46,7 +58,11 @@ CREATE TABLE [sa].[sa_virta_otp_viisviis_2025](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
 ) ON [PRIMARY]
 GO
+
 ALTER TABLE [sa].[sa_virta_otp_viisviis_2025] ADD  CONSTRAINT [DF__sa_virta_otp_viisviis_2025__loadtime]  DEFAULT (getdate()) FOR [loadtime]
 GO
+
 ALTER TABLE [sa].[sa_virta_otp_viisviis_2025] ADD  CONSTRAINT [DF__sa_virta_otp_viisviis_2025__username]  DEFAULT (suser_name()) FOR [username]
 GO
+
+
