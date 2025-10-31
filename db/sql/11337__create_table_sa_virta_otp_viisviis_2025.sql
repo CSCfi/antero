@@ -1,12 +1,6 @@
 USE [ANTERO]
 GO
 
-ALTER TABLE [sa].[sa_virta_otp_viisviis_2025] DROP CONSTRAINT [DF__sa_virta_otp_viisviis_2025__username]
-GO
-
-ALTER TABLE [sa].[sa_virta_otp_viisviis_2025] DROP CONSTRAINT [DF__sa_virta_otp_viisviis_2025__loadtime]
-GO
-
 /****** Object:  Table [sa].[sa_virta_otp_viisviis_2025]    Script Date: 31.10.2025 12.21.51 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[sa_virta_otp_viisviis_2025]') AND type in (N'U'))
 DROP TABLE [sa].[sa_virta_otp_viisviis_2025]
