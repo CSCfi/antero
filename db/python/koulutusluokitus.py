@@ -195,8 +195,8 @@ def load(secure,hostname,url,schema,table,codeset,verbose=False,debug=False):
             row["tutkintonimike"] = getnimi(ii,"FI")
             row["tutkintonimike_sv"] = getnimi(ii,"SV")
             row["tutkintonimike_en"] = getnimi(ii,"EN")
-    except Exception:
-        print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" %d -- %s"%(cnt,row["koodi"]))
+    except Exception as e:
+        print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" %d -- %s"%(cnt,row["koodi"]), e)
     if verbose: print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" %d -- %s"%(cnt,row["koodi"]))
     dboperator.insert(hostname+url,schema,table,row,debug)
 
