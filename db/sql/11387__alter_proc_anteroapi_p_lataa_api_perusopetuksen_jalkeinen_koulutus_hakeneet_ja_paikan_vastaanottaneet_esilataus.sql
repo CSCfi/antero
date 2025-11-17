@@ -64,6 +64,7 @@ SELECT
 	d19.kunta_koodi as koodit_kunta_hakukohde,
 	d16a.organisaatio_koodi as koodit_koulutuksen_jarjestaja,
 	d16b.organisaatio_koodi as koodit_oppilaitos,
+	d10.oid as koodit_hakukohde,
 	f.aloituspaikat_lkm,
 	f.kaikki_hakijat_lkm,
 	f.ensisijaiset_hakijat_lkm,

@@ -36,6 +36,7 @@ CREATE TABLE [api].[perusopetuksen_jalkeinen_koulutus_hakeneet_ja_paikan_vastaan
 	[koodit_kunta_hakukohde] [varchar](3) NULL,
 	[koodit_koulutuksen_jarjestaja] [varchar](100) NULL,
 	[koodit_oppilaitos] [varchar](100) NULL,
+	[koodit_hakukohde] [varchar] (300) NULL,
 	[aloituspaikat_lkm] [int] NULL,
 	[kaikki_hakijat_lkm] [int] NULL,
 	[ensisijaiset_hakijat_lkm] [int] NULL,
