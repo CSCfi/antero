@@ -61,7 +61,7 @@ SELECT
 FROM ANTERO.dw.f_haku_ja_valinta_aloituspaikat_ja_pistemaarat f
 LEFT JOIN ANTERO.dw.d_haku d2 ON d2.id = f.d_haku_id
 LEFT JOIN ANTERO.dw.d_hakukohde d3 on d3.id = f.d_hakukohde_id
-WHERE f.koulutuksen_alkamisvuosi > 2013 and d2.korkeakouluhaku=0 and d2.hakutapa_koodi in ('01','03') AND f.aloituspaikat is not null
+WHERE f.koulutuksen_alkamisvuosi > 2013 and d2.korkeakouluhaku=0 and d2.hakutapa_koodi in ('01','03') AND coalesce(f.aloituspaikat,0) > 0
 AND NOT EXISTS (
 	SELECT TOP 1 haku_oid 
 	FROM ANTERO.dw.f_haku_ja_valinta_hakeneet_toinen_aste f2 
