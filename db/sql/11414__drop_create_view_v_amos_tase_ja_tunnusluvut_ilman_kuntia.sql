@@ -2,7 +2,7 @@ USE [ANTERO]
 GO
 
 /****** Object:  View [dw].[v_amos_tase_ja_tunnusluvut_ilman_kuntia]    Script Date: 29.10.2025 15.17.27 ******/
-DROP VIEW [dw].[v_amos_tase_ja_tunnusluvut_ilman_kuntia]
+DROP VIEW IF EXISTS [dw].[v_amos_tase_ja_tunnusluvut_ilman_kuntia]
 GO
 
 /****** Object:  View [dw].[v_amos_tase_ja_tunnusluvut_ilman_kuntia]    Script Date: 29.10.2025 15.17.27 ******/

@@ -2,7 +2,7 @@ USE [ANTERO]
 GO
 
 /****** Object:  StoredProcedure [dw].[p_lataa_d_amos_tase_ja_tunnusluvut]    Script Date: 29.10.2025 14.22.33 ******/
-DROP PROCEDURE [dw].[p_lataa_d_amos_tase_ja_tunnusluvut]
+DROP PROCEDURE IF EXISTS [dw].[p_lataa_d_amos_tase_ja_tunnusluvut]
 GO
 
 /****** Object:  StoredProcedure [dw].[p_lataa_d_amos_tase_ja_tunnusluvut]    Script Date: 29.10.2025 14.22.33 ******/
