@@ -10,7 +10,7 @@ Uses /api/oids, /api/liitokset, /api/{oid}.
 Addresses: uses kayntiosoite if available, else falls back to yhteystiedot[kaynti].
 """
 
-import sys
+import sys, os , getopt
 import requests
 from time import localtime, strftime
 import argparse
