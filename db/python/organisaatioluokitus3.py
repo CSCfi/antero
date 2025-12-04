@@ -103,7 +103,6 @@ def get_and_set_coordinates(row):
 
 
 def load(secure, hostname, baseurl, schema, table, verbose=False):
-
     protocol = "https://" if secure else "http://"
     root = protocol + hostname + baseurl
 
@@ -113,9 +112,25 @@ def load(secure, hostname, baseurl, schema, table, verbose=False):
 
     # --- 2. Liitokset ---
     show("Fetching liitokset…")
-    liitokset_raw = requests.get(root + "liitokset",
-                                 headers={'Caller-Id': '1.2.246.562.10.2013112012294919827487.vipunen'}).json()
-    liitosmap = {l["organisaatio"]["oid"]: l["kohde"]["oid"] for l in liitokset_raw}
+    liitokset_resp = requests.get(root + "liitokset",
+                                 headers={'Caller-Id': '1.2.246.562.10.2013112012294919827487.vipunen'})
+    liitokset_data = liitokset_resp.json()
+
+    # Flexible parsing
+    if isinstance(liitokset_data, dict) and "liitokset" in liitokset_data:
+        liitokset_raw = liitokset_data["liitokset"]
+    elif isinstance(liitokset_data, list):
+        liitokset_raw = liitokset_data
+    else:
+        show(f"ERROR: Unknown liitokset format: {liitokset_data}")
+        return
+
+    liitosmap = {}
+    for l in liitokset_raw:
+        oid_a = l.get("organisaatioOid") or l.get("organisaatio", {}).get("oid")
+        oid_b = l.get("kohdeOid") or l.get("kohde", {}).get("oid")
+        if oid_a and oid_b:
+            liitosmap[oid_a] = oid_b
 
     # --- Prepare table ---
     row = makerow()
@@ -181,7 +196,6 @@ def load(secure, hostname, baseurl, schema, table, verbose=False):
 
             # osoitteet
             if "osoitteet" in i and i["osoitteet"]:
-                # Use primary visiting or mailing address (same logic as old UI)
                 oso = i["osoitteet"][0]
                 row["osoitetyyppi"] = oso.get("osoitetyyppi")
                 row["osoite"] = oso.get("osoite")
