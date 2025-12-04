@@ -90,49 +90,36 @@ def get_and_set_coordinates(row):
         dbcommand.load(command, "", False)
 
 def extract_address(org_json):
-    # Prioritize kayntiosoite
-    if "kayntiosoite" in org_json and org_json["kayntiosoite"]:
-        addr = org_json["kayntiosoite"]
-        osoite = addr.get("osoite")
-        postinumero_tmp =  addr.get("postinumero")
-        postinumero= postinumero_tmp.split("_")[-1]
-        postitoimipaikka=addr.get("postitoimipaikka"),
-        osoitetyyppi= addr.get("osoitetyyppi")
+    osoite = postinumero = postitoimipaikka = osoitetyyppi = None
 
-    elif "yhteystiedot" in org_json:
-        yt = org_json["yhteystiedot"]
-        for y in yt
-            if y["osoitetyyppi"] == "kaynti":
-                osoite = y.get("osoite")
-                postinumero_tmp =  y.get("postinumero")
-                postinumero= postinumero_tmp.split("_")[-1]
-                postitoimipaikka=y.get("postitoimipaikka"),
-                osoitetyyppi= y.get("osoitetyyppi")
+    # 1. Kayntiosoite
+    kaynti = org_json.get("kayntiosoite")
+    if kaynti:
+        osoite = kaynti.get("osoite")
+        postinumero = kaynti.get("postinumero", "").split("_")[-1] if kaynti.get("postinumero") else None
+        postitoimipaikka = kaynti.get("postitoimipaikka")
+        osoitetyyppi = kaynti.get("osoitetyyppi")
+        return osoite, postinumero, postitoimipaikka, osoitetyyppi
 
-    elif "postiosoite" in org_json and org_json["kayntiosoite"]:
-            addr = org_json["kayntiosoite"]
-            osoite = addr.get("osoite")
-            postinumero_tmp =  addr.get("postinumero")
-            postinumero= postinumero_tmp.split("_")[-1]
-            postitoimipaikka=addr.get("postitoimipaikka"),
-            osoitetyyppi= addr.get("osoitetyyppi")
-    elif "yhteystiedot" in org_json:
-        yt = org_json["yhteystiedot"]
-        for y in yt
-            if y["osoitetyyppi"] == "posti":
-                osoite = y.get("osoite")
-                postinumero_tmp =  y.get("postinumero")
-                postinumero= postinumero_tmp.split("_")[-1]
-                postitoimipaikka=y.get("postitoimipaikka"),
-                osoitetyyppi= y.get("osoitetyyppi")
-    else:
-        osoite = None
-        postinumero = None
-        postitoimipaikka = None
-        osoitetyyppi = None
+    # 2. Yhteystiedot kaynti
+    for y in org_json.get("yhteystiedot", []):
+        if y.get("osoitetyyppi") == "kaynti":
+            osoite = y.get("osoite")
+            postinumero = y.get("postinumero", "").split("_")[-1] if y.get("postinumero") else None
+            postitoimipaikka = y.get("postitoimipaikka")
+            osoitetyyppi = y.get("osoitetyyppi")
+            return osoite, postinumero, postitoimipaikka, osoitetyyppi
 
+    # 3. Yhteystiedot posti
+    for y in org_json.get("yhteystiedot", []):
+        if y.get("osoitetyyppi") == "posti":
+            osoite = y.get("osoite")
+            postinumero = y.get("postinumero", "").split("_")[-1] if y.get("postinumero") else None
+            postitoimipaikka = y.get("postitoimipaikka")
+            osoitetyyppi = y.get("osoitetyyppi")
+            return osoite, postinumero, postitoimipaikka, osoitetyyppi
 
-    return osoite,postinumero, postitoimipaikka,osoitetyyppi
+    return osoite, postinumero, postitoimipaikka, osoitetyyppi
 
 
 def load(secure, hostname, baseurl, schema, table, verbose=False):
