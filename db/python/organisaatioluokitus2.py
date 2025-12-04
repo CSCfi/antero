@@ -9,6 +9,7 @@ Optimized for:
 - Safe SQL string handling
 - Parallel geocoding
 - Session reuse
+- Insert all rows, even missing data
 """
 import sys
 import os
@@ -49,26 +50,8 @@ def get_osoite_array(osoite, postinumero, kunta):
     return ["--address", f"{osoite}, {postinumero}, {kunta}"]
 
 
-def get_kotikunta_by_kuntakoodi(koodi):
-    try:
-        r = requests.get(
-            f"https://virkailija.opintopolku.fi/koodisto-service/rest/json/kunta/koodi/arvo/{koodi}",
-            headers={"Accept": "application/json",
-                     'Caller-Id': '1.2.246.562.10.2013112012294919827487.vipunen'}
-        )
-        result_json = r.json()
-        if r.status_code == 200 and result_json:
-            for m in result_json[0].get("metadata", []):
-                if m.get("kieli") == "FI":
-                    return {"OK": True, "kunta": m.get("nimi")}
-            return {"OK": True, "kunta": result_json[0]["metadata"][0].get("nimi")}
-    except Exception as e:
-        print(f"Error fetching kotikunta for koodi {koodi}: {e}")
-    return {"OK": False, "kunta": None}
-
-
 def check_if_coordinates_in_our_db(osoite, postinumero, postitoimipaikka):
-    safe_osoite = osoite.replace("'", "''")
+    safe_osoite = osoite.replace("'", "''") if osoite else ''
     command = f"SELECT * FROM [ANTERO].[sa].[sa_koordinaatit] WHERE osoite='{safe_osoite}' AND postinumero='{postinumero}' AND postitoimipaikka='{postitoimipaikka}'"
     result = dbcommand.load(command.encode('utf-8', 'ignore'), "*", False)
     if result:
@@ -78,7 +61,7 @@ def check_if_coordinates_in_our_db(osoite, postinumero, postitoimipaikka):
 
 
 def insert_coordinates_to_our_db(osoite, postinumero, postitoimipaikka, latitude, longitude, api_result_confidence):
-    safe_osoite = osoite.replace("'", "''")
+    safe_osoite = osoite.replace("'", "''") if osoite else ''
     command = f"INSERT INTO [ANTERO].[sa].[sa_koordinaatit] (osoite, postinumero, postitoimipaikka, latitude, longitude, confidence) VALUES ('{safe_osoite}', '{postinumero}', '{postitoimipaikka}', {latitude}, {longitude}, {api_result_confidence})"
     dbcommand.load(command.encode('utf-8', 'ignore'), "", False)
 
@@ -98,6 +81,8 @@ def fetch_coordinates_from_server(osoite_array):
 
 def get_and_set_coordinates_parallel(row):
     try:
+        if not (row.get("osoite") and row.get("postinumero") and row.get("postitoimipaikka")):
+            return row
         osoite_parsed = row["osoite"].split(",")[0]
         osoite_array = get_osoite_array(osoite_parsed, row["postinumero"], row["postitoimipaikka"])
         check_coordinates = check_if_coordinates_in_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"])
@@ -126,8 +111,8 @@ def load(secure, hostname, url, schema, table, verbose=False):
     if verbose:
         show("begin")
 
-    row = makerow()
-    dboperator.columns(row)
+    row_template = makerow()
+    dboperator.columns(row_template)
     if verbose:
         show(f"empty {schema}.{table}")
     dboperator.empty(schema, table)
@@ -162,7 +147,8 @@ def load(secure, hostname, url, schema, table, verbose=False):
             row["oid"] = o
             row["parentoid"] = jv(i, "parentOid")
             row["liitosoid"] = liitosmap.get(o)
-            # determine type
+
+            # Determine type
             if "tyypit" in i:
                 if "Koulutustoimija" in i["tyypit"]:
                     row["tyyppi"] = "Koulutustoimija"
@@ -174,16 +160,32 @@ def load(secure, hostname, url, schema, table, verbose=False):
                     row["koodi"] = jv(i, "oppilaitosKoodi")
                     if i.get("oppilaitosTyyppiUri"):
                         row["oppilaitostyyppi"] = i["oppilaitosTyyppiUri"].replace("oppilaitostyyppi_", "").replace("#1", "")
-            if row["tyyppi"]:
-                if "nimi" in i and i["nimi"]:
-                    row["nimi"] = jv(i["nimi"], "fi")
-                    row["nimi_sv"] = jv(i["nimi"], "sv")
-                    row["nimi_en"] = jv(i["nimi"], "en")
-                row["alkupvm"] = jv(i, "alkuPvm")
-                row["loppupvm"] = jv(i, "lakkautusPvm")
-                if "kotipaikkaUri" in i and i["kotipaikkaUri"]:
-                    row["kotikunta"] = jv(i, "kotipaikkaUri").replace("kunta_", "")
-                rows_to_insert.append(row)
+
+            # Names, dates, kotikunta
+            if "nimi" in i and i["nimi"]:
+                row["nimi"] = jv(i["nimi"], "fi")
+                row["nimi_sv"] = jv(i["nimi"], "sv")
+                row["nimi_en"] = jv(i["nimi"], "en")
+            row["alkupvm"] = jv(i, "alkuPvm")
+            row["loppupvm"] = jv(i, "lakkautusPvm")
+            if "kotipaikkaUri" in i and i["kotipaikkaUri"]:
+                row["kotikunta"] = jv(i, "kotipaikkaUri").replace("kunta_", "")
+
+            # Extract address if present
+            if "osoitteet" in i and i["osoitteet"]:
+                osoite_obj = i["osoitteet"][0]
+                row["osoitetyyppi"] = osoite_obj.get("osoiteTyyppi")
+                row["osoite"] = jv(osoite_obj.get("osoite"), "fi")
+                row["postinumero"] = jv(osoite_obj, "postinumero")
+                posttoimipaikka_obj = osoite_obj.get("postitoimipaikka")
+                if isinstance(posttoimipaikka_obj, dict):
+                    row["postitoimipaikka"] = jv(posttoimipaikka_obj, "fi")
+                else:
+                    row["postitoimipaikka"] = posttoimipaikka_obj
+
+            # Append all rows regardless of missing fields
+            rows_to_insert.append(row)
+
         except Exception as ve:
             print(f"Error processing OID {o}: {ve}")
 
@@ -196,10 +198,11 @@ def load(secure, hostname, url, schema, table, verbose=False):
     with ThreadPoolExecutor(max_workers=10) as executor:
         geocoded_rows = list(executor.map(geocode_row, rows_to_insert))
 
-    # batch insert
+    # Batch insert
     for i in range(0, len(geocoded_rows), BATCH_SIZE):
         batch = geocoded_rows[i:i + BATCH_SIZE]
         dboperator.insertMany(hostname + url, schema, table, batch)
+        print(f"*")
     dboperator.close()
     show("ready")
 
