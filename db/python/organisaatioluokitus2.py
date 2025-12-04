@@ -17,13 +17,13 @@ Optimized with:
 * Parallel geocoding
 * Batch inserts
   """
-  import sys, os, getopt
-  import geocoding
-  import json
-  import requests
-  from time import localtime, strftime
-  import importlib
-  from concurrent.futures import ThreadPoolExecutor
+import sys, os, getopt
+import geocoding
+import json
+import requests
+from time import localtime, strftime
+import importlib
+from concurrent.futures import ThreadPoolExecutor
 
 import dbcommand
 import dboperator
