@@ -1,22 +1,20 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- encoding: utf-8 -*-
 # vim: set fileencoding=utf-8 :
 """
-organisaatioluokitus
+organisaatioluokitus_batch
 
 Fetch all organizations from Organisaatio Service from Opintopolku.
-If organization has predefined matching value in "tyypit" (one of: Koulutustoimija, Oppilaitos or Toimipiste)
-then include it in result set and fetch more information for it.
+Includes batch inserts to handle large datasets safely.
 
 Optimized with:
 - Session reuse
 - Parallel geocoding
-- Batch inserts
+- Batch inserts every 1000 rows
 """
 import sys
 import os
 import getopt
-#import json
 import requests
 from time import localtime, strftime
 from concurrent.futures import ThreadPoolExecutor
@@ -26,6 +24,7 @@ import dbcommand
 import dboperator
 
 EXT_API_QUERY_CONFIDENCE_LIMIT = 0.6  # minimum acceptable confidence
+BATCH_SIZE = 1000  # number of rows per DB insert
 
 
 def makerow():
@@ -42,13 +41,6 @@ def makerow():
 
 def jv(jsondata, key):
     return jsondata.get(key) if jsondata else None
-
-
-def getmeta(i, tieto, kieli):
-    for m in i.get("metadata", []):
-        if m.get("kieli") == kieli:
-            return m.get(tieto)
-    return None
 
 
 def show(message):
@@ -182,7 +174,8 @@ def load(secure, hostname, url, schema, table, verbose=False):
     liitosmap = {l["organisaatio"]["oid"]: l["kohde"]["oid"] for l in liitosresponse.json()}
     oids = response.json()
 
-    rows_to_insert = []
+    batch_rows = []
+
     for cnt, o in enumerate(oids, 1):
         if cnt % 100 == 0:
             sys.stdout.write('.')
@@ -241,21 +234,25 @@ def load(secure, hostname, url, schema, table, verbose=False):
                     row["osoite"] = jv(josoite, "osoite")
                     row["postinumero"] = josoite["postinumeroUri"].replace("posti_", "") if "postinumeroUri" in josoite and josoite["postinumeroUri"] else None
                     row["postitoimipaikka"] = jv(josoite, "postitoimipaikka")
-                rows_to_insert.append(row)
+
+                batch_rows.append(row)
+
+            # Batch insert
+            if len(batch_rows) >= BATCH_SIZE:
+                with ThreadPoolExecutor(max_workers=10) as executor:
+                    geocoded_rows = list(executor.map(lambda r: get_and_set_coordinates_parallel(r) if r.get("osoite") else r, batch_rows))
+                dboperator.insertMany(hostname + url, schema, table, geocoded_rows)
+                batch_rows = []
+
         except Exception as ve:
             print(f"Error processing OID {o}: {ve}")
 
-    # --- parallel geocoding ---
-    def geocode_row(row):
-        if row.get("osoite") and row.get("postinumero") and row.get("postitoimipaikka"):
-            return get_and_set_coordinates_parallel(row)
-        return row
+    # Insert remaining rows
+    if batch_rows:
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            geocoded_rows = list(executor.map(lambda r: get_and_set_coordinates_parallel(r) if r.get("osoite") else r, batch_rows))
+        dboperator.insertMany(hostname + url, schema, table, geocoded_rows)
 
-    with ThreadPoolExecutor(max_workers=10) as executor:
-        geocoded_rows = list(executor.map(geocode_row, rows_to_insert))
-
-    # batch insert
-    dboperator.insertMany(hostname + url, schema, table, geocoded_rows)
     dboperator.close()
     show("ready")
 
