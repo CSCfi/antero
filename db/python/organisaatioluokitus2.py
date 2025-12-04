@@ -1,16 +1,14 @@
 #!/usr/bin/python3
-# -*- encoding: utf-8 -*-
-# vim: set fileencoding=utf-8 :
+# -*- coding: utf-8 -*-
 """
-organisaatioluokitus_batch
+organisaatioluokitus2.py
 
 Fetch all organizations from Organisaatio Service from Opintopolku.
-Includes batch inserts to handle large datasets safely.
-
-Optimized with:
-- Session reuse
+Optimized for:
+- Batch inserts
+- Safe SQL string handling
 - Parallel geocoding
-- Batch inserts every 1000 rows
+- Session reuse
 """
 import sys
 import os
@@ -24,7 +22,7 @@ import dbcommand
 import dboperator
 
 EXT_API_QUERY_CONFIDENCE_LIMIT = 0.6  # minimum acceptable confidence
-BATCH_SIZE = 1000  # number of rows per DB insert
+BATCH_SIZE = 100  # smaller batch for safe testing
 
 
 def makerow():
@@ -70,39 +68,19 @@ def get_kotikunta_by_kuntakoodi(koodi):
 
 
 def check_if_coordinates_in_our_db(osoite, postinumero, postitoimipaikka):
-    # Escape single quotes
-    safe_osoite = osoite.replace("'", "''") if osoite else None
-    safe_postinumero = postinumero.replace("'", "''") if postinumero else None
-    safe_postitoimipaikka = postitoimipaikka.replace("'", "''") if postitoimipaikka else None
-
-    command = (
-        f"SELECT * FROM [ANTERO].[sa].[sa_koordinaatit] "
-        f"WHERE osoite='{safe_osoite}' AND postinumero='{safe_postinumero}' AND postitoimipaikka='{safe_postitoimipaikka}'"
-    )
-
-    result = dbcommand.load(command, "*", False)
+    safe_osoite = osoite.replace("'", "''")
+    command = f"SELECT * FROM [ANTERO].[sa].[sa_koordinaatit] WHERE osoite='{safe_osoite}' AND postinumero='{postinumero}' AND postitoimipaikka='{postitoimipaikka}'"
+    result = dbcommand.load(command.encode('utf-8', 'ignore'), "*", False)
     if result:
-        return {
-            "coordinates_found": True,
-            "latitude": result[0]["latitude"],
-            "longitude": result[0]["longitude"],
-            "confidence": result[0]["confidence"]
-        }
+        return {"coordinates_found": True, "latitude": result[0]["latitude"], "longitude": result[0]["longitude"],
+                "confidence": result[0]["confidence"]}
     return {"coordinates_found": False, "latitude": None, "longitude": None, "confidence": None}
 
 
 def insert_coordinates_to_our_db(osoite, postinumero, postitoimipaikka, latitude, longitude, api_result_confidence):
-    # Escape single quotes in strings to prevent SQL syntax errors
     safe_osoite = osoite.replace("'", "''")
-    safe_postinumero = postinumero.replace("'", "''") if postinumero else None
-    safe_postitoimipaikka = postitoimipaikka.replace("'", "''") if postitoimipaikka else None
-
-    command = (
-        f"INSERT INTO [ANTERO].[sa].[sa_koordinaatit] "
-        f"(osoite, postinumero, postitoimipaikka, latitude, longitude, confidence) "
-        f"VALUES ('{safe_osoite}', '{safe_postinumero}', '{safe_postitoimipaikka}', {latitude}, {longitude}, {api_result_confidence})"
-    )
-    dbcommand.load(command, "", False)
+    command = f"INSERT INTO [ANTERO].[sa].[sa_koordinaatit] (osoite, postinumero, postitoimipaikka, latitude, longitude, confidence) VALUES ('{safe_osoite}', '{postinumero}', '{postitoimipaikka}', {latitude}, {longitude}, {api_result_confidence})"
+    dbcommand.load(command.encode('utf-8', 'ignore'), "", False)
 
 
 def coordinate_length_ok(latitude, longitude):
@@ -122,7 +100,6 @@ def get_and_set_coordinates_parallel(row):
     try:
         osoite_parsed = row["osoite"].split(",")[0]
         osoite_array = get_osoite_array(osoite_parsed, row["postinumero"], row["postitoimipaikka"])
-
         check_coordinates = check_if_coordinates_in_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"])
         if check_coordinates["coordinates_found"]:
             if float(check_coordinates["confidence"]) >= EXT_API_QUERY_CONFIDENCE_LIMIT and coordinate_length_ok(
@@ -130,7 +107,6 @@ def get_and_set_coordinates_parallel(row):
                 row["latitude"] = check_coordinates["latitude"]
                 row["longitude"] = check_coordinates["longitude"]
             return row
-
         result = fetch_coordinates_from_server(osoite_array)
         if result["OK"] and result["result"]["STATUS"] == "OK":
             res = result["result"]["RESULT"]
@@ -140,27 +116,9 @@ def get_and_set_coordinates_parallel(row):
             if api_conf >= EXT_API_QUERY_CONFIDENCE_LIMIT and coordinate_length_ok(lat, lon):
                 row["latitude"] = lat
                 row["longitude"] = lon
-            insert_coordinates_to_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"], lat, lon,
-                                         api_conf)
-            if api_conf >= EXT_API_QUERY_CONFIDENCE_LIMIT:
-                return row
-
-        kotikunta_info = get_kotikunta_by_kuntakoodi(row["kotikunta"])
-        if kotikunta_info["OK"]:
-            new_osoite_array = get_osoite_array(osoite_parsed, row["postinumero"], kotikunta_info["kunta"])
-            result = fetch_coordinates_from_server(new_osoite_array)
-            if result["OK"] and result["result"]["STATUS"] == "OK":
-                res = result["result"]["RESULT"]
-                api_conf = res["confidence"]
-                lat = res["latitude"]
-                lon = res["longitude"]
-                if api_conf >= EXT_API_QUERY_CONFIDENCE_LIMIT and coordinate_length_ok(lat, lon):
-                    row["latitude"] = lat
-                    row["longitude"] = lon
-                insert_coordinates_to_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"], lat, lon,
-                                             api_conf)
+            insert_coordinates_to_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"], lat, lon, api_conf)
     except Exception as e:
-        print(f"Error in get_and_set_coordinates_parallel for row {row['oid']}: {e}")
+        print(f"Error in get_and_set_coordinates_parallel for row {row.get('oid', '')}: {e}")
     return row
 
 
@@ -176,8 +134,7 @@ def load(secure, hostname, url, schema, table, verbose=False):
 
     address = f"https://{hostname}{url}" if secure else f"http://{hostname}{url}"
     session = requests.Session()
-    session.headers.update(
-        {'Caller-Id': '1.2.246.562.10.2013112012294919827487.vipunen'})
+    session.headers.update({'Caller-Id': '1.2.246.562.10.2013112012294919827487.vipunen'})
     show("load from " + address)
 
     try:
@@ -192,23 +149,20 @@ def load(secure, hostname, url, schema, table, verbose=False):
     liitosmap = {l["organisaatio"]["oid"]: l["kohde"]["oid"] for l in liitosresponse.json()}
     oids = response.json()
 
-    batch_rows = []
-
+    rows_to_insert = []
     for cnt, o in enumerate(oids, 1):
         if cnt % 100 == 0:
             sys.stdout.write('.')
             sys.stdout.flush()
         if cnt % 1000 == 0:
             show(f"-- {cnt}")
-
         try:
-            r = session.get(address + o)
-            i = r.json()
+            i = session.get(address + o).json()
             row = makerow()
             row["oid"] = o
             row["parentoid"] = jv(i, "parentOid")
             row["liitosoid"] = liitosmap.get(o)
-
+            # determine type
             if "tyypit" in i:
                 if "Koulutustoimija" in i["tyypit"]:
                     row["tyyppi"] = "Koulutustoimija"
@@ -220,19 +174,6 @@ def load(secure, hostname, url, schema, table, verbose=False):
                     row["koodi"] = jv(i, "oppilaitosKoodi")
                     if i.get("oppilaitosTyyppiUri"):
                         row["oppilaitostyyppi"] = i["oppilaitosTyyppiUri"].replace("oppilaitostyyppi_", "").replace("#1", "")
-                elif "Toimipiste" in i["tyypit"]:
-                    row["tyyppi"] = "Toimipiste"
-                    row["koodi"] = jv(i, "toimipistekoodi")
-                elif "Oppisopimustoimipiste" in i["tyypit"]:
-                    row["tyyppi"] = "Oppisopimustoimipiste"
-                    row["koodi"] = jv(i, "toimipistekoodi")
-                elif "Varhaiskasvatuksen toimipaikka" in i["tyypit"]:
-                    row["tyyppi"] = "Varhaiskasvatuksen toimipaikka"
-                    row["koodi"] = jv(i, "toimipistekoodi")
-                elif "Varhaiskasvatuksen jarjestaja" in i["tyypit"]:
-                    row["tyyppi"] = "Varhaiskasvatuksen järjestaja"
-                    row["koodi"] = jv(i, "toimipistekoodi")
-
             if row["tyyppi"]:
                 if "nimi" in i and i["nimi"]:
                     row["nimi"] = jv(i["nimi"], "fi")
@@ -242,35 +183,23 @@ def load(secure, hostname, url, schema, table, verbose=False):
                 row["loppupvm"] = jv(i, "lakkautusPvm")
                 if "kotipaikkaUri" in i and i["kotipaikkaUri"]:
                     row["kotikunta"] = jv(i, "kotipaikkaUri").replace("kunta_", "")
-                if "kieletUris" in i and i["kieletUris"]:
-                    row["oppilaitoksenopetuskieli"] = "3" if len(i["kieletUris"]) > 1 else i["kieletUris"][0].replace(
-                        "oppilaitoksenopetuskieli_", "").split("#")[0]
-
-                josoite = jv(i, "kayntiosoite") if "kayntiosoite" in i else jv(i, "postiosoite") if "postiosoite" in i else None
-                if josoite:
-                    row["osoitetyyppi"] = "kayntiosoite" if "kayntiosoite" in i else "postiosoite"
-                    row["osoite"] = jv(josoite, "osoite")
-                    row["postinumero"] = josoite["postinumeroUri"].replace("posti_", "") if "postinumeroUri" in josoite and josoite["postinumeroUri"] else None
-                    row["postitoimipaikka"] = jv(josoite, "postitoimipaikka")
-
-                batch_rows.append(row)
-
-            # Batch insert
-            if len(batch_rows) >= BATCH_SIZE:
-                with ThreadPoolExecutor(max_workers=10) as executor:
-                    geocoded_rows = list(executor.map(lambda r: get_and_set_coordinates_parallel(r) if r.get("osoite") else r, batch_rows))
-                dboperator.insertMany(hostname + url, schema, table, geocoded_rows)
-                batch_rows = []
-
+                rows_to_insert.append(row)
         except Exception as ve:
             print(f"Error processing OID {o}: {ve}")
 
-    # Insert remaining rows
-    if batch_rows:
-        with ThreadPoolExecutor(max_workers=10) as executor:
-            geocoded_rows = list(executor.map(lambda r: get_and_set_coordinates_parallel(r) if r.get("osoite") else r, batch_rows))
-        dboperator.insertMany(hostname + url, schema, table, geocoded_rows)
+    # --- parallel geocoding ---
+    def geocode_row(row):
+        if row.get("osoite") and row.get("postinumero") and row.get("postitoimipaikka"):
+            return get_and_set_coordinates_parallel(row)
+        return row
 
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        geocoded_rows = list(executor.map(geocode_row, rows_to_insert))
+
+    # batch insert
+    for i in range(0, len(geocoded_rows), BATCH_SIZE):
+        batch = geocoded_rows[i:i + BATCH_SIZE]
+        dboperator.insertMany(hostname + url, schema, table, batch)
     dboperator.close()
     show("ready")
 
@@ -278,12 +207,6 @@ def load(secure, hostname, url, schema, table, verbose=False):
 def usage():
     print("""
 usage: organisaatioluokitus.py [-s|--secure] [-H|--hostname <hostname>] [-u|--url <url>] [-e|--schema <schema>] [-t|--table <table>] [-v|--verbose]
-
-secure defaults to secure, so no actual use here!
-hostname defaults to $OPINTOPOLKU then to "virkailija.opintopolku.fi"
-url defaults to "/organisaatio-service/rest/organisaatio/"
-schema defaults to $SCHEMA then to "sa"
-table defaults to $TABLE then to "sa_organisaatioluokitus"
 """)
 
 
@@ -296,8 +219,7 @@ def main(argv):
     verbose = False
 
     try:
-        opts, args = getopt.getopt(argv, "sH:u:e:t:v",
-                                   ["secure", "hostname=", "url=", "schema=", "table=", "verbose"])
+        opts, args = getopt.getopt(argv, "sH:u:e:t:v", ["secure", "hostname=", "url=", "schema=", "table=", "verbose"])
     except getopt.GetoptError as err:
         print(err)
         usage()
@@ -316,10 +238,6 @@ def main(argv):
             table = arg
         elif opt in ("-v", "--verbose"):
             verbose = True
-
-    if not hostname or not url or not schema or not table:
-        usage()
-        sys.exit(2)
 
     load(secure, hostname, url, schema, table, verbose)
 
