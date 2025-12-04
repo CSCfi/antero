@@ -122,13 +122,12 @@ def load(secure, hostname, baseurl, schema, table):
         print(sql)
         result = dbcommand.load(sql)
         print(result)
-        lastdate = str(result[0]["lastdate"]) if result and  else: "2025-12-01"
+        lastdate = str(result[0]["lastdate"]) if result and result[0].get("lastdate") else "2025-12-01"
         if not lastdate:
-            show("ERROR: No last load date found in the database.")
-            sys.exit(1)
+            lastdate = "2025-12-01"
     except Exception as e:
-        show(f"ERROR: Could not get last load date ({e})")
-        sys.exit(1)
+        show(f"ERROR: Could not get last load date, szet defaul '2025-12-01'")
+        lastdate="2025-12-01"
 
     with requests.Session() as session:
         session.headers.update({
