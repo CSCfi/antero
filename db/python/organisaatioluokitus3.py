@@ -43,10 +43,9 @@ def get_and_set_coordinates(row):
     if not (osoite_parsed and postinumero and postitoimipaikka):
         return
 
-    # Check cache DB
     sql = "SELECT * FROM [ANTERO].[sa].[sa_koordinaatit] WHERE osoite=%s AND postinumero=%s AND postitoimipaikka=%s"
     params = (osoite_parsed, postinumero, postitoimipaikka)
-    result = dbcommand.load(sql, params, "*", False)
+    result = dbcommand.load(sql, params)
 
     if result:
         lat = result[0]["latitude"]
@@ -57,7 +56,6 @@ def get_and_set_coordinates(row):
             row["longitude"] = lon
         return
 
-    # External geocoding
     full_address = f"{osoite_parsed}, {postinumero}, {postitoimipaikka}"
     try:
         geo = geocoding.main(["-A", full_address])
@@ -68,23 +66,20 @@ def get_and_set_coordinates(row):
             if conf >= EXT_API_QUERY_CONFIDENCE_LIMIT:
                 row["latitude"] = lat
                 row["longitude"] = lon
-            # Save to DB
             sql_insert = (
                 "INSERT INTO [ANTERO].[sa].[sa_koordinaatit] "
                 "(osoite, postinumero, postitoimipaikka, latitude, longitude, confidence) "
                 "VALUES (%s, %s, %s, %s, %s, %s)"
             )
             params_insert = (osoite_parsed, postinumero, postitoimipaikka, lat, lon, conf)
-            dbcommand.load(sql_insert, params_insert, "", False)
+            dbcommand.execute(sql_insert, params_insert)
     except Exception as e:
         show(f"Geocoding failed for {full_address}: {e}")
 
 def extract_address(org_json):
     osoite = postinumero = postitoimipaikka = osoitetyyppi = None
 
-    # 1. Kayntiosoite
     kaynti = org_json.get("kayntiosoite")
-
     if kaynti:
         osoite = kaynti.get("osoite")
         postinumero = kaynti.get("postinumero", "").split("_")[-1] if kaynti.get("postinumero") else None
@@ -92,7 +87,6 @@ def extract_address(org_json):
         osoitetyyppi = kaynti.get("osoitetyyppi")
         return osoite, postinumero, postitoimipaikka, osoitetyyppi
 
-    # 2. Yhteystiedot kaynti
     for y in org_json.get("yhteystiedot", []):
         if y.get("osoitetyyppi") == "kaynti":
             osoite = y.get("osoite")
@@ -100,7 +94,7 @@ def extract_address(org_json):
             postitoimipaikka = y.get("postitoimipaikka")
             osoitetyyppi = y.get("osoitetyyppi")
             return osoite, postinumero, postitoimipaikka, osoitetyyppi
-    # 2.  postiosoite
+
     kaynti = org_json.get("postiosoite")
     if kaynti:
         osoite = kaynti.get("osoite")
@@ -109,7 +103,6 @@ def extract_address(org_json):
         osoitetyyppi = kaynti.get("osoitetyyppi")
         return osoite, postinumero, postitoimipaikka, osoitetyyppi
 
-    # 3. Yhteystiedot posti
     for y in org_json.get("yhteystiedot", []):
         if y.get("osoitetyyppi") == "posti":
             osoite = y.get("osoite")
@@ -120,14 +113,13 @@ def extract_address(org_json):
 
     return osoite, postinumero, postitoimipaikka, osoitetyyppi
 
-def load(secure, hostname, baseurl, schema, table, verbose=False):
+def load(secure, hostname, baseurl, schema, table):
     protocol = "https://"
     root = protocol + hostname + baseurl
 
-    # --- Get last load date with 2-day buffer ---
     try:
         sql = "SELECT CONVERT(varchar(10), DATEADD(day,-2,MAX(loadtime)),120) AS lastdate FROM sa.sa_organisaatioluokitus"
-        result = dbcommand.load(sql, None, "*", False)
+        result = dbcommand.load(sql)
         lastdate = result[0]["lastdate"] if result and result[0]["lastdate"] else None
         if not lastdate:
             show("ERROR: No last load date found in the database.")
@@ -136,13 +128,11 @@ def load(secure, hostname, baseurl, schema, table, verbose=False):
         show(f"ERROR: Could not get last load date ({e})")
         sys.exit(1)
 
-    # --- Create session ---
     with requests.Session() as session:
         session.headers.update({
             'Caller-Id': '1.2.246.562.10.2013112012294919827487.vipunen'
         })
 
-        # --- 1. Fetch changed OIDs ---
         show(f"Fetching changed OIDs since {lastdate}…")
         muutetut_url = f"{root}muutetut?lastModifiedSince={lastdate}&includeImage=false&excludeDiscontinued=false"
         try:
@@ -158,7 +148,6 @@ def load(secure, hostname, baseurl, schema, table, verbose=False):
             show("No updated organizations to process. Exiting.")
             return
 
-        # --- 2. Liitokset: only relevant OIDs ---
         show("Fetching relevant liitokset…")
         liitokset_url = root + "liitokset"
         try:
@@ -175,7 +164,6 @@ def load(secure, hostname, baseurl, schema, table, verbose=False):
             show(f"WARNING: Liitokset fetch failed ({e}), setting all liitosoid=None")
             liitokset_raw = []
 
-        # Filter liitokset to relevant OIDs
         liitosmap = {}
         for l in liitokset_raw:
             oid_a = l.get("organisaatioOid") or l.get("organisaatio", {}).get("oid")
@@ -183,7 +171,6 @@ def load(secure, hostname, baseurl, schema, table, verbose=False):
             if oid_a in oids and oid_b:
                 liitosmap[oid_a] = oid_b
 
-        # --- Prepare table ---
         row = makerow()
         dboperator.columns(row)
         dboperator.empty(schema, table)
@@ -191,7 +178,6 @@ def load(secure, hostname, baseurl, schema, table, verbose=False):
         batch_rows = []
         cnt = 0
 
-        # --- 3. Process each OID ---
         for oid in oids:
             cnt += 1
             if cnt % 100 == 0:
@@ -207,7 +193,6 @@ def load(secure, hostname, baseurl, schema, table, verbose=False):
                 row["parentoid"] = jv(i, "parentOid")
                 row["liitosoid"] = liitosmap.get(oid)
 
-                # types
                 tyypit = jv(i, "tyypit") or []
 
                 if "Koulutustoimija" in tyypit:
@@ -224,7 +209,6 @@ def load(secure, hostname, baseurl, schema, table, verbose=False):
                 if not row["tyyppi"]:
                     continue
 
-                # Names
                 if "nimi" in i:
                     row["nimi"] = i["nimi"].get("fi")
                     row["nimi_sv"] = i["nimi"].get("sv")
@@ -236,14 +220,12 @@ def load(secure, hostname, baseurl, schema, table, verbose=False):
                 if "opetuskielet" in i:
                     row["oppilaitoksenopetuskieli"] = ",".join(i["opetuskielet"])
 
-                # Address extraction
                 osoite, postinumero, postitoimipaikka, tyyppi = extract_address(i)
                 row["osoite"] = osoite
                 row["postinumero"] = postinumero
                 row["postitoimipaikka"] = postitoimipaikka
                 row["osoitetyyppi"] = tyyppi
 
-                # Coordinates
                 get_and_set_coordinates(row)
 
                 batch_rows.append(row)
@@ -255,7 +237,6 @@ def load(secure, hostname, baseurl, schema, table, verbose=False):
             except Exception as e:
                 show(f"Error processing {oid}: {e}")
 
-        # Insert remaining
         if batch_rows:
             dboperator.insertMany("opintopolku", schema, table, batch_rows)
 
@@ -276,7 +257,6 @@ def main(argv):
     url = "/organisaatio-service/api/"
     schema = os.getenv("SCHEMA") or "sa"
     table = os.getenv("TABLE") or "sa_organisaatioluokitus"
-    verbose = False
 
     try:
         opts, args = getopt.getopt(argv,"sH:u:e:t:v",["secure","hostname=","url=","schema=","table=","verbose"])
@@ -291,9 +271,8 @@ def main(argv):
         elif opt in ("-u", "--url"): url = arg
         elif opt in ("-e", "--schema"): schema = arg
         elif opt in ("-t", "--table"): table = arg
-        elif opt in ("-v", "--verbose"): verbose = True
 
-    load(secure, hostname, url, schema, table, verbose)
+    load(secure, hostname, url, schema, table)
 
 if __name__ == "__main__":
     main(sys.argv[1:])
