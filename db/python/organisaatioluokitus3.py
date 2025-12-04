@@ -122,7 +122,7 @@ def load(secure, hostname, baseurl, schema, table):
         print(sql)
         result = dbcommand.load(sql)
         print(result)
-        lastdate = str(result[0]) if result and  else "2025-12-01"
+        lastdate = str(result[0]["lastdate"]) if result and  else: "2025-12-01"
         if not lastdate:
             show("ERROR: No last load date found in the database.")
             sys.exit(1)
