@@ -13,11 +13,7 @@ Addresses: uses kayntiosoite if available, else falls back to yhteystiedot[kaynt
 import sys
 import requests
 from time import localtime, strftime
-import importlib
-
-importlib.reload(sys)
-if sys.version_info < (3,0):
-    sys.setdefaultencoding('utf-8')
+import argparse
 
 import dbcommand
 import dboperator
@@ -38,7 +34,7 @@ def makerow():
     }
 
 def jv(jsondata, key):
-    return jsondata[key] if key in jsondata else None
+    return jsondata.get(key)
 
 def show(message):
     print(strftime("%Y-%m-%d %H:%M:%S", localtime()) + " " + message)
@@ -69,25 +65,25 @@ def get_and_set_coordinates(row):
 
     # External geocoding
     full_address = f"{osoite_parsed}, {postinumero}, {postitoimipaikka}"
-    geo = geocoding.main(["-A", full_address])
-
-    if geo["STATUS"] == "OK":
-        lat = geo["RESULT"]["latitude"]
-        lon = geo["RESULT"]["longitude"]
-        conf = geo["RESULT"].get("confidence", 1)
-
-        if conf >= EXT_API_QUERY_CONFIDENCE_LIMIT:
-            row["latitude"] = lat
-            row["longitude"] = lon
-
-        # Save to DB
-        command = (
-            "INSERT INTO [ANTERO].[sa].[sa_koordinaatit] "
-            "(osoite, postinumero, postitoimipaikka, latitude, longitude, confidence) "
-            "VALUES (%s, %s, %s, %s, %s, %s)",
-            (osoite_parsed, postinumero, postitoimipaikka, lat, lon, conf)
-        )
-        dbcommand.load(command, "", False)
+    try:
+        geo = geocoding.main(["-A", full_address])
+        if geo["STATUS"] == "OK":
+            lat = geo["RESULT"]["latitude"]
+            lon = geo["RESULT"]["longitude"]
+            conf = geo["RESULT"].get("confidence", 1)
+            if conf >= EXT_API_QUERY_CONFIDENCE_LIMIT:
+                row["latitude"] = lat
+                row["longitude"] = lon
+            # Save to DB
+            command = (
+                "INSERT INTO [ANTERO].[sa].[sa_koordinaatit] "
+                "(osoite, postinumero, postitoimipaikka, latitude, longitude, confidence) "
+                "VALUES (%s, %s, %s, %s, %s, %s)",
+                (osoite_parsed, postinumero, postitoimipaikka, lat, lon, conf)
+            )
+            dbcommand.load(command, "", False)
+    except Exception as e:
+        show(f"Geocoding failed for {full_address}: {e}")
 
 def extract_address(org_json):
     osoite = postinumero = postitoimipaikka = osoitetyyppi = None
@@ -120,7 +116,6 @@ def extract_address(org_json):
             return osoite, postinumero, postitoimipaikka, osoitetyyppi
 
     return osoite, postinumero, postitoimipaikka, osoitetyyppi
-
 
 def load(secure, hostname, baseurl, schema, table, verbose=False):
     protocol = "https://" if secure else "http://"
@@ -233,3 +228,34 @@ def load(secure, hostname, baseurl, schema, table, verbose=False):
         dboperator.insertMany("opintopolku", schema, table, batch_rows)
 
     show("DONE.")
+
+def main(argv):
+  # variables from arguments with possible defaults
+  secure = True # default secure, so always secure!
+  hostname = os.getenv("OPINTOPOLKU") or "virkailija.opintopolku.fi"
+  url = "/organisaatio-service/rest/organisaatio/"
+  schema = os.getenv("SCHEMA") or "sa"
+  table = os.getenv("TABLE") or "sa_organisaatioluokitus"
+  verbose = False
+
+  try:
+    opts, args = getopt.getopt(argv,"sH:u:e:t:v",["secure","hostname=","url=","schema=","table=","verbose"])
+  except getopt.GetoptError as err:
+    print(err)
+    usage()
+    sys.exit(2)
+  for opt, arg in opts:
+    if opt in ("-s", "--secure"): secure=True
+    elif opt in ("-H", "--hostname"): hostname = arg
+    elif opt in ("-u", "--url"): url = arg
+    elif opt in ("-e", "--schema"): schema = arg
+    elif opt in ("-t", "--table"): table = arg
+    elif opt in ("-v", "--verbose"): verbose = True
+  if not hostname or not url or not schema or not table:
+    usage()
+    sys.exit(2)
+
+  load(secure,hostname,url,schema,table,verbose)
+
+if __name__ == "__main__":
+  main(sys.argv[1:])
