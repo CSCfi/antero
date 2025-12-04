@@ -118,7 +118,7 @@ def extract_address(org_json):
     return osoite, postinumero, postitoimipaikka, osoitetyyppi
 
 def load(secure, hostname, baseurl, schema, table, verbose=False):
-    protocol = "https://" if secure else "http://"
+    protocol = "https://"
     root = protocol + hostname + baseurl
 
     # --- 1. All OIDs ---
@@ -233,9 +233,9 @@ def main(argv):
   # variables from arguments with possible defaults
   secure = True # default secure, so always secure!
   hostname = os.getenv("OPINTOPOLKU") or "virkailija.opintopolku.fi"
-  url = "/organisaatio-service/rest/organisaatio/"
+  url = "/organisaatio-service/api/"
   schema = os.getenv("SCHEMA") or "sa"
-  table = os.getenv("TABLE") or "sa_organisaatioluokitus"
+  table = os.getenv("TABLE") or "sa_organisaatioluokitus_phase1"
   verbose = False
 
   try:
