@@ -70,20 +70,38 @@ def get_kotikunta_by_kuntakoodi(koodi):
 
 
 def check_if_coordinates_in_our_db(osoite, postinumero, postitoimipaikka):
-    command = ("SELECT * FROM [ANTERO].[sa].[sa_koordinaatit] WHERE osoite='" + osoite +
-               "' AND postinumero='" + postinumero + "' AND postitoimipaikka='" + postitoimipaikka + "'").encode('utf-8', 'ignore')
+    # Escape single quotes
+    safe_osoite = osoite.replace("'", "''") if osoite else None
+    safe_postinumero = postinumero.replace("'", "''") if postinumero else None
+    safe_postitoimipaikka = postitoimipaikka.replace("'", "''") if postitoimipaikka else None
+
+    command = (
+        f"SELECT * FROM [ANTERO].[sa].[sa_koordinaatit] "
+        f"WHERE osoite='{safe_osoite}' AND postinumero='{safe_postinumero}' AND postitoimipaikka='{safe_postitoimipaikka}'"
+    )
+
     result = dbcommand.load(command, "*", False)
     if result:
-        return {"coordinates_found": True, "latitude": result[0]["latitude"], "longitude": result[0]["longitude"],
-                "confidence": result[0]["confidence"]}
+        return {
+            "coordinates_found": True,
+            "latitude": result[0]["latitude"],
+            "longitude": result[0]["longitude"],
+            "confidence": result[0]["confidence"]
+        }
     return {"coordinates_found": False, "latitude": None, "longitude": None, "confidence": None}
 
 
 def insert_coordinates_to_our_db(osoite, postinumero, postitoimipaikka, latitude, longitude, api_result_confidence):
-    command = ("INSERT INTO [ANTERO].[sa].[sa_koordinaatit] (osoite, postinumero, postitoimipaikka, latitude, longitude, confidence) VALUES ('" +
-               osoite + "', '" + postinumero + "', '" + postitoimipaikka + "', '" + str(latitude) + "', '" + str(
-                   longitude) + "', '" +
-               str(api_result_confidence) + "')").encode('utf-8', 'ignore')
+    # Escape single quotes in strings to prevent SQL syntax errors
+    safe_osoite = osoite.replace("'", "''")
+    safe_postinumero = postinumero.replace("'", "''") if postinumero else None
+    safe_postitoimipaikka = postitoimipaikka.replace("'", "''") if postitoimipaikka else None
+
+    command = (
+        f"INSERT INTO [ANTERO].[sa].[sa_koordinaatit] "
+        f"(osoite, postinumero, postitoimipaikka, latitude, longitude, confidence) "
+        f"VALUES ('{safe_osoite}', '{safe_postinumero}', '{safe_postitoimipaikka}', {latitude}, {longitude}, {api_result_confidence})"
+    )
     dbcommand.load(command, "", False)
 
 
