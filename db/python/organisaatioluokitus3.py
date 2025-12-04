@@ -5,21 +5,15 @@
 """
 organisaatioluokitus - batch insert version using new /api/ endpoints
 
-Fetch all organizations from the new Organisaatio Service API.
-Uses:
-
-- /api/oids          → list of all OIDs
-- /api/liitokset     → linked OIDs
-- /api/{oid}         → full org details (includes osoitteet, opetuskielet, oppilaitostyyppi…)
-
-Batch inserts rows into target table.
+Fetch all organizations from the Organisaatio Service API.
+Uses /api/oids, /api/liitokset, /api/{oid}.
+Addresses: uses kayntiosoite if available, else falls back to yhteystiedot[kaynti].
 """
 
-import sys, os
+import sys
 import requests
 from time import localtime, strftime
 import importlib
-import getopt
 
 importlib.reload(sys)
 if sys.version_info < (3,0):
@@ -32,27 +26,22 @@ import geocoding_v2 as geocoding
 EXT_API_QUERY_CONFIDENCE_LIMIT = 0.6
 BATCH_SIZE = 1000
 
-
 def makerow():
     return {
-        'oid':None, 'koodi':None, 'nimi':None, 'nimi_sv':None, 'nimi_en':None,
-        'alkupvm':None, 'loppupvm':None,
-        'tyyppi':None, 'parentoid':None, 'liitosoid':None,
-        'kotikunta':None, 'oppilaitoksenopetuskieli':None,
-        'oppilaitostyyppi':None,
-        'osoitetyyppi':None, 'osoite':None, 'postinumero':None,
-        'postitoimipaikka':None,
-        'latitude':None, 'longitude':None
+        'oid': None, 'koodi': None, 'nimi': None, 'nimi_sv': None, 'nimi_en': None,
+        'alkupvm': None, 'loppupvm': None,
+        'tyyppi': None, 'parentoid': None, 'liitosoid': None,
+        'kotikunta': None, 'oppilaitoksenopetuskieli': None,
+        'oppilaitostyyppi': None,
+        'osoitetyyppi': None, 'osoite': None, 'postinumero': None, 'postitoimipaikka': None,
+        'latitude': None, 'longitude': None
     }
-
 
 def jv(jsondata, key):
     return jsondata[key] if key in jsondata else None
 
-
 def show(message):
-    print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message)
-
+    print(strftime("%Y-%m-%d %H:%M:%S", localtime()) + " " + message)
 
 def get_and_set_coordinates(row):
     osoite_parsed = row["osoite"].split(",")[0] if row["osoite"] else ""
@@ -100,9 +89,53 @@ def get_and_set_coordinates(row):
         )
         dbcommand.load(command, "", False)
 
+def extract_address(org_json):
+    # Prioritize kayntiosoite
+    if "kayntiosoite" in org_json and org_json["kayntiosoite"]:
+        addr = org_json["kayntiosoite"]
+        osoite = addr.get("osoite")
+        postinumero_tmp =  addr.get("postinumero")
+        postinumero= postinumero_tmp.split("_")[-1]
+        postitoimipaikka=addr.get("postitoimipaikka"),
+        osoitetyyppi= addr.get("osoitetyyppi")
+
+    elif "yhteystiedot" in org_json:
+        yt = org_json["yhteystiedot"]
+        for y in yt
+            if y["osoitetyyppi"] == "kaynti":
+                osoite = y.get("osoite")
+                postinumero_tmp =  y.get("postinumero")
+                postinumero= postinumero_tmp.split("_")[-1]
+                postitoimipaikka=y.get("postitoimipaikka"),
+                osoitetyyppi= y.get("osoitetyyppi")
+
+    elif "postiosoite" in org_json and org_json["kayntiosoite"]:
+            addr = org_json["kayntiosoite"]
+            osoite = addr.get("osoite")
+            postinumero_tmp =  addr.get("postinumero")
+            postinumero= postinumero_tmp.split("_")[-1]
+            postitoimipaikka=addr.get("postitoimipaikka"),
+            osoitetyyppi= addr.get("osoitetyyppi")
+    elif "yhteystiedot" in org_json:
+        yt = org_json["yhteystiedot"]
+        for y in yt
+            if y["osoitetyyppi"] == "posti":
+                osoite = y.get("osoite")
+                postinumero_tmp =  y.get("postinumero")
+                postinumero= postinumero_tmp.split("_")[-1]
+                postitoimipaikka=y.get("postitoimipaikka"),
+                osoitetyyppi= y.get("osoitetyyppi")
+    else:
+        osoite = None
+        postinumero = None
+        postitoimipaikka = None
+        osoitetyyppi = None
+
+
+    return osoite,postinumero, postitoimipaikka,osoitetyyppi
+
 
 def load(secure, hostname, baseurl, schema, table, verbose=False):
-
     protocol = "https://" if secure else "http://"
     root = protocol + hostname + baseurl
 
@@ -158,7 +191,7 @@ def load(secure, hostname, baseurl, schema, table, verbose=False):
             row = makerow()
             row["oid"] = oid
             row["parentoid"] = jv(i, "parentOid")
-            row["liitosoid"] = liitosmap.get(oid)  # None if not linked
+            row["liitosoid"] = liitosmap.get(oid)
 
             # types
             tyypit = jv(i, "tyypit") or []
@@ -166,19 +199,16 @@ def load(secure, hostname, baseurl, schema, table, verbose=False):
             if "Koulutustoimija" in tyypit:
                 row["tyyppi"] = "Koulutustoimija"
                 row["koodi"] = jv(i, "ytunnus") or jv(i, "virastoTunnus")
-
             elif "Oppilaitos" in tyypit:
                 row["tyyppi"] = "Oppilaitos"
                 row["koodi"] = jv(i, "oppilaitosKoodi")
                 if "oppilaitosTyyppi" in i:
                     row["oppilaitostyyppi"] = i["oppilaitosTyyppi"]
-
             elif "Toimipiste" in tyypit:
                 row["tyyppi"] = "Toimipiste"
                 row["koodi"] = jv(i, "toimipistekoodi")
-
             if not row["tyyppi"]:
-                continue  # skip non-relevant organizations
+                continue
 
             # Names
             if "nimi" in i:
@@ -188,22 +218,16 @@ def load(secure, hostname, baseurl, schema, table, verbose=False):
 
             row["alkupvm"] = jv(i, "alkuPvm")
             row["loppupvm"] = jv(i, "lakkautusPvm")
-
-            # kotikunta
-            if "kotipaikka" in i and i["kotipaikka"]:
-                row["kotikunta"] = i["kotipaikka"]
-
-            # opetuskielet
+            row["kotikunta"] = jv(i, "kotipaikka")
             if "opetuskielet" in i:
                 row["oppilaitoksenopetuskieli"] = ",".join(i["opetuskielet"])
 
-            # osoitteet
-            if "osoitteet" in i and i["osoitteet"]:
-                oso = i["osoitteet"][0]
-                row["osoitetyyppi"] = oso.get("osoitetyyppi")
-                row["osoite"] = oso.get("osoite")
-                row["postinumero"] = oso.get("postinumero")
-                row["postitoimipaikka"] = oso.get("postitoimipaikka")
+            # Address extraction
+            osoite, postinumero, postitoimipaikka, tyyppi = extract_address(i)
+            row["osoite"] = osoite
+            row["postinumero"] = postinumero
+            row["postitoimipaikka"] = postitoimipaikka
+            row["osoitetyyppi"] = tyyppi
 
             # Coordinates
             get_and_set_coordinates(row)
@@ -222,38 +246,3 @@ def load(secure, hostname, baseurl, schema, table, verbose=False):
         dboperator.insertMany("opintopolku", schema, table, batch_rows)
 
     show("DONE.")
-
-
-def usage():
-    print("usage: script [-s] [-H host] [-u baseurl] [-e schema] [-t table] [-v]")
-    sys.exit(2)
-
-
-def main(argv):
-    secure = True
-    hostname = "virkailija.opintopolku.fi"
-    baseurl = "/organisaatio-service/api/"
-    schema = "sa"
-    table = "sa_organisaatioluokitus_phase1"
-    verbose = False
-
-    try:
-        opts, args = getopt.getopt(argv, "sH:u:e:t:v",
-                                   ["secure", "hostname=", "url=", "schema=", "table=", "verbose"])
-    except getopt.GetoptError as err:
-        print(err)
-        usage()
-
-    for opt, arg in opts:
-        if opt in ("-s", "--secure"): secure = True
-        elif opt in ("-H", "--hostname"): hostname = arg
-        elif opt in ("-u", "--url"): baseurl = arg
-        elif opt in ("-e", "--schema"): schema = arg
-        elif opt in ("-t", "--table"): table = arg
-        elif opt in ("-v", "--verbose"): verbose = True
-
-    load(secure, hostname, baseurl, schema, table, verbose)
-
-
-if __name__ == "__main__":
-    main(sys.argv[1:])
