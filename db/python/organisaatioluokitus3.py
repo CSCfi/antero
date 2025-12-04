@@ -16,7 +16,6 @@ Batch inserts rows into target table.
 """
 
 import sys, os
-import json
 import requests
 from time import localtime, strftime
 import importlib
@@ -103,27 +102,31 @@ def get_and_set_coordinates(row):
 
 
 def load(secure, hostname, baseurl, schema, table, verbose=False):
+
     protocol = "https://" if secure else "http://"
     root = protocol + hostname + baseurl
 
     # --- 1. All OIDs ---
     show("Fetching OIDs…")
-    oids = requests.get(root + "oids", headers={'Caller-Id': '1.2.246.562.10.2013112012294919827487.vipunen'}).json()
+    oids = requests.get(root + "oids",
+                        headers={'Caller-Id': '1.2.246.562.10.2013112012294919827487.vipunen'}).json()
 
     # --- 2. Liitokset ---
     show("Fetching liitokset…")
-    liitokset_resp = requests.get(root + "liitokset",
-                                 headers={'Caller-Id': '1.2.246.562.10.2013112012294919827487.vipunen'})
-    liitokset_data = liitokset_resp.json()
-
-    # Flexible parsing
-    if isinstance(liitokset_data, dict) and "liitokset" in liitokset_data:
-        liitokset_raw = liitokset_data["liitokset"]
-    elif isinstance(liitokset_data, list):
-        liitokset_raw = liitokset_data
-    else:
-        show(f"ERROR: Unknown liitokset format: {liitokset_data}")
-        return
+    try:
+        liitokset_resp = requests.get(root + "liitokset",
+                                     headers={'Caller-Id': '1.2.246.562.10.2013112012294919827487.vipunen'})
+        liitokset_data = liitokset_resp.json()
+        if isinstance(liitokset_data, dict) and "liitokset" in liitokset_data:
+            liitokset_raw = liitokset_data["liitokset"]
+        elif isinstance(liitokset_data, list):
+            liitokset_raw = liitokset_data
+        else:
+            show(f"WARNING: Unknown liitokset format, setting all liitosoid=None")
+            liitokset_raw = []
+    except Exception as e:
+        show(f"WARNING: Liitokset fetch failed ({e}), setting all liitosoid=None")
+        liitokset_raw = []
 
     liitosmap = {}
     for l in liitokset_raw:
@@ -155,7 +158,7 @@ def load(secure, hostname, baseurl, schema, table, verbose=False):
             row = makerow()
             row["oid"] = oid
             row["parentoid"] = jv(i, "parentOid")
-            row["liitosoid"] = liitosmap.get(oid)
+            row["liitosoid"] = liitosmap.get(oid)  # None if not linked
 
             # types
             tyypit = jv(i, "tyypit") or []
