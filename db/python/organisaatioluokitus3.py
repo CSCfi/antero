@@ -116,11 +116,13 @@ def extract_address(org_json):
 def load(secure, hostname, baseurl, schema, table):
     protocol = "https://"
     root = protocol + hostname + baseurl
-
+    print(root)
     try:
         sql = "SELECT CONVERT(varchar(10), DATEADD(day,-2,MAX(loadtime)),120) AS lastdate FROM sa.sa_organisaatioluokitus"
+        print(sql)
         result = dbcommand.load(sql)
-        lastdate = result[0]["lastdate"] if result and result[0]["lastdate"] else None
+        print(result)
+        lastdate = str(result[0]) if result and  else "2025-12-01"
         if not lastdate:
             show("ERROR: No last load date found in the database.")
             sys.exit(1)
