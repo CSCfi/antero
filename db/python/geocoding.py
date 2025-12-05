@@ -50,7 +50,7 @@ def get_geo_coordinates_from_server(address, postalcode, city):
     # Try 5 times if not getting result
     TIMES_TRIED = 0
     RESULT_NOT_FOUND = True
-    while TIMES_TRIED < 2 and RESULT_NOT_FOUND:
+    while TIMES_TRIED < 1 and RESULT_NOT_FOUND:
         try:
             r = requests.get(complete_url, headers={"Accept": "application/json"})
         except requests.exceptions.RequestException as e:
