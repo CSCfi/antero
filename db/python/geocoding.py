@@ -50,7 +50,7 @@ def get_geo_coordinates_from_server(address, postalcode, city):
     # Try 5 times if not getting result
     TIMES_TRIED = 0
     RESULT_NOT_FOUND = True
-    while TIMES_TRIED < 5 and RESULT_NOT_FOUND:
+    while TIMES_TRIED < 2 and RESULT_NOT_FOUND:
         try:
             r = requests.get(complete_url, headers={"Accept": "application/json"})
         except requests.exceptions.RequestException as e:
@@ -73,7 +73,7 @@ def get_geo_coordinates_from_server(address, postalcode, city):
             return get_result_dictionary(True, coordinate_results)
         else:  # Request failed. nominatim.openstreetmap.org has a limit of 1 req/s.
             TIMES_TRIED = TIMES_TRIED + 1
-            time.sleep(1)
+            time.sleep(0.5)
 
     return get_result_dictionary(False, "Unknown HTTP-error code: " + str(r.status_code))
 
