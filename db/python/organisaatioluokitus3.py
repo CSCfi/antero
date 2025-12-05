@@ -1,279 +1,439 @@
-#!/usr/bin/python3
+#!/usr/bin/python
 # -*- encoding: utf-8 -*-
 # vim: set fileencoding=utf-8 :
-
 """
-organisaatioluokitus - batch insert version using new /api/ endpoints with dynamic muutetut fetching
-Optimized liitokset fetching: only include relevant OIDs to minimize processing.
-"""
+organisaatioluokitus
 
+Fetch all organizations from Organisaatio Service from Opintopolku.
+If organization has predefined matching value in "tyypit" (one of: Koulutustoimija, Oppilaitos or Toimipiste)
+then include it in result set and fetch more information for it.
+
+Koodi is in
+- ytunnus for Koulutustoimija
+- oppilaitosKoodi for Oppilaitos
+- toimipistekoodi for Toimipiste.
+"""
 import sys, os, getopt
+import geocoding_v2
+import json
 import requests
 from time import localtime, strftime
+#from imp import reload
+import importlib
+
+#reload(sys)
+importlib.reload(sys)
+if sys.version_info < (3,0):
+    sys.setdefaultencoding('utf-8')
 
 import dbcommand
 import dboperator
-import geocoding_v2 as geocoding
 
-EXT_API_QUERY_CONFIDENCE_LIMIT = 0.6
-BATCH_SIZE = 1000
+EXT_API_QUERY_CONFIDENCE_LIMIT = 0.6  # TODO: this needs more evaluation. What is the minimum acceptable confidence.
 
 def makerow():
-    return {
-        'oid': None, 'koodi': None, 'nimi': None, 'nimi_sv': None, 'nimi_en': None,
-        'alkupvm': None, 'loppupvm': None,
-        'tyyppi': None, 'parentoid': None, 'liitosoid': None,
-        'kotikunta': None, 'oppilaitoksenopetuskieli': None,
-        'oppilaitostyyppi': None,
-        'osoitetyyppi': None, 'osoite': None, 'postinumero': None, 'postitoimipaikka': None,
-        'latitude': None, 'longitude': None
-    }
+  return {
+    'oid':None, 'koodi':None, 'nimi':None, 'nimi_sv':None, 'nimi_en':None, 'alkupvm':None, 'loppupvm':None,
+    'tyyppi':None, 'parentoid':None, 'liitosoid':None,
+    'kotikunta':None, 'oppilaitoksenopetuskieli':None,
+    'oppilaitostyyppi':None,
+    'osoitetyyppi':None, 'osoite':None, 'postinumero':None, 'postitoimipaikka':None,
+    'latitude':None, 'longitude':None
+  }
 
+# get value from json
 def jv(jsondata, key):
-    return jsondata.get(key)
+  if key in jsondata:
+    return jsondata[key]
+  return None
+###  if key in jsondata:
+###		if jsondata[key]=='':
+###       return None
+###       else:
+###         return jsondata[key]
+###     return None
+
+
+def getmeta(i,tieto,kieli):
+  for m in i["metadata"]:
+    if m["kieli"] == kieli:
+      return m[tieto]
+  return None
 
 def show(message):
-    print(strftime("%Y-%m-%d %H:%M:%S", localtime()) + " " + message)
+  print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message)
+
+def get_osoite_array(osoite, postinumero, kunta):
+  osoite_array = ["--address"]
+  osoite_array.append(osoite + ", " + postinumero + ", " + kunta)
+  return osoite_array
+
+def get_kotikunta_by_kuntakoodi(koodi):
+  try:
+    r = requests.get("https://virkailija.opintopolku.fi/koodisto-service/rest/json/kunta/koodi/arvo/" + str(koodi),
+                     headers={"Accept": "application/json", 'Caller-Id': '1.2.246.562.10.2013112012294919827487.vipunen'})
+  except requests.exceptions.RequestException as e:
+    print("Error: virkailija.opintopolku.fi, no kunta for koodi: " + str(koodi))
+
+  try:
+    result_json = json.loads(r.text)
+  except ValueError as e:
+    print("Error: virkailija.opintopolku.fi, " + str(e))
+
+  if r.status_code == 200:
+    for i in result_json[0]["metadata"]:
+        if i["kieli"] == "FI":
+          return {"OK": True, "kunta": i["nimi"]}
+    return {"OK": True, "kunta": result_json[0]["metadata"][0]["nimi"]}  # If FI was not found
+  else:
+    print("Error! virkailija.opintopolku.fi, code: " + str(r.status_code))
+  return {"OK": False, "kunta": None}
+
+def check_if_coordinates_in_our_db(osoite, postinumero, postitoimipaikka):
+  command = ("SELECT * FROM [ANTERO].[sa].[sa_koordinaatit] WHERE osoite='" + osoite +
+             "' AND postinumero='" + postinumero + "' AND postitoimipaikka='" + postitoimipaikka + "'") \
+             .encode('utf-8', 'ignore')  # unknown characters will be lost (ignored)
+
+  result = dbcommand.load(command, "*", False)
+
+  if len(result) > 0:  # the coordinates are found
+      latitude = result[0]["latitude"]
+      longitude = result[0]["longitude"]
+      confidence = result[0]["confidence"]
+  else:
+      return {"coordinates_found": False, "latitude": None, "longitude": None, "confidence": None}
+
+  return {"coordinates_found": True, "latitude": latitude, "longitude": longitude, "confidence": confidence}
+
+def insert_coordinates_to_our_db(osoite, postinumero, postitoimipaikka, latitude, longitude, api_result_confidence):
+  command = ("INSERT INTO [ANTERO].[sa].[sa_koordinaatit] (osoite, postinumero, postitoimipaikka, latitude, longitude, confidence) VALUES ('" +
+             osoite + "', '" + postinumero + "', '" + postitoimipaikka + "', '" + str(latitude) + "', '" + str(longitude) + "', '" + \
+             str(api_result_confidence) + "')").encode('utf-8', 'ignore')
+
+  dbcommand.load(command, "", False)
+
+def coordinate_length_ok(latitude, longitude):
+  """
+  A valid coordinate should be a float of certain length (i.e. usually 8-9 characters including the dot).
+  E.g. ['60.388098', '25.621308']
+  Explicitly check the length of a float and discard clearly invalid coordinates. There seems to be an issue
+  with some of the coordinates having a high confidence value, but the coordinate is still clearly wrong (too short).
+  """
+  if len(str(latitude)) > 6 and len(str(longitude)) > 6:
+      return True
+  return False
+
+def fetch_coordinates_from_server(osoite_array):
+  api_fetch_successful = False
+  geocoding_api_answer = None
+
+  try:
+    geocoding_api_answer = geocoding.main(osoite_array)
+    api_fetch_successful = True
+  except Exception as e:
+    print("Error: " + str(e))
+    print("Osoite: " + ''.join(osoite_array))  # convert osoite_array to string
+  except SystemExit:
+    pass  # catch the sys.exit from geocoding. It prints the usage().
+
+  return {"OK": api_fetch_successful, "result": geocoding_api_answer}
 
 def get_and_set_coordinates(row):
-    osoite_parsed = row["osoite"].split(",")[0] if row["osoite"] else ""
-    postinumero = row["postinumero"] or ""
-    postitoimipaikka = row["postitoimipaikka"] or ""
+  """
+  nb! coordinates in another process! (see geocoding.py)
+  In short:  geocoding.py translates given address to latitude/longitude -coordinates
 
-    if not (osoite_parsed and postinumero and postitoimipaikka):
-        return
+  Geocoding eats the address in following format: ["--address", "Kadunnimi talon_numero [porras asunto], postinumero, kaupunki"]
 
-    sql = "SELECT * FROM [ANTERO].[sa].[sa_koordinaatit] WHERE osoite=%s AND postinumero=%s AND postitoimipaikka=%s"
-    params = (osoite_parsed, postinumero, postitoimipaikka)
-    result = dbcommand.load(sql, params)
+  Geocoding returns:
+  {'STATUS': 'OK', 'RESULT': {'latitude': 61.246893, 'longitude': 22.33108, 'confidence': 0.8}}
 
-    if result:
-        lat = result[0]["latitude"]
-        lon = result[0]["longitude"]
-        conf = result[0]["confidence"]
-        if float(conf) >= EXT_API_QUERY_CONFIDENCE_LIMIT:
-            row["latitude"] = lat
-            row["longitude"] = lon
-        return
+  OR if problems:
+  {'STATUS': 'NOK', 'RESULT': "Error message"}
 
-    full_address = f"{osoite_parsed}, {postinumero}, {postitoimipaikka}"
-    try:
-        geo = geocoding.main(["-A", full_address])
-        if geo["STATUS"] == "OK":
-            lat = geo["RESULT"]["latitude"]
-            lon = geo["RESULT"]["longitude"]
-            conf = geo["RESULT"].get("confidence", 1)
-            if conf >= EXT_API_QUERY_CONFIDENCE_LIMIT:
-                row["latitude"] = lat
-                row["longitude"] = lon
-            sql_insert = (
-                "INSERT INTO [ANTERO].[sa].[sa_koordinaatit] "
-                "(osoite, postinumero, postitoimipaikka, latitude, longitude, confidence) "
-                "VALUES (%s, %s, %s, %s, %s, %s)"
-            )
-            params_insert = (osoite_parsed, postinumero, postitoimipaikka, lat, lon, conf)
-            dbcommand.execute(sql_insert, params_insert)
-    except Exception as e:
-        show(f"Geocoding failed for {full_address}: {e}")
+  --
 
-def extract_address(org_json):
-    osoite = postinumero = postitoimipaikka = osoitetyyppi = None
+  if there are commas (,) in osoite, use the part before the first comma
+  e.g. "Fredrikinkatu 33 A, 2 krs" --> "Fredrikinkatu 33 A"
+  """
+  osoite_parsed = row["osoite"].split(",")[0]
+  osoite_array = get_osoite_array(osoite_parsed, row["postinumero"], row["postitoimipaikka"])
 
-    kaynti = org_json.get("kayntiosoite")
-    if kaynti:
-        osoite = kaynti.get("osoite")
-        postinumero = kaynti.get("postinumero", "").split("_")[-1] if kaynti.get("postinumero") else None
-        postitoimipaikka = kaynti.get("postitoimipaikka")
-        osoitetyyppi = kaynti.get("osoitetyyppi")
-        return osoite, postinumero, postitoimipaikka, osoitetyyppi
+  """
+  First check if the coordinates are found in our database.
+  """
+  check_coordinates = check_if_coordinates_in_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"])
+  if check_coordinates["coordinates_found"]:
+    if float(check_coordinates["confidence"]) >= EXT_API_QUERY_CONFIDENCE_LIMIT and coordinate_length_ok(check_coordinates["latitude"], check_coordinates["longitude"]):
+      row["latitude"] = check_coordinates["latitude"]
+      row["longitude"] = check_coordinates["longitude"]
+    else:
+        pass  # fetched result has too low confidence to be shown or the coordinate length-check failed
 
-    for y in org_json.get("yhteystiedot", []):
-        if y.get("osoitetyyppi") == "kaynti":
-            osoite = y.get("osoite")
-            postinumero = y.get("postinumero", "").split("_")[-1] if y.get("postinumero") else None
-            postitoimipaikka = y.get("postitoimipaikka")
-            osoitetyyppi = y.get("osoitetyyppi")
-            return osoite, postinumero, postitoimipaikka, osoitetyyppi
+  else:
+    """
+    Coordinates not found in our database, fetch from external-API. First use "postitoimipaikka",
+    if the result-confidence is too low, then use "kotikunta" instead.
+    """
+    query_result = fetch_coordinates_from_server(osoite_array)
+    if query_result["OK"]:
+      geocoding_api_answer = query_result["result"]
 
-    kaynti = org_json.get("postiosoite")
-    if kaynti:
-        osoite = kaynti.get("osoite")
-        postinumero = kaynti.get("postinumero", "").split("_")[-1] if kaynti.get("postinumero") else None
-        postitoimipaikka = kaynti.get("postitoimipaikka")
-        osoitetyyppi = kaynti.get("osoitetyyppi")
-        return osoite, postinumero, postitoimipaikka, osoitetyyppi
+      if geocoding_api_answer["STATUS"] == "OK":
+        api_result_confidence = geocoding_api_answer["RESULT"]["confidence"]
 
-    for y in org_json.get("yhteystiedot", []):
-        if y.get("osoitetyyppi") == "posti":
-            osoite = y.get("osoite")
-            postinumero = y.get("postinumero", "").split("_")[-1] if y.get("postinumero") else None
-            postitoimipaikka = y.get("postitoimipaikka")
-            osoitetyyppi = y.get("osoitetyyppi")
-            return osoite, postinumero, postitoimipaikka, osoitetyyppi
+        kotikunta = get_kotikunta_by_kuntakoodi(row["kotikunta"])
+        if api_result_confidence < EXT_API_QUERY_CONFIDENCE_LIMIT and kotikunta["OK"]:
+          """
+          Too low confidence. Fetch again, now with 'kotikunta' instead of 'postitoimipaikka'.
+          """
+          new_osoite_array = get_osoite_array(osoite_parsed, row["postinumero"], kotikunta["kunta"])
+          query_result = fetch_coordinates_from_server(new_osoite_array)
 
-    return osoite, postinumero, postitoimipaikka, osoitetyyppi
+          if query_result["OK"]:
+            geocoding_api_answer = query_result["result"]
 
-def load(secure, hostname, baseurl, schema, table):
-    protocol = "https://"
-    root = protocol + hostname + baseurl
-    print(root)
-    try:
-        sql = "SELECT CONVERT(varchar(10), DATEADD(day,-2,MAX(loadtime)),120) AS lastdate FROM sa.sa_organisaatioluokitus"
-        print(sql)
-        result = dbcommand.load(sql)
-        print(result)
-        lastdate = str(result[0]["lastdate"]) if result and result[0].get("lastdate") else "2025-12-01"
-        if not lastdate:
-            lastdate = "2025-12-01"
-    except Exception as e:
-        show(f"ERROR: Could not get last load date, szet defaul '2025-12-01'")
-        lastdate="2025-12-01"
+            if geocoding_api_answer["STATUS"] == "OK":
+              api_result_confidence = geocoding_api_answer["RESULT"]["confidence"]
+              latitude = geocoding_api_answer["RESULT"]["latitude"]
+              longitude = geocoding_api_answer["RESULT"]["longitude"]
 
-    with requests.Session() as session:
-        session.headers.update({
-            'Caller-Id': '1.2.246.562.10.2013112012294919827487.vipunen'
-        })
+              if api_result_confidence >= EXT_API_QUERY_CONFIDENCE_LIMIT and coordinate_length_ok(latitude, longitude):
+                row["latitude"] = latitude
+                row["longitude"] = longitude
+              else:
+                pass  # results not shown further
 
-        show(f"Fetching changed OIDs since {lastdate}…")
-        muutetut_url = f"{root}muutetut?lastModifiedSince={lastdate}&includeImage=false&excludeDiscontinued=false"
+              insert_coordinates_to_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"], latitude, longitude, api_result_confidence)
+            else:  # STATUS == NOK
+              print("Error:", geocoding_api_answer["RESULT"].encode('utf-8', 'ignore'))
+
+        else:  # First external-API fetching successful (=high confidence) or we don't have better info (kotikunta is not known!)
+          latitude = geocoding_api_answer["RESULT"]["latitude"]
+          longitude = geocoding_api_answer["RESULT"]["longitude"]
+
+          if api_result_confidence >= EXT_API_QUERY_CONFIDENCE_LIMIT and coordinate_length_ok(latitude, longitude):
+            row["latitude"] = latitude
+            row["longitude"] = longitude
+          else:
+            pass  # results not shown further
+
+          insert_coordinates_to_our_db(osoite_parsed, row["postinumero"], row["postitoimipaikka"], latitude, longitude, api_result_confidence)
+      else:  # STATUS == NOK
         try:
-            response = session.get(muutetut_url, timeout=10)
-            response.raise_for_status()
-            muutetut_data = response.json()
-            oids = [org["oid"] for org in muutetut_data.get("organisaatiot", [])]
-        except Exception as e:
-            show(f"ERROR: Could not fetch changed OIDs ({e})")
-            sys.exit(1)
+            geo_error = geocoding_api_answer["RESULT"].encode('utf-8', 'ignore')
+            print("Error: ", geo_error)
+        except AttributeError as e :
+            print ("AttributeError: ", e)
 
-        if not oids:
-            show("No updated organizations to process. Exiting.")
-            return
+def load(secure,hostname,url,schema,table,verbose=False):
+  if verbose: show("begin")
 
-        show("Fetching relevant liitokset…")
-        liitokset_url = root + "liitokset"
-        try:
-            liitokset_resp = session.get(liitokset_url, timeout=10)
-            liitokset_data = liitokset_resp.json()
-            if isinstance(liitokset_data, dict) and "liitokset" in liitokset_data:
-                liitokset_raw = liitokset_data["liitokset"]
-            elif isinstance(liitokset_data, list):
-                liitokset_raw = liitokset_data
-            else:
-                show("WARNING: Unknown liitokset format, setting all liitosoid=None")
-                liitokset_raw = []
-        except Exception as e:
-            show(f"WARNING: Liitokset fetch failed ({e}), setting all liitosoid=None")
-            liitokset_raw = []
+  # make "columnlist" (type has no meaning as we're not creating table)
+  row = makerow()
+  # setup dboperator so other calls work
+  dboperator.columns(row)
 
-        liitosmap = {}
-        for l in liitokset_raw:
-            oid_a = l.get("organisaatioOid") or l.get("organisaatio", {}).get("oid")
-            oid_b = l.get("kohdeOid") or l.get("kohde", {}).get("oid")
-            if oid_a in oids and oid_b:
-                liitosmap[oid_a] = oid_b
+  if verbose: show("empty %s.%s"%(schema,table))
+  dboperator.empty(schema,table)
 
+  # fetching could be as simple and fast as:
+  """
+  geturi = "v2/hae?aktiiviset=true&suunnitellut=true&lakkautetut=true&organisaatiotyyppi="
+  tyyppis = [
+    "Koulutustoimija",
+    "Oppilaitos",
+    "Toimipiste"
+  ]
+  cnt = 0
+  for tyyppi in tyyppis:
+    show("load from "+hostname+url+geturi+tyyppi)
+
+    if secure:
+      address = "https://"+hostname+url+geturi+tyyppi
+    else:
+      address = "http://"+hostname+url+geturi+tyyppi
+  """
+  # ... but results don't contain address information :(
+
+  if secure:
+    address = "https://"+hostname+url
+  else:
+    address = "http://"+hostname+url
+
+  #""" load from web
+  show("load from "+address)
+
+  try:
+    # first create a "hash map" of liitokset
+    liitosresponse = requests.get(address+"v2/liitokset", headers = {'Caller-Id': '1.2.246.562.10.2013112012294919827487.vipunen'})
+    # actual data
+    response = requests.get(address, headers = {'Caller-Id': '1.2.246.562.10.2013112012294919827487.vipunen'})
+  except Exception as e:
+    show('HTTP GET failed.')
+    show('Reason: %s'%(str(e)))
+    sys.exit(2)
+  else:
+    # everything is fine
+    show("api call OK")
+  #"""
+
+  # liitokset
+  liitosmap = dict()
+  for l in liitosresponse.json():
+    liitosmap[l["organisaatio"]["oid"]] = l["kohde"]["oid"]
+  liitosresponse = None
+
+  oids = response.json()
+  cnt = 0
+  for o in oids:
+    cnt+=1
+    # show some sign of being alive
+    if cnt%100 == 0:
+      sys.stdout.write('.')
+      sys.stdout.flush()
+    if cnt%1000 == 0:
+      show("-- %d" % (cnt))
+    if verbose: show("%d -- %s"%(cnt,row))
+
+    # make another requets to actual organization data
+    try:
+        r = requests.get(address+o, headers = {'Caller-Id': '1.2.246.562.10.2013112012294919827487.vipunen'})
+        i = r.json()
+
+        # make "row" (clear values)
         row = makerow()
-        dboperator.columns(row)
-        dboperator.empty(schema, table)
 
-        batch_rows = []
-        cnt = 0
+        row["oid"] = o
+        row["parentoid"] = jv(i,"parentOid")
+        # liitokset
+        row["liitosoid"] = liitosmap[o] if o in liitosmap else None
 
-        for oid in oids:
-            cnt += 1
-            if cnt % 100 == 0:
-                sys.stdout.write('.')
-                sys.stdout.flush()
+        # TODO does the order here matter? if multiple tyyppi's, what to do?
+        if "tyypit" in i and "Koulutustoimija" in i["tyypit"]:
+          row["tyyppi"] = "Koulutustoimija"
+          row["koodi"] = jv(i,"ytunnus")
+          if not row["koodi"]:
+            row["koodi"] = jv(i,"virastoTunnus") # alternatively try virastotunnus if ytunnus is missing
+          if not row["koodi"]:
+            row["tyyppi"] = None # cancel this organization from loading
+        elif "tyypit" in i and "Oppilaitos" in i["tyypit"]:
+          row["tyyppi"] = "Oppilaitos"
+          row["koodi"] = jv(i,"oppilaitosKoodi")
+          if "oppilaitosTyyppiUri" in i and i["oppilaitosTyyppiUri"]:
+            row["oppilaitostyyppi"] = i["oppilaitosTyyppiUri"].replace("oppilaitostyyppi_","").replace("#1","")
+            # => just code, text values separately
+        elif "tyypit" in i and "Toimipiste" in i["tyypit"]:
+          row["tyyppi"] = "Toimipiste"
+          row["koodi"] = jv(i,"toimipistekoodi")
+        elif "tyypit" in i and "Oppisopimustoimipiste" in i["tyypit"]:
+          row["tyyppi"] = "Oppisopimustoimipiste"
+          row["koodi"] = jv(i,"toimipistekoodi")
+        elif "tyypit" in i and "Varhaiskasvatuksen toimipaikka" in i["tyypit"]:
+          row["tyyppi"] = "Varhaiskasvatuksen toimipaikka"
+          row["koodi"] = jv(i,"toimipistekoodi")
+        elif "tyypit" in i and "Varhaiskasvatuksen jarjestaja" in i["tyypit"]:
+          row["tyyppi"] = "Varhaiskasvatuksen järjestaja"
+          row["koodi"] = jv(i,"toimipistekoodi")
+        # was current organization of type of interest
+        if row["tyyppi"]:
 
-            try:
-                r = session.get(root + oid, timeout=10)
-                i = r.json()
+          if "nimi" in i and i["nimi"]:
+            row["nimi"] = jv(jv(i,"nimi"),"fi")
+            row["nimi_sv"] = jv(jv(i,"nimi"),"sv")
+            row["nimi_en"] = jv(jv(i,"nimi"),"en")
+          row["alkupvm"] = jv(i,"alkuPvm")
+          row["loppupvm"] = jv(i,"lakkautusPvm")
 
-                row = makerow()
-                row["oid"] = oid
-                row["parentoid"] = jv(i, "parentOid")
-                row["liitosoid"] = liitosmap.get(oid)
+          if "kotipaikkaUri" in i and i["kotipaikkaUri"]:
+            row["kotikunta"] = jv(i,"kotipaikkaUri").replace("kunta_","")
+            # => just code, text values separately
 
-                tyypit = jv(i, "tyypit") or []
+          if "kieletUris" in i and i["kieletUris"]:
+            # fix 7.10.2022 , replacing #1 didn't work anymore
+            # if many fix
+            uri_cnt=0
+            for uri in  i["kieletUris"]:
+                uri_cnt=uri_cnt+1
 
-                if "Koulutustoimija" in tyypit:
-                    row["tyyppi"] = "Koulutustoimija"
-                    row["koodi"] = jv(i, "ytunnus") or jv(i, "virastoTunnus")
-                elif "Oppilaitos" in tyypit:
-                    row["tyyppi"] = "Oppilaitos"
-                    row["koodi"] = jv(i, "oppilaitosKoodi")
-                    if "oppilaitosTyyppi" in i:
-                        row["oppilaitostyyppi"] = i["oppilaitosTyyppi"]
-                elif "Toimipiste" in tyypit:
-                    row["tyyppi"] = "Toimipiste"
-                    row["koodi"] = jv(i, "toimipistekoodi")
-                if not row["tyyppi"]:
-                    continue
+            if uri_cnt>1:
+                row["oppilaitoksenopetuskieli"] = "3"
+            else:
+                kieli_tmp= i["kieletUris"][0].replace("oppilaitoksenopetuskieli_","")
+                kieli_tmp=kieli_tmp.split("#")
+                row["oppilaitoksenopetuskieli"] = kieli_tmp[0]
 
-                if "nimi" in i:
-                    row["nimi"] = i["nimi"].get("fi")
-                    row["nimi_sv"] = i["nimi"].get("sv")
-                    row["nimi_en"] = i["nimi"].get("en")
+            # this is just for debugging with spyder
+            # row["oppilaitoksenopetuskieliUris"]=i["kieletUris"]
 
-                row["alkupvm"] = jv(i, "alkuPvm")
-                row["loppupvm"] = jv(i, "lakkautusPvm")
-                row["kotikunta"] = jv(i, "kotipaikka")
-                if "opetuskielet" in i:
-                    row["oppilaitoksenopetuskieli"] = ",".join(i["opetuskielet"])
+            #row["oppilaitoksenopetuskieli"] = i["kieletUris"][0].replace("oppilaitoksenopetuskieli_","").replace("#1","")
+            # => just code, text values separately
 
-                osoite, postinumero, postitoimipaikka, tyyppi = extract_address(i)
-                row["osoite"] = osoite
-                row["postinumero"] = postinumero
-                row["postitoimipaikka"] = postitoimipaikka
-                row["osoitetyyppi"] = tyyppi
+          # address, first kayntiosoite and if not exists then postiosoite
+          josoite = None
+          if "kayntiosoite" in i:
+            josoite = jv(i,"kayntiosoite")
+            row["osoitetyyppi"] = "kayntiosoite"
+          elif "postiosoite" in i:
+            josoite = jv(i,"postiosoite")
+            row["osoitetyyppi"] = "postiosoite"
+          if josoite:
+            row["osoite"] = jv(josoite,"osoite")
+            row["postinumero"] = josoite["postinumeroUri"].replace("posti_","") if "postinumeroUri" in josoite and josoite["postinumeroUri"] else None
+            row["postitoimipaikka"] = jv(josoite,"postitoimipaikka")
 
-                get_and_set_coordinates(row)
+            if (row["osoite"] != None and row["osoite"] != "" and row["postinumero"] != None and row["postinumero"] != ""
+                and int(row["postinumero"]) != 0 and row["postitoimipaikka"] != None and row["postitoimipaikka"] != ""):
+              get_and_set_coordinates(row)
 
-                batch_rows.append(row)
+          if verbose: show(" %5d -- %s %s (%s)"%(cnt,row["tyyppi"],row["koodi"],row["nimi"]))
+          dboperator.insert(hostname+url,schema,table,row)
+    except ValueError as ve:
+        print("ValueError: " + str(ve))
+        print("vika: " + str(address) + " oid:" + str(o))
 
-                if len(batch_rows) >= BATCH_SIZE:
-                    dboperator.insertMany("opintopolku", schema, table, batch_rows)
-                    batch_rows = []
+  dboperator.close()
 
-            except Exception as e:
-                show(f"Error processing {oid}: {e}")
-
-        if batch_rows:
-            dboperator.insertMany("opintopolku", schema, table, batch_rows)
-
-        show("DONE.")
+  if verbose: show("ready")
 
 def usage():
-    print("Usage: python3 script.py [-s] [-H hostname] [-u url] [-e schema] [-t table] [-v]")
-    print("  -s, --secure     Use HTTPS (default)")
-    print("  -H, --hostname   API hostname")
-    print("  -u, --url        Base API path (e.g., /organisaatio-service/api/)")
-    print("  -e, --schema     Database schema")
-    print("  -t, --table      Database table")
-    print("  -v, --verbose    Verbose mode")
+  print("""
+usage: organisaatioluokitus.py [-s|--secure] [-H|--hostname <hostname>] [-u|--url <url>] [-e|--schema <schema>] [-t|--table <table>] [-v|--verbose]
+
+secure defaults to secure, so no actual use here!
+hostname defaults to $OPINTOPOLKU then to "virkailija.opintopolku.fi"
+url defaults to "/organisaatio-service/rest/organisaatio/"
+schema defaults to $SCHEMA then to "sa"
+table defaults to $TABLE then to "sa_organisaatioluokitus"
+""")
 
 def main(argv):
-    secure = True
-    hostname = os.getenv("OPINTOPOLKU") or "virkailija.opintopolku.fi"
-    url = "/organisaatio-service/api/"
-    schema = os.getenv("SCHEMA") or "sa"
-    table = os.getenv("TABLE") or "sa_organisaatioluokitus"
+  # variables from arguments with possible defaults
+  secure = True # default secure, so always secure!
+  hostname = os.getenv("OPINTOPOLKU") or "virkailija.opintopolku.fi"
+  url = "/organisaatio-service/rest/organisaatio/"
+  schema = os.getenv("SCHEMA") or "sa"
+  table = os.getenv("TABLE") or "sa_organisaatioluokitus"
+  verbose = False
 
-    try:
-        opts, args = getopt.getopt(argv,"sH:u:e:t:v",["secure","hostname=","url=","schema=","table=","verbose"])
-    except getopt.GetoptError as err:
-        print(err)
-        usage()
-        sys.exit(2)
+  try:
+    opts, args = getopt.getopt(argv,"sH:u:e:t:v",["secure","hostname=","url=","schema=","table=","verbose"])
+  except getopt.GetoptError as err:
+    print(err)
+    usage()
+    sys.exit(2)
+  for opt, arg in opts:
+    if opt in ("-s", "--secure"): secure=True
+    elif opt in ("-H", "--hostname"): hostname = arg
+    elif opt in ("-u", "--url"): url = arg
+    elif opt in ("-e", "--schema"): schema = arg
+    elif opt in ("-t", "--table"): table = arg
+    elif opt in ("-v", "--verbose"): verbose = True
+  if not hostname or not url or not schema or not table:
+    usage()
+    sys.exit(2)
 
-    for opt, arg in opts:
-        if opt in ("-s", "--secure"): secure = True
-        elif opt in ("-H", "--hostname"): hostname = arg
-        elif opt in ("-u", "--url"): url = arg
-        elif opt in ("-e", "--schema"): schema = arg
-        elif opt in ("-t", "--table"): table = arg
-
-    load(secure, hostname, url, schema, table)
+  load(secure,hostname,url,schema,table,verbose)
 
 if __name__ == "__main__":
-    main(sys.argv[1:])
+  main(sys.argv[1:])
