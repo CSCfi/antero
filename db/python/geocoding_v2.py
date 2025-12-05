@@ -35,47 +35,74 @@ def get_result_dictionary(status_ok, result):
 
 def get_geo_coordinates_from_server(address, postalcode, city):
     """
-    API-KEY not needed when using http://nominatim.openstreetmap.org
-
-    try:
-        api_key = os.environ['GEO_COORDINATES_API_KEY']
-    except KeyError:
-        return get_result_dictionary(False, "API-key missing")
+    Query Nominatim (OpenStreetMap) and return geo-coordinates.
+    One initial try + one retry (2 attempts total).
     """
 
-    geocode_server_api_base_url = "http://nominatim.openstreetmap.org/search/?q="
+    geocode_server_api_base_url = "https://nominatim.openstreetmap.org/search/?q="
     address_url = address + "+" + postalcode + "+" + city + "+finland"
-    complete_url = geocode_server_api_base_url + address_url + "&polygon_geojson=1&format=json&limit=1"  # limit the query size to only one top-result
+    complete_url = geocode_server_api_base_url + address_url + "&polygon_geojson=1&format=json&limit=1"
 
-    # Try 5 times if not getting result
-    TIMES_TRIED = 0
-    RESULT_NOT_FOUND = True
-    while TIMES_TRIED < 1 and RESULT_NOT_FOUND:
+    MAX_TRIES = 2     # first attempt + retry
+    attempt = 0
+
+    while attempt < MAX_TRIES:
+        attempt += 1
+
         try:
-            r = requests.get(complete_url, headers={"Accept": "application/json"})
+            r = requests.get(
+                complete_url,
+                headers={"Accept": "application/json", "User-Agent": "your-app"}
+            )
         except requests.exceptions.RequestException as e:
-            return get_result_dictionary(False, e)
+            # network failure — no need to check anything else
+            if attempt < MAX_TRIES:
+                time.sleep(2)
+                continue
+            return get_result_dictionary(False, str(e))
 
-        # GET-request sent successfully to server, and a reply was received.
+        # Try to parse JSON safely
         try:
-            result_json = json.loads(r.text)
-        except ValueError as e:
-            return get_result_dictionary(False, "Invalid JSON from server.")
+            result_json = r.json()
+        except ValueError:
+            if attempt < MAX_TRIES:
+                time.sleep(2)
+                continue
+            return get_result_dictionary(False, "Invalid JSON returned by server.")
 
-        # Check HTTP error codes
-        if r.status_code == 200:
-            RESULT_NOT_FOUND = False
-            coordinate_results = {}
-            results = result_json[0]
-            coordinate_results["latitude"] = json.loads(results["lat"])
-            coordinate_results["longitude"] = json.loads(results["lon"])
-            coordinate_results["confidence"] = 1
-            return get_result_dictionary(True, coordinate_results)
-        else:  # Request failed. nominatim.openstreetmap.org has a limit of 1 req/s.
-            TIMES_TRIED = TIMES_TRIED + 1
-            time.sleep(2)
+        # Check HTTP status
+        if r.status_code != 200:
+            if attempt < MAX_TRIES:
+                time.sleep(2)
+                continue
+            return get_result_dictionary(False, f"HTTP error code: {r.status_code}")
 
-    return get_result_dictionary(False, "Unknown HTTP-error code: " + str(r.status_code))
+        # ----- SUCCESSFUL HTTP 200 BUT NO RESULTS -----
+        if not result_json:
+            if attempt < MAX_TRIES:
+                time.sleep(2)
+                continue
+            return get_result_dictionary(False, "No geo-coordinates found for the given address.")
+
+        # ----- SUCCESSFUL RESULT -----
+        result = result_json[0]
+
+        try:
+            latitude = float(result["lat"])
+            longitude = float(result["lon"])
+        except (KeyError, ValueError):
+            if attempt < MAX_TRIES:
+                time.sleep(2)
+                continue
+            return get_result_dictionary(False, "Invalid coordinate data returned.")
+
+        return get_result_dictionary(
+            True,
+            {"latitude": latitude, "longitude": longitude, "confidence": 1}
+        )
+
+    # Should never reach here, but kept as fallback
+    return get_result_dictionary(False, "Unknown error.")
 
 def parse_url_address(argument_array):
     address_string = ""

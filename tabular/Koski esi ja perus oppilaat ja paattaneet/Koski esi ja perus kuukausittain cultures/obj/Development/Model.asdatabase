@@ -1094,7 +1094,7 @@
             "name": "oppilaitokset",
             "expression": [
               "",
-              "var ehto1 = ISFILTERED(Muuttujat[oppilaitos_fi]) || ISFILTERED(Muuttujat[oppilaitos_sv])",
+              "var ehto1 = DISTINCTCOUNT(Muuttujat[apusarake_oppilaitos_oid]) = 1 && (ISINSCOPE(Muuttujat[oppilaitos_fi]) || ISINSCOPE(Muuttujat[oppilaitos_sv]))",
               "var ehto2 = ISBLANK([oppilaat])",
               "return IF(ehto1 || ehto2, BLANK(), DISTINCTCOUNT(Muuttujat[apusarake_oppilaitos_oid]))"
             ],
@@ -1105,7 +1105,7 @@
             "expression": [
               "",
               "var lkm = [oppilaat]",
-              "var ehto = ISFILTERED(Muuttujat[oppilaitos_fi]) || ISFILTERED(Muuttujat[oppilaitos_sv])",
+              "var ehto = DISTINCTCOUNT(Muuttujat[apusarake_oppilaitos_oid]) = 1",
               "return IF(ehto || lkm = \"1-4\", lkm, DIVIDE(lkm, [oppilaitokset]))"
             ],
             "isHidden": true
@@ -1120,25 +1120,6 @@
             "expression": [
               "",
               "var osa = [pidennetyn_oppivelvollisuuden_oppilaat]",
-              "var kaikki = [oppilaat]",
-              "return IF(osa = BLANK(), BLANK(),",
-              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
-              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
-              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
-              "osa / kaikki)))"
-            ],
-            "formatString": "0.0 %;-0.0 %;0.0 %"
-          },
-          {
-            "name": "oppilaat_joilla_on_erityisen_tuen_paatos",
-            "expression": "CALCULATE([oppilaat], KEEPFILTERS(Muuttujat[erityisen_tuen_paatos_fi] = \"Kyllä\"))",
-            "formatString": "#,0"
-          },
-          {
-            "name": "oppilaat_joilla_on_erityisen_tuen_paatos_pros",
-            "expression": [
-              "",
-              "var osa = [oppilaat_joilla_on_erityisen_tuen_paatos]",
               "var kaikki = [oppilaat]",
               "return IF(osa = BLANK(), BLANK(),",
               "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
@@ -1165,6 +1146,25 @@
               "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
               "osa / kaikki)))",
               ""
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "oppilaat_joilla_on_erityisen_tuen_paatos",
+            "expression": "CALCULATE([oppilaat], KEEPFILTERS(Muuttujat[erityisen_tuen_paatos_fi] = \"Kyllä\"))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "oppilaat_joilla_on_erityisen_tuen_paatos_pros",
+            "expression": [
+              "",
+              "var osa = [oppilaat_joilla_on_erityisen_tuen_paatos]",
+              "var kaikki = [oppilaat]",
+              "return IF(osa = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
+              "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
+              "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "osa / kaikki)))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           }
@@ -5100,20 +5100,20 @@
                     "translatedCaption": "Pidennetyn oppivelvollisuuden oppilaat %"
                   },
                   {
-                    "name": "oppilaat_joilla_on_erityisen_tuen_paatos",
-                    "translatedCaption": "Oppilaat, joilla on erityisen tuen päätös"
-                  },
-                  {
-                    "name": "oppilaat_joilla_on_erityisen_tuen_paatos_pros",
-                    "translatedCaption": "Oppilaat, joilla on erityisen tuen päätös %"
-                  },
-                  {
                     "name": "oppilaat_joilla_on_tukea_koskeva_paatos_pol_20_f",
                     "translatedCaption": "Oppilaat, joilla on tukea koskeva päätös (POL 20 f)"
                   },
                   {
                     "name": "oppilaat_joilla_on_tukea_koskeva_paatos_pol_20_f_pros",
                     "translatedCaption": "Oppilaat, joilla on tukea koskeva päätös (POL 20 f) %"
+                  },
+                  {
+                    "name": "oppilaat_joilla_on_erityisen_tuen_paatos",
+                    "translatedCaption": "Oppilaat, joilla on erityisen tuen päätös"
+                  },
+                  {
+                    "name": "oppilaat_joilla_on_erityisen_tuen_paatos_pros",
+                    "translatedCaption": "Oppilaat, joilla on erityisen tuen päätös %"
                   }
                 ]
               }
@@ -5818,20 +5818,20 @@
                     "translatedCaption": "Elever med förlängd läroplikt %"
                   },
                   {
-                    "name": "oppilaat_joilla_on_erityisen_tuen_paatos",
-                    "translatedCaption": "Elever som har ett beslut om särskilt stöd"
-                  },
-                  {
-                    "name": "oppilaat_joilla_on_erityisen_tuen_paatos_pros",
-                    "translatedCaption": "Elever som har ett beslut om särskilt stöd %"
-                  },
-                  {
                     "name": "oppilaat_joilla_on_tukea_koskeva_paatos_pol_20_f",
                     "translatedCaption": "Elever som har ett beslut om stöd (Lag om grundläggande utbildning 20 f §)"
                   },
                   {
                     "name": "oppilaat_joilla_on_tukea_koskeva_paatos_pol_20_f_pros",
                     "translatedCaption": "Elever som har ett beslut om stöd (Lag om grundläggande utbildning 20 f §) %"
+                  },
+                  {
+                    "name": "oppilaat_joilla_on_erityisen_tuen_paatos",
+                    "translatedCaption": "Elever som har ett beslut om särskilt stöd"
+                  },
+                  {
+                    "name": "oppilaat_joilla_on_erityisen_tuen_paatos_pros",
+                    "translatedCaption": "Elever som har ett beslut om särskilt stöd %"
                   }
                 ]
               }
@@ -6417,22 +6417,22 @@
                 "name": "kaikki_oppilaat"
               },
               {
-                "name": "pidennetyn_oppivelvollisuuden_oppilaat"
-              },
-              {
                 "name": "pidennetyn_oppivelvollisuuden_oppilaat_pros"
               },
               {
-                "name": "oppilaat_joilla_on_erityisen_tuen_paatos"
-              },
-              {
-                "name": "oppilaat_joilla_on_erityisen_tuen_paatos_pros"
+                "name": "pidennetyn_oppivelvollisuuden_oppilaat"
               },
               {
                 "name": "oppilaat_joilla_on_tukea_koskeva_paatos_pol_20_f"
               },
               {
                 "name": "oppilaat_joilla_on_tukea_koskeva_paatos_pol_20_f_pros"
+              },
+              {
+                "name": "oppilaat_joilla_on_erityisen_tuen_paatos"
+              },
+              {
+                "name": "oppilaat_joilla_on_erityisen_tuen_paatos_pros"
               }
             ]
           }
@@ -6522,22 +6522,22 @@
                 "name": "kaikki_oppilaat"
               },
               {
-                "name": "pidennetyn_oppivelvollisuuden_oppilaat"
-              },
-              {
                 "name": "pidennetyn_oppivelvollisuuden_oppilaat_pros"
               },
               {
-                "name": "oppilaat_joilla_on_erityisen_tuen_paatos"
-              },
-              {
-                "name": "oppilaat_joilla_on_erityisen_tuen_paatos_pros"
+                "name": "pidennetyn_oppivelvollisuuden_oppilaat"
               },
               {
                 "name": "oppilaat_joilla_on_tukea_koskeva_paatos_pol_20_f"
               },
               {
                 "name": "oppilaat_joilla_on_tukea_koskeva_paatos_pol_20_f_pros"
+              },
+              {
+                "name": "oppilaat_joilla_on_erityisen_tuen_paatos"
+              },
+              {
+                "name": "oppilaat_joilla_on_erityisen_tuen_paatos_pros"
               }
             ]
           }
@@ -6698,16 +6698,16 @@
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1733"
           },
           {
-            "memberName": "DWI\\Z_P_OPH_materials_Full_Read_No_TK_TAB",
-            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5670"
-          },
-          {
             "memberName": "DWI\\Z_DWIPVIPURD_Allow_F_Drive",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5333"
           },
           {
             "memberName": "DWI\\Z_DWIPVIPURD_Allow_All_Drives",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5673"
+          },
+          {
+            "memberName": "DWI\\Z_DWIVIPURD_Allow_E_Drive",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5359"
           }
         ]
       }
