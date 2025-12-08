@@ -1,12 +1,12 @@
 {
-  "name": "SemanticModel",
+  "name": "AMOS tyoelamapalaute jaadytys",
   "compatibilityLevel": 1200,
   "model": {
     "culture": "fi-FI",
     "dataSources": [
       {
-        "name": "SqlServer dwitvipuarch ANTERO_master",
-        "connectionString": "Provider=SQLNCLI11;Data Source=dwitvipuarch;Initial Catalog=ANTERO_master;Integrated Security=SSPI;Persist Security Info=false",
+        "name": "SqlServer dwitvipuarch22 ANTERO_master",
+        "connectionString": "Provider=SQLOLEDB.1;Data Source=dwitvipuarch22;Initial Catalog=ANTERO_master;Integrated Security=SSPI;Persist Security Info=false",
         "impersonationMode": "impersonateServiceAccount",
         "annotations": [
           {
@@ -39,8 +39,9 @@
             "name": "Sarakeleveys",
             "dataView": "full",
             "source": {
+              "type": "query",
               "query": " SELECT [dw].[Sarakeleveys].* FROM [dw].[Sarakeleveys] ",
-              "dataSource": "SqlServer dwitvipuarch ANTERO_master"
+              "dataSource": "SqlServer dwitvipuarch22 ANTERO_master"
             }
           }
         ],
@@ -120,6 +121,36 @@
             "sourceColumn": "koulutuksen_jarjestajan_opetuskieli_fi",
             "sortByColumn": "jarjestys_koulutuksen_jarjestajan_opetuskieli",
             "sourceProviderType": "Char"
+          },
+          {
+            "name": "Koul. järjestäjän PILKE-alue (kokeilu)",
+            "dataType": "string",
+            "sourceColumn": "Koul. järjestäjän PILKE-alue (kokeilu)",
+            "sortByColumn": "jarjestys Koul. järjestäjän PILKE-alue (kokeilu)",
+            "sourceProviderType": "WChar",
+            "displayFolder": "Organisaatiomuuttujat"
+          },
+          {
+            "name": "jarjestys Koul. järjestäjän PILKE-alue (kokeilu)",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "jarjestys Koul. järjestäjän PILKE-alue (kokeilu)",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Toiminnanohjauksen kokeilu",
+            "dataType": "string",
+            "sourceColumn": "Toiminnanohjauksen kokeilu",
+            "sortByColumn": "jarjestys Toiminnanohjauksen kokeilu",
+            "sourceProviderType": "WChar",
+            "displayFolder": "Organisaatiomuuttujat"
+          },
+          {
+            "name": "jarjestys Toiminnanohjauksen kokeilu",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "jarjestys Toiminnanohjauksen kokeilu",
+            "sourceProviderType": "Integer"
           },
           {
             "name": "koodit_koulutuksen_jarjestaja",
@@ -217,8 +248,9 @@
             "name": "Muuttujat",
             "dataView": "full",
             "source": {
+              "type": "query",
               "query": " SELECT [dw].[v_amos_tyoelamapalaute].* FROM [dw].[v_amos_tyoelamapalaute] ",
-              "dataSource": "SqlServer dwitvipuarch ANTERO_master"
+              "dataSource": "SqlServer dwitvipuarch22 ANTERO_master"
             }
           }
         ],
@@ -250,8 +282,17 @@
             "name": "Katokorjauskerroin (Rahoitus)",
             "expression": [
               "",
+              "var ehto = HASONEVALUE(Muuttujat[rahoituskausi]) && ISFILTERED(Muuttujat[rahoituskausi])",
+              "var ehto_2025 = SELECTEDVALUE(Muuttujat[rahoituskausi]) in {\"01.07.2023 - 30.06.2024\", \"01.07.2022 - 30.06.2023\", \"01.07.2021 - 30.06.2022\"}",
               "var osuus = [Vastausosuus (Rahoitus)]",
-              "return IF(ISBLANK(osuus)",
+              "var kk_2026 = IF(ISBLANK(osuus)",
+              "\t, BLANK()",
+              "\t, IF(osuus >= 0.6",
+              "\t\t, 1/osuus",
+              "\t\t, 1/0.6 + 2 * (0.6 - osuus)",
+              "\t)",
+              ")",
+              "var kk_2025 = IF(ISBLANK(osuus)",
               "\t, BLANK()",
               "\t, IF(osuus >= 0.7",
               "\t\t, 1/osuus",
@@ -260,7 +301,8 @@
               "\t\t\t, 1/0.7 + 2.04 * (0.7 - osuus)",
               "\t\t)",
               "\t)",
-              ")"
+              ")",
+              "return IF(ehto, IF(ehto_2025, kk_2025, kk_2026), BLANK())"
             ],
             "formatString": "0.00"
           },
@@ -308,11 +350,8 @@
               "\t, \"painotetut\"",
               "\t, [Katokorjauskerroin (Rahoitus)] * [Pisteet (Rahoitus)]",
               ")",
-              "return SUMX(taulu, [painotetut])",
-              "/*",
-              "var lkm = SUM([apusarake_painotetut_pisteet])",
-              "return IF(lkm=0; BLANK(); lkm)",
-              "*/"
+              "var lkm = SUMX(taulu, [painotetut])",
+              "return IF(lkm=0, BLANK(), lkm)"
             ],
             "formatString": "#,0"
           },
@@ -503,6 +542,12 @@
             "name": "Muuttujat",
             "columns": [
               {
+                "name": "Koul. järjestäjän PILKE-alue (kokeilu)"
+              },
+              {
+                "name": "Toiminnanohjauksen kokeilu"
+              },
+              {
                 "name": "koulutuksen_jarjestaja_fi"
               },
               {
@@ -619,8 +664,12 @@
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1732"
           },
           {
-            "memberName": "NT AUTHORITY\\IUSR",
-            "memberId": "S-1-5-17"
+            "memberName": "DWI\\Z_DWIPVIPURD_Allow_F_Drive",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5333"
+          },
+          {
+            "memberName": "DWI\\Z_DWIVIPURD_Allow_E_Drive",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5359"
           }
         ]
       }
@@ -631,6 +680,5 @@
         "value": "400"
       }
     ]
-  },
-  "id": "SemanticModel"
+  }
 }
