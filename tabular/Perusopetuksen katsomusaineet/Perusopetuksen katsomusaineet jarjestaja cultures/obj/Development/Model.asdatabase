@@ -913,11 +913,38 @@
               "",
               "var lkm = SUM([lkm])",
               "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", MROUND(lkm, 3)))"
-            ]
+            ],
+            "formatString": "#,0"
           },
           {
             "name": "osallistuneet_s",
-            "expression": "IF([kytkin]=0, BLANK(), SUM([lkm]))"
+            "expression": "IF([kytkin]=0, BLANK(), SUM([lkm]))",
+            "formatString": "#,0"
+          },
+          {
+            "name": "osuus_osallistuneista",
+            "expression": [
+              " ",
+              "var osa = SUM(Muuttujat[lkm])",
+              "var kaikki = CALCULATE(SUM(Muuttujat[lkm]), ALL(Muuttujat[katsomusaine_fi]), ALL(Muuttujat[katsomusaine_sv]), ALL(Muuttujat[katsomusaine_en]))",
+              "",
+              "return IF(ISBLANK(osa), BLANK(),",
+              "                IF(AND(kaikki >= 1, kaikki <= 4), \"25 % – 100 %\",",
+              "                                IF(AND(osa >= 1, osa <= 4),  IF(kaikki > 8000, \"0.0 %\", CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
+              "                                     DIVIDE(osa, kaikki))))"
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
+          },
+          {
+            "name": "osuus_osallistuneista_s",
+            "expression": [
+              " ",
+              "var osa = SUM(Muuttujat[lkm])",
+              "var kaikki = CALCULATE(SUM(Muuttujat[lkm]), ALL(Muuttujat[katsomusaine_fi]), ALL(Muuttujat[katsomusaine_sv]), ALL(Muuttujat[katsomusaine_en]))",
+              "",
+              "return IF([kytkin]=0, BLANK(), DIVIDE(osa, kaikki))"
+            ],
+            "formatString": "0.0 %;-0.0 %;0.0 %"
           }
         ],
         "annotations": [
@@ -1692,17 +1719,20 @@
                 ],
                 "measures": [
                   {
-                    "name": "kytkin",
-                    "translatedCaption": "kytkin",
-                    "translatedDisplayFolder": "Koodimuuttujat"
-                  },
-                  {
                     "name": "osallistuneet",
                     "translatedCaption": "Koulutukseen osallistuneet"
                   },
                   {
                     "name": "osallistuneet_s",
                     "translatedCaption": "Koulutukseen osallistuneet_s"
+                  },
+                  {
+                    "name": "osuus_osallistuneista",
+                    "translatedCaption": "Osuus osallistuneista"
+                  },
+                  {
+                    "name": "osuus_osallistuneista_s",
+                    "translatedCaption": "Osuus osallistuneista_s"
                   }
                 ]
               }
@@ -1848,17 +1878,20 @@
                 ],
                 "measures": [
                   {
-                    "name": "kytkin",
-                    "translatedCaption": "kytkin",
-                    "translatedDisplayFolder": "Kodvariabler"
-                  },
-                  {
                     "name": "osallistuneet",
                     "translatedCaption": "Deltagare i utbildningen"
                   },
                   {
                     "name": "osallistuneet_s",
                     "translatedCaption": "Deltagare i utbildningen_s"
+                  },
+                  {
+                    "name": "osuus_osallistuneista",
+                    "translatedCaption": "Andel deltagare"
+                  },
+                  {
+                    "name": "osuus_osallistuneista_s",
+                    "translatedCaption": "Andel deltagare_s"
                   }
                 ]
               }
@@ -2004,17 +2037,20 @@
                 ],
                 "measures": [
                   {
-                    "name": "kytkin",
-                    "translatedCaption": "kytkin",
-                    "translatedDisplayFolder": "Code variables"
-                  },
-                  {
                     "name": "osallistuneet",
                     "translatedCaption": "Participants in education"
                   },
                   {
                     "name": "osallistuneet_s",
                     "translatedCaption": "Participants in education_s"
+                  },
+                  {
+                    "name": "osuus_osallistuneista",
+                    "translatedCaption": "Percentage of participants"
+                  },
+                  {
+                    "name": "osuus_osallistuneista_s",
+                    "translatedCaption": "Percentage of participants_s"
                   }
                 ]
               }
@@ -2031,18 +2067,6 @@
           {
             "memberName": "DWI\\T_SP_Excel_S_Read",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1732"
-          },
-          {
-            "memberName": "DWI\\Z_DWIVIPURD_Allow_E_Drive",
-            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5359"
-          },
-          {
-            "memberName": "DWI\\Z_DWIPVIPURD_Allow_F_Drive",
-            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5333"
-          },
-          {
-            "memberName": "DWI\\Z_DWIPVIPURD_Allow_All_Drives",
-            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5673"
           }
         ]
       },
@@ -2053,18 +2077,6 @@
           {
             "memberName": "DWI\\P_SP_Excel_S_Read",
             "memberId": "S-1-5-21-2196741920-3238685902-2581541251-1733"
-          },
-          {
-            "memberName": "DWI\\Z_DWIVIPURD_Allow_E_Drive",
-            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5359"
-          },
-          {
-            "memberName": "DWI\\Z_DWIPVIPURD_Allow_F_Drive",
-            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5333"
-          },
-          {
-            "memberName": "DWI\\Z_DWIPVIPURD_Allow_All_Drives",
-            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5673"
           }
         ]
       }
