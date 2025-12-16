@@ -1,0 +1,4 @@
+USE ANTERO
+GO
+
+SELECT sarake = 1
