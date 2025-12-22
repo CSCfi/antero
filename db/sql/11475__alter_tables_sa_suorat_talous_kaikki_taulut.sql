@@ -9,7 +9,6 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-USE VipunenKK_SA
 ALTER TABLE sa.sa_suorat_amk_talous_1_tuloslaskelma ALTER COLUMN POISTOT BIGINT
 ALTER TABLE sa.sa_suorat_amk_talous_1_tuloslaskelma ALTER COLUMN LIIKEVAIHTO BIGINT
 ALTER TABLE sa.sa_suorat_amk_talous_1_tuloslaskelma ALTER COLUMN KVARASTOJENL BIGINT
