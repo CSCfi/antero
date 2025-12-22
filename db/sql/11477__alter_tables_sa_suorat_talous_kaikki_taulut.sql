@@ -9,7 +9,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-ALTER TABLE sa_suorat_amk_talous_3_tuloslaskelman_toiminnot ALTER COLUMN TUOTOT BIGINT
+ALTER TABLE sa.sa_suorat_amk_talous_3_tuloslaskelman_toiminnot ALTER COLUMN TUOTOT BIGINT
 
 
 ALTER TABLE sa.sa_suorat_yo_talous_3_tuloslaskelman_toiminnot ALTER COLUMN [KKVALTRAH] BIGINT
