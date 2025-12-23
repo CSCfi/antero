@@ -28,20 +28,20 @@ CREATE TABLE [sa].[sa_arvo_v2_vastaukset_error](
 	[username] [nvarchar](30) NULL,
 	[fixed_status] [varchar](5) NULL,
 	[koodi] [nvarchar](100) NULL
-) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
-GO
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY];
+
 
 CREATE NONCLUSTERED INDEX [idx_sa_arvo_v2_vastaukset_error_lookup] ON [sa].[sa_arvo_v2_vastaukset_error]
 (
 	[vastausid] ASC
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, DROP_EXISTING = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
-GO
+
 
 ALTER TABLE [sa].[sa_arvo_v2_vastaukset_error] ADD  CONSTRAINT [DF__sa_arvo_v2_vastaukset_error__loadtime]  DEFAULT (getdate()) FOR [loadtime]
-GO
+
 
 ALTER TABLE [sa].[sa_arvo_v2_vastaukset_error] ADD  CONSTRAINT [DF__sa_arvo_v2_vastaukset_error__username]  DEFAULT (suser_name()) FOR [username]
-GO
+
 
 END
 GO
