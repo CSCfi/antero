@@ -2,10 +2,9 @@ USE [Arvo_SA]
 GO
 
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[sa_arvo_v2_kysymysryhmat]') AND type in (N'U'))
-DROP TABLE [sa].[sa_arvo_v2_kysymysryhmat]
+	DROP TABLE [sa].[sa_arvo_v2_kysymysryhmat]
 GO
 
-/****** Object:  Table [sa].[sa_arvo_v2_kysymysryhmat]    Script Date: 23.12.2025 9.40.47 ******/
 SET ANSI_NULLS ON
 GO
 
