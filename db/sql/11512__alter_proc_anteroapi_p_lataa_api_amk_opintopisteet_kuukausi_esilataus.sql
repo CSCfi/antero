@@ -1,16 +1,10 @@
 USE [AnteroAPI]
 GO
-
 /****** Object:  StoredProcedure [dw].[p_lataa_api_amk_opintopisteet_kuukausi_esilataus]    Script Date: 7.1.2026 8.39.54 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
-
-
-
-
 ALTER PROCEDURE [dw].[p_lataa_api_amk_opintopisteet_kuukausi_esilataus] AS
 
 DECLARE @pvm date
@@ -152,5 +146,3 @@ BEGIN
 	SET @alkuVuosi = @alkuVuosi + 1
 
 END
-
-GO
