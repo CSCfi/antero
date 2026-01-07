@@ -1,10 +1,7 @@
 USE [ANTERO]
 GO
-
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[sa].[sa_virta_otp_opintopistepvmamk_2024]') AND type in (N'U'))
-
 BEGIN
-
 	CREATE TABLE [sa].[sa_virta_otp_opintopistepvmyo_2024](
 		[tilastovuosi] [int] NULL,
 		[kuukausi] [int] NULL,
@@ -28,7 +25,4 @@ BEGIN
 		[username] [nvarchar](128) NULL,
 		[source] [varchar](39) NOT NULL
 	) ON [PRIMARY]
-
 END
-
-GO
