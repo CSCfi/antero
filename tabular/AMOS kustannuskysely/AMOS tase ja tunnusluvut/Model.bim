@@ -799,7 +799,7 @@
           },
           {
             "name": "Tilikauden yli- tai alijäämä",
-            "expression": "CALCULATE(SUM(Muuttujat[ylialijaama]))",
+            "expression": " var lkm=SUM(Muuttujat[ylialijaama]) return IF([ehto_kunta], lkm, \"—\")",
             "formatString": "#,0"
           },
           {
@@ -816,6 +816,12 @@
             "name": "Vuosikatteen riittävyys poistoihin",
             "expression": "DIVIDE([Vuosikate],[Poistot ja arvonalentumiset],0)",
             "formatString": "0 %;-0 %;0 %"
+          },
+          {
+            "name": "ehto_kunta",
+            "expression": "IF(HASONEVALUE(Muuttujat[Omistajatyyppi]),IF(VALUES(Muuttujat[Omistajatyyppi])<>\"Kunta\",1,0),0)",
+            "formatString": "\"TRUE\";\"TRUE\";\"FALSE\"",
+            "isHidden": true
           }
         ],
         "annotations": [
