@@ -185,12 +185,6 @@
             "sourceColumn": "apusarake_painotetut_pisteet"
           },
           {
-            "name": "Tilastokausi",
-            "dataType": "string",
-            "sourceColumn": "Tilastokausi",
-            "displayFolder": "Aikamuuttujat"
-          },
-          {
             "name": "apusarake_lkm",
             "dataType": "int64",
             "isHidden": true,
@@ -503,21 +497,6 @@
             "sourceColumn": "apusarake_laskennallinen_rahoitus_osuus_ed_v"
           },
           {
-            "name": "Toiminnanohjauksen kokeilu",
-            "dataType": "string",
-            "sourceColumn": "Toiminnanohjauksen kokeilu",
-            "sortByColumn": "jarjestys Toiminnanohjauksen kokeilu",
-            "sourceProviderType": "Char",
-            "displayFolder": "Organisaatiomuuttujat"
-          },
-          {
-            "name": "jarjestys Toiminnanohjauksen kokeilu",
-            "dataType": "int64",
-            "isHidden": true,
-            "sourceColumn": "jarjestys Toiminnanohjauksen kokeilu",
-            "sourceProviderType": "Integer"
-          },
-          {
             "name": "Koul. järjestäjän PILKE-alue (kokeilu)",
             "dataType": "string",
             "sourceColumn": "Koul. järjestäjän PILKE-alue (kokeilu)",
@@ -689,6 +668,27 @@
             "dataType": "double",
             "isHidden": true,
             "sourceColumn": "apusarake_opiskelijavuodet_painotettu_majoitus"
+          },
+          {
+            "name": "Toiminnanohjauksen kokeilu",
+            "dataType": "string",
+            "sourceColumn": "Toiminnanohjauksen kokeilu",
+            "sortByColumn": "jarjestys Toiminnanohjauksen kokeilu",
+            "sourceProviderType": "Char",
+            "displayFolder": "Organisaatiomuuttujat"
+          },
+          {
+            "name": "jarjestys Toiminnanohjauksen kokeilu",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "jarjestys Toiminnanohjauksen kokeilu",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Tilastokausi",
+            "dataType": "string",
+            "sourceColumn": "Tilastokausi",
+            "displayFolder": "Aikamuuttujat"
           }
         ],
         "partitions": [
@@ -1548,10 +1548,11 @@
             "name": "Rahoitusosuuden muutosrajoitteet huomioiva järjestäjien %-osuus (kiinteä)",
             "expression": [
               "",
-              "var ehto1 = (",
+              "var ehto1 = HASONEVALUE(Muuttujat[Varainhoitovuosi]) ",
+              "/*(",
               "\tSELECTEDVALUE(Muuttujat[Varainhoitovuosi]) ",
               "\t== CALCULATE(MAX(Muuttujat[Varainhoitovuosi]), ALL(Muuttujat), Muuttujat[apusarake_laskennallinen_rahoitus_osuus_ed_v] > 0)",
-              ")",
+              ")*/",
               "var ehto2 = ISFILTERED(Muuttujat[Toteuma/Estimaatti])",
               "var ehto3 = (",
               "\t(ISFILTERED(Muuttujat[Koulutuksen järjestäjä]) && HASONEVALUE(Muuttujat[Koulutuksen järjestäjä]))",
@@ -1569,10 +1570,11 @@
             "name": "Rahoitusosioiden osuuksilla painotettu järj. %-osuus, muutos ed. v. rahoitusosuuteen (kiinteä)",
             "expression": [
               "",
-              "var ehto1 = (",
+              "var ehto1 = HASONEVALUE(Muuttujat[Varainhoitovuosi]) ",
+              "/*(",
               "\tSELECTEDVALUE(Muuttujat[Varainhoitovuosi]) ",
               "\t== CALCULATE(MAX(Muuttujat[Varainhoitovuosi]), ALL(Muuttujat), Muuttujat[apusarake_laskennallinen_rahoitus_osuus_ed_v] > 0)",
-              ")",
+              ")*/",
               "var ehto2 = ISFILTERED(Muuttujat[Toteuma/Estimaatti])",
               "var ehto3 = (",
               "\t(ISFILTERED(Muuttujat[Koulutuksen järjestäjä]) && HASONEVALUE(Muuttujat[Koulutuksen järjestäjä]))",
@@ -1596,10 +1598,11 @@
             "name": "Rahoitusosuuden muutosrajoitteet huomioiva järj. %-osuus, muutos ed. v. rahoitusosuuteen (kiinteä)",
             "expression": [
               "",
-              "var ehto1 = (",
+              "var ehto1 = HASONEVALUE(Muuttujat[Varainhoitovuosi]) ",
+              "/*(",
               "\tSELECTEDVALUE(Muuttujat[Varainhoitovuosi]) ",
               "\t== CALCULATE(MAX(Muuttujat[Varainhoitovuosi]), ALL(Muuttujat), Muuttujat[apusarake_laskennallinen_rahoitus_osuus_ed_v] > 0)",
-              ")",
+              ")*/",
               "var ehto2 = ISFILTERED(Muuttujat[Toteuma/Estimaatti])",
               "var ehto3 = (",
               "\t(ISFILTERED(Muuttujat[Koulutuksen järjestäjä]) && HASONEVALUE(Muuttujat[Koulutuksen järjestäjä]))",
@@ -1620,10 +1623,11 @@
             "name": "Rahoitusosuuden muutosrajoitteiden vaikutus rahoitusosuuteen (kiinteä)",
             "expression": [
               "",
-              "var ehto1 = (",
+              "var ehto1 = HASONEVALUE(Muuttujat[Varainhoitovuosi]) ",
+              "/*(",
               "\tSELECTEDVALUE(Muuttujat[Varainhoitovuosi]) ",
               "\t== CALCULATE(MAX(Muuttujat[Varainhoitovuosi]), ALL(Muuttujat), Muuttujat[apusarake_laskennallinen_rahoitus_osuus_ed_v] > 0)",
-              ")",
+              ")*/",
               "var ehto2 = ISFILTERED(Muuttujat[Toteuma/Estimaatti])",
               "var ehto3 = (",
               "\t(ISFILTERED(Muuttujat[Koulutuksen järjestäjä]) && HASONEVALUE(Muuttujat[Koulutuksen järjestäjä]))",
@@ -3081,9 +3085,6 @@
                 "name": "Rahoituskausi (palautteet)"
               },
               {
-                "name": "Tilastokausi"
-              },
-              {
                 "name": "Äidinkieli (ryhmä)"
               },
               {
@@ -3159,9 +3160,6 @@
                 "name": "Toteuma/Estimaatti"
               },
               {
-                "name": "Toiminnanohjauksen kokeilu"
-              },
-              {
                 "name": "Koul. järjestäjän PILKE-alue (kokeilu)"
               },
               {
@@ -3199,6 +3197,12 @@
               },
               {
                 "name": "Maksuttomuus (rahoitus)"
+              },
+              {
+                "name": "Toiminnanohjauksen kokeilu"
+              },
+              {
+                "name": "Tilastokausi"
               }
             ],
             "measures": [
