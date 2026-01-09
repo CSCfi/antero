@@ -117,4 +117,3 @@ FROM (
 	(sa.vuosi = YEAR(getdate()) AND 
 	MONTH(convert(date, dateadd(s, convert(bigint, sa.suorituspaiva) / 1000, convert(datetime, '1-1-1970 3:00:00')))) <= MONTH(getdate())))) f 
 GROUP BY f.tilastovuosi, f.kuukausi, f.ammattikorkeakoulu, f.koodit_ammattikorkeakoulu, f.okm_ohjauksen_ala, f.koodit_okm_ohjauksen_ala, f.koulutustyyppi, f.aineistotyyppi, f.tietojen_ajankohta
-GO
