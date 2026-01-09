@@ -18,7 +18,7 @@ GO
 
 
 
-CREATE PROCEDURE [dbo].[p_lataa_sa_aloittaneiden_lapaisy_tiivistetty_nykytila] AS
+CREATE OR ALTER PROCEDURE [dbo].[p_lataa_sa_aloittaneiden_lapaisy_tiivistetty_nykytila] AS
 
 /*
 	Huom. (päivitetty kommentteja 22.6.2021) / CSC Juha:
