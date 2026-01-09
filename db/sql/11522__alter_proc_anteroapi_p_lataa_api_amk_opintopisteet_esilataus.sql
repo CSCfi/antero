@@ -1,14 +1,10 @@
 USE [AnteroAPI]
 GO
-
 /****** Object:  StoredProcedure [dw].[p_lataa_api_amk_opintopisteet_esilataus]    Script Date: 9.1.2026 8.05.27 ******/
 SET ANSI_NULLS ON
 GO
-
 SET QUOTED_IDENTIFIER ON
 GO
-
-
 ALTER PROCEDURE [dw].[p_lataa_api_amk_opintopisteet_esilataus] AS
 
 TRUNCATE TABLE AnteroAPI.dw.[api_amk_opintopisteet];
@@ -121,5 +117,4 @@ FROM (
 	(sa.vuosi = YEAR(getdate()) AND 
 	MONTH(convert(date, dateadd(s, convert(bigint, sa.suorituspaiva) / 1000, convert(datetime, '1-1-1970 3:00:00')))) <= MONTH(getdate())))) f 
 GROUP BY f.tilastovuosi, f.kuukausi, f.ammattikorkeakoulu, f.koodit_ammattikorkeakoulu, f.okm_ohjauksen_ala, f.koodit_okm_ohjauksen_ala, f.koulutustyyppi, f.aineistotyyppi, f.tietojen_ajankohta
-
 GO
