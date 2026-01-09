@@ -149,4 +149,3 @@ BEGIN
 	SET @alkuVuosi = @alkuVuosi + 1
 
 END
-GO

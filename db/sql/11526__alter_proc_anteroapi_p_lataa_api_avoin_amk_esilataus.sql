@@ -166,5 +166,3 @@ GROUP BY
 	,f.[Koodit Sukupuoli]
 	,f.[Koodit OKM ohjauksen ala]
 	,f.[Koodit Koulutusala]
-	 
-GO

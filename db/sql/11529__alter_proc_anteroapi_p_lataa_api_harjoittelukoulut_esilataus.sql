@@ -157,5 +157,3 @@ GROUP BY
 	,f.[Koodit Koulutusala]
 	,f.[Koodit Henkilöstöryhmä]
 	,f.Henkilöstöryhmä
- 
-GO

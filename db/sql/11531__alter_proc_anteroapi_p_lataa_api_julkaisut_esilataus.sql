@@ -804,6 +804,3 @@ GROUP BY Tilastovuosi,julkaisunTunnus,[Koodit Sektori],[Sektori],[Sektor],[Secto
 [Yhteisjulk. yliop. sairaanhoitopiiri],[Yhteisjulk. valtion sektoritutkimuslaitos],[Yhteisjulk. muu kotim. tutkimusorganisaatio],[Yhteisjulkaisu yrityksen kanssa]
 ,[Julkaisu rinnakkaistallennettu],CASE  [Koodit Avoin saatavuus] WHEN -1 THEN 9 ELSE [Koodit Avoin saatavuus] END
 ,[Avoin saatavuus],[JufoTunnus]
-
-
-GO

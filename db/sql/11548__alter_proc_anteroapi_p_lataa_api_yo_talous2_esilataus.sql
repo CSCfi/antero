@@ -72,5 +72,3 @@ INNER JOIN Antero.dw.d_aineistotyyppi d4 ON f.d_aineistotyyppi_id = d4.id
 INNER JOIN Antero.dw.d_toiminto d5 ON f.d_toiminto_id = d5.id
 INNER JOIN Antero.dw.d_ohjauksenala d6 ON f.d_ohjauksenala_id = d6.id
 WHERE f.arvo <> 0 AND NOT (tili_taso5_fi='Konserni; Henkilöstökulut' AND konserni='E') AND NOT (tili_taso5_fi='Konserni; Avustustuotot' AND konserni='E') AND NOT (tili_taso5_fi='Konserni; Lahjoitukset' AND konserni='E')
-
-GO

@@ -51,5 +51,3 @@ SELECT
   case when d3.koulutusluokitus_koodi = '899999' and d3.koulutusastetaso2_fi like 'tohtori%' then 'Lisensiaatin tai tohtorin tutkinto' else d3.koulutusastetaso2_fi end,
   d3.koulutusalataso1_fi,d3.koulutusalataso2_fi,d3.koulutusalataso3_fi,d2.ohjauksenala_nimi_fi,
   d10.liikkuvuudensuunta_fi,d11.liikkuvuudenkesto_fi,d1.organisaatio_nykyinen_koodi,d3.koulutusluokitus_koodi, d5.liikkuvuudentyyppi_fi
-
-GO

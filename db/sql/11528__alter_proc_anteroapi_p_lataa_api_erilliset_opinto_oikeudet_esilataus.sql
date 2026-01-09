@@ -86,5 +86,3 @@ GROUP BY
 	,f.[Koodit Yliopisto]
 	,f.[Koodit OKM ohjauksen ala]
 	,f.[Koodit Koulutusala]
- 
-GO

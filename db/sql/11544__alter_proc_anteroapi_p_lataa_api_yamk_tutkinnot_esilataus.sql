@@ -97,6 +97,3 @@ INSERT INTO [dw].[api_yamk_tutkinnot]
 	LEFT JOIN ANTERO.dw.d_virta_rahoituslahde d9 ON d9.rahoituslahde_koodi = f.rahoituslahde
 	
 	WHERE d2.koulutusastetaso2_koodi = '71' --vain yamk
-
-
-GO

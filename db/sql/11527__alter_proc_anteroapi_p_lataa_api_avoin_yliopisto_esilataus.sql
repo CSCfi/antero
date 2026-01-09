@@ -30,5 +30,3 @@ SELECT
 FROM ANTERO.[dw].[f_yo_avoimen_yliopiston_kautta_opiskelevat] f
 JOIN ANTERO.dw.d_sukupuoli d1 on d1.id=f.d_sukupuoli_id
 JOIN ANTERO.dw.d_organisaatioluokitus d6 on d6.id=f.d_yliopisto_id
-
-GO

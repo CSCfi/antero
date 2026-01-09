@@ -111,5 +111,3 @@ FROM (
 	JOIN antero.dw.d_yo_toimipiste d2 ON d2.id=f.d_toimipiste_id and d2.vuosi = f.vuosi
 	JOIN antero.dw.d_yo_toimipisteen_toimipaikka d3 ON d3.id=f.d_toimipaikka_id
 ) f
-
-GO

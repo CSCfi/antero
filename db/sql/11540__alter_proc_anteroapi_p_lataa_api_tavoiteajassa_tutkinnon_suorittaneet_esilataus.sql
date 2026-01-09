@@ -147,5 +147,3 @@ TRUNCATE TABLE [AnteroAPI].[dw].[api_tavoiteajassa_tutkinnon_suorittaneet]
 	SET @alkuVuosi = @alkuVuosi + 1
 
 END
-
-GO

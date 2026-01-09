@@ -37,5 +37,3 @@ JOIN ANTERO.dw.d_amk_koulutustyyppi d1 on d1.id=f.d_koulutustyyppi_id
 JOIN ANTERO.dw.d_ohjauksenala d2 on d2.id=f.d_ohjauksen_ala_id
 JOIN ANTERO.dw.d_organisaatioluokitus d6 on d6.id=f.d_amk_id
 JOIN ANTERO.dw.d_koulutusala_2002 d9 on d9.id=f.d_koulutusala_id
-	 
-GO

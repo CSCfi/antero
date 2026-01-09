@@ -48,4 +48,3 @@ FROM (
 	LEFT JOIN antero.dw.d_organisaatioluokitus d1 on d1.id=f.d_yliopisto_id
 	LEFT JOIN antero.dw.d_sukupuoli d2 on d2.id=f.sukupuoli_id
 ) f
-GO

@@ -285,5 +285,3 @@ LEFT JOIN VipunenTK_lisatiedot.dbo.opiskelijan_olo AS d17 ON d17.opiskelijan_olo
 LEFT JOIN VipunenTK.dbo.d_alueluokitus AS d18 ON d18.kunta_koodi=f.kkun
 
 WHERE d2.koulutusastetaso2_koodi not in ('73','91') --poistetaan lääkärien erik.koul. ja muita erikoistumisia
-
-GO

@@ -102,5 +102,3 @@ FROM (
 	--LEFT JOIN antero.dw.d_amk_toimipisteen_toimipaikka d2 ON d2.id=f.d_toimipiste_id
 	LEFT JOIN antero.dw.d_amk_toimipisteen_toimipaikka d3 ON d3.id=f.d_toimipisteen_toimipaikka_id
 ) f
-
-GO

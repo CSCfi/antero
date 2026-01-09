@@ -90,5 +90,3 @@ GROUP BY
 	  ,f.koodit_okm_ohjauksen_ala
 	  ,f.koodit_ammattikorkeakoulu
 	  ,f.koodit_henkilöstöryhmä
-	
-GO

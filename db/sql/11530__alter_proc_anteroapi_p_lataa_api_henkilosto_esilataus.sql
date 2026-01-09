@@ -193,5 +193,3 @@ GROUP BY
       ,f.[Koodit Muun henkilöstön henkilöstöryhmä]
       ,f.[Koodit Työsuhteen nimitystapa]
       ,f.[Kansalaisuus järj]
-	
-GO

@@ -31,5 +31,3 @@ SELECT d1.organisaatio_koodi AS 'Oppilaitos Koodi'
 FROM dw.f_virta_otp_55_suppea f
 LEFT JOIN dw.d_organisaatioluokitus d1 ON d1.id=f.d_organisaatio_id
 LEFT JOIN dw.d_koulutusluokitus d2 ON d2.id=f.d_koulutusluokitus_id
-
-GO

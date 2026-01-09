@@ -44,8 +44,3 @@ LEFT JOIN dw.d_koulutusluokitus d2 ON d2.koulutusluokitus_avain like 'koulutus_%
 
 WHERE (f.suorittanut55ilmanPankkia = 1 or f.suorittanut55pankinAvulla = 1 or f.suorittanut27 = 1)
 GROUP BY f.vuosi, d1.id, d2.id, f.source
-
-
-
-
-GO

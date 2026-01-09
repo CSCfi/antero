@@ -265,5 +265,3 @@ where (f.koulutuksen_alkamisvuosi > 2016 OR (f.koulutuksen_alkamisvuosi = 2016 a
 
 DROP TABLE IF EXISTS ANTERO.sa.temp_haku_ja_valinta_api 
 DROP TABLE IF EXISTS ANTERO.sa.temp_haku_ja_valinta_api2
-
-GO

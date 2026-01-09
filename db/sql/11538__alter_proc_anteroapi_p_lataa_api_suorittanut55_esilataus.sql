@@ -58,5 +58,3 @@ SELECT
 	,d2.koulutusluokitus_koodi
 	,d2.koulutusluokitus_fi 
 	,f.vuosi
-
-GO
