@@ -10,7 +10,7 @@ GO
 
 
 
-CREATE PROCEDURE [dbo].[p_lataa_f_aloittaneiden_lapaisy] AS
+ALTER PROCEDURE [dbo].[p_lataa_f_aloittaneiden_lapaisy] AS
 
 TRUNCATE TABLE [VipunenTK].[dbo].[f_aloittaneiden_lapaisy];
 
