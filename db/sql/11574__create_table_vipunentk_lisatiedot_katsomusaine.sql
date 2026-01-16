@@ -9,6 +9,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 IF NOT EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[katsomusaine]') AND type in (N'U'))
+BEGIN
 CREATE TABLE [dbo].[katsomusaine](
 	[id] [int] NOT NULL,
 	[luotu] [date] NULL,
@@ -30,6 +31,7 @@ ALTER TABLE [dbo].[katsomusaine] ADD  CONSTRAINT [DF__katsomusaine__alkaa]  DEFA
 ALTER TABLE [dbo].[katsomusaine] ADD  CONSTRAINT [DF__katsomusaine__paattyy]  DEFAULT ('9999-01-01') FOR [paattyy]
 
 ALTER TABLE [dbo].[katsomusaine] ADD  CONSTRAINT [DF__katsomusaine__tietolahde]  DEFAULT ('Tilastokeskus') FOR [tietolahde]
+END
 GO
 
 
