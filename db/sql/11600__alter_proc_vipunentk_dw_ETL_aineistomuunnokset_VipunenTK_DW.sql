@@ -1,0 +1,305 @@
+USE [VipunenTK_DW]
+GO
+
+/****** Object:  StoredProcedure [dbo].[ETL_aineistomuunnokset_VipunenTK_DW]    Script Date: 19.1.2026 16.19.39 ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+
+
+
+
+
+
+
+
+
+
+
+
+ALTER PROCEDURE [dbo].[ETL_aineistomuunnokset_VipunenTK_DW] AS
+
+PRINT N'Starting f_1_21_1_22 load';
+truncate table [VipunenTK_DW]..f_1_21_1_22_Jatkuva_oppiminen_uudet_opiskelijat;
+insert into [VipunenTK_DW]..f_1_21_1_22_Jatkuva_oppiminen_uudet_opiskelijat select * from [dbo].[v_f_1_21_1_22_Jatkuva_oppiminen_uudet_opiskelijat];
+PRINT N'f_1_21_1_22 ok';
+
+PRINT N'Starting f_2_13 load';
+truncate table [VipunenTK_DW]..f_2_13_Tutkintoon_johtavan_koulutuksen_opiskelijat_kansalaisuuden_mukaan;
+insert into [VipunenTK_DW]..f_2_13_Tutkintoon_johtavan_koulutuksen_opiskelijat_kansalaisuuden_mukaan select * from [VipunenTK_DW]..v_f_2_13_Tutkintoon_johtavan_koulutuksen_opiskelijat_kansalaisuuden_mukaan;
+PRINT N'f_2_13 ok';
+
+PRINT N'Starting f_2_14 load';
+truncate table [VipunenTK_DW]..f_2_14_Tutkintoon_johtavan_koulutuksen_opiskelijat_syntymamaan_mukaan;
+insert into [VipunenTK_DW]..f_2_14_Tutkintoon_johtavan_koulutuksen_opiskelijat_syntymamaan_mukaan select * from [VipunenTK_DW]..v_f_2_14_Tutkintoon_johtavan_koulutuksen_opiskelijat_syntymamaan_mukaan;
+PRINT N'f_2_14 ok';
+
+PRINT N'Starting f_2_15 load';
+truncate table [VipunenTK_DW]..f_2_15_Tutkintoon_johtavan_koulutuksen_opiskelijat_aidinkielen_mukaan;
+insert into [VipunenTK_DW]..f_2_15_Tutkintoon_johtavan_koulutuksen_opiskelijat_aidinkielen_mukaan select * from [VipunenTK_DW]..v_f_2_15_Tutkintoon_johtavan_koulutuksen_opiskelijat_aidinkielen_mukaan;
+PRINT N'f_2_15 ok';
+
+PRINT N'Starting f_K2_17 load';
+truncate table [VipunenTK_DW]..f_K2_17_ulkomaalaistaustaiset_opisk_ja_tutk;
+insert into [VipunenTK_DW]..f_K2_17_ulkomaalaistaustaiset_opisk_ja_tutk select * from [VipunenTK_DW]..v_f_K2_17_ulkomaalaistaustaiset_opisk_ja_tutk;
+PRINT N'f_K2_17 ok';
+
+PRINT N'Starting f_2_3 load';
+truncate table [VipunenTK_DW]..f_2_3_Lukiokoulutuksen_ja_ammatillisen_koulutuksen_opiskelijat;
+insert into [VipunenTK_DW]..f_2_3_Lukiokoulutuksen_ja_ammatillisen_koulutuksen_opiskelijat select * from [VipunenTK_DW]..v_f_2_3_Lukiokoulutuksen_ja_ammatillisen_koulutuksen_opiskelijat;
+PRINT N'f_2_3 ok';
+
+PRINT N'Starting f_2_4 load';
+truncate table [VipunenTK_DW]..f_2_4_Ammatillisen_koulutuksen_tutkinnot;
+insert into [VipunenTK_DW]..f_2_4_Ammatillisen_koulutuksen_tutkinnot select * from [VipunenTK_DW]..v_f_2_4_Ammatillisen_koulutuksen_tutkinnot;
+PRINT N'f_2_4 ok';
+
+PRINT N'Starting f_2_5 load';
+
+truncate table VipunenTK_DW.dbo.f_2_5_Lukiokoulutuksen_ainevalinnat
+insert into VipunenTK_DW.dbo.f_2_5_Lukiokoulutuksen_ainevalinnat select * from VipunenTK_DW.dbo.v_f_2_5_Lukiokoulutuksen_ainevalinnat
+
+PRINT N'f_2_5 ok';
+
+PRINT N'Starting f_2_8e load';
+truncate table [VipunenTK_DW]..f_2_8e_Korkeakouluopiskelijat;
+insert into [VipunenTK_DW]..f_2_8e_Korkeakouluopiskelijat select * from [VipunenTK_DW]..v_f_2_8e_Korkeakouluopiskelijat;
+PRINT N'f_2_8e ok';
+
+PRINT N'Starting f_2_8 load';
+truncate table [VipunenTK_DW]..f_2_8_Korkeakouluopiskelijat;
+insert into [VipunenTK_DW]..f_2_8_Korkeakouluopiskelijat select * from [VipunenTK_DW]..v_f_2_8_Korkeakouluopiskelijat;
+PRINT N'f_2_8 ok';
+
+PRINT N'Starting f_2_9 load';
+truncate table [VipunenTK_DW]..f_2_9_Korkeakoulututkinnot;
+insert into [VipunenTK_DW]..f_2_9_Korkeakoulututkinnot select * from [VipunenTK_DW]..v_f_2_9_Korkeakoulututkinnot;
+PRINT N'f_2_9 ok';
+
+PRINT N'Starting f_2_11 load';
+Truncate table VipunenTK_DW.dbo.f_2_11_Oppilaitosten_tutkintoon_johtamaton_unpivot
+Insert into VipunenTK_DW.dbo.f_2_11_Oppilaitosten_tutkintoon_johtamaton_unpivot Select * from VipunenTK_DW.dbo.v_f_2_11_Oppilaitosten_tutkintoon_johtamaton_unpivot 
+PRINT N'f_2_11 ok';
+
+PRINT N'Starting f_2_20 load';
+truncate table [VipunenTK_DW]..f_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan;
+insert into [VipunenTK_DW]..f_2_20_Lukio_amm_oppis_opisk_ian_ja_aik_koul_mukaan select * from [VipunenTK_DW]..v_f_2_20_Lukio_amm_oppis_opisk_ian_ja_koul_mukaan;
+PRINT N'f_2_20 ok';
+
+PRINT N'Starting f_2_23 load';
+truncate table [VipunenTK_DW]..f_2_23_Opisk_ja_tutksuor_vanh_aseman_muk;
+insert into [VipunenTK_DW]..f_2_23_Opisk_ja_tutksuor_vanh_aseman_muk select * from [VipunenTK_DW]..v_f_2_23_Opisk_ja_tutksuor_vanh_aseman_muk;
+PRINT N'f_2_23 ok';
+
+PRINT N'Starting f_2_27a load';
+truncate table [VipunenTK_DW]..f_2_27a_perusopetuksen_katsomusaineet_maakunta;
+insert into [VipunenTK_DW]..f_2_27a_perusopetuksen_katsomusaineet_maakunta select * from [VipunenTK_DW]..v_f_2_27a_perusopetuksen_katsomusaineet_maakunta;
+PRINT N'f_2_27a ok';
+
+PRINT N'Starting f_2_27b load';
+truncate table [VipunenTK_DW]..f_2_27b_perusopetuksen_katsomusaineet_jarjestaja;
+insert into [VipunenTK_DW]..f_2_27b_perusopetuksen_katsomusaineet_jarjestaja select * from [VipunenTK_DW]..v_f_2_27b_perusopetuksen_katsomusaineet_jarjestaja;
+PRINT N'f_2_27b ok';
+
+PRINT N'Starting f_3_4 load';
+truncate table [VipunenTK_DW]..f_3_4_Korkeakoulututkinnon_suorittaneiden_mediaani_iat_ja_tutkinnon_suorittamiseen_kuluneet_mediaaniajat;
+insert into [VipunenTK_DW]..f_3_4_Korkeakoulututkinnon_suorittaneiden_mediaani_iat_ja_tutkinnon_suorittamiseen_kuluneet_mediaaniajat select * from [VipunenTK_DW]..v_f_3_4_Korkeakoulututkinnon_suorittaneiden_mediaani_iat_ja_tutkinnon_suorittamiseen_kuluneet_mediaaniajat;
+PRINT N'f_3_4 ok';
+
+/*
+--Poistettu, koska ei tule enää uusia tietoja. JS 11.7.2023
+PRINT N'Starting f_3_14 load';
+truncate table [VipunenTK_DW]..f_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat;
+insert into [VipunenTK_DW]..f_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat select * from [VipunenTK_DW]..v_f_3_14_Lukio_ja_ammatillisen_koulutuksen_opiskelijoiden_mediaani_iat;
+PRINT N'f_3_14 ok';
+*/
+
+PRINT N'Starting f_3_15 load';
+truncate table [VipunenTK_DW]..f_3_15_Lukio_ja_ammatillisen_koulutuksen_tutkintojen_mediaani_iat;
+insert into [VipunenTK_DW]..f_3_15_Lukio_ja_ammatillisen_koulutuksen_tutkintojen_mediaani_iat select * from [VipunenTK_DW]..v_f_3_15_Lukio_ja_ammatillisen_koulutuksen_tutkintojen_mediaani_iat;
+PRINT N'f_3_15 ok';
+
+/*
+--Poistettu, koska ei tule enää uusia tietoja. JS 11.7.2023
+PRINT N'Starting f_K3_16 load';
+EXECUTE [VipunenTK_DW].[dbo].[p_lataa_f_K3_16_Moninkertainen_haku]
+--truncate table VipunenTK_DW..f_K3_16_Moninkertainen_haku;
+--insert into VipunenTK_DW..f_K3_16_Moninkertainen_haku select * from VipunenTK_DW..v_f_K3_16_Moninkertainen_haku;
+PRINT N'f_K3_16 ok';
+*/
+
+PRINT N'Starting f_4_2 load';
+truncate table [VipunenTK_DW]..f_4_2_Vaeston_koulutusrakenne_ja_paaasiallinen_toiminta;
+insert into [VipunenTK_DW]..f_4_2_Vaeston_koulutusrakenne_ja_paaasiallinen_toiminta select * from [VipunenTK_DW]..v_f_4_2_Vaeston_koulutusrakenne_ja_paaasiallinen_toiminta;
+PRINT N'f_4_2 ok';
+
+PRINT N'Starting f_4_3 load';
+truncate table [VipunenTK_DW]..f_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta;
+insert into [VipunenTK_DW]..f_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta select * from [VipunenTK_DW]..v_f_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta;
+PRINT N'f_4_3 ok';
+
+PRINT N'Starting f_4_3b load';
+truncate table [VipunenTK_DW]..f_4_3b_Tutkinnon_suorittaneiden_paaasiallinen_toiminta_syntyperan_mukaan;
+insert into [VipunenTK_DW]..f_4_3b_Tutkinnon_suorittaneiden_paaasiallinen_toiminta_syntyperan_mukaan select * from [VipunenTK_DW]..v_f_4_3b_Tutkinnon_suorittaneiden_paaasiallinen_toiminta_syntyperan_mukaan;
+PRINT N'f_4_3b ok';
+
+PRINT N'Starting f_4_7 load';
+--Truncate table VipunenTK_DW.dbo.f_4_7_Tutkinnon_suorittaneiden_aiempi_koulutus
+--Insert into VipunenTK_DW.dbo.f_4_7_Tutkinnon_suorittaneiden_aiempi_koulutus
+--  Select * from VipunenTK_DW.dbo.v_f_4_7_Tutkinnon_suorittaneiden_aiempi_koulutus
+
+exec [dbo].[p_prosessoi_4_7]
+
+--Truncate table VipunenTK_DW.dbo.f_tutkinnon_suorittaneiden_aiempi_koulutus_4_7 
+--Insert into VipunenTK_DW.dbo.f_tutkinnon_suorittaneiden_aiempi_koulutus_4_7
+--  Select * from VipunenTK_DW.dbo.v_f_tutkinnon_suorittaneiden_aiempi_koulutus_4_7 
+
+PRINT N'Starting f_4_8 load';
+Truncate table VipunenTK_DW.dbo.f_4_8_Tutkinnon_suorittaneiden_myohempi_koulutus
+Insert into VipunenTK_DW.dbo.f_4_8_Tutkinnon_suorittaneiden_myohempi_koulutus
+  Select * from VipunenTK_DW.dbo.v_f_4_8_Tutkinnon_suorittaneiden_myohempi_koulutus
+
+Truncate table VipunenTK_DW.dbo.f_tutkinnon_suorittaneiden_myohempi_koulutus_4_8 
+Insert into VipunenTK_DW.dbo.f_tutkinnon_suorittaneiden_myohempi_koulutus_4_8
+  Select * from VipunenTK_DW.dbo.v_f_tutkinnon_suorittaneiden_myohempi_koulutus_4_8 
+
+PRINT N'Starting f_4_9 load';
+truncate table [VipunenTK_DW]..f_4_9_Vaestorakenne_kunnittain;
+insert into [VipunenTK_DW]..f_4_9_Vaestorakenne_kunnittain select * from [VipunenTK_DW]..v_f_4_9_Vaestorakenne_kunnittain;
+PRINT N'f_4_9 ok';
+
+PRINT N'Starting f_R4_19_R4_20 load';
+truncate table [VipunenTK_DW]..f_R4_19_R4_20_Tyollisten_ammattisiirtymat_ja_aiemmat_ammatit;
+insert into [VipunenTK_DW]..f_R4_19_R4_20_Tyollisten_ammattisiirtymat_ja_aiemmat_ammatit select * from [VipunenTK_DW]..v_f_R4_19_R4_20_Tyollisten_ammattisiirtymat_ja_aiemmat_ammatit;
+PRINT N'f_R4_19_R4_20 ok';
+
+PRINT N'Starting f_R4_23 load';
+truncate table [VipunenTK_DW]..f_R4_23_Tyollisten_ammattisiirtymat;
+insert into [VipunenTK_DW]..f_R4_23_Tyollisten_ammattisiirtymat select * from [VipunenTK_DW]..v_f_R4_23_Tyollisten_ammattisiirtymat
+PRINT N'f_R4_23 ok';
+
+PRINT N'Starting f_5_1 load';
+Truncate table VipunenTK_DW.dbo.f_5_1_Yliopistojen_tutkimushenkilökunta_yliopistoittain;
+Insert into VipunenTK_DW.dbo.f_5_1_Yliopistojen_tutkimushenkilökunta_yliopistoittain Select * from VipunenTK_DW.dbo.v_f_5_1_Yliopistojen_tutkimushenkilökunta_yliopistoittain;
+PRINT N'f_5_1 ok';
+
+PRINT N'Starting f_5_2 load';
+Truncate table VipunenTK_DW.dbo.f_5_2_Yliopistojen_tutkimustyovuodet_yliopistoittain;
+Insert into VipunenTK_DW.dbo.f_5_2_Yliopistojen_tutkimustyovuodet_yliopistoittain Select * from VipunenTK_DW.dbo.v_f_5_2_Yliopistojen_tutkimustyovuodet_yliopistoittain;
+PRINT N'f_5_2 ok';
+
+PRINT N'Starting f_5_3 load';
+Truncate table VipunenTK_DW.dbo.f_5_3_Yliopistojen_tutkimustyovuodet_ja_tutkimusmenot_rahoituslahteittain_menolajeittain_yliopistoittain;
+Insert into VipunenTK_DW.dbo.f_5_3_Yliopistojen_tutkimustyovuodet_ja_tutkimusmenot_rahoituslahteittain_menolajeittain_yliopistoittain Select * from VipunenTK_DW.dbo.v_f_5_3_Yliopistojen_tutkimustyovuodet_ja_tutkimusmenot_rahoituslahteittain_menolajeittain_yliopistoittain;
+PRINT N'f_5_3 ok';
+
+PRINT N'Starting f_5_4 load';
+Truncate table VipunenTK_DW.dbo.f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimusmenot
+Insert into VipunenTK_DW.dbo.f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimusmenot Select * from VipunenTK_DW.dbo.v_f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimusmenot
+Truncate table VipunenTK_DW.dbo.f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimusmenot_alueittain
+Insert into VipunenTK_DW.dbo.f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimusmenot_alueittain Select * from VipunenTK_DW.dbo.v_f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimusmenot_alueittain
+Truncate table VipunenTK_DW.dbo.f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimusmenot_tieteenaloittain
+Insert into VipunenTK_DW.dbo.f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimusmenot_tieteenaloittain Select * from VipunenTK_DW.dbo.v_f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimusmenot_tieteenaloittain
+Truncate table VipunenTK_DW.dbo.f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_rahoitus
+Insert into VipunenTK_DW.dbo.f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_rahoitus Select * from VipunenTK_DW.dbo.v_f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_rahoitus
+Truncate table VipunenTK_DW.dbo.f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimushenkilokunta_alueittain
+Insert into VipunenTK_DW.dbo.f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimushenkilokunta_alueittain Select * from VipunenTK_DW.dbo.v_f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimushenkilokunta_alueittain
+Truncate table VipunenTK_DW.dbo.f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimushenkilokunta_paatieteenaloittain_tehtavittain
+Insert into VipunenTK_DW.dbo.f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimushenkilokunta_paatieteenaloittain_tehtavittain Select * from VipunenTK_DW.dbo.v_f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimushenkilokunta_paatieteenaloittain_tehtavittain
+Truncate table VipunenTK_DW.dbo.f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimushenkilokunta_tutkintotasoittain
+Insert into VipunenTK_DW.dbo.f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimushenkilokunta_tutkintotasoittain Select * from VipunenTK_DW.dbo.v_f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimushenkilokunta_tutkintotasoittain
+Truncate table VipunenTK_DW.dbo.f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimustyovuodet_alueittain
+Insert into VipunenTK_DW.dbo.f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimustyovuodet_alueittain Select * from VipunenTK_DW.dbo.v_f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimustyovuodet_alueittain
+Truncate table VipunenTK_DW.dbo.f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimustyovuodet_tehtavittain
+Insert into VipunenTK_DW.dbo.f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimustyovuodet_tehtavittain Select * from VipunenTK_DW.dbo.v_f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimustyovuodet_tehtavittain
+Truncate table VipunenTK_DW.dbo.f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimustyovuodet_tutkintotasoittain
+Insert into VipunenTK_DW.dbo.f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimustyovuodet_tutkintotasoittain Select * from VipunenTK_DW.dbo.v_f_5_4_Ammattikorkeakoulujen_tutkimus_ja_kehitys_tutkimustyovuodet_tutkintotasoittain
+PRINT N'f_5_4 ok';
+
+PRINT N'Starting f_5_4 sekt load';
+Truncate table VipunenTK_DW.dbo.f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimusmenot
+Insert into VipunenTK_DW.dbo.f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimusmenot Select * from VipunenTK_DW.dbo.v_f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimusmenot
+Truncate table VipunenTK_DW.dbo.f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimusmenot_alueittain
+Insert into VipunenTK_DW.dbo.f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimusmenot_alueittain Select * from VipunenTK_DW.dbo.v_f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimusmenot_alueittain
+Truncate table VipunenTK_DW.dbo.f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimusmenot_tieteenaloittain
+Insert into VipunenTK_DW.dbo.f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimusmenot_tieteenaloittain Select * from VipunenTK_DW.dbo.v_f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimusmenot_tieteenaloittain
+Truncate table VipunenTK_DW.dbo.f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_rahoitus
+Insert into VipunenTK_DW.dbo.f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_rahoitus Select * from VipunenTK_DW.dbo.v_f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_rahoitus
+Truncate table VipunenTK_DW.dbo.f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimushenkilokunta_alueittain
+Insert into VipunenTK_DW.dbo.f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimushenkilokunta_alueittain Select * from VipunenTK_DW.dbo.v_f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimushenkilokunta_alueittain
+Truncate table VipunenTK_DW.dbo.f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimushenkilokunta_paatieteenaloittain_tehtavittain
+Insert into VipunenTK_DW.dbo.f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimushenkilokunta_paatieteenaloittain_tehtavittain Select * from VipunenTK_DW.dbo.v_f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimushenkilokunta_paatieteenaloittain_tehtavittain
+Truncate table VipunenTK_DW.dbo.f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimushenkilokunta_tutkintotasoittain
+Insert into VipunenTK_DW.dbo.f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimushenkilokunta_tutkintotasoittain Select * from VipunenTK_DW.dbo.v_f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimushenkilokunta_tutkintotasoittain
+Truncate table VipunenTK_DW.dbo.f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimustyovuodet_alueittain
+Insert into VipunenTK_DW.dbo.f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimustyovuodet_alueittain Select * from VipunenTK_DW.dbo.v_f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimustyovuodet_alueittain
+Truncate table VipunenTK_DW.dbo.f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimustyovuodet_tehtavittain
+Insert into VipunenTK_DW.dbo.f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimustyovuodet_tehtavittain Select * from VipunenTK_DW.dbo.v_f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimustyovuodet_tehtavittain
+Truncate table VipunenTK_DW.dbo.f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimustyovuodet_tutkintotasoittain
+Insert into VipunenTK_DW.dbo.f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimustyovuodet_tutkintotasoittain Select * from VipunenTK_DW.dbo.v_f_5_4_Sektoritutkimuslaitosten_tutkimus_ja_kehitys_tutkimustyovuodet_tutkintotasoittain
+PRINT N'f_5_4 sekt ok';
+
+PRINT N'Starting f_5_4 yosair load';
+Truncate table VipunenTK_DW.dbo.f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimusmenot
+Insert into VipunenTK_DW.dbo.f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimusmenot Select * from VipunenTK_DW.dbo.v_f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimusmenot
+Truncate table VipunenTK_DW.dbo.f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimusmenot_alueittain
+Insert into VipunenTK_DW.dbo.f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimusmenot_alueittain Select * from VipunenTK_DW.dbo.v_f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimusmenot_alueittain
+Truncate table VipunenTK_DW.dbo.f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimusmenot_tieteenaloittain
+Insert into VipunenTK_DW.dbo.f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimusmenot_tieteenaloittain Select * from VipunenTK_DW.dbo.v_f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimusmenot_tieteenaloittain
+Truncate table VipunenTK_DW.dbo.f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_rahoitus
+Insert into VipunenTK_DW.dbo.f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_rahoitus Select * from VipunenTK_DW.dbo.v_f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_rahoitus
+Truncate table VipunenTK_DW.dbo.f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimushenkilokunta_alueittain
+Insert into VipunenTK_DW.dbo.f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimushenkilokunta_alueittain Select * from VipunenTK_DW.dbo.v_f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimushenkilokunta_alueittain
+Truncate table VipunenTK_DW.dbo.f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimushenkilokunta_paatieteenaloittain_tehtavittain
+Insert into VipunenTK_DW.dbo.f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimushenkilokunta_paatieteenaloittain_tehtavittain Select * from VipunenTK_DW.dbo.v_f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimushenkilokunta_paatieteenaloittain_tehtavittain
+Truncate table VipunenTK_DW.dbo.f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimushenkilokunta_tutkintotasoittain
+Insert into VipunenTK_DW.dbo.f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimushenkilokunta_tutkintotasoittain Select * from VipunenTK_DW.dbo.v_f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimushenkilokunta_tutkintotasoittain
+Truncate table VipunenTK_DW.dbo.f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimustyovuodet_alueittain
+Insert into VipunenTK_DW.dbo.f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimustyovuodet_alueittain Select * from VipunenTK_DW.dbo.v_f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimustyovuodet_alueittain
+Truncate table VipunenTK_DW.dbo.f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimustyovuodet_tehtavittain
+Insert into VipunenTK_DW.dbo.f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimustyovuodet_tehtavittain Select * from VipunenTK_DW.dbo.v_f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimustyovuodet_tehtavittain
+Truncate table VipunenTK_DW.dbo.f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimustyovuodet_tutkintotasoittain
+Insert into VipunenTK_DW.dbo.f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimustyovuodet_tutkintotasoittain Select * from VipunenTK_DW.dbo.v_f_5_4_Yosairaaloiden_tutkimus_ja_kehitys_tutkimustyovuodet_tutkintotasoittain
+PRINT N'f_5_4 yosair ok';
+
+PRINT N'Starting f_K5_5 load';
+truncate table [VipunenTK_DW]..f_K5_5_Tieteen_ja_teknologian_henkilovoimavarat;
+insert into [VipunenTK_DW]..f_K5_5_Tieteen_ja_teknologian_henkilovoimavarat select * from [VipunenTK_DW]..v_f_K5_5_Tieteen_ja_teknologian_henkilovoimavarat;
+PRINT N'f_K5_5 ok';
+
+PRINT N'Starting f_2_10 load';
+truncate table [VipunenTK_DW]..f_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus;
+insert into [VipunenTK_DW]..f_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus select * from [VipunenTK_DW]..v_f_2_10_Korkeakouluopiskelijoiden_aikaisempi_koulutus;
+PRINT N'f_2_10 ok';
+
+PRINT N'Starting f_3_1a load';
+truncate table [VipunenTK_DW]..f_3_1a_Oppisopimus_paaasiallinen_toiminta;
+insert into [VipunenTK_DW]..f_3_1a_Oppisopimus_paaasiallinen_toiminta select * from [VipunenTK_DW]..v_f_3_1a_Oppisopimus_paaasiallinen_toiminta;
+PRINT N'f_3_1a ok';
+
+PRINT N'Starting f_3_1b load';
+truncate table [VipunenTK_DW]..f_3_1b_Oppisopimus_koulutuksen_kesto;
+insert into [VipunenTK_DW]..f_3_1b_Oppisopimus_koulutuksen_kesto select * from [VipunenTK_DW]..v_f_3_1b_Oppisopimus_koulutuksen_kesto;
+PRINT N'f_3_1b ok';
+
+PRINT N'Starting f_3_2 load';
+truncate table [VipunenTK_DW]..f_3_2_Oppisopimus_jatko_opinnot;
+insert into [VipunenTK_DW]..f_3_2_Oppisopimus_jatko_opinnot select * from [VipunenTK_DW]..v_f_3_2_Oppisopimus_jatko_opinnot;
+PRINT N'f_3_2 ok';
+
+PRINT N'Starting f_K3_11 load';
+truncate table [VipunenTK_DW]..f_K_3_11_Keskeyttaneet;
+insert into [VipunenTK_DW]..f_K_3_11_Keskeyttaneet select * from [VipunenTK_DW].[dbo].[v_f_K3_11_Keskeyttaneet];
+PRINT N'f_K3_11 ok';
+
+
+
+
+
+
+GO
+
+
