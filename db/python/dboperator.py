@@ -12,8 +12,8 @@ Offers also a function to close the connection which is good to
 remember to call at the end.
 """
 import sys,os
-#import pymssql
-import mssql #pitää ensin asentaa
+import pymssql
+#import mssql #pitää ensin asentaa
 
 # Uses env vars for the connection.
 # If not set, kill the process!
@@ -26,8 +26,8 @@ if not dbhost or not dbname or not dbuser or not dbpass:
   sys.exit(2)
 
 # global vars; information maintains between calls
-#conn = pymssql.connect(dbhost, dbuser, dbpass, dbname)
-conn = mssql.connect(dbhost, dbuser, dbpass, dbname)
+conn = pymssql.connect(dbhost, dbuser, dbpass, dbname)
+#conn = mssql.connect(dbhost, dbuser, dbpass, dbname)
 cur = conn.cursor(as_dict=True)
 
 columnlist = []
