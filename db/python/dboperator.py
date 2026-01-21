@@ -12,7 +12,8 @@ Offers also a function to close the connection which is good to
 remember to call at the end.
 """
 import sys,os
-import pymssql
+#import pymssql
+import mssql #pitää ensin asentaa
 
 # Uses env vars for the connection.
 # If not set, kill the process!
@@ -25,7 +26,8 @@ if not dbhost or not dbname or not dbuser or not dbpass:
   sys.exit(2)
 
 # global vars; information maintains between calls
-conn = pymssql.connect(dbhost, dbuser, dbpass, dbname)
+#conn = pymssql.connect(dbhost, dbuser, dbpass, dbname)
+conn = mssql.connect(dbhost, dbuser, dbpass, dbname)
 cur = conn.cursor(as_dict=True)
 
 columnlist = []
@@ -190,17 +192,24 @@ def insertMany(source, schema, table, rows, debug=False): #insert array
   conn.commit()
 
 # for procedure calls and ready made statements
-def execute(sql,debug=False):
-  global conn, cur, count
-  if debug: print("dboperator.execute: sql="+sql)
-  try:
-      cur.execute(sql)
-      count = cur.rowcount
-      conn.commit()
-      return 1
-  except pymssql.Error as sqlerror:
-    return str(sqlerror)
+def execute(sql, debug=False):
+    global conn, cur, count
+    if debug:
+        print("dboperator.execute: sql=" + sql)
 
+    try:
+        cur.execute(sql)
+        count = cur.rowcount
+        conn.commit()
+        return 1
+
+    # --- VANHA  ---
+    #except pymssql.Error as sqlerror:
+    #    return str(sqlerror)
+
+    # --- UUSI ---
+    except Exception as e:
+         return str(e)
 # get results of a query as an array of dicts
 def get(sql,debug=False):
   global conn, cur, count
