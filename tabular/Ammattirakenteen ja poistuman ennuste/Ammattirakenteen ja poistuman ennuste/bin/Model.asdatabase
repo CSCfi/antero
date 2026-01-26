@@ -1,5 +1,5 @@
 {
-  "name": "SemanticModel",
+  "name": "Ammattirakenteen ja poistuman ennuste",
   "compatibilityLevel": 1200,
   "model": {
     "culture": "fi-FI",
@@ -150,6 +150,7 @@
             "name": "Muuttujat",
             "dataView": "full",
             "source": {
+              "type": "query",
               "query": " SELECT [dbo].[v_f_tab_poistuma].* FROM [dbo].[v_f_tab_poistuma] ",
               "dataSource": "SqlServer dwitvipusql22 VipunenTK"
             },
@@ -1429,6 +1430,7 @@
             "name": "Poistumakertoimet",
             "dataView": "full",
             "source": {
+              "type": "query",
               "query": " SELECT [dbo].[v_f_tab_poistuma_kertoimet].* FROM [dbo].[v_f_tab_poistuma_kertoimet] ",
               "dataSource": "SqlServer dwitvipusql22 VipunenTK"
             },
@@ -1788,6 +1790,7 @@
             "name": "Eläkkeelle siirtyneet ja kuolleet",
             "dataView": "full",
             "source": {
+              "type": "query",
               "query": " SELECT [dbo].[v_f_tab_poistuma_elakkeelle_siirtyneet_ja_kuolleet].* FROM [dbo].[v_f_tab_poistuma_elakkeelle_siirtyneet_ja_kuolleet] ",
               "dataSource": "SqlServer dwitvipusql22 VipunenTK"
             }
@@ -1870,6 +1873,7 @@
             "name": "Ammattirakenne2",
             "dataView": "full",
             "source": {
+              "type": "query",
               "query": " SELECT [dbo].[v_f_tab_ammattirakenne_ennuste].[Tilastovuosi],[dbo].[v_f_tab_ammattirakenne_ennuste].[Ammattiryhmä 1. taso],[dbo].[v_f_tab_ammattirakenne_ennuste].[Ammattiryhmä 2. taso],[dbo].[v_f_tab_ammattirakenne_ennuste].[Toimiala],[dbo].[v_f_tab_ammattirakenne_ennuste].[Toimiala_koodi],[dbo].[v_f_tab_ammattirakenne_ennuste].[Ikä tilastovuonna],[dbo].[v_f_tab_ammattirakenne_ennuste].[lkm],[dbo].[v_f_tab_ammattirakenne_ennuste].[vieraskieliset_lkm] FROM [dbo].[v_f_tab_ammattirakenne_ennuste] ",
               "dataSource": "SqlServer dwitvipusql22 VipunenTK"
             },
@@ -2509,6 +2513,7 @@
             "name": "Toimialaennuste",
             "dataView": "full",
             "source": {
+              "type": "query",
               "query": " SELECT [dbo].[v_f_tab_toimialaennuste].* FROM [dbo].[v_f_tab_toimialaennuste] ",
               "dataSource": "SqlServer dwitvipusql22 VipunenTK"
             },
@@ -2811,6 +2816,7 @@
             "name": "Luokitusavain",
             "dataView": "full",
             "source": {
+              "type": "query",
               "query": " \t\t\t\tSELECT [dbo].[v_f_tab_oef_osaamis_ammatti_luokitusavain].*   FROM [dbo].[v_f_tab_oef_osaamis_ammatti_luokitusavain] ",
               "dataSource": "SqlServer dwitvipusql22 VipunenTK"
             }
@@ -2824,6 +2830,69 @@
           {
             "name": "_TM_ExtProp_DbTableName",
             "value": "v_f_tab_oef_osaamis_ammatti_luokitusavain"
+          },
+          {
+            "name": "_TM_ExtProp_DbSchemaName",
+            "value": "dbo"
+          }
+        ]
+      },
+      {
+        "name": "Palkat",
+        "columns": [
+          {
+            "name": "Ammattiryhmä 2. taso",
+            "dataType": "string",
+            "sourceColumn": "Ammattiryhmä 2. taso",
+            "sortByColumn": "jarjestys_ammattiryhma2",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "jarjestys_ammattiryhma2",
+            "dataType": "string",
+            "isHidden": true,
+            "sourceColumn": "jarjestys_ammattiryhma2",
+            "sourceProviderType": "WChar"
+          },
+          {
+            "name": "palkka2",
+            "dataType": "double",
+            "isHidden": true,
+            "sourceColumn": "palkka2",
+            "sourceProviderType": "Double"
+          }
+        ],
+        "partitions": [
+          {
+            "name": "Palkat",
+            "dataView": "full",
+            "source": {
+              "type": "query",
+              "query": " \t\t\t\tSELECT [dbo].[v_f_tab_ammatit_palkat].*   FROM [dbo].[v_f_tab_ammatit_palkat] ",
+              "dataSource": "SqlServer dwitvipusql22 VipunenTK"
+            }
+          }
+        ],
+        "measures": [
+          {
+            "name": "Palkkojen keskiarvo",
+            "expression": " AVERAGE(Palkat[palkka2])",
+            "formatString": "0.00"
+          },
+          {
+            "name": "Palkkaindeksi",
+            "expression": " Palkat[Palkkojen keskiarvo] / CALCULATE(Palkat[Palkkojen keskiarvo], ALL(Palkat))",
+            "formatString": "0.00"
+          }
+        ],
+        "annotations": [
+          {
+            "name": "_TM_ExtProp_QueryDefinition",
+            "value": " \t\t\t\tSELECT [dbo].[v_f_tab_ammatit_palkat].*   FROM [dbo].[v_f_tab_ammatit_palkat] "
+          },
+          {
+            "name": "_TM_ExtProp_DbTableName",
+            "value": "v_f_tab_ammatit_palkat"
           },
           {
             "name": "_TM_ExtProp_DbSchemaName",
@@ -3082,6 +3151,27 @@
             ]
           }
         ]
+      },
+      {
+        "name": "Palkka",
+        "tables": [
+          {
+            "name": "Palkat",
+            "columns": [
+              {
+                "name": "Ammattiryhmä 2. taso"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Palkkaindeksi"
+              },
+              {
+                "name": "Palkkojen keskiarvo"
+              }
+            ]
+          }
+        ]
       }
     ],
     "roles": [
@@ -3090,8 +3180,12 @@
         "modelPermission": "read",
         "members": [
           {
-            "memberName": "DWI\\Z_P_Antero_Full_Read_TAB",
-            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-2272"
+            "memberName": "DWI\\Z_DWIVIPURD_Allow_D_Drive",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5358"
+          },
+          {
+            "memberName": "DWI\\Z_DWIPVIPURD_Allow_All_Drives",
+            "memberId": "S-1-5-21-2196741920-3238685902-2581541251-5673"
           }
         ]
       }
@@ -3102,6 +3196,5 @@
         "value": "400"
       }
     ]
-  },
-  "id": "SemanticModel"
+  }
 }
