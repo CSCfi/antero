@@ -1214,12 +1214,11 @@
             "expression": [
               "",
               "var vastanneet_ei_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[Kiusaamiskysymys]=0,Muuttujat[vastaajaid] <> BLANK())",
-              "var vastanneet_ei_kius_ylataso = CALCULATE(DISTINCTCOUNT([vastaajaid]),KEEPFILTERS(FILTER(ALL(Muuttujat[Kiusaamiskysymys],Muuttujat[vastaajaid]),[Kiusaamiskysymys]=0 && NOT(ISBLANK(Muuttujat[vastaajaid])))),ALL(Muuttujat[Flervalsalternativ]))",
               "var vastanneet_kius = CALCULATE([Vastanneet_kiusSV],Muuttujat[Kiusaamiskysymys]=1,Muuttujat[vastaajaid] <> BLANK())",
-              "var summa = CALCULATE(vastanneet_ei_kius+vastanneet_kius)",
-              "",
-              "return IF(vastanneet_ei_kius_ylataso<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(),\"1-4\"),summa)",
-              ""
+              "var lkm = CALCULATE(vastanneet_ei_kius+vastanneet_kius)",
+              "var summa_ylataso = CALCULATE(DISTINCTCOUNT([vastaajaid]),ALL(Muuttujat[Flervalsalternativ]))",
+              "return ",
+              "IF(AND(summa_ylataso < 5, ISFILTERED(Muuttujat[Flervalsalternativ])), BLANK(), IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", lkm)))"
             ],
             "formatString": "#,0"
           },
@@ -1327,11 +1326,12 @@
             "expression": [
               "",
               "var vastanneet_ei_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[Kiusaamiskysymys]=0,Muuttujat[vastaajaid] <> BLANK())",
-              "var vastanneet_ei_kius_ylataso = CALCULATE(DISTINCTCOUNT([vastaajaid]),KEEPFILTERS(FILTER(ALL(Muuttujat[Kiusaamiskysymys],Muuttujat[vastaajaid]),[Kiusaamiskysymys]=0 && NOT(ISBLANK(Muuttujat[vastaajaid])))),ALL(Muuttujat[Multiple choice option]))",
               "var vastanneet_kius = CALCULATE([Vastanneet_kiusEN],Muuttujat[Kiusaamiskysymys]=1,Muuttujat[vastaajaid] <> BLANK())",
-              "var summa = CALCULATE(vastanneet_ei_kius+vastanneet_kius)",
+              "var lkm = CALCULATE(vastanneet_ei_kius+vastanneet_kius)",
+              "var summa_ylataso = CALCULATE(DISTINCTCOUNT([vastaajaid]),ALL(Muuttujat[Multiple choice option]))",
               "",
-              "return IF(vastanneet_ei_kius_ylataso<5,IF(OR(summa=0,ISFILTERED([Monivalintavaihtoehto])),BLANK(),\"1-4\"),summa)"
+              "return",
+              "IF(AND(summa_ylataso < 5, ISFILTERED(Muuttujat[Multiple choice option])), BLANK(), IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", lkm)))"
             ],
             "formatString": "#,0"
           },
@@ -1735,7 +1735,10 @@
               "var vastanneet_ei_kius = CALCULATE(DISTINCTCOUNT([vastaajaid]),Muuttujat[Kiusaamiskysymys]=0,NOT(ISBLANK(Muuttujat[vastaajaid])))",
               "var vastanneet_kius = CALCULATE([Vastanneet_kius],Muuttujat[Kiusaamiskysymys]=1,NOT(ISBLANK(Muuttujat[vastaajaid])))",
               "var lkm = CALCULATE(vastanneet_ei_kius+vastanneet_kius)",
-              "return IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", lkm))"
+              "var summa_ylataso = CALCULATE(DISTINCTCOUNT([vastaajaid]),ALL(Muuttujat[Monivalintavaihtoehto]))",
+              "return ",
+              "",
+              "IF(AND(summa_ylataso < 5, ISFILTERED(Muuttujat[Monivalintavaihtoehto])), BLANK(), IF(lkm = 0, BLANK(), IF(lkm < 5, \"1-4\", lkm)))"
             ],
             "formatString": "#,0"
           },
@@ -4414,6 +4417,14 @@
     ],
     "relationships": [
       {
+        "name": "6b63ffce-d4d4-4e5b-9606-a40e83684234",
+        "fromTable": "Muuttujat",
+        "fromColumn": "luodut_vastaajatunnukset_id",
+        "toTable": "Luodut vastaajatunnukset",
+        "toColumn": "id",
+        "crossFilteringBehavior": "bothDirections"
+      },
+      {
         "name": "59c392ba-cd38-4b6a-a89c-a0f9c707096f",
         "fromTable": "Muuttujat",
         "fromColumn": "osaamisalat_avain",
@@ -4426,14 +4437,6 @@
         "fromColumn": "osaamisalat_avain",
         "toTable": "Osaamisalat_avain",
         "toColumn": "osaamisalat_avain",
-        "crossFilteringBehavior": "bothDirections"
-      },
-      {
-        "name": "6b63ffce-d4d4-4e5b-9606-a40e83684234",
-        "fromTable": "Muuttujat",
-        "fromColumn": "luodut_vastaajatunnukset_id",
-        "toTable": "Luodut vastaajatunnukset",
-        "toColumn": "id",
         "crossFilteringBehavior": "bothDirections"
       }
     ],
