@@ -216,12 +216,6 @@
             "displayFolder": "Henkilömuuttujat"
           },
           {
-            "name": "Ikä (maksuttomuusraja)",
-            "dataType": "string",
-            "sourceColumn": "Ikä (maksuttomuusraja)",
-            "displayFolder": "Henkilömuuttujat"
-          },
-          {
             "name": "Koulutuksen järjestäjän AVI",
             "dataType": "string",
             "sourceColumn": "Koulutuksen järjestäjän AVI",
@@ -505,13 +499,6 @@
             "displayFolder": "Aikamuuttujat"
           },
           {
-            "name": "Tilastokausi",
-            "dataType": "string",
-            "sourceColumn": "Tilastokausi",
-            "sourceProviderType": "WChar",
-            "displayFolder": "Aikamuuttujat"
-          },
-          {
             "name": "Koulutuksen alkamisvuosi",
             "dataType": "string",
             "sourceColumn": "Koulutuksen alkamisvuosi",
@@ -564,21 +551,6 @@
             "sourceColumn": "jarj_perusopetuksen_keskiarvoluokka"
           },
           {
-            "name": "Toiminnanohjauksen kokeilu",
-            "dataType": "string",
-            "sourceColumn": "Toiminnanohjauksen kokeilu",
-            "sortByColumn": "jarjestys Toiminnanohjauksen kokeilu",
-            "sourceProviderType": "Char",
-            "displayFolder": "Organisaatiomuuttujat"
-          },
-          {
-            "name": "jarjestys Toiminnanohjauksen kokeilu",
-            "dataType": "int64",
-            "isHidden": true,
-            "sourceColumn": "jarjestys Toiminnanohjauksen kokeilu",
-            "sourceProviderType": "Integer"
-          },
-          {
             "name": "Koul. järjestäjän PILKE-alue (kokeilu)",
             "dataType": "string",
             "sourceColumn": "Koul. järjestäjän PILKE-alue (kokeilu)",
@@ -610,6 +582,39 @@
             "dataType": "string",
             "sourceColumn": "Maksuttomuus (rahoitus)",
             "displayFolder": "Koulutusmuuttujat"
+          },
+          {
+            "name": "Ikä (maksuttomuusraja)",
+            "dataType": "string",
+            "sourceColumn": "Ikä (maksuttomuusraja)",
+            "displayFolder": "Henkilömuuttujat"
+          },
+          {
+            "name": "Toiminnanohjauksen kokeilu",
+            "dataType": "string",
+            "sourceColumn": "Toiminnanohjauksen kokeilu",
+            "sortByColumn": "jarjestys Toiminnanohjauksen kokeilu",
+            "sourceProviderType": "Char",
+            "displayFolder": "Organisaatiomuuttujat"
+          },
+          {
+            "name": "jarjestys Toiminnanohjauksen kokeilu",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "jarjestys Toiminnanohjauksen kokeilu",
+            "sourceProviderType": "Integer"
+          },
+          {
+            "name": "Tilastokausi",
+            "dataType": "string",
+            "sourceColumn": "Tilastokausi",
+            "sourceProviderType": "WChar",
+            "displayFolder": "Aikamuuttujat"
+          },
+          {
+            "name": "vuosiraportti_1_0",
+            "dataType": "int64",
+            "sourceColumn": "vuosiraportti_1_0"
           }
         ],
         "partitions": [
@@ -747,6 +752,15 @@
               "return IF(lkm = 0, BLANK(), lkm)"
             ],
             "formatString": "#,0.0"
+          },
+          {
+            "name": "Tutkinnon osien määrä, lkm",
+            "expression": [
+              "",
+              "var summa = CALCULATE(SUM(Muuttujat[painottamaton_osatutkinnot]))",
+              "return IF(summa=0,BLANK(),summa)"
+            ],
+            "formatString": "#,0"
           }
         ],
         "annotations": [
@@ -866,9 +880,6 @@
                 "name": "Ikä"
               },
               {
-                "name": "Ikä (maksuttomuusraja)"
-              },
-              {
                 "name": "Ikäryhmä"
               },
               {
@@ -950,9 +961,6 @@
                 "name": "Rahoituskausi"
               },
               {
-                "name": "Tilastokausi"
-              },
-              {
                 "name": "Koulutuksen alkamisvuosi"
               },
               {
@@ -968,9 +976,6 @@
                 "name": "Perusopetuksen keskiarvoluokka"
               },
               {
-                "name": "Toiminnanohjauksen kokeilu"
-              },
-              {
                 "name": "Koul. järjestäjän PILKE-alue (kokeilu)"
               },
               {
@@ -981,6 +986,15 @@
               },
               {
                 "name": "Maksuttomuus (rahoitus)"
+              },
+              {
+                "name": "Ikä (maksuttomuusraja)"
+              },
+              {
+                "name": "Toiminnanohjauksen kokeilu"
+              },
+              {
+                "name": "Tilastokausi"
               }
             ],
             "measures": [
@@ -1019,6 +1033,206 @@
               },
               {
                 "name": "Tutkinnon osien laskentaan hyväksytyt osaamispisteet / Painottamattomat rahoituksen perusteena olevat opiskelijavuodet"
+              }
+            ]
+          },
+          {
+            "name": "Sarakeleveys",
+            "columns": [
+              {
+                "name": "leveys"
+              },
+              {
+                "name": "Sarakeleveys"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "vuosiraportti_fi",
+        "tables": [
+          {
+            "name": "Muuttujat",
+            "columns": [
+              {
+                "name": "Erityisopetus"
+              },
+              {
+                "name": "Hankintakoulutuksen järjestäjä"
+              },
+              {
+                "name": "Hankintakoulutuksen oppilaitos"
+              },
+              {
+                "name": "Hankintakoulutus"
+              },
+              {
+                "name": "Ikä"
+              },
+              {
+                "name": "Ikä (maksuttomuusraja)"
+              },
+              {
+                "name": "Ikäryhmä"
+              },
+              {
+                "name": "Järjestäjärakenne"
+              },
+              {
+                "name": "Koodit Hankintakoulutuksen järjestäjä"
+              },
+              {
+                "name": "Koodit Koulutuksen järjestäjä"
+              },
+              {
+                "name": "Koodit Osaamisala"
+              },
+              {
+                "name": "Koodit Tutkinto"
+              },
+              {
+                "name": "Koul. järjestäjän PILKE-alue (kokeilu)"
+              },
+              {
+                "name": "Koulutuksen alkamiskuukausi"
+              },
+              {
+                "name": "Koulutuksen alkamisvuosi"
+              },
+              {
+                "name": "Koulutuksen järjestäjä"
+              },
+              {
+                "name": "Koulutuksen järjestäjän AVI"
+              },
+              {
+                "name": "Koulutuksen järjestäjän ELY"
+              },
+              {
+                "name": "Koulutuksen järjestäjän kunta"
+              },
+              {
+                "name": "Koulutuksen järjestäjän maakunta"
+              },
+              {
+                "name": "Koulutusala, taso 1"
+              },
+              {
+                "name": "Koulutusala, taso 2"
+              },
+              {
+                "name": "Koulutusala, taso 3"
+              },
+              {
+                "name": "Luvanmukainen suorituskieli"
+              },
+              {
+                "name": "Luvaton koulutus"
+              },
+              {
+                "name": "Maksuttomuus (rahoitus)"
+              },
+              {
+                "name": "Oppilaitoksen AVI"
+              },
+              {
+                "name": "Oppilaitoksen ELY"
+              },
+              {
+                "name": "Oppilaitoksen kunta"
+              },
+              {
+                "name": "Oppilaitoksen maakunta"
+              },
+              {
+                "name": "Oppilaitos"
+              },
+              {
+                "name": "Oppisopimuskoulutus"
+              },
+              {
+                "name": "Osaamisala"
+              },
+              {
+                "name": "Perusopetuksen keskiarvoluokka"
+              },
+              {
+                "name": "Perusopetuksen suoritusvuosi"
+              },
+              {
+                "name": "Rahoitusmuoto"
+              },
+              {
+                "name": "Sukupuoli"
+              },
+              {
+                "name": "Suorituksen tyyppi"
+              },
+              {
+                "name": "Suorituskieli"
+              },
+              {
+                "name": "Tilastokausi"
+              },
+              {
+                "name": "Tilastokuukausi"
+              },
+              {
+                "name": "Tilastovuosi"
+              },
+              {
+                "name": "Toiminnanohjauksen kokeilu"
+              },
+              {
+                "name": "Toimipiste"
+              },
+              {
+                "name": "Toimipisteen AVI"
+              },
+              {
+                "name": "Toimipisteen ELY"
+              },
+              {
+                "name": "Toimipisteen kunta"
+              },
+              {
+                "name": "Toimipisteen maakunta"
+              },
+              {
+                "name": "Tutkinto"
+              },
+              {
+                "name": "Tutkintotyyppi"
+              },
+              {
+                "name": "Äidinkieli"
+              }
+            ],
+            "measures": [
+              {
+                "name": "Tutkinnon osien laskentaan hyväksytyt osaamispisteet / Painottamattomat rahoituksen perusteena olevat opiskelijavuodet"
+              },
+              {
+                "name": "Tutkinnon osien laskentaan hyväksytyt osaamispisteet, lkm"
+              },
+              {
+                "name": "Tutkinnon osien osaamispisteet / Painottamattomat rahoituksen perusteena olevat opiskelijavuodet"
+              },
+              {
+                "name": "Tutkinnon osien osaamispisteet, lkm"
+              },
+              {
+                "name": "Tutkintojen määrä, lkm"
+              },
+              {
+                "name": "Tutkintojen painotetut pisteet ja laskentaan hyväksytyt osaamispisteet yhteensä, lkm"
+              },
+              {
+                "name": "Tutkintojen painotetut pisteet, lkm"
+              },
+              {
+                "name": "Tutkinnon osien määrä, lkm"
               }
             ]
           },
