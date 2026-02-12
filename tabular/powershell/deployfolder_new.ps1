@@ -33,6 +33,11 @@ $pdLogFile = Enable-LogFile -Path (Join-Path $pdlogpath $pdlog)
 $ScriptPath = Split-Path $MyInvocation.MyCommand.Path
 $files = get-childitem $tabularsdir"*.bim" -recurse
 
+if (-not $files)
+{
+	exit 0
+}
+
 forEach ($file in $files)
 {
     Write-Host "Processing file:" $file.FullName
