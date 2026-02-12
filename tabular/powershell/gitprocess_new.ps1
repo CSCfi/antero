@@ -36,13 +36,25 @@ while ($reader.Read())
 }
 $reader.Close()
 
+#check if there is nothing to be deployed
+if (-not $table)
+{
+	exit 0
+}
+
 #git clone https://github.com/CSCfi/antero.git
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 Invoke-WebRequest https://github.com/CSCfi/antero/archive/master.zip -OutFile "$gitdir\antero.zip"
 
-Unzip "$gitdir\antero.zip" "$gitdir"
-
-Copy-Item ($gitdir+"\antero-master\tabular\powershell") ($tabulardir) -recurse -force
+$items = @()
+#try unzip as many times as necessary
+while (-not $items)
+{
+	Unzip "$gitdir\antero.zip" "$gitdir"
+	$items = Copy-Item ($gitdir+"\antero-master\tabular\powershell") ($tabulardir) -recurse -force -PassThru
+	
+	Start-Sleep -Seconds 3
+}
 
 foreach ($tabular in $table)
 {
@@ -59,4 +71,3 @@ foreach ($tabular in $table)
 
 Remove-Item $gitdir\* -recurse
 $connection.Close()
-
