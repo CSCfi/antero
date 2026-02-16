@@ -1681,6 +1681,7 @@
               "ISFILTERED([Oppisopimuskoulutus]),TRUE(),",
               "ISFILTERED([Osaamisen hankkimistavat]),TRUE(),",
               "ISFILTERED([Oppisopimuksen perusta]),TRUE(),",
+              "ISFILTERED([Suorituskieli]),TRUE(),",
               "ISFILTERED(Osaamisalat[Osaamisala]),TRUE()",
               ")",
               ""
@@ -1700,6 +1701,7 @@
               "ISFILTERED([Läroavtalsutbildning]),TRUE(),",
               "ISFILTERED([Förvärvandet av kunnande]),TRUE(),",
               "ISFILTERED([Grund för läroavtalet]),TRUE(),",
+              "ISFILTERED([Studiespråk]),TRUE(),",
               "ISFILTERED(Osaamisalat[Kompetensområde]),TRUE()",
               ")"
             ],
@@ -1718,6 +1720,7 @@
               "ISFILTERED([Apprenticeship training]),TRUE(),",
               "ISFILTERED([Method of acquisition of competence]),TRUE(),",
               "ISFILTERED([Apprenticeship agreement type]),TRUE(),",
+              "ISFILTERED([Language of education]),TRUE(),",
               "ISFILTERED(Osaamisalat[Competence area]),TRUE()",
               ")"
             ],
@@ -1763,10 +1766,11 @@
               "",
               "var osa = [Vastanneet]",
               "var kaikki = [Kyselyn kohteet]",
-              "return IF(osa = BLANK(), BLANK(), ",
+              "return IF(osa = BLANK() || kaikki = BLANK(), BLANK(),",
+              "IF(kaikki = \"1-4\", \"25 % – 100 %\",",
               "IF(osa = \"1-4\", IF(kaikki > 8000, 0,",
               "CONCATENATE(FORMAT(1 / kaikki, \"0.0 % – \"), FORMAT(4 / kaikki, \"0.0 %\"))),",
-              "osa / kaikki))"
+              "osa / kaikki)))"
             ],
             "formatString": "0.0 %;-0.0 %;0.0 %"
           },
