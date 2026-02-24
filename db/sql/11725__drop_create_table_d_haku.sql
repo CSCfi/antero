@@ -3,7 +3,7 @@ GO
 
 
 /****** Object:  Table [dw].[d_haku_ovara]    Script Date: 4.2.2026 8.57.38 ******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[d_haku_ovara]') AND type in (N'U'))
+IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[d_haku]') AND type in (N'U'))
 DROP TABLE [dw].[d_haku]
 DROP TABLE IF EXISTS [dw].[d_haku_ovara]
 GO
