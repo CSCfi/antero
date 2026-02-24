@@ -7,6 +7,6 @@ IF NOT EXISTS (
   AND name = 'master_oid'
 )
 BEGIN
-	ALTER TABLE [sa].[sa_ovara_valintarekisteri_valinnantulos] ADD master_oid INT
+	ALTER TABLE [sa].[sa_ovara_valintarekisteri_valinnantulos] ADD master_oid varchar(100)
 
 END
