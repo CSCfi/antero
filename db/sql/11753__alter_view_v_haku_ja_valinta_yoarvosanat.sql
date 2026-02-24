@@ -123,5 +123,5 @@ LEFT JOIN ANTERO.dw.d_haku_amk_yo d46 ON d46.id=f.d_haku_amk_yo_id
 LEFT JOIN ANTERO.dw.d_ytl_aine d47 ON d47.id = f2.d_ytl_aine_id
 LEFT JOIN ANTERO.dw.d_ytl_aine_laajuus d48 ON d48.id = f2.d_ytl_aine_laajuus_id
 LEFT JOIN ANTERO.dw.d_ytl_aine d49 ON d49.id = f2.d_ytl_aine_matikka_id
-LEFT JOIN ANTERO.dw.d_valintatapajonon_tyyppi_ovara d51 on d51.id = f.d_valintatapajonon_tyyppi_id
+LEFT JOIN ANTERO.dw.d_valintatapajonon_tyyppi d51 on d51.id = f.d_valintatapajonon_tyyppi_id
 WHERE f.koulutuksen_alkamisvuosi >= 2015 AND f2.valmistumisvuosi >= 2010 AND f.loadtime >= d1.valitut
