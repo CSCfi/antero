@@ -375,5 +375,5 @@ LEFT JOIN dw.d_kytkin d78 on d78.kytkin_koodi = f2.aiempi_tutk_koulutusala_taso_
 LEFT JOIN dw.d_kytkin d79 on d79.kytkin_koodi = f2.aiempi_tutk_koulutusaste_taso_2_sama_kuin_hakukohde
 LEFT JOIN dw.d_kytkin d80 on d80.kytkin_koodi = f2.aiempi_tutk_tavoitetutkinto_sama_kuin_hakukohde
 LEFT JOIN dw.d_kytkin d81 on d81.kytkin_koodi = f2.aiempi_tutk_korkeakoulu_sama_kuin_hakukohde
-LEFT JOIN dw.d_valintatapajonon_tyyppi_ovara d90 on d90.id = f.d_valintatapajonon_tyyppi_id
+LEFT JOIN dw.d_valintatapajonon_tyyppi d90 on d90.id = f.d_valintatapajonon_tyyppi_id
 WHERE f.master_oid is not null
