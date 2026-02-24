@@ -524,12 +524,6 @@
             "displayFolder": "Aikamuuttujat"
           },
           {
-            "name": "jarj_tilastokuukausi",
-            "dataType": "int64",
-            "isHidden": true,
-            "sourceColumn": "jarj_tilastokuukausi"
-          },
-          {
             "name": "Työvoimakoulutus",
             "dataType": "string",
             "sourceColumn": "Työvoimakoulutus",
@@ -702,6 +696,12 @@
             "dataType": "string",
             "sourceColumn": "Tilastokausi",
             "displayFolder": "Aikamuuttujat"
+          },
+          {
+            "name": "jarj_tilastokuukausi",
+            "dataType": "int64",
+            "isHidden": true,
+            "sourceColumn": "jarj_tilastokuukausi"
           }
         ],
         "partitions": [
@@ -1561,20 +1561,19 @@
             "name": "Rahoitusosuuden muutosrajoitteet huomioiva järjestäjien %-osuus (kiinteä)",
             "expression": [
               "",
-              "var ehto1 = HASONEVALUE(Muuttujat[Varainhoitovuosi]) ",
-              "/*(",
-              "\tSELECTEDVALUE(Muuttujat[Varainhoitovuosi]) ",
-              "\t== CALCULATE(MAX(Muuttujat[Varainhoitovuosi]), ALL(Muuttujat), Muuttujat[apusarake_laskennallinen_rahoitus_osuus_ed_v] > 0)",
-              ")*/",
+              "var ehto1 = HASONEVALUE(Muuttujat[Varainhoitovuosi])",
               "var ehto2 = ISFILTERED(Muuttujat[Toteuma/Estimaatti])",
-              "var ehto3 = (",
-              "\t(ISFILTERED(Muuttujat[Koulutuksen järjestäjä]) && HASONEVALUE(Muuttujat[Koulutuksen järjestäjä]))",
-              "\t|| (ISFILTERED(Muuttujat[Koodit Koulutuksen järjestäjä]) && HASONEVALUE(Muuttujat[Koodit Koulutuksen järjestäjä]))",
-              ")",
               "",
-              "var osuus = CALCULATE(MAX(Muuttujat[apusarake_laskennallinen_rahoitus_osuus]))",
-              "\t",
-              "return IF(ehto1 && ehto2 && ehto3 && osuus > 0, osuus, BLANK())"
+              "var taulu = ",
+              "CALCULATETABLE(",
+              "\tADDCOLUMNS(",
+              "\t\tSUMMARIZE(Muuttujat, Muuttujat[Koodit Koulutuksen järjestäjä], Muuttujat[Koulutuksen järjestäjä])",
+              "\t\t,\"osuus\", CALCULATE(MAX(Muuttujat[apusarake_laskennallinen_rahoitus_osuus]))",
+              "\t)",
+              ")",
+              "var osuudet_yht = SUMX(taulu, [osuus])",
+              "",
+              "return IF(ehto1 && ehto2 && osuudet_yht > 0, osuudet_yht, BLANK())"
             ],
             "formatString": "0.00000 %;-0.00000 %;0.00000 %",
             "displayFolder": "Kokonaisrahoitus"
