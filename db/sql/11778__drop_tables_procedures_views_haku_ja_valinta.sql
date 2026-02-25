@@ -1,0 +1,35 @@
+USE [ANTERO]
+
+GO
+
+DROP TABLE IF EXISTS ANTERO.dw.d_hakuaika
+DROP TABLE IF EXISTS ANTERO.dw.d_hakuaika_kouta
+DROP TABLE IF EXISTS ANTERO.dw.f_haku_ja_valinta_aiemmat_opiskeluoikeudet_tutkinnot
+DROP TABLE IF EXISTS ANTERO.dw.f_haku_ja_valinta_hakeneet_korkea_aste_hakijat
+DROP TABLE IF EXISTS ANTERO.dw.f_haku_ja_valinta_hakeneet_korkea_aste_hakijat_taustatiedot
+DROP TABLE IF EXISTS ANTERO.dw.f_haku_ja_valinta_hakeneet_korkea_aste_hakutoiveet
+DROP TABLE IF EXISTS ANTERO.dw.f_haku_ja_valinta_korkea_aste_hakijat_aiemmat_opiskeluoikeudet_ja_tutkinnot
+DROP TABLE IF EXISTS ANTERO.dw.f_haku_ja_valinta_aloituspaikat_ja_pistemaarat
+DROP TABLE IF EXISTS ANTERO.dw.f_haku_ja_valinta_korkea_aste_valintatapajonot
+DROP TABLE IF EXISTS ANTERO.sa.sa_hakeneet_kk_hakutoiveet
+DROP TABLE IF EXISTS ANTERO.sa.sa_hakeneet_kk_pohjakoulutuksen_maa
+DROP TABLE IF EXISTS ANTERO.sa.sa_hakeneet_kk_pohjakoulutus
+DROP TABLE IF EXISTS ANTERO.sa.sa_hakukohde_kielet
+DROP TABLE IF EXISTS ANTERO.sa.sa_hakukohde_koulutus
+DROP VIEW IF EXISTS ANTERO.sa.v_hakukohde_kielet
+DROP VIEW IF EXISTS ANTERO.sa.v_hakukohde_taso_sykli
+DROP PROCEDURE IF EXISTS ANTERO.dw.p_lataa_f_haku_ja_valinta_aiemmat_opiskeluoikeudet_tutkinnot
+DROP PROCEDURE IF EXISTS ANTERO.dw.p_lataa_f_haku_ja_valinta_aloituspaikat_ja_pistemaarat
+DROP PROCEDURE IF EXISTS ANTERO.dw.p_lataa_f_haku_ja_valinta_hakeneet_korkea_aste_hakijat
+DROP PROCEDURE IF EXISTS ANTERO.dw.p_lataa_f_haku_ja_valinta_hakeneet_korkea_aste_hakijat_taustatiedot
+DROP PROCEDURE IF EXISTS ANTERO.dw.p_lataa_f_haku_ja_valinta_hakeneet_korkea_aste_hakutoiveet
+DROP PROCEDURE IF EXISTS ANTERO.dw.p_lataa_f_haku_ja_valinta_hakeneet_korkea_aste_hakutoiveet
+DROP PROCEDURE IF EXISTS ANTERO.dw.p_lataa_f_haku_ja_valinta_korkea_aste_valintatapajonot
+DROP PROCEDURE IF EXISTS ANTERO.sa.p_lataa_sa_hakeneet_kk_hakutoiveet
+DROP PROCEDURE IF EXISTS ANTERO.sa.p_lataa_sa_hakeneet_kk_pohjakoulutuksen_maa
+DROP PROCEDURE IF EXISTS ANTERO.sa.p_lataa_sa_hakeneet_kk_pohjakoulutus
+DROP PROCEDURE IF EXISTS ANTERO.sa.p_lataa_sa_hakukohde_kielet
+DROP PROCEDURE IF EXISTS ANTERO.sa.p_lataa_sa_hakukohde_koulutus
+DROP PROCEDURE IF EXISTS ANTERO.sa.p_lisaa_indeksit_odw_hakeneet
+DROP PROCEDURE IF EXISTS ANTERO.sa.p_poista_indeksit_odw_hakeneet
+DROP PROCEDURE IF EXISTS ANTERO.sa.paivita_haku_ja_valinta_henkilo_oidit
