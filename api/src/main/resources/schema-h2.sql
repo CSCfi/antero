@@ -5,7 +5,8 @@ CREATE TABLE test_data (
   test_text VARCHAR(100),
   test_number DOUBLE,
   test_date TIMESTAMP,
-  "white space" BOOLEAN
+  "white space" BOOLEAN,
+  defaultorder INT AUTO_INCREMENT
 );
 
 DROP TABLE IF EXISTS test_data_2;
@@ -13,5 +14,6 @@ CREATE TABLE test_data_2 (
   id INT PRIMARY KEY,
   test_text VARCHAR(100),
   test_number DOUBLE,
-  test_date TIMESTAMP
+  test_date TIMESTAMP,
+  defaultorder INT AUTO_INCREMENT
 );
