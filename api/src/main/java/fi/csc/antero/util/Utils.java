@@ -1,7 +1,7 @@
 package fi.csc.antero.util;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.WordUtils;
+import org.apache.commons.text.WordUtils;
 
 public class Utils {
 

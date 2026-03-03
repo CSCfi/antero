@@ -98,7 +98,7 @@ public class ApiDataService {
     }
 
     private Predicate createFilterPredicate(String table, String filter) throws SQLException {
-        if (StringUtils.isEmpty(filter)) {
+        if (!StringUtils.hasText(filter)) {
             return null;
         }
         final Map<String, Path> pathMap = getPathMap(table);
@@ -136,7 +136,7 @@ public class ApiDataService {
 
     private OrderSpecifier[] createOrderSpecifiers(String table, String sort) {
         final OrderSpecifier[] orderSpecifiers = {};
-        if (StringUtils.isEmpty(sort)) {
+        if (!StringUtils.hasText(sort)) {
             sort = "(+" + configService.getDefaultOrderColumn() + ")";
         }
 
