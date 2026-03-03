@@ -1,6 +1,7 @@
 package fi.csc.antero.response;
 
-import com.fasterxml.jackson.core.JsonGenerator;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
 import fi.csc.antero.repository.ApiProperty;
 import org.springframework.jdbc.core.RowCallbackHandler;
 
@@ -31,12 +32,12 @@ public class JsonRowHandler implements RowCallbackHandler {
                 }
                 Object value = rs.getObject(i + 1);
                 String name = apiProperty.getApiName();
-                jsonGenerator.writeObjectField(name, value);
+                jsonGenerator.writePOJOProperty(name, value);
             }
             jsonGenerator.writeEndObject();
             jsonGenerator.flush();
             count++;
-        } catch (IOException e) {
+        } catch (JacksonException e) {
             throw new SQLException("Could not process result set row!", e);
         }
     }

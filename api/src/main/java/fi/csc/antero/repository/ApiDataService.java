@@ -1,7 +1,7 @@
 package fi.csc.antero.repository;
 
-import com.fasterxml.jackson.core.JsonGenerator;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.JsonGenerator;
+import tools.jackson.databind.ObjectMapper;
 import com.github.vineey.rql.filter.parser.DefaultFilterParser;
 import com.github.vineey.rql.querydsl.filter.QueryDslFilterContext;
 import com.github.vineey.rql.querydsl.page.QuerydslPageParser;
@@ -60,16 +60,29 @@ public class ApiDataService {
     }
 
     public void streamToJsonArray(String table, OutputStream out, ApiQuery query)
-            throws IOException, SQLException {
+            throws SQLException {
         log.debug("streamToJsonArray start");
-        final JsonGenerator jg = om.getFactory().createGenerator(out);
+        final JsonGenerator jg = om.createGenerator(out);
         jg.writeStartArray();
         final StringTemplate path = getFromExpression(table);
-        final SQLQuery<String> sql = queryFactory.select(Expressions.stringTemplate("*"))
+
+        SQLQuery<String> sql = queryFactory.select(Expressions.stringTemplate("*"))
                 .from(path)
                 .where(createFilterPredicate(table, query.getFilter()))
-                .orderBy(createOrderSpecifiers(table, query.getSort()))
                 .restrict(createLimitQueryModifier(query.getOffset(), query.getLimit()));
+
+        OrderSpecifier<?>[] orderSpecifiers = createOrderSpecifiers(table, query.getSort());
+        if (orderSpecifiers != null && orderSpecifiers.length > 0) {
+            // Filter out broken specifiers (null target) to avoid Querydsl NPE
+            orderSpecifiers = java.util.Arrays.stream(orderSpecifiers)
+                    .filter(os -> os != null && os.getTarget() != null)
+                    .toArray(OrderSpecifier[]::new);
+
+            if (orderSpecifiers.length > 0) {
+                sql.orderBy(orderSpecifiers);
+            }
+        }
+
         sql.setUseLiterals(true);
         final String queryString = sql.getSQL().getSQL();
         final JsonRowHandler rowHandler = new JsonRowHandler(jg, dataDao.queryTableColumns(table));
