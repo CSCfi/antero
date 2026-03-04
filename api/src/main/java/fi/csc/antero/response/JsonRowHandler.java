@@ -5,7 +5,6 @@ import tools.jackson.core.JsonGenerator;
 import fi.csc.antero.repository.ApiProperty;
 import org.springframework.jdbc.core.RowCallbackHandler;
 
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -30,6 +29,7 @@ public class JsonRowHandler implements RowCallbackHandler {
                 if (apiProperty.isHidden()) {
                     continue;
                 }
+                // Assumes DB stores timestamps in UTC; JDBC drivers may return date/time columns as java.sql.Timestamp; you may need to handle time zones explicitly (prefer UTC).
                 Object value = rs.getObject(i + 1);
                 String name = apiProperty.getApiName();
                 jsonGenerator.writePOJOProperty(name, value);

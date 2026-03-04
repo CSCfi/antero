@@ -45,13 +45,13 @@ public class ApiControllerTest {
                 "'testText' : 'text value'," +
                 "'testNumber' : 1.11," +
                 "'testDate' : '2017-01-01 00:00:00'," +
-                "'whiteSpace' : true" +
+                "'whiteSpace' : 1" +
                 "},{" +
                 "'id' : 2," +
                 "'testText' : 'text value 2'," +
                 "'testNumber' : 2.22," +
                 "'testDate' : '2017-02-02 00:00:00'," +
-                "'whiteSpace' : false" +
+                "'whiteSpace' : 0" +
                 "}]";
         JSONAssert.assertEquals(expected, entity.getBody(), true);
     }
@@ -71,14 +71,14 @@ public class ApiControllerTest {
 
     @Test
     public void testGetDataWithWhiteSpaceFilter() throws Exception {
-        final String result = makeQuery("/resources/test_data/data?filter=" + encodeValue("whiteSpace==") + "'true'",
+        final String result = makeQuery("/resources/test_data/data?filter=" + encodeValue("whiteSpace==") + "'1'",
                 HttpStatusCode.valueOf(200))
                 .getBody();
         String expected = "[{'id' : 1," +
                 "'testText' : 'text value'," +
                 "'testNumber' : 1.11," +
                 "'testDate' : '2017-01-01 00:00:00'," +
-                "'whiteSpace' : true" +
+                "'whiteSpace' : 1" +
                 "}]";
         JSONAssert.assertEquals(expected, result, false);
     }
@@ -184,7 +184,7 @@ public class ApiControllerTest {
                 "  'format' : 'yyyy-MM-dd HH:mm:ss'" +
                 "}, {" +
                 "  'name' : 'whiteSpace'," +
-                "  'type' : 'boolean'" +
+                "  'type' : 'number'" +
                 "} ]";
         JSONAssert.assertEquals(expected, result, false);
     }
@@ -230,7 +230,7 @@ public class ApiControllerTest {
         return responseEntity;
     }
 
-    private String encodeValue(String value) throws UnsupportedEncodingException {
+    private String encodeValue(String value) throws NullPointerException {
         return URLEncoder.encode(value, StandardCharsets.UTF_8);
     }
 }
