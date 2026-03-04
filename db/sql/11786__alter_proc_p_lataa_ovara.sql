@@ -1,12 +1,14 @@
 USE [ANTERO]
 GO
 
-/****** Object:  StoredProcedure [sa].[p_lataa_ovara]    Script Date: 4.2.2026 8.41.14 ******/
+/****** Object:  StoredProcedure [sa].[p_lataa_ovara]    Script Date: 4.3.2026 7.42.39 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
+
 
 
 ALTER PROCEDURE  [sa].[p_lataa_ovara] as 
@@ -881,3 +883,8 @@ SET
 FROM ANTERO.sa.sa_ovara_hakeneet h
 LEFT JOIN ANTERO.sa.sa_odw_hakeneet_updated h2 on h2.hakemus_oid = h.hakemus_oid and h2.hakukohde_oid = h.hakukohde_oid
 WHERE h.valittu = 1 and h.kk_haku = 1 and h.valintatapajonon_tyyppi is null and h.koulutuksen_alkamisvuosi >= 2025 and h2.valittu = 1
+
+UPDATE ANTERO.sa.sa_ovara_hakeneet
+SET 
+	valintatapajonon_tyyppi = 'ev'
+WHERE valittu = 0 and kk_haku = 1 and coalesce(valintatapajonon_tyyppi,'') <> 'ev'
