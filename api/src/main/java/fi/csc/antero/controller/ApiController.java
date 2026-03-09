@@ -39,7 +39,7 @@ public class ApiController {
     @Operation(summary = "Get resource data",
             description = "You can query resource data with filters and use paging. " +
                     "Filtering uses [FIQL](https://tools.ietf.org/html/draft-nottingham-atompub-fiql-00) query syntax. " +
-                    "HOX! All dates are in GMT time.")
+                    "HOX! All dates are in UTC time.")
     public StreamingResponseBody getResourceData(@Parameter(description = "Name of the resource", required = true)
                                                  @PathVariable("resource") String resource,
                                                  @ParameterObject ApiQuery query,

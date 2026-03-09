@@ -1,10 +1,10 @@
 package fi.csc.antero.response;
 
-import com.fasterxml.jackson.core.JsonGenerator;
+import tools.jackson.core.JacksonException;
+import tools.jackson.core.JsonGenerator;
 import fi.csc.antero.repository.ApiProperty;
 import org.springframework.jdbc.core.RowCallbackHandler;
 
-import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -29,14 +29,15 @@ public class JsonRowHandler implements RowCallbackHandler {
                 if (apiProperty.isHidden()) {
                     continue;
                 }
+                // Assumes DB stores timestamps in UTC; JDBC drivers may return date/time columns as java.sql.Timestamp; you may need to handle time zones explicitly (prefer UTC).
                 Object value = rs.getObject(i + 1);
                 String name = apiProperty.getApiName();
-                jsonGenerator.writeObjectField(name, value);
+                jsonGenerator.writePOJOProperty(name, value);
             }
             jsonGenerator.writeEndObject();
             jsonGenerator.flush();
             count++;
-        } catch (IOException e) {
+        } catch (JacksonException e) {
             throw new SQLException("Could not process result set row!", e);
         }
     }
