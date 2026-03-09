@@ -33,7 +33,7 @@ public class ApiProperty {
     }
 
     @JsonIgnore
-    PropType getType() {
+    public PropType getType() {
         return type;
     }
 

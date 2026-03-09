@@ -44,13 +44,13 @@ public class ApiControllerTest {
         String expected = "[{'id' : 1," +
                 "'testText' : 'text value'," +
                 "'testNumber' : 1.11," +
-                "'testDate' : '2017-01-01 00:00:00'," +
+                "'testDate' : '2017-01-01'," +
                 "'whiteSpace' : 1" +
                 "},{" +
                 "'id' : 2," +
                 "'testText' : 'text value 2'," +
                 "'testNumber' : 2.22," +
-                "'testDate' : '2017-02-02 00:00:00'," +
+                "'testDate' : '2017-02-02'," +
                 "'whiteSpace' : 0" +
                 "}]";
         JSONAssert.assertEquals(expected, entity.getBody(), true);
@@ -64,7 +64,7 @@ public class ApiControllerTest {
         String expected = "[{'id' : 2," +
                 "'testText' : 'text value 2'," +
                 "'testNumber' : 2.22," +
-                "'testDate' : '2017-02-02 00:00:00'" +
+                "'testDate' : '2017-02-02'" +
                 "}]";
         JSONAssert.assertEquals(expected, result, false);
     }
@@ -77,7 +77,7 @@ public class ApiControllerTest {
         String expected = "[{'id' : 1," +
                 "'testText' : 'text value'," +
                 "'testNumber' : 1.11," +
-                "'testDate' : '2017-01-01 00:00:00'," +
+                "'testDate' : '2017-01-01'," +
                 "'whiteSpace' : 1" +
                 "}]";
         JSONAssert.assertEquals(expected, result, false);
@@ -89,13 +89,13 @@ public class ApiControllerTest {
     @Sql(executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD,
             scripts = "/sql/clear.sql")
     public void testGetDataWithDateFilter() throws Exception {
-        final String result = makeQuery("/resources/test_data/data?filter=" + encodeValue("testDate=='2017-01-03 00:00:00'"),
+        final String result = makeQuery("/resources/test_data/data?filter=" + encodeValue("testDate=='2017-01-03'"),
                 HttpStatusCode.valueOf(200))
                 .getBody();
         String expected = "[{'id' : 3," +
                 "'testText' : 'text value'," +
                 "'testNumber' : 3.11," +
-                "'testDate' : '2017-01-03 00:00:00'" +
+                "'testDate' : '2017-01-03'" +
                 "}]";
         JSONAssert.assertEquals(expected, result, false);
     }
