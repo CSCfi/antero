@@ -8,7 +8,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[sa_5_4_Yosairaaloiden_tutkimus_ja_kehitys](') AND type in (N'U'))
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[sa_5_4_Yosairaaloiden_tutkimus_ja_kehitys]') AND type in (N'U'))
   DROP TABLE [dbo].[sa_5_4_Yosairaaloiden_tutkimus_ja_kehitys](
 GO
 
