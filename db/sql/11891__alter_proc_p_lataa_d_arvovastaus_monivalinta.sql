@@ -175,7 +175,7 @@ MERGE dw.d_arvovastaus_monivalinta AS TARGET
 			d1.kysymysid,
 			d1.kysymysversio,
 			d3.paiva as jarjestys
-		FROM ANTERO.dw.d_arvokysymys_v2 d1
+		FROM ANTERO.dw.d_arvokysymys d1
 		LEFT JOIN ANTERO.dw.d_arvotiedonkeruu_v2 d2 on d2.kyselyid = d1.kyselyid
 		LEFT JOIN ANTERO.dw.d_kalenteri d3 on d3.vuosi = YEAR(GETDATE()) and d3.kuukausi = 1 and d3.paiva BETWEEN 1 and 7
 		OUTER APPLY (
