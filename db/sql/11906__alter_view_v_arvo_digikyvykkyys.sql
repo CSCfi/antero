@@ -69,4 +69,4 @@ LEFT JOIN dw.d_kalenteri d3b ON f.d_kalenteri_vastaus_id = d3b.id
 LEFT JOIN dw.d_arvokysymys d4 ON f.d_arvokysymys_id = d4.id
 LEFT JOIN dw.d_arvokysymys d4b ON f.d_arvokysymys_2_id = d4b.id
 LEFT JOIN dw.d_arvotiedonkeruu d5 ON f.kyselyid = d5.kyselyid
-LEFT JOIN dw.d_arvovastaus_monivalinta_v2 d6 ON f.d_arvovastaus_monivalinta_id = d6.id
+LEFT JOIN dw.d_arvovastaus_monivalinta d6 ON f.d_arvovastaus_monivalinta_id = d6.id
