@@ -1,7 +1,7 @@
 USE [ANTERO]
 GO
 
-/****** Object:  View [dw].[v_arvo_kandi_uusi_api_testi]    Script Date: 16.3.2026 11.55.51 ******/
+/****** Object:  View [dw].[v_arvo_kandi]    Script Date: 16.3.2026 11.55.51 ******/
 SET ANSI_NULLS ON
 GO
 

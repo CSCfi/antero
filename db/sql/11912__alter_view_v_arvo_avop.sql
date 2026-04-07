@@ -1,7 +1,7 @@
 USE [ANTERO]
 GO
 
-/****** Object:  View [dw].[v_arvo_avop_uusi_api_testi]    Script Date: 16.3.2026 11.52.50 ******/
+/****** Object:  View [dw].[v_arvo_avop]    Script Date: 16.3.2026 11.52.50 ******/
 SET ANSI_NULLS ON
 GO
 
@@ -140,11 +140,11 @@ SELECT --TOP 100
 
 															--JÄRJESTYSMUUTTUJAT
 	, (select max(d.jarjestys)	
-	from dw.d_arvovastaus_monivalinta_uusi_api_testi d 
+	from dw.d_arvovastaus_monivalinta d 
 	where d.vastaus_fi=d10.vastaus_fi)			AS 'Järjestys pohjakoulutus'
 	, d11.jarjestys								AS 'Järjestys ikäryhmä'
 	, (select max(d.jarjestys)	
-	from dw.d_arvovastaus_monivalinta_uusi_api_testi d 
+	from dw.d_arvovastaus_monivalinta d 
 	where d.vastaus_fi=d8.vastaus_fi)			AS 'Järjestys sukupuoli'
 	, d7.jarjestys_koulutusastetaso1_koodi		AS 'Järjestys koulutusaste1'
 	, d7.jarjestys_koulutusastetaso2_koodi		AS 'Järjestys koulutusaste2'
