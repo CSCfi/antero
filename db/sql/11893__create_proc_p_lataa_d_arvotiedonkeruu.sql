@@ -9,7 +9,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 
 
-ALTER PROCEDURE [dw].[p_lataa_d_arvotiedonkeruu] AS
+CREATE OR ALTER PROCEDURE [dw].[p_lataa_d_arvotiedonkeruu] AS
 
 if not exists (select * from dw.d_arvotiedonkeruu where id=-1) begin
 set identity_insert dw.d_arvotiedonkeruu on;
