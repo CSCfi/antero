@@ -110,7 +110,7 @@ SELECT
 	tilastovuosi as 'Tilastovuosi',
 	d10.kytkin_fi as [Rahoitusmallikysymys],
 	d10.kytkin_sv as 'Finansieringsmodellfråga',
-	d10.kytkin_en as 'Funding modell question',
+	d10.kytkin_en as 'Funding model question',
 
 	f.rahoituskysymys_paino,
 

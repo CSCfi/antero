@@ -273,7 +273,7 @@ DROP TABLE IF EXISTS ANTERO.dbo.arvo_amk_uraseuranta_temp
 SELECT DISTINCT concat(f.kyselyid,'_',d_koulutusluokitus_id) as avain 
 INTO ANTERO.dbo.arvo_amk_uraseuranta_temp
 FROM ANTERO.dw.f_arvo_amk_uraseuranta f
-LEFT JOIN dw.d_arvokysymys_uusi_api_testi d4 ON f.d_arvokysymys_id = d4.id
+LEFT JOIN dw.d_arvokysymys d4 ON f.d_arvokysymys_id = d4.id
 -- Näkymän rajaus
 WHERE d4.kysymysryhma_fi not in ('Lupa tietojen käsittelyyn','KIITOS VASTAUKSISTASI!')
 and (numerovalinta<>'-1' or d_kylla_ei_valinta_id <> '-1')
