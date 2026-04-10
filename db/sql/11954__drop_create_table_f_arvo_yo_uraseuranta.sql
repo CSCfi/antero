@@ -29,6 +29,6 @@ CREATE TABLE [dw].[f_arvo_yo_uraseuranta](
 	[d_arvovastaus_monivalinta_id] [int] NULL,
 	[d_kytkin_vaihtoehto_id] [int] NULL,
 	[d_virta_rahoituslahde_id] [int] NOT NULL,
-	[visualisointiin] [ínt] NULL,
+	[visualisointiin] [int] NULL,
 	[source] [varchar](34) NOT NULL
 ) ON [PRIMARY]
