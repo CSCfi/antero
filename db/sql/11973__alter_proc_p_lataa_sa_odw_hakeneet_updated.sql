@@ -221,3 +221,11 @@ DROP TABLE IF EXISTS ANTERO.sa.temp_odw_pohjakoulutukset
 UPDATE ANTERO.sa.sa_odw_hakeneet_updated
 SET valintatapajono_oid = null
 WHERE valintatapajonon_tyyppi = 'ev' and valintatapajono_oid is not null
+
+UPDATE ANTERO.sa.sa_odw_hakeneet_updated
+SET kansalaisuus = CONCAT('0',kansalaisuus)
+WHERE LEN(kansalaisuus) = 2
+
+UPDATE ANTERO.sa.sa_odw_hakeneet_updated
+SET kansalaisuus = CONCAT('00',kansalaisuus)
+WHERE LEN(kansalaisuus) = 1
