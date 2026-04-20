@@ -43,7 +43,7 @@ SELECT [id]
       ,[poistettu]
       ,[tietolahde]
       ,[kommentti]
-FROM [VipunenTK_lisatiedot].[dbo].[vst_kieli]
+FROM [VipunenTK_lisatiedot].[dbo].[kieli_vst]
 WHERE virhetilanne = 'K'
 
 GO
