@@ -1,12 +1,6 @@
 USE [ANTERO]
 GO
 
-ALTER TABLE [dw].[d_koskiyokokeet] DROP CONSTRAINT [DF__d_koskiyokokeet__username__531856C7]
-GO
-
-ALTER TABLE [dw].[d_koskiyokokeet] DROP CONSTRAINT [DF__d_koskiyokokeet__loadtime__5224328E]
-GO
-
 /****** Object:  Table [dw].[d_koskiyokokeet]    Script Date: 27.4.2026 14.28.55 ******/
 IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dw].[d_koskiyokokeet]') AND type in (N'U'))
 DROP TABLE [dw].[d_koskiyokokeet]
@@ -25,9 +19,6 @@ CREATE TABLE [dw].[d_koskiyokokeet](
 	[aine_selite_fi] [varchar](300) NOT NULL,
 	[aine_selite_sv] [varchar](300) NULL,
 	[aine_selite_en] [varchar](300) NULL,
-	[laajuus_fi] [varchar](300) NOT NULL,
-	[laajuus_sv] [varchar](300) NULL,
-	[laajuus_en] [varchar](300) NULL,
 	[laajuus_fi] [varchar](300) NULL,
 	[laajuus_sv] [varchar](300) NULL,
 	[laajuus_en] [varchar](300) NULL,
