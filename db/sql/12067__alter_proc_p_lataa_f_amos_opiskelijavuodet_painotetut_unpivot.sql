@@ -20,7 +20,6 @@ SELECT
     ,[d_sukupuoli_id]
     ,[d_kieli_aidinkieli_id]
     ,[d_ika_id]
-	,[d_amos_pohjakoulutus_id]
     ,[d_osa_aikaisuus_id]
     ,[d_erityisopetus_id]
     ,[d_majoitus_id]
