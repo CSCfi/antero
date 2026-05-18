@@ -876,7 +876,11 @@ DROP TABLE IF EXISTS [ANTERO].[sa].[temp_pohjakoulutukset_toinen_aste_prio]
 UPDATE h
 SET 
 	valintatapajonon_tyyppi = h2.valintatapajonon_tyyppi,
-	valintatapajono_oid = h2.valintatapajono_oid
+	valintatapajono_oid = h2.valintatapajono_oid,
+	-- CSCVIPUNEN-5018
+	alinhyvaksyttypistemaara = h2.alinhyvaksyttypistemaara,
+	ylinhyvaksyttypistemaara = h2.ylinhyvaksyttypistemaara,
+	kiinnostunut_oppisopimuksesta = h2.pisteet
 FROM ANTERO.sa.sa_ovara_hakeneet h
 LEFT JOIN ANTERO.sa.sa_odw_hakeneet_updated h2 on h2.hakemus_oid = h.hakemus_oid and h2.hakukohde_oid = h.hakukohde_oid
 WHERE h.valittu = 1 and h.kk_haku = 1 and h.valintatapajonon_tyyppi is null and h.koulutuksen_alkamisvuosi >= 2025 and h2.valittu = 1
