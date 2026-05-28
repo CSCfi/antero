@@ -166,4 +166,4 @@ LEFT JOIN ANTERO.dw.d_opintojenrahoitus d11 ON d11.id = f.d_opintojenrahoitus_id
 LEFT JOIN ANTERO.dw.d_kytkin d12 on d12.kytkin_koodi = d11.tyovoimakoulutus
 LEFT JOIN ANTERO.dw.d_kieli d19 on d19.id = f.d_suorituskieli_id
 LEFT JOIN ANTERO.dw.d_kytkin d23 on d23.id = f.d_kytkin_hankintakoulutus_id
-WHERE f.vahvistus_paiva <= YEAR(GETDATE()) and d8.selite_fi = 'Ammatillinen tutkinto'
+WHERE YEAR(f.vahvistus_paiva) <= YEAR(GETDATE()) and d8.selite_fi = 'Ammatillinen tutkinto'
