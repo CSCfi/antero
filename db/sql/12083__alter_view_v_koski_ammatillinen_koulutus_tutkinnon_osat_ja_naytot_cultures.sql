@@ -24,7 +24,7 @@ SELECT
 	f.osasuoritus_id as apusarake_osasuoritus_id,
 	case when f.osasuoritus_id is null then 0 else 1 end as apusarake_suorittanut_tutkinnon_osan,
 	case 
-		when f.vahvistus_paiva between 2018 and YEAR(GETDATE()) and d8.selite_fi = 'Ammatillinen tutkinto' then 1 
+		when YEAR(f.vahvistus_paiva) between 2018 and YEAR(GETDATE()) and d8.selite_fi = 'Ammatillinen tutkinto' then 1 
 		else 0 
 	end as apusarake_suorittanut_tutkinnon,
 
