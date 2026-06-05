@@ -1,7 +1,7 @@
 USE [ANTERO]
 GO
 
-ROP PROCEDURE [dw].[p_lataa_f_varda_tuentiedot]
+DROP PROCEDURE [dw].[p_lataa_f_varda_tuentiedot]
 
 /****** Object:  StoredProcedure [dw].[p_lataa_f_varda_tuentiedot]    Script Date: 5.6.2026 17.20.06 ******/
 SET ANSI_NULLS ON
