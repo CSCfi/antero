@@ -1,9 +1,6 @@
 USE [Varda_SA]
 GO
 
-/****** Object:  StoredProcedure [sa].[p_lataa_sa_varda_tuen_tiedot]    Script Date: 5.6.2026 17.45.11 ******/
-DROP PROCEDURE [sa].[p_lataa_sa_varda_tuen_tiedot]
-GO
 
 /****** Object:  StoredProcedure [sa].[p_lataa_sa_varda_tuen_tiedot]    Script Date: 5.6.2026 17.45.11 ******/
 SET ANSI_NULLS ON
@@ -16,7 +13,7 @@ GO
 
 
 
-CREATE   PROCEDURE  [sa].[p_lataa_sa_varda_tuen_tiedot] AS
+CREATE OR ALTER    PROCEDURE  [sa].[p_lataa_sa_varda_tuen_tiedot] AS
 
 TRUNCATE TABLE [sa].[sa_varda_tuen_tiedot]
 
