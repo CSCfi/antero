@@ -8,7 +8,7 @@ GO
 SET QUOTED_IDENTIFIER ON
 GO
 
-ALTER PROCEDURE EXEC [dw].[p_lataa_f_arvo_yo_uraseuranta] AS
+ALTER PROCEDURE [dw].[p_lataa_f_arvo_yo_uraseuranta] AS
 
 TRUNCATE TABLE dw.f_arvo_yo_uraseuranta
 
