@@ -45,7 +45,7 @@ CREATE TABLE [dw].[f_virta_otp_55_kuluva_lukuvuosi](
 	[d_tk_koulutustyyppi_id] [int] NULL,
 	[loadtime] [datetime] NOT NULL,
 	[username] [varchar](30) NOT NULL,
-	[source] [varchar](100) NO
+	[source] [varchar](100) NOt NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [dw].[f_virta_otp_55_kuluva_lukuvuosi] ADD  CONSTRAINT [DF__f_virta_otp_55_kuluva_lukuvuosi__loadtime]  DEFAULT (getdate()) FOR [loadtime]
