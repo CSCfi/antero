@@ -48,8 +48,6 @@ CREATE TABLE [dw].[f_virta_otp_55_kuluva_lukuvuosi](
 	[source] [varchar](100) NO
 ) ON [PRIMARY]
 GO
-
 ALTER TABLE [dw].[f_virta_otp_55_kuluva_lukuvuosi] ADD  CONSTRAINT [DF__f_virta_otp_55_kuluva_lukuvuosi__loadtime]  DEFAULT (getdate()) FOR [loadtime]
 GO
-
 ALTER TABLE [dw].[f_virta_otp_55_kuluva_lukuvuosi] ADD  CONSTRAINT [DF__f_virta_otp_55_kuluva_lukuvuosi__username]  DEFAULT (suser_sname()) FOR [username]
