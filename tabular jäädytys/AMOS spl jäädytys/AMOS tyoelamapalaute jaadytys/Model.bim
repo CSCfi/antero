@@ -241,15 +241,22 @@
             "isHidden": true,
             "sourceColumn": "apusarake_painotetut_pisteet",
             "sourceProviderType": "Double"
+          },
+          {
+            "type": "calculated",
+            "name": "Varainhoitovuosi",
+            "dataType": "int64",
+            "expression": "RIGHT(Muuttujat[rahoituskausi], 4) + 1",
+            "displayFolder": "Aikamuuttujat"
           }
         ],
         "partitions": [
           {
-            "name": "Muuttujat",
+            "name": "2026_ja_aiemmat",
             "dataView": "full",
             "source": {
               "type": "query",
-              "query": " SELECT [dw].[v_amos_tyoelamapalaute].* FROM [dw].[v_amos_tyoelamapalaute] ",
+              "query": " SELECT [dw].[v_amos_tyoelamapalaute_2026_ja_aiemmat].* FROM [dw].[v_amos_tyoelamapalaute_2026_ja_aiemmat] ",
               "dataSource": "SqlServer dwitvipuarch22 ANTERO_master"
             }
           }
@@ -366,6 +373,7 @@
               "\t, ALLEXCEPT(Muuttujat",
               "\t\t, Muuttujat[kysely_fi]",
               "\t\t, Muuttujat[rahoituskausi]",
+              "\t\t, Muuttujat[Varainhoitovuosi]",
               "\t)",
               ")",
               "return DIVIDE(osa, kaikki)"
@@ -383,6 +391,7 @@
               "\t, ALLEXCEPT(Muuttujat",
               "\t\t, Muuttujat[kysely_fi]",
               "\t\t, Muuttujat[rahoituskausi]",
+              "\t\t, Muuttujat[Varainhoitovuosi]",
               "\t)",
               ")",
               "return DIVIDE(osa, kaikki)"
@@ -393,11 +402,11 @@
         "annotations": [
           {
             "name": "_TM_ExtProp_QueryDefinition",
-            "value": " SELECT [dw].[v_amos_tyoelamapalaute].* FROM [dw].[v_amos_tyoelamapalaute] "
+            "value": " SELECT [dw].[v_amos_tyoelamapalaute_2026_ja_aiemmat].* FROM [dw].[v_amos_tyoelamapalaute_2026_ja_aiemmat] "
           },
           {
             "name": "_TM_ExtProp_DbTableName",
-            "value": "v_amos_tyoelamapalaute"
+            "value": "v_amos_tyoelamapalaute2026_ja_aiemmat"
           },
           {
             "name": "_TM_ExtProp_DbSchemaName",
@@ -567,6 +576,9 @@
               },
               {
                 "name": "koodit_koulutuksen_jarjestaja"
+              },
+              {
+                "name": "Varainhoitovuosi"
               }
             ],
             "measures": [
@@ -624,6 +636,9 @@
               },
               {
                 "name": "koodit_koulutuksen_jarjestaja"
+              },
+              {
+                "name": "Varainhoitovuosi"
               }
             ],
             "measures": [
