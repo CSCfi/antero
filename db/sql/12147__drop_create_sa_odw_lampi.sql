@@ -1,4 +1,4 @@
-﻿USE [ANTERO]
+USE [ANTERO]
 GO
 
 ALTER TABLE [sa].[sa_odw_lampi] DROP CONSTRAINT [DF__sa_odw_lampi__username]
