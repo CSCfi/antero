@@ -11,8 +11,6 @@
     #[string]$password = "PASSWORD"
 )
 
-Import-Module AdomdClient
-
 [System.Reflection.Assembly]::LoadWithPartialName("Microsoft.AnalysisServices")
 [System.Reflection.Assembly]::LoadWithPartialName("Microsoft.AnalysisServices.AdomdClient") | out-null
 [System.Reflection.Assembly]::LoadWithPartialName('Microsoft.VisualBasic') | Out-Null
