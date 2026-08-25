@@ -31,7 +31,7 @@ CREATE TABLE [api].[suorittanut55](
 	[koulutusnimike] [nvarchar](200) NULL,
 	[koulutustyyppi] [nvarchar](200) NULL,
 	[vuosi] [int] NULL,
-	[suorittanut_55] [int] NU
+	[suorittanut_55] [int] NULL,
 	[suorittanut_55ilman_pankkia] [int] NULL,
 	[suorittanut_55pankin_avulla] [int] NULL,
 	[suorittanut_27] [int] NULL,
