@@ -54,7 +54,7 @@ VALUES
 ('yamk_amk', 'Ylemmät amk-tutkinnot per amk-tutkinnot', 'Tutkimusindikaattorit', 30, 2, 'suhde', 'ETL: p_lataa_d_indikaattorit_kk'),
 ('toht_per_iv', 'Tohtorin tutkinnot per IV htv', 'Tutkimusindikaattorit', 31, 2, 'suhde', 'ETL: p_lataa_d_indikaattorit_kk'),
 ('toht_y_kk', 'Tohtorin tutkinnot per ylemmät kk-tutkinnot', 'Tutkimusindikaattorit', 32, 2, 'suhde', 'ETL: p_lataa_d_indikaattorit_kk'),
-('i_up_osuus', 'I uraportaan osuus yliopistojen opetus- ja tutkimushenkilöstöstä', 'Tutkimusindikaattorit', 33, 2, 'osuus', 'ETL: p_lataa_d_indikaattorit_kk'),
+('i_up_osuus', 'I uraportaan osuus opetus- ja tutkimushenkilöstöstä', 'Tutkimusindikaattorit', 33, 2, 'osuus', 'ETL: p_lataa_d_indikaattorit_kk'),
 ('ulk_opetus_i_ii', 'Ulk. opetus- ja tutkimushenkilökunnan osuus uraportaat I-II', 'Tutkimusindikaattorit', 34, 2, 'osuus', 'ETL: p_lataa_d_indikaattorit_kk'),
 ('ulk_opetus_iii_iv', 'Ulk. opetus- ja tutkimushenkilökunnan osuus uraportaat III-IV', 'Tutkimusindikaattorit', 35, 2, 'osuus', 'ETL: p_lataa_d_indikaattorit_kk'),
 ('kv_toht', 'Kansainvälisten tohtoritutkinto-opiskelijoiden osuus', 'Tutkimusindikaattorit', 36, 2, 'osuus', 'ETL: p_lataa_d_indikaattorit_kk'),
