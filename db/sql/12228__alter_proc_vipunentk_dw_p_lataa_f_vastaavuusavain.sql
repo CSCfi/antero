@@ -1,12 +1,13 @@
 USE [VipunenTK_DW]
 GO
 
-/****** Object:  StoredProcedure [dbo].[p_lataa_f_vastaavuusavain]    Script Date: 30.9.2026 14.53.19 ******/
+/****** Object:  StoredProcedure [dbo].[p_lataa_f_vastaavuusavain]    Script Date: 30.9.2026 15.07.46 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 
@@ -187,6 +188,7 @@ BEGIN
 		WHEN f.Koulutusaste = 4 THEN 'Yliopistokoulutus'
 	END,
 	[Koulutusala, taso 1],[Koulutusala, taso 2],[Koulutusala, taso 3], CASE WHEN t.Koulutusaste is null THEN 0 ELSE 1 END,
+	[Koodit Koulutusala, taso 1],[Koodit Koulutusala, taso 2],[Koodit Koulutusala, taso 3],
 	f.jarj_koulutusala_taso1,f.jarj_koulutusala_taso2,f.jarj_koulutusala_taso3,f.jarjestys_ammattiryhma1, f.jarjestys_ammattiryhma2,f.Koulutusaste
 
 	SET @alkuVuosi = @alkuVuosi + 1
