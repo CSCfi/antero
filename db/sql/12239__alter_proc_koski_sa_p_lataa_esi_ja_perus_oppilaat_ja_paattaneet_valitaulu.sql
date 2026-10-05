@@ -1,12 +1,13 @@
 USE [Koski_SA]
 GO
 
-/****** Object:  StoredProcedure [dbo].[p_lataa_esi_ja_perus_oppilaat_ja_paattaneet_valitaulu]    Script Date: 5.10.2026 9.53.54 ******/
+/****** Object:  StoredProcedure [dbo].[p_lataa_esi_ja_perus_oppilaat_ja_paattaneet_valitaulu]    Script Date: 5.10.2026 11.27.42 ******/
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
+
 
 
 ALTER PROCEDURE [dbo].[p_lataa_esi_ja_perus_oppilaat_ja_paattaneet_valitaulu] AS
@@ -333,7 +334,7 @@ BEGIN
 
 		--
 		,[tilastopaiva_1_0]
-		,[vardapaiva_1_0]
+		--,[vardapaiva_1_0]
 		,[aikuisten_alkuvaihe_1_0]
 		,[oppivelvollinen]
 		,[tuen_paatos]
@@ -408,7 +409,7 @@ BEGIN
 					then 1 
 					else 0 
 				end,
-				vardapaiva_1_0 =	
+				/*vardapaiva_1_0 =	
 				case 
 					when month(@alkuPvm) = 12 
 						and (
@@ -417,7 +418,7 @@ BEGIN
 						)
 					then 1 
 					else 0 
-				end,
+				end,*/
 			epo.aikuisten_alkuvaihe_1_0,
 			oppivelvollinen = case when ov.master_oid is not null then 1 else 0 end,
 			epo.tuen_paatos
@@ -532,7 +533,7 @@ BEGIN
 
 		--
 		,[tilastopaiva_1_0]
-		,[vardapaiva_1_0]
+		--,[vardapaiva_1_0]
 		,[aikuisten_alkuvaihe_1_0]
 		,[oppivelvollinen]
 		,[tuen_paatos]
@@ -596,7 +597,7 @@ BEGIN
 			epo.sukupuoli,
 
 			tilastopaiva_1_0 = null,
-			vardapaiva_1_0 = null,
+			--vardapaiva_1_0 = null,
 			aikuisten_alkuvaihe_1_0 = null,
 			oppivelvollinen = case when ov.master_oid is not null then 1 else 0 end,
 			tuen_paatos = null,
