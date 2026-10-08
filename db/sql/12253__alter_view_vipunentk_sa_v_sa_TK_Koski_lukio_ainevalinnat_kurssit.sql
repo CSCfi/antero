@@ -73,7 +73,7 @@ FROM (
 		,[kurssi_suorituskieli]
 		,[kurssi_arvosana]
 		,[lkm] 
-	FROM VipunenTK_SA.dbo.TK_Koski_lukio_ainevalinnat_kurssit_2026_TEST
+	FROM VipunenTK_SA.dbo.TK_Koski_lukio_ainevalinnat_kurssit_2026
 
 	UNION ALL
 
