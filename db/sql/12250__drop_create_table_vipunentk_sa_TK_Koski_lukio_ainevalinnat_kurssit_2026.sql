@@ -1,16 +1,7 @@
 USE [VipunenTK_SA]
 GO
 
-/****** Object:  Table [dbo].[TK_Koski_lukio_ainevalinnat_kurssit_2026]    Script Date: 8.10.2026 11.40.49 ******/
-IF  EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'[dbo].[TK_Koski_lukio_ainevalinnat_kurssit_2026]') AND type in (N'U'))
-DROP TABLE [dbo].[TK_Koski_lukio_ainevalinnat_kurssit_2026]
-GO
-
-/****** Object:  Table [dbo].[TK_Koski_lukio_ainevalinnat_kurssit_2026]    Script Date: 8.10.2026 11.40.49 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
+DROP TABLE IF EXISTS [dbo].[TK_Koski_lukio_ainevalinnat_kurssit_2026]
 GO
 
 CREATE TABLE [dbo].[TK_Koski_lukio_ainevalinnat_kurssit_2026](

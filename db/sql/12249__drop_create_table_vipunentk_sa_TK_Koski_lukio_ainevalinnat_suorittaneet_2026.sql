@@ -1,11 +1,7 @@
 USE [VipunenTK_SA]
 GO
 
-/****** Object:  Table [dbo].[TK_Koski_lukio_ainevalinnat_suorittaneet_2026]    Script Date: 8.10.2026 11.40.27 ******/
-SET ANSI_NULLS ON
-GO
-
-SET QUOTED_IDENTIFIER ON
+DROP TABLE IF EXISTS [dbo].[TK_Koski_lukio_ainevalinnat_suorittaneet_2026]
 GO
 
 CREATE TABLE [dbo].[TK_Koski_lukio_ainevalinnat_suorittaneet_2026](
