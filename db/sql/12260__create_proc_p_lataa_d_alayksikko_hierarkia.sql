@@ -3,7 +3,7 @@ USE [ANTERO]
 
 GO
 
-CREATE OR ALTER PROCEDURE  EXEC dw.p_lataa_d_alayksikko_hierarkia as 
+CREATE OR ALTER PROCEDURE  dw.p_lataa_d_alayksikko_hierarkia as 
 
 ------------------------------------------------------------
 -- 1) Tunnistetaan alayksiköiden väliset suhteet
