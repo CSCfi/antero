@@ -45,6 +45,9 @@ CREATE TABLE [dbo].[f_2_8f_2_9d_Korkeakouluopiskelijat_ja_tutkinnot_syntyperan_m
 	[suormaa_id] [int] NULL,
 	[lkm] [int] NULL
 ) ON [PRIMARY]
+
+END
+
 GO
 
 
