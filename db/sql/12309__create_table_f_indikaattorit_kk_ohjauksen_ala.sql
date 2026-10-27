@@ -21,6 +21,7 @@ BEGIN
 		[aidosti_ensikertainen] [int] NULL,
 		[avoin_vayla] [int] NULL,
 		[alle_23_vuotta] [int] NULL,
+		[ika_vahintaan_30] [int] NULL,
 		[kv_opiskelija] [int] NULL,
 		[tilauskoulutus] [int] NULL,
 		[valmistunut_tavoiteajassa] [int] NULL,
