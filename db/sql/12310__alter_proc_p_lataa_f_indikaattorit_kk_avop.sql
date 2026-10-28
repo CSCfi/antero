@@ -91,48 +91,55 @@ WHEN NOT MATCHED THEN
 IF (SELECT cast(MAX(loadtime) as date) FROM ANTERO.dw.f_indikaattorit_kk WHERE source = 'ETL: p_lataa_f_indikaattorit_kk_avop') = cast(getdate() as date)
 BEGIN
 
-EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
+	EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
 
-DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-WHERE tarkenne = 'avop'
+	DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	WHERE tarkenne = 'avop'
 
-INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-(
-	tilastovuosi,
-	organisaatio_koodi,
-	okmohjauksenala_koodi,
-	avop_ka_yli_4,
-	avop_vastanneet,
-	tarkenne,
-	loadtime,
-	username,
-	source
-)
-SELECT		
-	f.tilastovuosi, 
-	f.organisaatio_koodi, 
-	f.okmohjauksenala_koodi,
-	COUNT(DISTINCT CASE WHEN f.ka >= 4 THEN f.vastaajaid ELSE NULL END) as avop_ka_yli_4,
-	COUNT(DISTINCT f.vastaajaid) as avop_vastanneet,
-	'avop' as tarkenne,
-	GETDATE() as lodatime,
-	SUSER_SNAME() as username,
-	'p_lataa_f_indikaattorit_kk_avop' as source
-FROM (		
-	SELECT	
-		f.kyselyvuosi as tilastovuosi, 
-		d2.organisaatio_koodi, 
-		d3.okmohjauksenala_koodi,
-		f.vastaajaid, 
-		AVG(cast(f.numerovalinta as float)) as ka
-	FROM ANTERO.dw.f_arvo_avop f
-	LEFT JOIN ANTERO.dw.d_arvokysymys d1 on d1.id = f.d_arvokysymys_id 
-	LEFT JOIN ANTERO.dw.d_organisaatioluokitus d2 ON d2.id = f.d_organisaatio_oppilaitos_id
-	LEFT JOIN ANTERO.dw.d_koulutusluokitus d3 ON f.d_koulutusluokitus_id = d3.id
-	WHERE d1.kysymysryhma_fi = 'Opiskelutyytyväisyys' and d2.organisaatio_koodi <> '02557' and d3.koulutusastetaso2_fi = 'Ammattikorkeakoulututkinto' and 
-	f.kyselyvuosi <= YEAR(DATEADD(MONTH, -1, getdate())) - 1
-	GROUP BY f.kyselyvuosi, d2.organisaatio_koodi, f.vastaajaid, d3.okmohjauksenala_koodi
-) f		
-GROUP BY f.tilastovuosi, f.organisaatio_koodi, f.okmohjauksenala_koodi
+	INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	(
+		tilastovuosi,
+		organisaatio_koodi,
+		okmohjauksenala_koodi,
+		avop_ka_yli_4,
+		avop_vastanneet,
+		tarkenne,
+		loadtime,
+		username,
+		source
+	)
+	SELECT		
+		f.tilastovuosi, 
+		f.organisaatio_koodi, 
+		f.okmohjauksenala_koodi,
+		COUNT(DISTINCT CASE WHEN f.ka >= 4 THEN f.vastaajaid ELSE NULL END) as avop_ka_yli_4,
+		COUNT(DISTINCT f.vastaajaid) as avop_vastanneet,
+		'avop' as tarkenne,
+		GETDATE() as lodatime,
+		SUSER_SNAME() as username,
+		'p_lataa_f_indikaattorit_kk_avop' as source
+	FROM (		
+		SELECT	
+			f.kyselyvuosi as tilastovuosi, 
+			d2.organisaatio_koodi, 
+			d3.okmohjauksenala_koodi,
+			f.vastaajaid, 
+			AVG(cast(f.numerovalinta as float)) as ka
+		FROM ANTERO.dw.f_arvo_avop f
+		LEFT JOIN ANTERO.dw.d_arvokysymys d1 on d1.id = f.d_arvokysymys_id 
+		LEFT JOIN ANTERO.dw.d_organisaatioluokitus d2 ON d2.id = f.d_organisaatio_oppilaitos_id
+		LEFT JOIN ANTERO.dw.d_koulutusluokitus d3 ON f.d_koulutusluokitus_id = d3.id
+		WHERE d1.kysymysryhma_fi = 'Opiskelutyytyväisyys' and d2.organisaatio_koodi <> '02557' and d3.koulutusastetaso2_fi = 'Ammattikorkeakoulututkinto' and 
+		f.kyselyvuosi <= YEAR(DATEADD(MONTH, -1, getdate())) - 1
+		GROUP BY f.kyselyvuosi, d2.organisaatio_koodi, f.vastaajaid, d3.okmohjauksenala_koodi
+	) f		
+	GROUP BY f.tilastovuosi, f.organisaatio_koodi, f.okmohjauksenala_koodi
+	
+	BEGIN TRY
+		EXEC msdb.dbo.sp_start_job @job_name = N'Tabular process Korkeakoulujen seurantaindikaattorit';
+	END TRY
+	BEGIN CATCH
+		PRINT 'sp_start_job note: ' + ERROR_MESSAGE();
+	END CATCH
 
 END

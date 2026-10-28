@@ -293,99 +293,106 @@ WHEN NOT MATCHED THEN
 IF (SELECT cast(MAX(loadtime) as date) FROM ANTERO.dw.f_indikaattorit_kk WHERE source = 'ETL: p_lataa_f_indikaattorit_kk_taloustiedot') = cast(getdate() as date)
 BEGIN
 
-EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
+	EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
 
-DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-WHERE tarkenne in ('talous', 'tutkimus_ja_kehitys')
+	DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	WHERE tarkenne in ('talous', 'tutkimus_ja_kehitys')
 
-INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-(
-	tilastovuosi,
-	organisaatio_koodi,
-	okmohjauksenala_koodi,
-	ulkopuolinen_rahoitus,
-	rakennerahastot,
-	taydentava_rahoitus,
-	liikevaihto,
-	yritysten_tk_rahoitus,
-	tarkenne,
-	loadtime,
-	username,
-	source
-)
-SELECT
-	tilikausi as tilastovuosi,
-	d1.organisaatio_nykyinen_koodi as organisaatio_koodi,
-	d3.ohjauksenala_koodi as okmohjauksenala_koodi,
-	SUM(CASE WHEN d2.tili_taso0_fi = 'Tutkimusmenot' and d2.tili_taso1_fi in ('Perusrahoitus', 'Ulkomainen ulkopuolinen rahoitus', 'Kotimainen ulkopuolinen rahoitus') THEN f.arvo ELSE 0 END) as ulkopuolinen_rahoitus,
-	SUM(CASE WHEN d2.tili_koodi in ('eakr', 'esr') THEN f.arvo ELSE 0 END) as rakennerahastot,
-	SUM(CASE WHEN d2.tili_taso1_fi in ('Kotimainen ulkopuolinen rahoitus', 'Ulkomainen ulkopuolinen rahoitus') THEN f.arvo ELSE 0 END) as taydentava_rahoitus,
-	SUM(CASE WHEN d2.tili_koodi in ('yolaki49', 'valtio', 'okmperus', 'vtliiket', 'liiktuotot', 'muuttuot', 'vtmuutul', 'vtosuust', 'eurah', 'eusuora', 'eurahmuu', 'eumuut', 'eurahyrit', 'euyritys', 'kotirah', 'krahalt', 'kotiyritys', 'kyrityst', 'kotitalt', 'kotilahj', 'kunnat', 'kunnat3', 'muujulkh', 'sosturvarah', 'muuokm', 'muuokm3', 'muuvaltio', 'ulkmuu', 'muuulkmuurah', 'ulkyrity', 'muuulkyritys', 'vyhteiso', 'vottavoittelematon', 'BusinessFinland', 'BusinessFinland3', 'Akatemia', 'Akatemia3') and f.konserni = 'E' THEN f.arvo ELSE 0 END) as liikevaihto,
-	SUM(CASE WHEN d2.tili_taso5_fi in ('Kotimaiset yritykset','Ulkomaiset yritykset') and tili_taso0_fi = 'Tutkimusmenot' THEN f.arvo ELSE 0 END) as yritysten_tk_rahoitus,
-	'talous' as tarkenne,
-	GETDATE() as lodatime,
-	SUSER_SNAME() as username,
-	'p_lataa_f_indikaattorit_kk_taloustiedot' as source
-FROM ANTERO.dw.f_yo_talous f
-LEFT JOIN ANTERO.dw.d_organisaatioluokitus d1 ON f.d_yo_id = d1.id
-INNER JOIN ANTERO.dw.d_tili d2 ON f.d_tili_id = d2.id
-LEFT JOIN ANTERO.dw.d_ohjauksenala d3 on d3.id = f.d_ohjauksenala_id
-WHERE (
-	(d2.tili_taso0_fi = 'Tutkimusmenot' and d2.tili_taso1_fi in ('Perusrahoitus', 'Ulkomainen ulkopuolinen rahoitus', 'Kotimainen ulkopuolinen rahoitus')) OR
-	(d2.tili_koodi in ('yolaki49', 'valtio', 'okmperus', 'vtliiket', 'liiktuotot', 'muuttuot', 'vtmuutul', 'vtosuust', 'eurah', 'eusuora', 'eurahmuu', 'eumuut', 'eurahyrit', 'euyritys', 'kotirah', 'krahalt', 'kotiyritys', 'kyrityst', 'kotitalt', 'kotilahj', 'kunnat', 'kunnat3', 'muujulkh', 'sosturvarah', 'muuokm', 'muuokm3', 'muuvaltio', 'ulkmuu', 'muuulkmuurah', 'ulkyrity', 'muuulkyritys', 'vyhteiso', 'vottavoittelematon', 'BusinessFinland', 'BusinessFinland3', 'Akatemia', 'Akatemia3') and f.konserni = 'E') OR
-	(d2.tili_taso5_fi in ('Kotimaiset yritykset','Ulkomaiset yritykset') and tili_taso0_fi = 'Tutkimusmenot')
-) AND f.tilikausi >= 2018
-GROUP BY tilikausi, d1.organisaatio_nykyinen_koodi, d3.ohjauksenala_koodi
-HAVING SUM(f.arvo) > 0
-UNION ALL
-SELECT
-	tilikausi as tilastovuosi,
-	d1.organisaatio_nykyinen_koodi as organisaatio_koodi,
-	d3.ohjauksenala_koodi as okmohjauksenala_koodi,
-	NULL as ulkopuolinen_rahoitus,
-	SUM(CASE WHEN d2.tili_koodi in ('eakr', 'esr') THEN f.arvo ELSE 0 END) as rakennerahastot,
-	SUM(CASE WHEN d2.tili_taso1_fi in ('Kotimainen ulkopuolinen rahoitus', 'Ulkomainen ulkopuolinen rahoitus') THEN f.arvo ELSE 0 END) as taydentava_rahoitus,
-	NULL as liikevaihto,
-	NULL as yritysten_tk_rahoitus,
-	'talous' as tarkenne,
-	GETDATE() as lodatime,
-	SUSER_SNAME() as username,
-	'p_lataa_f_indikaattorit_kk_taloustiedot' as source
-FROM ANTERO.dw.f_amk_talous f
-LEFT JOIN ANTERO.dw.d_organisaatioluokitus d1 ON f.d_amk_id = d1.id
-INNER JOIN ANTERO.dw.d_tili d2 ON f.d_tili_id = d2.id
-LEFT JOIN ANTERO.dw.d_ohjauksenala d3 on d3.id = f.d_ohjauksenala_id
-WHERE (
-	(d2.tili_taso0_fi = 'Tutkimusmenot' and d2.tili_taso1_fi in ('Perusrahoitus', 'Ulkomainen ulkopuolinen rahoitus', 'Kotimainen ulkopuolinen rahoitus')) OR
-	(d2.tili_koodi in ('yolaki49', 'valtio', 'okmperus', 'vtliiket', 'liiktuotot', 'muuttuot', 'vtmuutul', 'vtosuust', 'eurah', 'eusuora', 'eurahmuu', 'eumuut', 'eurahyrit', 'euyritys', 'kotirah', 'krahalt', 'kotiyritys', 'kyrityst', 'kotitalt', 'kotilahj', 'kunnat', 'kunnat3', 'muujulkh', 'sosturvarah', 'muuokm', 'muuokm3', 'muuvaltio', 'ulkmuu', 'muuulkmuurah', 'ulkyrity', 'muuulkyritys', 'vyhteiso', 'vottavoittelematon', 'BusinessFinland', 'BusinessFinland3', 'Akatemia', 'Akatemia3') and f.konserni = 'E') OR
-	(d2.tili_taso5_fi in ('Kotimaiset yritykset','Ulkomaiset yritykset') and tili_taso0_fi = 'Tutkimusmenot')
-) AND f.tilikausi >= 2018
-GROUP BY tilikausi, d1.organisaatio_nykyinen_koodi, d3.ohjauksenala_koodi
-HAVING SUM(f.arvo) > 0
+	INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	(
+		tilastovuosi,
+		organisaatio_koodi,
+		okmohjauksenala_koodi,
+		ulkopuolinen_rahoitus,
+		rakennerahastot,
+		taydentava_rahoitus,
+		liikevaihto,
+		yritysten_tk_rahoitus,
+		tarkenne,
+		loadtime,
+		username,
+		source
+	)
+	SELECT
+		tilikausi as tilastovuosi,
+		d1.organisaatio_nykyinen_koodi as organisaatio_koodi,
+		d3.ohjauksenala_koodi as okmohjauksenala_koodi,
+		SUM(CASE WHEN d2.tili_taso0_fi = 'Tutkimusmenot' and d2.tili_taso1_fi in ('Perusrahoitus', 'Ulkomainen ulkopuolinen rahoitus', 'Kotimainen ulkopuolinen rahoitus') THEN f.arvo ELSE 0 END) as ulkopuolinen_rahoitus,
+		SUM(CASE WHEN d2.tili_koodi in ('eakr', 'esr') THEN f.arvo ELSE 0 END) as rakennerahastot,
+		SUM(CASE WHEN d2.tili_taso1_fi in ('Kotimainen ulkopuolinen rahoitus', 'Ulkomainen ulkopuolinen rahoitus') THEN f.arvo ELSE 0 END) as taydentava_rahoitus,
+		SUM(CASE WHEN d2.tili_koodi in ('yolaki49', 'valtio', 'okmperus', 'vtliiket', 'liiktuotot', 'muuttuot', 'vtmuutul', 'vtosuust', 'eurah', 'eusuora', 'eurahmuu', 'eumuut', 'eurahyrit', 'euyritys', 'kotirah', 'krahalt', 'kotiyritys', 'kyrityst', 'kotitalt', 'kotilahj', 'kunnat', 'kunnat3', 'muujulkh', 'sosturvarah', 'muuokm', 'muuokm3', 'muuvaltio', 'ulkmuu', 'muuulkmuurah', 'ulkyrity', 'muuulkyritys', 'vyhteiso', 'vottavoittelematon', 'BusinessFinland', 'BusinessFinland3', 'Akatemia', 'Akatemia3') and f.konserni = 'E' THEN f.arvo ELSE 0 END) as liikevaihto,
+		SUM(CASE WHEN d2.tili_taso5_fi in ('Kotimaiset yritykset','Ulkomaiset yritykset') and tili_taso0_fi = 'Tutkimusmenot' THEN f.arvo ELSE 0 END) as yritysten_tk_rahoitus,
+		'talous' as tarkenne,
+		GETDATE() as lodatime,
+		SUSER_SNAME() as username,
+		'p_lataa_f_indikaattorit_kk_taloustiedot' as source
+	FROM ANTERO.dw.f_yo_talous f
+	LEFT JOIN ANTERO.dw.d_organisaatioluokitus d1 ON f.d_yo_id = d1.id
+	INNER JOIN ANTERO.dw.d_tili d2 ON f.d_tili_id = d2.id
+	LEFT JOIN ANTERO.dw.d_ohjauksenala d3 on d3.id = f.d_ohjauksenala_id
+	WHERE (
+		(d2.tili_taso0_fi = 'Tutkimusmenot' and d2.tili_taso1_fi in ('Perusrahoitus', 'Ulkomainen ulkopuolinen rahoitus', 'Kotimainen ulkopuolinen rahoitus')) OR
+		(d2.tili_koodi in ('yolaki49', 'valtio', 'okmperus', 'vtliiket', 'liiktuotot', 'muuttuot', 'vtmuutul', 'vtosuust', 'eurah', 'eusuora', 'eurahmuu', 'eumuut', 'eurahyrit', 'euyritys', 'kotirah', 'krahalt', 'kotiyritys', 'kyrityst', 'kotitalt', 'kotilahj', 'kunnat', 'kunnat3', 'muujulkh', 'sosturvarah', 'muuokm', 'muuokm3', 'muuvaltio', 'ulkmuu', 'muuulkmuurah', 'ulkyrity', 'muuulkyritys', 'vyhteiso', 'vottavoittelematon', 'BusinessFinland', 'BusinessFinland3', 'Akatemia', 'Akatemia3') and f.konserni = 'E') OR
+		(d2.tili_taso5_fi in ('Kotimaiset yritykset','Ulkomaiset yritykset') and tili_taso0_fi = 'Tutkimusmenot')
+	) AND f.tilikausi >= 2018
+	GROUP BY tilikausi, d1.organisaatio_nykyinen_koodi, d3.ohjauksenala_koodi
+	HAVING SUM(f.arvo) > 0
+	UNION ALL
+	SELECT
+		tilikausi as tilastovuosi,
+		d1.organisaatio_nykyinen_koodi as organisaatio_koodi,
+		d3.ohjauksenala_koodi as okmohjauksenala_koodi,
+		NULL as ulkopuolinen_rahoitus,
+		SUM(CASE WHEN d2.tili_koodi in ('eakr', 'esr') THEN f.arvo ELSE 0 END) as rakennerahastot,
+		SUM(CASE WHEN d2.tili_taso1_fi in ('Kotimainen ulkopuolinen rahoitus', 'Ulkomainen ulkopuolinen rahoitus') THEN f.arvo ELSE 0 END) as taydentava_rahoitus,
+		NULL as liikevaihto,
+		NULL as yritysten_tk_rahoitus,
+		'talous' as tarkenne,
+		GETDATE() as lodatime,
+		SUSER_SNAME() as username,
+		'p_lataa_f_indikaattorit_kk_taloustiedot' as source
+	FROM ANTERO.dw.f_amk_talous f
+	LEFT JOIN ANTERO.dw.d_organisaatioluokitus d1 ON f.d_amk_id = d1.id
+	INNER JOIN ANTERO.dw.d_tili d2 ON f.d_tili_id = d2.id
+	LEFT JOIN ANTERO.dw.d_ohjauksenala d3 on d3.id = f.d_ohjauksenala_id
+	WHERE (
+		(d2.tili_taso0_fi = 'Tutkimusmenot' and d2.tili_taso1_fi in ('Perusrahoitus', 'Ulkomainen ulkopuolinen rahoitus', 'Kotimainen ulkopuolinen rahoitus')) OR
+		(d2.tili_koodi in ('yolaki49', 'valtio', 'okmperus', 'vtliiket', 'liiktuotot', 'muuttuot', 'vtmuutul', 'vtosuust', 'eurah', 'eusuora', 'eurahmuu', 'eumuut', 'eurahyrit', 'euyritys', 'kotirah', 'krahalt', 'kotiyritys', 'kyrityst', 'kotitalt', 'kotilahj', 'kunnat', 'kunnat3', 'muujulkh', 'sosturvarah', 'muuokm', 'muuokm3', 'muuvaltio', 'ulkmuu', 'muuulkmuurah', 'ulkyrity', 'muuulkyritys', 'vyhteiso', 'vottavoittelematon', 'BusinessFinland', 'BusinessFinland3', 'Akatemia', 'Akatemia3') and f.konserni = 'E') OR
+		(d2.tili_taso5_fi in ('Kotimaiset yritykset','Ulkomaiset yritykset') and tili_taso0_fi = 'Tutkimusmenot')
+	) AND f.tilikausi >= 2018
+	GROUP BY tilikausi, d1.organisaatio_nykyinen_koodi, d3.ohjauksenala_koodi
+	HAVING SUM(f.arvo) > 0
 
-INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-(
-	tilastovuosi,
-	organisaatio_koodi,
-	okmohjauksenala_koodi,
-	tutkimusmenot,
-	tarkenne,
-	loadtime,
-	username,
-	source
-)
-SELECT 
-	[tilastovuosi],
-	coalesce(d.oppilaitoksen_korvaavakoodi,d.oppilaitoskoodi) as organisaatio_koodi,
-	-1 as okmohjauksenala_koodi,
-	SUM(tutkimusmenot) * 1000 as tutkimusmenot,
-	'tutkimus_ja_kehitys' as tarkenne,
-	GETDATE() as lodatime,
-	SUSER_SNAME() as username,
-	'p_lataa_f_indikaattorit_kk_taloustiedot' as source
-FROM VipunenTK.[dbo].[f_korkeakoulujen_tutkimus_kehitys_5_3_menot] f
-INNER JOIN VipunenTK.[dbo].d_oppilaitoksen_taustatiedot d ON d.id = f.oppilaitos_id
-WHERE tilastovuosi >= 2018
-GROUP BY [tilastovuosi],coalesce(d.oppilaitoksen_korvaavakoodi,d.oppilaitoskoodi)
+	INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	(
+		tilastovuosi,
+		organisaatio_koodi,
+		okmohjauksenala_koodi,
+		tutkimusmenot,
+		tarkenne,
+		loadtime,
+		username,
+		source
+	)
+	SELECT 
+		[tilastovuosi],
+		coalesce(d.oppilaitoksen_korvaavakoodi,d.oppilaitoskoodi) as organisaatio_koodi,
+		-1 as okmohjauksenala_koodi,
+		SUM(tutkimusmenot) * 1000 as tutkimusmenot,
+		'tutkimus_ja_kehitys' as tarkenne,
+		GETDATE() as lodatime,
+		SUSER_SNAME() as username,
+		'p_lataa_f_indikaattorit_kk_taloustiedot' as source
+	FROM VipunenTK.[dbo].[f_korkeakoulujen_tutkimus_kehitys_5_3_menot] f
+	INNER JOIN VipunenTK.[dbo].d_oppilaitoksen_taustatiedot d ON d.id = f.oppilaitos_id
+	WHERE tilastovuosi >= 2018
+	GROUP BY [tilastovuosi],coalesce(d.oppilaitoksen_korvaavakoodi,d.oppilaitoskoodi)
+	
+	BEGIN TRY
+		EXEC msdb.dbo.sp_start_job @job_name = N'Tabular process Korkeakoulujen seurantaindikaattorit';
+	END TRY
+	BEGIN CATCH
+		PRINT 'sp_start_job note: ' + ERROR_MESSAGE();
+	END CATCH
 
 END

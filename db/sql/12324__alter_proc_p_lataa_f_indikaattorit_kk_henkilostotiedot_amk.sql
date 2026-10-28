@@ -221,44 +221,52 @@ WHEN NOT MATCHED THEN
 
 IF (SELECT cast(MAX(loadtime) as date) FROM ANTERO.dw.f_indikaattorit_kk WHERE source = 'ETL: p_lataa_f_indikaattorit_kk_henkilostotiedot_amk') = cast(getdate() as date)
 BEGIN
-EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
 
-DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-WHERE tarkenne = 'amk_henkilosto'
+	EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
 
-INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-(
-	tilastovuosi,
-	organisaatio_koodi,
-	okmohjauksenala_koodi,
-	ulkomaalainen,
-	opetus_tki_henkilokunta_htv,
-	opetushenkilokunta_htv,
-	tohtorintutkinto_opetus_tki_henkilokunta_htv,
-	tarkenne,
-	loadtime,
-	username,
-	source
-)
-SELECT 
-	f.vuosi as tilastovuosi,
-	d1.organisaatio_nykyinen_koodi as organisaatio_koodi,
-	d4.ohjauksenala_koodi as okmohjauksenala_koodi,
-	CASE WHEN d3.maatjavaltiot2_fi NOT IN ('Suomi', 'Tieto puuttuu', 'Tuntematon') THEN 1 ELSE 0 END as ulkomaalainen,
-	SUM(f.henkilotyovuosi) as opetus_tki_henkilokunta_htv,
-	SUM(CASE WHEN d2.selite_fi = 'Opetushenkilökunta' THEN f.henkilotyovuosi ELSE NULL END) as opetushenkilokunta_htv,
-	SUM(CASE WHEN f.suorittanut_tohtorintutkinnon = 1 and f.vuosi >= 2021 THEN f.henkilotyovuosi ELSE 0 END) as tohtorintutkinto_opetus_tki_henkilokunta_htv,
-	'amk_henkilosto' as tarkenne,
-	GETDATE() as lodatime,
-	SUSER_SNAME() as username,
-	'p_lataa_f_indikaattorit_kk_henkilostotiedot_amk' as source
-FROM [ANTERO].[dw].[f_amk_henkilon_tyo] f
-LEFT JOIN ANTERO.dw.d_organisaatioluokitus d1 on d1.id = f.d_amk_id 
-LEFT JOIN ANTERO.dw.d_amk_tehtavanjaottelu d2 on d2.id = f.d_tehtavanjaottelu
-LEFT JOIN ANTERO.dw.d_maatjavaltiot2 d3 on d3.id = f.d_maa_id
-LEFT JOIN ANTERO.dw.d_ohjauksenala d4 on d4.id = f.d_ohjauksenala_id
-WHERE vuosi >= 2018 and d2.selite_fi in ('Opetushenkilökunta', 'T&K&I-toiminnan henkilökunta')
-GROUP BY vuosi, d1.organisaatio_nykyinen_koodi, d4.ohjauksenala_koodi, 
-CASE WHEN d3.maatjavaltiot2_fi NOT IN ('Suomi', 'Tieto puuttuu', 'Tuntematon') THEN 1 ELSE 0 END
+	DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	WHERE tarkenne = 'amk_henkilosto'
+
+	INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	(
+		tilastovuosi,
+		organisaatio_koodi,
+		okmohjauksenala_koodi,
+		ulkomaalainen,
+		opetus_tki_henkilokunta_htv,
+		opetushenkilokunta_htv,
+		tohtorintutkinto_opetus_tki_henkilokunta_htv,
+		tarkenne,
+		loadtime,
+		username,
+		source
+	)
+	SELECT 
+		f.vuosi as tilastovuosi,
+		d1.organisaatio_nykyinen_koodi as organisaatio_koodi,
+		d4.ohjauksenala_koodi as okmohjauksenala_koodi,
+		CASE WHEN d3.maatjavaltiot2_fi NOT IN ('Suomi', 'Tieto puuttuu', 'Tuntematon') THEN 1 ELSE 0 END as ulkomaalainen,
+		SUM(f.henkilotyovuosi) as opetus_tki_henkilokunta_htv,
+		SUM(CASE WHEN d2.selite_fi = 'Opetushenkilökunta' THEN f.henkilotyovuosi ELSE NULL END) as opetushenkilokunta_htv,
+		SUM(CASE WHEN f.suorittanut_tohtorintutkinnon = 1 and f.vuosi >= 2021 THEN f.henkilotyovuosi ELSE 0 END) as tohtorintutkinto_opetus_tki_henkilokunta_htv,
+		'amk_henkilosto' as tarkenne,
+		GETDATE() as lodatime,
+		SUSER_SNAME() as username,
+		'p_lataa_f_indikaattorit_kk_henkilostotiedot_amk' as source
+	FROM [ANTERO].[dw].[f_amk_henkilon_tyo] f
+	LEFT JOIN ANTERO.dw.d_organisaatioluokitus d1 on d1.id = f.d_amk_id 
+	LEFT JOIN ANTERO.dw.d_amk_tehtavanjaottelu d2 on d2.id = f.d_tehtavanjaottelu
+	LEFT JOIN ANTERO.dw.d_maatjavaltiot2 d3 on d3.id = f.d_maa_id
+	LEFT JOIN ANTERO.dw.d_ohjauksenala d4 on d4.id = f.d_ohjauksenala_id
+	WHERE vuosi >= 2018 and d2.selite_fi in ('Opetushenkilökunta', 'T&K&I-toiminnan henkilökunta')
+	GROUP BY vuosi, d1.organisaatio_nykyinen_koodi, d4.ohjauksenala_koodi, 
+	CASE WHEN d3.maatjavaltiot2_fi NOT IN ('Suomi', 'Tieto puuttuu', 'Tuntematon') THEN 1 ELSE 0 END
+	
+	BEGIN TRY
+		EXEC msdb.dbo.sp_start_job @job_name = N'Tabular process Korkeakoulujen seurantaindikaattorit';
+	END TRY
+	BEGIN CATCH
+		PRINT 'sp_start_job note: ' + ERROR_MESSAGE();
+	END CATCH
 
 END

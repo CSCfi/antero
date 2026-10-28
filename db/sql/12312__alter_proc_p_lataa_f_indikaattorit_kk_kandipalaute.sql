@@ -87,47 +87,55 @@ WHEN NOT MATCHED THEN
 IF (SELECT cast(MAX(loadtime) as date) FROM ANTERO.dw.f_indikaattorit_kk WHERE source = 'ETL: p_lataa_f_indikaattorit_kk_kandipalaute') = cast(getdate() as date)
 BEGIN
 
-EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
+	EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
 
-DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-WHERE tarkenne = 'kandipalaute'
+	DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	WHERE tarkenne = 'kandipalaute'
 
-INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-(
-	tilastovuosi,
-	organisaatio_koodi,
-	okmohjauksenala_koodi,
-	kandipalaute_ka_yli_3,
-	kandipalaute_vastanneet,
-	tarkenne,
-	loadtime,
-	username,
-	source
-)
-SELECT		
-	f.tilastovuosi, 
-	f.organisaatio_koodi, 
-	f.okmohjauksenala_koodi,
-	CAST(COUNT(DISTINCT CASE WHEN f.ka >= 3 THEN f.vastaajaid ELSE NULL END) as float) as kandipalaute_ka_yli_3,
-	COUNT(DISTINCT f.vastaajaid) as kandipalaute_vastanneet,
-	'kandipalaute' as tarkenne,
-	GETDATE() as lodatime,
-	SUSER_SNAME() as username,
-	'p_lataa_f_indikaattorit_kk_kandipalaute' as source
-FROM (		
-	SELECT	
-		f.kyselyvuosi as tilastovuosi, 
-		d2.organisaatio_koodi, 
-		d4.ohjauksenala_koodi as okmohjauksenala_koodi,
-		f.vastaajaid, 
-		AVG(cast(f.numerovalinta as float)) as ka
-	FROM ANTERO.dw.f_arvo_kandi f
-	LEFT JOIN ANTERO.dw.d_arvokysymys d1 on d1.id = f.d_arvokysymys_id 
-	LEFT JOIN ANTERO.dw.d_organisaatioluokitus d2 ON d2.id = f.d_organisaatio_oppilaitos_id
-	LEFT JOIN ANTERO.dw.d_koulutusluokitus d3 ON f.d_koulutusluokitus_id = d3.id
-	LEFT JOIN ANTERO.dw.d_ohjauksenala d4 on d4.ohjauksenala_koodi = d3.okmohjauksenala_koodi
-	WHERE d1.rahoitusmallikysymys = 1 and f.kyselyvuosi BETWEEN 2021 AND YEAR(DATEADD(MONTH, -1, getdate())) - 1
-	GROUP BY f.kyselyvuosi, d2.organisaatio_koodi, f.vastaajaid, d4.ohjauksenala_koodi
-) f		
-GROUP BY f.tilastovuosi, f.organisaatio_koodi, f.okmohjauksenala_koodi
+	INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	(
+		tilastovuosi,
+		organisaatio_koodi,
+		okmohjauksenala_koodi,
+		kandipalaute_ka_yli_3,
+		kandipalaute_vastanneet,
+		tarkenne,
+		loadtime,
+		username,
+		source
+	)
+	SELECT		
+		f.tilastovuosi, 
+		f.organisaatio_koodi, 
+		f.okmohjauksenala_koodi,
+		CAST(COUNT(DISTINCT CASE WHEN f.ka >= 3 THEN f.vastaajaid ELSE NULL END) as float) as kandipalaute_ka_yli_3,
+		COUNT(DISTINCT f.vastaajaid) as kandipalaute_vastanneet,
+		'kandipalaute' as tarkenne,
+		GETDATE() as lodatime,
+		SUSER_SNAME() as username,
+		'p_lataa_f_indikaattorit_kk_kandipalaute' as source
+	FROM (		
+		SELECT	
+			f.kyselyvuosi as tilastovuosi, 
+			d2.organisaatio_koodi, 
+			d4.ohjauksenala_koodi as okmohjauksenala_koodi,
+			f.vastaajaid, 
+			AVG(cast(f.numerovalinta as float)) as ka
+		FROM ANTERO.dw.f_arvo_kandi f
+		LEFT JOIN ANTERO.dw.d_arvokysymys d1 on d1.id = f.d_arvokysymys_id 
+		LEFT JOIN ANTERO.dw.d_organisaatioluokitus d2 ON d2.id = f.d_organisaatio_oppilaitos_id
+		LEFT JOIN ANTERO.dw.d_koulutusluokitus d3 ON f.d_koulutusluokitus_id = d3.id
+		LEFT JOIN ANTERO.dw.d_ohjauksenala d4 on d4.ohjauksenala_koodi = d3.okmohjauksenala_koodi
+		WHERE d1.rahoitusmallikysymys = 1 and f.kyselyvuosi BETWEEN 2021 AND YEAR(DATEADD(MONTH, -1, getdate())) - 1
+		GROUP BY f.kyselyvuosi, d2.organisaatio_koodi, f.vastaajaid, d4.ohjauksenala_koodi
+	) f		
+	GROUP BY f.tilastovuosi, f.organisaatio_koodi, f.okmohjauksenala_koodi
+	
+	BEGIN TRY
+		EXEC msdb.dbo.sp_start_job @job_name = N'Tabular process Korkeakoulujen seurantaindikaattorit';
+	END TRY
+	BEGIN CATCH
+		PRINT 'sp_start_job note: ' + ERROR_MESSAGE();
+	END CATCH
+	
 END

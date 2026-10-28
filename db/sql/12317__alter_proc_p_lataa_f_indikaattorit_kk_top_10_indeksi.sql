@@ -243,3 +243,10 @@ BEGIN
 	END
 
 EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
+
+BEGIN TRY
+	EXEC msdb.dbo.sp_start_job @job_name = N'Tabular process Korkeakoulujen seurantaindikaattorit';
+END TRY
+BEGIN CATCH
+	PRINT 'sp_start_job note: ' + ERROR_MESSAGE();
+END CATCH

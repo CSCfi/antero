@@ -227,84 +227,91 @@ WHEN NOT MATCHED THEN
 IF (SELECT cast(MAX(loadtime) as date) FROM ANTERO.dw.f_indikaattorit_kk WHERE source = 'ETL: p_lataa_f_indikaattorit_kk_julkaisutiedot') = cast(getdate() as date)
 BEGIN
 
-EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
+	EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
 
-DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-WHERE tarkenne in ('virta_jtp', 'cwts')
+	DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	WHERE tarkenne in ('virta_jtp', 'cwts')
 
-INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-(
-	tilastovuosi,
-	organisaatio_koodi,
-	okmohjauksenala_koodi,
-	avoimet_julkaisut,
-	kv_yhteisjulkaisut,
-	jufo_1_3_julkaisut,
-	julkaisut,
-	tarkenne,
-	loadtime,
-	username,
-	source
-)
-SELECT
-	f.tilastovuosi,
-	d1.organisaatio_nykyinen_koodi as organisaatio_koodi,
-	d6.ohjauksenala_koodi as okmohjauksenala_koodi,
-	CAST(SUM(CASE WHEN d2.avoinsaatavuus_koodi in (1,2) or d4.kytkin_koodi = 1 THEN f.lukumaara ELSE 0 END) as float) as avoimet_julkaisut,
-	CAST(SUM(CASE WHEN d5.virtajtpsektori_koodi <> 1 THEN NULL WHEN d8.kansainvalinen_yhteisjulkaisu_koodi = 1 and d7.julkaisufoorumitaso_koodi in ('1', '2', '3') and d5.virtajtpsektori_koodi = 1 THEN f.lukumaara ELSE 0 END) as float) as kv_yhteisjulkaisut,
-	CAST(SUM(CASE WHEN d5.virtajtpsektori_koodi <> 1 THEN NULL WHEN d7.julkaisufoorumitaso_koodi in ('1', '2', '3') and d5.virtajtpsektori_koodi = 1 THEN f.lukumaara ELSE 0 END) as float) as jufo_1_3_julkaisut,
-	CAST(SUM(f.lukumaara) as float) as julkaisut,
-	'virta_jtp' as tarkenne,
-	GETDATE() as lodatime,
-	SUSER_SNAME() as username,
-	'p_lataa_f_indikaattorit_kk_julkaisutiedot' as source
-FROM [ANTERO].[dw].[f_virta_jtp_tilasto] f
-LEFT JOIN ANTERO.dw.d_organisaatioluokitus d1 on d1.id = f.d_organisaatio_id
-LEFT JOIN ANTERO.dw.d_avoinsaatavuus d2 on d2.id = f.d_avoinSaatavuus_id
-LEFT JOIN ANTERO.dw.d_julkaisutyyppi d3 on d3.id = f.d_julkaisutyyppi_id
-LEFT JOIN ANTERO.dw.d_kytkin d4 on d4.id = f.d_rinnakkaistallennusKytkin_id
-LEFT JOIN ANTERO.dw.d_virtajtpsektori d5 on d5.id = f.d_virtajtpsektori_id
-LEFT JOIN ANTERO.dw.d_ohjauksenala d6 on d6.id = f.d_ohjauksenala_id
-LEFT JOIN ANTERO.dw.d_julkaisufoorumitaso d7 on d7.id = f.d_julkaisufoorumitaso_id
-LEFT JOIN ANTERO.dw.d_kansainvalinen_yhteisjulkaisu d8 on d8.id = f.d_kansainvalinen_yhteisjulkaisu_id
-WHERE ((d3.julkaisunpaaluokka_koodi in ('A', 'C') and d5.virtajtpsektori_koodi = 1) or
-(d3.julkaisunpaaluokka_koodi in ('A', 'B', 'C', 'D', 'E') and d5.virtajtpsektori_koodi = 2)) and f.tilastovuosi >= 2018
-and d1.oppilaitostyyppi_koodi in ('41','42') and d1.organisaatio_koodi <> '02557'
-GROUP BY f.tilastovuosi ,d1.organisaatio_nykyinen_koodi, d6.ohjauksenala_koodi
+	INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	(
+		tilastovuosi,
+		organisaatio_koodi,
+		okmohjauksenala_koodi,
+		avoimet_julkaisut,
+		kv_yhteisjulkaisut,
+		jufo_1_3_julkaisut,
+		julkaisut,
+		tarkenne,
+		loadtime,
+		username,
+		source
+	)
+	SELECT
+		f.tilastovuosi,
+		d1.organisaatio_nykyinen_koodi as organisaatio_koodi,
+		d6.ohjauksenala_koodi as okmohjauksenala_koodi,
+		CAST(SUM(CASE WHEN d2.avoinsaatavuus_koodi in (1,2) or d4.kytkin_koodi = 1 THEN f.lukumaara ELSE 0 END) as float) as avoimet_julkaisut,
+		CAST(SUM(CASE WHEN d5.virtajtpsektori_koodi <> 1 THEN NULL WHEN d8.kansainvalinen_yhteisjulkaisu_koodi = 1 and d7.julkaisufoorumitaso_koodi in ('1', '2', '3') and d5.virtajtpsektori_koodi = 1 THEN f.lukumaara ELSE 0 END) as float) as kv_yhteisjulkaisut,
+		CAST(SUM(CASE WHEN d5.virtajtpsektori_koodi <> 1 THEN NULL WHEN d7.julkaisufoorumitaso_koodi in ('1', '2', '3') and d5.virtajtpsektori_koodi = 1 THEN f.lukumaara ELSE 0 END) as float) as jufo_1_3_julkaisut,
+		CAST(SUM(f.lukumaara) as float) as julkaisut,
+		'virta_jtp' as tarkenne,
+		GETDATE() as lodatime,
+		SUSER_SNAME() as username,
+		'p_lataa_f_indikaattorit_kk_julkaisutiedot' as source
+	FROM [ANTERO].[dw].[f_virta_jtp_tilasto] f
+	LEFT JOIN ANTERO.dw.d_organisaatioluokitus d1 on d1.id = f.d_organisaatio_id
+	LEFT JOIN ANTERO.dw.d_avoinsaatavuus d2 on d2.id = f.d_avoinSaatavuus_id
+	LEFT JOIN ANTERO.dw.d_julkaisutyyppi d3 on d3.id = f.d_julkaisutyyppi_id
+	LEFT JOIN ANTERO.dw.d_kytkin d4 on d4.id = f.d_rinnakkaistallennusKytkin_id
+	LEFT JOIN ANTERO.dw.d_virtajtpsektori d5 on d5.id = f.d_virtajtpsektori_id
+	LEFT JOIN ANTERO.dw.d_ohjauksenala d6 on d6.id = f.d_ohjauksenala_id
+	LEFT JOIN ANTERO.dw.d_julkaisufoorumitaso d7 on d7.id = f.d_julkaisufoorumitaso_id
+	LEFT JOIN ANTERO.dw.d_kansainvalinen_yhteisjulkaisu d8 on d8.id = f.d_kansainvalinen_yhteisjulkaisu_id
+	WHERE ((d3.julkaisunpaaluokka_koodi in ('A', 'C') and d5.virtajtpsektori_koodi = 1) or
+	(d3.julkaisunpaaluokka_koodi in ('A', 'B', 'C', 'D', 'E') and d5.virtajtpsektori_koodi = 2)) and f.tilastovuosi >= 2018
+	and d1.oppilaitostyyppi_koodi in ('41','42') and d1.organisaatio_koodi <> '02557'
+	GROUP BY f.tilastovuosi ,d1.organisaatio_nykyinen_koodi, d6.ohjauksenala_koodi
 
-INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-(
-	tilastovuosi,
-	organisaatio_koodi,
-	okmohjauksenala_koodi,
-	yhteisjulkaisut_yritysten_kanssa,
-	yhteisjulkaisut,
-	tarkenne,
-	loadtime,
-	username,
-	source
-)
-SELECT
-	s.year as tilastovuosi,
-	CASE
-		WHEN d.organisaatio_koodi is not null THEN d.organisaatio_koodi
-		WHEN university like '%Lappeenranta%' THEN '01914'
-	END as organisaatio_koodi,
-	-1 as okmohjauksenala_koodi,
-	SUM(CAST(s.p_industry_collab as float)) as yhteisjulkaisut_yritysten_kanssa, 
-	SUM(CAST(collab_p as float)) as yhteisjulkaisut,
-	'cwts' as tarkenne,
-	GETDATE() as lodatime,
-	SUSER_SNAME() as username,
-	'p_lataa_f_indikaattorit_kk_julkaisutiedot' as source
-FROM ANTERO.[sa].[sa_cwts_leiden_ranking] s
-OUTER APPLY (
-	SELECT 
-		MAX(organisaatio_koodi) as organisaatio_koodi 
-	FROM ANTERO.dw.d_organisaatioluokitus d
-	WHERE d.organisaatio_en = s.university
-) d
-GROUP BY 
-s.year, CASE WHEN d.organisaatio_koodi is not null THEN d.organisaatio_koodi WHEN university like '%Lappeenranta%' THEN '01914' END
+	INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	(
+		tilastovuosi,
+		organisaatio_koodi,
+		okmohjauksenala_koodi,
+		yhteisjulkaisut_yritysten_kanssa,
+		yhteisjulkaisut,
+		tarkenne,
+		loadtime,
+		username,
+		source
+	)
+	SELECT
+		s.year as tilastovuosi,
+		CASE
+			WHEN d.organisaatio_koodi is not null THEN d.organisaatio_koodi
+			WHEN university like '%Lappeenranta%' THEN '01914'
+		END as organisaatio_koodi,
+		-1 as okmohjauksenala_koodi,
+		SUM(CAST(s.p_industry_collab as float)) as yhteisjulkaisut_yritysten_kanssa, 
+		SUM(CAST(collab_p as float)) as yhteisjulkaisut,
+		'cwts' as tarkenne,
+		GETDATE() as lodatime,
+		SUSER_SNAME() as username,
+		'p_lataa_f_indikaattorit_kk_julkaisutiedot' as source
+	FROM ANTERO.[sa].[sa_cwts_leiden_ranking] s
+	OUTER APPLY (
+		SELECT 
+			MAX(organisaatio_koodi) as organisaatio_koodi 
+		FROM ANTERO.dw.d_organisaatioluokitus d
+		WHERE d.organisaatio_en = s.university
+	) d
+	GROUP BY 
+	s.year, CASE WHEN d.organisaatio_koodi is not null THEN d.organisaatio_koodi WHEN university like '%Lappeenranta%' THEN '01914' END
+	
+	BEGIN TRY
+		EXEC msdb.dbo.sp_start_job @job_name = N'Tabular process Korkeakoulujen seurantaindikaattorit';
+	END TRY
+	BEGIN CATCH
+		PRINT 'sp_start_job note: ' + ERROR_MESSAGE();
+	END CATCH
 
 END

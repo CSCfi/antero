@@ -413,52 +413,59 @@ WHEN NOT MATCHED THEN
 IF (SELECT cast(MAX(loadtime) as date) FROM ANTERO.dw.f_indikaattorit_kk WHERE source = 'ETL: p_lataa_f_indikaattorit_kk_haku_ja_valintatiedot') = cast(getdate() as date)
 BEGIN
 
-EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
+	EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
 
-DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-WHERE tarkenne = 'haku_ja_valinta'
+	DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	WHERE tarkenne = 'haku_ja_valinta'
 
-INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-(
-	tilastovuosi,
-	organisaatio_koodi,
-	okmohjauksenala_koodi,
-	master_oid,
-	vastaanottanut_paikan,
-	ensisijainen_kohde,
-	sama_maakunta,
-	uusimaa,
-	aidosti_ensikertainen,
-	avoin_vayla,
-	alle_23_vuotta,
-	tarkenne,
-	loadtime,
-	username,
-	source
-)
-SELECT DISTINCT
-	f.koulutuksen_alkamisvuosi as tilastovuosi,
-	d2.organisaatio_koodi,
-	-1 as okmohjauksenala_koodi,
-	f.master_oid as master_oid_haku_ja_valinta,
-	CASE WHEN d1.vastaanottaneet <= f.loadtime THEN f.vastaanottanut_paikan ELSE NULL END as vastaanottanut_paikan,
-	CASE WHEN f.hakutoive = 1 THEN 1 ELSE 0 END as ensisijainen_kohde,
-	CASE WHEN d4.maakunta_fi = d5.maakunta_fi and d5.maakunta_koodi <> -1 THEN 1 ELSE 0 END as sama_maakunta,
-	CASE WHEN d4.maakunta_fi = 'Uusimaa' THEN 1 ELSE 0 END as uusimaa,
-	CASE WHEN f.aidosti_ensikertainen = 1 THEN 1 ELSE 0 END aidosti_ensikertainen,
-	CASE WHEN d6.koodi = 'av' THEN 1 ELSE 0 END as avoin_vayla,
-	CASE WHEN d7.ika_avain < 23 THEN 1 ELSE 0 END alle_23_vuotta,
-	'haku_ja_valinta' as tarkenne,
-	GETDATE() as lodatime,
-	SUSER_SNAME() as username,
-	'p_lataa_f_indikaattorit_kk_haku_ja_valintatiedot' as source
-FROM ANTERO.dw.temp_haku_ja_valinta_indikaattorit f
-LEFT JOIN ANTERO.sa.sa_haku_ja_valinta_vuosikello_korkea_aste d1 on d1.id=f.sa_haku_ja_valinta_vuosikello_korkea_aste_id
-LEFT JOIN ANTERO.dw.d_organisaatioluokitus d2 on d2.id = f.d_organisaatioluokitus_oppilaitos_id
-LEFT JOIN ANTERO.dw.d_alueluokitus d4 on d4.id = f.d_alueluokitus_kotikunta_id
-LEFT JOIN ANTERO.dw.d_alueluokitus d5 on d5.id = f.d_alueluokitus_hakukohde_id
-LEFT JOIN ANTERO.dw.d_valintatapajonon_tyyppi d6 on d6.id = f.d_valintatapajonon_tyyppi_id
-LEFT JOIN ANTERO.dw.d_ika d7 on d7.id = f.d_ika_id
+	INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	(
+		tilastovuosi,
+		organisaatio_koodi,
+		okmohjauksenala_koodi,
+		master_oid,
+		vastaanottanut_paikan,
+		ensisijainen_kohde,
+		sama_maakunta,
+		uusimaa,
+		aidosti_ensikertainen,
+		avoin_vayla,
+		alle_23_vuotta,
+		tarkenne,
+		loadtime,
+		username,
+		source
+	)
+	SELECT DISTINCT
+		f.koulutuksen_alkamisvuosi as tilastovuosi,
+		d2.organisaatio_koodi,
+		-1 as okmohjauksenala_koodi,
+		f.master_oid as master_oid_haku_ja_valinta,
+		CASE WHEN d1.vastaanottaneet <= f.loadtime THEN f.vastaanottanut_paikan ELSE NULL END as vastaanottanut_paikan,
+		CASE WHEN f.hakutoive = 1 THEN 1 ELSE 0 END as ensisijainen_kohde,
+		CASE WHEN d4.maakunta_fi = d5.maakunta_fi and d5.maakunta_koodi <> -1 THEN 1 ELSE 0 END as sama_maakunta,
+		CASE WHEN d4.maakunta_fi = 'Uusimaa' THEN 1 ELSE 0 END as uusimaa,
+		CASE WHEN f.aidosti_ensikertainen = 1 THEN 1 ELSE 0 END aidosti_ensikertainen,
+		CASE WHEN d6.koodi = 'av' THEN 1 ELSE 0 END as avoin_vayla,
+		CASE WHEN d7.ika_avain < 23 THEN 1 ELSE 0 END alle_23_vuotta,
+		'haku_ja_valinta' as tarkenne,
+		GETDATE() as lodatime,
+		SUSER_SNAME() as username,
+		'p_lataa_f_indikaattorit_kk_haku_ja_valintatiedot' as source
+	FROM ANTERO.dw.temp_haku_ja_valinta_indikaattorit f
+	LEFT JOIN ANTERO.sa.sa_haku_ja_valinta_vuosikello_korkea_aste d1 on d1.id=f.sa_haku_ja_valinta_vuosikello_korkea_aste_id
+	LEFT JOIN ANTERO.dw.d_organisaatioluokitus d2 on d2.id = f.d_organisaatioluokitus_oppilaitos_id
+	LEFT JOIN ANTERO.dw.d_alueluokitus d4 on d4.id = f.d_alueluokitus_kotikunta_id
+	LEFT JOIN ANTERO.dw.d_alueluokitus d5 on d5.id = f.d_alueluokitus_hakukohde_id
+	LEFT JOIN ANTERO.dw.d_valintatapajonon_tyyppi d6 on d6.id = f.d_valintatapajonon_tyyppi_id
+	LEFT JOIN ANTERO.dw.d_ika d7 on d7.id = f.d_ika_id
+	
+	BEGIN TRY
+		EXEC msdb.dbo.sp_start_job @job_name = N'Tabular process Korkeakoulujen seurantaindikaattorit';
+	END TRY
+	BEGIN CATCH
+		PRINT 'sp_start_job note: ' + ERROR_MESSAGE();
+	END CATCH
 
 END
 

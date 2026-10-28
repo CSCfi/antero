@@ -125,58 +125,65 @@ WHEN NOT MATCHED THEN
 IF (SELECT cast(MAX(loadtime) as date) FROM ANTERO.dw.f_indikaattorit_kk WHERE source = 'ETL: p_lataa_f_indikaattorit_kk_lapaisy') = cast(getdate() as date)
 BEGIN
 
-EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
+	EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
 
-DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-WHERE tarkenne in ('5_v_lapaisy', '7_v_lapaisy')
+	DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	WHERE tarkenne in ('5_v_lapaisy', '7_v_lapaisy')
 
-INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-(
-	tilastovuosi,
-	organisaatio_koodi,
-	okmohjauksenala_koodi,
-	amk_tutkinnot,
-	alemmat_kk_tutkinnot,
-	aloittaneet_amk,
-	aloittaneet_alempi_kk,
-	tarkenne,
-	loadtime,
-	username,
-	source
-)
-SELECT 
-	CASE 
-		WHEN d2.tarkastelujakso_koodi = '5' THEN CAST(RIGHT(d1.lukuvuosi,4) as int) + 5
-		ELSE CAST(RIGHT(d1.lukuvuosi,4) as int) + 7
-	END as tilastovuosi,
-	COALESCE(d6.oppilaitoksen_korvaavakoodi,d6.oppilaitoskoodi) as organisaatio_koodi,
-	COALESCE(d8.ohjauksenala_koodi,-1) as okmohjauksenala_koodi,
-	SUM(CASE WHEN d2.tarkastelujakso_koodi = '5' and f.[1a Aloittaneiden opintojen kulku koulutuslajin mukaan prioriteettina mikä tahansa tutkinto] = 'Tutkinto alkuperäisessä tutkintolajissa' THEN f.lkm_int ELSE 0 END) as amk_tutkinnot,
-	SUM(CASE WHEN d2.tarkastelujakso_koodi <> '5' and f.[1a Aloittaneiden opintojen kulku koulutuslajin mukaan prioriteettina mikä tahansa tutkinto] = 'Tutkinto alkuperäisessä tutkintolajissa' THEN f.lkm_int ELSE 0 END) as alemmat_kk_tutkinnot,
-	SUM(CASE WHEN d2.tarkastelujakso_koodi = '5' THEN f.lkm_int ELSE 0 END) as aloittaneet_amk,
-	SUM(CASE WHEN d2.tarkastelujakso_koodi <> '5' THEN f.lkm_int ELSE 0 END) as aloittaneet_alempi_kk,
-	CASE 
-		WHEN d2.tarkastelujakso_koodi = '5' THEN '5_v_lapaisy'
-		ELSE '7_v_lapaisy'
-	END as tarkenne,
-	GETDATE() as lodatime,
-	SUSER_SNAME() as username,
-	'p_lataa_f_indikaattorit_kk_lapaisy' as source
-FROM  VipunenTK.dbo.f_aloittaneiden_lapaisy f 
-LEFT JOIN VipunenTK.dbo.d_kausi AS d1 ON d1.kausi_id = f.aloituskausikoodi 
-LEFT JOIN VipunenTK.dbo.d_tarkastelujakso AS d2 ON d2.id = f.tarkastelujakso_id 
-LEFT JOIN VipunenTK.dbo.d_koulutuslaji2 AS d3 ON d3.id = f.koulutuslaji2_id 
-LEFT JOIN VipunenTK.dbo.d_koulutusluokitus AS d4 ON d4.id = f.koulk_id 
-LEFT JOIN VipunenTK.dbo.d_lahde AS d5 ON d5.id = f.lahde_id 
-LEFT JOIN VipunenTK.dbo.d_oppilaitoksen_taustatiedot AS d6 ON d6.id = f.oppilaitoksen_taustatiedot_id 
-LEFT JOIN ANTERO.dw.d_organisaatioluokitus d7 on d7.organisaatio_koodi = COALESCE(d6.oppilaitoksen_korvaavakoodi,d6.oppilaitoskoodi)
-LEFT JOIN ANTERO.dw.d_ohjauksenala d8 on d8.ohjauksenala_koodi = d4.OKM_ohjauksen_ala_koodi
-WHERE aineistokoodi = 'K3.10' AND d3.koulutuslaji2_koodi <> '52' 
-AND ((CAST(RIGHT(d1.lukuvuosi,4) as int) + 5 >= 2018 and d5.lahde_koodi = '41' AND d2.tarkastelujakso_koodi = '5' AND (d4.koulutusaste2002_koodi='62' or d4.Koulutusaste_taso2_koodi = '62'))
-OR (CAST(RIGHT(d1.lukuvuosi,4) as int) + 7 >= 2018 and d5.lahde_koodi ='51' AND d2.tarkastelujakso_koodi = '7' AND ((d4.koulutusaste2002_koodi = '63' or d4.Koulutusaste_taso2_koodi = '63') OR d4.koulutus_koodi in ('772101', '772201'))))
-AND [1a Aloittaneiden opintojen kulku koulutuslajin mukaan prioriteettina mikä tahansa tutkinto] <> 'Virhetilanne'
-AND d7.oppilaitostyyppi_koodi in ('41','42') and d7.organisaatio_koodi not in ('01710','01723','02557')
-GROUP BY d2.tarkastelujakso_koodi, COALESCE(d6.oppilaitoksen_korvaavakoodi,d6.oppilaitoskoodi), CASE WHEN d2.tarkastelujakso_koodi = '5' THEN CAST(RIGHT(d1.lukuvuosi,4) as int) + 5 ELSE CAST(RIGHT(d1.lukuvuosi,4) as int) + 7 END, d7.oppilaitostyyppi_koodi,
-COALESCE(d8.ohjauksenala_koodi,-1)
+	INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	(
+		tilastovuosi,
+		organisaatio_koodi,
+		okmohjauksenala_koodi,
+		amk_tutkinnot,
+		alemmat_kk_tutkinnot,
+		aloittaneet_amk,
+		aloittaneet_alempi_kk,
+		tarkenne,
+		loadtime,
+		username,
+		source
+	)
+	SELECT 
+		CASE 
+			WHEN d2.tarkastelujakso_koodi = '5' THEN CAST(RIGHT(d1.lukuvuosi,4) as int) + 5
+			ELSE CAST(RIGHT(d1.lukuvuosi,4) as int) + 7
+		END as tilastovuosi,
+		COALESCE(d6.oppilaitoksen_korvaavakoodi,d6.oppilaitoskoodi) as organisaatio_koodi,
+		COALESCE(d8.ohjauksenala_koodi,-1) as okmohjauksenala_koodi,
+		SUM(CASE WHEN d2.tarkastelujakso_koodi = '5' and f.[1a Aloittaneiden opintojen kulku koulutuslajin mukaan prioriteettina mikä tahansa tutkinto] = 'Tutkinto alkuperäisessä tutkintolajissa' THEN f.lkm_int ELSE 0 END) as amk_tutkinnot,
+		SUM(CASE WHEN d2.tarkastelujakso_koodi <> '5' and f.[1a Aloittaneiden opintojen kulku koulutuslajin mukaan prioriteettina mikä tahansa tutkinto] = 'Tutkinto alkuperäisessä tutkintolajissa' THEN f.lkm_int ELSE 0 END) as alemmat_kk_tutkinnot,
+		SUM(CASE WHEN d2.tarkastelujakso_koodi = '5' THEN f.lkm_int ELSE 0 END) as aloittaneet_amk,
+		SUM(CASE WHEN d2.tarkastelujakso_koodi <> '5' THEN f.lkm_int ELSE 0 END) as aloittaneet_alempi_kk,
+		CASE 
+			WHEN d2.tarkastelujakso_koodi = '5' THEN '5_v_lapaisy'
+			ELSE '7_v_lapaisy'
+		END as tarkenne,
+		GETDATE() as lodatime,
+		SUSER_SNAME() as username,
+		'p_lataa_f_indikaattorit_kk_lapaisy' as source
+	FROM  VipunenTK.dbo.f_aloittaneiden_lapaisy f 
+	LEFT JOIN VipunenTK.dbo.d_kausi AS d1 ON d1.kausi_id = f.aloituskausikoodi 
+	LEFT JOIN VipunenTK.dbo.d_tarkastelujakso AS d2 ON d2.id = f.tarkastelujakso_id 
+	LEFT JOIN VipunenTK.dbo.d_koulutuslaji2 AS d3 ON d3.id = f.koulutuslaji2_id 
+	LEFT JOIN VipunenTK.dbo.d_koulutusluokitus AS d4 ON d4.id = f.koulk_id 
+	LEFT JOIN VipunenTK.dbo.d_lahde AS d5 ON d5.id = f.lahde_id 
+	LEFT JOIN VipunenTK.dbo.d_oppilaitoksen_taustatiedot AS d6 ON d6.id = f.oppilaitoksen_taustatiedot_id 
+	LEFT JOIN ANTERO.dw.d_organisaatioluokitus d7 on d7.organisaatio_koodi = COALESCE(d6.oppilaitoksen_korvaavakoodi,d6.oppilaitoskoodi)
+	LEFT JOIN ANTERO.dw.d_ohjauksenala d8 on d8.ohjauksenala_koodi = d4.OKM_ohjauksen_ala_koodi
+	WHERE aineistokoodi = 'K3.10' AND d3.koulutuslaji2_koodi <> '52' 
+	AND ((CAST(RIGHT(d1.lukuvuosi,4) as int) + 5 >= 2018 and d5.lahde_koodi = '41' AND d2.tarkastelujakso_koodi = '5' AND (d4.koulutusaste2002_koodi='62' or d4.Koulutusaste_taso2_koodi = '62'))
+	OR (CAST(RIGHT(d1.lukuvuosi,4) as int) + 7 >= 2018 and d5.lahde_koodi ='51' AND d2.tarkastelujakso_koodi = '7' AND ((d4.koulutusaste2002_koodi = '63' or d4.Koulutusaste_taso2_koodi = '63') OR d4.koulutus_koodi in ('772101', '772201'))))
+	AND [1a Aloittaneiden opintojen kulku koulutuslajin mukaan prioriteettina mikä tahansa tutkinto] <> 'Virhetilanne'
+	AND d7.oppilaitostyyppi_koodi in ('41','42') and d7.organisaatio_koodi not in ('01710','01723','02557')
+	GROUP BY d2.tarkastelujakso_koodi, COALESCE(d6.oppilaitoksen_korvaavakoodi,d6.oppilaitoskoodi), CASE WHEN d2.tarkastelujakso_koodi = '5' THEN CAST(RIGHT(d1.lukuvuosi,4) as int) + 5 ELSE CAST(RIGHT(d1.lukuvuosi,4) as int) + 7 END, d7.oppilaitostyyppi_koodi,
+	COALESCE(d8.ohjauksenala_koodi,-1)
+	
+	BEGIN TRY
+		EXEC msdb.dbo.sp_start_job @job_name = N'Tabular process Korkeakoulujen seurantaindikaattorit';
+	END TRY
+	BEGIN CATCH
+		PRINT 'sp_start_job note: ' + ERROR_MESSAGE();
+	END CATCH
 
 END

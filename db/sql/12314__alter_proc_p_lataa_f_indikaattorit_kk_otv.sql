@@ -512,98 +512,105 @@ WHEN NOT MATCHED THEN
 IF (SELECT cast(MAX(loadtime) as date) FROM ANTERO.dw.f_indikaattorit_kk WHERE source = 'ETL: p_lataa_f_indikaattorit_kk_otv') = cast(getdate() as date)
 BEGIN
 
-EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
+	EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
 
-DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-WHERE tarkenne in ('otv_opiskelijat', 'otv_tutkinnot')
+	DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	WHERE tarkenne in ('otv_opiskelijat', 'otv_tutkinnot')
 
-INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-(
-	tilastovuosi,
-	organisaatio_koodi,
-	okmohjauksenala_koodi,
-	kv_opiskelija,
-	tilauskoulutus,
-	amk_opiskelijat,
-	alempi_kk_opiskelijat,
-	ylempi_kk_opiskelijat,
-	tohtoriopiskelijat,
-	tarkenne,
-	loadtime,
-	username,
-	source
-)
-SELECT 
-	tilastointivuosi as tilastovuosi,
-	COALESCE(d2.oppilaitoksen_korvaavakoodi, d2.oppilaitoskoodi) as organisaatio_koodi,
-	d4.okmohjauksenala_koodi,
-	CASE WHEN d5.kylla_ei_koodi = 'K' THEN 1 ELSE 0 END as kv_opiskelija,
-	CASE WHEN d6.rahoituslahde_koodi = 4 THEN 1 ELSE 0 END as tilauskoulutus,
-	SUM(CASE WHEN d4.koulutusastetaso2_koodi = '62' THEN opiskelijat ELSE 0 END) as amk_opiskelijat,
-	SUM(CASE WHEN d4.koulutusastetaso2_koodi = '63' THEN opiskelijat ELSE 0 END) as alempi_kk_opiskelijat,
-	SUM(CASE WHEN d4.koulutusastetaso2_koodi = '72' THEN opiskelijat ELSE 0 END) as ylempi_kk_opiskelijat,
-	SUM(CASE WHEN d4.koulutusastetaso2_koodi = '82' THEN opiskelijat ELSE 0 END) as tohtoriopiskelijat,
-	'otv_opiskelijat' as tarkenne,
-	GETDATE() as loadtime,
-	SUSER_SNAME() as username,
-	'p_lataa_f_indikaattorit_kk_otv' as source
-FROM [VipunenTK].[dbo].[f_OTV_2_8_Korkeakouluopiskelijat] f
-LEFT JOIN [VipunenTK].[dbo].[d_oppilaitoksen_taustatiedot] d2 ON d2.id = f.oppilaitos_id
-LEFT JOIN [VipunenTK].[dbo].d_lahde d3 ON d3.id = f.lahde_id
-LEFT JOIN ANTERO.dw.d_koulutusluokitus d4 on d4.koulutusluokitus_koodi = f.koulutusluokitus
-LEFT JOIN VipunenTK.[dbo].d_kylla_ei d5 ON d5.id = f.kvopisk_id
-LEFT JOIN VipunenTk.[dbo].d_rahoituslahde d6 ON d6.id = f.rahoituslahde_id
-WHERE d3.lahde_koodi in ('-1','41','42','51','52') AND d2.oppilaitoskoodi NOT IN ('02557','10031','02358') AND 
-coalesce(d2.oppilaitoksen_korvaavakoodi,d2.oppilaitoskoodi) not in ('01029','01569','10102') AND
-tilastointivuosi >= 2018 AND d4.koulutusastetaso2_koodi in ('62','63','72','82') 
-GROUP BY tilastointivuosi, COALESCE(d2.oppilaitoksen_korvaavakoodi, d2.oppilaitoskoodi),d4.okmohjauksenala_koodi,
-CASE WHEN d5.kylla_ei_koodi = 'K' THEN 1 ELSE 0 END, CASE WHEN d6.rahoituslahde_koodi = 4 THEN 1 ELSE 0 END
+	INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	(
+		tilastovuosi,
+		organisaatio_koodi,
+		okmohjauksenala_koodi,
+		kv_opiskelija,
+		tilauskoulutus,
+		amk_opiskelijat,
+		alempi_kk_opiskelijat,
+		ylempi_kk_opiskelijat,
+		tohtoriopiskelijat,
+		tarkenne,
+		loadtime,
+		username,
+		source
+	)
+	SELECT 
+		tilastointivuosi as tilastovuosi,
+		COALESCE(d2.oppilaitoksen_korvaavakoodi, d2.oppilaitoskoodi) as organisaatio_koodi,
+		d4.okmohjauksenala_koodi,
+		CASE WHEN d5.kylla_ei_koodi = 'K' THEN 1 ELSE 0 END as kv_opiskelija,
+		CASE WHEN d6.rahoituslahde_koodi = 4 THEN 1 ELSE 0 END as tilauskoulutus,
+		SUM(CASE WHEN d4.koulutusastetaso2_koodi = '62' THEN opiskelijat ELSE 0 END) as amk_opiskelijat,
+		SUM(CASE WHEN d4.koulutusastetaso2_koodi = '63' THEN opiskelijat ELSE 0 END) as alempi_kk_opiskelijat,
+		SUM(CASE WHEN d4.koulutusastetaso2_koodi = '72' THEN opiskelijat ELSE 0 END) as ylempi_kk_opiskelijat,
+		SUM(CASE WHEN d4.koulutusastetaso2_koodi = '82' THEN opiskelijat ELSE 0 END) as tohtoriopiskelijat,
+		'otv_opiskelijat' as tarkenne,
+		GETDATE() as loadtime,
+		SUSER_SNAME() as username,
+		'p_lataa_f_indikaattorit_kk_otv' as source
+	FROM [VipunenTK].[dbo].[f_OTV_2_8_Korkeakouluopiskelijat] f
+	LEFT JOIN [VipunenTK].[dbo].[d_oppilaitoksen_taustatiedot] d2 ON d2.id = f.oppilaitos_id
+	LEFT JOIN [VipunenTK].[dbo].d_lahde d3 ON d3.id = f.lahde_id
+	LEFT JOIN ANTERO.dw.d_koulutusluokitus d4 on d4.koulutusluokitus_koodi = f.koulutusluokitus
+	LEFT JOIN VipunenTK.[dbo].d_kylla_ei d5 ON d5.id = f.kvopisk_id
+	LEFT JOIN VipunenTk.[dbo].d_rahoituslahde d6 ON d6.id = f.rahoituslahde_id
+	WHERE d3.lahde_koodi in ('-1','41','42','51','52') AND d2.oppilaitoskoodi NOT IN ('02557','10031','02358') AND 
+	coalesce(d2.oppilaitoksen_korvaavakoodi,d2.oppilaitoskoodi) not in ('01029','01569','10102') AND
+	tilastointivuosi >= 2018 AND d4.koulutusastetaso2_koodi in ('62','63','72','82') 
+	GROUP BY tilastointivuosi, COALESCE(d2.oppilaitoksen_korvaavakoodi, d2.oppilaitoskoodi),d4.okmohjauksenala_koodi,
+	CASE WHEN d5.kylla_ei_koodi = 'K' THEN 1 ELSE 0 END, CASE WHEN d6.rahoituslahde_koodi = 4 THEN 1 ELSE 0 END
 
-INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-(
-	tilastovuosi,
-	organisaatio_koodi,
-	okmohjauksenala_koodi,
-	ika_vahintaan_30,
-	kv_opiskelija,
-	tilauskoulutus,
-	tohtorintutkinnot,
-	amk_tutkinnot,
-	ylemmat_amk_tutkinnot,
-	alemmat_kk_tutkinnot,
-	ylemmat_kk_tutkinnot,
-	tarkenne,
-	loadtime,
-	username,
-	source
-)
+	INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	(
+		tilastovuosi,
+		organisaatio_koodi,
+		okmohjauksenala_koodi,
+		ika_vahintaan_30,
+		kv_opiskelija,
+		tilauskoulutus,
+		tohtorintutkinnot,
+		amk_tutkinnot,
+		ylemmat_amk_tutkinnot,
+		alemmat_kk_tutkinnot,
+		ylemmat_kk_tutkinnot,
+		tarkenne,
+		loadtime,
+		username,
+		source
+	)
 
-SELECT 
-	tilastointivuosi as tilastovuosi,
-	COALESCE(d2.oppilaitoksen_korvaavakoodi, d2.oppilaitoskoodi) as organisaatio_koodi,
-	d4.okmohjauksenala_koodi,
-	CASE WHEN d5.ika_int >= 30 THEN 1 ELSE 0 END as ika_vahintaan_30,
-	CASE WHEN d6.kylla_ei_koodi = 'K' THEN 1 ELSE 0 END as kv_opiskelija,
-	CASE WHEN d7.rahoituslahde_koodi = 4 THEN 1 ELSE 0 END as tilauskoulutus,
-	SUM(CASE WHEN d4.koulutusastetaso2_koodi = '82' THEN tutkinnot ELSE 0 END) as tohtorintutkinnot,
-	SUM(CASE WHEN d4.koulutusastetaso2_koodi = '62' THEN tutkinnot ELSE 0 END) as amk_tutkinnot,
-	SUM(CASE WHEN d4.koulutusastetaso2_koodi = '71' THEN tutkinnot ELSE 0 END) as ylemmat_amk_tutkinnot,
-	SUM(CASE WHEN d4.koulutusastetaso2_koodi = '63' THEN tutkinnot ELSE 0 END) as alemmat_kk_tutkinnot,
-	SUM(CASE WHEN d4.koulutusastetaso2_koodi = '72' THEN tutkinnot ELSE 0 END) as ylemmat_kk_tutkinnot,
-	'otv_tutkinnot' as tarkenne,
-	GETDATE() as loadtime,
-	SUSER_SNAME() as username,
-	'p_lataa_f_indikaattorit_kk_otv' as source
-FROM [VipunenTK].[dbo].[f_OTV_2_9_Korkeakoulututkinnot] f
-LEFT JOIN [VipunenTK].[dbo].[d_oppilaitoksen_taustatiedot] d2 ON d2.id = f.oppilaitos_id
-LEFT JOIN [VipunenTK].[dbo].d_lahde d3 ON d3.id = f.lahde_id
-LEFT JOIN ANTERO.dw.d_koulutusluokitus d4 on d4.koulutusluokitus_koodi = f.koulutusluokitus
-LEFT JOIN VipunenTK.dbo.d_ika d5 on d5.id = f.ika_id
-LEFT JOIN VipunenTK.[dbo].d_kylla_ei d6 ON d6.id = f.kvopisk_id
-LEFT JOIN VipunenTk.[dbo].d_rahoituslahde d7 ON d7.id = f.rahoituslahde_id
-WHERE d3.lahde_koodi in ('-1','41','42','51','52') AND d2.oppilaitoskoodi NOT IN ('02557','10031','02358')  AND
-tilastointivuosi >= 2018 AND d4.koulutusastetaso2_koodi in ('62','63','71','72','82')
-GROUP BY tilastointivuosi, COALESCE(d2.oppilaitoksen_korvaavakoodi, d2.oppilaitoskoodi), CASE WHEN d5.ika_int >= 30 THEN 1 ELSE 0 END, d4.okmohjauksenala_koodi,
-CASE WHEN d6.kylla_ei_koodi = 'K' THEN 1 ELSE 0 END, CASE WHEN d7.rahoituslahde_koodi = 4 THEN 1 ELSE 0 END
+	SELECT 
+		tilastointivuosi as tilastovuosi,
+		COALESCE(d2.oppilaitoksen_korvaavakoodi, d2.oppilaitoskoodi) as organisaatio_koodi,
+		d4.okmohjauksenala_koodi,
+		CASE WHEN d5.ika_int >= 30 THEN 1 ELSE 0 END as ika_vahintaan_30,
+		CASE WHEN d6.kylla_ei_koodi = 'K' THEN 1 ELSE 0 END as kv_opiskelija,
+		CASE WHEN d7.rahoituslahde_koodi = 4 THEN 1 ELSE 0 END as tilauskoulutus,
+		SUM(CASE WHEN d4.koulutusastetaso2_koodi = '82' THEN tutkinnot ELSE 0 END) as tohtorintutkinnot,
+		SUM(CASE WHEN d4.koulutusastetaso2_koodi = '62' THEN tutkinnot ELSE 0 END) as amk_tutkinnot,
+		SUM(CASE WHEN d4.koulutusastetaso2_koodi = '71' THEN tutkinnot ELSE 0 END) as ylemmat_amk_tutkinnot,
+		SUM(CASE WHEN d4.koulutusastetaso2_koodi = '63' THEN tutkinnot ELSE 0 END) as alemmat_kk_tutkinnot,
+		SUM(CASE WHEN d4.koulutusastetaso2_koodi = '72' THEN tutkinnot ELSE 0 END) as ylemmat_kk_tutkinnot,
+		'otv_tutkinnot' as tarkenne,
+		GETDATE() as loadtime,
+		SUSER_SNAME() as username,
+		'p_lataa_f_indikaattorit_kk_otv' as source
+	FROM [VipunenTK].[dbo].[f_OTV_2_9_Korkeakoulututkinnot] f
+	LEFT JOIN [VipunenTK].[dbo].[d_oppilaitoksen_taustatiedot] d2 ON d2.id = f.oppilaitos_id
+	LEFT JOIN [VipunenTK].[dbo].d_lahde d3 ON d3.id = f.lahde_id
+	LEFT JOIN ANTERO.dw.d_koulutusluokitus d4 on d4.koulutusluokitus_koodi = f.koulutusluokitus
+	LEFT JOIN VipunenTK.dbo.d_ika d5 on d5.id = f.ika_id
+	LEFT JOIN VipunenTK.[dbo].d_kylla_ei d6 ON d6.id = f.kvopisk_id
+	LEFT JOIN VipunenTk.[dbo].d_rahoituslahde d7 ON d7.id = f.rahoituslahde_id
+	WHERE d3.lahde_koodi in ('-1','41','42','51','52') AND d2.oppilaitoskoodi NOT IN ('02557','10031','02358')  AND
+	tilastointivuosi >= 2018 AND d4.koulutusastetaso2_koodi in ('62','63','71','72','82')
+	GROUP BY tilastointivuosi, COALESCE(d2.oppilaitoksen_korvaavakoodi, d2.oppilaitoskoodi), CASE WHEN d5.ika_int >= 30 THEN 1 ELSE 0 END, d4.okmohjauksenala_koodi,
+	CASE WHEN d6.kylla_ei_koodi = 'K' THEN 1 ELSE 0 END, CASE WHEN d7.rahoituslahde_koodi = 4 THEN 1 ELSE 0 END
+	
+	BEGIN TRY
+		EXEC msdb.dbo.sp_start_job @job_name = N'Tabular process Korkeakoulujen seurantaindikaattorit';
+	END TRY
+	BEGIN CATCH
+		PRINT 'sp_start_job note: ' + ERROR_MESSAGE();
+	END CATCH
 
 END

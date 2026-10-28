@@ -104,42 +104,48 @@ WHEN NOT MATCHED THEN
 IF (SELECT cast(MAX(loadtime) as date) FROM ANTERO.dw.f_indikaattorit_kk WHERE source = 'ETL: p_lataa_f_indikaattorit_kk_tutkinnon_suorittaneet_vaihdossa') = cast(getdate() as date)
 BEGIN
 
-EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
+	EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
 
-DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-WHERE tarkenne = 'tutkinnon_suorittaneet_vaihdossa'
+	DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	WHERE tarkenne = 'tutkinnon_suorittaneet_vaihdossa'
 
-INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-(
-	tilastovuosi,
-	organisaatio_koodi,
-	okmohjauksenala_koodi,
-	yliopisto_vaihdossa_olleet,
-	amk_vaihdossa_olleet,
-	vaihdossa_olleet_avain,
-	tarkenne,
-	loadtime,
-	username,
-	source
-)
-SELECT   
-	f.tilastovuosi,
-	d1.organisaatio_nykyinen_koodi as organisaatio_koodi,
-	d2.okmohjauksenala_koodi,
-	SUM(CASE WHEN d2.koulutusastetaso2_koodi in ('63' ,'72') THEN f.lukumaara ELSE 0 END) as yliopisto_vaihdossa_olleet,
-	SUM(CASE WHEN d2.koulutusastetaso2_koodi = '62' THEN f.lukumaara ELSE 0 END) as amk_vaihdossa_olleet,
-	f.opiskelijaavain as vaihdossa_olleet_avain,
-	'tutkinnon_suorittaneet_vaihdossa' as tarkenne,
-	GETDATE() as loadtime,
-	SUSER_SNAME() as username,
-	'p_lataa_f_indikaattorit_kk_tutkinnon_suorittaneet_vaihdossa' as source
-FROM [ANTERO].[dw].[f_virta_otp_tutkinnon_suorittaneet_vaihdossa] f 
-LEFT JOIN ANTERO.dw.d_organisaatioluokitus d1 on d1.id = f.d_organisaatioluokitus_id
-LEFT JOIN ANTERO.dw.d_koulutusluokitus d2 on d2.id	= f.d_koulutusluokitus_id
-WHERE f.tilastovuosi >= 2018 and 
-(d2.koulutusastetaso2_koodi in ('62', '63' ,'72')) and d1.oppilaitostyyppi_koodi in ('41','42')
-and d1.organisaatio_koodi not in ('02557', '02633','10031')
-GROUP BY f.tilastovuosi, d1.organisaatio_nykyinen_koodi, d2.okmohjauksenala_koodi, f.opiskelijaavain
+	INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	(
+		tilastovuosi,
+		organisaatio_koodi,
+		okmohjauksenala_koodi,
+		yliopisto_vaihdossa_olleet,
+		amk_vaihdossa_olleet,
+		vaihdossa_olleet_avain,
+		tarkenne,
+		loadtime,
+		username,
+		source
+	)
+	SELECT   
+		f.tilastovuosi,
+		d1.organisaatio_nykyinen_koodi as organisaatio_koodi,
+		d2.okmohjauksenala_koodi,
+		SUM(CASE WHEN d2.koulutusastetaso2_koodi in ('63' ,'72') THEN f.lukumaara ELSE 0 END) as yliopisto_vaihdossa_olleet,
+		SUM(CASE WHEN d2.koulutusastetaso2_koodi = '62' THEN f.lukumaara ELSE 0 END) as amk_vaihdossa_olleet,
+		f.opiskelijaavain as vaihdossa_olleet_avain,
+		'tutkinnon_suorittaneet_vaihdossa' as tarkenne,
+		GETDATE() as loadtime,
+		SUSER_SNAME() as username,
+		'p_lataa_f_indikaattorit_kk_tutkinnon_suorittaneet_vaihdossa' as source
+	FROM [ANTERO].[dw].[f_virta_otp_tutkinnon_suorittaneet_vaihdossa] f 
+	LEFT JOIN ANTERO.dw.d_organisaatioluokitus d1 on d1.id = f.d_organisaatioluokitus_id
+	LEFT JOIN ANTERO.dw.d_koulutusluokitus d2 on d2.id	= f.d_koulutusluokitus_id
+	WHERE f.tilastovuosi >= 2018 and 
+	(d2.koulutusastetaso2_koodi in ('62', '63' ,'72')) and d1.oppilaitostyyppi_koodi in ('41','42')
+	and d1.organisaatio_koodi not in ('02557', '02633','10031')
+	GROUP BY f.tilastovuosi, d1.organisaatio_nykyinen_koodi, d2.okmohjauksenala_koodi, f.opiskelijaavain
 
+	BEGIN TRY
+	EXEC msdb.dbo.sp_start_job @job_name = N'Tabular process Korkeakoulujen seurantaindikaattorit';
+	END TRY
+	BEGIN CATCH
+		PRINT 'sp_start_job note: ' + ERROR_MESSAGE();
+	END CATCH
 
 END

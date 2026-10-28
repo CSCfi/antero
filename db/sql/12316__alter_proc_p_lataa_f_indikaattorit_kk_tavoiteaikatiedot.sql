@@ -148,44 +148,51 @@ WHEN NOT MATCHED THEN
 IF (SELECT cast(MAX(loadtime) as date) FROM ANTERO.dw.f_indikaattorit_kk WHERE source = 'ETL: p_lataa_f_indikaattorit_kk_tavoiteaikatiedot') = cast(getdate() as date)
 BEGIN
 
-EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
+	EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
 
-DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-WHERE tarkenne = 'tavoiteaika'
+	DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	WHERE tarkenne = 'tavoiteaika'
 
-INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-(
-	tilastovuosi,
-	organisaatio_koodi,
-	okmohjauksenala_koodi,
-	valmistunut_tavoiteajassa,
-	aiempi_tutkinto,
-	amk_tutkinnot,
-	alemmat_kk_tutkinnot,
-	ylemmat_kk_tutkinnot,
-	tarkenne,
-	loadtime,
-	username,
-	source
-)
-SELECT  
-	d2.vuosi as tilastovuosi,
-	d1.organisaatio_koodi,
-	d3.okmohjauksenala_koodi,
-	apusarake_tavoiteajassavalmistunut as valmistunut_tavoiteajassa,
-	f.apusarake_aiempitutkinto as aiempi_tutkinto,
-	CAST(COUNT(DISTINCT CASE WHEN d3.koulutusastetaso2_koodi = '62' THEN f.apusarake_henkilokoodi ELSE NULL END) as float) as 'amk_tutkinnot',
-	CAST(COUNT(DISTINCT CASE WHEN d3.koulutusastetaso2_koodi = '63' THEN f.apusarake_henkilokoodi ELSE NULL END) as float) as 'alemmat_kk_tutkinnot',
-	CAST(COUNT(DISTINCT CASE WHEN d3.koulutusastetaso2_koodi = '72' THEN f.apusarake_henkilokoodi ELSE NULL END) as float) as 'ylemmat_kk_tutkinnot',
-	'tavoiteaika' as tarkenne,
-	GETDATE() as loadtime,
-	SUSER_SNAME() as username,
-	'p_lataa_f_indikaattorit_kk_tavoiteaikatiedot' as source
-FROM ANTERO.dw.f_virta_otp_tavoiteajassa_tutkinnon_suorittaneet_jaadytys f 
-LEFT JOIN ANTERO.dw.d_organisaatioluokitus d1 on d1.id = f.d_organisaatioluokitus_id
-LEFT JOIN ANTERO.dw.d_kalenteri d2 ON d2.id  = f.d_kalenteri_tutkinnon_suoritus_id
-LEFT JOIN ANTERO.dw.d_koulutusluokitus d3 on d3.id = f.d_koulutusluokitus_id
-WHERE apusarake_rahoitusmalli = 1 and d2.vuosi >= 2018 and d1.oppilaitostyyppi_koodi in ('41','42') and d3.koulutusastetaso2_koodi in ('62', '63', '72')
-GROUP BY d2.vuosi, d1.organisaatio_koodi, d1.oppilaitostyyppi_koodi, d3.okmohjauksenala_koodi, apusarake_tavoiteajassavalmistunut, f.apusarake_aiempitutkinto
+	INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	(
+		tilastovuosi,
+		organisaatio_koodi,
+		okmohjauksenala_koodi,
+		valmistunut_tavoiteajassa,
+		aiempi_tutkinto,
+		amk_tutkinnot,
+		alemmat_kk_tutkinnot,
+		ylemmat_kk_tutkinnot,
+		tarkenne,
+		loadtime,
+		username,
+		source
+	)
+	SELECT  
+		d2.vuosi as tilastovuosi,
+		d1.organisaatio_koodi,
+		d3.okmohjauksenala_koodi,
+		apusarake_tavoiteajassavalmistunut as valmistunut_tavoiteajassa,
+		f.apusarake_aiempitutkinto as aiempi_tutkinto,
+		CAST(COUNT(DISTINCT CASE WHEN d3.koulutusastetaso2_koodi = '62' THEN f.apusarake_henkilokoodi ELSE NULL END) as float) as 'amk_tutkinnot',
+		CAST(COUNT(DISTINCT CASE WHEN d3.koulutusastetaso2_koodi = '63' THEN f.apusarake_henkilokoodi ELSE NULL END) as float) as 'alemmat_kk_tutkinnot',
+		CAST(COUNT(DISTINCT CASE WHEN d3.koulutusastetaso2_koodi = '72' THEN f.apusarake_henkilokoodi ELSE NULL END) as float) as 'ylemmat_kk_tutkinnot',
+		'tavoiteaika' as tarkenne,
+		GETDATE() as loadtime,
+		SUSER_SNAME() as username,
+		'p_lataa_f_indikaattorit_kk_tavoiteaikatiedot' as source
+	FROM ANTERO.dw.f_virta_otp_tavoiteajassa_tutkinnon_suorittaneet_jaadytys f 
+	LEFT JOIN ANTERO.dw.d_organisaatioluokitus d1 on d1.id = f.d_organisaatioluokitus_id
+	LEFT JOIN ANTERO.dw.d_kalenteri d2 ON d2.id  = f.d_kalenteri_tutkinnon_suoritus_id
+	LEFT JOIN ANTERO.dw.d_koulutusluokitus d3 on d3.id = f.d_koulutusluokitus_id
+	WHERE apusarake_rahoitusmalli = 1 and d2.vuosi >= 2018 and d1.oppilaitostyyppi_koodi in ('41','42') and d3.koulutusastetaso2_koodi in ('62', '63', '72')
+	GROUP BY d2.vuosi, d1.organisaatio_koodi, d1.oppilaitostyyppi_koodi, d3.okmohjauksenala_koodi, apusarake_tavoiteajassavalmistunut, f.apusarake_aiempitutkinto
+
+	BEGIN TRY
+		EXEC msdb.dbo.sp_start_job @job_name = N'Tabular process Korkeakoulujen seurantaindikaattorit';
+	END TRY
+	BEGIN CATCH
+		PRINT 'sp_start_job note: ' + ERROR_MESSAGE();
+	END CATCH
 
 END

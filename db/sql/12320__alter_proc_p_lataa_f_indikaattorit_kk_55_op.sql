@@ -71,37 +71,45 @@ WHEN NOT MATCHED THEN
 	
 IF (SELECT cast(MAX(loadtime) as date) FROM ANTERO.dw.f_indikaattorit_kk WHERE source = 'ETL: p_lataa_f_indikaattorit_kk_55_op') = cast(getdate() as date)
 BEGIN
-EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
 
-DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-WHERE tarkenne = '55op'
+	EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
 
-INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-(
-	tilastovuosi,
-	organisaatio_koodi,
-	okmohjauksenala_koodi,
-	yli_55_op_suorittaneet,
-	opiskelijat_55_op,
-	tarkenne,
-	loadtime,
-	username,
-	source
-)
-SELECT 
-	f.vuosi as tilastovuosi,
-	d2.organisaatio_nykyinen_koodi as organisaatio_koodi,
-	d3.okmohjauksenala_koodi,
-	SUM(CASE WHEN f.suorittanut55 = 1 THEN f.suorittanut55 ELSE 0 END) as yli_55_op_suorittaneet,
-	SUM(case when f.lasna_syksy_edellinen=1 or f.lasna_kevat=1 then 1 else 0 end) as opiskelijat_55_op,
-	'55_op' as tarkenne,
-	GETDATE() as lodatime,
-	SUSER_SNAME() as username,
-	'p_lataa_f_indikaattorit_kk_55_op' as source
-FROM [ANTERO].[dw].[f_virta_otp_55_tilasto] f
-LEFT JOIN ANTERO.dw.d_organisaatioluokitus d2 on d2.id = f.d_organisaatio_id
-LEFT JOIN ANTERO.dw.d_koulutusluokitus d3 on d3.id = f.d_koulutusluokitus_id
-WHERE f.vuosi >= 2018 and d2.oppilaitostyyppi_koodi in ('41','42')
-GROUP BY f.vuosi,d2.organisaatio_nykyinen_koodi,d3.okmohjauksenala_koodi
+	DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	WHERE tarkenne = '55op'
+
+	INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	(
+		tilastovuosi,
+		organisaatio_koodi,
+		okmohjauksenala_koodi,
+		yli_55_op_suorittaneet,
+		opiskelijat_55_op,
+		tarkenne,
+		loadtime,
+		username,
+		source
+	)
+	SELECT 
+		f.vuosi as tilastovuosi,
+		d2.organisaatio_nykyinen_koodi as organisaatio_koodi,
+		d3.okmohjauksenala_koodi,
+		SUM(CASE WHEN f.suorittanut55 = 1 THEN f.suorittanut55 ELSE 0 END) as yli_55_op_suorittaneet,
+		SUM(case when f.lasna_syksy_edellinen=1 or f.lasna_kevat=1 then 1 else 0 end) as opiskelijat_55_op,
+		'55_op' as tarkenne,
+		GETDATE() as lodatime,
+		SUSER_SNAME() as username,
+		'p_lataa_f_indikaattorit_kk_55_op' as source
+	FROM [ANTERO].[dw].[f_virta_otp_55_tilasto] f
+	LEFT JOIN ANTERO.dw.d_organisaatioluokitus d2 on d2.id = f.d_organisaatio_id
+	LEFT JOIN ANTERO.dw.d_koulutusluokitus d3 on d3.id = f.d_koulutusluokitus_id
+	WHERE f.vuosi >= 2018 and d2.oppilaitostyyppi_koodi in ('41','42')
+	GROUP BY f.vuosi,d2.organisaatio_nykyinen_koodi,d3.okmohjauksenala_koodi
+	
+	BEGIN TRY
+		EXEC msdb.dbo.sp_start_job @job_name = N'Tabular process Korkeakoulujen seurantaindikaattorit';
+	END TRY
+	BEGIN CATCH
+		PRINT 'sp_start_job note: ' + ERROR_MESSAGE();
+	END CATCH
 
 END

@@ -156,49 +156,56 @@ WHEN NOT MATCHED THEN
 IF (SELECT cast(MAX(loadtime) as date) FROM ANTERO.dw.f_indikaattorit_kk WHERE source = 'ETL: p_lataa_f_indikaattorit_kk_tutkinnon_suorittaneiden_tyollistyminen') = cast(getdate() as date)
 BEGIN
 
-EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
+	EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
 
-DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-WHERE tarkenne = 'tyollistyminen'
+	DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	WHERE tarkenne = 'tyollistyminen'
 
-INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-(
-	tilastovuosi,
-	organisaatio_koodi,
-	okmohjauksenala_koodi,
-	tyollinen,
-	uusimaa,
-	ulkomaalainen,
-	amk_tutkinnot,
-	ylemmat_kk_tutkinnot,
-	tarkenne,
-	loadtime,
-	username,
-	source
-)
-SELECT
-	f.tilastointivuosi as tilastovuosi,
-	COALESCE(d2.oppilaitoksen_korvaavakoodi, d2.oppilaitoskoodi) as organisaatio_koodi,
-	d1.OKM_ohjauksen_ala_koodi as okmohjauksenala_koodi,
-	CASE WHEN d3.paaasiallinen_toiminta_okm_koodi = 1 THEN 1 ELSE 0 END as tyollinen,
-	CASE WHEN d6.maakunta = 'Uusimaa' THEN 1 ELSE 0 END as uusimaa,
-	CASE WHEN d7.eu_etamaat <> 'Suomi' THEN 1 ELSE 0 END as ulkomaalainen,
-	SUM(CASE WHEN d1.Koulutusaste_taso2_koodi = '62' THEN f.sijoittuminen_1v_tutkinnon_jalkeen else 0 end) as amk_tutkinnot,
-	SUM(CASE WHEN d1.Koulutusaste_taso2_koodi = '72' THEN f.sijoittuminen_1v_tutkinnon_jalkeen else 0 end) as ylemmat_kk_tutkinnot,
-	'tyollistyminen' as tarkenne,
-	GETDATE() as loadtime,
-	SUSER_SNAME() as username,
-	'p_lataa_f_indikaattorit_kk_tutkinnon_suorittaneiden_tyollistyminen' as source
-FROM VipunenTK.dbo.f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta f
-LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d1 on d1.id = koulutusluokitus_id
-LEFT JOIN VipunenTK.dbo.d_oppilaitoksen_taustatiedot d2 on d2.id = f.oppilaitos_id
-LEFT JOIN VipunenTK.dbo.d_paaasiallinen_toiminta_okm d3 on d3.id = f.paaasiallinen_toiminta_okm_id
-LEFT JOIN ANTERO.dw.d_organisaatioluokitus d5 on d5.organisaatio_koodi = COALESCE(d2.oppilaitoksen_korvaavakoodi, d2.oppilaitoskoodi)
-LEFT JOIN VipunenTK.dbo.d_alueluokitus d6 on d6.id = f.asuinmaakunta_id
-LEFT JOIN VipunenTK.dbo.d_eu_etamaat d7 ON d7.id = f.eu_etamaat_id
-WHERE d1.Koulutusaste_taso2_koodi in ('62','72') and tilastointivuosi >= 2018 and d5.organisaatio_koodi not in ('02633', '10031', '02358', '02557')
-AND sijoittuminen_1v_tutkinnon_jalkeen <> 0  
-GROUP BY tilastointivuosi, COALESCE(d2.oppilaitoksen_korvaavakoodi, d2.oppilaitoskoodi), CASE WHEN d3.paaasiallinen_toiminta_okm_koodi = 1 THEN 1 ELSE 0 END, 
-d1.OKM_ohjauksen_ala_koodi, CASE WHEN d6.maakunta = 'Uusimaa' THEN 1 ELSE 0 END, CASE WHEN d7.eu_etamaat <> 'Suomi' THEN 1 ELSE 0 END
+	INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	(
+		tilastovuosi,
+		organisaatio_koodi,
+		okmohjauksenala_koodi,
+		tyollinen,
+		uusimaa,
+		ulkomaalainen,
+		amk_tutkinnot,
+		ylemmat_kk_tutkinnot,
+		tarkenne,
+		loadtime,
+		username,
+		source
+	)
+	SELECT
+		f.tilastointivuosi as tilastovuosi,
+		COALESCE(d2.oppilaitoksen_korvaavakoodi, d2.oppilaitoskoodi) as organisaatio_koodi,
+		d1.OKM_ohjauksen_ala_koodi as okmohjauksenala_koodi,
+		CASE WHEN d3.paaasiallinen_toiminta_okm_koodi = 1 THEN 1 ELSE 0 END as tyollinen,
+		CASE WHEN d6.maakunta = 'Uusimaa' THEN 1 ELSE 0 END as uusimaa,
+		CASE WHEN d7.eu_etamaat <> 'Suomi' THEN 1 ELSE 0 END as ulkomaalainen,
+		SUM(CASE WHEN d1.Koulutusaste_taso2_koodi = '62' THEN f.sijoittuminen_1v_tutkinnon_jalkeen else 0 end) as amk_tutkinnot,
+		SUM(CASE WHEN d1.Koulutusaste_taso2_koodi = '72' THEN f.sijoittuminen_1v_tutkinnon_jalkeen else 0 end) as ylemmat_kk_tutkinnot,
+		'tyollistyminen' as tarkenne,
+		GETDATE() as loadtime,
+		SUSER_SNAME() as username,
+		'p_lataa_f_indikaattorit_kk_tutkinnon_suorittaneiden_tyollistyminen' as source
+	FROM VipunenTK.dbo.f_TJ_4_3_Tutkinnon_suorittaneiden_paaasiallinen_toiminta f
+	LEFT JOIN VipunenTK.dbo.d_koulutusluokitus d1 on d1.id = koulutusluokitus_id
+	LEFT JOIN VipunenTK.dbo.d_oppilaitoksen_taustatiedot d2 on d2.id = f.oppilaitos_id
+	LEFT JOIN VipunenTK.dbo.d_paaasiallinen_toiminta_okm d3 on d3.id = f.paaasiallinen_toiminta_okm_id
+	LEFT JOIN ANTERO.dw.d_organisaatioluokitus d5 on d5.organisaatio_koodi = COALESCE(d2.oppilaitoksen_korvaavakoodi, d2.oppilaitoskoodi)
+	LEFT JOIN VipunenTK.dbo.d_alueluokitus d6 on d6.id = f.asuinmaakunta_id
+	LEFT JOIN VipunenTK.dbo.d_eu_etamaat d7 ON d7.id = f.eu_etamaat_id
+	WHERE d1.Koulutusaste_taso2_koodi in ('62','72') and tilastointivuosi >= 2018 and d5.organisaatio_koodi not in ('02633', '10031', '02358', '02557')
+	AND sijoittuminen_1v_tutkinnon_jalkeen <> 0  
+	GROUP BY tilastointivuosi, COALESCE(d2.oppilaitoksen_korvaavakoodi, d2.oppilaitoskoodi), CASE WHEN d3.paaasiallinen_toiminta_okm_koodi = 1 THEN 1 ELSE 0 END, 
+	d1.OKM_ohjauksen_ala_koodi, CASE WHEN d6.maakunta = 'Uusimaa' THEN 1 ELSE 0 END, CASE WHEN d7.eu_etamaat <> 'Suomi' THEN 1 ELSE 0 END
+	
+	BEGIN TRY
+	EXEC msdb.dbo.sp_start_job @job_name = N'Tabular process Korkeakoulujen seurantaindikaattorit';
+	END TRY
+	BEGIN CATCH
+		PRINT 'sp_start_job note: ' + ERROR_MESSAGE();
+	END CATCH
 
 END

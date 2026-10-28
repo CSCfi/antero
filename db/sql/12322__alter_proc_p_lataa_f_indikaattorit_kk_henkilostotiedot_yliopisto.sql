@@ -465,42 +465,49 @@ BEGIN
 
 EXEC [dw].[p_lataa_f_indikaattorit_kk_4v]
 
-DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-WHERE tarkenne = 'yliopisto_henkilosto'
+	DELETE ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	WHERE tarkenne = 'yliopisto_henkilosto'
 
-INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
-(
-	tilastovuosi,
-	organisaatio_koodi,
-	okmohjauksenala_koodi,
-	ulkomaalainen,
-	uraporras,
-	opetus_tutkimus_henkilokunta_htv,
-	tarkenne,
-	loadtime,
-	username,
-	source
-)
-SELECT 
-	f.vuosi as tilastovuosi,
-	d1.organisaatio_nykyinen_koodi as organisaatio_koodi,
-	d4.ohjauksenala_koodi as okmohjauksenala_koodi,
-	CASE WHEN d3.maatjavaltiot2_fi NOT IN ('Suomi', 'Tieto puuttuu', 'Tuntematon') THEN 1 ELSE 0 END as ulkomaalainen,
-	d5.koodi as uraporras,
-	SUM(f.henkilotyovuosi) as opetus_tutkimus_henkilokunta_htv,
-	'yliopisto_henkilosto' as tarkenne,
-	GETDATE() as lodatime,
-	SUSER_SNAME() as username,
-	'p_lataa_f_indikaattorit_kk_henkilostotiedot_yliopisto' as source
-FROM [ANTERO].[dw].[f_yo_henkilon_tyo] f
-LEFT JOIN ANTERO.dw.d_organisaatioluokitus d1 on d1.id = f.d_yliopisto_id
-LEFT JOIN ANTERO.dw.d_yo_tehtavanjaottelu d2 on d2.id = f.d_tehtavanjaottelu_id
-LEFT JOIN ANTERO.dw.d_maatjavaltiot2 d3 on d3.id = f.d_kansalaisuus_id
-LEFT JOIN ANTERO.dw.d_ohjauksenala d4 on d4.id = f.d_ohjauksenala_id
-LEFT JOIN ANTERO.dw.d_yo_tutkijanuravaihe d5 on d5.id=f.d_tutkijanuravaihe_id
-LEFT JOIN ANTERO.dw.d_maatjavaltiot2 d6 on d6.id = f.d_kansalaisuus_id
-WHERE vuosi >= 2018 and d2.selite_fi = 'Opetus- ja tutkimushenkilökunta'
-GROUP BY vuosi, d1.organisaatio_nykyinen_koodi, d4.ohjauksenala_koodi,
-CASE WHEN d3.maatjavaltiot2_fi NOT IN ('Suomi', 'Tieto puuttuu', 'Tuntematon') THEN 1 ELSE 0 END, d5.koodi
+	INSERT INTO ANTERO.dw.f_indikaattorit_kk_ohjauksen_ala
+	(
+		tilastovuosi,
+		organisaatio_koodi,
+		okmohjauksenala_koodi,
+		ulkomaalainen,
+		uraporras,
+		opetus_tutkimus_henkilokunta_htv,
+		tarkenne,
+		loadtime,
+		username,
+		source
+	)
+	SELECT 
+		f.vuosi as tilastovuosi,
+		d1.organisaatio_nykyinen_koodi as organisaatio_koodi,
+		d4.ohjauksenala_koodi as okmohjauksenala_koodi,
+		CASE WHEN d3.maatjavaltiot2_fi NOT IN ('Suomi', 'Tieto puuttuu', 'Tuntematon') THEN 1 ELSE 0 END as ulkomaalainen,
+		d5.koodi as uraporras,
+		SUM(f.henkilotyovuosi) as opetus_tutkimus_henkilokunta_htv,
+		'yliopisto_henkilosto' as tarkenne,
+		GETDATE() as lodatime,
+		SUSER_SNAME() as username,
+		'p_lataa_f_indikaattorit_kk_henkilostotiedot_yliopisto' as source
+	FROM [ANTERO].[dw].[f_yo_henkilon_tyo] f
+	LEFT JOIN ANTERO.dw.d_organisaatioluokitus d1 on d1.id = f.d_yliopisto_id
+	LEFT JOIN ANTERO.dw.d_yo_tehtavanjaottelu d2 on d2.id = f.d_tehtavanjaottelu_id
+	LEFT JOIN ANTERO.dw.d_maatjavaltiot2 d3 on d3.id = f.d_kansalaisuus_id
+	LEFT JOIN ANTERO.dw.d_ohjauksenala d4 on d4.id = f.d_ohjauksenala_id
+	LEFT JOIN ANTERO.dw.d_yo_tutkijanuravaihe d5 on d5.id=f.d_tutkijanuravaihe_id
+	LEFT JOIN ANTERO.dw.d_maatjavaltiot2 d6 on d6.id = f.d_kansalaisuus_id
+	WHERE vuosi >= 2018 and d2.selite_fi = 'Opetus- ja tutkimushenkilökunta'
+	GROUP BY vuosi, d1.organisaatio_nykyinen_koodi, d4.ohjauksenala_koodi,
+	CASE WHEN d3.maatjavaltiot2_fi NOT IN ('Suomi', 'Tieto puuttuu', 'Tuntematon') THEN 1 ELSE 0 END, d5.koodi
+	
+	BEGIN TRY
+		EXEC msdb.dbo.sp_start_job @job_name = N'Tabular process Korkeakoulujen seurantaindikaattorit';
+	END TRY
+	BEGIN CATCH
+		PRINT 'sp_start_job note: ' + ERROR_MESSAGE();
+	END CATCH
 
 END
