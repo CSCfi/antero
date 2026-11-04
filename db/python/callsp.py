@@ -19,15 +19,15 @@ def load(database,schema,procedure,parameters,verbose=False,autocommit=False):
   show("begin with "+database+" "+schema+" "+procedure+" "+parameters+(" (autocommit)" if autocommit else ""))
   sql = "execute "+database+"."+schema+"."+procedure
   if (parameters != ""):
-   sql = "execute "+database+"."+schema+"."+procedure+" "+parameters
-   
+    sql = "execute "+database+"."+schema+"."+procedure+" "+parameters
+
   result = dboperator.execute(sql, autocommit=autocommit)
   #succesful execution result returns 1, anything else is error message
   if (result != 1):
-   show("A MSSQL error has been caught during executing " + procedure)
-   show("Error code: " + result)
-   dboperator.close()
-   exit(2) # lopeta virheeseen
+    show("A MSSQL error has been caught during executing " + procedure)
+    show("Error code: " + result)
+    dboperator.close()
+    exit(2) # lopeta virheeseen
 
   dboperator.close()
   show("ready")
@@ -39,7 +39,7 @@ usage: callsp.py [-e|--schema <schema>] -p|--procedure <procedure> [-s|--paramet
 schema defaults to $SCHEMA then to "" (for database default if set)
 procedure is mandatory argument. Name of the procedure to execute.
 autocommit is optional. Use it for procedures that manage their own
-transactions (BEGIN TRAN/COMMIT, sp_getapplock). Default is off.                                                                                                                                 
+transactions (BEGIN TRAN/COMMIT, sp_getapplock). Default is off.
 """)
 
 def main(argv):
@@ -49,7 +49,7 @@ def main(argv):
   procedure = ""
   parameters = ""
   verbose = False
-  autocommit = False            
+  autocommit = False
 
   try:
     opts, args = getopt.getopt(argv,"d:e:p:s:va",["database=","schema=","procedure=","parameters=","verbose","autocommit"])
@@ -63,7 +63,7 @@ def main(argv):
     elif opt in ("-p", "--procedure"): procedure = arg
     elif opt in ("-s", "--parameters"): parameters = arg
     elif opt in ("-v", "--verbose"): verbose = True
-    elif opt in ("-a", "--autocommit"): autocommit = True                                                     
+    elif opt in ("-a", "--autocommit"): autocommit = True
   if not schema or not procedure:
     usage()
     sys.exit(2)

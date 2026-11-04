@@ -193,32 +193,34 @@ def insertMany(source, schema, table, rows, debug=False): #insert array
 
 # for procedure calls and ready made statements
 def execute(sql, debug=False, autocommit=False):
-    global conn, cur, count
-    if debug:
-        print("dboperator.execute: sql=" + sql)
-    try:
-        if autocommit:
-            conn.commit()
-            conn.autocommit(True)
-        cur.execute(sql)
-        count = cur.rowcount
-        if not autocommit:
-            conn.commit()
-        return 1
+  global conn, cur, count
+  if debug:
+    print("dboperator.execute: sql=" + sql)
+  try:
+    if autocommit:
+      conn.commit()
+      conn.autocommit(True)
+    cur.execute(sql)
+    count = cur.rowcount
+    if not autocommit:
+      conn.commit()
+    return 1
 
-    # --- VANHA  ---
-    #except pymssql.Error as sqlerror:
-    #    return str(sqlerror)
+  # --- VANHA  ---
+  #except pymssql.Error as sqlerror:
+  #    return str(sqlerror)
 
-    # --- UUSI ---
-    except Exception as e:
-         return str(e)
-	finally:
-        if autocommit:
-            try:
-                conn.autocommit(False)  # back to the default for other functions
-            except Exception:
-                pass
+  # --- UUSI ---
+  except Exception as e:
+    return str(e)
+
+  finally:
+    if autocommit:
+      try:
+        conn.autocommit(False)  # back to the default for other functions
+      except Exception:
+        pass
+
 # get results of a query as an array of dicts
 def get(sql,debug=False):
   global conn, cur, count
