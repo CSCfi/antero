@@ -192,15 +192,18 @@ def insertMany(source, schema, table, rows, debug=False): #insert array
   conn.commit()
 
 # for procedure calls and ready made statements
-def execute(sql, debug=False):
+def execute(sql, debug=False, autocommit=False):
     global conn, cur, count
     if debug:
         print("dboperator.execute: sql=" + sql)
-
     try:
+        if autocommit:
+            conn.commit()
+            conn.autocommit(True)
         cur.execute(sql)
         count = cur.rowcount
-        conn.commit()
+        if not autocommit:
+            conn.commit()
         return 1
 
     # --- VANHA  ---
@@ -210,6 +213,12 @@ def execute(sql, debug=False):
     # --- UUSI ---
     except Exception as e:
          return str(e)
+	finally:
+        if autocommit:
+            try:
+                conn.autocommit(False)  # back to the default for other functions
+            except Exception:
+                pass
 # get results of a query as an array of dicts
 def get(sql,debug=False):
   global conn, cur, count

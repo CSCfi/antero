@@ -15,13 +15,13 @@ import dboperator
 def show(message):
   print(strftime("%Y-%m-%d %H:%M:%S", localtime())+" "+message)
 
-def load(database,schema,procedure,parameters,verbose=False):
-  show("begin with "+database+" "+schema+" "+procedure+" "+parameters)
+def load(database,schema,procedure,parameters,verbose=False,autocommit=False):
+  show("begin with "+database+" "+schema+" "+procedure+" "+parameters+(" (autocommit)" if autocommit else ""))
   sql = "execute "+database+"."+schema+"."+procedure
   if (parameters != ""):
    sql = "execute "+database+"."+schema+"."+procedure+" "+parameters
    
-  result = dboperator.execute(sql)
+  result = dboperator.execute(sql, autocommit=autocommit)
   #succesful execution result returns 1, anything else is error message
   if (result != 1):
    show("A MSSQL error has been caught during executing " + procedure)
@@ -34,10 +34,12 @@ def load(database,schema,procedure,parameters,verbose=False):
 
 def usage():
   print("""
-usage: callsp.py [-e|--schema <schema>] -p|--procedure <procedure> [-v|--verbose]
+usage: callsp.py [-e|--schema <schema>] -p|--procedure <procedure> [-s|--parameters <params>] [-a|--autocommit] [-v|--verbose]
 
 schema defaults to $SCHEMA then to "" (for database default if set)
 procedure is mandatory argument. Name of the procedure to execute.
+autocommit is optional. Use it for procedures that manage their own
+transactions (BEGIN TRAN/COMMIT, sp_getapplock). Default is off.                                                                                                                                 
 """)
 
 def main(argv):
@@ -47,9 +49,10 @@ def main(argv):
   procedure = ""
   parameters = ""
   verbose = False
+  autocommit = False            
 
   try:
-    opts, args = getopt.getopt(argv,"d:e:p:s:v",["database=","schema=","procedure=","parameters=","verbose"])
+    opts, args = getopt.getopt(argv,"d:e:p:s:va",["database=","schema=","procedure=","parameters=","verbose","autocommit"])
   except getopt.GetoptError as err:
     print(err)
     usage()
@@ -60,11 +63,12 @@ def main(argv):
     elif opt in ("-p", "--procedure"): procedure = arg
     elif opt in ("-s", "--parameters"): parameters = arg
     elif opt in ("-v", "--verbose"): verbose = True
+    elif opt in ("-a", "--autocommit"): autocommit = True                                                     
   if not schema or not procedure:
     usage()
     sys.exit(2)
 
-  load(database,schema,procedure,parameters,verbose)
+  load(database,schema,procedure,parameters,verbose,autocommit)
 
 if __name__ == "__main__":
   main(sys.argv[1:])
