@@ -17,10 +17,6 @@ GO
 
 
 
-
-
-
-
 ALTER VIEW [dbo].[v_sa_3_8_tutkinnon_suorittaneiden_osuus_aloittaneista_erityisopiskelijat] AS
 SELECT [tilv] = CAST(tilv as nvarchar(4))
       ,[lahde] = CAST(COALESCE(NULLIF(lahde , ''), '-1') as nvarchar(2))
