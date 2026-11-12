@@ -63,7 +63,7 @@ SELECT DISTINCT
 	,CASE
 		WHEN f.[oppimaara] = 'nuortenops' THEN 'Lärokurs för ungdomar'
 		WHEN f.[oppimaara] = 'aikuistenops' THEN 'Lärokurs för vuxna'
-		WHEN f.suorituksen_tyyppi = 'lukionoppiaineenoppimaara' THEN 'ämnesstuderande (ingen målexamen)'
+		WHEN f.suorituksen_tyyppi = 'lukionoppiaineenoppimaara' THEN 'Ämnesstuderande (ingen målexamen)'
 		WHEN f.[oppimaara] = 'Ulkomainen tutkinto' THEN 'Utländsk examen'
 		ELSE 'Information saknas' END
 		AS oppimaara_sv
@@ -130,7 +130,7 @@ SELECT DISTINCT
 	,d6.kieliryhma1_sv AS kieliryhma_sv
 	,CASE 
 		WHEN f.kansalaisuus = '246' THEN 'Finland'
-		ELSE 'övrig' END
+		ELSE 'Övrig' END
 		AS kansalaisuus_sv
 	,COALESCE(d1.maanosa_sv, 'Information saknas') AS kansalaisuus_maanosa_sv
 	,COALESCE(d3.[sukupuoli_sv], 'Information saknas') AS sukupuoli_sv

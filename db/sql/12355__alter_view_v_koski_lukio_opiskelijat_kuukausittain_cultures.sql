@@ -132,7 +132,7 @@ SELECT
 
 	-- KOULUTUSMUUTTUJAT
 		,oppimaara_sv										= CASE WHEN oppimaara = 'Aikuisten oppimäärä' THEN 'Lärokursen för vuxna'
-																WHEN oppimaara = 'Aineopiskelija (ei tutkintotavoitetta)' THEN 'ämnesstuderande (Ingen målexamen)'
+																WHEN oppimaara = 'Aineopiskelija (ei tutkintotavoitetta)' THEN 'Ämnesstuderande (Ingen målexamen)'
 																WHEN oppimaara = 'Nuorten oppimäärä' THEN 'Lärokursen för unga'
 																WHEN oppimaara = 'Ulkomainen tutkinto' THEN 'Utländsk examen' END
 		,tavoitetutkinto_sv									= CASE WHEN tavoitetutkinto = 'Ylioppilastutkinto' THEN 'Studentexamen' 

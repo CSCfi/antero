@@ -112,7 +112,7 @@ SELECT
 	,kansalaisuus_ryhma_sv =
 		case 
 			when d22.maatjavaltiot2_koodi = '246' THEN d22.maatjavaltiot2_sv 
-			when d22.maatjavaltiot2_koodi <> '-1'  THEN 'övrigt' 
+			when d22.maatjavaltiot2_koodi <> '-1'  THEN 'Övrigt' 
 			else 'Information saknas' 
 		end
 	

@@ -129,13 +129,13 @@ SELECT
 	,[kotikunta_nykyinen_sv] = d0.kunta_sv
 	,[kotimaakunta_nykyinen_sv] = d0.maakunta_sv
 	,[kotikunnan_hyvinvointialue_nykyinen_sv] = d0.hyvinvointialue_sv
-	,[tutkintotyypin_ryhma_sv] = case when d24.kytkin_koodi = 1 then 'övrig yrkesinriktad utbildning' else d4.tutkintotyypin_ryhma_sv end  
+	,[tutkintotyypin_ryhma_sv] = case when d24.kytkin_koodi = 1 then 'Övrig yrkesinriktad utbildning' else d4.tutkintotyypin_ryhma_sv end  
 	,[tutkintotyyppi_sv] = 
 		case 
 			when valmentava_koodi = 1 then 'VALMA' 
 			when valmentava_koodi = 2 then 'TELMA' 
 			when valmentava_koodi = 3 then 'TUVA' 
-			when d24.kytkin_koodi = 1 then 'övrig yrkesinriktad utbildning' 
+			when d24.kytkin_koodi = 1 then 'Övrig yrkesinriktad utbildning' 
 			else d4.tutkintotyyppi_sv 
 		end
 	,[tutkinto_sv] = d4.koulutusluokitus_sv  
