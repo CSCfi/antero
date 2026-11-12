@@ -17,13 +17,13 @@ SELECT DISTINCT
 	CASE 
 		WHEN f.aika_vuosina is null THEN 'Viimeisin tilanne (edellisen kuukauden lopussa)'
 		WHEN f.aika_vuosina = 0 THEN 'Aloitusajankohta'
-		WHEN f.aika_vuosina = 1 THEN '1 vuosi aloitusp‰iv‰st‰'
-		ELSE CONCAT(aika_vuosina, ' vuotta aloitusp‰iv‰st‰')
+		WHEN f.aika_vuosina = 1 THEN '1 vuosi aloitusp√§iv√§st√§'
+		ELSE CONCAT(aika_vuosina, ' vuotta aloitusp√§iv√§st√§')
 	END as tarkastelujakso_fi,
 	CASE 
-		WHEN f.aika_vuosina is null THEN 'Senaste status (i slutet av fˆregÂende mÂnad)'
+		WHEN f.aika_vuosina is null THEN 'Senaste status (i slutet av f√∂reg√•ende m√•nad)'
 		WHEN f.aika_vuosina = 0 THEN 'Begynnelsetid'
-		ELSE CONCAT(f.aika_vuosina, ' Âr frÂn begynnelsedatum')
+		ELSE CONCAT(f.aika_vuosina, ' √•r fr√•n begynnelsedatum')
 	END as tarkastelujakso_sv,
 
 	HASHBYTES('SHA2_256', vs.salt + f.master_oid) as apusarake_oppija_oid,

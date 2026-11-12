@@ -16,10 +16,10 @@ SELECT
 	,lukuvuosi = concat(f.tilastovuosi-1, '/', f.tilastovuosi)
 
   --FI
-	,sukupuoli_fi = case d1.sukupuoli_koodi when '1' then 'Pojat' when '2' then 'Tytöt' else 'Tieto puuttuu' end
+	,sukupuoli_fi = case d1.sukupuoli_koodi when '1' then 'Pojat' when '2' then 'TytÃ¶t' else 'Tieto puuttuu' end
 	,ika_fi =
 		case 
-			when d3.ika_fi in ('0','1','2','3','4') then '4-vuotiaat ja sitä nuoremmat'
+			when d3.ika_fi in ('0','1','2','3','4') then '4-vuotiaat ja sitÃ¤ nuoremmat'
 			when d3.ika_fi in ('5','6','7','8','9','10','11','12','13','14','15','16','17','18','19') then d3.ika_fi
 			else d3.ikaryhma3_fi
 		end
@@ -52,7 +52,7 @@ SELECT
 	,sukupuoli_sv = case d1.sukupuoli_koodi when '1' then 'Pojkar' when '2' then 'Flickor' else 'Information saknas' end
 	,ika_sv =
 		case 
-			when d3.ika_sv in ('0','1','2','3','4') then '4 år eller yngre'
+			when d3.ika_sv in ('0','1','2','3','4') then '4 Ã¥r eller yngre'
 			when d3.ika_sv in ('5','6','7','8','9','10','11','12','13','14','15','16','17','18','19') then d3.ika_sv
 			else d3.ikaryhma3_sv
 		end
@@ -62,7 +62,7 @@ SELECT
 	,kansalaisuus_ryhma_sv =
 		case 
 			when d22.maatjavaltiot2_koodi = '246' THEN d22.maatjavaltiot2_sv 
-			when d22.maatjavaltiot2_koodi <> '-1'  THEN 'Övrigt' 
+			when d22.maatjavaltiot2_koodi <> '-1'  THEN 'Ã¶vrigt' 
 			else 'Information saknas' 
 		end
 	,d24.vuosiluokka_sv
@@ -76,7 +76,7 @@ SELECT
 	,matematiikan_oppim_yksilollistetty_sv = d40.kytkin_sv
 	,oppimaaran_yksilollistaminen_sv = 
 		case
-			when opiskelee_toiminta_alueittain = 0 and ei_oppiainesuorituksia = 1 then 'Information om läroämnesprestationer saknas'
+			when opiskelee_toiminta_alueittain = 0 and ei_oppiainesuorituksia = 1 then 'Information om lÃ¤roÃ¤mnesprestationer saknas'
 			else d26.perusopetuksen_oppimaaran_yksilollistaminen_sv
 		end
 	,oppilaitoksen_maakunta_sv = d10.maakunta_sv
@@ -131,7 +131,7 @@ SELECT
 	,d24.jarjestys_vuosiluokkaryhma
 	,jarjestys_erityinen_tuki = d25.jarjestys
 	,jarjestys_oppimaaran_yksilollistaminen = 999999 - case when opiskelee_toiminta_alueittain = 0 and ei_oppiainesuorituksia = 1 then 0 else d26.jarjestys end
-	,jarjestys_aidinkielen_oppimaara = coalesce(d26b.jarjestys, 'öööö')
+	,jarjestys_aidinkielen_oppimaara = coalesce(d26b.jarjestys, 'Ã¶Ã¶Ã¶Ã¶')
 
 FROM [dw].[f_koski_esi_ja_perus_yksilollistaminen] f
 LEFT JOIN dw.d_sukupuoli d1 ON d1.id = f.d_sukupuoli_id

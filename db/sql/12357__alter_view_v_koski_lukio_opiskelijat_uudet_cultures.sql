@@ -36,22 +36,22 @@ SELECT DISTINCT
 	
 	--fi
 	,CASE
-		WHEN f.[oppimaara] = 'nuortenops' THEN 'Nuorten oppim‰‰r‰'
-		WHEN f.[oppimaara] = 'aikuistenops' THEN 'Aikuisten oppim‰‰r‰'
+		WHEN f.[oppimaara] = 'nuortenops' THEN 'Nuorten oppim√§√§r√§'
+		WHEN f.[oppimaara] = 'aikuistenops' THEN 'Aikuisten oppim√§√§r√§'
 		WHEN f.suorituksen_tyyppi = 'lukionoppiaineenoppimaara' THEN 'Aineopiskelija (ei tutkintotavoitetta)'
 		WHEN f.[oppimaara] = 'Ulkomainen tutkinto' THEN 'Ulkomainen tutkinto'
 		ELSE 'Tieto puuttuu' END
 		AS oppimaara_fi
 	,CASE
 		WHEN koulutusluokitus_fi IS NULL THEN 'Ei tutkintotavoitetta'
-		WHEN [koulutusluokitus_fi] = 'Lukion oppim‰‰r‰' THEN 'Ylioppilastutkinto'
-		WHEN [koulutusluokitus_fi] IN ('Lukion aineen oppim‰‰r‰', 'Lukiokoulutukseen valmistava koulutus') THEN 'Ei tutkintotavoitetta'
+		WHEN [koulutusluokitus_fi] = 'Lukion oppim√§√§r√§' THEN 'Ylioppilastutkinto'
+		WHEN [koulutusluokitus_fi] IN ('Lukion aineen oppim√§√§r√§', 'Lukiokoulutukseen valmistava koulutus') THEN 'Ei tutkintotavoitetta'
 		WHEN [koulutusluokitus_fi] IS NOT NULL THEN koulutusluokitus_fi
 		ELSE 'Tieto puuttuu' END
 		AS tavoitetutkinto_fi
 	,CASE
 		WHEN koulutusluokitus_fi = 'Lukiokoulutukseen valmistava koulutus' THEN 'Lukiokoulutukseen valmistava koulutus'
-		ELSE 'Yleissivist‰v‰ lukiokoulutus' END
+		ELSE 'Yleissivist√§v√§ lukiokoulutus' END
 		AS koulutus_fi
 	,CASE 
 		WHEN d14.selite_fi is not null THEN d14.selite_fi
@@ -61,22 +61,22 @@ SELECT DISTINCT
 
 	--sv
 	,CASE
-		WHEN f.[oppimaara] = 'nuortenops' THEN 'L‰rokurs fˆr ungdomar'
-		WHEN f.[oppimaara] = 'aikuistenops' THEN 'L‰rokurs fˆr vuxna'
-		WHEN f.suorituksen_tyyppi = 'lukionoppiaineenoppimaara' THEN 'ƒmnesstuderande (ingen mÂlexamen)'
-		WHEN f.[oppimaara] = 'Ulkomainen tutkinto' THEN 'Utl‰ndsk examen'
+		WHEN f.[oppimaara] = 'nuortenops' THEN 'L√§rokurs f√∂r ungdomar'
+		WHEN f.[oppimaara] = 'aikuistenops' THEN 'L√§rokurs f√∂r vuxna'
+		WHEN f.suorituksen_tyyppi = 'lukionoppiaineenoppimaara' THEN '√§mnesstuderande (ingen m√•lexamen)'
+		WHEN f.[oppimaara] = 'Ulkomainen tutkinto' THEN 'Utl√§ndsk examen'
 		ELSE 'Information saknas' END
 		AS oppimaara_sv
 	,CASE
-		WHEN koulutusluokitus_fi IS NULL THEN 'Ingen mÂlexamen'
-		WHEN [koulutusluokitus_fi] = 'Lukion oppim‰‰r‰' THEN 'Studentexamen'
-		WHEN [koulutusluokitus_fi] IN ('Lukion aineen oppim‰‰r‰', 'Lukiokoulutukseen valmistava koulutus') THEN 'Ingen mÂlexamen'
+		WHEN koulutusluokitus_fi IS NULL THEN 'Ingen m√•lexamen'
+		WHEN [koulutusluokitus_fi] = 'Lukion oppim√§√§r√§' THEN 'Studentexamen'
+		WHEN [koulutusluokitus_fi] IN ('Lukion aineen oppim√§√§r√§', 'Lukiokoulutukseen valmistava koulutus') THEN 'Ingen m√•lexamen'
 		WHEN [koulutusluokitus_fi] IS NOT NULL THEN koulutusluokitus_sv
 		ELSE 'Information saknas' END
 		AS tavoitetutkinto_sv
 	,CASE
 		WHEN koulutusluokitus_fi = 'Lukiokoulutukseen valmistava koulutus' THEN koulutusluokitus_sv
-		ELSE 'Allm‰nbildande gymnasieutbildning' END
+		ELSE 'Allm√§nbildande gymnasieutbildning' END
 		AS koulutus_sv
 	,CASE 
 		WHEN d14.selite_fi is not null THEN d14.selite_sv
@@ -94,8 +94,8 @@ SELECT DISTINCT
 		AS oppimaara_en
 	,CASE
 		WHEN koulutusluokitus_fi IS NULL THEN 'No intended qualification'
-		WHEN [koulutusluokitus_fi] = 'Lukion oppim‰‰r‰' THEN 'Matriculation examination'
-		WHEN [koulutusluokitus_fi] IN ('Lukion aineen oppim‰‰r‰', 'Lukiokoulutukseen valmistava koulutus') THEN 'No intended qualification'
+		WHEN [koulutusluokitus_fi] = 'Lukion oppim√§√§r√§' THEN 'Matriculation examination'
+		WHEN [koulutusluokitus_fi] IN ('Lukion aineen oppim√§√§r√§', 'Lukiokoulutukseen valmistava koulutus') THEN 'No intended qualification'
 		WHEN [koulutusluokitus_fi] IS NOT NULL THEN koulutusluokitus_en
 		ELSE 'Missing information' END
 		AS tavoitetutkinto_en
@@ -109,7 +109,7 @@ SELECT DISTINCT
 		WHEN d14.selite_fi is null AND d15.selite_fi is null AND d16.selite_fi is not null THEN d16.selite_en
 	END AS hakukohde_en
 
--- HENKIL÷MUUTTUJAT
+-- HENKIL√∂MUUTTUJAT
 
 	--fi
 	,f.[ika] AS ika_fi
@@ -130,12 +130,12 @@ SELECT DISTINCT
 	,d6.kieliryhma1_sv AS kieliryhma_sv
 	,CASE 
 		WHEN f.kansalaisuus = '246' THEN 'Finland'
-		ELSE '÷vrig' END
+		ELSE '√∂vrig' END
 		AS kansalaisuus_sv
 	,COALESCE(d1.maanosa_sv, 'Information saknas') AS kansalaisuus_maanosa_sv
 	,COALESCE(d3.[sukupuoli_sv], 'Information saknas') AS sukupuoli_sv
 	,CASE 
-		WHEN d4.[ikaryhma3_sv] IS NULL THEN 'Ok‰nd'
+		WHEN d4.[ikaryhma3_sv] IS NULL THEN 'Ok√§nd'
 		ELSE d4.ikaryhma3_sv END 
 		AS ikaryhma_sv
 
@@ -155,7 +155,7 @@ SELECT DISTINCT
 
 -- ORGANISAATIOMUUTTUJAT
 
-	-- Koulutuksen j‰rjest‰j‰
+	-- Koulutuksen j√§rjest√§j√§
 
 	--fi
 	,d7.organisaatio_fi AS koulutuksen_jarjestaja_fi
@@ -220,7 +220,7 @@ SELECT DISTINCT
 	,d7.organisaatio_koodi AS koodit_koulutuksen_jarjestaja
 	,d9.organisaatio_koodi AS koodit_toimipiste
 
--- JƒRJESTYSMUUTTUJAT
+-- J√§RJESTYSMUUTTUJAT
 	,d8.jarjestys_oppilaitoksenopetuskieli_koodi AS jarjestys_opetuskieli
 	,d6.jarjestys_kieliryhma1 AS jarjestys_kieliryhma
 	,COALESCE(d3.jarjestys_sukupuoli_koodi, 999) AS jarjestys_sukupuoli
@@ -234,8 +234,8 @@ SELECT DISTINCT
 		AS jarjestys_oppimaara
 	,CASE
 		WHEN koulutusluokitus_fi IS NULL THEN 3
-		WHEN [koulutusluokitus_fi] = 'Lukion oppim‰‰r‰' THEN 1
-		WHEN [koulutusluokitus_fi] IN ('Lukion aineen oppim‰‰r‰', 'Lukiokoulutukseen valmistava koulutus') THEN 3
+		WHEN [koulutusluokitus_fi] = 'Lukion oppim√§√§r√§' THEN 1
+		WHEN [koulutusluokitus_fi] IN ('Lukion aineen oppim√§√§r√§', 'Lukiokoulutukseen valmistava koulutus') THEN 3
 		WHEN [koulutusluokitus_fi] IS NOT NULL THEN 2
 		ELSE 4 END
 		AS jarjestys_tavoitetutkinto

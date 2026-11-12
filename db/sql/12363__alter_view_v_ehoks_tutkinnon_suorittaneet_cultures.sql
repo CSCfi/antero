@@ -89,7 +89,7 @@ SELECT
 	,[koodit_tyopaikka] = f.ytunnus
 	,[koodit_tutkinto] = d1.koulutusluokitus_koodi
 
-	--järjestykset
+	--jarjestykset
 	,[jarjestys_tutkintotyyppi] = case when d1.koulutusluokitus_fi like '%VALMA%' then '92' when d1.koulutusluokitus_fi like '%TELMA%' then '93' when d24.kytkin_koodi = 1 then '99' else d1.jarjestys_tutkintotyyppi_koodi end
 	,[jarjestys_tutkintotyypin_ryhma] = ca1.tutkintotyypin_ryhma_jarjestys
 	,[jarjestys_koulutusala_taso_1] = d1.jarjestys_koulutusalataso1_koodi

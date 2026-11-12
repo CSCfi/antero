@@ -22,74 +22,74 @@ SELECT
 	,[Tilastovuosi] = f.tilastovuosi
 	,[Tilastokuukausi] = d0a.kuukausi_fi
 	,[Tutkinnon perusteiden voimaantulo] = f.tutkinnon_perusteiden_voimaantulo
-	,[P‰tevyyden saavuttamisvuosi] = d0b.vuosi
-	,[P‰tevyyden saavuttamiskuukausi] = d0b.kuukausi_fi
+	,[P√§tevyyden saavuttamisvuosi] = d0b.vuosi
+	,[P√§tevyyden saavuttamiskuukausi] = d0b.kuukausi_fi
 	,[Tutkinnon suorittamisvuosi] = coalesce(cast(nullif(d0c.vuosi, -1) as varchar), ' Tieto puuttuu')
 	,[Tutkinnon suorittamiskuukausi] = d0c.kuukausi_fi
 	,[Opiskeluoikeuden alkamisvuosi] = d0d.vuosi
 	,[Opiskeluoikeuden alkamiskuukausi] = d0d.kuukausi_fi
 
-	,[Opiskeluoikeus p‰‰ttynyt] = case when patevyyden_opiskeluoikeus_voimassa = 0 then 'Opiskeluoikeus p‰‰ttynyt' else 'Opiskeluoikeus ei p‰‰ttynyt' end
+	,[Opiskeluoikeus p√§√§ttynyt] = case when patevyyden_opiskeluoikeus_voimassa = 0 then 'Opiskeluoikeus p√§√§ttynyt' else 'Opiskeluoikeus ei p√§√§ttynyt' end
 	,[Tutkinto suoritettu] = case when tutkinto_kumulatiivinen = 1 then 'Tutkinto suoritettu' else 'Tutkinto ei suoritettu' end
 
 	,[Sukupuoli] = d1.sukupuoli_fi
-	,[Ik‰] = d2.ika_fi
-	,[Ik‰ryhm‰] = d2.ikaryhma3_fi
-	,[ƒidinkieli] = d3.kieli_fi
-	,[ƒidinkieli (ryhm‰)] = d3.kieliryhma1_fi
+	,[Ik√§] = d2.ika_fi
+	,[Ik√§ryhm√§] = d2.ikaryhma3_fi
+	,[√Ñidinkieli] = d3.kieli_fi
+	,[√Ñidinkieli (ryhm√§)] = d3.kieliryhma1_fi
 	,[Kansalaisuus] = d4.maatjavaltiot2_fi
-	,[Kansalaisuus (ryhm‰)] = d4.maanosa1_fi
+	,[Kansalaisuus (ryhm√§)] = d4.maanosa1_fi
 	,[Kansalaisuus (maanosa)] = d4.maanosa0_fi
 	,[Kotikunta] = d5.kunta_fi
 	,[Kotimaakunta] = d5.maakunta_fi
 	,[Kotikunnan hyvinvointialue] = d5.hyvinvointialue_fi
 
-	,[Rahoitusmuoto (p‰tevyys)] = d14.selite_fi
+	,[Rahoitusmuoto (p√§tevyys)] = d14.selite_fi
 
   --org
 	--pat
-	,[Koul. j‰rj. (p‰tevyys)] = jl_pat.nimi_amos_spl
-	,[Koul. j‰rj. kunta (p‰tevyys)] = d10.kunta_fi
-	,[Koul. j‰rj. maak. (p‰tevyys)] = d10.maakunta_fi
-	,[Koul. j‰rj. hyvinvointialue (p‰tevyys)] = d10.hyvinvointialue_fi
-	,[Koul. j‰rj. AVI (p‰tevyys)] = d10.avi_fi
-	,[Koul. j‰rj. ELY (p‰tevyys)] = d10.ely_fi
+	,[Koul. j√§rj. (p√§tevyys)] = jl_pat.nimi_amos_spl
+	,[Koul. j√§rj. kunta (p√§tevyys)] = d10.kunta_fi
+	,[Koul. j√§rj. maak. (p√§tevyys)] = d10.maakunta_fi
+	,[Koul. j√§rj. hyvinvointialue (p√§tevyys)] = d10.hyvinvointialue_fi
+	,[Koul. j√§rj. AVI (p√§tevyys)] = d10.avi_fi
+	,[Koul. j√§rj. ELY (p√§tevyys)] = d10.ely_fi
 
-	,[Oppilaitos (p‰tevyys)] = d6b.organisaatio_fi
-	,[Oppilaitoksen kunta (p‰tevyys)] = d10b.kunta_fi
-	,[Oppilaitoksen maak. (p‰tevyys)] = d10b.maakunta_fi
-	,[Oppilaitoksen hyvinvointialue (p‰tevyys)] = d10b.hyvinvointialue_fi
-	,[Oppilaitoksen AVI (p‰tevyys)] = d10b.avi_fi
-	,[Oppilaitoksen ELY (p‰tevyys)] = d10b.ely_fi
+	,[Oppilaitos (p√§tevyys)] = d6b.organisaatio_fi
+	,[Oppilaitoksen kunta (p√§tevyys)] = d10b.kunta_fi
+	,[Oppilaitoksen maak. (p√§tevyys)] = d10b.maakunta_fi
+	,[Oppilaitoksen hyvinvointialue (p√§tevyys)] = d10b.hyvinvointialue_fi
+	,[Oppilaitoksen AVI (p√§tevyys)] = d10b.avi_fi
+	,[Oppilaitoksen ELY (p√§tevyys)] = d10b.ely_fi
 
-	,[Koul. j‰rj. (p‰tevyys/todistus)] = d7.organisaatio_fi
-	,[Koul. j‰rj. kunta (p‰tevyys/todistus)] = d11.kunta_fi
-	,[Koul. j‰rj. maak. (p‰tevyys/todistus)] = d11.maakunta_fi
-	,[Koul. j‰rj. hyvinvointialue (p‰tevyys/todistus)] = d11.hyvinvointialue_fi
-	,[Koul. j‰rj. AVI (p‰tevyys/todistus)] = d11.avi_fi
-	,[Koul. j‰rj. ELY (p‰tevyys/todistus)] = d11.ely_fi	
+	,[Koul. j√§rj. (p√§tevyys/todistus)] = d7.organisaatio_fi
+	,[Koul. j√§rj. kunta (p√§tevyys/todistus)] = d11.kunta_fi
+	,[Koul. j√§rj. maak. (p√§tevyys/todistus)] = d11.maakunta_fi
+	,[Koul. j√§rj. hyvinvointialue (p√§tevyys/todistus)] = d11.hyvinvointialue_fi
+	,[Koul. j√§rj. AVI (p√§tevyys/todistus)] = d11.avi_fi
+	,[Koul. j√§rj. ELY (p√§tevyys/todistus)] = d11.ely_fi	
 
-	,[Oppilaitos (p‰tevyys/todistus)] = d8.organisaatio_fi
-	,[Oppilaitoksen kunta (p‰tevyys/todistus)] = d12.kunta_fi
-	,[Oppilaitoksen maak. (p‰tevyys/todistus)] = d12.maakunta_fi
-	,[Oppilaitoksen hyvinvointialue (p‰tevyys/todistus)] = d12.hyvinvointialue_fi
-	,[Oppilaitoksen AVI (p‰tevyys/todistus)] = d12.avi_fi
-	,[Oppilaitoksen ELY (p‰tevyys/todistus)] = d12.ely_fi
+	,[Oppilaitos (p√§tevyys/todistus)] = d8.organisaatio_fi
+	,[Oppilaitoksen kunta (p√§tevyys/todistus)] = d12.kunta_fi
+	,[Oppilaitoksen maak. (p√§tevyys/todistus)] = d12.maakunta_fi
+	,[Oppilaitoksen hyvinvointialue (p√§tevyys/todistus)] = d12.hyvinvointialue_fi
+	,[Oppilaitoksen AVI (p√§tevyys/todistus)] = d12.avi_fi
+	,[Oppilaitoksen ELY (p√§tevyys/todistus)] = d12.ely_fi
 
-	,[Toimipiste (p‰tevyys/todistus)] = d9.organisaatio_fi
-	,[Toimipisteen kunta (p‰tevyys/todistus)] = d13.kunta_fi
-	,[Toimipisteen maak. (p‰tevyys/todistus)] = d13.maakunta_fi
-	,[Toimipisteen hyvinvointialue (p‰tevyys/todistus)] = d13.hyvinvointialue_fi
-	,[Toimipisteen AVI (p‰tevyys/todistus)] = d13.avi_fi
-	,[Toimipisteen ELY (p‰tevyys/todistus)] = d13.ely_fi
+	,[Toimipiste (p√§tevyys/todistus)] = d9.organisaatio_fi
+	,[Toimipisteen kunta (p√§tevyys/todistus)] = d13.kunta_fi
+	,[Toimipisteen maak. (p√§tevyys/todistus)] = d13.maakunta_fi
+	,[Toimipisteen hyvinvointialue (p√§tevyys/todistus)] = d13.hyvinvointialue_fi
+	,[Toimipisteen AVI (p√§tevyys/todistus)] = d13.avi_fi
+	,[Toimipisteen ELY (p√§tevyys/todistus)] = d13.ely_fi
 
 	--tutk
-	,[Koul. j‰rj. (tutkinto)] = jl_tutk.nimi_amos_spl
-	,[Koul. j‰rj. kunta (tutkinto)] = d20.kunta_fi
-	,[Koul. j‰rj. maak. (tutkinto)] = d20.maakunta_fi
-	,[Koul. j‰rj. hyvinvointialue (tutkinto)] = d20.hyvinvointialue_fi
-	,[Koul. j‰rj. AVI (tutkinto)] = d20.avi_fi
-	,[Koul. j‰rj. ELY (tutkinto)] = d20.ely_fi
+	,[Koul. j√§rj. (tutkinto)] = jl_tutk.nimi_amos_spl
+	,[Koul. j√§rj. kunta (tutkinto)] = d20.kunta_fi
+	,[Koul. j√§rj. maak. (tutkinto)] = d20.maakunta_fi
+	,[Koul. j√§rj. hyvinvointialue (tutkinto)] = d20.hyvinvointialue_fi
+	,[Koul. j√§rj. AVI (tutkinto)] = d20.avi_fi
+	,[Koul. j√§rj. ELY (tutkinto)] = d20.ely_fi
 	
 	,[Oppilaitos (tutkinto)] = d16b.organisaatio_fi
 	,[Oppilaitoksen kunta (tutkinto)] = d20b.kunta_fi
@@ -98,12 +98,12 @@ SELECT
 	,[Oppilaitoksen AVI (tutkinto)] = d20b.avi_fi
 	,[Oppilaitoksen ELY (tutkinto)] = d20b.ely_fi
 
-	,[Koul. j‰rj. (tutkinto/todistus)] = d17.organisaatio_fi
-	,[Koul. j‰rj. kunta (tutkinto/todistus)] = d21.kunta_fi
-	,[Koul. j‰rj. maak. (tutkinto/todistus)] = d21.maakunta_fi
-	,[Koul. j‰rj. hyvinvointialue (tutkinto/todistus)] = d21.hyvinvointialue_fi
-	,[Koul. j‰rj. AVI (tutkinto/todistus)] = d21.avi_fi
-	,[Koul. j‰rj. ELY (tutkinto/todistus)] = d21.ely_fi
+	,[Koul. j√§rj. (tutkinto/todistus)] = d17.organisaatio_fi
+	,[Koul. j√§rj. kunta (tutkinto/todistus)] = d21.kunta_fi
+	,[Koul. j√§rj. maak. (tutkinto/todistus)] = d21.maakunta_fi
+	,[Koul. j√§rj. hyvinvointialue (tutkinto/todistus)] = d21.hyvinvointialue_fi
+	,[Koul. j√§rj. AVI (tutkinto/todistus)] = d21.avi_fi
+	,[Koul. j√§rj. ELY (tutkinto/todistus)] = d21.ely_fi
 	
 	,[Oppilaitos (tutkinto/todistus)] = d18.organisaatio_fi
 	,[Oppilaitoksen kunta (tutkinto/todistus)] = d22.kunta_fi
@@ -120,10 +120,10 @@ SELECT
 	,[Toimipisteen ELY (tutkinto/todistus)] = d23.ely_fi
 
 	--koodit
-	,[Koodit Koul. j‰rj. (p‰tevyys)] = coalesce(jl_pat.ytunnus_amos_spl, jl_pat.ytunnus_avain)
-	,[Koodit Koul. j‰rj. (p‰tevyys/todistus)] = d7.organisaatio_koodi
-	,[Koodit Koul. j‰rj. (tutkinto)] = coalesce(jl_tutk.ytunnus_amos_spl, jl_tutk.ytunnus_avain)
-	,[Koodit Koul. j‰rj. (tutkinto/todistus)] = d17.organisaatio_koodi
+	,[Koodit Koul. j√§rj. (p√§tevyys)] = coalesce(jl_pat.ytunnus_amos_spl, jl_pat.ytunnus_avain)
+	,[Koodit Koul. j√§rj. (p√§tevyys/todistus)] = d7.organisaatio_koodi
+	,[Koodit Koul. j√§rj. (tutkinto)] = coalesce(jl_tutk.ytunnus_amos_spl, jl_tutk.ytunnus_avain)
+	,[Koodit Koul. j√§rj. (tutkinto/todistus)] = d17.organisaatio_koodi
 
 	--jarjestys
 	,jarjestys_tilastokuukausi = d0a.kuukausi

@@ -34,11 +34,11 @@ SELECT
 	,opiskeluoikeuden_alkamiskuukausi_fi = d14b.kuukausi_fi
 	,opiskeluoikeus_alkanut_tilastokuukauden_aikana_fi = d38.kytkin_fi
 
-	--hlˆ
-	,sukupuoli_fi = case d1.sukupuoli_koodi when '1' then 'Pojat' when '2' then 'Tytˆt' else 'Tieto puuttuu' end
+	--hl√∂
+	,sukupuoli_fi = case d1.sukupuoli_koodi when '1' then 'Pojat' when '2' then 'Tyt√∂t' else 'Tieto puuttuu' end
 	,ika_fi =
 		case 
-			when d3.ika_fi in ('0','1','2','3','4') then '4-vuotiaat ja sit‰ nuoremmat'
+			when d3.ika_fi in ('0','1','2','3','4') then '4-vuotiaat ja sit√§ nuoremmat'
 			when d3.ika_fi in ('5','6','7','8','9','10','11','12','13','14','15','16','17','18','19') then d3.ika_fi
 			else d3.ikaryhma3_fi
 		end
@@ -54,7 +54,7 @@ SELECT
 	,koulutusmuoto_fi = d24.koulutus_fi
 	,perusopetuksen_suoritustapa_fi = f.suoritustapa
 	,vuosiluokka_tai_koulutus_fi = d24.vuosiluokka_fi
-	,koulutus_fi = d24.vuosiluokka_fi --eri nimell‰ suorittaneet-raporttia varten
+	,koulutus_fi = d24.vuosiluokka_fi --eri nimell√§ suorittaneet-raporttia varten
 	,vuosiluokkaryhma_tai_koulutus_fi = d24.vuosiluokkaryhma_fi
 	,suorituskieli_fi = d23.suorituskieli_yleissivistava_fi
 	,muu_suorituskieli_fi = d23b.suorituskieli_yleissivistava_fi
@@ -78,7 +78,7 @@ SELECT
 	,opetuksen_jarjestajan_hyvinvointialue_fi = d12.hyvinvointialue_fi 
 	,opetuksen_jarjestajan_avi_fi = d12.avi_fi 
 	,opetuksen_jarjestajan_ely_fi = d12.ely_fi 
-	,erityinen_maailmankatsomus_tai_kasvatusopillinen_jarjestelma_fi = coalesce(d26.selite_fi, 'Ei erityisen maailmankatsomuksen tai kasvatusopillisen j‰rjestelm‰n teht‰v‰‰')
+	,erityinen_maailmankatsomus_tai_kasvatusopillinen_jarjestelma_fi = coalesce(d26.selite_fi, 'Ei erityisen maailmankatsomuksen tai kasvatusopillisen j√§rjestelm√§n teht√§v√§√§')
 	,oppilaitos_fi = d9.organisaatio_fi
 	,oppilaitosnumero_fi = d9.organisaatio_koodi 
 	,oppilaitoksen_opetuskieli_fi = d9.oppilaitoksenopetuskieli_fi
@@ -98,11 +98,11 @@ SELECT
 	,opiskeluoikeuden_alkamiskuukausi_sv = d14b.kuukausi_sv
 	,opiskeluoikeus_alkanut_tilastokuukauden_aikana_sv = d38.kytkin_sv
 
-	--hlˆ
+	--hl√∂
 	,sukupuoli_sv = case d1.sukupuoli_koodi when '1' then 'Pojkar' when '2' then 'Flickor' else 'Information saknas' end
 	,ika_sv =
 		case 
-			when d3.ika_sv in ('0','1','2','3','4') then '4 Âr eller yngre'
+			when d3.ika_sv in ('0','1','2','3','4') then '4 √•r eller yngre'
 			when d3.ika_sv in ('5','6','7','8','9','10','11','12','13','14','15','16','17','18','19') then d3.ika_sv
 			else d3.ikaryhma3_sv
 		end
@@ -118,7 +118,7 @@ SELECT
 	,koulutusmuoto_sv = d24.koulutus_sv
 	,perusopetuksen_suoritustapa_sv = f.suoritustapa
 	,vuosiluokka_tai_koulutus_sv = d24.vuosiluokka_sv
-	,koulutus_sv = d24.vuosiluokka_sv --eri nimell‰ suorittaneet-raporttia varten
+	,koulutus_sv = d24.vuosiluokka_sv --eri nimell√§ suorittaneet-raporttia varten
 	,vuosiluokkaryhma_tai_koulutus_sv = d24.vuosiluokkaryhma_sv
 	,suorituskieli_sv = d23.suorituskieli_yleissivistava_sv
 	,muu_suorituskieli_sv = d23b.suorituskieli_yleissivistava_sv
@@ -142,7 +142,7 @@ SELECT
 	,opetuksen_jarjestajan_hyvinvointialue_sv = d12.hyvinvointialue_sv 
 	,opetuksen_jarjestajan_avi_sv = d12.avi_sv 
 	,opetuksen_jarjestajan_ely_sv = d12.ely_sv 
-	,erityinen_maailmankatsomus_tai_kasvatusopillinen_jarjestelma_sv = coalesce(d26.selite_sv, 'Ingen uppgift som bygger pÂ s‰rskild v‰rldsÂskÂdning eller pedagogiskt system')
+	,erityinen_maailmankatsomus_tai_kasvatusopillinen_jarjestelma_sv = coalesce(d26.selite_sv, 'Ingen uppgift som bygger p√• s√§rskild v√§rlds√•sk√•dning eller pedagogiskt system')
 	,oppilaitos_sv = d9.organisaatio_sv
 	,oppilaitosnumero_sv = d9.organisaatio_koodi 
 	,oppilaitoksen_opetuskieli_sv = d9.oppilaitoksenopetuskieli_sv

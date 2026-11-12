@@ -28,14 +28,14 @@ SELECT DISTINCT
 		,tavoitetutkinto AS tavoitetutkinto_fi
 		,koulutus_fi											= CASE
 																	WHEN koulutusluokitus_fi in ('Lukiokoulutukseen valmistava koulutus', 'Tutkintokoulutukseen valmentava koulutus') THEN koulutusluokitus_fi
-																	ELSE 'Yleissivist‰v‰ lukiokoulutus' 
+																	ELSE 'Yleissivist√§v√§ lukiokoulutus' 
 																  END
 		,majoitus_fi 											= d16.kytkin_fi
-		,sisaoppilaitosmuotoinen_majoitus_fi 						= d17.kytkin_fi
-		,suorituskieliryhma_fi 											= d15.kieliryhma2_fi
+		,sisaoppilaitosmuotoinen_majoitus_fi 					= d17.kytkin_fi
+		,suorituskieliryhma_fi 									= d15.kieliryhma2_fi
 		,suorituskieli_fi 										= d15.suorituskieli_yleissivistava_fi 
 
-	-- HENKIL÷MUUTTUJAT
+	-- HENKIL√∂MUUTTUJAT
 		,ika_fi													= d4.ikaryhma6_fi			
 		,aidinkieli_fi 											= d6.kieliryhma2_fi
 		,kansalaisuus_fi 										= d1.maanosa1_fi
@@ -45,7 +45,7 @@ SELECT DISTINCT
 		,oppivelvollinen_1_8_2021_fi							= d18.kytkin_fi
 
 	-- ORGANISAATIOMUUTTUJAT
-		-- Koulutuksen j‰rjest‰j‰
+		-- Koulutuksen j√§rjest√§j√§
 		,koulutuksen_jarjestaja_fi						= d7.organisaatio_fi
 		,koulutuksen_jarjestajan_yritysmuoto_fi 		= d7.koulutuksen_jarjestajan_yritysmuoto
 		,koulutuksen_jarjestajan_kunta_fi 				= d10.kunta_fi
@@ -83,37 +83,37 @@ SELECT DISTINCT
 
 	-- KOULUTUSMUUTTUJAT
 		,oppimaara_sv											= CASE 
-																	WHEN oppimaara = 'Aikuisten oppim‰‰r‰' THEN 'L‰rokursen fˆr vuxna'
-																	WHEN oppimaara = 'Aineopiskelija (ei tutkintotavoitetta)' THEN 'ƒmnesstuderande (Ingen mÂlexamen)'
-																	WHEN oppimaara = 'Nuorten oppim‰‰r‰' THEN 'L‰rokursen fˆr unga'
-																	WHEN oppimaara = 'Ulkomainen tutkinto' THEN 'Utl‰ndsk examen' 
+																	WHEN oppimaara = 'Aikuisten oppim√§√§r√§' THEN 'L√§rokursen f√∂r vuxna'
+																	WHEN oppimaara = 'Aineopiskelija (ei tutkintotavoitetta)' THEN '√§mnesstuderande (Ingen m√•lexamen)'
+																	WHEN oppimaara = 'Nuorten oppim√§√§r√§' THEN 'L√§rokursen f√∂r unga'
+																	WHEN oppimaara = 'Ulkomainen tutkinto' THEN 'Utl√§ndsk examen' 
 																  END
 		,tavoitetutkinto_sv										= CASE 
 																	WHEN tavoitetutkinto = 'Ylioppilastutkinto' THEN 'Studentexamen' 
 																	WHEN tavoitetutkinto = 'IB-tutkinto (International Baccalaureate)' THEN 'IB-examen (International Baccalaureate)' 
-																	WHEN tavoitetutkinto = 'Ei tutkintotavoitetta' THEN  'Ingen mÂlexamen'
+																	WHEN tavoitetutkinto = 'Ei tutkintotavoitetta' THEN  'Ingen m√•lexamen'
 																	ELSE tavoitetutkinto 
 																  END
 		,koulutus_sv											= CASE
 																	WHEN koulutusluokitus_fi in ('Lukiokoulutukseen valmistava koulutus', 'Tutkintokoulutukseen valmentava koulutus') THEN koulutusluokitus_sv
-																	ELSE 'Allm‰nbildande gymnasieutbildning' 
+																	ELSE 'Allm√§nbildande gymnasieutbildning' 
 																  END
 		,majoitus_sv 											= d16.kytkin_sv
 		,sisaoppilaitosmuotoinen_majoitus_sv 						= d17.kytkin_sv
 		,suorituskieliryhma_sv 											= d15.kieliryhma2_sv
 		,suorituskieli_sv 										= d15.suorituskieli_yleissivistava_sv 
 
-	-- HENKIL÷MUUTTUJAT
+	-- HENKIL√∂MUUTTUJAT
 		,ika_sv													= d4.ikaryhma6_sv
 		,aidinkieli_sv 											= d6.kieliryhma2_sv
 		,kansalaisuus_sv 										= d1.maanosa1_sv
 		,kansalaisuus_maanosa_sv 								= COALESCE(d1.maanosa_sv, 'Information saknas')
 		,sukupuoli_sv 											= COALESCE(d3.[sukupuoli_sv], 'Information saknas')
-		,ikaryhma_sv 											= COALESCE(d4.ikaryhma3_sv, 'Ok‰nd')
+		,ikaryhma_sv 											= COALESCE(d4.ikaryhma3_sv, 'Ok√§nd')
 		,oppivelvollinen_1_8_2021_sv							= d18.kytkin_sv
 
 	-- ORGANISAATIOMUUTTUJAT
-		-- Koulutuksen j‰rjest‰j‰
+		-- Koulutuksen j√§rjest√§j√§
 		,koulutuksen_jarjestaja_sv							= d7.organisaatio_sv
 		,koulutuksen_jarjestajan_yritysmuoto_sv 			= d7.koulutuksen_jarjestajan_yritysmuoto_sv
 		,koulutuksen_jarjestajan_kunta_sv 					= d10.kunta_sv
@@ -151,7 +151,7 @@ SELECT DISTINCT
 		,koodit_oppilaitoksen_kunta 								= d8.kunta_koodi
 		,koodit_oppilaitoksen_seutukunta 							= d11.seutukunta_koodi
 
-	-- JƒRJESTYSMUUTTUJAT
+	-- J√§RJESTYSMUUTTUJAT
 		,case
 			when f.ika = -1 then 99 
 			when f.[ika] < 15 then 0 
@@ -163,9 +163,9 @@ SELECT DISTINCT
 		,jarjestys_sukupuoli	 									= COALESCE(d3.jarjestys_sukupuoli_koodi, 999)
 		,d4.jarjestys_ikaryhma3
 		,CASE
-			WHEN f.oppimaara = 'Aikuisten oppim‰‰r‰' THEN 2
+			WHEN f.oppimaara = 'Aikuisten oppim√§√§r√§' THEN 2
 			WHEN f.oppimaara = 'Aineopiskelija (ei tutkintotavoitetta)' THEN 4
-			WHEN f.oppimaara = 'Nuorten oppim‰‰r‰' THEN 1
+			WHEN f.oppimaara = 'Nuorten oppim√§√§r√§' THEN 1
 			WHEN f.oppimaara = 'Ulkomainen tutkinto' THEN 3
 			ELSE 999 
 		END AS jarjestys_oppimaara

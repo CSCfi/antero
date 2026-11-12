@@ -25,14 +25,14 @@ SELECT
 	end as apusarake_suorittanut_tutkinnon,
 
 	CASE 
-		WHEN d5.kytkin_fi = 'Kyll‰' THEN d1.selite_fi
-		WHEN d3.kytkin_fi = 'Kyll‰' THEN 'Paikallinen tutkinnon osa'
+		WHEN d5.kytkin_fi = 'Kyll√§' THEN d1.selite_fi
+		WHEN d3.kytkin_fi = 'Kyll√§' THEN 'Paikallinen tutkinnon osa'
 		ELSE d1.selite_fi
 	END as tutkinnon_osa_fi,
 
 	CASE 
-		WHEN d5.kytkin_fi = 'Kyll‰' THEN d1.selite_sv
-		WHEN d3.kytkin_fi = 'Kyll‰' THEN 'Lokal examensdel'
+		WHEN d5.kytkin_fi = 'Kyll√§' THEN d1.selite_sv
+		WHEN d3.kytkin_fi = 'Kyll√§' THEN 'Lokal examensdel'
 		ELSE d1.selite_sv
 	END as tutkinnon_osa_sv,
 

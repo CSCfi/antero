@@ -21,19 +21,19 @@ SELECT
 		ELSE CONCAT(d1b.vuosi, ' ' ,d1b.lukukausi_fi)
 	END as 'Ammatillisen perustutkinnon suorituslukukausi',
 	CASE
-		WHEN d1c.vuosi is null THEN 'Ei lukion oppim‰‰r‰‰'
+		WHEN d1c.vuosi is null THEN 'Ei lukion oppim√§√§r√§√§'
 		ELSE CONCAT(d1c.vuosi, ' ' ,d1c.lukukausi_fi)
-	END as 'Lukion oppim‰‰r‰n suorituslukukausi',
+	END as 'Lukion oppim√§√§r√§n suorituslukukausi',
 	CASE
 		WHEN d1d.vuosi is null THEN 'Ei ylioppilastutkintoa'
 		ELSE CONCAT(d1d.vuosi, ' ' ,d1d.lukukausi_fi)
 	END as 'Ylioppilastutkinnon suorituslukukausi',
 
-	-- Henkilˆmuuttujat
+	-- Henkil√∂muuttujat
 	d2.maanosa1_fi as Kansalaisuus,
-	d3.kieli_fi as 'ƒidinkieli',
+	d3.kieli_fi as '√Ñidinkieli',
 	d4.sukupuoli_fi as Sukupuoli,
-	d7.ika_fi as 'Ik‰',
+	d7.ika_fi as 'Ik√§',
 
 	-- Koulutusmuuttujat
 	d5.koulutusalataso1_fi as 'Koulutusala, taso 1 (ammatillinen perustutkinto)',
@@ -52,14 +52,14 @@ SELECT
 	CASE 
 		WHEN f.suoritetut_kurssit_lukio is null or f.suoritetut_kurssit_lukio = 0 THEN 'Ei suorituksia'
 		ELSE CONCAT(FLOOR(cast(suoritetut_kurssit_lukio as float) / 10) * 10 + 1, '-', CEILING(cast(suoritetut_kurssit_lukio as float) / 10 + 0.001) * 10, ' ', d8.nimi)
-	END as 'Lukio-opintojen laajuus opintopisteiss‰ (tarkka)',
+	END as 'Lukio-opintojen laajuus opintopisteiss√§ (tarkka)',
 	CASE 
 		WHEN f.suoritetut_kurssit_lukio is null or f.suoritetut_kurssit_lukio = 0 THEN 'Ei suorituksia'
 		ELSE CONCAT(FLOOR(cast(suoritetut_kurssit_lukio as float) / 50) * 50 + 1, '-', CEILING(cast(suoritetut_kurssit_lukio as float) / 50 + 0.001) * 50, ' ', d8.nimi)
-	END as 'Lukio-opintojen laajuus opintopisteiss‰',
+	END as 'Lukio-opintojen laajuus opintopisteiss√§',
 	CASE WHEN d1d.vuosi is not null THEN COALESCE(d11.aine_selite_fi, 'Tieto puuttuu') ELSE COALESCE(d11.aine_selite_fi, 'Ei ylioppilastutkintoa') END as 'Ylioppilastutkinnon aine',
 	CASE
-		WHEN f.master_oid_tiedossa = 0 THEN 'Tieto ammatillisen perustutkinnon ja lukion oppim‰‰r‰n suorittamisesta puuttuu'
+		WHEN f.master_oid_tiedossa = 0 THEN 'Tieto ammatillisen perustutkinnon ja lukion oppim√§√§r√§n suorittamisesta puuttuu'
 		WHEN f.hetu_tiedossa = 0 THEN 'Tieto ylioppilastutkinnon suorittamisesta puuttuu'
 		ELSE 'Ei puutteitta'
 	END as 'Suoritustietojen kattavuus',
@@ -69,58 +69,58 @@ SELECT
 		WHEN f.kaksoistutkinto_sama_lk = 1 THEN 'Kaksoistutkinto'
 		WHEN d1b.vuosi = d1a.vuosi and d1b.lukukausi_fi = d1a.lukukausi_fi THEN 'Ammatillinen perustutkinto'
 		WHEN d1d.vuosi = d1a.vuosi and d1d.lukukausi_fi = d1a.lukukausi_fi THEN 'Ylioppilastutkinto'
-		ELSE 'Lukion oppim‰‰r‰'
+		ELSE 'Lukion oppim√§√§r√§'
 	END as 'Suorituksen tyyppi (suoritus samana lukukautena)', 
 	CASE 
 		WHEN f.kolmoistutkinto_1_lk = 1 THEN 'Kolmoistutkinto'
 		WHEN f.kaksoistutkinto_1_lk = 1 THEN 'Kaksoistutkinto'
 		WHEN d1b.vuosi = d1a.vuosi and d1b.lukukausi_fi = d1a.lukukausi_fi THEN 'Ammatillinen perustutkinto'
 		WHEN d1d.vuosi = d1a.vuosi and d1d.lukukausi_fi = d1a.lukukausi_fi THEN 'Ylioppilastutkinto'
-		ELSE 'Lukion oppim‰‰r‰'
-	END as 'Suorituksen tyyppi (suoritus enint‰‰n 2 lukukautena)',
+		ELSE 'Lukion oppim√§√§r√§'
+	END as 'Suorituksen tyyppi (suoritus enint√§√§n 2 lukukautena)',
 	CASE 
 		WHEN f.kolmoistutkinto_2_lk = 1 THEN 'Kolmoistutkinto'
 		WHEN f.kaksoistutkinto_2_lk = 1 THEN 'Kaksoistutkinto'
 		WHEN d1b.vuosi = d1a.vuosi and d1b.lukukausi_fi = d1a.lukukausi_fi THEN 'Ammatillinen perustutkinto'
 		WHEN d1d.vuosi = d1a.vuosi and d1d.lukukausi_fi = d1a.lukukausi_fi THEN 'Ylioppilastutkinto'
-		ELSE 'Lukion oppim‰‰r‰'
-	END as 'Suorituksen tyyppi (suoritus enint‰‰n 3 lukukautena)', 
+		ELSE 'Lukion oppim√§√§r√§'
+	END as 'Suorituksen tyyppi (suoritus enint√§√§n 3 lukukautena)', 
 	CASE 
 		WHEN f.kolmoistutkinto_3_lk = 1 THEN 'Kolmoistutkinto'
 		WHEN f.kaksoistutkinto_3_lk = 1 THEN 'Kaksoistutkinto'
 		WHEN d1b.vuosi = d1a.vuosi and d1b.lukukausi_fi = d1a.lukukausi_fi THEN 'Ammatillinen perustutkinto'
 		WHEN d1d.vuosi = d1a.vuosi and d1d.lukukausi_fi = d1a.lukukausi_fi THEN 'Ylioppilastutkinto'
-		ELSE 'Lukion oppim‰‰r‰'
-	END as 'Suorituksen tyyppi (suoritus enint‰‰n 4 lukukautena)', 
+		ELSE 'Lukion oppim√§√§r√§'
+	END as 'Suorituksen tyyppi (suoritus enint√§√§n 4 lukukautena)', 
 
 	CASE
 		WHEN f.amm_lukio_ero = -1 THEN 'Ei suoritettu'
 		ELSE cast(f.amm_lukio_ero as varchar) 
-	END as 'Lukukaudet ammatillisen tutkinnon ja lukion oppim‰‰r‰n v‰lill‰',
+	END as 'Lukukaudet ammatillisen tutkinnon ja lukion oppim√§√§r√§n v√§lill√§',
 	CASE
 		WHEN f.lukio_yo_ero = -1 THEN 'Ei suoritettu'
 		ELSE cast(f.lukio_yo_ero as varchar) 
-	END as 'Lukukaudet lukion oppim‰‰r‰n ja ylioppilastutkinnon v‰lill‰',
+	END as 'Lukukaudet lukion oppim√§√§r√§n ja ylioppilastutkinnon v√§lill√§',
 	CASE
 		WHEN amm_yo_ero = -1 THEN 'Ei suoritettu'
 		ELSE cast(amm_yo_ero as varchar) 
-	END as 'Lukukaudet ammatillisen tutkinnon ja ylioppilastutkinnon v‰lill‰',
+	END as 'Lukukaudet ammatillisen tutkinnon ja ylioppilastutkinnon v√§lill√§',
 	-- Organisaatiomuuttujat
 	d6a.organisaatio_fi as 'Ammatillisen perustutkinnon oppilaitos',
-	d6b.organisaatio_fi as 'Lukion oppim‰‰r‰n oppilaitos',
+	d6b.organisaatio_fi as 'Lukion oppim√§√§r√§n oppilaitos',
 	d6c.organisaatio_fi as 'Ylioppilastutkinnon oppilaitos',
-	d9a.organisaatio_fi as 'Ammatillisen perustutkinnon koulutuksen j‰rjest‰j‰',
-	d9b.organisaatio_fi as 'Lukion oppim‰‰r‰n koulutuksen j‰rjest‰j‰',
-	d9c.organisaatio_fi as 'Ylioppilastutkinnon koulutuksen j‰rjest‰j‰',
-	d10a.hyvinvointialue_fi as 'Ammatillisen perustutkinnon koulutuksen j‰rjest‰j‰n hyvinvointialue',
-	d10b.hyvinvointialue_fi as 'Lukion oppim‰‰r‰n koulutuksen j‰rjest‰j‰n hyvinvointialue',
-	d10c.hyvinvointialue_fi as 'Ylioppilastutkinnon koulutuksen j‰rjest‰j‰n hyvinvointialue',
-	d10a.maakunta_fi as 'Ammatillisen perustutkinnon koulutuksen j‰rjest‰j‰n maakunta',
-	d10b.maakunta_fi as 'Lukion oppim‰‰r‰n koulutuksen j‰rjest‰j‰n maakunta',
-	d10c.maakunta_fi as 'Ylioppilastutkinnon koulutuksen j‰rjest‰j‰n maakunta',
-	d10a.kunta_fi as 'Ammatillisen perustutkinnon koulutuksen j‰rjest‰j‰n kunta',
-	d10b.kunta_fi as 'Lukion oppim‰‰r‰n koulutuksen j‰rjest‰j‰n kunta',
-	d10c.kunta_fi as 'Ylioppilastutkinnon koulutuksen j‰rjest‰j‰n kunta',
+	d9a.organisaatio_fi as 'Ammatillisen perustutkinnon koulutuksen j√§rjest√§j√§',
+	d9b.organisaatio_fi as 'Lukion oppim√§√§r√§n koulutuksen j√§rjest√§j√§',
+	d9c.organisaatio_fi as 'Ylioppilastutkinnon koulutuksen j√§rjest√§j√§',
+	d10a.hyvinvointialue_fi as 'Ammatillisen perustutkinnon koulutuksen j√§rjest√§j√§n hyvinvointialue',
+	d10b.hyvinvointialue_fi as 'Lukion oppim√§√§r√§n koulutuksen j√§rjest√§j√§n hyvinvointialue',
+	d10c.hyvinvointialue_fi as 'Ylioppilastutkinnon koulutuksen j√§rjest√§j√§n hyvinvointialue',
+	d10a.maakunta_fi as 'Ammatillisen perustutkinnon koulutuksen j√§rjest√§j√§n maakunta',
+	d10b.maakunta_fi as 'Lukion oppim√§√§r√§n koulutuksen j√§rjest√§j√§n maakunta',
+	d10c.maakunta_fi as 'Ylioppilastutkinnon koulutuksen j√§rjest√§j√§n maakunta',
+	d10a.kunta_fi as 'Ammatillisen perustutkinnon koulutuksen j√§rjest√§j√§n kunta',
+	d10b.kunta_fi as 'Lukion oppim√§√§r√§n koulutuksen j√§rjest√§j√§n kunta',
+	d10c.kunta_fi as 'Ylioppilastutkinnon koulutuksen j√§rjest√§j√§n kunta',
 
 	-- Apumuuttujat
 	HASHBYTES('SHA2_256', vs.salt + f.master_oid) as oppija_oid,
@@ -137,11 +137,11 @@ SELECT
 	f.kolmoistutkinto_3_lk,
 
 	-- Koodit
-	d9a.organisaatio_koodi as 'Koodit Ammatillisen perustutkinnon koulutuksen j‰rjest‰j‰',
-	d9b.organisaatio_koodi as 'Koodit Lukion oppim‰‰r‰n koulutuksen j‰rjest‰j‰',
-	d9b.organisaatio_koodi as 'Koodit Ylioppilastutkinnon koulutuksen j‰rjest‰j‰',
+	d9a.organisaatio_koodi as 'Koodit Ammatillisen perustutkinnon koulutuksen j√§rjest√§j√§',
+	d9b.organisaatio_koodi as 'Koodit Lukion oppim√§√§r√§n koulutuksen j√§rjest√§j√§',
+	d9b.organisaatio_koodi as 'Koodit Ylioppilastutkinnon koulutuksen j√§rjest√§j√§',
 
-	-- J‰rjestys
+	-- J√§rjestys
 	CASE 
 		WHEN f.kolmoistutkinto_sama_lk = 1 THEN 1
 		WHEN f.kaksoistutkinto_sama_lk = 1 THEN 2
@@ -155,21 +155,21 @@ SELECT
 		WHEN d1b.vuosi = d1a.vuosi and d1b.lukukausi_fi = d1a.lukukausi_fi THEN 3
 		WHEN d1d.vuosi = d1a.vuosi and d1d.lukukausi_fi = d1a.lukukausi_fi THEN 4
 		ELSE 5
-	END as 'Jarjestys Suorituksen tyyppi suoritus enint‰‰n 2 lukukautena',
+	END as 'Jarjestys Suorituksen tyyppi suoritus enint√§√§n 2 lukukautena',
 	CASE 
 		WHEN f.kolmoistutkinto_2_lk = 1 THEN 1
 		WHEN f.kaksoistutkinto_2_lk = 1 THEN 2
 		WHEN d1b.vuosi = d1a.vuosi and d1b.lukukausi_fi = d1a.lukukausi_fi THEN 3
 		WHEN d1d.vuosi = d1a.vuosi and d1d.lukukausi_fi = d1a.lukukausi_fi THEN 4
 		ELSE 5
-	END as 'Jarjestys Suorituksen tyyppi suoritus enint‰‰n 3 lukukautena', 
+	END as 'Jarjestys Suorituksen tyyppi suoritus enint√§√§n 3 lukukautena', 
 	CASE 
 		WHEN f.kolmoistutkinto_3_lk = 1 THEN 1
 		WHEN f.kaksoistutkinto_3_lk = 1 THEN 2
 		WHEN d1b.vuosi = d1a.vuosi and d1b.lukukausi_fi = d1a.lukukausi_fi THEN 3
 		WHEN d1d.vuosi = d1a.vuosi and d1d.lukukausi_fi = d1a.lukukausi_fi THEN 4
 		ELSE 5
-	END as 'Jarjestys Suorituksen tyyppi suoritus enint‰‰n 4 lukukautena',
+	END as 'Jarjestys Suorituksen tyyppi suoritus enint√§√§n 4 lukukautena',
 		CASE 
 		WHEN f.suoritetut_kurssit_lukio is null or f.suoritetut_kurssit_lukio = 0 THEN 9999
 		ELSE FLOOR(cast(suoritetut_kurssit_lukio as float) / 2 / 5) * 5 + 1
@@ -181,22 +181,22 @@ SELECT
 	CASE 
 		WHEN f.suoritetut_kurssit_lukio is null or f.suoritetut_kurssit_lukio = 0 THEN 9999
 		ELSE FLOOR(cast(suoritetut_kurssit_lukio as float) / 10) * 10 + 1
-	END as 'Jarjestys Lukio-opintojen laajuus opintopisteiss‰ (tarkka)',
+	END as 'Jarjestys Lukio-opintojen laajuus opintopisteiss√§ (tarkka)',
 	CASE 
 		WHEN f.suoritetut_kurssit_lukio is null or f.suoritetut_kurssit_lukio = 0 THEN 9999
 		ELSE FLOOR(cast(suoritetut_kurssit_lukio as float) / 50) * 50 + 1
-	END as 'Jarjestys Lukio-opintojen laajuus opintopisteiss‰',
+	END as 'Jarjestys Lukio-opintojen laajuus opintopisteiss√§',
 
 	d10a.jarjestys_hyvinvointialue_koodi as 'Jarjestys Ammatillisen perustutkinnon koulutuksen jarjestajan hyvinvointialue',
-	d10b.jarjestys_hyvinvointialue_koodi as 'Jarjestys Lukion oppim‰‰r‰n koulutuksen jarjestajan hyvinvointialue',
+	d10b.jarjestys_hyvinvointialue_koodi as 'Jarjestys Lukion oppim√§√§r√§n koulutuksen jarjestajan hyvinvointialue',
 	d10c.jarjestys_hyvinvointialue_koodi as 'Jarjestys Ylioppilastutkinnon koulutuksen jarjestajan hyvinvointialue',
 	d10a.jarjestys_maakunta_koodi as 'Jarjestys Ammatillisen perustutkinnon koulutuksen jarjestajan maakunta',
-	d10b.jarjestys_maakunta_koodi as 'Jarjestys Lukion oppim‰‰r‰n koulutuksen jarjestajan maakunta',
+	d10b.jarjestys_maakunta_koodi as 'Jarjestys Lukion oppim√§√§r√§n koulutuksen jarjestajan maakunta',
 	d10c.jarjestys_maakunta_koodi as 'Jarjestys Ylioppilastutkinnon koulutuksen jarjestajan maakunta',
 	d10a.jarjestys_kunta_koodi as 'Jarjestys Ammatillisen perustutkinnon koulutuksen jarjestajan kunta',
-	d10b.jarjestys_kunta_koodi as 'Jarjestys Lukion oppim‰‰r‰n koulutuksen jarjestajan kunta',
+	d10b.jarjestys_kunta_koodi as 'Jarjestys Lukion oppim√§√§r√§n koulutuksen jarjestajan kunta',
 	d10c.jarjestys_kunta_koodi as 'Jarjestys Ylioppilastutkinnon koulutuksen jarjestajan kunta',
-	CASE WHEN d1d.vuosi is not null THEN COALESCE(d11.aine_selite_fi, '÷÷ƒ') ELSE COALESCE(d11.aine_selite_fi, '÷÷÷') END as 'Jarjestys Ylioppilastutkinnon aine'
+	CASE WHEN d1d.vuosi is not null THEN COALESCE(d11.aine_selite_fi, '√∂√∂√§') ELSE COALESCE(d11.aine_selite_fi, '√∂√∂√∂') END as 'Jarjestys Ylioppilastutkinnon aine'
 
 FROM [ANTERO].[dw].[f_koski_kaksois_ja_kolmoistutkinnot] f
 LEFT JOIN [ANTERO].[dw].[d_kalenteri] d1a on d1a.id = f.d_kalenteri_id

@@ -11,7 +11,7 @@ GO
 
 CREATE OR ALTER VIEW [dw].[v_koski_lukio_opintojen_kulku_cultures] AS
 
-SELECT DISTINCT --TOP 1000
+SELECT DISTINCT 
 	opiskeluoikeus_oid = HASHBYTES('SHA2_256', vs.salt + f.opiskeluoikeus_oid),
 	oppija_oid = HASHBYTES('SHA2_256', vs.salt + f.master_oid),
 
@@ -69,7 +69,7 @@ SELECT DISTINCT --TOP 1000
 	[koodit_koulutuksen_jarjestaja] = d10.organisaatio_koodi,
 	[koodit_oppilaitos] = d11.organisaatio_koodi,
 
-	-- JÄRJESTYKSET
+	-- JÃ„RJESTYKSET
 	jarjestys_aloitusajankohta = d1.jarj_aloitusajankohta,
 	jarjestys_aloitusvuosipuolisko = d1.jarj_vuosipuolisko,
 	jarjestys_priorisoitu_tilanne = d2.priorisoitu_tilanne_koodi,

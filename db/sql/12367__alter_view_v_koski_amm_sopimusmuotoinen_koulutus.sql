@@ -16,17 +16,12 @@ SELECT
 -- AIKAMUUTTUJAT
 	[Koul. aloitusvuosi] = d6.vuosi
 	,[Koul. aloituskuukausi] = d6.kuukausi_fi
-	,[Koul. p‰‰ttymisvuosi] = d7.vuosi
---	,[Koul. p‰‰ttymisvuosi] =
---		CASE
---			WHEN d7.vuosi = -1 THEN 'Tieto puuttuu'
---			ELSE d7.vuosi
---		END
-	,[Koul. p‰‰ttymiskuukausi] = d7.kuukausi_fi
+	,[Koul. p√§√§ttymisvuosi] = d7.vuosi
+	,[Koul. p√§√§ttymiskuukausi] = d7.kuukausi_fi
 	,[Sopimuksen aloitusvuosi] = d8.vuosi
 	,[Sopimuksen aloituskuukausi] = d8.kuukausi_fi
-	,[Sopimuksen p‰‰ttymisvuosi] = d9.vuosi
-	,[Sopimuksen p‰‰ttymiskuukausi] = d9.kuukausi_fi
+	,[Sopimuksen p√§√§ttymisvuosi] = d9.vuosi
+	,[Sopimuksen p√§√§ttymiskuukausi] = d9.kuukausi_fi
 
 -- LASKENTAMUUTTUJAT
 	,oppija_oid = HASHBYTES('SHA2_256', vs.salt + f.oppija_oid)
@@ -45,14 +40,14 @@ SELECT
 		end
 	
 	,lkm = 1
-    ,[Ensimm‰inen sopimus] = [ensimmainen_sopimus]
-    ,[Ensimm‰inen sopimus yrityksess‰] = [ensimmainen_sopimus_yritys]
-    ,[V‰h. kaksi sopimusta] = [vahintaan_kaksi_sopimusta]
-    ,[V‰h. kaksi sopimusta yrityksess‰] = [vahintaan_kaksi_sopimusta_yritys]
+    ,[Ensimm√§inen sopimus] = [ensimmainen_sopimus]
+    ,[Ensimm√§inen sopimus yrityksess√§] = [ensimmainen_sopimus_yritys]
+    ,[V√§h. kaksi sopimusta] = [vahintaan_kaksi_sopimusta]
+    ,[V√§h. kaksi sopimusta yrityksess√§] = [vahintaan_kaksi_sopimusta_yritys]
     ,[sopimusten_lkm_opiskeluoikeudessa]
     ,[sopimusten_lkm_opiskeluoikeus_yritys]
     ,[Edellinen sopimus] = [edellinen_sopimus]
-    ,[Edellinen sopimus yrityksess‰] = [edellinen_sopimus_sama_yritys]
+    ,[Edellinen sopimus yrityksess√§] = [edellinen_sopimus_sama_yritys]
     ,[edellinen_sopimus_koso]
     ,[edellinen_sopimus_opso]
     ,[edellinen_sopimus_koso_yritys]
@@ -72,14 +67,14 @@ SELECT
 			else CAST(CEILING(paivat_tarkastettu * 1.0 / 7) AS nvarchar(13)) 
 		end
 
--- HENKIL÷MUUTTUJAT
+-- HENKIL√∂MUUTTUJAT
 	,[Sukupuoli] = d1.sukupuoli_fi
-	,[ƒidinkieli] = d2.kieli_fi
-	,[Ik‰] = d3.ika_fi 
-	,[Ik‰ryhm‰] = d3.ikaryhma3_fi
+	,[√Ñidinkieli] = d2.kieli_fi
+	,[Ik√§] = d3.ika_fi 
+	,[Ik√§ryhm√§] = d3.ikaryhma3_fi
 
 -- KOULUTUSMUUTTUJAT
-	,[Tutkintotyypin ryhm‰] = d4.tutkintotyypin_ryhma_fi --case when d18.koodi = 'muu' then 'Muu ammatillinen koulutus' else d4a.tutkintotyypin_ryhma_fi end
+	,[Tutkintotyypin ryhm√§] = d4.tutkintotyypin_ryhma_fi --case when d18.koodi = 'muu' then 'Muu ammatillinen koulutus' else d4a.tutkintotyypin_ryhma_fi end
     ,[Tutkintotyyppi] = d4.tutkintotyypin_ryhma_fi -- case when d18.koodi = 'muu' then 'Muu ammatillinen koulutus' else d4a.tutkintotyyppi_fi end
 	,[Tutkinto] = d4.koulutusluokitus_fi  
 	,[Koulutusala, taso 3] = d4.koulutusalataso3_fi  
@@ -91,21 +86,21 @@ SELECT
 
 -- ORGANISAATIOMUUTTUJAT
 	,[Oppilaitos] = d5.organisaatio_fi
-	,[Koulutuksen j‰rjest‰j‰] = d11.organisaatio_fi
+	,[Koulutuksen j√§rjest√§j√§] = d11.organisaatio_fi
 	,[Toimipiste] = d14.organisaatio_fi
 	,[Oppilaitoksen kunta] = d10.kunta_fi
 	,[Oppilaitoksen maakunta] = d10.maakunta_fi
 	,[Oppilaitoksen AVI] = d10.avi_fi
 	,[Oppilaitoksen ELY] = d10.ely_fi 
-	,[Koul. j‰rjest‰j‰n kunta] = d12.kunta_fi 
-	,[Koul. j‰rjest‰j‰n maakunta] = d12.maakunta_fi 
-	,[Koul. j‰rjest‰j‰n ELY] = d12.ely_fi 
-	,[Koul. j‰rjest‰j‰n AVI] = d12.avi_fi  
+	,[Koul. j√§rjest√§j√§n kunta] = d12.kunta_fi 
+	,[Koul. j√§rjest√§j√§n maakunta] = d12.maakunta_fi 
+	,[Koul. j√§rjest√§j√§n ELY] = d12.ely_fi 
+	,[Koul. j√§rjest√§j√§n AVI] = d12.avi_fi  
 
 -- SOPIMUSKOULUTUSMUUTTUJAT
-	,[Sopimus p‰‰ttynyt] =
+	,[Sopimus p√§√§ttynyt] =
 		CASE
-			WHEN sopimusjakso_loppunut = 1 THEN 'Kyll‰'
+			WHEN sopimusjakso_loppunut = 1 THEN 'Kyll√§'
 			WHEN sopimusjakso_loppunut = 0 THEN 'Ei'
 		END
 	,[Sopimusmuoto] = sopimusmuoto
@@ -117,15 +112,15 @@ SELECT
 	,[Yrityksen maakunta] = d32.maakunta_fi
 	,[Yrityksen AVI] = d32.avi_fi
 	,[Yrityksen ELY] = d32.ely_fi
-	,[P‰‰toimiala] = d31.selite_fi
-	,[P‰‰toimiala, taso 0] = d31.[taso_0_selite_fi]	
-	,[P‰‰toimiala, taso 1] = d31.[taso_1_selite_fi]
-	,[P‰‰toimiala, taso 2] = d31.[taso_2_selite_fi]
-	,[P‰‰toimiala, taso 3] = d31.[taso_3_selite_fi]
-	,[P‰‰toimiala, taso 4] = d31.[taso_4_selite_fi]
-	,[P‰‰toimiala, taso 5] = d31.[taso_5_selite_fi]
+	,[P√§√§toimiala] = d31.selite_fi
+	,[P√§√§toimiala, taso 0] = d31.[taso_0_selite_fi]	
+	,[P√§√§toimiala, taso 1] = d31.[taso_1_selite_fi]
+	,[P√§√§toimiala, taso 2] = d31.[taso_2_selite_fi]
+	,[P√§√§toimiala, taso 3] = d31.[taso_3_selite_fi]
+	,[P√§√§toimiala, taso 4] = d31.[taso_4_selite_fi]
+	,[P√§√§toimiala, taso 5] = d31.[taso_5_selite_fi]
 
--- JƒRJESTYSMUUTTUJAT
+-- J√§RJESTYSMUUTTUJAT
 	,d1.jarjestys_sukupuoli_koodi AS jarj_sukupuoli
 
 	,d6.kuukausi AS jarj_alkamiskuukausi
@@ -170,7 +165,7 @@ SELECT
 		end
 
 -- KOODIMUUTTUJAT
-    ,[Koodi P‰‰toimiala] = d31.[toimiala_koodi]
+    ,[Koodi P√§√§toimiala] = d31.[toimiala_koodi]
 	,[Koodi Yrityksen Y-tunnus] = d30.ytunnus
 	,[Koodi Yritysmuoto] = d30.yritysmuoto_koodi
 
@@ -189,7 +184,6 @@ LEFT JOIN dw.d_organisaatioluokitus d11 ON d11.id = f.d_organisaatioluokitus_jar
 LEFT JOIN dw.d_alueluokitus d12 ON d12.kunta_koodi = d11.kunta_koodi
 LEFT JOIN dw.d_kieli d13 ON d13.id = f.d_kieli_suorituskieli_id
 LEFT JOIN dw.d_organisaatioluokitus d14 ON d14.id = f.d_organisaatioluokitus_toimipiste_id
---LEFT JOIN dw.d_erityisopetus d13 ON d13.id = f.d_erityisopetus_id
 LEFT JOIN dw.d_suorituksen_tyyppi d17 ON d17.id = f.d_suorituksen_tyyppi_id
 LEFT JOIN dw.d_osaamisala d20 ON d20.id = f.d_osaamisala_id
 LEFT JOIN dw.d_ytj_yritystiedot d30 ON d30.id = f.d_ytj_yritystieto_id

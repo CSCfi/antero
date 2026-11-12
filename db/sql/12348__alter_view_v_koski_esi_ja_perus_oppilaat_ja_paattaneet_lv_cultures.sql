@@ -26,11 +26,11 @@ SELECT
   --FI
 	,lukukausi_fi = d14.selite_fi 
 
-	--hlˆ
-	,sukupuoli_fi = case d1.sukupuoli_koodi when '1' then 'Pojat' when '2' then 'Tytˆt' else 'Tieto puuttuu' end
+	--hl√∂
+	,sukupuoli_fi = case d1.sukupuoli_koodi when '1' then 'Pojat' when '2' then 'Tyt√∂t' else 'Tieto puuttuu' end
 	,ika_fi =
 		case 
-			when d3.ika_fi in ('0','1','2','3','4') then '4-vuotiaat ja sit‰ nuoremmat'
+			when d3.ika_fi in ('0','1','2','3','4') then '4-vuotiaat ja sit√§ nuoremmat'
 			when d3.ika_fi in ('5','6','7','8','9','10','11','12','13','14','15','16','17','18','19') then d3.ika_fi
 			else d3.ikaryhma3_fi
 		end
@@ -44,11 +44,11 @@ SELECT
 			else 'Tieto puuttuu' 
 		end
 	
-	--koulutus (osin hlˆ)
+	--koulutus (osin hl√∂)
 	,koulutusmuoto_fi = d24.koulutus_fi
 	,perusopetuksen_suoritustapa_fi = f.suoritustapa
 	,vuosiluokka_tai_koulutus_fi = d24.vuosiluokka_fi
-	,koulutus_fi = d24.vuosiluokka_fi --eri nimell‰ suorittaneet-raporttia varten
+	,koulutus_fi = d24.vuosiluokka_fi --eri nimell√§ suorittaneet-raporttia varten
 	,vuosiluokkaryhma_tai_koulutus_fi = d24.vuosiluokkaryhma_fi
 	,suorituskieli_fi = d23.suorituskieli_yleissivistava_fi
 	,muu_suorituskieli_fi = d23b.suorituskieli_yleissivistava_fi
@@ -66,7 +66,7 @@ SELECT
 			when 1.0 then 'Lukutaitovaihe' 
 			when 2.0 then 'Alkuvaihe' 
 			when 2.5 then 'Lukutaitovaihe tai alkuvaihe (ei tiedossa)'
-			when 3.0 then 'P‰‰ttˆvaihe' 
+			when 3.0 then 'P√§√§tt√∂vaihe' 
 			else 'Vaihe ei tiedossa' 
 		end
 	,vuosiluokkiin_sitomaton_opetus_fi = case when tutk > 0 or kuluva_lv_1_0 = 1 then d35.kytkin_fi else 'Tieto puuttuu' end
@@ -81,7 +81,7 @@ SELECT
 	,opetuksen_jarjestajan_hyvinvointialue_fi = d12.hyvinvointialue_fi
 	,opetuksen_jarjestajan_avi_fi = d12.avi_fi 
 	,opetuksen_jarjestajan_ely_fi = d12.ely_fi 
-	,erityinen_maailmankatsomus_tai_kasvatusopillinen_jarjestelma_fi = coalesce(d26.selite_fi, 'Ei erityisen maailmankatsomuksen tai kasvatusopillisen j‰rjestelm‰n teht‰v‰‰')
+	,erityinen_maailmankatsomus_tai_kasvatusopillinen_jarjestelma_fi = coalesce(d26.selite_fi, 'Ei erityisen maailmankatsomuksen tai kasvatusopillisen j√§rjestelm√§n teht√§v√§√§')
 	,oppilaitos_fi = d9.organisaatio_fi
 	,oppilaitosnumero_fi = d9.organisaatio_koodi 
 	,oppilaitoksen_opetuskieli_fi = d9.oppilaitoksenopetuskieli_fi
@@ -98,11 +98,11 @@ SELECT
   --SV
 	,lukukausi_sv = d14.selite_sv 
 
-	--hlˆ
+	--hl√∂
 	,sukupuoli_sv = case d1.sukupuoli_koodi when '1' then 'Pojkar' when '2' then 'Flickor' else 'Information saknas' end
 	,ika_sv =
 		case 
-			when d3.ika_sv in ('0','1','2','3','4') then '4 Âr eller yngre'
+			when d3.ika_sv in ('0','1','2','3','4') then '4 √•r eller yngre'
 			when d3.ika_sv in ('5','6','7','8','9','10','11','12','13','14','15','16','17','18','19') then d3.ika_sv
 			else d3.ikaryhma3_sv
 		end
@@ -112,7 +112,7 @@ SELECT
 	,kansalaisuus_ryhma_sv =
 		case 
 			when d22.maatjavaltiot2_koodi = '246' THEN d22.maatjavaltiot2_sv 
-			when d22.maatjavaltiot2_koodi <> '-1'  THEN '÷vrigt' 
+			when d22.maatjavaltiot2_koodi <> '-1'  THEN '√∂vrigt' 
 			else 'Information saknas' 
 		end
 	
@@ -120,7 +120,7 @@ SELECT
 	,koulutusmuoto_sv = d24.koulutus_sv
 	,perusopetuksen_suoritustapa_sv = f.suoritustapa
 	,vuosiluokka_tai_koulutus_sv = d24.vuosiluokka_sv
-	,koulutus_sv = d24.vuosiluokka_sv --eri nimell‰ suorittaneet-raporttia varten
+	,koulutus_sv = d24.vuosiluokka_sv --eri nimell√§ suorittaneet-raporttia varten
 	,vuosiluokkaryhma_tai_koulutus_sv = d24.vuosiluokkaryhma_sv
 	,suorituskieli_sv = d23.suorituskieli_yleissivistava_sv
 	,muu_suorituskieli_sv = d23b.suorituskieli_yleissivistava_sv
@@ -135,11 +135,11 @@ SELECT
 	,aikuisten_perusopetuksen_alkuvaiheen_opiskelija_sv = d34.kytkin_sv
 	,[aikuisten_perusopetuksen_vaihe_sv] =  
 		case vaihe_koodi_priorisoitu 
-			when 1.0 then 'L‰skunnighetsskedet' 
+			when 1.0 then 'L√§skunnighetsskedet' 
 			when 2.0 then 'Inledningsskedet' 
-			when 2.5 then 'L‰skunnighets- eller inledningsskedet (inte k‰nt)'
+			when 2.5 then 'L√§skunnighets- eller inledningsskedet (inte k√§nt)'
 			when 3.0 then 'Slutskedet' 
-			else 'Skede inte k‰nt' 
+			else 'Skede inte k√§nt' 
 		end
 	,vuosiluokkiin_sitomaton_opetus_sv = case when tutk > 0 or kuluva_lv_1_0 = 1 then d35.kytkin_sv else 'Information saknas' end
 	,ulkomailla_sv = d36.kytkin_sv
@@ -153,7 +153,7 @@ SELECT
 	,opetuksen_jarjestajan_hyvinvointialue_sv = d12.hyvinvointialue_sv 
 	,opetuksen_jarjestajan_avi_sv = d12.avi_sv 
 	,opetuksen_jarjestajan_ely_sv = d12.ely_sv 
-	,erityinen_maailmankatsomus_tai_kasvatusopillinen_jarjestelma_sv = coalesce(d26.selite_sv, 'Ingen uppgift som bygger pÂ s‰rskild v‰rldsÂskÂdning eller pedagogiskt system')
+	,erityinen_maailmankatsomus_tai_kasvatusopillinen_jarjestelma_sv = coalesce(d26.selite_sv, 'Ingen uppgift som bygger p√• s√§rskild v√§rlds√•sk√•dning eller pedagogiskt system')
 	,oppilaitos_sv = d9.organisaatio_sv
 	,oppilaitosnumero_sv = d9.organisaatio_koodi 
 	,oppilaitoksen_opetuskieli_sv = d9.oppilaitoksenopetuskieli_sv

@@ -20,7 +20,7 @@ SELECT
     ,d11.kuukausi_fi as tilastokuukausi_fi
 	,d11.kuukausi_sv as tilastokuukausi_sv
 
-	-- Henkilˆmuuttujat
+	-- Henkil√∂muuttujat
 	,d1.sukupuoli_fi as sukupuoli_fi
 	,d1.sukupuoli_sv as sukupuoli_sv
 	,d2.ika_fi as ika_fi
@@ -69,8 +69,8 @@ SELECT
 	,d15.kunta_sv as perusopetuksen_suorituskunta_sv
 	,d15.maakunta_fi as perusopetuksen_suoritusmaakunta_fi
 	,d15.maakunta_sv as perusopetuksen_suoritusmaakunta_sv
-	,replace(cast(d18.vuosi as varchar), '-1', 'Ei perusopetuksen oppim‰‰r‰‰') as perusopetuksen_suoritusvuosi_fi
-	,replace(cast(d18.vuosi as varchar), '-1', 'Ingen l‰rokurs fˆr den grundl‰ggande utbildningen') as perusopetuksen_suoritusvuosi_sv
+	,replace(cast(d18.vuosi as varchar), '-1', 'Ei perusopetuksen oppim√§√§r√§√§') as perusopetuksen_suoritusvuosi_fi
+	,replace(cast(d18.vuosi as varchar), '-1', 'Ingen l√§rokurs f√∂r den grundl√§ggande utbildningen') as perusopetuksen_suoritusvuosi_sv
 	,d18.lukukausi_fi as perusopetuksen_suorituskausi_fi
 	,d18.lukukausi_sv as perusopetuksen_suorituskausi_sv
 	,d20.erityisopetus_ryhma_fi as erityisopetus_fi
@@ -107,7 +107,7 @@ SELECT
     ,HASHBYTES('SHA2_256', vs.salt + f.[master_oid]) as apusarake_oppija_oid
 	,f.[ajankohta] as apusarake_tiedon_ajankohta
 
-	-- J‰rjestysmuuttujat
+	-- Jarjestysmuuttujat
 	,d17.jarjestys AS jarjestys_oppivelvollisen_toiminta_taso_1
 	,d17.jarjestys2 AS jarjestys_oppivelvollisen_toiminta_taso_2
 

@@ -12,9 +12,9 @@ GO
 CREATE OR ALTER  VIEW [dw].[v_koski_ammatillisen_koulutuksen_arvosanat_cultures] as
 
 SELECT
-	coalesce(cast(d8.vuosi as varchar), 'Koulutus ei ole p‰‰ttynyt') as koulutuksen_paattymisvuosi_fi,
+	coalesce(cast(d8.vuosi as varchar), 'Koulutus ei ole p√§√§ttynyt') as koulutuksen_paattymisvuosi_fi,
 	coalesce(cast(d8.vuosi as varchar), 'Utbildningen har inte avslutats') as koulutuksen_paattymisvuosi_sv,
-	coalesce(d8.kuukausi_fi, 'Koulutus ei ole p‰‰ttynyt') as koulutuksen_paattymiskuukausi_fi,
+	coalesce(d8.kuukausi_fi, 'Koulutus ei ole p√§√§ttynyt') as koulutuksen_paattymiskuukausi_fi,
 	coalesce(d8.kuukausi_sv, 'Utbildningen har inte avslutats') as koulutuksen_paattymiskuukausi_sv,
 	f.tutkinnon_osan_suoritusvuosi as tutkinnon_osan_suoritusvuosi_fi,
 	f.tutkinnon_osan_suoritusvuosi as tutkinnon_osan_suoritusvuosi_sv,
@@ -28,11 +28,11 @@ SELECT
 	laajuus_tutkinnon_osa as apusarake_laajuus_tutkinnon_osa,
 
 	CASE
-		WHEN d3.kytkin_fi = 'Kyll‰' and yto = 0 THEN 'Paikalliset ammatillisen tutkinnon osat'
+		WHEN d3.kytkin_fi = 'Kyll√§' and yto = 0 THEN 'Paikalliset ammatillisen tutkinnon osat'
 		ELSE COALESCE(d1.selite_fi, f.tutkinnonosa)
 	END as tutkinnon_osan_nimi_fi,
 	CASE
-		WHEN d3.kytkin_fi = 'Kyll‰' and yto = 0 THEN 'Lokala yrkesinriktade examensdelar'
+		WHEN d3.kytkin_fi = 'Kyll√§' and yto = 0 THEN 'Lokala yrkesinriktade examensdelar'
 		ELSE COALESCE(d1.selite_sv, f.tutkinnonosa)
 	END as tutkinnon_osan_nimi_sv,
 	CASE 
@@ -41,7 +41,7 @@ SELECT
 		ELSE COALESCE(d2.nimi, f.tutkinnonosan_osaalue)
 	END as yhteisen_tutkinnon_osan_osa_alueen_nimi_fi,
 	CASE 
-		WHEN yto = 1 AND d4.kytkin_koodi = 1 THEN 'Lokala delomrÂden av en gemensam examensdel'
+		WHEN yto = 1 AND d4.kytkin_koodi = 1 THEN 'Lokala delomr√•den av en gemensam examensdel'
 		WHEN yto = 0  THEN 'Yrkesexamensdel'
 		ELSE COALESCE(d2.nimi_sv, f.tutkinnonosan_osaalue)
 	END as yhteisen_tutkinnon_osan_osa_alueen_nimi_sv,
@@ -71,100 +71,100 @@ SELECT
 	d24.kytkin_sv as tyovoimakoulutus_sv,
 	case 
 		when oppisopimus_osuus <= 0 then '0 %'
-		when oppisopimus_osuus < 0.25 then '1ñ24 %'
-		when oppisopimus_osuus < 0.5 then '25ñ49 %'
-		when oppisopimus_osuus < 0.75 then '50ñ74 %'
-		when oppisopimus_osuus >= 0.75 then '75ñ100 %'
+		when oppisopimus_osuus < 0.25 then '1‚Äì24 %'
+		when oppisopimus_osuus < 0.5 then '25‚Äì49 %'
+		when oppisopimus_osuus < 0.75 then '50‚Äì74 %'
+		when oppisopimus_osuus >= 0.75 then '75‚Äì100 %'
 		else 'Tieto puuttuu'
 	end as oppisopimuksen_suoritusosuus_fi,
 	case 
 		when oppisopimus_osuus <= 0 then '0 %'
-		when oppisopimus_osuus < 0.25 then '1ñ24 %'
-		when oppisopimus_osuus < 0.5 then '25ñ49 %'
-		when oppisopimus_osuus < 0.75 then '50ñ74 %'
-		when oppisopimus_osuus >= 0.75 then '75ñ100 %'
+		when oppisopimus_osuus < 0.25 then '1‚Äì24 %'
+		when oppisopimus_osuus < 0.5 then '25‚Äì49 %'
+		when oppisopimus_osuus < 0.75 then '50‚Äì74 %'
+		when oppisopimus_osuus >= 0.75 then '75‚Äì100 %'
 		else 'Information saknas'
 	end as oppisopimuksen_suoritusosuus_sv,
 	
 	case 
 		when koulutussopimus_osuus <= 0 then '0 %'
-		when koulutussopimus_osuus < 0.25 then '1ñ24 %'
-		when koulutussopimus_osuus < 0.5 then '25ñ49 %'
-		when koulutussopimus_osuus < 0.75 then '50ñ74 %'
-		when koulutussopimus_osuus >= 0.75 then '75ñ100 %'
+		when koulutussopimus_osuus < 0.25 then '1‚Äì24 %'
+		when koulutussopimus_osuus < 0.5 then '25‚Äì49 %'
+		when koulutussopimus_osuus < 0.75 then '50‚Äì74 %'
+		when koulutussopimus_osuus >= 0.75 then '75‚Äì100 %'
 		else 'Tieto puuttuu'
 	end as koulutussopimuksen_suoritusosuus_fi,
 	case 
 		when koulutussopimus_osuus <= 0 then '0 %'
-		when koulutussopimus_osuus < 0.25 then '1ñ24 %'
-		when koulutussopimus_osuus < 0.5 then '25ñ49 %'
-		when koulutussopimus_osuus < 0.75 then '50ñ74 %'
-		when koulutussopimus_osuus >= 0.75 then '75ñ100 %'
+		when koulutussopimus_osuus < 0.25 then '1‚Äì24 %'
+		when koulutussopimus_osuus < 0.5 then '25‚Äì49 %'
+		when koulutussopimus_osuus < 0.75 then '50‚Äì74 %'
+		when koulutussopimus_osuus >= 0.75 then '75‚Äì100 %'
 		else 'Information saknas'
 	end as koulutussopimuksen_suoritusosuus_sv,
 	CASE
 		WHEN f.laajuus_tutkinnon_osa is null THEN 'Tieto puuttuu'
 		WHEN f.laajuus_tutkinnon_osa = 1 THEN '1 osaamispiste'
-		ELSE CONCAT(CAST(f.laajuus_tutkinnon_osa as varchar), ' osaamispistett‰')
+		ELSE CONCAT(CAST(f.laajuus_tutkinnon_osa as varchar), ' osaamispistett√§')
 	END as tutkinnon_osan_laajuus_fi,
 	CASE
 		WHEN f.laajuus_tutkinnon_osa is null THEN 'Information saknas'
-		ELSE CONCAT(CAST(f.laajuus_tutkinnon_osa as varchar), ' kompetenspo‰ng')
+		ELSE CONCAT(CAST(f.laajuus_tutkinnon_osa as varchar), ' kompetenspo√§ng')
 	END as tutkinnon_osan_laajuus_sv,
 	CASE
 		WHEN f.laajuus is null OR yto = 0 THEN 'Tieto puuttuu'
 		WHEN f.laajuus = 1 THEN '1 osaamispiste'
-		ELSE CONCAT(CAST(f.laajuus as varchar), ' osaamispistett‰')
+		ELSE CONCAT(CAST(f.laajuus as varchar), ' osaamispistett√§')
 	END as yhteisen_tutkinnon_osan_osa_alueen_laajuus_fi,
 	CASE
 		WHEN f.laajuus is null OR yto = 0 THEN 'Information saknas'
-		ELSE CONCAT(CAST(f.laajuus as varchar), ' kompetenspo‰ng')
+		ELSE CONCAT(CAST(f.laajuus as varchar), ' kompetenspo√§ng')
 	END as yhteisen_tutkinnon_osan_osa_alueen_laajuus_sv,
 
 	CASE
 		WHEN yto = 1 THEN 'Yhteinen tutkinnon osa'
-		WHEN d3.kytkin_fi = 'Kyll‰' THEN 'Paikallinen ammatillinen tutkinnon osa'
-		WHEN d5.kytkin_fi = 'Kyll‰' THEN 'Pakollinen ammatillinen tutkinnon osa'
+		WHEN d3.kytkin_fi = 'Kyll√§' THEN 'Paikallinen ammatillinen tutkinnon osa'
+		WHEN d5.kytkin_fi = 'Kyll√§' THEN 'Pakollinen ammatillinen tutkinnon osa'
 		WHEN d5.kytkin_fi = 'Ei' THEN 'Valinnainen ammatillinen tutkinnon osa'
 		ELSE 'Tieto puuttuu'
 	END as tutkinnon_osa_fi,
 	CASE
 		WHEN yto = 1 THEN 'Gemensam examensdel'
-		WHEN d3.kytkin_fi = 'Kyll‰' THEN 'Lokal yrkesinriktad examensdel'
-		WHEN d5.kytkin_fi = 'Kyll‰' THEN 'Obligatorisk yrkesinriktad examensdel'
+		WHEN d3.kytkin_fi = 'Kyll√§' THEN 'Lokal yrkesinriktad examensdel'
+		WHEN d5.kytkin_fi = 'Kyll√§' THEN 'Obligatorisk yrkesinriktad examensdel'
 		WHEN d5.kytkin_fi = 'Ei' THEN 'Valbar yrkesinriktad examensdel'
 		ELSE 'Information saknas'
 	END as tutkinnon_osa_sv,
 	CASE 
-		WHEN d4.kytkin_fi = 'Kyll‰' THEN 'Paikallinen yhteisen tutkinnon osan osa-alue'
-		WHEN d6.kytkin_fi = 'Kyll‰' THEN 'Pakollinen yhteisen tutkinnon osan osa-alue'
+		WHEN d4.kytkin_fi = 'Kyll√§' THEN 'Paikallinen yhteisen tutkinnon osan osa-alue'
+		WHEN d6.kytkin_fi = 'Kyll√§' THEN 'Pakollinen yhteisen tutkinnon osan osa-alue'
 		WHEN d6.kytkin_fi = 'Ei' THEN 'Valinnainen yhteisen tutkinnon osan osa-alue'
 		ELSE 'Tieto puuttuu'
 	END as yhteisen_tutkinnon_osan_osa_alue_fi,
 	CASE 
-		WHEN d4.kytkin_fi = 'Kyll‰' THEN 'Lokalt delomrÂde av en gemensam examensdel'
-		WHEN d6.kytkin_fi = 'Kyll‰' THEN 'Obligatoriskt delomrÂde av en gemensam examensdel'
-		WHEN d6.kytkin_fi = 'Ei' THEN 'Valbart delomrÂde av en gemensam examensdel'
+		WHEN d4.kytkin_fi = 'Kyll√§' THEN 'Lokalt delomr√•de av en gemensam examensdel'
+		WHEN d6.kytkin_fi = 'Kyll√§' THEN 'Obligatoriskt delomr√•de av en gemensam examensdel'
+		WHEN d6.kytkin_fi = 'Ei' THEN 'Valbart delomr√•de av en gemensam examensdel'
 		ELSE 'Information saknas'
 	END as yhteisen_tutkinnon_osan_osa_alue_sv,
 	CASE 
-		WHEN d26.kytkin_fi = 'Kyll‰' THEN 'Tunnustettu tutkinnon osa' 
+		WHEN d26.kytkin_fi = 'Kyll√§' THEN 'Tunnustettu tutkinnon osa' 
 		WHEN d26.kytkin_fi = 'Ei' THEN 'Suoritettu tutkinnon osa'
 		ELSE d26.kytkin_fi
 	END as suoritettu_tunnustettu_tutkinnon_osa_fi,
 	CASE 
-		WHEN d26.kytkin_fi = 'Kyll‰' THEN 'Erk‰nd examensdel' 
-		WHEN d26.kytkin_fi = 'Ei' THEN 'Genomfˆrd examensdel'
+		WHEN d26.kytkin_fi = 'Kyll√§' THEN 'Erk√§nd examensdel' 
+		WHEN d26.kytkin_fi = 'Ei' THEN 'Genomf√∂rd examensdel'
 		ELSE d26.kytkin_fi
 	END as suoritettu_tunnustettu_tutkinnon_osa_sv,
 	CASE 
-		WHEN d27.kytkin_fi = 'Kyll‰' THEN 'Tunnustettu yhteisen tutkinnon osan osa-alue' 
+		WHEN d27.kytkin_fi = 'Kyll√§' THEN 'Tunnustettu yhteisen tutkinnon osan osa-alue' 
 		WHEN d27.kytkin_fi = 'Ei' THEN 'Suoritettu yhteisen tutkinnon osan osa-alue'
 		ELSE d27.kytkin_fi
 	END suoritettu_tunnustettu_yhteisen_tutkinnon_osan_osa_alue_fi,
 	CASE 
-		WHEN d27.kytkin_fi = 'Kyll‰' THEN 'Erk‰nt delomrÂde av en gemensam examensdel' 
-		WHEN d27.kytkin_fi = 'Ei' THEN 'Genomfˆrt delomrÂde av en gemensam examensdel'
+		WHEN d27.kytkin_fi = 'Kyll√§' THEN 'Erk√§nt delomr√•de av en gemensam examensdel' 
+		WHEN d27.kytkin_fi = 'Ei' THEN 'Genomf√∂rt delomr√•de av en gemensam examensdel'
 		ELSE d27.kytkin_fi
 	END suoritettu_tunnustettu_yhteisen_tutkinnon_osan_osa_alue_sv,
 
@@ -263,19 +263,19 @@ SELECT
 		ELSE COALESCE(d2.nimi, f.tutkinnonosan_osaalue)
 	END as jarjestys_yhteisen_tutkinnon_osan_osa_alueen_nimi,
 	CASE
-		WHEN d3.kytkin_fi = 'Kyll‰' and yto = 0 THEN 'ZZZ'
+		WHEN d3.kytkin_fi = 'Kyll√§' and yto = 0 THEN 'ZZZ'
 		ELSE COALESCE(d1.selite_fi, f.tutkinnonosa)
 	END as jarjestys_tutkinnon_osan_nimi,
 	CASE
 		WHEN yto = 1 THEN 1
-		WHEN d5.kytkin_fi = 'Kyll‰' THEN 2
-		WHEN d3.kytkin_fi = 'Kyll‰' THEN 3
+		WHEN d5.kytkin_fi = 'Kyll√§' THEN 2
+		WHEN d3.kytkin_fi = 'Kyll√§' THEN 3
 		WHEN d5.kytkin_fi = 'Ei' THEN 4
 		ELSE 9
 	END as jarjestys_tutkinnon_osa,
 	CASE 
-		WHEN d6.kytkin_fi = 'Kyll‰' THEN 1
-		WHEN d4.kytkin_fi = 'Kyll‰' THEN 2
+		WHEN d6.kytkin_fi = 'Kyll√§' THEN 1
+		WHEN d4.kytkin_fi = 'Kyll√§' THEN 2
 		WHEN d6.kytkin_fi = 'Ei' THEN 3
 		ELSE 9
 	END as jarjestys_yhteisen_tutkinnon_osan_osa_alue,

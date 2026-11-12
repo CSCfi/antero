@@ -11,8 +11,7 @@ GO
 
 CREATE OR ALTER VIEW [dw].[v_koski_amm_opiskelijat_ja_tutkinnot_cultures] AS
 
-SELECT --top 1000
-	
+SELECT
 	[opiskeluoikeuden_alkamisajankohta] = oo_alkamisajankohta
 
 	--fi
@@ -122,7 +121,7 @@ SELECT --top 1000
 	,[ikaryhma2_sv] =
 		case
 			when d3.[ika_avain] <= 18 then d3.[ikaryhma2_sv]
-			else 'ˆver 18 Âr'
+			else '√∂ver 18 √•r'
 		end
 	,[kansalaisuus_tarkka_sv] = d22.maatjavaltiot2_sv
 	,[kansalaisuus_sv] = d22.maanosa6_sv
@@ -130,13 +129,13 @@ SELECT --top 1000
 	,[kotikunta_nykyinen_sv] = d0.kunta_sv
 	,[kotimaakunta_nykyinen_sv] = d0.maakunta_sv
 	,[kotikunnan_hyvinvointialue_nykyinen_sv] = d0.hyvinvointialue_sv
-	,[tutkintotyypin_ryhma_sv] = case when d24.kytkin_koodi = 1 then '÷vrig yrkesinriktad utbildning' else d4.tutkintotyypin_ryhma_sv end  
+	,[tutkintotyypin_ryhma_sv] = case when d24.kytkin_koodi = 1 then '√∂vrig yrkesinriktad utbildning' else d4.tutkintotyypin_ryhma_sv end  
 	,[tutkintotyyppi_sv] = 
 		case 
 			when valmentava_koodi = 1 then 'VALMA' 
 			when valmentava_koodi = 2 then 'TELMA' 
 			when valmentava_koodi = 3 then 'TUVA' 
-			when d24.kytkin_koodi = 1 then '÷vrig yrkesinriktad utbildning' 
+			when d24.kytkin_koodi = 1 then '√∂vrig yrkesinriktad utbildning' 
 			else d4.tutkintotyyppi_sv 
 		end
 	,[tutkinto_sv] = d4.koulutusluokitus_sv  
@@ -190,12 +189,12 @@ SELECT --top 1000
 
 	,[ika_opiskeluoikeuden_alkamisvuonna_sv] = d27.ikaryhma6_sv
 	,[ika_opiskeluoikeuden_alkamishetkella_sv] = d28.ikaryhma6_sv
-	,[ika_oppisopimusjakson_alkamisvuonna_sv] = case when d6a.kytkin_koodi <> '1' then 'Ej l‰roavtalsperioder' else d29.ikaryhma6_sv end
-	,[ika_oppisopimusjakson_alkamishetkella_sv] = case when d6a.kytkin_koodi <> '1' then 'Ej l‰roavtalsperioder' else d30.ikaryhma6_sv end
+	,[ika_oppisopimusjakson_alkamisvuonna_sv] = case when d6a.kytkin_koodi <> '1' then 'Ej l√§roavtalsperioder' else d29.ikaryhma6_sv end
+	,[ika_oppisopimusjakson_alkamishetkella_sv] = case when d6a.kytkin_koodi <> '1' then 'Ej l√§roavtalsperioder' else d30.ikaryhma6_sv end
 	,[opiskeluoikeuden_alkamisvuosi_sv] = d31.vuosi
 	,[opiskeluoikeuden_alkamiskuukausi_sv] = d31.kuukausi_sv
-	,[oppisopimusjakson_alkamisvuosi_sv] = case when d6a.kytkin_koodi <> '1' then 'Ej l‰roavtalsperioder' else cast(d32.vuosi as nvarchar(20)) end
-	,[oppisopimusjakson_alkamiskuukausi_sv] = case when d6a.kytkin_koodi <> '1' then 'Ej l‰roavtalsperioder' else d32.kuukausi_sv end
+	,[oppisopimusjakson_alkamisvuosi_sv] = case when d6a.kytkin_koodi <> '1' then 'Ej l√§roavtalsperioder' else cast(d32.vuosi as nvarchar(20)) end
+	,[oppisopimusjakson_alkamiskuukausi_sv] = case when d6a.kytkin_koodi <> '1' then 'Ej l√§roavtalsperioder' else d32.kuukausi_sv end
 
 	,[kotikunta_manner_suomessa_sv] = d35.kytkin_sv
 	,[oppivelvollinen_1_8_2021_sv] = d36.kytkin_sv
@@ -334,7 +333,7 @@ SELECT --top 1000
 	,[koodit_oppisopimuskoulutus] = d6a.kytkin_koodi
 	,[koodit_koulutussopimus] = d6b.kytkin_koodi
 
-	--J‰rjestykset
+	--J√§rjestykset
 	,d18.jarjestys_koodi as jarjestys_kustannusryhma
 	,d19.jarjestys_koodi as jarjestys_rahoitusmuoto
 	,d14.kuukausi as jarjestys_tilastokuukausi

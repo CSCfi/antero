@@ -11,7 +11,7 @@ GO
 
 CREATE OR ALTER VIEW [dw].[v_koski_amm_opintojen_kulku_cultures] AS
 
-SELECT DISTINCT --TOP 1000
+SELECT DISTINCT 
 	opiskeluoikeus_oid = HASHBYTES('SHA2_256', vs.salt + f.opiskeluoikeus_oid),
 	oppija_oid = HASHBYTES('SHA2_256', vs.salt + f.master_oid),
 
@@ -23,7 +23,7 @@ SELECT DISTINCT --TOP 1000
 	d3.tarkastelujakso_fi,
 	suorituksen_tyyppi_fi = d0.selite_fi,
 	tutkinto_fi = d4.koulutusluokitus_fi,
-	koulutusnimike_fi = d4.koulutusluokitus_fi, --ed. rivin tutkinto_fi käytössä raportilla
+	koulutusnimike_fi = d4.koulutusluokitus_fi, --ed. rivin tutkinto_fi raportilla
 	d4.tutkintotyyppi_fi,
 	d4.tutkintotyypin_ryhma_fi,
 	koulutusala_taso_1_fi = d4.koulutusalataso1_fi,
@@ -76,7 +76,7 @@ SELECT DISTINCT --TOP 1000
 	[koodit_oppilaitos] = d11.organisaatio_koodi,
 	[koodit_tutkinto] = d4.koulutusluokitus_koodi,
 
-	-- JÄRJESTYKSET
+	-- JARJESTYKSET
 	jarjestys_aloitusajankohta = d1.jarj_aloitusajankohta,
 	jarjestys_aloitusvuosipuolisko = d1.jarj_vuosipuolisko,
 	jarjestys_priorisoitu_tilanne = d2.priorisoitu_tilanne_koodi,

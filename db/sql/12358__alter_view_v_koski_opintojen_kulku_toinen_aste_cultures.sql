@@ -17,13 +17,13 @@ SELECT
 	CASE 
 		WHEN f.aika_vuosina is null THEN 'Viimeisin tilanne (edellisen kuukauden lopussa)'
 		WHEN f.aika_vuosina = 0 THEN 'Aloitusajankohta'
-		WHEN f.aika_vuosina = 1 THEN '1 vuosi aloitusp‰iv‰st‰'
-		ELSE CONCAT(aika_vuosina, ' vuotta aloitusp‰iv‰st‰')
+		WHEN f.aika_vuosina = 1 THEN '1 vuosi aloitusp√§iv√§st√§'
+		ELSE CONCAT(aika_vuosina, ' vuotta aloitusp√§iv√§st√§')
 	END as tarkastelujakso_fi,
 	CASE 
-		WHEN f.aika_vuosina is null THEN 'Senaste status (i slutet av fˆregÂende mÂnad)'
+		WHEN f.aika_vuosina is null THEN 'Senaste status (i slutet av f√∂reg√•ende m√•nad)'
 		WHEN f.aika_vuosina = 0 THEN 'Begynnelsetid'
-		ELSE CONCAT(f.aika_vuosina, ' Âr frÂn begynnelsedatum')
+		ELSE CONCAT(f.aika_vuosina, ' √•r fr√•n begynnelsedatum')
 	END as tarkastelujakso_sv,
 
 	HASHBYTES('SHA2_256', vs.salt + f.master_oid) as apusarake_oppija_oid,
@@ -84,15 +84,15 @@ SELECT
 	d31a.selite_fi as alkuperainen_koulutustyyppi_fi,
 	d31a.selite_sv as alkuperainen_koulutustyyppi_sv,
 	CASE
-		WHEN f.oppimaara_alkuperainen = 1 THEN 'Nuorten oppim‰‰r‰'
-		WHEN f.oppimaara_alkuperainen = 2 THEN 'Aikuisten oppim‰‰r‰'
+		WHEN f.oppimaara_alkuperainen = 1 THEN 'Nuorten oppim√§√§r√§'
+		WHEN f.oppimaara_alkuperainen = 2 THEN 'Aikuisten oppim√§√§r√§'
 		WHEN f.oppimaara_alkuperainen = 3 THEN 'Ulkomainen tutkinto'
 		ELSE 'Tieto puuttuu'
 	END as alkuperainen_oppimaara_fi,
 	CASE
-		WHEN f.oppimaara_alkuperainen = 1 THEN 'L‰rokursen fˆr unga'
-		WHEN f.oppimaara_alkuperainen = 2 THEN 'L‰rokursen fˆr vuxna'
-		WHEN f.oppimaara_alkuperainen = 3 THEN 'Utl‰ndsk examen'
+		WHEN f.oppimaara_alkuperainen = 1 THEN 'L√§rokursen f√∂r unga'
+		WHEN f.oppimaara_alkuperainen = 2 THEN 'L√§rokursen f√∂r vuxna'
+		WHEN f.oppimaara_alkuperainen = 3 THEN 'Utl√§ndsk examen'
 		ELSE 'Information saknas'
 	END as alkuperainen_oppimaara_sv,
 	
@@ -111,15 +111,15 @@ SELECT
 	d31b.selite_fi as koulutustyyppi_tarkasteluhetki_fi,
 	d31b.selite_sv as koulutustyyppi_tarkasteluhetki_sv,
 	CASE
-		WHEN f.oppimaara = 1 THEN 'Nuorten oppim‰‰r‰'
-		WHEN f.oppimaara = 2 THEN 'Aikuisten oppim‰‰r‰'
+		WHEN f.oppimaara = 1 THEN 'Nuorten oppim√§√§r√§'
+		WHEN f.oppimaara = 2 THEN 'Aikuisten oppim√§√§r√§'
 		WHEN f.oppimaara = 3 THEN 'Ulkomainen tutkinto'
 		ELSE 'Tieto puuttuu'
 	END as oppimaara_tarkasteluhetki_fi,
 	CASE
-		WHEN f.oppimaara_alkuperainen = 1 THEN 'L‰rokursen fˆr unga'
-		WHEN f.oppimaara_alkuperainen = 2 THEN 'L‰rokursen fˆr vuxna'
-		WHEN f.oppimaara_alkuperainen = 3 THEN 'Utl‰ndsk examen'
+		WHEN f.oppimaara_alkuperainen = 1 THEN 'L√§rokursen f√∂r unga'
+		WHEN f.oppimaara_alkuperainen = 2 THEN 'L√§rokursen f√∂r vuxna'
+		WHEN f.oppimaara_alkuperainen = 3 THEN 'Utl√§ndsk examen'
 		ELSE 'Information saknas'
 	END as oppimaara_tarkasteluhetki_sv,
 

@@ -11,7 +11,7 @@ GO
 
 CREATE OR ALTER VIEW [dw].[v_koski_esi_ja_perus_oppilaat_ja_paattaneet_lv_jaadytys_cultures] AS
 
-SELECT --top 1000
+SELECT
     apusarake_opisk = opisk
 	,apusarake_tutk = tutk
 	,apusarake_tilastopaiva_1_0 = tilastopaiva_1_0
@@ -25,11 +25,11 @@ SELECT --top 1000
   --FI
 	,lukukausi_fi = d14.selite_fi 
 
-	--hlö
-	,sukupuoli_fi = case d1.sukupuoli_koodi when '1' then 'Pojat' when '2' then 'Tytöt' else 'Tieto puuttuu' end
+	--hlÃ¶
+	,sukupuoli_fi = case d1.sukupuoli_koodi when '1' then 'Pojat' when '2' then 'TytÃ¶t' else 'Tieto puuttuu' end
 	,ika_fi =
 		case 
-			when d3.ika_fi in ('0','1','2','3','4') then '4-vuotiaat ja sitä nuoremmat'
+			when d3.ika_fi in ('0','1','2','3','4') then '4-vuotiaat ja sitÃ¤ nuoremmat'
 			when d3.ika_fi in ('5','6','7','8','9','10','11','12','13','14','15','16','17','18','19') then d3.ika_fi
 			else d3.ikaryhma3_fi
 		end
@@ -42,7 +42,7 @@ SELECT --top 1000
 	,koulutusmuoto_fi = d24.koulutus_fi
 	,perusopetuksen_suoritustapa_fi = f.suoritustapa
 	,vuosiluokka_tai_koulutus_fi = d24.vuosiluokka_fi
-	,koulutus_fi = d24.vuosiluokka_fi --eri nimellä suorittaneet-raporttia varten
+	,koulutus_fi = d24.vuosiluokka_fi --eri nimellÃ¤ suorittaneet-raporttia varten
 	,vuosiluokkaryhma_tai_koulutus_fi = d24.vuosiluokkaryhma_fi
 	,suorituskieli_fi = d23.suorituskieli_yleissivistava_fi
 	,muu_suorituskieli_fi = d23b.suorituskieli_yleissivistava_fi
@@ -79,11 +79,11 @@ SELECT --top 1000
   --SV
 	,lukukausi_sv = d14.selite_sv 
 
-	--hlö
+	--hlÃ¶
 	,sukupuoli_sv = case d1.sukupuoli_koodi when '1' then 'Pojkar' when '2' then 'Flickor' else 'Information saknas' end
 	,ika_sv =
 		case 
-			when d3.ika_sv in ('0','1','2','3','4') then '4 år eller yngre'
+			when d3.ika_sv in ('0','1','2','3','4') then '4 Ã¥r eller yngre'
 			when d3.ika_sv in ('5','6','7','8','9','10','11','12','13','14','15','16','17','18','19') then d3.ika_sv
 			else d3.ikaryhma3_sv
 		end
@@ -96,7 +96,7 @@ SELECT --top 1000
 	,koulutusmuoto_sv = d24.koulutus_sv
 	,perusopetuksen_suoritustapa_sv = f.suoritustapa
 	,vuosiluokka_tai_koulutus_sv = d24.vuosiluokka_sv
-	,koulutus_sv = d24.vuosiluokka_sv --eri nimellä suorittaneet-raporttia varten
+	,koulutus_sv = d24.vuosiluokka_sv --eri nimellÃ¤ suorittaneet-raporttia varten
 	,vuosiluokkaryhma_tai_koulutus_sv = d24.vuosiluokkaryhma_sv
 	,suorituskieli_sv = d23.suorituskieli_yleissivistava_sv
 	,muu_suorituskieli_sv = d23b.suorituskieli_yleissivistava_sv

@@ -16,18 +16,18 @@ SELECT
 	,[opiskeluoikeus_oid] = HASHBYTES('SHA2_256', vs.salt + f.opiskeluoikeus_oid)
 
 	,[Koulutuksen alkamisvuosi] = [alkamisvuosi]
-	,[Koulutuksen p‰‰ttymisvuosi] = year(vahvistuspaiva)
-	,[Koulutuksen j‰rjest‰j‰] = d10.organisaatio_fi
-	,[Koulutuksen j‰rjest‰j‰n kunta] = d10a.kunta_fi
-	,[Koulutuksen j‰rjest‰j‰n maakunta] = d10a.maakunta_fi
+	,[Koulutuksen p√§√§ttymisvuosi] = year(vahvistuspaiva)
+	,[Koulutuksen j√§rjest√§j√§] = d10.organisaatio_fi
+	,[Koulutuksen j√§rjest√§j√§n kunta] = d10a.kunta_fi
+	,[Koulutuksen j√§rjest√§j√§n maakunta] = d10a.maakunta_fi
 
 	,[Osaamisen hankkimistapa] = d5.selite_fi
 	,[Osaamisen hankkimistavat] = d4.selite_fi
-	,[Tyˆpaikka] = coalesce(d14.toiminimi,'Tieto puuttuu')
-	,[Tyˆnantajan toimiala, taso 1] = d11.taso_1_selite_fi
-	,[Tyˆnantajan toimiala, taso 2] = d11.taso_2_selite_fi
+	,[Ty√∂paikka] = coalesce(d14.toiminimi,'Tieto puuttuu')
+	,[Ty√∂nantajan toimiala, taso 1] = d11.taso_1_selite_fi
+	,[Ty√∂nantajan toimiala, taso 2] = d11.taso_2_selite_fi
 
-	,[Tutkintotyypin ryhm‰] = 
+	,[Tutkintotyypin ryhm√§] = 
 		case 
 			when d1.tutkintotyyppi_koodi = '-1' and d9.koodi = '3' then 'Tieto puuttuu (tutkinnon osaa pienempi kokonaisuus)' 
 			when d24.kytkin_koodi = 1 then (select distinct tutkintotyypin_ryhma_fi from [ANTERO].[dw].[d_koulutusluokitus] where tutkintotyypin_ryhma_koodi = '09') 
@@ -48,10 +48,10 @@ SELECT
 	,[Suorituksen tyyppi] = d9.selite_fi
 
 	,[Sukupuoli] = d2.sukupuoli_fi
-	,[Ik‰, alkamisvuonna] = d3.ika_fi
-	,[Ik‰ryhm‰, alkamisvuonna] = d3.ikaryhma3_fi
+	,[Ik√§, alkamisvuonna] = d3.ika_fi
+	,[Ik√§ryhm√§, alkamisvuonna] = d3.ikaryhma3_fi
 
-	,[Nelj‰nnes] = concat(f.[neljannes],'. nelj‰nnes opiskeluajasta')
+	,[Nelj√§nnes] = concat(f.[neljannes],'. nelj√§nnes opiskeluajasta')
 	,[neljanneksen_kesto] = f.neljannes_paivat
 	,paivat
 	,opiskeluoikeuden_kesto_paivia
@@ -72,25 +72,25 @@ SELECT
 			else '75 - 100 %'
 		end
 	--,[Aika aloittamisesta jakson alkuun (kk)] = f.aika_aloittamisesta_sopimusjaksoon_kk
-	--,[Tyˆpaikkajaksojen lkm] = f.tyopaikkajaksojen_lkm
+	--,[Ty√∂paikkajaksojen lkm] = f.tyopaikkajaksojen_lkm
 
 	,[lkm] = 1
 	--,[sopimusten_lkm_opiskeluoikeudessa]
     --,[sopimusten_lkm_opiskeluoikeus_yritys]
 
 	--koodit
-	,[Koodit Koulutuksen j‰rjest‰j‰] = d10.organisaatio_koodi
-	,[Koodit Tyˆpaikka] = f.tyopaikan_ytunnus
+	,[Koodit Koulutuksen j√§rjest√§j√§] = d10.organisaatio_koodi
+	,[Koodit Ty√∂paikka] = f.tyopaikan_ytunnus
 
-	--j‰rjestykset
-	,[j‰rjestys Tutkintotyyppi] = case when d24.kytkin_koodi =  1 then 98 else d1.jarjestys_tutkintotyyppi_koodi end
-	,[j‰rjestys Koulutusala, taso 1] = d1.jarjestys_koulutusalataso1_koodi
-	,[j‰rjestys Koulutusala, taso 2] = d1.jarjestys_koulutusalataso2_koodi
-	,[j‰rjestys Koulutusala, taso 3] = d1.jarjestys_koulutusalataso3_koodi
-	,[j‰rjestys Suorituksen tyyppi] = d9.jarjestys
+	--j√§rjestykset
+	,[j√§rjestys Tutkintotyyppi] = case when d24.kytkin_koodi =  1 then 98 else d1.jarjestys_tutkintotyyppi_koodi end
+	,[j√§rjestys Koulutusala, taso 1] = d1.jarjestys_koulutusalataso1_koodi
+	,[j√§rjestys Koulutusala, taso 2] = d1.jarjestys_koulutusalataso2_koodi
+	,[j√§rjestys Koulutusala, taso 3] = d1.jarjestys_koulutusalataso3_koodi
+	,[j√§rjestys Suorituksen tyyppi] = d9.jarjestys
 	,[jarjestys Neljannes] = f.neljannes
-	,[j‰rjestys Osaamisen hankkimistapa] = d5.jarjestys
-	,[j‰rjestys Osaamisen hankkimistavat] = d4.jarjestys
+	,[j√§rjestys Osaamisen hankkimistapa] = d5.jarjestys
+	,[j√§rjestys Osaamisen hankkimistavat] = d4.jarjestys
 
 FROM [ANTERO].[dw].[f_ehoks_tutkinnon_suorittaneet_neljannekset] f
 LEFT JOIN dw.d_koulutusluokitus d1 on d1.id = f.d_koulutusluokitus_id

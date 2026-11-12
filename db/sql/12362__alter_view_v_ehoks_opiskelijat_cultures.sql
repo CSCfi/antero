@@ -97,7 +97,7 @@ SELECT
 	,[jarjestys_koulutusala_taso_3] = d1.jarjestys_koulutusalataso3_koodi
 	,[jarjestys_suorituksen_tyyppi] = d9.jarjestys
 	,[jarjestys_osaamisen_hankkimistavat] = d13.jarjestys
-	,[jarjestys_urasuunnitelma] = left(coalesce(nullif(urasuunnitelma, 'Tieto puuttuu'),'ööö'),3)
+	,[jarjestys_urasuunnitelma] = left(coalesce(nullif(urasuunnitelma, 'Tieto puuttuu'),'Ã¶Ã¶Ã¶'),3)
 	,[jarjestys_koulutuksen_jarjestajan_maakunta] = d14.jarjestys_maakunta_koodi
 	,[jarjestys_aidinkieli] = d15.jarjestys_kieliryhma2
 	,[jarjestys_kansalaisuus_maanosa] = d16.jarjestys_maanosa5_koodi

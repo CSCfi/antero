@@ -51,7 +51,7 @@ SELECT
 		,kuukausi_fi 										= d13.kuukausi_fi
 		,aloitusvuosi_fi									= COALESCE(f.aloitusvuosi, 'Tieto puuttuu')
 		,aloituskuukausi_fi 								= COALESCE(d14.kuukausi_fi, 'Tieto puuttuu')
-		,lukuvuosi_fi 										= case when f.lukuvuosi = '2017/2018' then '2017/2018 kev‰tlukukausi' else f.lukuvuosi END 
+		,lukuvuosi_fi 										= case when f.lukuvuosi = '2017/2018' then '2017/2018 kev√§tlukukausi' else f.lukuvuosi END 
 		,lukukausi_fi 										= f.lukukausi
 		,aloitus_kuukauden_aikana_fi						= d19.kytkin_fi
 
@@ -65,7 +65,7 @@ SELECT
 		,suorituskieliryhma_fi 								= d15.kieliryhma2_fi
 		,suorituskieli_fi 									= d15.suorituskieli_yleissivistava_fi
 
-	-- HENKIL÷MUUTTUJAT
+	-- HENKIL√∂MUUTTUJAT
 		,ika_fi												= d4.ikaryhma6_fi
 		,aidinkieli_fi										= d6.kieliryhma2_fi
 		,kansalaisuus_tarkka_fi								= d1.maatjavaltiot2_fi
@@ -84,7 +84,7 @@ SELECT
 		,oppivelvollinen_1_8_2021_fi						= d21.kytkin_fi
 
 	-- ORGANISAATIOMUUTTUJAT
-		-- Koulutuksen j‰rjest‰j‰
+		-- Koulutuksen j√§rjest√§j√§
 			,koulutuksen_jarjestaja_fi 						= d7.organisaatio_fi 
 			,koulutuksen_jarjestajan_yritysmuoto_fi 		= d7.koulutuksen_jarjestajan_yritysmuoto
 			,koulutuksen_jarjestajan_kunta_fi 				= d10.kunta_fi
@@ -126,41 +126,41 @@ SELECT
 		,kuukausi_sv 										= d13.kuukausi_sv
 		,aloitusvuosi_sv	 								= COALESCE(f.aloitusvuosi, 'Information saknas')
 		,aloituskuukausi_sv 								= COALESCE(d14.kuukausi_sv, 'Information saknas')
-		,lukuvuosi_sv										= case when f.lukuvuosi = '2017/2018' then '2017/2018 vÂrtermin' else f.lukuvuosi END 
-		,lukukausi_sv 										= case f.lukukausi when 'Syyslukukausi' then 'Hˆsttermin' when 'Kev‰tlukukausi' then 'VÂrtermin' end
+		,lukuvuosi_sv										= case when f.lukuvuosi = '2017/2018' then '2017/2018 v√•rtermin' else f.lukuvuosi END 
+		,lukukausi_sv 										= case f.lukukausi when 'Syyslukukausi' then 'H√∂sttermin' when 'Kev√§tlukukausi' then 'V√•rtermin' end
 		,aloitus_kuukauden_aikana_sv						= d19.kytkin_sv
 
 	-- KOULUTUSMUUTTUJAT
-		,oppimaara_sv										= CASE WHEN oppimaara = 'Aikuisten oppim‰‰r‰' THEN 'L‰rokursen fˆr vuxna'
-																WHEN oppimaara = 'Aineopiskelija (ei tutkintotavoitetta)' THEN 'ƒmnesstuderande (Ingen mÂlexamen)'
-																WHEN oppimaara = 'Nuorten oppim‰‰r‰' THEN 'L‰rokursen fˆr unga'
-																WHEN oppimaara = 'Ulkomainen tutkinto' THEN 'Utl‰ndsk examen' END
+		,oppimaara_sv										= CASE WHEN oppimaara = 'Aikuisten oppim√§√§r√§' THEN 'L√§rokursen f√∂r vuxna'
+																WHEN oppimaara = 'Aineopiskelija (ei tutkintotavoitetta)' THEN '√§mnesstuderande (Ingen m√•lexamen)'
+																WHEN oppimaara = 'Nuorten oppim√§√§r√§' THEN 'L√§rokursen f√∂r unga'
+																WHEN oppimaara = 'Ulkomainen tutkinto' THEN 'Utl√§ndsk examen' END
 		,tavoitetutkinto_sv									= CASE WHEN tavoitetutkinto = 'Ylioppilastutkinto' THEN 'Studentexamen' 
 																WHEN tavoitetutkinto = 'IB-tutkinto (International Baccalaureate)' THEN 'IB-examen (International Baccalaureate)' 
-																WHEN tavoitetutkinto = 'Ei tutkintotavoitetta' THEN  'Ingen mÂlexamen'
+																WHEN tavoitetutkinto = 'Ei tutkintotavoitetta' THEN  'Ingen m√•lexamen'
 																ELSE tavoitetutkinto END
 		,yhdistelmatutkinto_sv								= CASE WHEN yhdistelmatutkinto = 'Kaksoistutkinto-opiskelija' THEN 'Dubbelexamen student'
 																WHEN yhdistelmatutkinto = 'Kolmoistutkinto-opiskelija' THEN 'Trippelexamen student' 
-																WHEN yhdistelmatutkinto = 'Lukio valm. ja ammatillinen' THEN 'Utbildning som fˆrbereder fˆr gymnasieutbildning och yrkesutbildning'
-																WHEN yhdistelmatutkinto = 'Ei yhdistelm‰tutkintoa' THEN 'Ingen kombinationsexamen' END
-		,koulutus_sv										= CASE WHEN koulutus = 'Lukiokoulutukseen valmistava koulutus' THEN 'Utbildning som fˆrbereder fˆr gymnasieutbildning' 
-																WHEN koulutus = 'Yleissivist‰v‰ lukiokoulutus' THEN 'Allm‰nbildande gymnasieutbildning' END
+																WHEN yhdistelmatutkinto = 'Lukio valm. ja ammatillinen' THEN 'Utbildning som f√∂rbereder f√∂r gymnasieutbildning och yrkesutbildning'
+																WHEN yhdistelmatutkinto = 'Ei yhdistelm√§tutkintoa' THEN 'Ingen kombinationsexamen' END
+		,koulutus_sv										= CASE WHEN koulutus = 'Lukiokoulutukseen valmistava koulutus' THEN 'Utbildning som f√∂rbereder f√∂r gymnasieutbildning' 
+																WHEN koulutus = 'Yleissivist√§v√§ lukiokoulutus' THEN 'Allm√§nbildande gymnasieutbildning' END
 		,majoitus_sv 										= d17.kytkin_sv
 		,sisaoppilaitosmuotoinen_majoitus_sv 				= d18.kytkin_sv
 		,suorituskieliryhma_sv 										= d15.kieliryhma2_sv
 		,suorituskieli_sv 									= d15.suorituskieli_yleissivistava_sv
 
-	-- HENKIL÷MUUTTUJAT
+	-- HENKIL√∂MUUTTUJAT
 		,ika_sv												= d4.ikaryhma6_sv
 		,aidinkieli_sv										= d6.kieliryhma2_sv
 		,kansalaisuus_tarkka_sv								= d1.maatjavaltiot2_sv
 		,kansalaisuus_sv 									= d1.maanosa6_sv
 		,kansalaisuus_maanosa_sv 							= COALESCE(d1.maanosa_sv, 'Information saknas')
 		,sukupuoli_sv 										= COALESCE(d3.[sukupuoli_sv], 'Information saknas') 
-		,ikaryhma_sv 										= CASE WHEN d4.[ikaryhma3_sv] IS NULL THEN 'Ok‰nd' ELSE d4.ikaryhma3_sv END
+		,ikaryhma_sv 										= CASE WHEN d4.[ikaryhma3_sv] IS NULL THEN 'Ok√§nd' ELSE d4.ikaryhma3_sv END
 		,ikaryhma2_sv 										= CASE
 															      WHEN d4.[ika_avain] <= 18 THEN d4.[ikaryhma2_sv]
-																  ELSE 'ˆver 18 Âr'
+																  ELSE '√∂ver 18 √•r'
 															  END
 		,kotikunta_nykyinen_sv								= d0.kunta_sv
 		,kotimaakunta_nykyinen_sv							= d0.maakunta_sv
@@ -169,7 +169,7 @@ SELECT
 		,oppivelvollinen_1_8_2021_sv						= d21.kytkin_sv
 		
 	-- ORGANISAATIOMUUTTUJAT
-		-- Koulutuksen j‰rjest‰j‰
+		-- Koulutuksen j√§rjest√§j√§
 			,koulutuksen_jarjestaja_sv 						= d7.organisaatio_sv
 			,koulutuksen_jarjestajan_yritysmuoto_sv 		= d7.koulutuksen_jarjestajan_yritysmuoto_sv
 			,koulutuksen_jarjestajan_kunta_sv 				= d10.kunta_sv
@@ -208,7 +208,7 @@ SELECT
 		,koodit_oppilaitoksen_seutukunta 						= d11.seutukunta_koodi
 
 
-	-- JƒRJESTYSMUUTTUJAT
+	-- J√§RJESTYSMUUTTUJAT
 		,jarjestys_koulutuksen_jarjestajan_kuntaryhma 							= COALESCE(d10.kuntaryhma_koodi, 99)
 		,jarjestys_koulutuksen_jarjestajan_maakunta 							= d10.jarjestys_maakunta_koodi
 		,jarjestys_koulutuksen_jarjestajan_hyvinvointialue 						= d10.jarjestys_hyvinvointialue_koodi
@@ -234,9 +234,9 @@ SELECT
 																		  ELSE 2
 																	  END
 		,CASE
-			WHEN f.oppimaara = 'Aikuisten oppim‰‰r‰' THEN 2
+			WHEN f.oppimaara = 'Aikuisten oppim√§√§r√§' THEN 2
 			WHEN f.oppimaara = 'Aineopiskelija (ei tutkintotavoitetta)' THEN 4
-			WHEN f.oppimaara = 'Nuorten oppim‰‰r‰' THEN 1
+			WHEN f.oppimaara = 'Nuorten oppim√§√§r√§' THEN 1
 			WHEN f.oppimaara = 'Ulkomainen tutkinto' THEN 3
 			ELSE 999 END
 			AS jarjestys_oppimaara
@@ -248,7 +248,7 @@ SELECT
 		,jarjestys_kuukausi 										= d13.kuukausi
 		,jarjestys_aloituskuukausi 									= COALESCE(d14.kuukausi, 99)
 		,jarjestys_yhdistelmatutkinto								= f.jarj_yhdistelmatutkinto
-		,jarjestys_lukukausi 										= CASE WHEN f.lukukausi = 'Syyslukukausi' THEN 1 WHEN f.lukukausi = 'Kev‰tlukukausi' THEN 2 END
+		,jarjestys_lukukausi 										= CASE WHEN f.lukukausi = 'Syyslukukausi' THEN 1 WHEN f.lukukausi = 'Kev√§tlukukausi' THEN 2 END
 
 FROM [ANTERO].[dw].[f_koski_lukio_opiskelijat_kuukausittain] AS f 
 LEFT JOIN ANTERO.dw.d_alueluokitus AS d0 ON d0.id = f.d_alueluokitus_kotikunta_id

@@ -21,7 +21,7 @@ SELECT
 	,opiskeluoikeuden_alkamiskuukausi_fi						= d13.kuukausi_fi
 	,opiskeluoikeuden_alkamisajankohta_fi						= f.oo_alkamisajankohta
 
-	-- Henkilömuuttujat
+	-- HenkilÃ¶muuttujat
 	,ika_fi														= d2.ikaryhma6_fi
 	,sukupuoli_fi												= d1.sukupuoli_fi
 	,aidinkieli_ryhma_fi										= d4.kieliryhma2_fi
@@ -58,9 +58,9 @@ SELECT
 	,koulutuksen_jarjestajan_ely_fi								= d17.ely_fi
 	,koulutuksen_jarjestajan_yritysmuoto_fi						= d6.koulutuksen_jarjestajan_yritysmuoto
 	,rahoitusjarjestelma_fi										= case
-																	when f.[tuva_jarjestamislupa] = 'ammatillinen' then 'Ammatillisen koulutuksen rahoitusjärjestelmä (TUVA)'
-																	when f.[tuva_jarjestamislupa] = 'lukio' then 'Lukiokoulutuksen rahoitusjärjestelmä (TUVA)'
-																	when f.[tuva_jarjestamislupa] = 'perusopetus' then 'Perusopetuksen rahoitusjärjestelmä (TUVA)'
+																	when f.[tuva_jarjestamislupa] = 'ammatillinen' then 'Ammatillisen koulutuksen rahoitusjÃ¤rjestelmÃ¤ (TUVA)'
+																	when f.[tuva_jarjestamislupa] = 'lukio' then 'Lukiokoulutuksen rahoitusjÃ¤rjestelmÃ¤ (TUVA)'
+																	when f.[tuva_jarjestamislupa] = 'perusopetus' then 'Perusopetuksen rahoitusjÃ¤rjestelmÃ¤ (TUVA)'
 																end
 
   -- SV
@@ -72,7 +72,7 @@ SELECT
 	,opiskeluoikeuden_alkamiskuukausi_sv						= d13.kuukausi_sv
 	,opiskeluoikeuden_alkamisajankohta_sv						= f.oo_alkamisajankohta
 
-	-- Henkilömuuttujat
+	-- HenkilÃ¶muuttujat
 	,ika_sv 													= d2.ikaryhma6_sv
 	,sukupuoli_sv												= d1.sukupuoli_sv
 	,aidinkieli_ryhma_sv										= d4.kieliryhma2_sv
@@ -109,9 +109,9 @@ SELECT
 	,koulutuksen_jarjestajan_ely_sv								= d17.ely_sv
 	,koulutuksen_jarjestajan_yritysmuoto_sv						= d6.koulutuksen_jarjestajan_yritysmuoto_sv
 	,rahoitusjarjestelma_sv										= case
-																	when f.[tuva_jarjestamislupa] = 'ammatillinen' then 'Finansieringssystemet för yrkesutbildning (Hux)'
-																	when f.[tuva_jarjestamislupa] = 'lukio' then 'Finansieringssystemet för gymnasieutbildning (Hux)'
-																	when f.[tuva_jarjestamislupa] = 'perusopetus' then 'Finansieringssystemet för den grundläggande utbildningen (Hux)'
+																	when f.[tuva_jarjestamislupa] = 'ammatillinen' then 'Finansieringssystemet fÃ¶r yrkesutbildning (Hux)'
+																	when f.[tuva_jarjestamislupa] = 'lukio' then 'Finansieringssystemet fÃ¶r gymnasieutbildning (Hux)'
+																	when f.[tuva_jarjestamislupa] = 'perusopetus' then 'Finansieringssystemet fÃ¶r den grundlÃ¤ggande utbildningen (Hux)'
 																end
 
 	-- Apumuuttujat
@@ -119,7 +119,7 @@ SELECT
 	,apusarake_opiskeluoikeus_oid								= HASHBYTES('SHA2_256', vs.salt + f.opiskeluoikeus_oid)
 	,apusarake_tila_20_9										= f.tila_20_9
 
-	-- Järjestysmuuttujat
+	-- JÃ¤rjestysmuuttujat
 	,jarjestys_tilastokuukausi									= d11.kuukausi
 	,jarjestys_opiskeluoikeuden_alkamiskuukausi					= d13.kuukausi
 	,jarjestys_ika												= d2.jarjestys_ikaryhma6
