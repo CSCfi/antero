@@ -502,7 +502,7 @@ DROP TABLE IF EXISTS ANTERO.sa.temp_ensi_kertaa_hakeneet
 
 -- Vastaanottaa korkeakoulupaikan kolmen vuoden sisällä
 UPDATE f 
-SET vastaanottaa_paikan_3v = vkkp3.vastaanottanut_paikan
+SET vastaanottaa_paikan_3v = 1
 FROM ANTERO.dw.f_haku_ja_valinta_hakeneet_korkea_aste f
 LEFT JOIN ANTERO.dw.d_kausi d on d.id = f.d_kausi_koulutuksen_alkamiskausi_id
 OUTER APPLY (
@@ -511,6 +511,7 @@ OUTER APPLY (
 	WHERE vkkp3.kk_haku = 1 and vkkp3.vastaanottanut_paikan = 1 and vkkp3.master_oid = f.master_oid
 	and cast(concat(vkkp3.koulutuksen_alkamisvuosi,'.', case when vkkp3.koulutuksen_alkamiskausi = 's' then '5' else 0 end) as float) between cast(concat(f.koulutuksen_alkamisvuosi,'.', case when d.koodi = 's' then '5' else 0 end) as float) and cast(concat(f.koulutuksen_alkamisvuosi,'.', case when d.koodi = 's' then '5' else 0 end) as float) + 2.5
 ) AS vkkp3 
+WHERE vkkp3.vastaanottanut_paikan = 1
 
 CREATE NONCLUSTERED INDEX [test_index]
 ON [dw].[f_haku_ja_valinta_hakeneet_korkea_aste] ([koulutuksen_alkamisvuosi])
